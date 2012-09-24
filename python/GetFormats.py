@@ -1,4 +1,5 @@
 #!/usr/bin/python
+
 import ossaudiodev
 
 sound = ossaudiodev.open('w')
