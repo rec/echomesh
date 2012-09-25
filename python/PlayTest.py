@@ -21,10 +21,10 @@ def play(filename):
   print "readframes"
   data = sound_file.readframes(nf)
 
-  if True: return
-
   print "closing file"
   sound_file.close()
+
+  if True: return
 
   print "writing data"
   sound.write(data)
