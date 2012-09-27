@@ -1,6 +1,5 @@
 #include <string.h>
 
-#include <iostream>
 
 using namespace std;
 
@@ -28,17 +27,5 @@ int main(int argc, char **argv) {
 
   string s;
   while (getline(cin, s)) {
-    bool err = false;
-    if (!s.find(PLAY))
-      play(s.substr(strlen(PLAY)));
-    else if (!s.find(LIST))
-      list();
-    else
-      err = true;
-
-    if (err)
-      error(s);
-    else
-      cout << "ok" << endl;
   }
 }

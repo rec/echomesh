@@ -1,7 +1,7 @@
 CFLAGS += -Wall -DBSD_INTERFACE_FUNCTIONS
 PROGRAM = Synth.bin
 LDFLAGS =
-SOURCES = Synth.cpp
+SOURCES = Main.cpp Commands.cpp ProcessLine.cpp
 OBJECTS = $(SOURCES:.c=.o)
 RM = rm -f
 
