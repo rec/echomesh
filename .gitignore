@@ -2,3 +2,5 @@
 .svn
 *.pyc
 *.pyo
+*.bin
+*.o
