@@ -1,7 +1,7 @@
 #ifndef __PROCESS_LINE__
 #define __PROCESS_LINE__
 
-#include <string>
+#include "Base.h"
 
 namespace echomesh {
 

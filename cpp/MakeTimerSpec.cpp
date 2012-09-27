@@ -1,6 +1,3 @@
-#include <stdlib.h>
-#include <iostream>
-
 #include "MakeTimerSpec.h"
 
 using namespace std;

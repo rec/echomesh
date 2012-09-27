@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH__SPLIT__
 #define __ECHOMESH__SPLIT__
 
-#include <string>
+#include "Base.h"
 
 namespace echomesh {
 

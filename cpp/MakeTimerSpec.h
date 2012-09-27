@@ -2,7 +2,8 @@
 #define __ECHOMESH_MAKE_TIMER_SPEC__
 
 #include <time.h>
-#include <string>
+
+#include "Base.h"
 
 namespace echomesh {
 

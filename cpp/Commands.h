@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH__COMMANDS__
 #define __ECHOMESH__COMMANDS__
 
-#include <string>
+#include "Base.h"
 
 namespace echomesh {
 
