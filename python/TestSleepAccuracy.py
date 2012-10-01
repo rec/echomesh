@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
-from datetime import datetime
-from math import sqrt
-
+import datetime
+import math
+import sys
 import time
 
-WAIT_TIME = 0.050
-ITERATIONS = 100
+WAIT_TIME = 0.005
+PRESKIP = 0
+ITERATIONS = 10
+MICROSECONDS_PER_SECOND = 1000000.
 
 # Copied from http://www.physics.rutgers.edu/~masud/computing/WPark_recipes_in_python.html
 
@@ -18,18 +20,38 @@ def meanstdv(x):
 
   for a in x:
     std = std + (a - mean)**2
-  std = sqrt(std / float(n-1))
+  std = math.sqrt(std / float(n-1))
 
   return mean, std
 
-# Copied from http://stackoverflow.com/questions/1133857/how-accurate-is-pythons-time-sleep
-
-def sleepError(amount=WAIT_TIME):
-  start = datetime.now()
-  time.sleep(amount)
-  end = datetime.now()
+def sleepError(wait):
+  start = datetime.datetime.now()
+  time.sleep(wait)
+  end = datetime.datetime.now()
   delta = end - start
-  return abs((delta.seconds + delta.microseconds / 1000000.) - amount)
+  error = (delta.seconds + delta.microseconds / MICROSECONDS_PER_SECOND) - wait
+  if error < 0:
+    print 'UNDERRUN:', error  # Never happens.
+    error = -error
 
-errors = [1000. * sleepError() for i in xrange(ITERATIONS)]
-print 'Error: average %0.2fms; std dev %0.2fms' % meanstdv(errors)
+  return error
+
+def getSleepErrors(iterations=ITERATIONS, t=WAIT_TIME):
+  return [MICROSECONDS_PER_SECOND * sleepError(t) for i in xrange(iterations)]
+
+def reportSleepErrors(errors, iterations=ITERATIONS, t=WAIT_TIME):
+  print '%d iterations, wait %dus' % (iterations, t * MICROSECONDS_PER_SECOND)
+  print '  average %dus; std dev %dus' % meanstdv(errors)
+  print '  min: %dus, max: %dus' % (min(errors), max(errors))
+
+def runSleepReport(iterations=ITERATIONS, wait=WAIT_TIME):
+  wait = float(wait)
+  iterations = int(iterations)
+  if PRESKIP:
+    # Skipping the first few to get stability seems to have no effect.
+    getSleepErrors(PRESKIP, wait)
+
+  reportSleepErrors(getSleepErrors(iterations, wait), iterations, wait)
+
+if __name__ == '__main__':
+  runSleepReport(*sys.argv[1:])
