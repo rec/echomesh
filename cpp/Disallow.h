@@ -18,14 +18,4 @@
   TypeName();                                    \
   DISALLOW_COPY_AND_ASSIGN(TypeName)
 
-// A macro to disallow the copy constructor and operator= functions.
-#define DISALLOW_COPY_ASSIGN_AND_LEAKS(TypeName) \
-  DISALLOW_COPY_AND_ASSIGN(TypeName);            \
-  JUCE_LEAK_DETECTOR(TypeName)
-
-#define DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(TypeName) \
-  DISALLOW_COPY_ASSIGN_AND_EMPTY(TypeName);            \
-  JUCE_LEAK_DETECTOR(TypeName)
-
-
 #endif  // __REC_BASE_DISALLOW__
