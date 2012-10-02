@@ -24,8 +24,6 @@ def play(filename):
   print "closing file"
   sound_file.close()
 
-  if True: return
-
   print "writing data"
   sound.write(data)
 

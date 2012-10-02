@@ -5,10 +5,11 @@ import math
 import sys
 import time
 
-WAIT_TIME = 0.005
-PRESKIP = 0
 ITERATIONS = 10
 MICROSECONDS_PER_SECOND = 1000000.
+PRESKIP = 0
+USAGE = 'Usage: TestSleepAccuracy [iterations] [waitTimeInFloatingPointSeconds]'
+WAIT_TIME = 0.005
 
 # Copied from http://www.physics.rutgers.edu/~masud/computing/WPark_recipes_in_python.html
 
@@ -54,4 +55,7 @@ def runSleepReport(iterations=ITERATIONS, wait=WAIT_TIME):
   reportSleepErrors(getSleepErrors(iterations, wait), iterations, wait)
 
 if __name__ == '__main__':
-  runSleepReport(*sys.argv[1:])
+  if len(sys.argv) <= 3:
+    runSleepReport(*sys.argv[1:])
+  else:
+    print USAGE
