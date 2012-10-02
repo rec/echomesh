@@ -6,7 +6,6 @@
 #include "Lock.h"
 
 namespace echomesh {
-
 }  // namespace echomesh
 
 #endif  // __ECHOMESH__SCHEDULER__
