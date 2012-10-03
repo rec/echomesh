@@ -19,10 +19,10 @@ def _getAndIncrementIndex(f):
 
 def shorten(url, config):
   def shortenerUrl(part):
-    return '%/%s' % (config.shortenUrl, part)
+    return '%s/%s' % (config.shortenUrl, part)
 
   shorturl = config.shortenPrefix + _getAndIncrementIndex(config.indexFile)
-  data = urllib.urlencode(dict(signature=config.shortenSignature,
+  data = urllib.urlencode(dict(signature=config.auth['yourls'],
                                action='shorturl',
                                keyword=shorturl,
                                url=url))
