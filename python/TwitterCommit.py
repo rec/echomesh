@@ -1,44 +1,33 @@
 #!/usr/bin/python
 
-import twitter
-
 import Config
 import Git
 import ShortenUrl
+import Twitter
+import Util
 
 TWITTER_SIZE = 140
-ELLIPSIS = '...'
+INTRO = 'COMMIT: '
 
 URL_PATTERN = 'https://github.com/%s/%s/commit/%s'
 
-def postUpdate(update, config):
-  if len(update) > TWITTER_SIZE:
-    update = update[0:TWITTER_SIZE - len(ELLIPSIS)] + ELLIPSIS
+def getCommitUrl(commit, config):
+  url = ''
+  if config.includeUrl:
+    url = URL_PATTERN % (config.gitUser, config.gitProject, commit)
+    if config.useShortener:
+      url = ShortenUrl.shorten(url, config)
+    url = ' ' + url
 
-  # TODO: why didn't this work?
-  #  twitter.Api(*config.auth['twitter']).PostUpdate(update)
-  auth = config.auth['twitter']
-  twitter.Api(
-    consumer_key = auth['consumer_key'],
-    consumer_secret = auth['consumer_secret'],
-    access_token_key = auth['access_token_key'],
-    access_token_secret = auth['access_token_secret']
-  ).PostUpdate(update)
+  return url
 
-
-def addUrlToSubject(commit, subject, config):
-  url = URL_PATTERN % (config.gitUser, config.gitProject, commit)
-  if config.useShortener:
-    url = ShortenUrl.shorten(url, config)
-
-  return '%s %s' % (url, subject)
+def getCommitText(config):
+  commit, description = Git.mostRecentCommit()
+  url = getCommitUrl(commit, config)
+  return Util.truncateSuffix(INTRO + description, url, Twitter.TWITTER_SIZE)
 
 def twitterCommit(config):
-  commit, subject = Git.mostRecentCommit()
-  if config.includeUrl:
-    subject = addUrlToSubject(commit, subject, config)
-
-  postUpdate(subject, config)
+  Twitter.postUpdate(getCommitText(config), config)
 
 if __name__ == '__main__':
   twitterCommit(Config)
