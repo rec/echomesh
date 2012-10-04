@@ -42,7 +42,6 @@
 ' suf'
 
 
-
 >>> import mock
 >>> mock_open = mock.mock_open()
 
