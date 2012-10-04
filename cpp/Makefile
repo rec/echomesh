@@ -1,7 +1,16 @@
 CFLAGS += -Wall
 PROGRAM = Synth.bin
 LDFLAGS = -lrt -lpthread
-SOURCES = Main.cpp Commands.cpp ProcessLine.cpp MakeTimerSpec.cpp Scheduler.cpp Owned.cpp
+SOURCES = \
+  Base.cpp \
+  CallbackThread.cpp \
+  Commands.cpp \
+  Main.cpp \
+  MakeTimerSpec.cpp \
+  Owned.cpp \
+  ProcessLine.cpp \
+  Scheduler.cpp
+
 OBJECTS = $(SOURCES:.cpp=.o)
 RM = rm -f
 

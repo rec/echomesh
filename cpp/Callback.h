@@ -13,7 +13,7 @@ class Callback {
   virtual bool operator()() = 0;
 
  private:
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(Callback);
+  DISALLOW_COPY_AND_ASSIGN(Callback);
 };
 
 }  // namespace echomesh

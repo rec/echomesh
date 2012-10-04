@@ -13,4 +13,12 @@
 
 typedef pthread_mutex_t Mutex;
 
+namespace echomesh {
+
+void dcheck(bool condition, const char* message);
+
+}  // namespace echomesh
+
+#define DCHECK(X) dcheck(X, #X)
+
 #endif
