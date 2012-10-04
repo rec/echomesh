@@ -5,10 +5,17 @@
 
 namespace echomesh {
 
-CallbackThread::CallbackThread() : exitRequested_(false), isRunning_(false) {
+CallbackThread::CallbackThread(Callback* cb)
+    : callback_(cb),
+      exitRequested_(false),
+      isRunning_(false) {
   pthread_attr_init(&threadAttributes_);
   sigemptyset(&signalMask_);
   sigaddset(&signalMask_, SIGUSR1); // TODO:
+
+  bool threadError = pthread_create(&thread_, &threadAttributes_,
+                                    &CallbackThread::runCallbackThread, this);
+  DCHECK2(threadError, "Couldn't start thread");
 }
 
 CallbackThread::~CallbackThread() {
@@ -27,6 +34,8 @@ bool CallbackThread::addCallback(Callback* cb) {
   if (callback_)
     return false;
   callback_.reset(cb);
+
+  notify();
   return true;
 }
 
@@ -46,13 +55,21 @@ void CallbackThread::run() {
       isEmpty = !callback_;
     }
     if (isEmpty) {
-      sigsuspend(&signalMask_);
+      wait();
     } else {
       (*callback_)();
       Lock l(&mutex_);
       callback_.reset();
     }
   }
+}
+
+void CallbackThread::notify() {
+  // TODO: raise a signal here.
+}
+
+void CallbackThread::wait() {
+  sigsuspend(&signalMask_);
 }
 
 void CallbackThread::requestExit() {

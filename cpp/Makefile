@@ -9,7 +9,9 @@ SOURCES = \
   MakeTimerSpec.cpp \
   Owned.cpp \
   ProcessLine.cpp \
-  Scheduler.cpp
+  Scheduler.cpp \
+  ThreadPool.cpp \
+
 
 OBJECTS = $(SOURCES:.cpp=.o)
 RM = rm -f

@@ -12,16 +12,23 @@ class Callback;
 
 class CallbackThread {
  public:
-  CallbackThread();
+  CallbackThread(Callback* cb = NULL);
   ~CallbackThread();
 
+  // Try to add a new callback to this thread.
+  // Return true if successful, or false if the thread is currently running
+  // a callback.
   bool addCallback(Callback*);
+
+  // Ask for the thread to exit.
   void requestExit();
   bool isRunning() const;
 
  private:
   static void* runCallbackThread(void*);
   void run();
+  void notify();
+  void wait();
 
   mutable Mutex mutex_;
   scoped_ptr<Callback> callback_;
