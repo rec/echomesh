@@ -11,4 +11,6 @@
 #include "Disallow.h"
 #include "Types.h"
 
+typedef pthread_mutex_t Mutex;
+
 #endif

@@ -5,8 +5,6 @@
 
 namespace echomesh {
 
-typedef pthread_mutex_t Mutex;
-
 class Lock {
  public:
   Lock(Mutex* mutex) : mutex_(mutex) { pthread_mutex_lock(mutex_); }
