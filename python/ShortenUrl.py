@@ -13,7 +13,7 @@ def shorten(url, config):
     return '%s/%s' % (config.shortenUrl, part)
 
   index = Util.getAndIncrementIndexFile(config.indexFile)
-  shorturl = config.shortenPrefix +
+  shorturl = config.shortenPrefix + index
   data = urllib.urlencode(dict(signature=config.auth['yourls'],
                                action='shorturl',
                                keyword=shorturl,
