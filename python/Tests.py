@@ -23,6 +23,26 @@
 >>> Util.truncate('hello', 0)
 ''
 
+>>> Util.truncateSuffix('hello', ' suf', 9)
+'hello suf'
+
+>>> Util.truncateSuffix('hello', ' suf', 8)
+'h... suf'
+
+>>> Util.truncateSuffix('hello', ' suf', 7)
+'... suf'
+
+>>> Util.truncateSuffix('hello', ' suf', 6)
+'.. suf'
+
+>>> Util.truncateSuffix('hello', ' suf', 5)
+'. suf'
+
+>>> Util.truncateSuffix('hello', ' suf', 4)
+' suf'
+
+
+
 >>> import mock
 >>> mock_open = mock.mock_open()
 
