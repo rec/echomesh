@@ -6,6 +6,8 @@
 #include <iostream>
 #include <string>
 
+#include "ScopedPtr.h"
+
 #include "Disallow.h"
 #include "Types.h"
 
