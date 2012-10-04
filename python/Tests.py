@@ -41,6 +41,7 @@
 >>> Util.truncateSuffix('hello', ' suf', 4)
 ' suf'
 
+
 >>> import mock
 >>> mock_open = mock.mock_open()
 
