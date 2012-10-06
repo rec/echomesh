@@ -10,6 +10,7 @@ namespace echomesh {
 
 class Callback;
 
+// This class deletes itself when it finishes running.
 class CallbackThread {
  public:
   CallbackThread(Callback* cb = NULL);
@@ -19,6 +20,7 @@ class CallbackThread {
   // Return true if successful, or false if the thread is currently running
   // a callback.
   bool addCallback(Callback*);
+  bool hasCallback() const;
 
   // Ask for the thread to exit.
   void requestExit();

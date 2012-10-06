@@ -1,6 +1,6 @@
 CFLAGS += -Wall
 PROGRAM = Synth.bin
-LDFLAGS = -lrt -lpthread
+LDFLAGS = -lrt -lpthread -lglog
 SOURCES = \
   Base.cpp \
   CallbackThread.cpp \

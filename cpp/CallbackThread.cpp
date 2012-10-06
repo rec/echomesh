@@ -11,16 +11,18 @@ CallbackThread::CallbackThread(Callback* cb)
       isRunning_(false) {
   pthread_attr_init(&threadAttributes_);
   sigemptyset(&signalMask_);
-  sigaddset(&signalMask_, SIGUSR1); // TODO:
+
+  // TODO: fill correct signal.
+  sigaddset(&signalMask_, SIGUSR1);
 
   bool threadError = pthread_create(&thread_, &threadAttributes_,
                                     &CallbackThread::runCallbackThread, this);
-  DCHECK2(threadError, "Couldn't start thread");
+  CHECK(threadError) << "Couldn't start thread";
 }
 
 CallbackThread::~CallbackThread() {
   Lock l(&mutex_);
-  DCHECK(!callback_);
+  CHECK(!callback_);
   pthread_attr_destroy(&threadAttributes_);
 }
 
@@ -39,6 +41,11 @@ bool CallbackThread::addCallback(Callback* cb) {
   return true;
 }
 
+bool CallbackThread::hasCallback() const {
+  Lock l(&mutex_);
+  return callback_;
+}
+
 void CallbackThread::run() {
   {
     Lock l(&mutex_);
@@ -49,8 +56,9 @@ void CallbackThread::run() {
     {
       Lock l(&mutex_);
       if (exitRequested_) {
+        callback_.reset();
         isRunning_ = false;
-        return;
+        break;
       }
       isEmpty = !callback_;
     }
@@ -62,6 +70,7 @@ void CallbackThread::run() {
       callback_.reset();
     }
   }
+  delete this;
 }
 
 void CallbackThread::notify() {

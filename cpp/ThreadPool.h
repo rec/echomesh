@@ -16,8 +16,8 @@ class ThreadPool {
   ~ThreadPool();
 
   void runNewCallback(Callback*);
-  void reduceThreadsTo(int);
-  void increaseThreadsTo(int);
+  int reduceThreadsTo(int);
+  int increaseThreadsTo(int);
 
  private:
   typedef std::set<CallbackThread*> Threads;
