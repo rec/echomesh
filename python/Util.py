@@ -17,7 +17,7 @@ def truncateSuffix(s, suffix, length, ellipsis=ELLIPSIS):
   return truncate(s, length - len(suffix), ellipsis) + suffix
 
 
-def getAndIncrementIndexFile(f, open=open):
+def get_and_increment_index_file(f, open=open):
   index = '0'
   try:
     with open(f) as input:

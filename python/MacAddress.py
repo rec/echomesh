@@ -7,18 +7,18 @@ import Platform
 if Platform.IS_LINUX:
   import fcntl, socket, struct
 
-  def getHwAddr(ifname):
+  def get_hw_addr(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
     return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]
 
-  def MacAddress():
-    return getHwAddr('eth0')
+  def mac_address():
+    return get_hw_addr('eth0')
 
 else:
   import uuid
-  def MacAddress():
+  def mac_address():
     return uuid.getnode()
 
 if __name__ == '__main__':
-  print MacAddress()
+  print mac_address()

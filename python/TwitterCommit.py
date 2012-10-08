@@ -11,26 +11,26 @@ INTRO = 'COMMIT: '
 
 URL_PATTERN = 'https://github.com/%s/%s/commit/%s'
 
-def getCommitUrl(commit, config):
+def get_commit_url(commit, config):
   url = ''
-  if config.includeUrl:
-    url = URL_PATTERN % (config.gitUser, config.gitProject, commit)
-    if config.useShortener:
+  if config.include_url:
+    url = URL_PATTERN % (config.git_user, config.git_project, commit)
+    if config.use_shortener:
       url = ShortenUrl.shorten(url, config)
     url = ' ' + url
 
   return url
 
-def getCommitText(config):
-  commit, description = Git.mostRecentCommit(config)
-  url = getCommitUrl(commit, config)
-  return Util.truncateSuffix(INTRO + description, url, Twitter.TWITTER_SIZE)
+def get_commit_text(config):
+  commit, description = Git.most_recent_commit(config)
+  url = get_commit_url(commit, config)
+  return Util.truncate_suffix(INTRO + description, url, Twitter.TWITTER_SIZE)
 
-def twitterCommit(config):
-  text = getCommitText(config)
-  Twitter.postUpdate(text, config)
+def twitter_commit(config):
+  text = get_commit_text(config)
+  Twitter.post_update(text, config)
   return text
 
 if __name__ == '__main__':
-  print 'Twittered', twitterCommit(Config)
+  print 'Twittered', twitter_commit(Config)
 

@@ -23,29 +23,29 @@
 >>> Util.truncate('hello', 0)
 ''
 
->>> Util.truncateSuffix('hello', ' suf', 9)
+>>> Util.truncate_suffix('hello', ' suf', 9)
 'hello suf'
 
->>> Util.truncateSuffix('hello', ' suf', 8)
+>>> Util.truncate_suffix('hello', ' suf', 8)
 'h... suf'
 
->>> Util.truncateSuffix('hello', ' suf', 7)
+>>> Util.truncate_suffix('hello', ' suf', 7)
 '... suf'
 
->>> Util.truncateSuffix('hello', ' suf', 6)
+>>> Util.truncate_suffix('hello', ' suf', 6)
 '.. suf'
 
->>> Util.truncateSuffix('hello', ' suf', 5)
+>>> Util.truncate_suffix('hello', ' suf', 5)
 '. suf'
 
->>> Util.truncateSuffix('hello', ' suf', 4)
+>>> Util.truncate_suffix('hello', ' suf', 4)
 ' suf'
 
 
 >>> import mock
 >>> mock_open = mock.mock_open()
 
->>> Util.getAndIncrementIndexFile('/tmp/test.txt', mock_open)
+>>> Util.get_and_increment_index_file('/tmp/test.txt', mock_open)
 '0'
 
 """
