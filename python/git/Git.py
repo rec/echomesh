@@ -2,7 +2,7 @@
 
 import subprocess
 
-import Platform
+import util.Platform
 
 GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
 GIT_LOG = [GIT_BINARY, 'log', '-n1', '--abbrev=40']

@@ -4,7 +4,7 @@
 import urllib
 import urllib2
 
-import Util
+import util.Util
 
 SHORTEN_PART = 'yourls-api.php'
 

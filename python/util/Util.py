@@ -16,7 +16,6 @@ def truncate_suffix(s, suffix, length, ellipsis=ELLIPSIS):
   suffix = suffix[0:length]
   return truncate(s, length - len(suffix), ellipsis) + suffix
 
-
 def get_and_increment_index_file(f, open=open):
   index = '0'
   try:
