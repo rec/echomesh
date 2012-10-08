@@ -18,7 +18,8 @@ if Platform.IS_LINUX:
 else:
   import uuid
   def mac_address():
-    return uuid.getnode()
+    myMAC = uuid.getnode()
+    return ':'.join('%02X' % ((myMAC >> 8*i) & 0xff) for i in reversed(xrange(6)))
 
 if __name__ == '__main__':
   print mac_address()
