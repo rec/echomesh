@@ -12,7 +12,7 @@ def truncate(s, length, ellipsis=ELLIPSIS):
 
   return s[0:length]
 
-def truncateSuffix(s, suffix, length, ellipsis=ELLIPSIS):
+def truncate_suffix(s, suffix, length, ellipsis=ELLIPSIS):
   suffix = suffix[0:length]
   return truncate(s, length - len(suffix), ellipsis) + suffix
 

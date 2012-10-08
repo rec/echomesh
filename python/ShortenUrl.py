@@ -9,8 +9,8 @@ import Util
 SHORTEN_PART = 'yourls-api.php'
 
 def _get_index(config):
-  if config.useIndexUrl:
-    return urllib2.urlopen(config.indexUrl).read().strip()
+  if config.use_index_url:
+    return urllib2.urlopen(config.index_url).read().strip()
   else:
     return Util.get_and_increment_index_file(config.indexFile)
 
