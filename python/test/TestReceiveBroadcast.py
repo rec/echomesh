@@ -4,7 +4,7 @@ import select
 import socket
 
 BUFFER_SIZE = 1024
-DEFAULT_PORT = 8888
+DEFAULT_PORT = 1248
 PORT_NAME = '<broadcast>'
 PORT_NAME = ''
 

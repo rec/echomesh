@@ -6,7 +6,7 @@ import socket
 import sys
 import time
 
-DEFAULT_PORT = 8888
+DEFAULT_PORT = 1248
 
 def send_broadcast(port, msg=None):
   s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
