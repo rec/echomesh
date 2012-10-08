@@ -7,7 +7,10 @@ useShortener = False  # True to turn on URL shortening
 shortenUrl = 'http://ax.to'  # Fill in your own shortener here.
 shortenPrefix = 'e'
 indexFile = '/home/tom/shortenIndex.txt'  # Use any file you like here.
-gitBinary = '/usr/bin/git'  # Change this for
+indexUrl = 'http://yoursite.com/sequentialIndex.php'
+useIndexUrl = True
+
+gitBinary = '/usr/bin/git'  # Change this if your git is installed in a non-standard place
 
 gitUser = 'rec'
 gitProject = 'echomesh'

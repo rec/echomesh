@@ -27,8 +27,10 @@ def getCommitText(config):
   return Util.truncateSuffix(INTRO + description, url, Twitter.TWITTER_SIZE)
 
 def twitterCommit(config):
-  Twitter.postUpdate(getCommitText(config), config)
+  text = getCommitText(config)
+  Twitter.postUpdate(text, config)
+  return text
 
 if __name__ == '__main__':
-  twitterCommit(Config)
+  print 'Twittered', twitterCommit(Config)
 

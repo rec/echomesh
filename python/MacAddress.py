@@ -2,11 +2,9 @@
 
 # From here: http://stackoverflow.com/questions/159137/getting-mac-address
 
-import platform
+import Platform
 
-SYSTEM = platform.system()
-
-if SYSTEM == 'Linux':
+if Platform.IS_LINUX:
   import fcntl, socket, struct
 
   def getHwAddr(ifname):
