@@ -22,7 +22,7 @@ def getCommitUrl(commit, config):
   return url
 
 def getCommitText(config):
-  commit, description = Git.mostRecentCommit()
+  commit, description = Git.mostRecentCommit(config)
   url = getCommitUrl(commit, config)
   return Util.truncateSuffix(INTRO + description, url, Twitter.TWITTER_SIZE)
 

@@ -18,5 +18,7 @@ def shorten(url, config):
                                action='shorturl',
                                keyword=shorturl,
                                url=url))
-  urllib2.urlopen(shortenerUrl(SHORTEN_PART), data)
+  resultingUrl = shortenerUrl(SHORTEN_PART)
+  print 'Opening:', resultingUrl, data
+  urllib2.urlopen(resultingUrl, data)
   return shortenerUrl(shorturl)

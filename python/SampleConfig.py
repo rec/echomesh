@@ -7,6 +7,7 @@ useShortener = False  # True to turn on URL shortening
 shortenUrl = 'http://ax.to'  # Fill in your own shortener here.
 shortenPrefix = 'e'
 indexFile = '/home/tom/shortenIndex.txt'  # Use any file you like here.
+gitBinary = '/usr/bin/git'  # Change this for
 
 gitUser = 'rec'
 gitProject = 'echomesh'

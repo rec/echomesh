@@ -2,11 +2,14 @@
 
 import subprocess
 
-GIT_LOG = ['/usr/bin/git', 'log', '-n1', '--decorate=full']
+GIT_LOG = ['/usr/bin/git', 'log', '-n1', '--abbrev=40']
 
-def mostRecentCommit():
+def mostRecentCommit(config=None):
+  if config and hasattr(config, 'gitBinary'):
+    GIT_LOG[0] = config.gitBinary
+
   popen = subprocess.Popen(GIT_LOG, stdout=subprocess.PIPE)
   popen.wait()
   lines = popen.stdout.read().splitlines()
-  return lines[0].split()[1], lines[4].strip()
+  return lines[0].split()[1], lines[-1].strip()
 
