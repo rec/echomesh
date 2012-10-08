@@ -1,12 +1,23 @@
-CFLAGS += -Wall -DBSD_INTERFACE_FUNCTIONS
+CFLAGS += -Wall
 PROGRAM = Synth.bin
-LDFLAGS =
-SOURCES = Main.cpp Commands.cpp ProcessLine.cpp
-OBJECTS = $(SOURCES:.c=.o)
+LDFLAGS = -lrt -lpthread -lglog
+SOURCES = \
+  Base.cpp \
+  CallbackThread.cpp \
+  Commands.cpp \
+  Main.cpp \
+  MakeTimerSpec.cpp \
+  Owned.cpp \
+  ProcessLine.cpp \
+  Scheduler.cpp \
+  ThreadPool.cpp \
+
+
+OBJECTS = $(SOURCES:.cpp=.o)
 RM = rm -f
 
-#.c.o:
-#	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
+.cpp.o:
+	$(CXX) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 all: $(PROGRAM)
 
