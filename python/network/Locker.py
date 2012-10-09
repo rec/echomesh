@@ -1,4 +1,4 @@
-#!/usr/bin/python
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 class Locker(object):
   def __init__(self, lock):

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 ELLIPSIS = '...'
 LOG_NEW_FILE = False
@@ -23,7 +23,7 @@ def get_and_increment_index_file(f, open=open):
       index = str(1 + int(input.read()))
   except:
     if LOG_NEW_FILE:
-      print 'Creating index file', f
+      print('Creating index file', f)
 
   with open(f, 'w') as output:
     output.write(index)

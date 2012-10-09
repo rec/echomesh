@@ -1,4 +1,4 @@
-#!/usr/bin/python
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import select
 import socket
@@ -21,4 +21,4 @@ def receive_broadcast(port):
 
 if __name__ == '__main__':
   for s in receive_broadcast(DEFAULT_PORT):
-    print s
+    print(s)

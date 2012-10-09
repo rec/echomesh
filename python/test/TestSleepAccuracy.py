@@ -1,4 +1,4 @@
-#!/usr/bin/python
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import datetime
 import math
@@ -32,7 +32,7 @@ def sleepError(wait):
   delta = end - start
   error = (delta.seconds + delta.microseconds / MICROSECONDS_PER_SECOND) - wait
   if error < 0:
-    print 'UNDERRUN:', error  # Never happens.
+    print('UNDERRUN:', error)  # Never happens.
     error = -error
 
   return error
@@ -41,9 +41,9 @@ def getSleepErrors(iterations=ITERATIONS, t=WAIT_TIME):
   return [MICROSECONDS_PER_SECOND * sleepError(t) for i in xrange(iterations)]
 
 def reportSleepErrors(errors, iterations=ITERATIONS, t=WAIT_TIME):
-  print '%d iterations, wait %dus' % (iterations, t * MICROSECONDS_PER_SECOND)
-  print '  average %dus; std dev %dus' % meanstdv(errors)
-  print '  min: %dus, max: %dus' % (min(errors), max(errors))
+  print('%d iterations, wait %dus' % (iterations, t * MICROSECONDS_PER_SECOND))
+  print('  average %dus; std dev %dus' % meanstdv(errors))
+  print('  min: %dus, max: %dus' % (min(errors), max(errors)))
 
 def runSleepReport(iterations=ITERATIONS, wait=WAIT_TIME):
   wait = float(wait)
@@ -58,4 +58,4 @@ if __name__ == '__main__':
   if len(sys.argv) <= 3:
     runSleepReport(*sys.argv[1:])
   else:
-    print USAGE
+    print(USAGE)
