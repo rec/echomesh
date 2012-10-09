@@ -1,10 +1,11 @@
 #!/usr/bin/python
 
-import Git
-import ShortenUrl
-import Twitter
-
 from config import Config
+
+from git import Git
+from git import ShortenUrl
+from git import Twitter
+
 from util import Util
 
 TWITTER_SIZE = 140
@@ -31,6 +32,3 @@ def twitter_commit(config):
   text = get_commit_text(config)
   Twitter.post_update(text, config)
   return text
-
-if __name__ == '__main__':
-  print 'Twittered', twitter_commit(Config)
