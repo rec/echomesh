@@ -27,7 +27,7 @@ class Discovery(object):
     self.thread = threading.Thread(target=self.receive)
     self.thread.start()
 
-  def stop(self):
+  def close(self):
     self.is_running = False
 
   def send(self, data):
