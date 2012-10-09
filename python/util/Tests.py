@@ -50,7 +50,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 """
 
-import Util
+from util import Util
 
 if __name__ == "__main__":
   import doctest
