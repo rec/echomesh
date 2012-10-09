@@ -11,17 +11,22 @@ from network import Locker
 
 DEFAULT_TIMEOUT = 0.2
 
+def _get_discovery_data(t=None):
+  return dict(type='discovery',
+              time=t or time.time(),
+              nodename=os.uname()[1],
+              mac_address=Address.mac_address(),
+              ip_address=Address.ip_address())
+
 class Discovery(object):
-  def __init__(self, port, timeout):
+  def __init__(self, port, timeout, callback=None):
     self.clients = {}
     self.port = port
     self.timeout = timeout
+    self.callback = callback
 
     self.lock = threading.RLock()
-    self.data = yaml.dump(dict(time=time.time(),
-                               nodename=os.uname()[1],
-                               mac_address=Address.mac_address(),
-                               ip_address=Address.ip_address()))
+    self.discovery_data = yaml.dump(_get_discovery_data())
     self.is_running = True
 
     self.thread = threading.Thread(target=self.receive)
@@ -36,13 +41,20 @@ class Discovery(object):
 
   def receive(self):
     with Broadcast.ReceiveSocket(self.port) as rs:
-      self.send(self.data)
+      self.send(self.discovery_data)
       while self.is_running:
         data = rs.receive(self.timeout)
         if data:
-          self.receive_data(yaml.load(data))
+          data = yaml.load(data)
+          t = data.get('type', None)
+          if t == DISCOVERY_TYPE:
+            self._receive_discovery(data)
+          elif self.callback:
+            self.callback(data)
+          else:
+            print('No callbacks for type', t)
 
-  def receive_data(self, data):
+  def _receive_discovery(self, data):
     with Locker.Locker(self.lock):
       nodename = data['nodename']
       c = self.clients.get(nodename, None)
@@ -52,5 +64,5 @@ class Discovery(object):
         return
       print('New client', data)
       self.clients[nodename] = data
-    self.send(self.data)
+    self.send(self.discovery_data)
 
