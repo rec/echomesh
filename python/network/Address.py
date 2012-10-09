@@ -32,4 +32,4 @@ else:
     return ':'.join('%02X' % ((myMAC >> 8*i) & 0xff) for i in reversed(xrange(6)))
 
 if __name__ == '__main__':
-  print mac_address()
+  print(mac_address())

@@ -20,7 +20,7 @@ def shorten(url, config, auth):
   def _shortener_url(part):
     return '%s/%s' % (config.shorten_url, part)
 
-  index = _get_index(config)
+  index = _get_index(config, auth)
   shorturl = config.shorten_prefix + index
   data = urllib.urlencode(dict(signature=auth.yourls,
                                action='shorturl',
