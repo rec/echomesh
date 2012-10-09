@@ -2,7 +2,7 @@
 
 import twitter
 
-import util.Util
+from util import Util
 
 TWITTER_SIZE = 140
 

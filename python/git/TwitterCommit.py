@@ -1,10 +1,11 @@
 #!/usr/bin/python
 
-import Config
-import git.Git
-import git.ShortenUrl
-import git.Twitter
-import util.Util
+import Git
+import ShortenUrl
+import Twitter
+
+from config import Config
+from util import Util
 
 TWITTER_SIZE = 140
 INTRO = 'COMMIT: '
@@ -33,4 +34,3 @@ def twitter_commit(config):
 
 if __name__ == '__main__':
   print 'Twittered', twitter_commit(Config)
-
