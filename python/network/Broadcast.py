@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-# Send UDP broadcast packets
+# Send and receive UDP broadcast packets
 
 import select
 import socket
@@ -11,6 +11,7 @@ DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024
 
 USAGE = '%s read | write' % sys.argv[0]
+
 
 class Socket(object):
   def __init__(self, port):

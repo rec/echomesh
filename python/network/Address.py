@@ -1,12 +1,22 @@
 #!/usr/bin/python
 
-# From here: http://stackoverflow.com/questions/159137/getting-mac-address
+import socket
 
-import Platform
+from util import Platform
+
+
+def ip_address():
+  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+  s.connect(('8.8.8.8', 80))
+  name = s.getsockname()[0]
+  s.close()
+  return name
+
 
 if Platform.IS_LINUX:
   import fcntl, socket, struct
 
+  # From here: http://stackoverflow.com/questions/159137/getting-mac-address
   def get_hw_addr(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
