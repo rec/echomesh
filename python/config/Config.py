@@ -11,3 +11,4 @@ git_project = 'echomesh'
 discovery_port = 1238
 discovery_timeout = 0.100
 
+allow_shutdown = True
