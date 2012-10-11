@@ -14,6 +14,8 @@
 
 ---
 
+# "audio" is an action.
+
 name: sound example
 type: audio
 file: sound.wav
@@ -29,7 +31,10 @@ pan:
 # Many other parameters like duration could be specified but can be deduced from
 # the file itself as a default.
 
+
 ---
+
+# "animation" is also an action.
 
 name: animation example
 type: animation
@@ -41,7 +46,9 @@ path:
                  # There are many other ways to represent this.
   duration: 10   # 10 seconds.
 
+
 ---
+
 
 # Play commands are sent "live" to the synths.
 # This is a command to "play" the sound.
@@ -53,3 +60,17 @@ target: sound example
 # For convenience, time is represented as seconds after "zero", the beginning
 # of the piece.
 time: 20.45304
+
+
+---
+
+
+# Trigger commands associate external events with an action.
+
+name: sound trigger
+type: trigger
+event: mic
+levels: 2
+triggers:
+  1: sound example
+  2: animation example
