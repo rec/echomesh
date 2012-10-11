@@ -19,7 +19,7 @@ if Platform.IS_LINUX:
   # From here: http://stackoverflow.com/questions/159137/getting-mac-address
   def get_hw_addr(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack('256s', ifname[:15]))
+    info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack(b'256s', ifname[:15]))
     return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]
 
   def mac_address():
@@ -33,3 +33,4 @@ else:
 
 if __name__ == '__main__':
   print(mac_address())
+  print(ip_address())
