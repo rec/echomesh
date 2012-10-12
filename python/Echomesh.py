@@ -13,4 +13,5 @@ if __name__ == '__main__':
   with closing(discovery):
     raw_input('Press return to exit\n')
 
-  discovery.thread.join()
+  discovery.send_thread.join()
+  discovery.receive_thread.join()

@@ -7,14 +7,16 @@ import socket
 import sys
 import time
 
+from util.Openable import Openable
+
 DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024
 
 USAGE = '%s read | write' % sys.argv[0]
 
-
-class Socket(object):
+class Socket(Openable):
   def __init__(self, port):
+    Openable.__init__(self)
     self.port = port
     self._open()
 
@@ -23,14 +25,8 @@ class Socket(object):
     self.socket.bind(('', self.bind_port))
 
   def close(self):
+    Openable.close(self)
     self.socket.close()
-
-  def __enter__(self):
-    return self
-
-  def __exit__(self, type, value, traceback):
-    self.close()
-
 
 class SendSocket(Socket):
   def __init__(self, port):
@@ -41,14 +37,15 @@ class SendSocket(Socket):
     Socket._open(self)
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
-  def send(self, data):
+  def write(self, data):
     self.socket.sendto(data, ('<broadcast>', self.port))
 
 
 class ReceiveSocket(Socket):
-  def __init__(self, port, buffer_size=DEFAULT_BUFFER_SIZE):
+  def __init__(self, port, timeout=None, buffer_size=DEFAULT_BUFFER_SIZE):
     self.bind_port = port
     self.buffer_size = buffer_size
+    self.timeout = timeout
     Socket.__init__(self, port)
 
   def _open(self):
@@ -56,9 +53,24 @@ class ReceiveSocket(Socket):
     self.socket.setblocking(0)
 
   def receive(self, timeout=None):
-    result = select.select([self.socket],[],[], timeout)
+    result = select.select([self.socket],[],[], timeout or self.timeout)
     return result[0] and result[0][0].recv(self.buffer_size)
 
+
+class SocketReader(ReceiveSocket):
+  def __init__(self, port, timeout=None, buffer_size=DEFAULT_BUFFER_SIZE):
+    ReceiveSocket.__init__(self, port, timeout, buffer_size)
+    self.unread = ''
+
+  def read(self, buffer_size=0):
+    if not self.unread:
+      self.unread = self.receive()
+
+    size = min(len(self.unread), buffer_size)
+
+    result = self.unread[0: size]
+    self.unread = self.unread[size:]
+    return result
 
 if __name__ == '__main__':
   if len(sys.argv) is not 2:
@@ -79,3 +91,4 @@ if __name__ == '__main__':
   else:
     print(USAGE)
     exit(-1)
+
