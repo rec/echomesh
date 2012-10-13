@@ -4,6 +4,9 @@ import alsaaudio
 import analyse
 import numpy
 
+from util import Util
+from util import ThreadLoop
+
 DEFAULT_CARD = 'sysdefault:CARD=AK5370'
 
 def mic_input(config):
@@ -23,31 +26,13 @@ def get_mic_level(mic):
   samps = numpy.fromstring(data, dtype=numpy.int16, count=length)
   return analyse.loudness(samps)
 
-def run_mic_thread(mic, callback):
-  thread = threading.Thread(target=lambda: callback(get_mic_level(mic)))
-  thread.start()
+def run_mic_levels_thread(callback, config):
+  mic = mic_input(config)
+  cb_different = Util.call_if_different(callback)
+  levels = config.mic['levels']
+  def cb():
+    level = get_mic_level(mic)
+    slot = Util.level_slot(level, levels)
+    cb_different(slot)
 
-  return thread
-
-def level_slot(level, levels):
-  for i, lev in enumerate(levels):
-    if level < lev:
-      return i
-  return len(levels)
-
-def call_if_different(callback, initial=None):
-  def cb(value):
-    if value != initial:
-      initial = value
-      callback(value)
-  return cb
-
-def run_mic_levels_thread(mic, callback, config):
-  levels = config.mic['levels'] + [10000]
-  assert len(callbacks) is len(levels)
-  def cb(level):
-    for i, lev in enumerate(levels):
-      if level < lev:
-        return callback(i)
-
-  return run_mic_thread(mic, cb)
+  return ThreadLoop.ThreadLoop(cb)
