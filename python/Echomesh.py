@@ -5,15 +5,19 @@ from contextlib import closing
 from command import Router
 from config import Config
 from network import Discovery
-from sound import Microphone
+from util import Platform
 
 if __name__ == '__main__':
   discovery = Discovery.Discovery(Config.discovery_port,
                                   Config.discovery_timeout,
                                   Router.ROUTER)
-  mic = Microphone.run_mic_levels_thread(print, Config)
+  if Platform.IS_LINUX:
+    mic = Microphone.run_mic_levels_thread(print, Config)
+
   with closing(discovery):
-    with closing(mic):
-      raw_input('Press return to exit\n')
+    raw_input('Press return to exit\n')
+
+  if Platform.IS_LINUX:
+    mic.close()
 
   discovery.join()
