@@ -1,7 +1,6 @@
 import alsaaudio
 
 card = 'sysdefault:CARD=AK5370'
-f = open('out.wav', 'wb')
 inp = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, card)
 inp.setchannels(1)
 inp.setrate(44000)

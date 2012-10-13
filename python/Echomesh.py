@@ -1,4 +1,4 @@
-#!/usr/bin/python
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from contextlib import closing
 
@@ -13,5 +13,4 @@ if __name__ == '__main__':
   with closing(discovery):
     raw_input('Press return to exit\n')
 
-  discovery.send_thread.join()
-  discovery.receive_thread.join()
+  discovery.join()

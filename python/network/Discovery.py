@@ -53,6 +53,10 @@ class Discovery(object):
   def send(self, data=None):
     self.queue.put(data or self.discovery_data)
 
+  def join(self):
+    self.receive_thread.join()
+    self.send_thread.join()
+
   def _run_receive(self):
     for data in yaml.safe_load_all(self.receive_socket):
       self.callbacks.get(data['type'], self._error)(data)

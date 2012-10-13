@@ -1,54 +1,86 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 """
 
 >>> Util.truncate('hello', 6)
-'hello'
+u'hello'
 
 >>> Util.truncate('hello', 5)
-'hello'
+u'hello'
 
 >>> Util.truncate('hello', 4)
-'h...'
+u'h...'
 
 >>> Util.truncate('hello', 3)
-'...'
+u'...'
 
 >>> Util.truncate('hello', 2)
-'..'
+u'..'
 
 >>> Util.truncate('hello', 1)
-'.'
+u'.'
 
 >>> Util.truncate('hello', 0)
-''
+u''
 
 >>> Util.truncate_suffix('hello', ' suf', 9)
-'hello suf'
+u'hello suf'
 
 >>> Util.truncate_suffix('hello', ' suf', 8)
-'h... suf'
+u'h... suf'
 
 >>> Util.truncate_suffix('hello', ' suf', 7)
-'... suf'
+u'... suf'
 
 >>> Util.truncate_suffix('hello', ' suf', 6)
-'.. suf'
+u'.. suf'
 
 >>> Util.truncate_suffix('hello', ' suf', 5)
-'. suf'
+u'. suf'
 
 >>> Util.truncate_suffix('hello', ' suf', 4)
-' suf'
+u' suf'
 
+>>> levels = [2, 3, 5]
+
+>>> Util.level_slot(0, levels)
+0
+
+>>> Util.level_slot(2, levels)
+1
+
+>>> Util.level_slot(3, levels)
+2
+
+>>> Util.level_slot(4, levels)
+2
+
+>>> Util.level_slot(5, levels)
+3
+
+>>> Util.level_slot(6, levels)
+3
+
+>>> cb = Util.call_if_different(print)
+
+>>> cb(1)
+1
+
+>>> cb(1)
+
+>>> cb(2)
+2
+
+>>> cb(1)
+1
 
 >>> import mock
 >>> mock_open = mock.mock_open()
 
 >>> Util.get_and_increment_index_file('/tmp/test.txt', mock_open)
-'0'
+u'0'
 
 """
+
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from util import Util
 

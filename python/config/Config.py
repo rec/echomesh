@@ -12,3 +12,8 @@ discovery_port = 1238
 discovery_timeout = 0.100
 
 allow_shutdown = True
+
+mic = dict(samplerate=8000,
+           card='sysdefault:CARD=AK5370',
+           periodsize=160,
+           levels=[-25, -15, -5])
