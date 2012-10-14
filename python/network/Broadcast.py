@@ -53,7 +53,9 @@ class ReceiveSocket(Socket):
     self.socket.setblocking(0)
 
   def receive(self, timeout=None):
+    print(timeout or self.timeout)
     result = select.select([self.socket],[],[], timeout or self.timeout)
+    print('!', result)
     return result[0] and result[0][0].recv(self.buffer_size)
 
 
@@ -63,6 +65,7 @@ class SocketReader(ReceiveSocket):
     self.unread = ''
 
   def read(self, buffer_size=0):
+    print('read')
     if not self.unread:
       self.unread = self.receive()
 

@@ -10,4 +10,4 @@ def get_api(auth):
   return twitter.Api(**auth.twitter)
 
 def post_update(text, auth):
-  get_api(auth).PostUpdate(Util.truncate(text, TWITTER_SIZE))
+  get_api(auth).PostUpdate(String.truncate(text, TWITTER_SIZE))

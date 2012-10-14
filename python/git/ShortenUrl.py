@@ -10,18 +10,18 @@ from util import Util
 SHORTEN_PART = 'yourls-api.php'
 
 def _get_index(config, auth):
-  if config.use_index_url:
+  if config['use_index_url':
     return urllib2.urlopen(auth.index_url).read().strip()
   else:
-    return Util.get_and_increment_index_file(config.index_file)
+    return Util.get_and_increment_index_file(config['index_file'])
 
 
 def shorten(url, config, auth):
   def _shortener_url(part):
-    return '%s/%s' % (config.shorten_url, part)
+    return '%s/%s' % (config['shorten_url'], part)
 
   index = _get_index(config, auth)
-  shorturl = config.shorten_prefix + index
+  shorturl = config['shorten_prefix'] + index
   data = urllib.urlencode(dict(signature=auth.yourls,
                                action='shorturl',
                                keyword=shorturl,
