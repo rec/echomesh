@@ -10,7 +10,7 @@ class Clients(object):
   TYPE = 'client'
 
   def __init__(self, sender):
-    self._clients = []
+    self._clients = {}
     self.lock = threading.RLock()
     self.send = sender.send
     self.type = Clients.TYPE

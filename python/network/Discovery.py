@@ -7,9 +7,14 @@ import yaml
 import Queue
 
 from network import Broadcast
+from util.Openable import Openable
 
-class Discovery(object):
+class Discovery(Openable):
+  DOCUMENT_START = '---\n'
+  DOCUMENT_END = '....\n'
+
   def __init__(self, port, timeout, callbacks=None):
+    Openable.__init__(self)
     self.port = port
     self.timeout = timeout
     self.queue = Queue.Queue()
@@ -28,8 +33,9 @@ class Discovery(object):
     self.send_thread.start()
 
   def close(self):
-    self.send_socket.close()
+    Openable.close(self)
     self.receive_socket.close()
+    self.send_socket.close()
 
   def send(self, data=None):
     self.queue.put(data or self.discovery_data)
@@ -40,27 +46,27 @@ class Discovery(object):
 
   def _run_receive(self):
     try:
-      for data in yaml.safe_load_all(self.receive_socket):
-        if data:
-          print('receive', data)
+      while self.is_open:
+        packet = self.receive_socket.receive()
+        if packet:
+          data = yaml.safe_load(packet)
           self.callbacks.get(data['type'], self._error)(data)
     except:
-      traceback.format_exc()
+      print(traceback.format_exc())
       self.close()
 
   def _run_send(self):
     try:
-      def generator():
-        while self.send_socket.is_open:
-          try:
-            value = self.queue.get(True, self.timeout)
-            yield value
-            yield ''
-          except Queue.Empty:
-            pass
-      yaml.safe_dump_all(generator(), self.send_socket)
+      while self.is_open:
+        try:
+          item = self.queue.get(True, self.timeout)
+          value = yaml.safe_dump(item)
+          self.send_socket.write(value)
+        except Queue.Empty:
+          pass
     except:
-      traceback.format_exc()
+      print(traceback.format_exc())
+      self.close()
 
   def _error(self, data):
     print('No callbacks for type', data['type'])

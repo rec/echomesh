@@ -5,12 +5,19 @@ import threading
 from util.Openable import Openable
 
 class ThreadLoop(Openable):
-  def __init__(self, runnable):
+  def __init__(self, runnable=None, openable=None):
     Openable.__init__(self)
-    self.runnable = runnable
+    self.openable = openable or self
+    if runnable:
+      self.runnable = runnable
     self.thread = threading.Thread(target=self.run)
     self.thread.start()
 
   def run(self):
-    while self.is_open:
-      self.runnable()
+    try:
+      while self.is_open:
+        self.runnable()
+    except:
+      traceback.format_exc()
+      self.close()
+

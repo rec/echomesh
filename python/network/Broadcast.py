@@ -39,7 +39,6 @@ class SendSocket(Socket):
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def write(self, data):
-    # print('write:', data)
     self.socket.sendto(data, ('<broadcast>', self.port))
 
 
@@ -55,9 +54,9 @@ class ReceiveSocket(Socket):
     self.socket.setblocking(0)
 
   def receive(self, timeout=None):
-    # print(timeout or self.timeout)
+    print(timeout or self.timeout)
     result = select.select([self.socket],[],[], timeout or self.timeout)
-    if False:
+    if True:
       # print('!', result)
       return result[0] and result[0][0].recv(self.buffer_size)
     if result[0]:
