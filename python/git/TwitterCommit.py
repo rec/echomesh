@@ -4,7 +4,7 @@ from git import Git
 from git import ShortenUrl
 from git import Twitter
 
-from util import Util
+from util import String
 
 TWITTER_SIZE = 140
 INTRO = 'COMMIT: '

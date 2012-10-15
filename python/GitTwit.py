@@ -6,6 +6,6 @@ from config import Auth
 from config import Config
 
 if __name__ == '__main__':
-  result = TwitterCommit.twitter_commit(Config.CONFIG, Auth.AUTH)
+  result = TwitterCommit.twitter_commit(Config.config(), Auth.AUTH)
   print('Twittered', result)
 

@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-
 def merge(old, new):
   """Merges a new item into an old item.
 
@@ -15,8 +14,14 @@ def merge(old, new):
   if type(old) is type({}):
     old = copy.deepcopy(old)
     for k, v in new.iteritems():
-      old[k] = merge_items(old.get(k, None), v)
+      old[k] = merge(old.get(k, None), v)
     return old
 
   else:
     return copy.deepcopy(new)
+
+def merge_all(*items):
+  result = {}
+  for i in items:
+    result = merge(result, i)
+  return result

@@ -2,12 +2,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import twitter
 
-from util import Util
+from util import String
 
 TWITTER_SIZE = 140
 
 def get_api(auth):
-  return twitter.Api(**auth.twitter)
+  return twitter.Api(**auth['twitter'])
 
 def post_update(text, auth):
   get_api(auth).PostUpdate(String.truncate(text, TWITTER_SIZE))

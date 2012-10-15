@@ -1,17 +1,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import alsaaudio
 import analyse
 import numpy
 
-from util import Util
+from util import Openable
+from util import Platform
 from util import ThreadLoop
+from util import Util
 
 DEFAULT_CARD = 'sysdefault:CARD=AK5370'
 
 def mic_input(config):
   conf = config['mic']
   card = conf.get('card', DEFAULT_CARD)
+
+  import alsaaudio
   mic = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, card)
   mic.setchannels(1)
   if 'samplerate' in conf:
@@ -28,6 +31,9 @@ def get_mic_level(mic):
   return analyse.loudness(samps)
 
 def run_mic_levels_thread(callback, config):
+  if Platform.IS_MAC or not config['mic'].get('enable', True):
+    return Openable.Openable()
+
   mic = mic_input(config)
   cb_different = Util.call_if_different(callback)
   levels = config['mic']['levels']

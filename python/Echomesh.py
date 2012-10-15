@@ -4,24 +4,26 @@ from contextlib import closing
 
 from command import Router
 from config import Config
+from network import Clients
 from network import Discovery
-from util import Platform
+from sound import Microphone
 
-ENABLE_MIC = True
+class Echomesh(object):
+  def __init__(self):
+    self.config = Config.config()
+    self.discovery = Discovery.Discovery(self.config['discovery_port'],
+                                         self.config['discovery_timeout'])
+    self.clients = Clients.Clients(self.discovery)
+    self.router = Router.router(self.config, self.clients)
+    self.discovery.callbacks = self.router
+    self.discovery.start()
+
+  def run(self):
+    with closing(self.discovery):
+      with closing(Microphone.run_mic_levels_thread(print, self.config)):
+        raw_input('Press return to exit\n')
+    self.discovery.join()
+
 
 if __name__ == '__main__':
-  discovery = Discovery.Discovery(Config.CONFIG['discovery_port'],
-                                  Config.CONFIG['discovery_timeout'],
-                                  Router.ROUTER)
-  with closing(discovery):
-    use_mic = ENABLE_MIC and Platform.IS_LINUX
-    if use_mic:
-      from sound import Microphone
-      mic = Microphone.run_mic_levels_thread(print, Config.CONFIG)
-
-    raw_input('Press return to exit\n')
-
-    if use_mic:
-      mic.close()
-
-  discovery.join()
+  Echomesh().run()
