@@ -54,7 +54,7 @@ class ReceiveSocket(Socket):
     self.socket.setblocking(0)
 
   def receive(self, timeout=None):
-    print(timeout or self.timeout)
+    # print(timeout or self.timeout)
     result = select.select([self.socket],[],[], timeout or self.timeout)
     if True:
       # print('!', result)
