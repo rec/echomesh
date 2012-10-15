@@ -6,12 +6,13 @@ import os.path
 def open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
-def yaml_load_all(fname):
+def yaml_load_all(fname, report_error=False):
   try:
     with closing(open_userfile(fname)) as f:
       return list(yaml.safe_load_all(f))
   except:
-    print("Can't read filename", fname)
+    if report_error:
+      print("Can't read filename", fname)
     return []
 
 def yaml_dump_all(fname, *items):

@@ -41,9 +41,11 @@ class Discovery(object):
   def _run_receive(self):
     try:
       for data in yaml.safe_load_all(self.receive_socket):
-        self.callbacks.get(data['type'], self._error)(data)
+        if data:
+          print('receive', data)
+          self.callbacks.get(data['type'], self._error)(data)
     except:
-      traceback.print_stack()
+      traceback.format_exc()
       self.close()
 
   def _run_send(self):
@@ -53,11 +55,12 @@ class Discovery(object):
           try:
             value = self.queue.get(True, self.timeout)
             yield value
+            yield ''
           except Queue.Empty:
             pass
       yaml.safe_dump_all(generator(), self.send_socket)
     except:
-      traceback.print_stack()
+      traceback.format_exc()
 
   def _error(self, data):
     print('No callbacks for type', data['type'])
