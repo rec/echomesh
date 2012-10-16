@@ -25,7 +25,7 @@ allow_shutdown: true
 
 mic: {
   samplerate: 8000,
-  card: "sysdefault:CARD=AK5370",
+  name: AK5370,
   periodsize: 160,
   levels: [-25, -15, -5]
 }
