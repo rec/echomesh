@@ -9,13 +9,13 @@ from util import String
 TWITTER_SIZE = 140
 INTRO = 'COMMIT: '
 
-URL_PATTERN = 'https://github.com/%s/%s/commit/%s'
+URL_FORMAT = 'https://github.com/%s/%s/commit/%s'
 
 def get_commit_url(commit, config, auth):
   url = ''
-  if config['include_url']:
-    url = URL_PATTERN % (config['git_user'], config['git_project'], commit)
-    if config['use_shortener']:
+  if config['shorten']['include_url']:
+    url = URL_FORMAT % (config['git']['user'], config['git']['project'], commit)
+    if config['shorten']['enable']:
       url = ShortenUrl.shorten(url, config, auth)
     url = ' ' + url
 

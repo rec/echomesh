@@ -10,8 +10,8 @@ GIT_LOG = [GIT_BINARY, 'log', '-n1', '--abbrev=40']
 
 def most_recent_commit(config=None):
   command = GIT_LOG[:]
-  if config and 'git_binary' in config:
-    command[0] = config['git_binary']
+  if config and 'git_binary' in config['git']:
+    command[0] = config['git']['binary']
 
   lines = Subprocess.run(command).splitlines()
   return lines[0].split()[1], lines[-1].strip()

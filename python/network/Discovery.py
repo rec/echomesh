@@ -22,7 +22,7 @@ class Discovery(Openable):
 
     self.is_running = True
 
-    port = self.config['discovery_port']
+    port = self.config['discovery']['port']
     self.receive_socket = Broadcast.ReceiveSocket(port)
     self.send_socket = Broadcast.SendSocket(port)
 
@@ -49,9 +49,9 @@ class Discovery(Openable):
   def _run_receive(self):
     try:
       while self.is_open:
-        packet = self.receive_socket.receive(self.config['discovery_timeout'])
-        if packet:
-          data = yaml.safe_load(packet)
+        pckt = self.receive_socket.receive(self.config['discovery']['timeout'])
+        if pckt:
+          data = yaml.safe_load(pckt)
           self.callbacks.get(data['type'], self._error)(data)
     except:
       print(traceback.format_exc())
@@ -61,7 +61,7 @@ class Discovery(Openable):
     try:
       while self.is_open:
         try:
-          item = self.queue.get(True, self.config['discovery_timeout'])
+          item = self.queue.get(True, self.config['discovery']['timeout'])
           value = yaml.safe_dump(item)
           self.send_socket.write(value)
         except Queue.Empty:

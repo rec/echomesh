@@ -8,26 +8,35 @@ from util import File
 from util import Merge
 
 CODE_CONFIG_STRING = """
+
 type: config
 
-include_url: true
-use_shortener: true
-shorten_url: http://ax.to
-shorten_prefix: e
-index_file: /home/tom/shortenIndex.txt
-use_index_url: true
-
-git_user: rec
-git_project: echomesh
-discovery_port: 1238
-discovery_timeout: 0.100
 allow_shutdown: true
+
+discovery: {
+  port: 1238,
+  timeout: 0.100
+}
+
+git: {
+  user: rec,
+  project: echomesh,
+}
 
 mic: {
   samplerate: 8000,
   name: AK5370,
   periodsize: 160,
-  levels: [-25, -15, -5]
+  levels: [-25, -15, -5],
+}
+
+shorten: {
+  enable: true,
+  include_url: true,
+  index_file: /home/tom/shortenIndex.txt,
+  prefix: e,
+  url: http://ax.to,
+  use_index_url: true,
 }
 """
 
