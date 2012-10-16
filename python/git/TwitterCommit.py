@@ -28,5 +28,4 @@ def get_commit_text(config, auth):
 
 def twitter_commit(config, auth):
   text = get_commit_text(config, auth)
-  Twitter.post_update('tech', text, auth)
-  return text
+  return Twitter.post_update(text, auth, 'tech')
