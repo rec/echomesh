@@ -9,6 +9,7 @@ import time
 import traceback
 
 from util.Openable import Openable
+from util import Platform
 
 DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024
@@ -54,17 +55,12 @@ class ReceiveSocket(Socket):
     self.socket.setblocking(0)
 
   def receive(self, timeout=None):
-    # print(timeout or self.timeout)
-    result = select.select([self.socket],[],[], timeout or self.timeout)
-    if True:
-      # print('!', result)
+    try:
+      result = select.select([self.socket],[],[], timeout or self.timeout)
       return result[0] and result[0][0].recv(self.buffer_size)
-    if result[0]:
-      res = result[0][0].recv(self.buffer_size)
-      # print('data:', res)
-      return res
-    else:
-      return None
+    except select.error:
+      if self.is_open:
+        raise
 
 
 class SocketReader(ReceiveSocket):
