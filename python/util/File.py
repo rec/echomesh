@@ -9,7 +9,7 @@ import os.path
 def open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
-def yaml_load_all(fname, report_error=False):
+def yaml_load_all(fname, report_error=True):
   opened = False
   try:
     f = open_userfile(fname, 'r')
