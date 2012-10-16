@@ -7,10 +7,11 @@ from util import String
 
 TWITTER_SIZE = 140
 
-def get_api(auth, name=None):
+def get_api(auth, name=''):
   return twitter.Api(**auth['twitter'][name or Platform.NODENAME])
 
-def post_update(text, auth, name=None):
+def post_update(text, auth, *names):
   text = String.truncate(text, TWITTER_SIZE)
-  get_api(auth, name).PostUpdate(text)
+  for name in names:
+    get_api(auth, name).PostUpdate(text)
   return text
