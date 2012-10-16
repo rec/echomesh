@@ -44,19 +44,18 @@ class SendSocket(Socket):
 
 
 class ReceiveSocket(Socket):
-  def __init__(self, port, timeout=None, buffer_size=DEFAULT_BUFFER_SIZE):
+  def __init__(self, port, buffer_size=DEFAULT_BUFFER_SIZE):
     self.bind_port = port
     self.buffer_size = buffer_size
-    self.timeout = timeout
     Socket.__init__(self, port)
 
   def _open(self):
     Socket._open(self)
     self.socket.setblocking(0)
 
-  def receive(self, timeout=None):
+  def receive(self, timeout):
     try:
-      result = select.select([self.socket],[],[], timeout or self.timeout)
+      result = select.select([self.socket], [], [], timeout)
       return result[0] and result[0][0].recv(self.buffer_size)
     except select.error:
       if self.is_open:
@@ -64,8 +63,8 @@ class ReceiveSocket(Socket):
 
 
 class SocketReader(ReceiveSocket):
-  def __init__(self, port, timeout=None, buffer_size=DEFAULT_BUFFER_SIZE):
-    ReceiveSocket.__init__(self, port, timeout, buffer_size)
+  def __init__(self, config, buffer_size=DEFAULT_BUFFER_SIZE):
+    ReceiveSocket.__init__(self, config, buffer_size)
     self.unread = ''
 
   def read(self, buffer_size=0):

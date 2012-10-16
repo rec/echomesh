@@ -36,10 +36,9 @@ def run_mic_levels_thread(callback, config):
 
   mic = mic_input(config)
   cb_different = Util.call_if_different(callback)
-  levels = config['mic']['levels']
   def cb():
     level = get_mic_level(mic)
-    slot = Util.level_slot(level, levels)
+    slot = Util.level_slot(level, config['mic']['levels'])
     cb_different(slot)
 
   return ThreadLoop.ThreadLoop(cb)

@@ -10,9 +10,8 @@ from sound import Microphone
 
 class Echomesh(object):
   def __init__(self):
-    self.config = Config.config()
-    self.discovery = Discovery.Discovery(self.config['discovery_port'],
-                                         self.config['discovery_timeout'])
+    self.config = Config.CONFIG
+    self.discovery = Discovery.Discovery(self.config)
     self.clients = Clients.Clients(self.discovery)
     self.router = Router.router(self.config, self.clients)
     self.discovery.callbacks = self.router

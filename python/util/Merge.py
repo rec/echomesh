@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-def merge(old, new):
+def merge_into(old, new):
   """Merges a new item into an old item.
 
   If the old item is a dictionary, returns a dictionary with the keys from both
@@ -12,16 +12,15 @@ def merge(old, new):
   Note that lists are overwritten and not appended.
   """
   if type(old) is type({}):
-    old = copy.deepcopy(old)
     for k, v in new.iteritems():
-      old[k] = merge(old.get(k, None), v)
+      old[k] = merge_into(old.get(k, None), v)
     return old
 
   else:
-    return copy.deepcopy(new)
+    return new
 
-def merge_all(*items):
+def merge_into_all(*items):
   result = {}
   for i in items:
-    result = merge(result, i)
+    result = merge_into(result, i)
   return result

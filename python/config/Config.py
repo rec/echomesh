@@ -1,3 +1,5 @@
+import copy
+import sys
 import yaml
 
 from util import File
@@ -33,11 +35,12 @@ LOCAL_CHANGED_FILE = '~/.echomesh-changed'
 CODE_CONFIG = yaml.safe_load(CODE_CONFIG_STRING)
 LOCAL_CONFIG = File.yaml_load(LOCAL_FILE)
 CHANGED_CONFIG = File.yaml_load(LOCAL_CHANGED_FILE)
+CONFIG = Merge.merge_into_all(copy.deepcopy(CODE_CONFIG), LOCAL_CONFIG,
+                              CHANGED_CONFIG)
 
-def config():
-  return Merge.merge_all(CODE_CONFIG, LOCAL_CONFIG, CHANGED_CONFIG)
+if len(sys.argv) > 1:
+  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
 
 def change(config):
-  global CHANGED_CONFIG
-  CHANGED_CONFIG = config
-  File.write_yaml(LOCAL_CHANGED_FILE, CHANGED_CONFIG)
+  File.write_yaml(LOCAL_CHANGED_FILE, config)
+  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))

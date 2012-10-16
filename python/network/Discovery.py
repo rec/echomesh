@@ -13,17 +13,18 @@ class Discovery(Openable):
   DOCUMENT_START = '---\n'
   DOCUMENT_END = '....\n'
 
-  def __init__(self, port, timeout, callbacks=None):
+  def __init__(self, config, callbacks=None):
     Openable.__init__(self)
-    self.port = port
-    self.timeout = timeout
+    self.config = config
     self.queue = Queue.Queue()
 
     self.callbacks = callbacks
 
     self.is_running = True
-    self.receive_socket = Broadcast.SocketReader(self.port, timeout=timeout)
-    self.send_socket = Broadcast.SendSocket(self.port)
+
+    port = self.config['discovery_port']
+    self.receive_socket = Broadcast.ReceiveSocket(port)
+    self.send_socket = Broadcast.SendSocket(port)
 
     self.receive_thread = threading.Thread(target=self._run_receive)
     self.send_thread = threading.Thread(target=self._run_send)
@@ -47,7 +48,7 @@ class Discovery(Openable):
   def _run_receive(self):
     try:
       while self.is_open:
-        packet = self.receive_socket.receive()
+        packet = self.receive_socket.receive(self.config['discovery_timeout'])
         if packet:
           data = yaml.safe_load(packet)
           self.callbacks.get(data['type'], self._error)(data)
@@ -59,7 +60,7 @@ class Discovery(Openable):
     try:
       while self.is_open:
         try:
-          item = self.queue.get(True, self.timeout)
+          item = self.queue.get(True, self.config['discovery_timeout'])
           value = yaml.safe_dump(item)
           self.send_socket.write(value)
         except Queue.Empty:
