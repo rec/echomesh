@@ -28,6 +28,7 @@ class Discovery(Openable):
 
     self.receive_thread = threading.Thread(target=self._run_receive)
     self.send_thread = threading.Thread(target=self._run_send)
+    print('Starting discovery on port', port)
 
   def start(self):
     self.receive_thread.start()

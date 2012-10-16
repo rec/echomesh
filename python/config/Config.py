@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import copy
 import sys
 import yaml
@@ -39,7 +41,8 @@ CONFIG = Merge.merge_into_all(copy.deepcopy(CODE_CONFIG), LOCAL_CONFIG,
                               CHANGED_CONFIG)
 
 if len(sys.argv) > 1:
-  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
+  print('Merging config from file', sys.argv[1])
+  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1].strip()))
 
 def change(config):
   File.write_yaml(LOCAL_CHANGED_FILE, config)
