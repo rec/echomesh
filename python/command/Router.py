@@ -6,18 +6,30 @@ from util import Subprocess
 SHUTDOWN = ['/sbin/shutdown', '-h', 'now']
 RESTART = ['/sbin/shutdown', '-r', 'now']
 
-def _start(data):
-  print('Starting');
+class Router(object):
+  def __init__(self, echomesh)
+    self.echomesh = echomesh
 
-def _quit(data):
-  print('Quitting');
+  def close(self, data):
+    print('Quitting');
+    self.echomesh.close()
 
-def router(config, clients):
+  def shutdown(self, data):
+    self.close()
+    print('Shutting down')
+    Subprocess.run(SHUTDOWN)
+
+  def shutdown(self, data):
+    self.close()
+    print('Restarting')
+    Subprocess.run(SHUTDOWN)
+
+def router(echomesh, config, clients):
+  r = Router(echomesh)
   return {
     clients.type: clients.new_client,
     'config': Config.change,
-    'quit': _quit,
-    'restart': lambda d: Subprocess.run(RESTART),
-    'shutdown': lambda d: Subprocess.run(SHUTDOWN),
-    'start': _start,
+    'quit': r.close,
+    'restart': r.restart,
+    'shutdown': r.shutdown,
     }

@@ -13,15 +13,20 @@ class Echomesh(object):
     self.config = Config.CONFIG
     self.discovery = Discovery.Discovery(self.config)
     self.clients = Clients.Clients(self.discovery)
-    self.router = Router.router(self.config, self.clients)
+    self.router = Router.router(self, self.config, self.clients)
     self.discovery.callbacks = self.router
+
+  def close(self):
+    self.discovery.close()
+    if hasattr(self, 'mic_thread'):
+      self.mic_thread.close()
+    self.discovery.join()
 
   def run(self):
     self.discovery.start()
-    mic_thread = Microphone.run_mic_levels_thread(print, self.config)
-    with closing(self.discovery), closing(mic_thread):
+    self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
+    with closing(self):
       raw_input('Press return to exit\n')
-    self.discovery.join()
 
 
 if __name__ == '__main__':
