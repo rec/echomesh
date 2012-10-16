@@ -4,6 +4,7 @@ import copy
 import sys
 import yaml
 
+from network import Address
 from util import File
 from util import Merge
 
@@ -43,6 +44,7 @@ shorten: {
 
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
+{}
 """
 
 # Local configuration for this account.
