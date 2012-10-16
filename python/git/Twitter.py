@@ -6,8 +6,8 @@ from util import String
 
 TWITTER_SIZE = 140
 
-def get_api(auth):
-  return twitter.Api(**auth['twitter'])
+def get_api(auth, name):
+  return twitter.Api(**auth['twitter'][name])
 
-def post_update(text, auth):
-  get_api(auth).PostUpdate(String.truncate(text, TWITTER_SIZE))
+def post_update(name, text, auth):
+  get_api(auth, name).PostUpdate(String.truncate(text, TWITTER_SIZE))

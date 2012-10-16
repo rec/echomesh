@@ -1,5 +1,6 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
 import socket
 
 from util import Platform
@@ -32,6 +33,10 @@ else:
   def mac_address():
     myMAC = uuid.getnode()
     return ':'.join('%02X' % ((myMAC >> 8*i) & 0xff) for i in reversed(xrange(6)))
+
+MAC_ADDRESS = mac_address()
+IP_ADDRESS = ip_address()
+NODENAME = os.uname()[1]
 
 if __name__ == '__main__':
   print(mac_address())

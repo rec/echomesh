@@ -16,9 +16,9 @@ class Clients(object):
     self.type = Clients.TYPE
     self.data = dict(type=self.type,
                      time=time.time(),
-                     nodename=os.uname()[1],
-                     mac_address=Address.mac_address(),
-                     ip_address=Address.ip_address())
+                     nodename=Address.NODENAME,
+                     mac_address=Address.MAC_ADDRESS,
+                     ip_address=Address.IP_ADDRESS)
     self.send(self.data)
 
 
