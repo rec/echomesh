@@ -34,6 +34,7 @@ class ImagePath(Openable.Openable):
 
     self.begin, self.end = path
     self.rect.move_ip(self.begin)
+    print(self.duration, self.begin, self.end, self.rect)
 
   def update(self, now):
     if not self.start:
