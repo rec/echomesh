@@ -4,6 +4,9 @@ class Openable(object):
   def __init__(self):
     self.is_open = True
 
+  def start(self):
+    pass
+
   def close(self):
     self.is_open = False
 

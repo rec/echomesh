@@ -44,8 +44,8 @@ class Echomesh(object):
 
   def _add_tasks(self):
     p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
-    self.control_loop.tasks = [Tasks.Flipper(), p, Tasks.Clearer(self.display)]
-
+    self.control_loop.tasks = [Tasks.Clearer(self.display), p,
+                               Tasks.Quitter(), Tasks.Flipper()]
 
 if __name__ == '__main__':
   Echomesh().run()

@@ -21,6 +21,7 @@ class ThreadLoop(Openable):
       while self.is_open:
         self.runnable()
     except:
-      traceback.format_exc()
+      print(traceback.format_exc())
       self.close()
 
+    print('ThreadLoop finished', self)

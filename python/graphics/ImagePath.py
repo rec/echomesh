@@ -15,9 +15,10 @@ def _distance(p, q):
 
 
 class ImagePath(Openable.Openable):
-  def __init__(self, image, angle, speed, display):
+  def __init__(self, image, angle, duration, display):
     Openable.Openable.__init__(self)
     self.image = pygame.image.load(image)
+    self.display = display
     self.rect = self.image.get_rect()
 
     width = display.size[0] + self.rect.width
@@ -28,13 +29,12 @@ class ImagePath(Openable.Openable):
       p[0] -= self.rect.width
       p[1] -= self.rect.height
 
-    distance = _distance(*path)
-    self.duration = distance / speed
+    # distance = _distance(*path)
+    self.duration = duration
     self.start = 0
 
     self.begin, self.end = path
     self.rect.move_ip(self.begin)
-    print(self.duration, self.begin, self.end, self.rect)
 
   def update(self, now):
     if not self.start:
@@ -44,8 +44,8 @@ class ImagePath(Openable.Openable):
     if ratio <= 1:
       x = self.begin[0] + (self.end[0] - self.begin[0]) * ratio
       y = self.begin[1] + (self.end[1] - self.begin[1]) * ratio
-      self.rect.move_ip((x - rect.x, y - rect.y))
-      display.screen.blit(self.image, self.rect)
+      self.rect.move_ip((x - self.rect.x, y - self.rect.y))
+      self.display.screen.blit(self.image, self.rect)
 
     else:
-      self.stop()
+      self.close()

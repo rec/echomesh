@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from util import Openable
+import pygame
+import sys
 
+from util import Openable
 
 class Flipper(Openable.Openable):
   def update(self, time):
@@ -16,3 +18,10 @@ class Clearer(Openable.Openable):
 
   def update(self, time):
     self.display.screen.fill(self.color)
+
+
+class Quitter(Openable.Openable):
+  def update(self, time):
+    for event in pygame.event.get():
+      if event.type == pygame.QUIT:
+        sys.exit()

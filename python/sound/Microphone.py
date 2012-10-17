@@ -30,7 +30,7 @@ def mic_input_linux(config):
 
 def mic_input_mac(config):
   if True:
-    return Openable.Openable()
+    return None
 
   import pyaudio
 
@@ -40,12 +40,11 @@ def mic_input_mac(config):
 
   for i in range(pa.get_device_count()):
     devinfo = pa.get_device_info_by_index(i)
-    # print('"%s" "%s"' % (devinfo['name'], name))
     if devinfo['name'].strip() == name:
       index = i
       break
   else:
-    return Openable.Openable()
+    return None
 
   frames = conf.get('periodsize', DEFAULT_PERIOD_SIZE)
   str = pa.open(format=pyaudio.paInt16,
@@ -55,9 +54,7 @@ def mic_input_mac(config):
                 input_device_index=index,
                 frames_per_buffer=frames)
   def cb():
-    print('here')
     block = self.stream.read(frames)
-    print(block)
     return len(block), block
 
   return cb
@@ -72,6 +69,9 @@ def run_mic_levels_thread(callback, config):
     return Openable.Openable()
 
   mic = mic_input_linux(config) if Platform.IS_LINUX else mic_input_mac(config)
+  if not mic:
+    return Openable.Openable()
+
   cb_different = Util.call_if_different(callback)
   def cb():
     level = get_mic_level(mic)

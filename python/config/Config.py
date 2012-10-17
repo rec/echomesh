@@ -14,6 +14,7 @@ CONFIG_STRING = """
 type: config
 
 allow_shutdown: true
+# control_frequency: 2.0
 control_frequency: 60.0
 
 discovery: {
