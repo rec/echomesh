@@ -24,4 +24,6 @@ class Quitter(Openable.Openable):
   def update(self, time):
     for event in pygame.event.get():
       if event.type == pygame.QUIT:
+        # TODO: why isn't this working?
+        # TODO: use the standard quitting mechanism.
         sys.exit()

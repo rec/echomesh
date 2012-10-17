@@ -15,7 +15,7 @@ type: config
 
 allow_shutdown: true
 # control_frequency: 2.0
-control_frequency: 60.0
+control_frequency: 10.0
 
 discovery: {
   port: 1238,
@@ -50,7 +50,9 @@ shorten: {
 
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
-hofmann: { display: {full_screen: false, width: 512, height: 384} }
+hofmann: {
+  display: {full_screen: false, width: 512, height: 384}
+}
 """
 
 # Local configuration for this account.
@@ -63,7 +65,7 @@ STORE_LOCAL_CHANGED_FILE = True
 
 CONFIG = Merge.merge_into_all(
   yaml.safe_load(CONFIG_STRING),
-  yaml.safe_load(NODENAME_CONFIG_STRING).get(Address.NODENAME, {}),
+  yaml.safe_load(NODENAME_CONFIG_STRING.strip()).get(Address.NODENAME, {}),
   File.yaml_load(LOCAL_FILE, False),
   File.yaml_load(LOCAL_CHANGED_FILE, False))
 

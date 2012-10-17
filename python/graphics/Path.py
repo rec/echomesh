@@ -20,6 +20,6 @@ def path(angle, width, height):
   end = [x + w, -y + h]
 
   if -45 <= angle <= 135:
-    return [begin, end]
-  else:
     return [end, begin]
+  else:
+    return [begin, end]

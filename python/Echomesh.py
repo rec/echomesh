@@ -32,6 +32,7 @@ class Echomesh(object):
       self._add_tasks()
       self.control_loop.start()
       self.mic_thread.start()
+
       raw_input('Press return to exit\n')
 
   def close(self):

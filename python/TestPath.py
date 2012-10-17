@@ -19,6 +19,7 @@ READ_INPUT = False
 
 display = Display.Display(dict(display=dict(full_screen=False,
                                             width=WIDTH, height=HEIGHT)))
+display.start()
 screen = display.screen
 
 degrees = -1
