@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-def path(width, height, angle):
+def path(angle, width, height):
   angle = angle % 360.0 - 180
   theta = math.radians(angle)
 
@@ -16,10 +16,10 @@ def path(width, height, angle):
   else:
     x, y = h / t, h
 
-  begin = -x + w, y + h
-  end = x + w, -y + h
+  begin = [-x + w, y + h]
+  end = [x + w, -y + h]
 
   if -45 <= angle <= 135:
-    return (begin, end)
+    return [begin, end]
   else:
-    return (end, begin)
+    return [end, begin]

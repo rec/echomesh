@@ -37,7 +37,7 @@ while True:
   if degrees == '':
     sys.exit()
 
-  begin, end = Path.path(WIDTH, HEIGHT, int(degrees))
+  begin, end = Path.path(int(degrees), WIDTH, HEIGHT)
 
   # print(begin, end)
   # print(degrees)

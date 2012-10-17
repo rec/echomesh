@@ -3,7 +3,7 @@ import sys, pygame
 pygame.init()
 
 size = width, height = 320, 240
-speed = [5, 5]
+speed = [1, 1]
 black = 0, 0, 0
 
 screen = pygame.display.set_mode(size)
@@ -24,3 +24,4 @@ while True:
     screen.fill(black)
     screen.blit(ball, ballrect)
     pygame.display.flip()
+

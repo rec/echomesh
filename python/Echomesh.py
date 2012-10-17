@@ -5,10 +5,14 @@ from contextlib import closing
 from command import Router
 from config import Config
 from graphics import Display
+from graphics import Tasks
+from graphics import ImagePath
 from network import Clients
 from network import Discovery
 from sound import Microphone
 from util import ControlLoop
+
+IMAGE = '/development/echomesh/data/ball.gif'
 
 class Echomesh(object):
   def __init__(self):
@@ -24,8 +28,9 @@ class Echomesh(object):
   def run(self):
     with closing(self):
       self.discovery.start()
-      self.control_loop.start()
       self.display.start()
+      self._add_tasks()
+      self.control_loop.start()
       self.mic_thread.start()
       raw_input('Press return to exit\n')
 
@@ -36,6 +41,10 @@ class Echomesh(object):
     self.control_loop.close()
 
     self.discovery.join()
+
+  def _add_tasks(self):
+    p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
+    self.control_loop.tasks = [Tasks.Flipper(), p, Tasks.Clearer(self.display)]
 
 
 if __name__ == '__main__':

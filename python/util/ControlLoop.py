@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import pygame
 import time
 
+from util import Openable
 from util import ThreadLoop
 
 class ControlLoop(ThreadLoop.ThreadLoop):
@@ -19,5 +21,8 @@ class ControlLoop(ThreadLoop.ThreadLoop):
         tasks.append(task)
 
     self.tasks = tasks
+    pygame.display.flip()
     time.sleep(1.0 / self.config['control_frequency'])
+
+# TODO: needs locking.
 

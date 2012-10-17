@@ -17,6 +17,7 @@ class Display(object):
       flags = 0
       resolution = dconf['width'], dconf['height']
     self.screen = pygame.display.set_mode(resolution, flags)
+    self.size = self.screen.get_size()
 
   def close(self):
     pygame.quit()
