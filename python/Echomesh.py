@@ -4,9 +4,11 @@ from contextlib import closing
 
 from command import Router
 from config import Config
+from graphics import Display
 from network import Clients
 from network import Discovery
 from sound import Microphone
+from util import ControlLoop
 
 class Echomesh(object):
   def __init__(self):
@@ -15,18 +17,25 @@ class Echomesh(object):
     self.clients = Clients.Clients(self.discovery)
     self.router = Router.router(self, self.config, self.clients)
     self.discovery.callbacks = self.router
+    self.control_loop = ControlLoop.ControlLoop(self.config)
+    self.display = Display.Display(self.config)
+    self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
+
+  def run(self):
+    with closing(self):
+      self.discovery.start()
+      self.control_loop.start()
+      self.display.start()
+      self.mic_thread.start()
+      raw_input('Press return to exit\n')
 
   def close(self):
     self.discovery.close()
-    if hasattr(self, 'mic_thread'):
-      self.mic_thread.close()
-    self.discovery.join()
+    self.mic_thread.close()
+    self.display.close()
+    self.control_loop.close()
 
-  def run(self):
-    self.discovery.start()
-    self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
-    with closing(self):
-      raw_input('Press return to exit\n')
+    self.discovery.join()
 
 
 if __name__ == '__main__':

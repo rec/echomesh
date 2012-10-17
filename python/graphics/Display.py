@@ -5,8 +5,10 @@ import pygame
 class Display(object):
   def __init__(self, config):
     self.config = config
+
+  def start(self):
     pygame.init()
-    dconf = config['display']
+    dconf = self.config['display']
     full_screen = dconf['full_screen']
     if full_screen:
       flags = pygame.FULLSCREEN & pygame.NOFRAME

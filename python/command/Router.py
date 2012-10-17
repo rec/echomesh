@@ -7,25 +7,29 @@ SHUTDOWN = ['/sbin/shutdown', '-h', 'now']
 RESTART = ['/sbin/shutdown', '-r', 'now']
 
 class Router(object):
-  def __init__(self, echomesh)
+  def __init__(self, echomesh, config):
     self.echomesh = echomesh
+    self.config = config
 
   def close(self, data):
     print('Quitting');
     self.echomesh.close()
 
-  def shutdown(self, data):
-    self.close()
-    print('Shutting down')
-    Subprocess.run(SHUTDOWN)
+  def restart(self, data):
+    if config['allow_shutdown']:
+      self.close()
+      print('Restarting')
+      Subprocess.run(RESTART)
 
   def shutdown(self, data):
-    self.close()
-    print('Restarting')
-    Subprocess.run(SHUTDOWN)
+    if config['allow_shutdown']:
+      self.close()
+      print('Shutting down')
+      Subprocess.run(SHUTDOWN)
+
 
 def router(echomesh, config, clients):
-  r = Router(echomesh)
+  r = Router(echomesh, config)
   return {
     clients.type: clients.new_client,
     'config': Config.change,

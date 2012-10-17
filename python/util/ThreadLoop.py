@@ -12,6 +12,8 @@ class ThreadLoop(Openable):
     if runnable:
       self.runnable = runnable
     self.thread = threading.Thread(target=self.run)
+
+  def start(self):
     self.thread.start()
 
   def run(self):
