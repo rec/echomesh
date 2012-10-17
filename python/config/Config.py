@@ -20,6 +20,10 @@ discovery: {
   timeout: 0.100
 }
 
+display: {
+  full_screen: true,
+}
+
 git: {
   user: rec,
   project: echomesh,
@@ -44,7 +48,7 @@ shorten: {
 
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
-{}
+hofmann: { display: {full_screen: false, width: 512, height: 384} }
 """
 
 # Local configuration for this account.
