@@ -1,10 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from config import Config
+from util import Log
 from util import Subprocess
 
 SHUTDOWN = ['/sbin/shutdown', '-h', 'now']
 RESTART = ['/sbin/shutdown', '-r', 'now']
+
+LOGGER = Log.logger(__name__)
 
 class Router(object):
   def __init__(self, echomesh, config):
@@ -12,19 +15,19 @@ class Router(object):
     self.config = config
 
   def close(self, data):
-    print('Quitting');
+    LOGGER.info('Quitting');
     self.echomesh.close()
 
   def restart(self, data):
     if config['allow_shutdown']:
       self.close()
-      print('Restarting')
+      LOGGER.info('Restarting')
       Subprocess.run(RESTART)
 
   def shutdown(self, data):
     if config['allow_shutdown']:
       self.close()
-      print('Shutting down')
+      LOGGER.info('Shutting down')
       Subprocess.run(SHUTDOWN)
 
 

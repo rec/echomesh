@@ -7,14 +7,17 @@ import yaml
 import Queue
 
 from network import Broadcast
-from util.Openable import Openable
+from util import Openable
+from util import Log
 
-class Discovery(Openable):
+LOGGER = Log.logger(__name__)
+
+class Discovery(Openable.Openable):
   DOCUMENT_START = '---\n'
   DOCUMENT_END = '....\n'
 
   def __init__(self, config, callbacks=None):
-    Openable.__init__(self)
+    Openable.Openable.__init__(self)
     self.config = config
     self.queue = Queue.Queue()
 
@@ -28,14 +31,14 @@ class Discovery(Openable):
 
     self.receive_thread = threading.Thread(target=self._run_receive)
     self.send_thread = threading.Thread(target=self._run_send)
-    print('Starting discovery on port', port)
+    LOGGER.info('Starting discovery on port', port)
 
   def start(self):
     self.receive_thread.start()
     self.send_thread.start()
 
   def close(self):
-    Openable.close(self)
+    Openable.Openable.close(self)
     self.receive_socket.close()
     self.send_socket.close()
 
@@ -54,7 +57,7 @@ class Discovery(Openable):
           data = yaml.safe_load(pckt)
           self.callbacks.get(data['type'], self._error)(data)
     except:
-      print(traceback.format_exc())
+      LOGGER.critical(traceback.format_exc())
       self.close()
 
   def _run_send(self):
@@ -67,8 +70,8 @@ class Discovery(Openable):
         except Queue.Empty:
           pass
     except:
-      print(traceback.format_exc())
+      LOGGER.critical(traceback.format_exc())
       self.close()
 
   def _error(self, data):
-    print('No callbacks for type', data['type'])
+    LOGGER.error('No callbacks for type', data['type'])

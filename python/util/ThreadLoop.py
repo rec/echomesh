@@ -3,11 +3,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import traceback
 
-from util.Openable import Openable
+from util import Log
+from util import Openable
 
-class ThreadLoop(Openable):
+LOGGER = Log.logger(__name__)
+
+class ThreadLoop(Openable.Openable):
   def __init__(self, runnable=None, openable=None):
-    Openable.__init__(self)
+    Openable.Openable.__init__(self)
     self.openable = openable or self
     if runnable:
       self.runnable = runnable
@@ -24,4 +27,4 @@ class ThreadLoop(Openable):
       print(traceback.format_exc())
       self.close()
 
-    print('ThreadLoop finished', self)
+    LOGGER.info('ThreadLoop finished', self)

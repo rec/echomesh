@@ -16,6 +16,7 @@ type: config
 allow_shutdown: true
 # control_frequency: 2.0
 control_frequency: 10.0
+headless: false
 
 discovery: {
   port: 1238,
@@ -29,6 +30,11 @@ display: {
 git: {
   user: rec,
   project: echomesh,
+}
+
+logging: {
+#  file: ~/log/echomesh.log,  # Uncomment to create a file
+  level: debug,
 }
 
 mic: {
@@ -51,7 +57,9 @@ shorten: {
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
 hofmann: {
-  display: {full_screen: false, width: 512, height: 384}
+  display: {full_screen: false, width: 512, height: 384},
+  headless: true
+
 }
 """
 
@@ -66,11 +74,10 @@ STORE_LOCAL_CHANGED_FILE = True
 CONFIG = Merge.merge_into_all(
   yaml.safe_load(CONFIG_STRING),
   yaml.safe_load(NODENAME_CONFIG_STRING.strip()).get(Address.NODENAME, {}),
-  File.yaml_load(LOCAL_FILE, False),
-  File.yaml_load(LOCAL_CHANGED_FILE, False))
+  File.yaml_load(LOCAL_FILE),
+  File.yaml_load(LOCAL_CHANGED_FILE))
 
 if len(sys.argv) > 1:
-  print('Merging config from file', sys.argv[1])
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1].strip()))
 
 def change(config):

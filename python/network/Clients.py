@@ -5,6 +5,9 @@ import time
 
 from network import Address
 from network import Locker
+from util import Log
+
+LOGGER = Log.logger(__name__)
 
 class Clients(object):
   TYPE = 'client'
@@ -21,18 +24,17 @@ class Clients(object):
                      ip_address=Address.IP_ADDRESS)
     self.send(self.data)
 
-
   def new_client(self, data):
     with Locker.Locker(self.lock):
       nodename = data['nodename']
       c = self._clients.get(nodename, None)
       if c != data:
-        print('New client', data)
         self._clients[nodename] = data
         if c != self.data:
+          LOGGER.info('New client', data)
           self.send(self.data)
         else:
-          print('self client')
+          LOGGER.info('self client')
 
   def get_clients(self):
     with Locker.Locker(self.lock):
