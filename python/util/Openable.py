@@ -10,6 +10,9 @@ class Openable(object):
   def close(self):
     self.is_open = False
 
+  def join(self):
+    pass
+
   def __enter__(self):
     return self
 

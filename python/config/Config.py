@@ -14,9 +14,8 @@ CONFIG_STRING = """
 type: config
 
 allow_shutdown: true
-# control_frequency: 2.0
-control_frequency: 10.0
-headless: false
+frames_per_second: 10.0
+control_program: true
 
 discovery: {
   port: 1238,

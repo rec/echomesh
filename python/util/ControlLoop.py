@@ -22,7 +22,7 @@ class ControlLoop(ThreadLoop.ThreadLoop):
 
     self.tasks = tasks
     pygame.display.flip()
-    time.sleep(1.0 / self.config['control_frequency'])
+    time.sleep(1.0 / self.config['frames_per_second'])
 
 # TODO: needs locking.
 

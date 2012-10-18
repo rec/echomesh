@@ -16,8 +16,9 @@ from util import MakeDirs
 DEFAULT_LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 LOG_FORMAT = Config.CONFIG['logging'].get('format', DEFAULT_LOG_FORMAT)
 
-_LOG_LEVEL_STR = Config.CONFIG['logging'].get('level', 'debug').upper()
-LOG_LEVEL = getattr(logging, _LOG_LEVEL_STR)
+DEFAULT_LOG_LEVEL = 'INFO'
+LOG_LEVEL_STR = Config.CONFIG['logging'].get('level', DEFAULT_LOG_LEVEL).upper()
+LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 

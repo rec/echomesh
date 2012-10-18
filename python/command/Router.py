@@ -19,16 +19,16 @@ class Router(object):
     self.echomesh.close()
 
   def restart(self, data):
-    if config['allow_shutdown']:
-      self.close()
-      LOGGER.info('Restarting')
-      Subprocess.run(RESTART)
+    self._close_and_run('Restarting', RESTART)
 
   def shutdown(self, data):
-    if config['allow_shutdown']:
+    self._close_and_run('Shutting down', SHUTDOWN)
+
+  def _close_and_run(self, msg, cmd):
+    if self.config['allow_shutdown']:
       self.close()
-      LOGGER.info('Shutting down')
-      Subprocess.run(SHUTDOWN)
+      LOGGER.info(msg)
+      Subprocess.run(cmd)
 
 
 def router(echomesh, config, clients):

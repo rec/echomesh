@@ -19,6 +19,9 @@ class ThreadLoop(Openable.Openable):
   def start(self):
     self.thread.start()
 
+  def join(self):
+    self.thread.join()
+
   def run(self):
     try:
       while self.is_open:

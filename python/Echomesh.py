@@ -10,13 +10,16 @@ from graphics import ImagePath
 from network import Clients
 from network import Discovery
 from sound import Microphone
+
 from util import ControlLoop
 from util import Log
+from util import Openable
 
 IMAGE = '/development/echomesh/data/ball.gif'
 
-class Echomesh(object):
+class Echomesh(Openable.Openable):
   def __init__(self):
+    Openable.Openable.__init__(self)
     self.config = Config.CONFIG
     self.discovery = Discovery.Discovery(self.config)
     self.clients = Clients.Clients(self.discovery)
@@ -34,20 +37,34 @@ class Echomesh(object):
       self.control_loop.start()
       self.mic_thread.start()
 
-      raw_input('Press return to exit\n')
+      if self.config.get('control_program', False):
+        while self.is_open:
+          if not self._process_command(raw_input('echomesh: ')):
+            self.close()
+
+      else:
+        self._join()
 
   def close(self):
+    Openable.Openable.close(self)
     self.discovery.close()
     self.mic_thread.close()
     self.display.close()
     self.control_loop.close()
+    self._join()
 
+  def _join(self):
     self.discovery.join()
+    self.mic_thread.join()
+    self.control_loop.join()
 
   def _add_tasks(self):
     p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
     self.control_loop.tasks = [Tasks.Clearer(self.display), p,
                                Tasks.Quitter(), Tasks.Flipper()]
+
+  def _process_command(self, command):
+    return command != 'quit'
 
 if __name__ == '__main__':
   Echomesh().run()
