@@ -3,79 +3,85 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import analyse
 import numpy
 
+from util import Log
 from util import Openable
 from util import Platform
 from util import ThreadLoop
 from util import Util
 
+LOGGING = Log.logger(__name__)
+
 DEFAULT_CARD_FORMAT = 'sysdefault:CARD=%s'
 DEFAULT_SAMPLE_RATE = 8000
 DEFAULT_PERIOD_SIZE = 160
+DEFAULT_CHUNK_SIZE = 1024
+MAX_INPUT_DEVICES = 64
 
-def mic_input_linux(config):
+def mic_input_alsa(config, rate):
   import alsaaudio
 
-  conf = config['mic']
+  conf = config['audio']['input']
   name = conf['name']
   card = conf.get('card', DEFAULT_CARD_FORMAT % name)
-  mic = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, card)
-  mic.setchannels(1)
-  if 'samplerate' in conf:
-    mic.setrate(conf['samplerate'])
+  stream = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, card)
+  stream.setchannels(1)
+  stream.setrate(rate)
 
   if 'periodsize' in conf:
-    mic.setperiodsize(conf['periodsize'])
+    stream.setperiodsize(conf['periodsize'])
 
-  return lambda: mic.read()
+  return lambda: stream.read()
 
-def mic_input_mac(config):
-  if True:
-    return None
 
+def _get_pyaudio_stream(pyaud, rate):
   import pyaudio
+  for i in range(MAX_INPUT_DEVICES):
+    try:
+      return pyaud.open(
+        format=pyaudio.paInt16,  # TODO: move this into config.
+        channels=1,
+        rate=rate,
+        input_device_index=i,
+        input=True)
+    except:
+      pass
+  LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
-  pa = pyaudio.PyAudio()
-  conf = config['mic']
-  name = conf['name']
+def mic_input_pyaudio(config, rate):
+  import pyaudio
+  pyaud = pyaudio.PyAudio()
+  stream = _get_pyaudio_stream(pyaud, rate)
+  if stream:
+    chunksize = config['audio']['input'].get('chunksize', DEFAULT_CHUNK_SIZE)
+    return lambda: (-1, stream.read(chunksize))
 
-  for i in range(pa.get_device_count()):
-    devinfo = pa.get_device_info_by_index(i)
-    if devinfo['name'].strip() == name:
-      index = i
-      break
-  else:
-    return None
+def get_input_stream(config):
+  conf = config['audio']
 
-  frames = conf.get('periodsize', DEFAULT_PERIOD_SIZE)
-  str = pa.open(format=pyaudio.paInt16,
-                channels=1,
-                rate=conf.get('samplerate', DEFAULT_SAMPLE_RATE),
-                input=True,
-                input_device_index=index,
-                frames_per_buffer=frames)
-  def cb():
-    block = self.stream.read(frames)
-    return len(block), block
+  if conf['input'].get('enable', True):
+    rate = conf['input'].get('samplerate', DEFAULT_SAMPLE_RATE)
+    library = conf['library']
+    if library == 'pyaudio':
+      return mic_input_pyaudio(config, rate)
+    elif library == 'alsaaudio':
+      return mic_input_alsa(config, rate)
+    else:
+      LOGGING.error("Don't understand audio library '%s'", library)
 
-  return cb
-
-def get_mic_level(mic):
-  length, data = mic()
+def get_mic_level(length, data):
   samps = numpy.fromstring(data, dtype=numpy.int16, count=length)
   return analyse.loudness(samps)
 
 def run_mic_levels_thread(callback, config):
-  if  not config['mic'].get('enable', True):
-    return Openable.Openable()
+  stream = get_input_stream(config)
 
-  mic = mic_input_linux(config) if Platform.IS_LINUX else mic_input_mac(config)
-  if not mic:
+  if not stream:
     return Openable.Openable()
 
   cb_different = Util.call_if_different(callback)
   def cb():
-    level = get_mic_level(mic)
-    slot = Util.level_slot(level, config['mic']['levels'])
+    level = get_mic_level(*stream())
+    slot = Util.level_slot(level, config['audio']['input']['levels'])
     cb_different(slot)
 
   return ThreadLoop.ThreadLoop(cb)

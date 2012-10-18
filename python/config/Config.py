@@ -36,11 +36,14 @@ logging: {
   level: debug,
 }
 
-mic: {
-  samplerate: 8000,
-  name: AK5370,
-  periodsize: 160,
-  levels: [-25, -15, -5],
+audio: {
+  library: pyaudio,
+  input: {
+    samplerate: 8000,
+    name: AK5370,
+    periodsize: 160,
+    levels: [-25, -15, -5],
+  }
 }
 
 shorten: {

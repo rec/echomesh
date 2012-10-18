@@ -2,7 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import pygame
 
+from util import Log
 from util import ThreadLoop
+
+LOGGING = Log.logger(__name__)
 
 def _make_screen(config):
   dconf = config['display']
@@ -25,7 +28,16 @@ class Display(ThreadLoop.ThreadLoop):
     self.update_clients = []
 
     pygame.init()
-    self.screen = _make_screen(config)
+
+    self.sprites = pygame.sprite.LayeredDirty()
+    self.time = 0.0
+
+    try:
+      self.screen = _make_screen(config)
+    except:
+      self.screen = None
+      LOGGING.error("Couldn't open graphics")
+      return
     self.size = self.screen.get_size()
 
     background = pygame.Surface(self.size).convert()
@@ -33,9 +45,7 @@ class Display(ThreadLoop.ThreadLoop):
     self.screen.blit(background, (0, 0))
     pygame.display.flip()
 
-    self.sprites = pygame.sprite.LayeredDirty()
     self.sprites.clear(self.screen, background)
-    self.time = 0.0
 
   def add_sprite(self, sprite):
     self.sprites.add(sprite)
@@ -51,13 +61,17 @@ class Display(ThreadLoop.ThreadLoop):
     self.update_clients.remove(client)
 
   def runnable(self):
+    for c in self.update_clients:
+      c.update(self.time)
+
+    if not self.screen:
+      return
+
     for e in pygame.event.get():
       if e.type == pygame.QUIT or (e.type == pygame.KEYDOWN and
                                    e.key == pygame.K_ESCAPE):
         self.close()
         return
-    for c in self.update_clients:
-      c.update(self.time)
 
     self.sprites.update(self.time)
     pygame.display.update(self.sprites.draw(self.screen))

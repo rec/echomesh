@@ -47,7 +47,7 @@ class Router(object):
       self.halt()
 
   def _is_headless(self):
-    return not self.echomesh.config['control_program']:
+    return not self.echomesh.config['control_program']
 
 
 def _error(data):

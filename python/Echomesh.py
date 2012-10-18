@@ -28,8 +28,9 @@ class Echomesh(Openable.Openable):
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
     self.display = Display.Display(self.config)
-    p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
-    self.display.add_sprite(p)
+    if self.display.screen:
+      p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
+      self.display.add_sprite(p)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
   def send(self, data):
