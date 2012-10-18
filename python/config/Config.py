@@ -14,7 +14,7 @@ CONFIG_STRING = """
 type: config
 
 allow_shutdown: true
-frames_per_second: 60.0
+frames_per_second: 60
 control_program: true
 
 discovery: {

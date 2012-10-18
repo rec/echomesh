@@ -11,7 +11,6 @@ from network import Clients
 from network import Discovery
 from sound import Microphone
 
-from util import ControlLoop
 from util import Log
 from util import Openable
 
@@ -28,15 +27,14 @@ class Echomesh(Openable.Openable):
     self.router = Router.router(self, self.config, self.clients)
     self.discovery.callbacks = self.router
     self.display = Display.Display(self.config)
-    self.control_loop = ControlLoop.ControlLoop(self.config, self.display.clock)
+    p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
+    self.display.sprites.add(p)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
   def run(self):
     with closing(self):
       self.discovery.start()
       self.display.start()
-      self._add_tasks()
-      self.control_loop.start()
       self.mic_thread.start()
 
       if self.config.get('control_program', False):
@@ -54,18 +52,13 @@ class Echomesh(Openable.Openable):
       self.discovery.close()
       self.mic_thread.close()
       self.display.close()
-      self.control_loop.close()
       self._join()
 
   def _join(self):
+    self.display.join()
+    self.close()
     self.discovery.join()
     self.mic_thread.join()
-    self.control_loop.join()
-
-  def _add_tasks(self):
-    p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
-    self.control_loop.tasks = [Tasks.Clearer(self.display), p,
-                               Tasks.Quitter(), Tasks.Flipper()]
 
   def _process_command(self, command):
     return command != 'quit'

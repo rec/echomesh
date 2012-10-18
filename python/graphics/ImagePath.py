@@ -3,40 +3,38 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import math
 import pygame
+# import pygame.sprite
 
 from graphics import Path
 from util import Openable
 
-def _length(x, y):
-  return math.sqrt(x * x + y + y)
-
-def _distance(p, q):
-  return _length(q[0] - p[0], q[1] - p[1])
-
-
-class ImagePath(Openable.Openable):
+class ImagePath(pygame.sprite.DirtySprite):
   def __init__(self, image, angle, duration, display):
-    Openable.Openable.__init__(self)
+    pygame.sprite.DirtySprite.__init__(self)
     self.image = pygame.image.load(image)
-    self.display = display
     self.rect = self.image.get_rect()
+    self.display = display
 
+    # Inflate to the right and down by the width of the image.
     width = display.size[0] + self.rect.width
     height = display.size[1] + self.rect.height
-    path = Path.path(angle, width, height)  # self.begin, self.end
 
+    path = Path.path(angle, width, height)
+
+    # Move back to the origin.
     for p in path:
       p[0] -= self.rect.width
       p[1] -= self.rect.height
 
-    # distance = _distance(*path)
-    self.duration = duration
+    self.duration = duration * 1000.0
     self.start = 0
 
     self.begin, self.end = path
     self.rect.move_ip(self.begin)
 
-  def update(self, now):
+  def update(self, time):
+    pygame.sprite.DirtySprite.update(self)
+    now = self.display.time
     if not self.start:
       self.start = now
 
@@ -45,7 +43,6 @@ class ImagePath(Openable.Openable):
       x = self.begin[0] + (self.end[0] - self.begin[0]) * ratio
       y = self.begin[1] + (self.end[1] - self.begin[1]) * ratio
       self.rect.move_ip((x - self.rect.x, y - self.rect.y))
-      self.display.screen.blit(self.image, self.rect)
-
+      self.dirty = 1
     else:
-      self.close()
+      self.display.sprites.remove(self)
