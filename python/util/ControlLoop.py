@@ -7,9 +7,10 @@ from util import Openable
 from util import ThreadLoop
 
 class ControlLoop(ThreadLoop.ThreadLoop):
-  def __init__(self, config):
+  def __init__(self, config, clock):
     ThreadLoop.ThreadLoop.__init__(self)
     self.config = config
+    self.clock = clock
     self.tasks = []
 
   def runnable(self):
@@ -22,7 +23,7 @@ class ControlLoop(ThreadLoop.ThreadLoop):
 
     self.tasks = tasks
     pygame.display.flip()
-    time.sleep(1.0 / self.config['frames_per_second'])
+    self.clock.tick(self.config['frames_per_second'])
 
 # TODO: needs locking.
 

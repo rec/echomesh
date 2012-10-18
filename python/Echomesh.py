@@ -17,6 +17,8 @@ from util import Openable
 
 IMAGE = '/development/echomesh/data/ball.gif'
 
+LOGGER = Log.logger(__name__)
+
 class Echomesh(Openable.Openable):
   def __init__(self):
     Openable.Openable.__init__(self)
@@ -25,8 +27,8 @@ class Echomesh(Openable.Openable):
     self.clients = Clients.Clients(self.discovery)
     self.router = Router.router(self, self.config, self.clients)
     self.discovery.callbacks = self.router
-    self.control_loop = ControlLoop.ControlLoop(self.config)
     self.display = Display.Display(self.config)
+    self.control_loop = ControlLoop.ControlLoop(self.config, self.display.clock)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
   def run(self):
@@ -46,12 +48,14 @@ class Echomesh(Openable.Openable):
         self._join()
 
   def close(self):
-    Openable.Openable.close(self)
-    self.discovery.close()
-    self.mic_thread.close()
-    self.display.close()
-    self.control_loop.close()
-    self._join()
+    if self.is_open:
+      Openable.Openable.close(self)
+      LOGGER.info('echomesh closing')
+      self.discovery.close()
+      self.mic_thread.close()
+      self.display.close()
+      self.control_loop.close()
+      self._join()
 
   def _join(self):
     self.discovery.join()

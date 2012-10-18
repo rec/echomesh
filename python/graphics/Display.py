@@ -5,6 +5,7 @@ import pygame
 class Display(object):
   def __init__(self, config):
     self.config = config
+    self.clock = pygame.time.Clock()
 
   def start(self):
     pygame.init()

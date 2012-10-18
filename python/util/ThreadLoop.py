@@ -29,5 +29,3 @@ class ThreadLoop(Openable.Openable):
     except:
       print(traceback.format_exc())
       self.close()
-
-    LOGGER.info('ThreadLoop finished %s', repr(self))
