@@ -4,23 +4,28 @@ import pygame
 
 from util import ThreadLoop
 
+def _make_screen(config):
+  dconf = config['display']
+  full_screen = dconf['full_screen']
+  if full_screen:
+    flags = pygame.FULLSCREEN & pygame.NOFRAME
+    resolution = 0, 0
+  else:
+    flags = 0
+    resolution = dconf['width'], dconf['height']
+  return pygame.display.set_mode(resolution, flags)
+
+
 class Display(ThreadLoop.ThreadLoop):
   def __init__(self, config, background_color=None):
     ThreadLoop.ThreadLoop.__init__(self)
     self.config = config
     self.clock = pygame.time.Clock()
     self.background_color = background_color or (0, 0, 0)
+    self.update_clients = []
 
     pygame.init()
-    dconf = self.config['display']
-    full_screen = dconf['full_screen']
-    if full_screen:
-      flags = pygame.FULLSCREEN & pygame.NOFRAME
-      resolution = 0, 0
-    else:
-      flags = 0
-      resolution = dconf['width'], dconf['height']
-    self.screen = pygame.display.set_mode(resolution, flags)
+    self.screen = _make_screen(config)
     self.size = self.screen.get_size()
 
     background = pygame.Surface(self.size).convert()
@@ -32,12 +37,28 @@ class Display(ThreadLoop.ThreadLoop):
     self.sprites.clear(self.screen, background)
     self.time = 0.0
 
+  def add_sprite(self, sprite):
+    self.sprites.add(sprite)
+
+  def remove_sprite(self, sprite):
+    self.sprites.remove(sprite)
+
+  def add_client(self, client):
+    if client not in self.clients:
+      self.update_clients.append(client)
+
+  def remove_client(self, client):
+    self.update_clients.remove(client)
+
   def runnable(self):
     for e in pygame.event.get():
       if e.type == pygame.QUIT or (e.type == pygame.KEYDOWN and
                                    e.key == pygame.K_ESCAPE):
         self.close()
         return
+    for c in self.update_clients:
+      c.update(self.time)
+
     self.sprites.update(self.time)
     pygame.display.update(self.sprites.draw(self.screen))
     self.time += self.clock.tick(self.config['frames_per_second'])

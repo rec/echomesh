@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from contextlib import closing
 
+from command import Processor
 from command import Router
 from config import Config
 from graphics import Display
@@ -24,11 +25,12 @@ class Echomesh(Openable.Openable):
     self.config = Config.CONFIG
     self.discovery = Discovery.Discovery(self.config)
     self.clients = Clients.Clients(self.discovery)
+    self.process = Processor.process
     self.router = Router.router(self, self.config, self.clients)
     self.discovery.callbacks = self.router
     self.display = Display.Display(self.config)
     p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
-    self.display.sprites.add(p)
+    self.display.add_sprite(p)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
   def run(self):
@@ -39,7 +41,7 @@ class Echomesh(Openable.Openable):
 
       if self.config.get('control_program', False):
         while self.is_open:
-          if not self._process_command(raw_input('echomesh: ')):
+          if not self.process(raw_input('echomesh: ').strip(), self):
             self.close()
 
       else:
@@ -59,9 +61,6 @@ class Echomesh(Openable.Openable):
     self.close()
     self.discovery.join()
     self.mic_thread.join()
-
-  def _process_command(self, command):
-    return command != 'quit'
 
 if __name__ == '__main__':
   Echomesh().run()

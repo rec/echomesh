@@ -11,6 +11,7 @@ from util import Openable
 class ImagePath(pygame.sprite.DirtySprite):
   def __init__(self, image, angle, duration, display):
     pygame.sprite.DirtySprite.__init__(self)
+
     self.image = pygame.image.load(image)
     self.rect = self.image.get_rect()
     self.display = display
@@ -45,4 +46,4 @@ class ImagePath(pygame.sprite.DirtySprite):
       self.rect.move_ip((x - self.rect.x, y - self.rect.y))
       self.dirty = 1
     else:
-      self.display.sprites.remove(self)
+      self.display.remove_sprite(self)
