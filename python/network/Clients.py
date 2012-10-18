@@ -22,6 +22,8 @@ class Clients(object):
                      nodename=Address.NODENAME,
                      mac_address=Address.MAC_ADDRESS,
                      ip_address=Address.IP_ADDRESS)
+
+  def start(self):
     self.send(self.data)
 
   def new_client(self, data):

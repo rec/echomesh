@@ -23,19 +23,22 @@ class Echomesh(Openable.Openable):
   def __init__(self):
     Openable.Openable.__init__(self)
     self.config = Config.CONFIG
-    self.discovery = Discovery.Discovery(self.config)
-    self.clients = Clients.Clients(self.discovery)
+    self.clients = Clients.Clients(self)
+    callbacks = Router.router(self, self.clients)
+    self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
-    self.router = Router.router(self, self.config, self.clients)
-    self.discovery.callbacks = self.router
     self.display = Display.Display(self.config)
     p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
     self.display.add_sprite(p)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
+  def send(self, data):
+    self.discovery.send(data)
+
   def run(self):
     with closing(self):
       self.discovery.start()
+      self.clients.start()
       self.display.start()
       self.mic_thread.start()
 

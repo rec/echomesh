@@ -16,7 +16,7 @@ class Discovery(Openable.Openable):
   DOCUMENT_START = '---\n'
   DOCUMENT_END = '....\n'
 
-  def __init__(self, config, callbacks=None):
+  def __init__(self, config, callbacks):
     Openable.Openable.__init__(self)
     self.config = config
     self.queue = Queue.Queue()
@@ -54,8 +54,7 @@ class Discovery(Openable.Openable):
       while self.is_open:
         pckt = self.receive_socket.receive(self.config['discovery']['timeout'])
         if pckt:
-          data = yaml.safe_load(pckt)
-          self.callbacks.get(data['type'], self._error)(data)
+          self.callbacks(yaml.safe_load(pckt))
     except:
       LOGGER.critical(traceback.format_exc())
       self.close()
