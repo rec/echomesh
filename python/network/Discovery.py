@@ -31,7 +31,7 @@ class Discovery(Openable.Openable):
 
     self.receive_thread = threading.Thread(target=self._run_receive)
     self.send_thread = threading.Thread(target=self._run_send)
-    LOGGER.info('Starting discovery on port', port)
+    LOGGER.info('Starting discovery on port %d', port)
 
   def start(self):
     self.receive_thread.start()
@@ -74,4 +74,4 @@ class Discovery(Openable.Openable):
       self.close()
 
   def _error(self, data):
-    LOGGER.error('No callbacks for type', data['type'])
+    LOGGER.error('No callbacks for type %s', data['type'])

@@ -8,5 +8,5 @@ from util import Log
 
 if __name__ == '__main__':
   result = TwitterCommit.twitter_commit(Config.CONFIG, Auth.AUTH)
-  Log.logger(__name__).info('Twittered', result)
+  Log.logger(__name__).info('Twittered %s', result)
 

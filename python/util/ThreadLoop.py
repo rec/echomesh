@@ -27,4 +27,4 @@ class ThreadLoop(Openable.Openable):
       print(traceback.format_exc())
       self.close()
 
-    LOGGER.info('ThreadLoop finished', self)
+    LOGGER.info('ThreadLoop finished %s', repr(self))

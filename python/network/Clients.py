@@ -31,7 +31,7 @@ class Clients(object):
       if c != data:
         self._clients[nodename] = data
         if c != self.data:
-          LOGGER.info('New client', data)
+          LOGGER.info('New client %s', nodename)
           self.send(self.data)
         else:
           LOGGER.info('self client')

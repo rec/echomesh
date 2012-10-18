@@ -11,6 +11,7 @@ from network import Clients
 from network import Discovery
 from sound import Microphone
 from util import ControlLoop
+from util import Log
 
 IMAGE = '/development/echomesh/data/ball.gif'
 
