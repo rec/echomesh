@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import analyse
 import numpy
+import pyaudio
 
 from util import Log
 from util import Openable
@@ -32,23 +33,30 @@ def mic_input_alsa(config, rate):
 
   return lambda: stream.read()
 
+def _make_stream(pyaud, rate, index):
+  return pyaud.open(
+    format=pyaudio.paInt16,  # TODO: move this into config.
+    channels=1,
+    rate=rate,
+    input_device_index=index,
+    input=True)
 
-def _get_pyaudio_stream(pyaud, rate):
-  import pyaudio
-  for i in range(MAX_INPUT_DEVICES):
-    try:
-      return pyaud.open(
-        format=pyaudio.paInt16,  # TODO: move this into config.
-        channels=1,
-        rate=rate,
-        input_device_index=i,
-        input=True)
-    except:
-      pass
+
+# TODO: a better way to identify that stream.
+def _get_pyaudio_stream(pyaud, rate, use_default=False):
+  if use_default:
+    index = pyaud.get_default_input_device_info()['index']
+    return _make_stream(pyaud, rate, index)
+  else:
+    for i in range(MAX_INPUT_DEVICES):
+      try:
+        return _make_stream(pyaud, rate, i)
+      except:
+        pass
+
   LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
 def mic_input_pyaudio(config, rate):
-  import pyaudio
   pyaud = pyaudio.PyAudio()
   stream = _get_pyaudio_stream(pyaud, rate)
   if stream:
