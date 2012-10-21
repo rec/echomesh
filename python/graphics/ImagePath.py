@@ -32,9 +32,11 @@ class ImagePath(pygame.sprite.DirtySprite):
 
     self.begin, self.end = path
     self.rect.move_ip(self.begin)
+    # print(dir(self.rect))
 
   def update(self, time):
     pygame.sprite.DirtySprite.update(self)
+    self.display.dirty(self.rect)
     now = self.display.time
     if not self.start:
       self.start = now
@@ -45,5 +47,6 @@ class ImagePath(pygame.sprite.DirtySprite):
       y = self.begin[1] + (self.end[1] - self.begin[1]) * ratio
       self.rect.move_ip((x - self.rect.x, y - self.rect.y))
       self.dirty = 1
+      self.display.dirty(self.rect)
     else:
       self.display.remove_sprite(self)

@@ -15,7 +15,7 @@ from sound import Microphone
 from util import Log
 from util import Openable
 
-IMAGE = '/development/echomesh/data/ball.gif'
+IMAGE = '~/echomesh/data/ball.gif'
 
 LOGGER = Log.logger(__name__)
 

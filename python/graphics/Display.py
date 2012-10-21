@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
 import pygame
 
 from util import Log
@@ -46,6 +47,7 @@ class Display(ThreadLoop.ThreadLoop):
     pygame.display.flip()
 
     self.sprites.clear(self.screen, background)
+    self._dirty = None
 
   def add_sprite(self, sprite):
     self.sprites.add(sprite)
@@ -60,6 +62,12 @@ class Display(ThreadLoop.ThreadLoop):
   def remove_client(self, client):
     self.update_clients.remove(client)
 
+  def dirty(self, rect):
+    if self._dirty:
+      self._dirty.union_ip(rect)
+    else:
+      self._dirty = copy.deepcopy(rect)
+
   def runnable(self):
     for c in self.update_clients:
       c.update(self.time)
@@ -73,8 +81,10 @@ class Display(ThreadLoop.ThreadLoop):
         self.close()
         return
 
+    self._dirty = None
     self.sprites.update(self.time)
-    pygame.display.update(self.sprites.draw(self.screen))
+    rect = self.sprites.draw(self.screen)
+    pygame.display.update(self._dirty)
     self.time += self.clock.tick(self.config['frames_per_second'])
 
   def close(self):
