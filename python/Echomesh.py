@@ -7,15 +7,12 @@ from command import Router
 from config import Config
 from graphics import Display
 from graphics import Tasks
-from graphics import ImagePath
 from network import Clients
 from network import Discovery
 from sound import Microphone
 
 from util import Log
 from util import Openable
-
-IMAGE = '~/echomesh/data/ball.gif'
 
 LOGGER = Log.logger(__name__)
 
@@ -27,10 +24,7 @@ class Echomesh(Openable.Openable):
     callbacks = Router.router(self, self.clients)
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
-    self.display = Display.Display(self.config)
-    if self.display.screen:
-      p = ImagePath.ImagePath(IMAGE, 45, 10.0, self.display)
-      self.display.add_sprite(p)
+    self.display = Display.display(self.config)
     self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
 
   def send(self, data):
@@ -40,7 +34,8 @@ class Echomesh(Openable.Openable):
     with closing(self):
       self.discovery.start()
       self.clients.start()
-      self.display.start()
+      if self.display:
+        self.display.start()
       self.mic_thread.start()
 
       if self.config.get('control_program', False):
@@ -57,11 +52,13 @@ class Echomesh(Openable.Openable):
       LOGGER.info('echomesh closing')
       self.discovery.close()
       self.mic_thread.close()
-      self.display.close()
+      if self.display:
+        self.display.close()
       self._join()
 
   def _join(self):
-    self.display.join()
+    if self.display:
+      self.display.join()
     self.close()
     self.discovery.join()
     self.mic_thread.join()

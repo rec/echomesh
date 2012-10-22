@@ -24,6 +24,7 @@ discovery: {
 
 display: {
   full_screen: true,
+  library: pi3d,
 }
 
 git: {
@@ -59,9 +60,8 @@ shorten: {
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
 hofmann: {
-  display: {full_screen: true, width: 512, height: 384},
+  display: {library: pygame, enable: true},
   headless: true
-
 }
 """
 
