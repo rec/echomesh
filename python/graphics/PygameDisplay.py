@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import os.path
 import pygame
 
 from graphics import ImagePath
@@ -57,7 +58,8 @@ class PygameDisplay(ThreadLoop.ThreadLoop):
 
     self.sprites.clear(self.screen, background)
     self._dirty = None
-    p = ImagePath.ImagePath(IMAGE, 45, 10.0, self)
+
+    p = ImagePath.ImagePath(os.path.expanduser(IMAGE), 45, 10.0, self)
     self.add_sprite(p)
 
 

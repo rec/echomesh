@@ -5,11 +5,9 @@ from util import Openable
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_LIBRARY = 'pi3d'
-
 def display(config):
   if config['display'].get('enable', True):
-    library = config['display'].get('library', DEFAULT_LIBRARY)
+    library = config['display'].get('library', '(no library set in Config)')
     if library == 'pi3d':
       from graphics import Pi3dDisplay
       return Pi3dDisplay.Pi3dDisplay(config)
@@ -18,5 +16,5 @@ def display(config):
       from graphics import PygameDisplay
       return PygameDisplay.PygameDisplay(config)
 
-    LOGGER.critical("Didn't understand display library '%s'", library)
+    LOGGER.critical("No display library for '%s'", library)
     assert False
