@@ -1,7 +1,14 @@
-E1  President
-E2  President (dupe)
-E3  Chairman
-E4  Treasurer
-E5  Secretary
-E6  President
-E7  Worker
+Card Number    Name            Status
+    E1       President          ok
+    E2       President (dupe)   *
+    E3       Chairman           ok
+    E4       Treasurer          ok
+    E5       Secretary          ok
+    E6       President          no
+    E7       Worker             no
+
+Cards E1 and E2 are Element 14.
+The remaining cards are SanDisk
+
+* - Attempted to decrease partition size, now it won't boot.
+    Probably needs a reformat!
