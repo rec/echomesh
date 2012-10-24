@@ -1,15 +1,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from util import Log
+from sound import FilePlayer
+
+LOGGER = Log.logger(__name__)
 
 SIMPLE_COMMANDS = (
   'halt',
+  'play',
   'rerun',
   'restart',
   'restart',
   'shutdown',
   'start',
   'stop',
+
   )
 
 REMAINING_COMMANDS = (
@@ -37,6 +42,12 @@ def process(command, echomesh):
 
   elif command == 'quit':
     return False
+
+  elif command.startswith('play'):
+    # print('Command="%s"'  %command)
+    filename = command.strip().split(' ')[1]
+    print("playing", filename)
+    FilePlayer.FilePlayer(filename).start()
 
   elif command:
     print("Didn't understand command '%s'" % command)

@@ -13,7 +13,7 @@ class Sprite(object):
 
 class ImageSprite(Sprite):
   def __init__(self, image, rect=None):
-    self.image = TEXTURES.loadTexture(image)
-
+    self.texture = TEXTURES.loadTexture(image)
+    self.rect =
 
 

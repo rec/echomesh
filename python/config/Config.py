@@ -40,6 +40,7 @@ logging: {
 audio: {
   library: pyaudio,
   input: {
+    enable: false,
     samplerate: 8000,
     name: AK5370,
     periodsize: 160,
@@ -60,7 +61,7 @@ shorten: {
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
 hofmann: {
-  display: {library: pygame, enable: true},
+  display: {library: pygame, enable: false},
   headless: true
 }
 """

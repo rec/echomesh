@@ -13,7 +13,7 @@ class ControlLoop(ThreadLoop.ThreadLoop):
     self.clock = clock
     self.tasks = []
 
-  def runnable(self):
+  def run(self):
     now = time.time()
     tasks = []
     for task in self.tasks:

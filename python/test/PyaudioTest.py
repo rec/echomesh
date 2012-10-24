@@ -5,14 +5,15 @@ import sys
 import wave
 
 
-READ = not False
+READ = False
 CHUNK = 1024
-INPUT_INDEX = int(sys.argv[1])
 
 # Initialize PyAudio
 pyaud = pyaudio.PyAudio()
 
 if READ:
+
+  INPUT_INDEX = int(sys.argv[1])
 
   # Open input stream, 16-bit mono at 44100 Hz
   # On my system, device 4 is a USB microphone
@@ -33,17 +34,22 @@ if READ:
 
 else:
 
-
   if len(sys.argv) < 2:
     print("Plays a wave file.\n\nUsage: %s filename.wav" % sys.argv[0])
     sys.exit(-1)
 
   wf = wave.open(sys.argv[1], 'rb')
+  print(wf.getsampwidth())
   format = pyaud.get_format_from_width(wf.getsampwidth())
   stream = pyaud.open(format=format,
                       channels=wf.getnchannels(),
                       rate=wf.getframerate(),
                       output=True)
+  print(dict(format=format,
+             channels=wf.getnchannels(),
+             rate=wf.getframerate(),
+             output=True))
+
 
   data = wf.readframes(CHUNK)
 
