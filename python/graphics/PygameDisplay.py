@@ -10,13 +10,12 @@ from util import Log
 from util import Platform
 from util import ThreadLoop
 
+LOGGING = Log.logger(__name__)
+
 if Platform.IS_MAC:
   IMAGE = '/development/echomesh/data/ball.gif'
 else:
   IMAGE = '~/echomesh/data/ball.gif'
-
-
-LOGGING = Log.logger(__name__)
 
 def _make_screen(config):
   dconf = config['display']
@@ -82,7 +81,7 @@ class PygameDisplay(ThreadLoop.ThreadLoop):
     else:
       self._dirty = copy.deepcopy(rect)
 
-  def runnable(self):
+  def run(self):
     for c in self.update_clients:
       c.update(self.time)
 
