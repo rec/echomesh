@@ -5,7 +5,6 @@ apt-get install python2.7-dev distcc emacs git libasound2-dev libboost-dev libma
 HOSTNAME=Secretary
 
 hostname $HOSTNAME
-
 echo $HOSTNAME > /etc/hostname
 sed "s/Chairman/$HOSTNAME/" /etc/hosts > /tmp/hosts # wrong.
 mv /tmp/hosts /etc/hosts
