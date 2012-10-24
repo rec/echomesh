@@ -10,10 +10,15 @@ class Point(namedtuple('Point', ['x', 'y'])):
   def __sub__(self, p):
     return Point(self.x - p.x, self.y - p.y)
 
+  def __mult__(self, ratio):
+    # Can only multiply if the left argument is a number!
+    return self.scale(ratio)
+
   def empty(self):
     return not (self.x and self.y)
 
   def scale(self, ratio):
+    ratio = float(ratio)
     return Point(self.x * ratio, self.y * ratio)
 
   def dot(self, p):
