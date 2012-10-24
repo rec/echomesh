@@ -50,8 +50,8 @@ def process(command, echomesh):
     filename = command.strip().split(' ')[1]
     print("playing", filename)
     FilePlayer.FilePlayer(filename).start()
-    #time.sleep(3)
-    #FilePlayer.FilePlayer(filename, level=1.0).start()
+    time.sleep(2)
+    FilePlayer.FilePlayer(filename, level=0.5).start()
 
   elif command:
     print("Didn't understand command '%s'" % command)
