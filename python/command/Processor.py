@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import time
+
 from util import Log
 from sound import FilePlayer
 
@@ -48,6 +50,8 @@ def process(command, echomesh):
     filename = command.strip().split(' ')[1]
     print("playing", filename)
     FilePlayer.FilePlayer(filename).start()
+    #time.sleep(3)
+    #FilePlayer.FilePlayer(filename, level=1.0).start()
 
   elif command:
     print("Didn't understand command '%s'" % command)
