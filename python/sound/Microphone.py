@@ -20,30 +20,6 @@ DEFAULT_PERIOD_SIZE = 160
 DEFAULT_CHUNK_SIZE = 1024
 MAX_INPUT_DEVICES = 64
 
-def mic_input_alsa(config, rate):
-  import alsaaudio
-
-  conf = config['audio']['input']
-  name = conf['name']
-  card = conf.get('card', DEFAULT_CARD_FORMAT % name)
-  stream = alsaaudio.PCM(alsaaudio.PCM_CAPTURE, alsaaudio.PCM_NORMAL, card)
-  stream.setchannels(1)
-  stream.setrate(rate)
-
-  if 'periodsize' in conf:
-    stream.setperiodsize(conf['periodsize'])
-
-  return lambda: stream.read()
-
-def _make_stream(pyaud, rate, index):
-  return pyaud.open(
-    format=pyaudio.paInt16,  # TODO: move this into config.
-    channels=1,
-    rate=rate,
-    input_device_index=index,
-    input=True)
-
-
 # TODO: a better way to identify that stream.
 def get_pyaudio_stream(rate, use_default=False):
   pyaud = pyaudio.PyAudio()
@@ -67,43 +43,9 @@ def get_pyaudio_stream(rate, use_default=False):
 
   LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
-def mic_input_pyaudio(config, rate):
-  aconfig = config['audio']['input']
-  stream = get_pyaudio_stream(rate, aconfig.get('use_default', False))
-  if stream:
-    chunksize = aconfig.get('chunksize', DEFAULT_CHUNK_SIZE)
-    return lambda: (-1, stream.read(chunksize))
-
-def get_input_stream(config):
-  conf = config['audio']
-
-  if conf['input'].get('enable', True):
-    rate = conf['input'].get('samplerate', DEFAULT_SAMPLE_RATE)
-    library = conf['library']
-    if library == 'pyaudio':
-      return mic_input_pyaudio(config, rate)
-    elif library == 'alsaaudio':
-      return mic_input_alsa(config, rate)
-    else:
-      LOGGING.error("Don't understand audio library '%s'", library)
-
-def get_mic_level(length, data):
-  samps = numpy.fromstring(data, dtype=numpy.int16, count=length)
+def get_mic_level(data, length=-1, dtype=numpy.int16):
+  samps = numpy.fromstring(data, dtype=dtype, count=length)
   return analyse.loudness(samps)
-
-def run_mic_levels_thread(callback, config):
-  stream = get_input_stream(config)
-
-  if not stream:
-    return Openable.Openable()
-
-  cb_different = Util.call_if_different(callback)
-  def cb():
-    level = get_mic_level(*stream())
-    slot = Levels.Levels(**config['audio']['input']['levels']).name(level)
-    cb_different(slot)
-
-  return ThreadLoop.ThreadLoop(cb)
 
 
 class Microphone(ThreadLoop.ThreadLoop):
@@ -113,18 +55,22 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.callback = Util.call_if_different(callback)
 
   def start(self):
-    self.stream = get_input_stream(self.config)
-    if self.stream:
+    if self.aconfig.get('enable', True):
+      rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
+      self.chunksize = self.aconfig.get('chunksize', DEFAULT_CHUNK_SIZE)
+      use_default = self.aconfig.get('use_default', False)
+      self.stream = get_pyaudio_stream(rate, use_default)
+
+    if getattr(self, 'stream', None):
       ThreadLoop.ThreadLoop.start(self)
     else:
       self.close()
 
   def set_config(self, config):
-    self.config = config
-    self.levels = Levels.Levels(**config['audio']['input']['levels'])
+    self.aconfig = config['audio']['input']
+    self.library = config['audio']['library']
+    self.levels = Levels.Levels(**self.aconfig['levels'])
 
   def run(self):
-    if self.stream:
-      level = get_mic_level(*self.stream())
-      slot = self.levels.name(level)
-      self.callback(slot)
+    level = get_mic_level(self.stream.read(self.chunksize))
+    self.callback(self.levels.name(level))

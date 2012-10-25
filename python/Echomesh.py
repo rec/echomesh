@@ -27,7 +27,6 @@ class Echomesh(Openable.Openable):
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
     self.display = Display.display(self.config)
-    # self.mic_thread = Microphone.run_mic_levels_thread(print, self.config)
     self.mic_thread = Microphone.Microphone(self.config, print)
 
   def send(self, data):
