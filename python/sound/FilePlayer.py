@@ -11,32 +11,14 @@ import sunau
 import wave
 
 from sound import Sound
+from util import Envelope
 from util import ThreadLoop
 
-# DEFAULT_CHUNK_SIZE = 1024
-DEFAULT_CHUNK_SIZE = 8
+DEFAULT_CHUNK_SIZE = 1024
+# DEFAULT_CHUNK_SIZE = 8
 BITS_PER_BYTE = 8
 DEBUG = False
 
-def _print_string(frames):
-  if not DEBUG:
-    return
-
-  print('  *****')
-  print('_print_string', len(frames), type(frames))
-  for f in frames:
-    print(ord(f))
-  print('  *****')
-
-def _print_frame(frames):
-  if not DEBUG:
-    return
-
-  print('  *****')
-  print('_print_frame', len(frames), type(frames))
-  for f in frames:
-    print(f)
-  print('  *****')
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
@@ -48,13 +30,16 @@ def uninterleave(src):
   """Convert one stereo source into two mono sources."""
   return src.reshape(2, len(src)/2, order='FORTRAN')
 
+def pan_to_angle(pan):
+  return (pan + 1.0) * math.pi / 4.0
+
 def calculate_pan(pan):
   """Pan two mono sources in the stereo field."""
   if pan < -1: pan = -1
   elif pan > 1: pan = 1
 
-  pan = (pan + 1.0) * math.pi / 4.0
-  return math.cos(pan), math.sin(pan)
+  angle = pan_to_angle(pan)
+  return math.cos(angle), math.sin(angle)
 
 
 class FilePlayer(ThreadLoop.ThreadLoop):
@@ -67,25 +52,36 @@ class FilePlayer(ThreadLoop.ThreadLoop):
 
     self.debug = True
     self.chunk_size = chunk_size
-    self.level = level
-    self.pan = pan
-    self.must_convert = (pan or type(level) == 'object' or level < 1.0)
+    self.level = Envelope.make_envelope(level)
+    self.pan = Envelope.make_envelope(pan)
+
+    if False:
+      assert self.pan.interpolate(0) is -1
+      assert self.pan.interpolate(1) is 1
+      assert self.pan.interpolate(2) is -1
+      assert self.pan.interpolate(3) is 1
 
     fname = os.path.expanduser(filename)
     filetype = sndhdr.what(fname)[0]
     self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')
     self.sample_width = self.file_stream.getsampwidth()
-    format = Sound.PYAUDIO.get_format_from_width(self.sample_width)
 
     (self.channels, self.sample_width, self.sampling_rate,
-     n, c1, c2) = self.file_stream.getparams()
+     nsamples, c1, c2) = self.file_stream.getparams()
     self.dtype = FilePlayer.DTYPES[self.sample_width]
     self.request_channels = 2 if self.pan else self.channels
-    self.audio_stream = Sound.PYAUDIO.open(format=format,
+    self.format = Sound.PYAUDIO.get_format_from_width(self.sample_width)
+    self.samples_per_frame = self.sample_width * self.channels
+    self.restart_sound()
+
+  def restart_sound(self):
+    self.audio_stream = Sound.PYAUDIO.open(format=self.format,
                                            channels=self.request_channels,
                                            rate=self.sampling_rate,
                                            output=True)
-
+    self.time = 0
+    self.current_level = self.level.interpolate(0)
+    self.current_pan = self.pan.interpolate(0)
 
   def close(self):
     ThreadLoop.ThreadLoop.close(self)
@@ -106,25 +102,39 @@ class FilePlayer(ThreadLoop.ThreadLoop):
 
   def run(self):
     frames = self.file_stream.readframes(self.chunk_size)
-    if frames:
-      if self.must_convert:
-        left, right = self._convert(frames)
-        if type(self.level) == 'object':
-          pass
-        else:
-          left *= self.level
-          right *= self.level
-
-        if type(self.pan) == 'object':
-          pass
-        else:
-          lpan, rpan = calculate_pan(self.pan)
-          left *= lpan
-          right *= rpan
-
-        frames = interleave(left, right).tostring()
-
-      self.audio_stream.write(frames)
-    else:
+    if not frames:
       self.close()
+      return
+
+    new_time = self.time + float(len(frames)) / (self.samples_per_frame
+                                                 * self.sampling_rate)
+
+    left, right = self._convert(frames)
+    if self.level.is_constant:
+      left *= self.current_level
+      right *= self.current_level
+    else:
+      next_level = self.level.interpolate(new_time)
+      levels = numpy.linspace(self.current_level, next_level, len(left))
+      left *= levels
+      right *= levels
+      self.current_level = next_level
+
+    if self.pan.is_constant:
+      lpan, rpan = calculate_pan(self.current_pan)
+      left *= lpan
+      right *= rpan
+    else:
+      next_pan = self.pan.interpolate(new_time)
+      angles = numpy.linspace(pan_to_angle(self.current_pan),
+                              pan_to_angle(next_pan), len(left))
+
+      left *= numpy.cos(angles)
+      right *= numpy.sin(angles)
+      self.current_pan = next_pan
+
+    frames = interleave(left, right).tostring()
+
+    self.time = new_time
+    self.audio_stream.write(frames)
 

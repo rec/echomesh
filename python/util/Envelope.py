@@ -4,10 +4,17 @@ import bisect
 
 class Envelope(object):
   def __init__(self, data):
-    self.times, self.data = zip(*data)
-    self.last = len(self.data) - 1
+    try:
+      self.times, self.data = zip(*data)
+      self.last = len(self.data) - 1
+      self.is_constant = False
+    except TypeError:
+      self.data = data
+      self.is_constant = True
 
   def interpolate(self, time):
+    if self.is_constant:
+      return self.data
     index = bisect.bisect(self.times, time)
     if index is 0:
       return self.data[0]
@@ -31,3 +38,6 @@ class Envelope(object):
       return d1 * (1 - ratio) + d2 * ratio
 
     return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
+
+def make_envelope(data):
+  return data if isinstance(data, Envelope) else Envelope(data)

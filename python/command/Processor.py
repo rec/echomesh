@@ -49,15 +49,17 @@ def process(command, echomesh):
     # print('Command="%s"'  %command)
     filename = command.strip().split(' ')[1]
     print("playing", filename)
-    FilePlayer.FilePlayer(filename).start()
-    time.sleep(2)
-    FilePlayer.FilePlayer(filename, level=0.5).start()
+    if False:
+      FilePlayer.FilePlayer(filename).start()
+      time.sleep(2)
+      FilePlayer.FilePlayer(filename, level=0.5).start()
 
-    time.sleep(2)
-    FilePlayer.FilePlayer(filename, pan=1.0).start()
+      time.sleep(2)
+      FilePlayer.FilePlayer(filename, pan=1.0).start()
 
-    time.sleep(2)
-    FilePlayer.FilePlayer(filename, pan=-1.0).start()
+      time.sleep(2)
+    pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
+    FilePlayer.FilePlayer(filename, pan=pan).start()
 
   elif command:
     print("Didn't understand command '%s'" % command)
