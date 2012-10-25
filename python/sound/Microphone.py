@@ -45,14 +45,23 @@ def _make_stream(pyaud, rate, index):
 
 
 # TODO: a better way to identify that stream.
-def _get_pyaudio_stream(pyaud, rate, use_default=False):
+def get_pyaudio_stream(rate, use_default=False):
+  pyaud = pyaudio.PyAudio()
+
+  def _make_stream(i):
+    stream = pyaud.open(format=pyaudio.paInt16, channels=1, rate=rate,
+                        input_device_index=i, input=True)
+    LOGGING.info('Opened pyaudio stream %d', i)
+    return stream
+    # TODO: move format into config.
+
   if use_default:
     index = pyaud.get_default_input_device_info()['index']
-    return _make_stream(pyaud, rate, index)
+    return _make_stream(index)
   else:
     for i in range(MAX_INPUT_DEVICES):
       try:
-        return _make_stream(pyaud, rate, i)
+        return _make_stream(i)
       except:
         pass
 
@@ -60,8 +69,7 @@ def _get_pyaudio_stream(pyaud, rate, use_default=False):
 
 def mic_input_pyaudio(config, rate):
   aconfig = config['audio']['input']
-  pyaud = pyaudio.PyAudio()
-  stream = _get_pyaudio_stream(pyaud, rate, aconfig.get('use_default', False))
+  stream = get_pyaudio_stream(rate, aconfig.get('use_default', False))
   if stream:
     chunksize = aconfig.get('chunksize', DEFAULT_CHUNK_SIZE)
     return lambda: (-1, stream.read(chunksize))
