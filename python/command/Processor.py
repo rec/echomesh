@@ -53,6 +53,12 @@ def process(command, echomesh):
     time.sleep(2)
     FilePlayer.FilePlayer(filename, level=0.5).start()
 
+    time.sleep(2)
+    FilePlayer.FilePlayer(filename, pan=1.0).start()
+
+    time.sleep(2)
+    FilePlayer.FilePlayer(filename, pan=-1.0).start()
+
   elif command:
     print("Didn't understand command '%s'" % command)
     _usage()

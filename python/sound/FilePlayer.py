@@ -1,6 +1,8 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
 import aifc
+import copy
+import math
 import numpy
 import os.path
 import sndhdr
@@ -36,16 +38,30 @@ def _print_frame(frames):
     print(f)
   print('  *****')
 
+# Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
+
+def interleave(left, right):
+    """Convert two mono sources into one stereo source."""
+    return numpy.ravel(numpy.vstack((left, right)), order='F')
+
 def uninterleave(src):
   """Convert one stereo source into two mono sources."""
   return src.reshape(2, len(src)/2, order='FORTRAN')
+
+def calculate_pan(pan):
+  """Pan two mono sources in the stereo field."""
+  if pan < -1: pan = -1
+  elif pan > 1: pan = 1
+
+  pan = (pan + 1.0) * math.pi / 4.0
+  return math.cos(pan), math.sin(pan)
 
 
 class FilePlayer(ThreadLoop.ThreadLoop):
   HANDLERS = dict(au=sunau, aifc=aifc, aiff=aifc, wav=wave)
   DTYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
-  def __init__(self, filename, level=-1.0, pan=None,
+  def __init__(self, filename, level=1.0, pan=0,
                chunk_size=DEFAULT_CHUNK_SIZE):
     ThreadLoop.ThreadLoop.__init__(self)
 
@@ -53,6 +69,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.chunk_size = chunk_size
     self.level = level
     self.pan = pan
+    self.must_convert = (pan or type(level) == 'object' or level < 1.0)
 
     fname = os.path.expanduser(filename)
     filetype = sndhdr.what(fname)[0]
@@ -69,7 +86,6 @@ class FilePlayer(ThreadLoop.ThreadLoop):
                                            rate=self.sampling_rate,
                                            output=True)
 
-    self.must_convert = ()
 
   def close(self):
     ThreadLoop.ThreadLoop.close(self)
@@ -83,21 +99,30 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     elif self.sample_width is 4:
       frames /= 65536.0
 
-    if True:
-      return frames
-
     if self.channels is 1:
-      return numpy.vstack((frames, frames))
+      return numpy.vstack((frames, numpy.array(frames)))
     else:
       return uninterleave(frames)
 
   def run(self):
     frames = self.file_stream.readframes(self.chunk_size)
     if frames:
-      if self.pan or self.level >= 0.0:
-        new_frames = self._convert(frames)
-        new_frames *= self.level
-        frames = new_frames.tostring()
+      if self.must_convert:
+        left, right = self._convert(frames)
+        if type(self.level) == 'object':
+          pass
+        else:
+          left *= self.level
+          right *= self.level
+
+        if type(self.pan) == 'object':
+          pass
+        else:
+          lpan, rpan = calculate_pan(self.pan)
+          left *= lpan
+          right *= rpan
+
+        frames = interleave(left, right).tostring()
 
       self.audio_stream.write(frames)
     else:
