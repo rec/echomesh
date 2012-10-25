@@ -7,16 +7,17 @@ from sound import FilePlayer
 
 LOGGER = Log.logger(__name__)
 
+# TODO: these are a subset the methods of Router, so we need
+# this information in two places... deal with that!
 SIMPLE_COMMANDS = (
   'halt',
   'play',
+  'refresh',
   'rerun',
-  'restart',
   'restart',
   'shutdown',
   'start',
   'stop',
-
   )
 
 REMAINING_COMMANDS = (
@@ -30,10 +31,6 @@ def _usage():
 def process(command, echomesh):
   if command in SIMPLE_COMMANDS:
     echomesh.discovery.send(dict(type=command))
-
-  elif command == 'discover':
-    print("Command '%s' not implemented" % command)
-    _usage()
 
   elif command == 'help':
     _usage()

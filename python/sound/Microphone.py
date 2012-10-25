@@ -10,6 +10,8 @@ from util import Platform
 from util import ThreadLoop
 from util import Util
 
+from sound import Levels
+
 LOGGING = Log.logger(__name__)
 
 DEFAULT_CARD_FORMAT = 'sysdefault:CARD=%s'
@@ -57,10 +59,11 @@ def _get_pyaudio_stream(pyaud, rate, use_default=False):
   LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
 def mic_input_pyaudio(config, rate):
+  aconfig = config['audio']['input']
   pyaud = pyaudio.PyAudio()
-  stream = _get_pyaudio_stream(pyaud, rate)
+  stream = _get_pyaudio_stream(pyaud, rate, aconfig.get('use_default', False))
   if stream:
-    chunksize = config['audio']['input'].get('chunksize', DEFAULT_CHUNK_SIZE)
+    chunksize = aconfig.get('chunksize', DEFAULT_CHUNK_SIZE)
     return lambda: (-1, stream.read(chunksize))
 
 def get_input_stream(config):
@@ -89,7 +92,29 @@ def run_mic_levels_thread(callback, config):
   cb_different = Util.call_if_different(callback)
   def cb():
     level = get_mic_level(*stream())
-    slot = Util.level_slot(level, config['audio']['input']['levels'])
+    slot = Levels.Levels(**config['audio']['input']['levels']).name(level)
     cb_different(slot)
 
   return ThreadLoop.ThreadLoop(cb)
+
+
+class Microphone(ThreadLoop.ThreadLoop):
+  def __init__(self, config, callback):
+    ThreadLoop.ThreadLoop.__init__(self)
+    self.set_config(config)
+    self.callback = Util.call_if_different(callback)
+
+  def start(self):
+    self.stream = get_input_stream(self.config)
+    if not self.stream:
+      self.close()
+
+  def set_config(self, config):
+    self.config = config
+    self.levels = Levels.Levels(**config['audio']['input']['levels'])
+
+  def run(self):
+    if self.stream:
+      level = get_mic_level(*self.stream())
+      slot = self.levels
+      cb_different(slot)

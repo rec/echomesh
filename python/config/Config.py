@@ -17,53 +17,56 @@ allow_shutdown: true
 frames_per_second: 60
 control_program: true
 
-discovery: {
-  port: 1238,
-  timeout: 0.100
-}
+discovery:
+  port: 1238
+  timeout: 0.10
 
-display: {
-  full_screen: true,
-  library: pi3d,
-}
+display:
+  full_screen: true
+  library: pi3d
 
-git: {
-  user: rec,
-  project: echomesh,
-}
+git:
+  user: rec
+  project: echomesh
 
-logging: {
-#  file: ~/log/echomesh.log,  # Uncomment to create a file
-  level: debug,
-}
+logging:
+#  file: ~/log/echomesh.log  # Uncomment to create a file
+  level: debug
 
-audio: {
-  library: pyaudio,
-  input: {
-    enable: false,
-    samplerate: 8000,
-    name: AK5370,
-    periodsize: 160,
-    levels: [-25, -15, -5],
-  }
-}
 
-shorten: {
-  enable: true,
-  include_url: true,
-  index_file: /home/tom/shortenIndex.txt,
-  prefix: e,
-  url: "http://ax.to",
-  use_index_url: true,
-}
+audio:
+  library: pyaudio
+  input:
+    samplerate: 8000
+    name: AK5370
+    periodsize: 160
+    levels:
+      silent: -70
+      quiet: -60
+      moderate: -50
+      loud: 0
+
+shorten:
+  enable: true
+  include_url: true
+  index_file: /home/tom/shortenIndex.txt
+  prefix: e
+  url: "http://ax.to"
+  use_index_url: true
+
 """
 
 # Configurations per nodename.
 NODENAME_CONFIG_STRING = """
-hofmann: {
-  display: {library: pygame, enable: false},
+hofmann:
+  display:
+    enable: false
+
+  audio:
+    input:
+      use_default: true
+
   headless: true
-}
 """
 
 # Local configuration for this account.

@@ -17,14 +17,6 @@ def get_and_increment_index_file(f, open=open):
     output.write(index)
   return index
 
-
-def level_slot(level, levels):
-  for i, lev in enumerate(levels):
-    if level < lev:
-      return i
-  return len(levels)
-
-
 def call_if_different(callback, initial=None):
   old_val = [initial]
   def cb(value):

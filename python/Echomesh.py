@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import contextlib
 import os.path
-
-from contextlib import closing
+import time
 
 from command import Processor
 from command import Router
@@ -33,7 +33,7 @@ class Echomesh(Openable.Openable):
     self.discovery.send(data)
 
   def run(self):
-    with closing(self):
+    with contextlib.closing(self):
       self.discovery.start()
       self.clients.start()
       if self.display:
@@ -41,6 +41,9 @@ class Echomesh(Openable.Openable):
       self.mic_thread.start()
 
       if self.config.get('control_program', False):
+        sleep = self.config.get('opening_sleep', 0.5)
+        if sleep:
+          time.sleep(sleep)
         while self.is_open:
           if not self.process(raw_input('echomesh: ').strip(), self):
             self.close()

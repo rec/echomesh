@@ -31,14 +31,24 @@ class Router(object):
   def shutdown(self, data):
     self._close_and_run('Shutting down', SHUTDOWN)
 
+  # TODO!
   def rerun(self, data):
-    LOGGER.error("Command 'rerun' not implemented")
+    self._error(data)
 
   def start(self, data):
-    LOGGER.error("Command 'start' not implemented")
+    self._error(data)
 
   def stop(self, data):
-    LOGGER.error("Command 'stop' not implemented")
+    self._error(data)
+
+  def refresh(self, data):
+    self._error(data)
+
+  def event(self, data):
+    self._error(data)
+
+  def _error(self, data):
+    LOGGER.error("Command '%s' not implemented", data['type'])
 
   def _close_and_run(self, msg, cmd):
     if self._is_headless() and self.config['allow_shutdown']:
