@@ -106,7 +106,9 @@ class Microphone(ThreadLoop.ThreadLoop):
 
   def start(self):
     self.stream = get_input_stream(self.config)
-    if not self.stream:
+    if self.stream:
+      ThreadLoop.ThreadLoop.start(self)
+    else:
       self.close()
 
   def set_config(self, config):
@@ -116,5 +118,5 @@ class Microphone(ThreadLoop.ThreadLoop):
   def run(self):
     if self.stream:
       level = get_mic_level(*self.stream())
-      slot = self.levels
-      cb_different(slot)
+      slot = self.levels.name(level)
+      self.callback(slot)

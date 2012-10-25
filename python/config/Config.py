@@ -41,9 +41,10 @@ audio:
     name: AK5370
     periodsize: 160
     levels:
-      silent: -70
-      quiet: -60
+      silent: -60
+      quiet: -55
       moderate: -50
+      medium: -45
       loud: 0
 
 shorten:

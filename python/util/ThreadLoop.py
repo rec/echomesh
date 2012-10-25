@@ -20,7 +20,10 @@ class ThreadLoop(Openable.Openable):
     self.thread.start()
 
   def join(self):
-    self.thread.join()
+    try:
+      self.thread.join()
+    except:
+      pass  # Swallow errors!  TODO
 
   def _run(self):
     try:
