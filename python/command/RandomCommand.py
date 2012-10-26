@@ -15,7 +15,7 @@ class RandomCommand(ThreadLoop):
     self.rule = rule
     self.mean = rule.get('data', {}).get('mean', DEFAULT_INTERVAL)
     keys = list(rule.get('mapping', {}).iterkeys())
-    self.key = keys[0] if keys else 'none'
+    self.event = dict(key=keys[0] if keys else 'none')
     self._next_event(time.time())
 
   def _next_event(self, t):
@@ -24,6 +24,6 @@ class RandomCommand(ThreadLoop):
   def run(self):
     t = time.time()
     if t >= self.time:
-      self.score.execute_rule(self.rule, self.key)
+      self.score.execute_rule(self.rule, self.event)
       self._next_event(t)
     time.sleep(min(DEFAULT_TIMEOUT, self.time - t))

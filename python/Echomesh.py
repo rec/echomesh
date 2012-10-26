@@ -4,6 +4,8 @@ import contextlib
 import os.path
 import time
 
+from command.Score import Score
+from command import Functions
 from command import Processor
 from command import Router
 from config import Config
@@ -12,9 +14,11 @@ from graphics import Tasks
 from network import Clients
 from network import Discovery
 from sound import Microphone
-
+from util import File
 from util import Log
 from util import Openable
+
+DEFAULT_RULES = '~/echomesh/score/rules.yml'
 
 LOGGER = Log.logger(__name__)
 
@@ -27,7 +31,12 @@ class Echomesh(Openable.Openable):
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
     self.display = Display.display(self.config)
-    self.mic_thread = Microphone.Microphone(self.config, print)
+    def none(*args):
+      pass
+    self.mic_thread = Microphone.Microphone(self.config, none)  # print)
+    rules_file = self.config.get('rules', DEFAULT_RULES)
+    rules = File.yaml_load_all(rules_file)
+    self.score = Score(rules, Functions.FUNCTIONS)
 
   def send(self, data):
     self.discovery.send(data)
@@ -59,6 +68,7 @@ class Echomesh(Openable.Openable):
       self.mic_thread.close()
       if self.display:
         self.display.close()
+      self.score.close()
       self._join()
 
   def _join(self):
@@ -67,6 +77,7 @@ class Echomesh(Openable.Openable):
     self.close()
     self.discovery.join()
     self.mic_thread.join()
+    self.score.join()
 
 if __name__ == '__main__':
   Echomesh().run()

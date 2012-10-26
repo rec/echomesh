@@ -2,27 +2,24 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from command import RandomCommand
 
-from util import Closer
+from network import Address
+
+from util.Closer import Closer
 from util import Log
-from util.Openable import Openable
-from util.RandomCommand import Openable
+from command.RandomCommand import RandomCommand
 
-LOGGER = Log.LOGGER(__name__)
+LOGGER = Log.logger(__name__)
 
-class Score(Openable):
-  def __init__(self, rules, commands, target):
+class Score(Closer):
+  def __init__(self, rules, functions, target=Address.NODENAME):
+    Closer.__init__(self)
     self.rules = {}
-    self.commands = commands
+    self.functions = functions
     self.target = target
-    self.closers = Closer.Closer()
     for r in rules:
       if self.validate_rule(r):
         rt = r['type']
         self.rules[rt] = self.rules.get(rt, []) + [r]
-
-  def close(self):
-    Openable.close(self)
-    self.closers.close()
 
   def receive_event(self, event):
     rule = self.rules.get(event['type'], None)
@@ -30,30 +27,34 @@ class Score(Openable):
     if (rule
         and rule.get('source', self.target) == event.get('source', self.target)
         and rule.get('target', self.target) == self.target):
-      self.execute_rule(rule, event.get('key', {}))
+      self.execute_rule(rule, event)
 
-  def execute_rule(self, rule, key):
+  def execute_rule(self, rule, event):
+    key = event.get('key', {})
     mapping = rule.get('mapping', {})
     command = mapping.get(key, {})
-    command_name = command.get('command', {})
-    function = self.commands.get(command_name, None)
+    function_name = command.get('function', {})
+    function = self.functions.get(function_name, None)
     if function:
-      for args in command.get('arguments', []):
-        closer = function(*args)
-        if closer:
-          self.closers.add_closer(closer)
+      arguments = command.get('arguments', [])
+      closer = function(self, event, *arguments)
+      if closer:
+        self.add_closer(closer)
     else:
-      LOGGER.error("Didn't understand command name %s", command_name)
+      LOGGER.error("Didn't understand function %s", function_name)
 
   def validate_rule(self, rule):
     ok = True
     for command in rule.get('mapping', {}).itervalues():
-      cmd = command.get('command', None)
-      if cmd not in self.commands:
+      cmd = command.get('function', None)
+      if cmd not in self.functions:
         ok = False
         LOGGER.error("Didn't understand command %s in rule %s", cmd, rule)
 
-    if rule.get('type', '') == 'random':
-      rand = RandomCommand(self, rule)
-      self.randoms.add_closer(rand)
-      rand.start
+    if ok:
+      if rule.get('type', '') == 'random':
+        rand = RandomCommand(self, rule)
+        self.add_closer(rand)
+        rand.start()
+
+    return ok

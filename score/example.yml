@@ -5,13 +5,13 @@ target: hofmann
 
 mapping:
   moderate:
-    command: select_random
+    function: select_random
     arguments:
       - [play, filename]
       - [play, filename2]
 
   loud:
-    command: select_random
+    function: select_random
     arguments:
       - [play, filename]
 
@@ -25,7 +25,7 @@ data:
 
 mapping:
   event:
-    command: select_random
+    function: select_random
     arguments:
       - [play, filename]
       - [play, filename2]

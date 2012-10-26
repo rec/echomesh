@@ -1,0 +1,14 @@
+type: random
+
+data:
+  distribution: poisson
+  mean: 3.0
+
+mapping:
+  event:
+    function: select_random
+    arguments:
+      - [print_function, Here's one]
+      - [print_function, Here's two]
+      - [print_function, Here's three]
+      - [print_function, Here's four]
