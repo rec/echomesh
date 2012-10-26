@@ -95,3 +95,4 @@ git remote add origin https://github.com/rec/echomesh.git
 git pull origin master
 
 # Copy .emacs!
+# Change /etc/default/keyboard
