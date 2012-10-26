@@ -23,7 +23,7 @@ discovery:
 
 display:
   full_screen: true
-  library: pygame
+  library: pi3d
 
 git:
   user: rec
