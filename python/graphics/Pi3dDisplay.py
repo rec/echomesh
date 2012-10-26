@@ -24,7 +24,7 @@ class Pi3dDisplay(Openable.Openable):
 
   def run(self):
     self.display.clear()
-    dirty = None:
+    dirty = None
     t = time.time()
     for c in clients:
       dirty = Rect.union(dirty, clients.update(t))

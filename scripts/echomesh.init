@@ -1,0 +1,74 @@
+#!/bin/sh
+# Start/stop the echomesh daemon.
+#
+### BEGIN INIT INFO
+# Provides:          echomesh
+# Required-Start:    $all
+# Required-Stop:     
+# Default-Start:     2 3 4 5
+# Default-Stop:
+# Short-Description: Run the echomesh program
+# Description:       A noisy array of reactive computers
+### END INIT INFO
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DESC="echomesh daemon"
+NAME=echomesh
+DAEMONUSER=pi #echomesh
+DAEMON=/home/pi/echomesh
+PIDFILE=/var/run/echomesh/echomeshd.pid
+SCRIPTNAME=/etc/init.d/"$NAME"
+
+DISALLOW_MODULE_LOADING=1
+
+test -f $DAEMON || exit 0
+
+. /lib/lsb/init-functions
+
+[ -r /etc/default/echomesh ] && . /etc/default/echomesh
+
+
+echomesh_start () {
+  log_daemon_msg "Starting system Echomesh Daemon"
+  if [ ! -d $PIDDIR ]; then
+    mkdir -p $PIDDIR
+    chown $DAEMONUSER:$DAEMONUSER $PIDDIR
+  fi
+  start-stop-daemon -x $DAEMON -p $PIDFILE --start -- --system --disallow-exit --disallow-module-loading=$DISALLOW_MODULE_LOADING --daemonize --log-target=syslog --high-priority
+  status=$?
+  log_end_msg ${status}
+}
+
+echomesh_stop () {
+  log_daemon_msg "Stopping system Echomesh Daemon"
+  start-stop-daemon -p $PIDFILE --stop --retry 5 || echo -n "...which is not running"
+  log_end_msg $?
+}
+
+
+case "$1" in
+  start|stop)
+    echomesh_${1}
+    ;;
+  restart|reload|force-reload)
+    if [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1; then
+      echomesh_stop
+      echomesh_start
+    fi
+    ;;
+  force-stop)
+    echomesh_stop
+    killall echomesh || true
+    sleep 2
+    killall -9 echomesh || true
+    ;;
+  status)
+    status_of_proc -p $PIDFILE "$DAEMON" "Echomesh" && exit 0 || exit $?
+    ;;
+  *)
+    echo "Usage: /etc/init.d/echomesh {start|stop|force-stop|restart|reload|force-reload|status}"
+    exit 1
+    ;;
+esac
+
+exit 0
