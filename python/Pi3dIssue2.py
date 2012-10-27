@@ -22,7 +22,7 @@ bbtitle = texs.loadTexture("graphics/pi3d/textures/pi3dbbd.png",True)
 # Fetch key presses
 mykeys = pi3d.key()
 
-def run():
+def event_loop():
   while True:
     display.clear()
     if not ENABLE_BUG:
@@ -30,9 +30,6 @@ def run():
     display.swapBuffers()
 
 if ENABLE_BUG:
-  thread = threading.Thread(target=run)
-  thread.start()
-  thread.join()
-
+  threading.Thread(target=event_loop).start()
 else:
-  run()
+  event_loop()
