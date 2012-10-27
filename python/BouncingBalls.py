@@ -17,7 +17,8 @@
 # this means that sprites can be drawn at pixel resolution
 # which is more common for 2D.  Also demonstrates a mock title bar.
 
-import pi3d, sys, random, array
+from graphics.pi3d import pi3d
+import sys, random, array
 
 # Setup display and initialise pi3d
 scnx=800
@@ -26,10 +27,10 @@ display = pi3d.display()
 display.create2D(100,100,scnx,scny,0)
 
 # Set last value (alpha) to zero for a transparent background!
-display.setBackColour(0,0.2,0.6,1)
+display.setBackColour(1.0,0.2,0.6,1)
 
 # Ball parameters
-maxballs = 40
+maxballs = 0
 maxballsize = 60
 minballsize = 30
 maxspeed = 30
@@ -57,11 +58,11 @@ for b in range (0, maxballs):
 
 texs=pi3d.textures()
 ball = []
-ball.append(texs.loadTexture("textures/red_ball.png"))
-ball.append(texs.loadTexture("textures/grn_ball.png"))
-ball.append(texs.loadTexture("textures/blu_ball.png"))
-bar = texs.loadTexture("textures/bar.png")
-bbtitle = texs.loadTexture("textures/pi3dbbd.png",True)
+ball.append(texs.loadTexture("graphics/pi3d/textures/red_ball.png"))
+ball.append(texs.loadTexture("graphics/pi3d/textures/grn_ball.png"))
+ball.append(texs.loadTexture("graphics/pi3d/textures/blu_ball.png"))
+bar = texs.loadTexture("graphics/pi3d/textures/bar.png")
+bbtitle = texs.loadTexture("graphics/pi3d/textures/pi3dbbd.png",True)
 
 # Fetch key presses
 mykeys = pi3d.key()
@@ -70,7 +71,6 @@ scshots = 1
 while True:
 
     display.clear()
-
     for b in range (0, maxballs):
 
 	# Draw ball (tex,x,y,z,width,height,rotation)

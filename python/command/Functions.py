@@ -44,7 +44,7 @@ def functions(display):
     filename = keywords.get('image', None)
     if filename:
       keywords['image'] = display.textures.loadTexture(filename)
-      display.add_sprite(ImageSprite(image, **keywords))
+      display.add_sprite(ImageSprite(**keywords))
     else:
       LOGGER.error('No filename in image arguments %s', keywords)
 

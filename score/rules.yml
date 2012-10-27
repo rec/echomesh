@@ -1,12 +1,13 @@
-type: random
+# type: random
 
-data:
-  distribution: poisson
-  mean: 3.0
+# data:
+#   distribution: poisson
+#   mean: 20.0
 
-mapping:
-  event:
-    function: image
-    keywords:
-      image: /home/pi/echomesh/python/graphics/pi3d/textures/blu_ball.png
-      duration: 1.0
+# mapping:
+#   event:
+#     function: image
+#     keywords:
+#       image: /home/pi/echomesh/python/graphics/pi3d/textures/blu_ball.png
+#       position: [100, 100]
+#       duration: 10.0

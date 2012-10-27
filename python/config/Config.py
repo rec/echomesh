@@ -14,7 +14,6 @@ CONFIG_STRING = """
 type: config
 
 allow_shutdown: true
-frames_per_second: 60
 control_program: true
 
 discovery:
@@ -22,6 +21,8 @@ discovery:
   timeout: 0.10
 
 display:
+  dimensions: [0, 0, 400, 400]
+  frames_per_second: 30
   full_screen: true
   library: pi3d
 
@@ -37,6 +38,7 @@ logging:
 audio:
   library: pyaudio
   input:
+    enable: false
     samplerate: 8000
     name: AK5370
     periodsize: 160
