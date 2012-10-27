@@ -13,10 +13,11 @@ class ThreadLoop(Openable.Openable):
     Openable.Openable.__init__(self)
     self.openable = openable or self
     if run:
+      assert not getattr(self, 'run', None)
       self.run = run
-    self.thread = threading.Thread(target=self._run)
 
   def start(self):
+    self.thread = threading.Thread(target=self.loop)
     self.thread.start()
 
   def join(self):
@@ -25,10 +26,10 @@ class ThreadLoop(Openable.Openable):
     except:
       pass  # Swallow errors!  TODO
 
-  def _run(self):
+  def loop(self):
     try:
       while self.is_open:
         self.run()
     except:
-      print(traceback.format_exc())
+      LOGGER.critical(traceback.format_exc())
       self.close()

@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from graphics.pi3d import pi3d
 from util.Envelope import Envelope
 from util.Openable import Openable
 
@@ -29,6 +28,10 @@ class ImageSprite(Sprite):
       envs = [self.position, self.rotation, self.size]
       self.duration = max(x.length() for x in envs)
 
+    from graphics.pi3d import pi3d
+    self.sprite = pi3d.sprite
+
+
   def update(self, t):
     if not self.time:
       self.time = t
@@ -45,5 +48,5 @@ class ImageSprite(Sprite):
       y += self.count
 
       print('!!!', self.image, x, y, z, size, rotation)
-      pi3d.sprite(self.image, x, y, z, size, size, rotation)
+      self.sprite(self.image, x, y, z, size, size, rotation)
       self.count += 1

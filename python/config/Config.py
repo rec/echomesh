@@ -34,11 +34,10 @@ logging:
 #  file: ~/log/echomesh.log  # Uncomment to create a file
   level: debug
 
-
 audio:
   library: pyaudio
   input:
-    enable: false
+#    enable: false
     samplerate: 8000
     name: AK5370
     periodsize: 160
