@@ -11,45 +11,37 @@ LOGGER = Log.logger(__name__)
 def select_random(score, event, *choices):
   if choices:
     item = random.choice(choices)
-    if item:
-      function_name, args = item[0], item[1:]
-      function = score.functions.get(function_name, None)
-      if function:
-        function(score, event, *args)
-      else:
-        LOGGER.error('No function named "%s": %s, %s', function_name, item, choices)
+    function_name = item.get('function', None)
+    function = score.functions.get(function_name, None)
+    if function:
+      keywords = item.get('keywords', {})
+      arguments = item.get('arguments', [])
+      function(score, event, *arguments, **keywords)
     else:
-      LOGGER.error('No choices for select_random')
+      LOGGER.error('No function named "%s": %s, %s', function_name, item, choices)
   else:
     LOGGER.error('No arguments to select_random')
 
 def print_function(score, event, *args):
   print(*args)
 
-def play_audio(score, event, *args):
-  if not args:
-    LOGGER.error('No arguments for play_audio')
-  else:
-    if len(args) > 1:
-      LOGGER.warning('Extra arguments to play_audio discarded')
+def functions(echomesh, display):
+  def play_image(score, event, **keywords):
+    ImageSprite(display, **keywords)
+
+  def play_audio(score, event, **keywords):
     try:
-      player = FilePlayer(**args[0])
+      player = FilePlayer(**keywords)
       player.start()
+      echomesh.add_closer(player)
       return player
     except:
       LOGGER.error("Didn't understand play_audio arguments %s", args[0])
 
-def functions(display):
-  def play_image(score, event, **keywords):
-    filename = keywords.get('image', None)
-    if filename:
-      keywords['image'] = display.textures.loadTexture(filename)
-      display.add_sprite(ImageSprite(**keywords))
-    else:
-      LOGGER.error('No filename in image arguments %s', keywords)
-
-  return dict(random=select_random,
-              print=print_function,
-              audio=play_audio,
-              image=play_image)
+  return dict(
+    audio=play_audio,
+    image=play_image,
+    print=print_function,
+    select=select_random,
+    )
 
