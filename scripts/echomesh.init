@@ -35,7 +35,7 @@ echomesh_start () {
     mkdir -p $PIDDIR
     chown $DAEMONUSER:$DAEMONUSER $PIDDIR
   fi
-  start-stop-daemon -x $DAEMON --pidfile $PIDFILE --start -- --system --disallow-exit --disallow-module-loading=$DISALLOW_MODULE_LOADING --daemonize --log-target=syslog --high-priority
+  start-stop-daemon -x $DAEMON --pidfile $PIDFILE --start -- --system --disallow-exit --disallow-module-loading=$DISALLOW_MODULE_LOADING --daemonize --log-target=syslog --high-priority --make-pidfile --background
   status=$?
   log_end_msg ${status}
 }

@@ -55,12 +55,6 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.level = Envelope.make_envelope(level)
     self.pan = Envelope.make_envelope(pan)
 
-    if False:
-      assert self.pan.interpolate(0) is -1
-      assert self.pan.interpolate(1) is 1
-      assert self.pan.interpolate(2) is -1
-      assert self.pan.interpolate(3) is 1
-
     fname = os.path.expanduser(filename)
     filetype = sndhdr.what(fname)[0]
     self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')

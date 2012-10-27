@@ -6,9 +6,7 @@ data:
 
 mapping:
   event:
-    function: select_random
-    arguments:
-      - [print_function, Here's one]
-      - [print_function, Here's two]
-      - [print_function, Here's three]
-      - [print_function, Here's four]
+    function: image
+    keywords:
+      image: /home/pi/echomesh/python/graphics/pi3d/textures/blu_ball.png
+      duration: 1.0

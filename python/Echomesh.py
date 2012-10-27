@@ -30,13 +30,13 @@ class Echomesh(Openable.Openable):
     callbacks = Router.router(self, self.clients)
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
-    self.display = Display.display(self.config)
+    self.display = Display.display(self, self.config)
     def none(*args):
       pass
     self.mic_thread = Microphone.Microphone(self.config, none)  # print)
     rules_file = self.config.get('rules', DEFAULT_RULES)
     rules = File.yaml_load_all(rules_file)
-    self.score = Score(rules, Functions.FUNCTIONS)
+    self.score = Score(rules, Functions.functions(self.display))
 
   def send(self, data):
     self.discovery.send(data)
@@ -45,8 +45,7 @@ class Echomesh(Openable.Openable):
     with contextlib.closing(self):
       self.discovery.start()
       self.clients.start()
-      if self.display:
-        self.display.start()
+      self.display.start()
       self.mic_thread.start()
 
       if self.config.get('control_program', False):
@@ -66,14 +65,12 @@ class Echomesh(Openable.Openable):
       LOGGER.info('echomesh closing')
       self.discovery.close()
       self.mic_thread.close()
-      if self.display:
-        self.display.close()
+      self.display.close()
       self.score.close()
       self._join()
 
   def _join(self):
-    if self.display:
-      self.display.join()
+    self.display.join()
     self.close()
     self.discovery.join()
     self.mic_thread.join()

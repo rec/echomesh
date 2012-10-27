@@ -2,8 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import random
 
-from util import Log
+from graphics.Sprite import ImageSprite
 from sound.FilePlayer import FilePlayer
+from util import Log
 
 LOGGER = Log.logger(__name__)
 
@@ -38,6 +39,17 @@ def play_audio(score, event, *args):
     except:
       LOGGER.error("Didn't understand play_audio arguments %s", args[0])
 
-FUNCTIONS = dict(select_random=select_random,
-                 print_function=print_function,
-                 play_audio=play_audio)
+def functions(display):
+  def play_image(score, event, **keywords):
+    filename = keywords.get('image', None)
+    if filename:
+      keywords['image'] = display.textures.loadTexture(filename)
+      display.add_sprite(ImageSprite(image, **keywords))
+    else:
+      LOGGER.error('No filename in image arguments %s', keywords)
+
+  return dict(random=select_random,
+              print=print_function,
+              audio=play_audio,
+              image=play_image)
+

@@ -6,11 +6,13 @@ class Envelope(object):
   def __init__(self, data):
     try:
       self.times, self.data = zip(*data)
-      self.last = len(self.data) - 1
       self.is_constant = False
     except TypeError:
       self.data = data
       self.is_constant = True
+
+  def length(self):
+    return 0 if self.is_constant else self.times[-1]
 
   def interpolate(self, time):
     if self.is_constant:
@@ -18,8 +20,8 @@ class Envelope(object):
     index = bisect.bisect(self.times, time)
     if index is 0:
       return self.data[0]
-    if index > self.last:
-      return self.data[self.last]
+    if index >= len(self.data):
+      return self.data[-1]
 
     t1, d1 = self.times[index - 1], self.data[index - 1]
     if time <= t1:

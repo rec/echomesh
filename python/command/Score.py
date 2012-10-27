@@ -37,7 +37,8 @@ class Score(Closer):
     function = self.functions.get(function_name, None)
     if function:
       arguments = command.get('arguments', [])
-      closer = function(self, event, *arguments)
+      keywords = command.get('keywords', {})
+      closer = function(self, event, *arguments, **keywords)
       if closer:
         self.add_closer(closer)
     else:
