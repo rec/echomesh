@@ -12,10 +12,16 @@ class Sprite(Openable):
     pass
 
 class ImageSprite(Sprite):
-  def __init__(self, image,
+  def __init__(self, display, image,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
     Sprite.__init__(self)
-    self.image = image
+    imagefile = keywords.get('image', None)
+    if imagefile:
+      self.image = display.load_texture(filename)
+    else:
+      self.image = None
+      LOGGER.error('No image in image arguments')
+
     self.position = Envelope(position)
     self.rotation = Envelope(rotation)
     self.size = Envelope(size)
@@ -30,6 +36,7 @@ class ImageSprite(Sprite):
 
     from graphics.pi3d import pi3d
     self.sprite = pi3d.sprite
+    display.add_sprite(this)
 
 
   def update(self, t):

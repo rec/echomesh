@@ -18,31 +18,36 @@ from network import Discovery
 from sound import Microphone
 from util import File
 from util import Log
-from util import Openable
+from util.Openable import Openable
+from util.Closer import Closer
 
-DEFAULT_RULES = '~/echomesh/score/rules.yml'
+DEFAULT_SCORE = '~/echomesh/score/score.yml'
 
 LOGGER = Log.logger(__name__)
 
-class Echomesh(Openable.Openable):
+class Echomesh(Openable):
   def __init__(self):
-    Openable.Openable.__init__(self)
+    Openable.__init__(self)
     self.config = Config.CONFIG
     self.clients = Clients.Clients(self)
     callbacks = Router.router(self, self.clients)
     self.discovery = Discovery.Discovery(self.config, callbacks)
     self.process = Processor.process
     self.display = Display.display(self, self.config)
+    self.closer = Closer()
 
     def mic_events(*args):
       pass  # TODO
     self.mic_thread = Microphone.Microphone(self.config, mic_events)
-    rules_file = self.config.get('rules', DEFAULT_RULES)
-    rules = File.yaml_load_all(rules_file)
-    self.score = Score(rules, Functions.functions(self.display))
+    score_file = self.config.get('score', DEFAULT_SCORE)
+    score = File.yaml_load_all(score_file)
+    self.score = Score(score, Functions.functions(self, self.display))
 
   def send(self, data):
     self.discovery.send(data)
+
+  def add_closer(self, closer):
+    self.closer.add_closer(closer)
 
   def run(self):
     with contextlib.closing(self):
@@ -69,7 +74,6 @@ class Echomesh(Openable.Openable):
         threading.Thread(target=self._keyboard_input).start()
       self.display.loop()  # Blocks until complete
 
-
   def _keyboard_input(self):
     sleep = self.config.get('opening_sleep', 0.5)
     if sleep:
@@ -81,8 +85,9 @@ class Echomesh(Openable.Openable):
 
   def close(self):
     if self.is_open:
-      Openable.Openable.close(self)
+      Openable.close(self)
       LOGGER.info('echomesh closing')
+      self.closer.close()
       self.discovery.close()
       self.mic_thread.close()
       self.display and self.display.close()
