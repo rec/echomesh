@@ -4,7 +4,7 @@ from graphics.pi3d import pi3d
 from util.Envelope import Envelope
 from util.Openable import Openable
 
-DEFAULT_Z = -2.0
+DEFAULT_Z = 0.0
 
 class Sprite(Openable):
   def update(self, time):

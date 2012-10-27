@@ -1,0 +1,154 @@
+#
+# This is a sample score file for echomesh.
+# As you've guessed, # introduces comments, and blank lines are ingored.
+#
+# Our model is simple:
+#
+#   1. We have four machines: President, Chairman, Treasurer and Secretary.
+#   2. A Machine receive Events and sends them to the whole system.
+#   3. There's a list of Rules.
+#   4. If a Rule triggers on an Event, it triggers a Function.
+#
+#
+# 1. Events.
+#
+# We only have two classes of Event right now - mic and random.
+#
+# mic Events happen when there's a gross input level change on one of the
+# microhones.
+#
+# random Events occur intermittently "on their own steam" - just to keep
+# things going if nothing has happened.
+#
+#
+# 2. Rules
+#
+# This whole file is nothing more than a list of Rules, so you'll see a lot of
+# examples of Rules below.  (Technically, we are using the YAML data language,
+# which is upward compatible with JSON - see here:
+# http://www.yaml.org/spec/1.2/spec.html#Preview )
+#
+#
+#
+# 3. Functions
+#
+# We have four classes of Function right now.
+#
+#   audio: plays an audio clip
+#   image: shows and animates an image
+#   select: selects a Function (and arguments) at random from a list.
+#   print: prints a message on the console (for debugging).
+#
+# Functions have Envelope keywords - keywords that can change over time.
+#
+# You can specify these in two ways: you can specify a constant value, or you
+# can have a list of times (in seconds) and values, called an Envelope.  You'll
+# see examples of both cases below.  The system linearly interpolates between
+# points in an envelope.  You'll see examples below.
+#
+#
+# The audio Function has the following keywords:
+#
+#  - filename:  compulsory keyword that says which file to play.
+#
+#  - level:     Envelope keyword giving the sound level.
+#               Default is a constant 1.
+#
+#  - pan:       Envelope keyword giving the left/right pan.
+#               -1 is left, 1 is right - default is a constant 0 (center).
+#
+#
+# The image Function has the following keywords:
+#
+#  - filename:  compulsory keyword that says which image file to display.
+#
+#  - position:  Envelope keyword giving the position on the screen.
+#               Default is a constant (0, 0).
+#
+#  - rotation:  Envelope keyword specifying the angular rotation of the image
+#               in degrees between 360.  Default is 0 degrees, unrotated.
+#
+#  - size:      Envelope keyword telling how to shrink or expand the image.
+#               Default is 1.0 - "original size".
+#
+#  - z:         Envelope keyword indicating "z order" on the screen (which image
+#               is above which other image).  Default is 0.0 - you can use both
+#               negative and positive z values.
+#
+#  - duration:  A single number indicating how long to display this image on
+#               the screen.  If you have any Envelope keywords, this is
+#               optional, and the image will be shown for the duration of the
+#               longest envelope.
+
+
+
+#
+# And now for some specific examples of Rules!
+#
+
+type: mic           # This rule triggers when a microphone changes levels.
+
+source: President   # This means that this rule only triggers on events coming
+                    # FROM the Machine named President.
+
+target: President   # This means that this rule only triggers ON the Machine
+                    # named President.
+                    #
+                    # If you omit the "source" field, the rule will trigger on
+                    # all incoming events regardless of source Machine
+                    #
+                    # If you omit the "target" field, the rule will trigger on
+                    # all Machines.
+
+
+# The mapping section of a Rule is a table of events for incoming data.
+#
+
+mapping:
+  silent:    # Trigger this Function when the microphone goes "silent"
+    function: image
+    keywords:
+      image: ghost.gif       # Show ghost.gif
+      position: [100, 100]   # at [100, 100]
+      duration: 10.0         # for 10 seconds.
+
+  quiet:     # Trigger this Function when the microphone goes "quiet"
+    function: image
+    keywords:
+      image: goblin.gif
+      position:
+        - [0, [100, 100]]    #  Start at 100, 100 at time 0.
+        - [5, [1000, 100]]   #  Move to [1000, 100] by time 5
+        - [15, [100, 1000]]  #  Move to [100, 1000] by time 15
+
+---
+# Rules are separated by three dashes, as in the line above.
+
+# This is a random rule that triggers automatically based on a random
+# variable.
+
+type: random
+
+data:
+  mean: 20.0                 # Trigger on average every 20 seconds.
+  distribution: poisson      # Select the distribution of these events.
+                             # Today, we only have one distribution, poisson,
+                             # so you don't have to specify it.
+
+mapping:
+  event:                     # This mapping is always "event" for random events.
+    function: select         # Select a function at random
+    arguments:               # The list of functions from which to select!
+      -
+        function: image
+        keywords:
+          image: bat.png
+          position: [100, 100]
+          duration: 10.0
+      -
+        function: image
+        keywords:
+          image: wiccan.png
+          position: [[0, [100, 100]], [20, [1000, 1000]]]
+                             # "Compact" list format.  You can also use the
+                             # "verbose" format we used for goblin.png above.
