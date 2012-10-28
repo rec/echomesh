@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import contextlib
 import os.path
+import sys
 import threading
 import time
 import traceback
@@ -30,6 +31,12 @@ class Echomesh(Openable):
   def __init__(self):
     Openable.__init__(self)
     self.config = Config.CONFIG
+    self.autostart = (self.config.get('autostart', True) or len(sys.argv) < 2 or
+                      sys.argv[1] != 'autostart')
+
+    if not self.autostart:
+      return
+
     self.clients = Clients.Clients(self)
     callbacks = Router.router(self, self.clients)
     self.discovery = Discovery.Discovery(self.config, callbacks)
@@ -62,11 +69,14 @@ class Echomesh(Openable):
     self.microphone.set_config(config)
 
   def run(self):
-    with contextlib.closing(self):
-      try:
-        self._run()
-      except:
-        LOGGER.critical(traceback.format_exc())
+    if self.autostart:
+      with contextlib.closing(self):
+        try:
+          self._run()
+        except:
+          LOGGER.critical(traceback.format_exc())
+    else:
+      LOGGER.info("Not autostarting because autostart = False")
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
