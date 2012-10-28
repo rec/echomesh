@@ -1,7 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from util.Envelope import Envelope
+from util import Log
 from util.Openable import Openable
+
+LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = 0.0
 
@@ -11,13 +14,13 @@ class Sprite(Openable):
       time: the time in floating point seconds."""
     pass
 
+
 class ImageSprite(Sprite):
-  def __init__(self, display, image,
+  def __init__(self, display, image=None,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
     Sprite.__init__(self)
-    imagefile = keywords.get('image', None)
-    if imagefile:
-      self.image = display.load_texture(filename)
+    if image and display:
+      self.image = display.load_texture(image)
     else:
       self.image = None
       LOGGER.error('No image in image arguments')
@@ -37,7 +40,6 @@ class ImageSprite(Sprite):
     from graphics.pi3d import pi3d
     self.sprite = pi3d.sprite
     display.add_sprite(this)
-
 
   def update(self, t):
     if not self.time:

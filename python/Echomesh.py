@@ -36,15 +36,16 @@ class Echomesh(Openable):
     self.display = Display.display(self, self.config)
     self.closer = Closer()
 
-    def mic_events(*args):
-      pass  # TODO
-    self.mic_thread = Microphone.Microphone(self.config, mic_events)
+    self.mic_thread = Microphone.Microphone(self.config, self._mic_event)
     score_file = self.config.get('score', DEFAULT_SCORE)
     score = File.yaml_load_all(score_file)
     self.score = Score(score, Functions.functions(self, self.display))
 
   def send(self, data):
     self.discovery.send(data)
+
+  def receive_event(self, event):
+    self.score.receive_event(event)
 
   def add_closer(self, closer):
     self.closer.add_closer(closer)
@@ -55,6 +56,9 @@ class Echomesh(Openable):
         self._run()
       except:
         LOGGER.critical(traceback.format_exc())
+
+  def _mic_event(self, level):
+    self.send(dict(type='event', event='mic', key=level))
 
   def _run(self):
     self.discovery.start()

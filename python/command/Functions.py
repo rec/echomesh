@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import random
 
-from graphics.Sprite import ImageSprite
 from sound.FilePlayer import FilePlayer
 from util import Log
 
@@ -26,8 +25,14 @@ def print_function(score, event, *args):
   print(*args)
 
 def functions(echomesh, display):
-  def play_image(score, event, **keywords):
-    ImageSprite(display, **keywords)
+  if echomesh.config['display']['enable']:
+    from graphics.Sprite import ImageSprite
+
+    def play_image(score, event, **keywords):
+      ImageSprite(display, **keywords)
+  else:
+    def play_image(score, event, **keywords):
+      LOGGER.info('Playing an image')
 
   def play_audio(score, event, **keywords):
     try:

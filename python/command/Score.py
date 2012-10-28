@@ -22,14 +22,15 @@ class Score(Closer):
         self.rules[rt] = self.rules.get(rt, []) + [r]
 
   def receive_event(self, event):
-    rule = self.rules.get(event['type'], None)
-
-    if (rule
-        and rule.get('source', self.target) == event.get('source', self.target)
-        and rule.get('target', self.target) == self.target):
-      self.execute_rule(rule, event)
+    rules = self.rules.get(event['event'], None)
+    for r in rules:
+      if (r
+          and r.get('source', self.target) == event.get('source', self.target)
+          and r.get('target', self.target) == self.target):
+        self.execute_rule(r, event)
 
   def execute_rule(self, rule, event):
+    LOGGER.info('Executing rule %s', rule)
     key = event.get('key', {})
     mapping = rule.get('mapping', {})
     command = mapping.get(key, {})

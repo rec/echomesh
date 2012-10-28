@@ -31,6 +31,10 @@ class Router(object):
   def shutdown(self, data):
     self._close_and_run('Shutting down', SHUTDOWN)
 
+  def event(self, event):
+    LOGGER.info(event)
+    self.echomesh.receive_event(event)
+
   # TODO!
   def rerun(self, data):
     self._error(data)
@@ -42,9 +46,6 @@ class Router(object):
     self._error(data)
 
   def refresh(self, data):
-    self._error(data)
-
-  def event(self, data):
     self._error(data)
 
   def _error(self, data):

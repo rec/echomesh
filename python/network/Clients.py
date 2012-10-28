@@ -12,29 +12,32 @@ LOGGER = Log.logger(__name__)
 class Clients(object):
   TYPE = 'client'
 
-  def __init__(self, sender):
+  def __init__(self, echomesh):
     self._clients = {}
     self.lock = threading.RLock()
-    self.send = sender.send
+    self.echomesh = echomesh
     self.type = Clients.TYPE
     self.data = dict(type=self.type,
                      time=time.time(),
-                     nodename=Address.NODENAME,
+                     source=Address.NODENAME,
                      mac_address=Address.MAC_ADDRESS,
                      ip_address=Address.IP_ADDRESS)
 
+  def _send(self):
+    self.echomesh.send(self.data)
+
   def start(self):
-    self.send(self.data)
+    self._send()
 
   def new_client(self, data):
     with Locker.Locker(self.lock):
-      nodename = data['nodename']
-      c = self._clients.get(nodename, None)
+      source = data['source']
+      c = self._clients.get(source, None)
       if c != data:
-        self._clients[nodename] = data
+        self._clients[source] = data
         if c != self.data:
-          LOGGER.info('New client %s', nodename)
-          self.send(self.data)
+          LOGGER.info('New client %s', source)
+          self._send()
         else:
           LOGGER.info('self client')
 

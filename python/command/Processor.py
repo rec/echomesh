@@ -30,7 +30,7 @@ def _usage():
 
 def process(command, echomesh):
   if command in SIMPLE_COMMANDS:
-    echomesh.discovery.send(dict(type=command))
+    echomesh.send(dict(type=command))
 
   elif command == 'help':
     _usage()

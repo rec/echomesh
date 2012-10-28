@@ -6,6 +6,7 @@ import traceback
 import yaml
 import Queue
 
+from network import Address
 from network import Broadcast
 from util import Openable
 from util import Log
@@ -42,8 +43,11 @@ class Discovery(Openable.Openable):
     self.receive_socket.close()
     self.send_socket.close()
 
-  def send(self, data=None):
-    self.queue.put(data or self.discovery_data)
+  def send(self, data):
+    if 'source' not in data:
+      data = dict(**data)
+      data['source'] = Address.NODENAME
+    self.queue.put(data)
 
   def join(self):
     self.receive_thread.join()
