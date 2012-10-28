@@ -68,7 +68,7 @@ hofmann:
     input:
       use_default: true
 
-  headless: true
+  control_program: true
 """
 
 # Local configuration for this account.

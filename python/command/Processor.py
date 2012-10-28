@@ -18,6 +18,7 @@ REMOTE_COMMANDS = (
   'shutdown',
   'start',
   'stop',
+  'update',
   )
 
 FILE_COMMANDS = (

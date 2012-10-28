@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import subprocess
 
-def run(command):
-  popen = subprocess.Popen(command, stdout=subprocess.PIPE)
+def run(command, **kwds):
+  popen = subprocess.Popen(command, stdout=subprocess.PIPE, **kwds)
   popen.wait()
   return popen.stdout.read()
 

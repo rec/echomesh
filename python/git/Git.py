@@ -6,12 +6,14 @@ from util import Platform
 from util import Subprocess
 
 GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
-GIT_LOG = [GIT_BINARY, 'log', '-n1', '--abbrev=40']
+GIT_LOG = ['log', '-n1', '--abbrev=40']
 
-def most_recent_commit(config=None):
-  command = GIT_LOG[:]
+def run_git_command(command, config=None, cwd=None):
+  binary = GIT_BINARY
   if config and 'git_binary' in config['git']:
-    command[0] = config['git']['binary']
+    binary = config['git']['binary']
+  return Subprocess.run([binary] + command, cwd=cwd).splitlines()
 
-  lines = Subprocess.run(command).splitlines()
+def most_recent_commit(config=None, cwd=None):
+  lines = run_git_command(GIT_LOG, config)
   return lines[0].split()[1], lines[-1].strip()
