@@ -46,7 +46,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
   HANDLERS = dict(au=sunau, aifc=aifc, aiff=aifc, wav=wave)
   DTYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
-  def __init__(self, filename, level=1.0, pan=0,
+  def __init__(self, filename, level=1.0, pan=0, loops=1,
                chunk_size=DEFAULT_CHUNK_SIZE):
     ThreadLoop.ThreadLoop.__init__(self)
 
@@ -54,6 +54,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.chunk_size = chunk_size
     self.level = Envelope.make_envelope(level)
     self.pan = Envelope.make_envelope(pan)
+    self.loops = loops
 
     fname = os.path.expanduser(filename)
     filetype = sndhdr.what(fname)[0]
@@ -76,6 +77,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.time = 0
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)
+    self.loop_number = 0
 
   def close(self):
     ThreadLoop.ThreadLoop.close(self)
@@ -97,8 +99,12 @@ class FilePlayer(ThreadLoop.ThreadLoop):
   def run(self):
     frames = self.file_stream.readframes(self.chunk_size)
     if not frames:
-      self.close()
-      return
+      self.loop_number += 1
+      if self.loop_number < self.loops:
+        self.restart_sound()
+      else:
+        self.close()
+        return
 
     new_time = self.time + float(len(frames)) / (self.samples_per_frame
                                                  * self.sampling_rate)

@@ -16,7 +16,7 @@ class Sprite(Openable):
 
 
 class ImageSprite(Sprite):
-  def __init__(self, display, image=None,
+  def __init__(self, display, image=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
     Sprite.__init__(self)
     if image and display:
@@ -25,12 +25,14 @@ class ImageSprite(Sprite):
       self.image = None
       LOGGER.error('No image in image arguments')
 
+    self.loops = loops
+    self.loop_number = 0
     self.position = Envelope(position)
     self.rotation = Envelope(rotation)
     self.size = Envelope(size)
     self.z = Envelope(z)
+
     self.time = 0
-    self.count = 0
     if duration:
       self.duration = duration
     else:
@@ -46,16 +48,19 @@ class ImageSprite(Sprite):
       self.time = t
     elapsed = t - self.time
     if elapsed > self.duration:
-      self.close()
-    else:
-      x, y = self.position.interpolate(elapsed)
-      z = self.z.interpolate(elapsed)
-      size = self.size.interpolate(elapsed)
-      rotation = self.rotation.interpolate(elapsed)
+      self.loop_number += 1
+      if self.loop_number < self.loops:
+        self.time = 0
+        elapsed = 0
+      else:
+        self.close()
+        return
 
-      x += self.count
-      y += self.count
+    x, y = self.position.interpolate(elapsed)
+    z = self.z.interpolate(elapsed)
+    size = self.size.interpolate(elapsed)
+    rotation = self.rotation.interpolate(elapsed)
 
-      print('!!!', self.image, x, y, z, size, rotation)
-      self.sprite(self.image, x, y, z, size, size, rotation)
-      self.count += 1
+    print('!!!', self.image, x, y, z, size, rotation)
+    self.sprite(self.image, x, y, z, size, size, rotation)
+    self.count += 1
