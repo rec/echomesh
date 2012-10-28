@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import contextlib
+import os
 import os.path
 import sys
 import threading
@@ -23,7 +24,7 @@ from util.Openable import Openable
 from util.Closer import Closer
 
 DEFAULT_SCORE = '~/echomesh/score/score.yml'
-LOCAL_SCORE = '~/.echomesh-score'
+LOCAL_SCORE = os.path.expanduser('~/.echomesh-score')
 
 LOGGER = Log.logger(__name__)
 
@@ -50,6 +51,11 @@ class Echomesh(Openable):
       score_file = self.config.get('score', DEFAULT_SCORE)
       score = File.yaml_load_all(score_file)
     self.score = Score(score, Functions.functions(self, self.display))
+
+
+  def remove_local(self):
+    Config.remove_local()
+    os.remove(LOCAL_SCORE)
 
   def send(self, **data):
     self.discovery.send(**data)

@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import os.path
 import sys
 import yaml
 
@@ -75,7 +76,7 @@ hofmann:
 LOCAL_FILE = '~/.echomesh'
 
 # Stores the last dynamic configuration update.
-LOCAL_CHANGED_FILE = '~/.echomesh-changed'
+LOCAL_CHANGED_FILE = os.path.expanduser('~/.echomesh-changed')
 
 STORE_LOCAL_CHANGED_FILE = True
 
@@ -91,6 +92,9 @@ if len(sys.argv) > 1:
 def change(config):
   File.write_yaml(LOCAL_CHANGED_FILE, config)
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
+
+def remove_local():
+  os.remove(LOCAL_FILE)
 
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
 # because we'd have to revert the main config to its original value "in place".

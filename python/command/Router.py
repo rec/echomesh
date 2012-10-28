@@ -24,14 +24,14 @@ class Router(object):
   def config(self, msg):
     config = msg.get('data', None)
     if data:
-      echomesh.set_config(config)
+      self.echomesh.set_config(config)
     else:
       LOGGER.error('Empty config data received')
 
   def score(self, msg):
     score = msg.get('data', None)
     if score:
-      echomesh.set_score(score)
+      self.echomesh.set_score(score)
     else:
       LOGGER.error('Empty score data received')
     self._error(data)
@@ -59,6 +59,10 @@ class Router(object):
     Git.run_git_command(GIT_UPDATE, cwd=cwd)
     self.restart(event)
 
+  def clear(self, data):
+    self.echomesh.remove_local()
+    self.restart(data)
+
   # TODO!
   def rerun(self, data):
     self._error(data)
@@ -67,9 +71,6 @@ class Router(object):
     self._error(data)
 
   def stop(self, data):
-    self._error(data)
-
-  def refresh(self, data):
     self._error(data)
 
   def _error(self, data):
