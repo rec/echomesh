@@ -43,7 +43,7 @@ class Discovery(Openable.Openable):
     self.send_socket.close()
     self.receive_socket.close()
 
-  def send(self, data):
+  def send(self, **data):
     if 'source' not in data:
       data = dict(**data)
       data['source'] = Address.NODENAME

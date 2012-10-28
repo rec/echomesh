@@ -22,6 +22,7 @@ from util.Openable import Openable
 from util.Closer import Closer
 
 DEFAULT_SCORE = '~/echomesh/score/score.yml'
+LOCAL_SCORE = '~/.echomesh-score'
 
 LOGGER = Log.logger(__name__)
 
@@ -36,19 +37,29 @@ class Echomesh(Openable):
     self.display = Display.display(self, self.config)
     self.closer = Closer()
 
-    self.mic_thread = Microphone.Microphone(self.config, self._mic_event)
-    score_file = self.config.get('score', DEFAULT_SCORE)
-    score = File.yaml_load_all(score_file)
+    self.microphone = Microphone.Microphone(self.config, self._mic_event)
+    score = File.yaml_load_all(LOCAL_SCORE)
+    if not score:
+      score_file = self.config.get('score', DEFAULT_SCORE)
+      score = File.yaml_load_all(score_file)
     self.score = Score(score, Functions.functions(self, self.display))
 
-  def send(self, data):
-    self.discovery.send(data)
+  def send(self, **data):
+    self.discovery.send(**data)
 
   def receive_event(self, event):
     self.score.receive_event(event)
 
+  def set_score(self, score):
+    File.yaml_dump_all(LOCAL_SCORE, score)
+    self.score.set_score(score)
+
   def add_closer(self, closer):
     self.closer.add_closer(closer)
+
+  def set_config(self, config):
+    Config.change(config)
+    self.microphone.set_config(config)
 
   def run(self):
     with contextlib.closing(self):
@@ -58,12 +69,12 @@ class Echomesh(Openable):
         LOGGER.critical(traceback.format_exc())
 
   def _mic_event(self, level):
-    self.send(dict(type='event', event='mic', key=level))
+    self.send(type='event', event='mic', key=level)
 
   def _run(self):
     self.discovery.start()
     self.clients.start()
-    self.mic_thread.start()
+    self.microphone.start()
 
     control_program = self.config.get('control_program', False)
     dconf = self.config['display']
@@ -93,7 +104,7 @@ class Echomesh(Openable):
       LOGGER.info('echomesh closing')
       self.discovery.close()
       self.closer.close()
-      self.mic_thread.close()
+      self.microphone.close()
       self.display and self.display.close()
       self.score.close()
       self._join()
@@ -101,7 +112,7 @@ class Echomesh(Openable):
   def _join(self):
     self.display and self.display.join()
     self.discovery.join()
-    self.mic_thread.join()
+    self.microphone.join()
     self.score.join()
 
 if __name__ == '__main__':

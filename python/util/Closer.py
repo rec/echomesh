@@ -15,14 +15,18 @@ class Closer(Openable):
   def add_closer(self, *closers):
     self.closers.update(closers)
 
-  def close(self):
-    Openable.close(self)
+  def close_all(self):
     for c in self.closers:
       try:
         if c and c.is_open:
           c.close()
       except:
         LOGGER.error("Couldn't close %s" % repr(c))
+    self.closers.clear()
+
+  def close(self):
+    Openable.close(self)
+    self.close_all()
 
   def join(self):
     for c in self.closers:

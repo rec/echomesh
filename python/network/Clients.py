@@ -24,7 +24,7 @@ class Clients(object):
                      ip_address=Address.IP_ADDRESS)
 
   def _send(self):
-    self.echomesh.send(self.data)
+    self.echomesh.send(**self.data)
 
   def start(self):
     self._send()

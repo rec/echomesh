@@ -14,8 +14,20 @@ class Router(object):
     self.echomesh = echomesh
     self.clients = clients
 
-  def config(self, data):
-    Config.change(data)
+  def config(self, msg):
+    config = msg.get('data', None)
+    if data:
+      echomesh.set_config(config)
+    else:
+      LOGGER.error('Empty config data received')
+
+  def score(self, msg):
+    score = msg.get('data', None)
+    if score:
+      echomesh.set_score(score)
+    else:
+      LOGGER.error('Empty score data received')
+    self._error(data)
 
   def client(self, data):
     self.clients.new_client(data)

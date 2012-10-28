@@ -13,9 +13,13 @@ LOGGER = Log.logger(__name__)
 class Score(Closer):
   def __init__(self, rules, functions, target=Address.NODENAME):
     Closer.__init__(self)
-    self.rules = {}
     self.functions = functions
     self.target = target
+    self.set_rules(rules)
+
+  def set_rules(self, rules):
+    self.close_all()
+    self.rules = {}
     for r in rules:
       if self.validate_rule(r):
         rt = r['type']

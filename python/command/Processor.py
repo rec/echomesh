@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
+from util import File
 from util import Log
 from sound import FilePlayer
 
@@ -9,9 +10,8 @@ LOGGER = Log.logger(__name__)
 
 # TODO: these are a subset the methods of Router, so we need
 # this information in two places... deal with that!
-SIMPLE_COMMANDS = (
+REMOTE_COMMANDS = (
   'halt',
-  'play',
   'refresh',
   'rerun',
   'restart',
@@ -20,46 +20,80 @@ SIMPLE_COMMANDS = (
   'stop',
   )
 
-REMAINING_COMMANDS = (
-  'help',
-  'list',
+FILE_COMMANDS = (
+  'config',
+  'score',
+  'play',
 )
 
+SIMPLE_COMMANDS = (
+  'help',
+  'list',
+  'quit',
+)
+
+ALL_COMMANDS = REMOTE_COMMANDS + FILE_COMMANDS + SIMPLE_COMMANDS
+
 def _usage():
-  print('Commands are', ', '.join(SIMPLE_COMMANDS + REMAINING_COMMANDS))
+  LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))
 
-def process(command, echomesh):
-  if command in SIMPLE_COMMANDS:
-    echomesh.send(dict(type=command))
+def _play(filename):
+  FilePlayer.FilePlayer(filename).start()
+  time.sleep(2)
+  FilePlayer.FilePlayer(filename, level=0.5).start()
 
-  elif command == 'help':
-    _usage()
+  time.sleep(2)
+  FilePlayer.FilePlayer(filename, pan=1.0).start()
 
-  elif command == 'list':
-    for client in echomesh.clients.get_clients().itervalues():
-      print(client)
+  time.sleep(2)
+  pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
+  FilePlayer.FilePlayer(filename, pan=pan).start()
 
-  elif command == 'quit':
+def _file_command(echomesh, cmd, filename):
+  if cmd == 'play':
+    _play(filename)
+
+  else:
+    data = File.yaml_load_all(filename)
+    if data:
+      echomesh.send(type=cmd, data=data)
+    else:
+      LOGGER.error("Didn't get any data from file %s", filename)
+
+def _simple_command(echomesh, cmd):
+  if cmd == 'quit':
+    LOGGER.info('quitting')
     return False
 
-  elif command.startswith('play'):
-    # print('Command="%s"'  %command)
-    filename = command.strip().split(' ')[1]
-    print("playing", filename)
-    if False:
-      FilePlayer.FilePlayer(filename).start()
-      time.sleep(2)
-      FilePlayer.FilePlayer(filename, level=0.5).start()
+  elif cmd == 'help':
+    _usage()
 
-      time.sleep(2)
-      FilePlayer.FilePlayer(filename, pan=1.0).start()
+  elif cmd == 'list':
+    for client in echomesh.clients.get_clients().itervalues():
+      LOGGER.info(client)
 
-      time.sleep(2)
-    pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
-    FilePlayer.FilePlayer(filename, pan=pan).start()
+  return True
 
-  elif command:
-    print("Didn't understand command '%s'" % command)
+def process(command, echomesh):
+  parts = command.strip().split(' ')
+  if not parts:
+    return
+
+  cmd = parts[0]
+  if cmd in REMOTE_COMMANDS:
+    echomesh.send(type=command)
+
+  elif cmd in FILE_COMMANDS:
+    if len(parts) is 2:
+      _file_command(echomesh, cmd, parts[1])
+    else:
+      LOGGER.error('Command %s needs a file argument' % cmd)
+
+  elif cmd in SIMPLE_COMMANDS:
+    return _simple_command(echomesh, cmd)
+
+  else:
+    LOGGER.error("Didn't understand command '%s'", cmd)
     _usage()
 
   return True
