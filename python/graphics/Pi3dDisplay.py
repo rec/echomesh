@@ -14,7 +14,6 @@ LOGGER = Log.logger(__name__)
 DEFAULT_BACKGROUND = 0, 0, 0, 1.0
 ESCAPE_KEY = 27
 DEFAULT_FPS = 60.0
-READ_KEYS = False
 
 DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
 
@@ -27,7 +26,6 @@ class Pi3dDisplay(ThreadLoop):
     self.texture_cache = {}
     self.display = pi3d.display()
     self.sprites = []
-    self.keys = pi3d.key()
 
     dconf = config['display']
     self.display.create2D(*dconf.get('dimensions', (0, 0, 0, 0, 0)))
@@ -40,12 +38,6 @@ class Pi3dDisplay(ThreadLoop):
 
   def run(self):
     self.display.clear()
-
-    if READ_KEYS and self.keys.read() == ESCAPE_KEY:
-      echomesh.close()
-      self.close()
-      LOGGER.info('Closing display')
-      return
 
     t = time.time()
     self.sprites = [s for s in self.sprites if s.is_open]
@@ -68,6 +60,5 @@ class Pi3dDisplay(ThreadLoop):
 
   def close(self):
     ThreadLoop.close(self)
-    self.keys.close()
     self.textures.deleteAll()
     self.display.destroy()

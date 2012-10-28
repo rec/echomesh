@@ -25,7 +25,7 @@ def print_function(score, event, *args):
   print(*args)
 
 def functions(echomesh, display):
-  if echomesh.config['display']['enable']:
+  if echomesh.config['display'].get('enable', True):
     from graphics.Sprite import ImageSprite
 
     def play_image(score, event, **keywords):
