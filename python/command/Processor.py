@@ -4,7 +4,6 @@ import time
 
 from util import File
 from util import Log
-from sound import FilePlayer
 
 LOGGER = Log.logger(__name__)
 
@@ -39,6 +38,8 @@ def _usage():
   LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))
 
 def _play(filename):
+  from sound import FilePlayer
+
   FilePlayer.FilePlayer(filename).start()
   time.sleep(2)
   FilePlayer.FilePlayer(filename, level=0.5).start()
@@ -98,4 +99,3 @@ def process(command, echomesh):
     _usage()
 
   return True
-

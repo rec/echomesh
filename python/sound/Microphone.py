@@ -1,8 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import analyse
 import numpy
-import pyaudio
 
 from util import Log
 from util import Openable
@@ -22,6 +20,8 @@ MAX_INPUT_DEVICES = 64
 
 # TODO: a better way to identify that stream.
 def get_pyaudio_stream(rate, use_default=False):
+  import pyaudio
+
   pyaud = pyaudio.PyAudio()
 
   def _make_stream(i):
@@ -44,9 +44,10 @@ def get_pyaudio_stream(rate, use_default=False):
   LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
 def get_mic_level(data, length=-1, dtype=numpy.int16):
+  import analyse
+
   samps = numpy.fromstring(data, dtype=dtype, count=length)
   return analyse.loudness(samps)
-
 
 class Microphone(ThreadLoop.ThreadLoop):
   def __init__(self, config, callback):

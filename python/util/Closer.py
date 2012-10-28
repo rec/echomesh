@@ -10,7 +10,10 @@ LOGGER = Log.logger(__name__)
 class Closer(Openable):
   def __init__(self, *closers):
     Openable.__init__(self)
-    self.closers = weakref.WeakSet(closers)
+    try:
+      self.closers = weakref.WeakSet(closers)
+    except:
+      self.closers = set()  # TODO: make sure this works in 2.6
 
   def add_closer(self, *closers):
     self.closers.update(closers)

@@ -38,7 +38,6 @@ logging:
 audio:
   library: pyaudio
   input:
-#    enable: false
     samplerate: 8000
     name: AK5370
     periodsize: 160
@@ -67,7 +66,23 @@ hofmann:
 
   audio:
     input:
+      enable: false
       use_default: true
+    output:
+      enable: false
+
+  control_program: true
+
+Asimov:
+  display:
+    enable: false
+
+  audio:
+    input:
+      enable: false
+      use_default: true
+    output:
+      enable: false
 
   control_program: true
 """

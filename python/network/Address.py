@@ -38,6 +38,10 @@ MAC_ADDRESS = mac_address()
 IP_ADDRESS = ip_address()
 NODENAME = os.uname()[1]
 
-if __name__ == '__main__':
+def print_all():
   print(mac_address())
   print(ip_address())
+  print(NODENAME)
+
+if __name__ == '__main__':
+  print_all()

@@ -14,7 +14,6 @@ from command import Router
 from command.Score import Score
 from config import Config
 from graphics import Display
-from graphics import Tasks
 from network import Clients
 from network import Discovery
 from sound import Microphone

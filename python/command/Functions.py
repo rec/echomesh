@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import random
 
-from sound.FilePlayer import FilePlayer
 from util import Log
 
 LOGGER = Log.logger(__name__)
@@ -34,14 +33,20 @@ def functions(echomesh, display):
     def play_image(score, event, **keywords):
       LOGGER.info('Playing an image')
 
-  def play_audio(score, event, **keywords):
-    try:
-      player = FilePlayer(**keywords)
-      player.start()
-      echomesh.add_closer(player)
-      return player
-    except:
-      LOGGER.error("Didn't understand play_audio arguments %s", args[0])
+  if echomesh.config['audio'].get('output', {}).get('enable', True):
+    from sound.FilePlayer import FilePlayer
+    def play_audio(score, event, **keywords):
+      try:
+        player = FilePlayer(**keywords)
+        player.start()
+        echomesh.add_closer(player)
+        return player
+      except:
+        LOGGER.error("Didn't understand play_audio arguments %s", args[0])
+  else:
+    def play_audio(score, event, **keywords):
+      LOGGER.info('Playing an image')
+
 
   return dict(
     audio=play_audio,
