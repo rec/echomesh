@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
 import time
 
 from graphics import Rect
@@ -15,8 +16,7 @@ ESCAPE_KEY = 27
 DEFAULT_FPS = 60.0
 READ_KEYS = False
 
-scnx=800
-scny=600
+DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh, config):
@@ -58,7 +58,9 @@ class Pi3dDisplay(ThreadLoop):
       time.sleep(1.0 / fps)
 
   def load_texture(self, imagefile):
-    texture = self.texture_cache.get(imagefile, None)
+    if not imagefile.startswith('/'):
+      imagefile = DEFAULT_IMAGE_DIRECTORY + imagefile
+    texture = self.texture_cache.get(os.path.expanduser(imagefile), None)
     if not texture:
       texture = self.textures.loadTexture(imagefile)
       self.texture_cache[imagefile] = texture

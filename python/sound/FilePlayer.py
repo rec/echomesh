@@ -19,6 +19,8 @@ DEFAULT_CHUNK_SIZE = 1024
 BITS_PER_BYTE = 8
 DEBUG = False
 
+DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
+
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
@@ -56,6 +58,8 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.pan = Envelope.make_envelope(pan)
     self.loops = loops
 
+    if not fname.startswith('/'):
+      fname = DEFAULT_AUDIO_DIRECTORY + fname
     fname = os.path.expanduser(filename)
     filetype = sndhdr.what(fname)[0]
     self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')
