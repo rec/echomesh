@@ -30,7 +30,7 @@ class Score(Closer):
         self.execute_rule(r, event)
 
   def execute_rule(self, rule, event):
-    LOGGER.info('Executing rule %s', rule)
+    LOGGER.debug('Executing rule %s', rule)
     key = event.get('key', {})
     mapping = rule.get('mapping', {})
     command = mapping.get(key, {})

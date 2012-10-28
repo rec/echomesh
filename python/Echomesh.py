@@ -91,8 +91,8 @@ class Echomesh(Openable):
     if self.is_open:
       Openable.close(self)
       LOGGER.info('echomesh closing')
-      self.closer.close()
       self.discovery.close()
+      self.closer.close()
       self.mic_thread.close()
       self.display and self.display.close()
       self.score.close()

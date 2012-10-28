@@ -40,7 +40,11 @@ class SendSocket(Socket):
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def write(self, data):
-    self.socket.sendto(data, ('<broadcast>', self.port))
+    try:
+      self.socket.sendto(data, ('<broadcast>', self.port))
+    except:
+      if self.is_open:
+        raise
 
 
 class ReceiveSocket(Socket):

@@ -40,8 +40,8 @@ class Discovery(Openable.Openable):
 
   def close(self):
     Openable.Openable.close(self)
-    self.receive_socket.close()
     self.send_socket.close()
+    self.receive_socket.close()
 
   def send(self, data):
     if 'source' not in data:

@@ -32,7 +32,6 @@ class Router(object):
     self._close_and_run('Shutting down', SHUTDOWN)
 
   def event(self, event):
-    LOGGER.info(event)
     self.echomesh.receive_event(event)
 
   # TODO!
