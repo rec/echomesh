@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from config import Config
 from util import Average
 from util import Log
 from util import Openable
@@ -62,7 +63,7 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.callback = Util.call_if_different(average)
 
   def start(self):
-    if self.aconfig.get('enable', True):
+    if Config.is_enabled(self.config, 'audio', 'input'):
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
       self.chunksize = self.aconfig.get('chunksize', DEFAULT_CHUNK_SIZE)
       use_default = self.aconfig.get('use_default', False)
@@ -74,6 +75,7 @@ class Microphone(ThreadLoop.ThreadLoop):
       self.close()
 
   def set_config(self, config):
+    self.config = config
     self.aconfig = config['audio']['input']
     self.library = config['audio']['library']
     self.levels = Levels.Levels(**self.aconfig['levels'])

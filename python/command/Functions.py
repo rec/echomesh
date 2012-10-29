@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import random
 
+from config import Config
 from util import Log
 
 LOGGER = Log.logger(__name__)
@@ -24,7 +25,7 @@ def print_function(score, event, *args):
   print(*args)
 
 def functions(echomesh, display):
-  if echomesh.config['display'].get('enable', True):
+  if Config.is_enabled(echomesh.config, 'display'):
     from graphics.Sprite import ImageSprite
 
     def play_image(score, event, **keywords):
@@ -33,7 +34,7 @@ def functions(echomesh, display):
     def play_image(score, event, **keywords):
       LOGGER.info('Playing an image')
 
-  if echomesh.config['audio'].get('output', {}).get('enable', True):
+  if Config.is_enabled(echomesh.config, 'audio', 'output'):
     from sound.FilePlayer import FilePlayer
     def play_audio(score, event, **keywords):
       try:

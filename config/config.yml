@@ -1,7 +1,21 @@
 type: config
 
 allow_shutdown: true
-control_program: true
+
+audio:
+  library: pyaudio
+  input:
+    samplerate: 8000
+    name: AK5370
+    periodsize: 160
+    levels:
+      silent: -60
+      quiet: -55
+      moderate: -50
+      medium: -45
+      loud: 0
+
+control_program: false
 
 discovery:
   port: 1238
@@ -20,19 +34,6 @@ git:
 logging:
 #  file: ~/log/echomesh.log  # Uncomment to create a file
   level: debug
-
-audio:
-  library: pyaudio
-  input:
-    samplerate: 8000
-    name: AK5370
-    periodsize: 160
-    levels:
-      silent: -60
-      quiet: -55
-      moderate: -50
-      medium: -45
-      loud: 0
 
 shorten:
   enable: true

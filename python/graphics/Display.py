@@ -1,12 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from config import Config
 from util import Log
 from util import Openable
 
 LOGGER = Log.logger(__name__)
 
 def display(echomesh, config):
-  if config['display'].get('enable', True):
+  if Config.is_enabled(config, 'display'):
     library = config['display'].get('library', '(no library set in Config)')
     if library == 'pi3d':
       from graphics import Pi3dDisplay

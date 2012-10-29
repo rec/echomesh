@@ -8,10 +8,8 @@ import threading
 import time
 import traceback
 
-from command import Functions
 from command import Processor
 from command import Router
-from command.Score import Score
 from config import Config
 from graphics import Display
 from network import Clients
@@ -45,12 +43,19 @@ class Echomesh(Openable):
     self.closer = Closer()
 
     self.microphone = Microphone.Microphone(self.config, self._mic_event)
-    score = File.yaml_load_all(LOCAL_SCORE)
-    if not score:
-      score_file = self.config.get('score', DEFAULT_SCORE)
-      score = File.yaml_load_all(score_file)
-    self.score = Score(score, Functions.functions(self, self.display))
+    self.control_program = self.config.get('control_program', False)
 
+    if Config.is_enabled(self.config, 'score'):
+      from command.Score import Score
+      from command import Functions
+
+      score = File.yaml_load_all(LOCAL_SCORE)
+      if not score:
+        score_file = self.config.get('score', DEFAULT_SCORE)
+        score = File.yaml_load_all(score_file)
+      self.score = Score(score, Functions.functions(self, self.display))
+    else:
+      self.score = Openable()
 
   def remove_local(self):
     Config.remove_local()
@@ -91,16 +96,15 @@ class Echomesh(Openable):
     self.clients.start()
     self.microphone.start()
 
-    control_program = self.config.get('control_program', False)
     dconf = self.config['display']
     display_threaded = dconf.get('threaded', False)
     if display_threaded or not self.display:
       self.display and self.display.start()
-      if control_program:
+      if self.control_program:
         self._keyboard_input()
 
     else:
-      if control_program:
+      if self.control_program:
         threading.Thread(target=self._keyboard_input).start()
       self.display.loop()  # Blocks until complete
 
