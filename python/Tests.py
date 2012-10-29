@@ -39,26 +39,6 @@ u'. suf'
 >>> String.truncate_suffix('hello', ' suf', 4)
 u' suf'
 
->>> levels = [2, 3, 5]
-
->>> Util.level_slot(0, levels)
-0
-
->>> Util.level_slot(2, levels)
-1
-
->>> Util.level_slot(3, levels)
-2
-
->>> Util.level_slot(4, levels)
-2
-
->>> Util.level_slot(5, levels)
-3
-
->>> Util.level_slot(6, levels)
-3
-
 >>> cb = Util.call_if_different(print)
 
 >>> cb(1)
@@ -118,10 +98,20 @@ u' suf'
 >>> env2.interpolate(3)
 [20.0, 200.0]
 
+>>> list(Average.average(range(8), moving=2))
+[0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5]
+
+>>> list(Average.average(range(8), grouped=2))
+[0.5, 2.5, 4.5, 6.5]
+
+>>> list(Average.average(range(8), grouped=2, moving=2))
+[1.5, 3.5, 5.5]
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from util import Average
 from util import Envelope
 from util import Merge
 from util import String
