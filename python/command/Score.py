@@ -20,10 +20,11 @@ class Score(Closer):
   def set_rules(self, rules):
     self.close_all()
     self.rules = {}
-    for r in rules:
-      if self.validate_rule(r):
-        rt = r['type']
-        self.rules[rt] = self.rules.get(rt, []) + [r]
+    if rules:
+      for r in rules:
+        if self.validate_rule(r):
+          rt = r['type']
+          self.rules[rt] = self.rules.get(rt, []) + [r]
 
   def receive_event(self, event):
     rules = self.rules.get(event['event'], None)

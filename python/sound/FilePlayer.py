@@ -21,7 +21,6 @@ DEBUG = False
 
 DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
 
-
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
 def interleave(left, right):

@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import numpy
-
+from util import Average
 from util import Log
 from util import Openable
 from util import Platform
@@ -43,8 +42,12 @@ def get_pyaudio_stream(rate, use_default=False):
 
   LOGGING.error("Coudn't create pyaudio input stream %d", rate)
 
-def get_mic_level(data, length=-1, dtype=numpy.int16):
+def get_mic_level(data, length=-1, dtype=None):
   import analyse
+  import numpy
+
+  if dtype is None:
+    dtype = numpy.int16
 
   samps = numpy.fromstring(data, dtype=dtype, count=length)
   return analyse.loudness(samps)
@@ -53,7 +56,10 @@ class Microphone(ThreadLoop.ThreadLoop):
   def __init__(self, config, callback):
     ThreadLoop.ThreadLoop.__init__(self)
     self.set_config(config)
-    self.callback = Util.call_if_different(callback)
+    average = Average.average(callback,
+                              moving=self.aconfig.get('moving', 0),
+                              grouped=self.aconfig.get('grouped', 0))
+    self.callback = Util.call_if_different(average)
 
   def start(self):
     if self.aconfig.get('enable', True):

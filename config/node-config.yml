@@ -1,0 +1,25 @@
+hofmann:
+  display:
+    enable: false
+
+  audio:
+    input:
+      enable: false
+      use_default: true
+    output:
+      enable: false
+
+  control_program: true
+
+Asimov:
+  display:
+    enable: false
+
+  audio:
+    input:
+      enable: false
+      use_default: true
+    output:
+      enable: false
+
+  control_program: true

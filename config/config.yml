@@ -1,0 +1,43 @@
+type: config
+
+allow_shutdown: true
+control_program: true
+
+discovery:
+  port: 1238
+  timeout: 0.10
+
+display:
+  dimensions: [0, 0, 400, 400]
+  frames_per_second: 30
+  full_screen: true
+  library: pi3d
+
+git:
+  user: rec
+  project: echomesh
+
+logging:
+#  file: ~/log/echomesh.log  # Uncomment to create a file
+  level: debug
+
+audio:
+  library: pyaudio
+  input:
+    samplerate: 8000
+    name: AK5370
+    periodsize: 160
+    levels:
+      silent: -60
+      quiet: -55
+      moderate: -50
+      medium: -45
+      loud: 0
+
+shorten:
+  enable: true
+  include_url: true
+  index_file: /home/tom/shortenIndex.txt
+  prefix: e
+  url: "http://ax.to"
+  use_index_url: true
