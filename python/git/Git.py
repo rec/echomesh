@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 import subprocess
+import traceback
 
 from util import Log
 from util import Platform
@@ -19,17 +20,25 @@ def run_git_command(command, config=None, cwd=None):
     binary = config['git']['binary']
   cwd = cwd or GIT_DIRECTORY
   LOGGER.info(' '.join(['git'] + list(command)))
-  return Subprocess.run([binary] + list(command), cwd=cwd).splitlines()
+  return Subprocess.run([binary] + list(command), cwd=cwd)
 
 def run_git_commands(*commands):
   for c in commands:
-    for line in run_git_command(c):
-      try:
+    try:
+      lines, returncode = run_git_command(c)
+      for line in lines:
         LOGGER.info(line)
-      except:
-        LOGGER.error('*** git command failed ***')
-        return
+      if returncode:
+        return False
+
+    except:
+      LOGGER.critical(traceback.format_exc())
+      LOGGER.error('git command failed')
+      return False
+
+  return True
 
 def most_recent_commit(config=None, cwd=None):
-  lines = run_git_command(GIT_LOG, config)
-  return lines[0].split()[1], lines[-1].strip()
+  lines, returncode = run_git_command(GIT_LOG, config)
+  if not returncode:
+    return lines[0].split()[1], lines[-1].strip()

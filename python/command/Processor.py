@@ -92,9 +92,10 @@ def _simple_command(echomesh, cmd):
 
   elif cmd == 'commit':
     LOGGER.info('Committing changes to the configuration')
-    for c in _UPDATE_GIT:
-      LOGGER.info(Git.run_git_command(c))
-    LOGGER.info('Changes committed')
+    if Git.run_git_commands(*_UPDATE_GIT):
+      LOGGER.info('Changes committed')
+    else:
+      LOGGER.info('Changes were NOT committed')
 
   return True
 

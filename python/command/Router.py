@@ -77,7 +77,7 @@ class Router(object):
     LOGGER.info(msg)
     if not self._is_control_program() and self.config['allow_shutdown']:
       Subprocess.run(cmd)
-      self.halt()
+      self.halt(cmd)
 
   def _is_control_program(self):
     return self.echomesh.config['control_program']
