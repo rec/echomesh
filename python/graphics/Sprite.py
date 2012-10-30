@@ -41,7 +41,7 @@ class ImageSprite(Sprite):
 
     from graphics.pi3d import pi3d
     self.sprite = pi3d.sprite
-    display.add_sprite(this)
+    display.add_sprite(self)
 
   def update(self, t):
     if not self.time:
@@ -59,8 +59,8 @@ class ImageSprite(Sprite):
     x, y = self.position.interpolate(elapsed)
     z = self.z.interpolate(elapsed)
     size = self.size.interpolate(elapsed)
+    width = self.image.ix * size
+    height = self.image.iy * size
     rotation = self.rotation.interpolate(elapsed)
 
-    print('!!!', self.image, x, y, z, size, rotation)
-    self.sprite(self.image, x, y, z, size, size, rotation)
-    self.count += 1
+    self.sprite(self.image, x, y, z, width, height, rotation)

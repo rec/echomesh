@@ -117,7 +117,7 @@ def process(command, echomesh):
   elif cmd in SIMPLE_COMMANDS:
     return _simple_command(echomesh, cmd)
 
-  else:
+  elif cmd:
     LOGGER.error("Didn't understand command '%s'", cmd)
     _usage()
 

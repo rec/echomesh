@@ -30,7 +30,7 @@ display.create2D(100,100,scnx,scny,0)
 display.setBackColour(1.0,0.2,0.6,1)
 
 # Ball parameters
-maxballs = 0
+maxballs = 1
 maxballsize = 60
 minballsize = 30
 maxspeed = 30

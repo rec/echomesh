@@ -53,7 +53,8 @@ class Pi3dDisplay(ThreadLoop):
   def load_texture(self, imagefile):
     if not imagefile.startswith('/'):
       imagefile = DEFAULT_IMAGE_DIRECTORY + imagefile
-    texture = self.texture_cache.get(os.path.expanduser(imagefile), None)
+    imagefile = os.path.expanduser(imagefile)
+    texture = self.texture_cache.get(imagefile, None)
     if not texture:
       texture = self.textures.loadTexture(imagefile)
       self.texture_cache[imagefile] = texture

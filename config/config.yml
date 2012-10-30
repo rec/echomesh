@@ -16,10 +16,9 @@ audio:
     moving_window: 2
 
     levels:
-      silent: -60
-      quiet: -55
-      moderate: -50
-      medium: -45
+      silent: -37
+      quiet: -25
+      medium: -15
       loud: 0
 
 control_program: false

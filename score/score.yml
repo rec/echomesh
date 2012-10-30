@@ -25,7 +25,7 @@
 #
 # This whole file is nothing more than a list of Rules, so you'll see a lot of
 # examples of Rules below.  (Technically, we are using the YAML data language,
-# which is upward compatible with JSON - see here:
+# which is upwardly compatible with JSON - see here:
 # http://www.yaml.org/spec/1.2/spec.html#Preview )
 #
 #
@@ -130,7 +130,8 @@ mapping:
 type: random
 
 data:
-  mean: 20.0                 # Trigger on average every 20 seconds.
+  mean: 5.0                  # Trigger on average every 20 seconds.
+
   distribution: poisson      # Select the distribution of these events.
                              # Today, we only have one distribution, poisson,
                              # so you don't have to specify it.
@@ -142,13 +143,13 @@ mapping:
       -
         function: image
         keywords:
-          image: bat.png
+          image: blu_ball.png
           position: [100, 100]
           duration: 10.0
       -
         function: image
         keywords:
-          image: wiccan.png
+          image: blu_ball.png
           position: [[0, [100, 100]], [20, [1000, 1000]]]
                              # "Compact" list format.  You can also use the
                              # "verbose" format we used for goblin.png above.
