@@ -12,8 +12,8 @@ audio:
     verbose: false
 
     chunksize: 1024
-    grouping_window: 2
-    moving_window: 2
+    grouping_window: 3
+    moving_window: 3
 
     levels:
       silent: -60
