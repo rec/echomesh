@@ -41,7 +41,8 @@ ALL_COMMANDS = REMOTE_COMMANDS + FILE_COMMANDS + SIMPLE_COMMANDS
 _UPDATE_GIT = (
   ('add', 'config/config.yml'),
   ('commit', '-m', '"Automatic checkin of config file"'),
-  ('push', 'origin', 'master'))
+  #  ('push', 'origin', 'master'),
+  )
 
 def _usage():
   LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))

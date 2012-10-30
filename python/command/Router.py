@@ -7,13 +7,13 @@ from git import Git
 from util import Log
 from util import Subprocess
 
+LOGGER = Log.logger(__name__)
+
 SUDO = '/usr/bin/sudo'
 SHUTDOWN = '/sbin/shutdown'
 SHUTDOWN_CMD = [SUDO, SHUTDOWN, '-h', 'now']
 RESTART_CMD = [SUDO, SHUTDOWN, '-r', 'now']
 GIT_UPDATE = ['pull', 'origin', 'master']
-
-LOGGER = Log.logger(__name__)
 
 class Router(object):
   def __init__(self, echomesh, clients):
@@ -56,9 +56,8 @@ class Router(object):
     self._close_and_run('Shutting down', SHUTDOWN_CMD)
 
   def update(self, event):
-    LOGGER.info('Updating codebase')
-    cwd = os.path.expanduser(GIT_DIRECTORY)
-    Git.run_git_command(GIT_UPDATE, cwd=cwd)
+    LOGGER.info('Pulling latest codebase from github')
+    Git.run_git_commands(GIT_UPDATE)
     self.restart(event)
 
   # TODO!
@@ -80,14 +79,12 @@ class Router(object):
       Subprocess.run(cmd)
       self.halt()
 
-
   def _is_control_program(self):
     return self.echomesh.config['control_program']
 
-
-def _error(data):
-  LOGGER.error("Didn't understand command '%s'", data['type'])
-
 def router(echomesh, clients):
+  def _error(data):
+    LOGGER.error("Didn't understand command '%s'", data['type'])
+
   r = Router(echomesh, clients)
   return lambda data: getattr(r, data['type'], _error)(data)
