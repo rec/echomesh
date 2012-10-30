@@ -5,11 +5,15 @@ allow_shutdown: true
 audio:
   library: pyaudio
 
+  output:
+    enable: false
+
   input:
+    enable: false
     samplerate: 8000
     name: AK5370
     periodsize: 160
-    verbose: false
+    verbose: true
 
     chunksize: 1024
     grouping_window: 2
@@ -39,7 +43,7 @@ git:
 
 logging:
 #  file: ~/log/echomesh.log  # Uncomment to create a file
-  level: debug
+  level: info
 
 shorten:
   enable: true

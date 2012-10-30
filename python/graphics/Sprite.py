@@ -62,5 +62,7 @@ class ImageSprite(Sprite):
     width = self.image.ix * size
     height = self.image.iy * size
     rotation = self.rotation.interpolate(elapsed)
-
+    if getattr(self, 'first_time', True):
+      print(self.image, x, y, z, width, height, rotation)
+      self.first_time = False
     self.sprite(self.image, x, y, z, width, height, rotation)

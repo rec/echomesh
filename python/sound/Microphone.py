@@ -10,7 +10,7 @@ from util import Util
 
 from sound import Levels
 
-LOGGING = Log.logger(__name__)
+LOGGER = Log.logger(__name__)
 
 DEFAULT_CARD_FORMAT = 'sysdefault:CARD=%s'
 DEFAULT_SAMPLE_RATE = 8000

@@ -67,6 +67,7 @@ bbtitle = texs.loadTexture("graphics/pi3d/textures/pi3dbbd.png",True)
 # Fetch key presses
 mykeys = pi3d.key()
 scshots = 1
+first_time = True
 
 while True:
 
@@ -74,6 +75,9 @@ while True:
     for b in range (0, maxballs):
 
 	# Draw ball (tex,x,y,z,width,height,rotation)
+        if first_time:
+            print(ball[bi[b]],bx[b],by[b],-2.0,bs[b],bs[b])
+        first_time = False
 	pi3d.sprite(ball[bi[b]],bx[b],by[b],-2.0,bs[b],bs[b])
 
 	# Increment ball positions
