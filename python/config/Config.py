@@ -20,21 +20,29 @@ LOCAL_CHANGED_FILE = os.path.expanduser('~/.echomesh-changed')
 
 STORE_LOCAL_CHANGED_FILE = True
 
-CONFIG = Merge.merge_into_all(
-  File.yaml_load(CONFIG_FILE),
-  File.yaml_load(NODE_CONFIG_FILE.strip()).get(Address.NODENAME, {}),
-  File.yaml_load(LOCAL_FILE),
-  File.yaml_load(LOCAL_CHANGED_FILE))
+CONFIG = None
 
-if len(sys.argv) > 1:
-  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1].strip()))
+def recalculate():
+  global CONFIG
+
+  CONFIG = Merge.merge_into_all(
+    File.yaml_load(CONFIG_FILE),
+    File.yaml_load(NODE_CONFIG_FILE.strip()).get(Address.NODENAME, {}),
+    File.yaml_load(LOCAL_FILE),
+    File.yaml_load(LOCAL_CHANGED_FILE))
+
+  if len(sys.argv) > 1:
+    Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1].strip()))
+
+recalculate()
 
 def change(config):
-  File.write_yaml(LOCAL_CHANGED_FILE, config)
+  File.yaml_dump_all(LOCAL_CHANGED_FILE, config)
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
 
 def remove_local():
-  os.remove(LOCAL_FILE)
+  os.remove(LOCAL_CHANGED_FILE)
+  recalculate()
 
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
 # because we'd have to revert the main config to its original value "in place".

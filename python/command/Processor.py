@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
+from config import Config
+from git import Git
 from util import File
 from util import Log
 
@@ -10,6 +12,7 @@ LOGGER = Log.logger(__name__)
 # TODO: these are a subset the methods of Router, so we need
 # this information in two places... deal with that!
 REMOTE_COMMANDS = (
+  'clear',
   'halt',
   'refresh',
   'rerun',
@@ -27,12 +30,18 @@ FILE_COMMANDS = (
 )
 
 SIMPLE_COMMANDS = (
+  'commit',
   'help',
   'list',
   'quit',
 )
 
 ALL_COMMANDS = REMOTE_COMMANDS + FILE_COMMANDS + SIMPLE_COMMANDS
+
+_UPDATE_GIT = (
+  ('add', 'config/config.yml'),
+  ('commit', '-m', '"Automatic checkin of config file"'),
+  ('push', 'origin', 'master'))
 
 def _usage():
   LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))
@@ -51,16 +60,22 @@ def _play(filename):
   pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
   FilePlayer.FilePlayer(filename, pan=pan).start()
 
-def _file_command(echomesh, cmd, filename):
+def _config(filename=Config.CONFIG_FILE):
+  config = File.yaml_load_all(filename)
+  if config:
+    echomesh.send(type='config', data=config)
+  else:
+    LOGGER.error("Didn't get any data from file %s", filename)
+
+def _file_command(echomesh, cmd, *args):
   if cmd == 'play':
-    _play(filename)
+    if args:
+      _play(args)
+    else:
+      LOGGER.error('play needs a file argument' % cmd)
 
   else:
-    data = File.yaml_load_all(filename)
-    if data:
-      echomesh.send(type=cmd, data=data)
-    else:
-      LOGGER.error("Didn't get any data from file %s", filename)
+    _config(*args)
 
 def _simple_command(echomesh, cmd):
   if cmd == 'quit':
@@ -74,6 +89,12 @@ def _simple_command(echomesh, cmd):
     for client in echomesh.clients.get_clients().itervalues():
       LOGGER.info(client)
 
+  elif cmd == 'commit':
+    LOGGER.info('Committing changes to the configuration')
+    for c in _UPDATE_GIT:
+      LOGGER.info(Git.run_git_command(c))
+    LOGGER.info('Changes committed')
+
   return True
 
 def process(command, echomesh):
@@ -86,10 +107,10 @@ def process(command, echomesh):
     echomesh.send(type=command)
 
   elif cmd in FILE_COMMANDS:
-    if len(parts) is 2:
-      _file_command(echomesh, cmd, parts[1])
+    if len(parts) <= 2:
+      _file_command(echomesh, *parts)
     else:
-      LOGGER.error('Command %s needs a file argument' % cmd)
+      LOGGER.error('Command %s has too many arguments' % cmd)
 
   elif cmd in SIMPLE_COMMANDS:
     return _simple_command(echomesh, cmd)

@@ -45,6 +45,9 @@ class Echomesh(Openable):
     self.microphone = Microphone.Microphone(self.config, self._mic_event)
     self.control_program = self.config.get('control_program', False)
 
+    self.load_score()
+
+  def load_score(self):
     if Config.is_enabled(self.config, 'score'):
       from command.Score import Score
       from command import Functions
@@ -58,8 +61,19 @@ class Echomesh(Openable):
       self.score = Openable()
 
   def remove_local(self):
-    Config.remove_local()
-    os.remove(LOCAL_SCORE)
+    try:
+      Config.remove_local()
+      self.config = Config.CONFIG
+      self.microphone.set_config(self.config)
+
+    except OSError as e:
+      LOGGER.warn("No local file %s" % Config.LOCAL_CHANGED_FILE)
+
+    try:
+      os.remove(LOCAL_SCORE)
+      self.load_score()
+    except OSError as e:
+      LOGGER.warn("No local score file %s", LOCAL_SCORE)
 
   def send(self, **data):
     self.discovery.send(**data)

@@ -4,4 +4,4 @@
 # hostname you'd like to change the machine to, check your work, then paste it
 # into a terminal window and press return.
 
-cd ~/echomesh && git pull origin master && ~/echomesh/scripts/change-hostname.sh $1 && sudo shutdown -r now
+cd ~/echomesh && git pull origin master && ~/echomesh/scripts/change-hostname-restart.sh $1

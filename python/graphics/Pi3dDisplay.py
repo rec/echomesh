@@ -12,6 +12,7 @@ from util.ThreadLoop import ThreadLoop
 LOGGER = Log.logger(__name__)
 
 DEFAULT_BACKGROUND = 0, 0, 0, 1.0
+DEFAULT_DIMENSIONS = 0, 0, 0, 0, 0
 ESCAPE_KEY = 27
 DEFAULT_FPS = 60.0
 
@@ -28,7 +29,7 @@ class Pi3dDisplay(ThreadLoop):
     self.sprites = []
 
     dconf = config['display']
-    self.display.create2D(*dconf.get('dimensions', (0, 0, 0, 0, 0)))
+    self.display.create2D(*dconf.get('dimensions', DEFAULT_DIMENSIONS))
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
     self.display.setBackColour(*background)

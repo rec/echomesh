@@ -4,10 +4,17 @@ allow_shutdown: true
 
 audio:
   library: pyaudio
+
   input:
     samplerate: 8000
     name: AK5370
     periodsize: 160
+    verbose: false
+
+    chunksize: 1024
+    grouping_window: 4
+    moving_window: 5
+
     levels:
       silent: -60
       quiet: -55

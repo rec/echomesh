@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
 import subprocess
 
 from util import Platform
@@ -7,12 +8,13 @@ from util import Subprocess
 
 GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
 GIT_LOG = ['log', '-n1', '--abbrev=40']
+GIT_DIRECTORY = os.path.expanduser('~/echomesh/')
 
 def run_git_command(command, config=None, cwd=None):
   binary = GIT_BINARY
   if config and 'git_binary' in config['git']:
     binary = config['git']['binary']
-  return Subprocess.run([binary] + command, cwd=cwd).splitlines()
+  return Subprocess.run([binary] + command, cwd=cwd or GIT_DIRECTORY).splitlines()
 
 def most_recent_commit(config=None, cwd=None):
   lines = run_git_command(GIT_LOG, config)

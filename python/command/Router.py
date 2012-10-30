@@ -12,7 +12,6 @@ SHUTDOWN = '/sbin/shutdown'
 SHUTDOWN_CMD = [SUDO, SHUTDOWN, '-h', 'now']
 RESTART_CMD = [SUDO, SHUTDOWN, '-r', 'now']
 GIT_UPDATE = ['pull', 'origin', 'master']
-GIT_DIRECTORY = '~/echomesh/'
 
 LOGGER = Log.logger(__name__)
 
@@ -21,12 +20,26 @@ class Router(object):
     self.echomesh = echomesh
     self.clients = clients
 
+  def clear(self, data):
+    self.echomesh.remove_local()
+
+  def client(self, data):
+    self.clients.new_client(data)
+
   def config(self, msg):
     config = msg.get('data', None)
     if data:
       self.echomesh.set_config(config)
     else:
       LOGGER.error('Empty config data received')
+
+  def event(self, event):
+    self.echomesh.receive_event(event)
+
+  def halt(self, data):
+    if not self._is_control_program():
+      LOGGER.info('Quitting');
+      self.echomesh.close()
 
   def score(self, msg):
     score = msg.get('data', None)
@@ -36,32 +49,17 @@ class Router(object):
       LOGGER.error('Empty score data received')
     self._error(data)
 
-  def client(self, data):
-    self.clients.new_client(data)
-
-  def halt(self, data):
-    if not self._is_control_program():
-      LOGGER.info('Quitting');
-      self.echomesh.close()
-
   def restart(self, data):
     self._close_and_run('Restarting', RESTART_CMD)
 
   def shutdown(self, data):
     self._close_and_run('Shutting down', SHUTDOWN_CMD)
 
-  def event(self, event):
-    self.echomesh.receive_event(event)
-
   def update(self, event):
     LOGGER.info('Updating codebase')
     cwd = os.path.expanduser(GIT_DIRECTORY)
     Git.run_git_command(GIT_UPDATE, cwd=cwd)
     self.restart(event)
-
-  def clear(self, data):
-    self.echomesh.remove_local()
-    self.restart(data)
 
   # TODO!
   def rerun(self, data):
