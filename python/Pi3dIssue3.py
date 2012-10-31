@@ -7,17 +7,29 @@ ENABLE_BUG = True
 scnx = 800
 scny = 600
 
-DISPLAY = pi3d.display()
+def init_display():
+  disp = pi3d.display()
+  disp.create2D(100,100,scnx,scny,0)
+  disp.setBackColour(1.0,0.2,0.6,1)
+  return disp
 
-DISPLAY.create2D(100,100,scnx,scny,0)
+if not ENABLE_BUG:
+  DISPLAY = init_display()
 
-# Set a pink display
-DISPLAY.setBackColour(1.0,0.2,0.6,1)
 
-texs=pi3d.textures()
-ball = texs.loadTexture("graphics/pi3d/textures/red_ball.png")
+class Display(object):
+  def __init__(self):
+    self.texs = pi3d.textures()
+    self.ball = self.texs.loadTexture("graphics/pi3d/textures/red_ball.png")
+    if ENABLE_BUG:
+      self.display = init_display()
+    else:
+      self.display = DISPLAY
 
-while True:
-  DISPLAY.clear()
-  pi3d.sprite(ball, 200.0, 200.0, -2.0, 80.0, 80.0)
-  DISPLAY.swapBuffers()
+  def run(self):
+    while True:
+      self.display.clear()
+      pi3d.sprite(self.ball, 200.0, 200.0, -2.0, 80.0, 80.0)
+      self.display.swapBuffers()
+
+Display().run()
