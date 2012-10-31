@@ -8,6 +8,7 @@ from graphics.pi3d import pi3d
 
 LOGGER = Log.logger(__name__)
 DEBUGGING = True
+LATEST = not True
 
 scnx=800
 scny=600
@@ -15,11 +16,12 @@ scny=600
 DEFAULT_BACKGROUND = 1.0, 0.2, 0.6, 1
 DEFAULT_DIMENSIONS = 100, 100, scnx, scny, 0
 
-DISPLAY = pi3d.display()
-DISPLAY.create2D(*DEFAULT_DIMENSIONS)
+if not LATEST:
+  DISPLAY = pi3d.display()
+  DISPLAY.create2D(*DEFAULT_DIMENSIONS)
 
-# Set last value (alpha) to zero for a transparent background!
-DISPLAY.setBackColour(*DEFAULT_BACKGROUND)
+  # Set last value (alpha) to zero for a transparent background!
+  DISPLAY.setBackColour(*DEFAULT_BACKGROUND)
 
 texs = pi3d.textures()
 ball = texs.loadTexture("graphics/pi3d/textures/red_ball.png")
@@ -37,17 +39,20 @@ class DebugDisplay(ThreadLoop):
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
     dimensions = dconf.get('dimensions', DEFAULT_DIMENSIONS)
-    #self.display = pi3d.display()
-    #self.display.create2D(*background)
-    #self.display.setBackColour(*dimensions)
+
+    if LATEST:
+      self.display = pi3d.display()
+      self.display.create2D(*dimensions)
+      self.display.setBackColour(*background)
 
   def add_sprite(self, sprite):
     pass
 
   def run(self):
-    DISPLAY.clear()
+    disp = LATEST and self.display or DISPLAY
+    disp.clear()
     pi3d.sprite(ball, 400, 400, -2.0, 41, 41)
-    DISPLAY.swapBuffers()
+    disp.swapBuffers()
 
   def close(self):
     LOGGER.error('Closing display!')
