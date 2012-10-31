@@ -25,7 +25,7 @@ def print_function(score, event, *args):
   print(*args)
 
 def functions(echomesh, display):
-  if Config.is_enabled(echomesh.config, 'display'):
+  if Config.is_enabled('display'):
     from graphics.Sprite import ImageSprite
 
     def play_image(score, event, **keywords):
@@ -34,7 +34,7 @@ def functions(echomesh, display):
     def play_image(score, event, **keywords):
       LOGGER.info('Playing an image')
 
-  if Config.is_enabled(echomesh.config, 'audio', 'output'):
+  if Config.is_enabled('audio', 'output'):
     from sound.FilePlayer import FilePlayer
     def play_audio(score, event, **keywords):
       try:

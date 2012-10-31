@@ -48,7 +48,7 @@ class Echomesh(Openable):
     self.load_score()
 
   def load_score(self):
-    if Config.is_enabled(self.config, 'score'):
+    if Config.is_enabled('score'):
       from command.Score import Score
       from command import Functions
 

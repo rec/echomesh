@@ -3,30 +3,34 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import time
 
+
+from config import Config
+
 from graphics import Rect
 from graphics.pi3d import pi3d
 
 from util import Log
+from util.File import FileExpander
 from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-scnx=800
-scny=600
-
 DEFAULT_BACKGROUND = 0, 0, 0, 1
-DEFAULT_DIMENSIONS = 100, 100, scnx, scny, 0
+DEFAULT_DIMENSIONS = 0, 0, 0, 0, 0
+
+_DCONF = Config.CONFIG.get('display', {})
+BACKGROUND = _DCONF.get('background', DEFAULT_BACKGROUND)
+DIMENSIONS = _DCONF.get('dimensions', DEFAULT_DIMENSIONS)
+
 DEFAULT_FPS = 60.0
 
 DISPLAY = pi3d.display()
-DISPLAY.create2D(*DEFAULT_DIMENSIONS)
-DISPLAY.setBackColour(*DEFAULT_BACKGROUND)
+DISPLAY.create2D(*DIMENSIONS)
+DISPLAY.setBackColour(*BACKGROUND)
 
 DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
-DEBUGGING = not True
 
 TEXTURES = pi3d.textures()
-
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh, config):
@@ -36,15 +40,8 @@ class Pi3dDisplay(ThreadLoop):
     self.textures = TEXTURES
     self.texture_cache = {}
     self.sprites = []
-    self.ball = None
     self.count = 0
-
-    dconf = config['display']
-
-    background = dconf.get('background', DEFAULT_BACKGROUND)
-    dimensions = dconf.get('dimensions', DEFAULT_DIMENSIONS)
     self.display = DISPLAY
-    self.display.setBackColour(*background)
 
   def add_sprite(self, sprite):
     self.sprites.append(sprite)
@@ -52,17 +49,10 @@ class Pi3dDisplay(ThreadLoop):
   def run(self):
     self.display.clear()
 
-    if not self.ball:
-      self.ball = self.textures.loadTexture("graphics/pi3d/textures/red_ball.png")
-
     t = time.time()
-    if DEBUGGING:
-      pi3d.sprite(self.ball, self.count, self.count, -2.0, 80.0, 80.0)
-      self.count += 1
-    else:
-      self.sprites = [s for s in self.sprites if s.is_open]
-      for s in self.sprites:
-        s.update(t)
+    self.sprites = [s for s in self.sprites if s.is_open]
+    for s in self.sprites:
+      s.update(t)
     self.display.swapBuffers()
 
     fps = self.config['display'].get('frames_per_second', 0)

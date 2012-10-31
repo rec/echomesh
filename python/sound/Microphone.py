@@ -66,9 +66,10 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.callback = Util.call_if_different(average)
 
   def start(self):
-    if Config.is_enabled(self.config, 'audio', 'input'):
+    if Config.is_enabled('audio', 'input'):
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
       use_default = self.aconfig.get('use_default', False)
+      LOGGER.info('Starting pyaudio')
       self.stream = get_pyaudio_stream(rate, use_default)
 
     if getattr(self, 'stream', None):

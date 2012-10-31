@@ -13,9 +13,6 @@ LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = -2.0
 
-DEBUGGING = True
-BALL = Pi3dDisplay.TEXTURES.loadTexture("graphics/pi3d/textures/red_ball.png")
-
 class Sprite(Openable):
   def update(self, time):
     """Called on each clock tick.
@@ -23,19 +20,13 @@ class Sprite(Openable):
     LOGGER.info('Closing sprite')
     pass
 
-
 class ImageSprite(Sprite):
   def __init__(self, display, image=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
     Sprite.__init__(self)
-    LOGGER.info('Opening sprite %s', image)
-    if image and display:
-      # self.image = display.load_texture(image)
-      self.image = Pi3dDisplay.TEXTURES.loadTexture(os.path.expanduser(image))
-      assert self.image
-    else:
-      self.image = None
-      LOGGER.error('No image in image arguments')
+    self.imagename = image
+    self.display = display
+    LOGGER.debug('Opening sprite %s', image)
 
     self.loops = loops
     self.loop_number = 0
@@ -54,6 +45,13 @@ class ImageSprite(Sprite):
     display.add_sprite(self)
 
   def update(self, t):
+    if not hasattr(self, 'image'):
+      if self.imagename and self.display:
+        self.image = self.display.load_texture(self.imagename)
+      else:
+        self.image = None
+        LOGGER.error('No image in image arguments')
+
     if not self.time:
       self.time = t
     elapsed = t - self.time
@@ -72,12 +70,6 @@ class ImageSprite(Sprite):
     width = self.image.ix * size
     height = self.image.iy * size
     rotation = self.rotation.interpolate(elapsed)
-    if getattr(self, 'first_time', True):
-      print(self.image, x, y, z, width, height, rotation)
-      self.first_time = False
 
     from graphics.pi3d import pi3d
-    if DEBUGGING:
-      pi3d.sprite(BALL, x, y, z, width, height, rotation)
-    else:
-      pi3d.sprite(self.image, x, y, z, width, height, rotation)
+    pi3d.sprite(self.image, x, y, z, width, height, rotation)

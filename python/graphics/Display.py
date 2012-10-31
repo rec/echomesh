@@ -62,7 +62,7 @@ class DebugDisplay(ThreadLoop):
     pass
 
 def display(echomesh, config):
-  if Config.is_enabled(config, 'display'):
+  if Config.is_enabled('display'):
     if DEBUGGING:
       return DebugDisplay(echomesh, config)
 
