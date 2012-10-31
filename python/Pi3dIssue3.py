@@ -2,14 +2,13 @@ from graphics.pi3d import pi3d
 
 import sys, random, array
 
-ENABLE_BUG = not True
+ENABLE_BUG = True
 
 scnx = 800
 scny = 600
 
 def init_display():
   DISPLAY.create2D(100,100,scnx,scny,0)
-  DISPLAY.setBackColour(1.0,0.2,0.6,1)
 
 DISPLAY = pi3d.display()
 if not ENABLE_BUG:
@@ -21,6 +20,7 @@ class Display(object):
     self.ball = self.texs.loadTexture("graphics/pi3d/textures/red_ball.png")
     if ENABLE_BUG:
       init_display()
+    DISPLAY.setBackColour(1.0,0.2,0.6,1)
 
   def run(self):
     while True:
