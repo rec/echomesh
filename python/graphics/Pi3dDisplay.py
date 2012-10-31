@@ -29,7 +29,6 @@ class Pi3dDisplay(ThreadLoop):
     self.sprites = []
 
     dconf = config['display']
-    self.display.create2D(*dconf.get('dimensions', DEFAULT_DIMENSIONS))
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
     self.display.setBackColour(*background)
