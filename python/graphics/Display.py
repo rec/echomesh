@@ -7,7 +7,7 @@ from util.ThreadLoop import ThreadLoop
 from graphics.pi3d import pi3d
 
 LOGGER = Log.logger(__name__)
-DEBUGGING = True
+DEBUGGING = not True
 LATEST = not True
 
 scnx=800

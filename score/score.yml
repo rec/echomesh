@@ -143,13 +143,15 @@ mapping:
       -
         function: image
         keywords:
-          image: blu_ball.png
-          position: [100, 100]
-          duration: 10.0
+#          image: red_ball.png
+          image: ~/echomesh/python/graphics/pi3d/textures/red_ball.png
+          position: [[0, [100, 100]], [20, [1000, 1000]]]
+#          duration: 10.0
       -
         function: image
         keywords:
-          image: blu_ball.png
+          image: ~/echomesh/python/graphics/pi3d/textures/red_ball.png
+#          image: red_ball.png
           position: [[0, [100, 100]], [20, [1000, 1000]]]
                              # "Compact" list format.  You can also use the
                              # "verbose" format we used for goblin.png above.

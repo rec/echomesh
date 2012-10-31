@@ -24,8 +24,8 @@ DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
 def interleave(left, right):
-    """Convert two mono sources into one stereo source."""
-    return numpy.ravel(numpy.vstack((left, right)), order='F')
+  """Convert two mono sources into one stereo source."""
+  return numpy.ravel(numpy.vstack((left, right)), order='F')
 
 def uninterleave(src):
   """Convert one stereo source into two mono sources."""
@@ -57,10 +57,10 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.pan = Envelope.make_envelope(pan)
     self.loops = loops
 
-    if not fname.startswith('/'):
-      fname = DEFAULT_AUDIO_DIRECTORY + fname
-    fname = os.path.expanduser(filename)
-    filetype = sndhdr.what(fname)[0]
+    filename = os.path.expanduser(filename)
+    if not filename.startswith('/'):  # TODO: windows
+      filename = DEFAULT_AUDIO_DIRECTORY + filename
+    filetype = sndhdr.what(filename)[0]
     self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')
     self.sample_width = self.file_stream.getsampwidth()
 

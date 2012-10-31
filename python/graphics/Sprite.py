@@ -1,5 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
+import time
+
+from graphics import Pi3dDisplay
+
 from util.Envelope import Envelope
 from util import Log
 from util.Openable import Openable
@@ -7,6 +12,9 @@ from util.Openable import Openable
 LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = -2.0
+
+DEBUGGING = True
+BALL = Pi3dDisplay.TEXTURES.loadTexture("graphics/pi3d/textures/red_ball.png")
 
 class Sprite(Openable):
   def update(self, time):
@@ -22,7 +30,9 @@ class ImageSprite(Sprite):
     Sprite.__init__(self)
     LOGGER.info('Opening sprite %s', image)
     if image and display:
-      self.image = display.load_texture(image)
+      # self.image = display.load_texture(image)
+      self.image = Pi3dDisplay.TEXTURES.loadTexture(os.path.expanduser(image))
+      assert self.image
     else:
       self.image = None
       LOGGER.error('No image in image arguments')
@@ -67,4 +77,7 @@ class ImageSprite(Sprite):
       self.first_time = False
 
     from graphics.pi3d import pi3d
-    pi3d.sprite(self.image, x, y, z, width, height, rotation)
+    if DEBUGGING:
+      pi3d.sprite(BALL, x, y, z, width, height, rotation)
+    else:
+      pi3d.sprite(self.image, x, y, z, width, height, rotation)

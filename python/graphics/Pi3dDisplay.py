@@ -14,28 +14,37 @@ LOGGER = Log.logger(__name__)
 scnx=800
 scny=600
 
-DEFAULT_BACKGROUND = 1.0, 0.2, 0.6, 1
+DEFAULT_BACKGROUND = 0, 0, 0, 1
 DEFAULT_DIMENSIONS = 100, 100, scnx, scny, 0
 DEFAULT_FPS = 60.0
 
+DISPLAY = pi3d.display()
+DISPLAY.create2D(*DEFAULT_DIMENSIONS)
+DISPLAY.setBackColour(*DEFAULT_BACKGROUND)
+
 DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
+DEBUGGING = not True
+
+TEXTURES = pi3d.textures()
+
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh, config):
     ThreadLoop.__init__(self)
     self.config = config
     self.echomesh = echomesh
-    self.textures = pi3d.textures()
+    self.textures = TEXTURES
     self.texture_cache = {}
     self.sprites = []
+    self.ball = None
+    self.count = 0
 
     dconf = config['display']
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
     dimensions = dconf.get('dimensions', DEFAULT_DIMENSIONS)
-    self.display = pi3d.display()
-    self.display.create2D(*background)
-    self.display.setBackColour(*dimensions)
+    self.display = DISPLAY
+    self.display.setBackColour(*background)
 
   def add_sprite(self, sprite):
     self.sprites.append(sprite)
@@ -43,10 +52,17 @@ class Pi3dDisplay(ThreadLoop):
   def run(self):
     self.display.clear()
 
+    if not self.ball:
+      self.ball = self.textures.loadTexture("graphics/pi3d/textures/red_ball.png")
+
     t = time.time()
-    self.sprites = [s for s in self.sprites if s.is_open]
-    for s in self.sprites:
-      s.update(t)
+    if DEBUGGING:
+      pi3d.sprite(self.ball, self.count, self.count, -2.0, 80.0, 80.0)
+      self.count += 1
+    else:
+      self.sprites = [s for s in self.sprites if s.is_open]
+      for s in self.sprites:
+        s.update(t)
     self.display.swapBuffers()
 
     fps = self.config['display'].get('frames_per_second', 0)
@@ -54,13 +70,16 @@ class Pi3dDisplay(ThreadLoop):
       time.sleep(1.0 / fps)
 
   def load_texture(self, imagefile):
+    imagefile = os.path.expanduser(imagefile)
     if not imagefile.startswith('/'):
       imagefile = DEFAULT_IMAGE_DIRECTORY + imagefile
-    imagefile = os.path.expanduser(imagefile)
     texture = self.texture_cache.get(imagefile, None)
     if not texture:
       LOGGER.info(imagefile)
-      texture = self.textures.loadTexture(imagefile)
+      try:
+        texture = self.textures.loadTexture(imagefile)
+      except IOError:
+        LOGGER.error("Can't open image file %s", imagefile)
       self.texture_cache[imagefile] = texture
     return texture
 
