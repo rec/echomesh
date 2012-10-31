@@ -9,7 +9,6 @@ from graphics.pi3d import pi3d
 LOGGER = Log.logger(__name__)
 DEBUGGING = True
 
-# Setup display and initialise pi3d
 scnx=800
 scny=600
 
@@ -32,13 +31,15 @@ class DebugDisplay(ThreadLoop):
     self.echomesh = echomesh
     self.textures = pi3d.textures()
     self.texture_cache = {}
-    # self.display = pi3d.display()
     self.sprites = []
 
     dconf = config['display']
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
-    # self.display.setBackColour(*background)
+    dimensions = dconf.get('dimensions', DEFAULT_DIMENSIONS)
+    #self.display = pi3d.display()
+    #self.display.create2D(*background)
+    #self.display.setBackColour(*dimensions)
 
   def add_sprite(self, sprite):
     pass

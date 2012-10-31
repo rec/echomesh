@@ -11,9 +11,11 @@ from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_BACKGROUND = 0, 0, 0, 1.0
-DEFAULT_DIMENSIONS = 0, 0, 0, 0, 0
-ESCAPE_KEY = 27
+scnx=800
+scny=600
+
+DEFAULT_BACKGROUND = 1.0, 0.2, 0.6, 1
+DEFAULT_DIMENSIONS = 100, 100, scnx, scny, 0
 DEFAULT_FPS = 60.0
 
 DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
@@ -25,13 +27,15 @@ class Pi3dDisplay(ThreadLoop):
     self.echomesh = echomesh
     self.textures = pi3d.textures()
     self.texture_cache = {}
-    self.display = pi3d.display()
     self.sprites = []
 
     dconf = config['display']
 
     background = dconf.get('background', DEFAULT_BACKGROUND)
-    self.display.setBackColour(*background)
+    dimensions = dconf.get('dimensions', DEFAULT_DIMENSIONS)
+    self.display = pi3d.display()
+    self.display.create2D(*background)
+    self.display.setBackColour(*dimensions)
 
   def add_sprite(self, sprite):
     self.sprites.append(sprite)
