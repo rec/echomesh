@@ -2,7 +2,7 @@ from graphics.pi3d import pi3d
 
 import sys, random, array
 
-ENABLE_BUG = True
+ENABLE_BUG = not True
 
 scnx = 800
 scny = 600
@@ -16,7 +16,8 @@ def init_display():
   return init(pi3d.display())
 
 if not ENABLE_BUG:
-  DISPLAY = init_display()
+  DISPLAY = pi3d.display()
+  init(DISPLAY)
 
 
 class Display(object):
