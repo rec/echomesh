@@ -56,6 +56,7 @@ class Pi3dDisplay(ThreadLoop):
     imagefile = os.path.expanduser(imagefile)
     texture = self.texture_cache.get(imagefile, None)
     if not texture:
+      LOGGER.info(imagefile)
       texture = self.textures.loadTexture(imagefile)
       self.texture_cache[imagefile] = texture
     return texture

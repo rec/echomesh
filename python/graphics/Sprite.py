@@ -6,12 +6,13 @@ from util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_Z = 0.0
+DEFAULT_Z = -2.0
 
 class Sprite(Openable):
   def update(self, time):
     """Called on each clock tick.
       time: the time in floating point seconds."""
+    LOGGER.info('Closing sprite')
     pass
 
 
@@ -19,6 +20,7 @@ class ImageSprite(Sprite):
   def __init__(self, display, image=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
     Sprite.__init__(self)
+    LOGGER.info('Opening sprite %s', image)
     if image and display:
       self.image = display.load_texture(image)
     else:
@@ -39,8 +41,6 @@ class ImageSprite(Sprite):
       envs = [self.position, self.rotation, self.size]
       self.duration = max(x.length() for x in envs)
 
-    from graphics.pi3d import pi3d
-    self.sprite = pi3d.sprite
     display.add_sprite(self)
 
   def update(self, t):
@@ -65,4 +65,6 @@ class ImageSprite(Sprite):
     if getattr(self, 'first_time', True):
       print(self.image, x, y, z, width, height, rotation)
       self.first_time = False
-    self.sprite(self.image, x, y, z, width, height, rotation)
+
+    from graphics.pi3d import pi3d
+    pi3d.sprite(self.image, x, y, z, width, height, rotation)

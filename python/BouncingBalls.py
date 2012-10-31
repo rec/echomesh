@@ -26,6 +26,8 @@ scny=600
 display = pi3d.display()
 display.create2D(100,100,scnx,scny,0)
 
+ENABLE_CAPTION = not True
+
 # Set last value (alpha) to zero for a transparent background!
 display.setBackColour(1.0,0.2,0.6,1)
 
@@ -65,7 +67,6 @@ bar = texs.loadTexture("graphics/pi3d/textures/bar.png")
 bbtitle = texs.loadTexture("graphics/pi3d/textures/pi3dbbd.png",True)
 
 # Fetch key presses
-mykeys = pi3d.key()
 scshots = 1
 first_time = True
 
@@ -92,19 +93,9 @@ while True:
 	if by[b]>scny or by[b]<0:
 		dy[b]=-dy[b]
 
-    #draw a bar at the top of the screen
-    pi3d.rectangle(bar,0,scny,scnx,32)
-    pi3d.rectangle(bbtitle,5,scny,256+5,32)
-
-    k = mykeys.read()
-    if k >-1:
-	if k==112:
-	    display.screenshot("screen3D"+str(scshots)+".jpg")
-	    scshots += 1
-	if k==27:
-		mykeys.close()
-		texs.deleteAll()
-		display.destroy()
-		break
+    if ENABLE_CAPTION:
+      #draw a bar at the top of the screen
+      pi3d.rectangle(bar,0,scny,scnx,32)
+      pi3d.rectangle(bbtitle,5,scny,256+5,32)
 
     display.swapBuffers()
