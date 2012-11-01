@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import traceback
+
 from config import Config
 from sound import Levels
 from util import Average
@@ -74,7 +76,10 @@ class Microphone(ThreadLoop.ThreadLoop):
   def run(self):
     def get_next_level():
       while self.is_open:
-        yield get_mic_level(self.stream.read(self.chunksize))
+        try:
+          yield get_mic_level(self.stream.read(self.chunksize))
+        except:
+          LOGGER.critical(traceback.format_exc())
 
     average = Average.average(
       get_next_level(),

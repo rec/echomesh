@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import random
+import traceback
 
 from config import Config
 from util import Log
@@ -43,7 +44,8 @@ def functions(echomesh, display):
         echomesh.add_closer(player)
         return player
       except:
-        LOGGER.error("Didn't understand play_audio arguments %s", args[0])
+        LOGGER.error("Didn't understand play_audio arguments %s", keywords)
+        LOGGER.critical(traceback.format_exc())
   else:
     def play_audio(score, event, **keywords):
       LOGGER.info('Playing an image')

@@ -17,9 +17,10 @@ from util import ThreadLoop
 DEFAULT_CHUNK_SIZE = 1024
 # DEFAULT_CHUNK_SIZE = 8
 BITS_PER_BYTE = 8
-DEBUG = False
 
 DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
+OUTPUT_DEVICE_INDEX = -1
+MAX_DEVICE_NUMBERS = 8
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
@@ -72,11 +73,28 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.samples_per_frame = self.sample_width * self.channels
     self.restart_sound()
 
+  def open_stream(self, index):
+    try:
+      return Sound.PYAUDIO.open(format=self.format,
+                                channels=self.request_channels,
+                                rate=self.sampling_rate,
+                                output=True,
+                                output_device_index=index)
+    except:
+      return None
+
   def restart_sound(self):
-    self.audio_stream = Sound.PYAUDIO.open(format=self.format,
-                                           channels=self.request_channels,
-                                           rate=self.sampling_rate,
-                                           output=True)
+    global OUTPUT_DEVICE_INDEX
+    if OUTPUT_DEVICE_INDEX is -1:
+      for i in range(MAX_DEVICE_NUMBERS):
+        self.audio_stream = self.open_stream(i)
+        if self.audio_stream:
+          OUTPUT_DEVICE_INDEX = i
+          break
+    else:
+      self.audio_stream = self.open_stream(OUTPUT_DEVICE_INDEX)
+
+    assert self.audio_stream
     self.time = 0
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)

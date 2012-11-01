@@ -1,8 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
 import os.path
+import random
 import time
-
 
 from config import Config
 
@@ -42,9 +43,10 @@ class Pi3dDisplay(ThreadLoop):
     self.sprites = []
     self.count = 0
     self.display = DISPLAY
+    self.preload()
 
   def add_sprite(self, sprite):
-    self.sprites.append(sprite)
+    self.sprites.insert(0, sprite)
 
   def run(self):
     self.display.clear()
@@ -60,6 +62,8 @@ class Pi3dDisplay(ThreadLoop):
       time.sleep(1.0 / fps)
 
   def load_texture(self, imagefile):
+    if imagefile == '$random':
+      imagefile = random.choice(os.listdir(DEFAULT_IMAGE_DIRECTORY))
     imagefile = os.path.expanduser(imagefile)
     if not imagefile.startswith('/'):
       imagefile = DEFAULT_IMAGE_DIRECTORY + imagefile
@@ -72,6 +76,12 @@ class Pi3dDisplay(ThreadLoop):
         LOGGER.error("Can't open image file %s", imagefile)
       self.texture_cache[imagefile] = texture
     return texture
+
+  def preload(self):
+    if True:
+      return
+    for imagefile in os.listdir(DEFAULT_IMAGE_DIRECTORY):
+      self.load_texture(imagefile)
 
   def close(self):
     ThreadLoop.close(self)

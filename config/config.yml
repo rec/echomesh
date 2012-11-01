@@ -32,7 +32,7 @@ discovery:
   timeout: 0.10
 
 display:
-  dimensions: [0, 0, 400, 400, 0]
+  dimensions: [960, 0, 960, 600, 0]
   frames_per_second: 30
   full_screen: true
   library: pi3d
