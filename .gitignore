@@ -5,6 +5,8 @@
 *.bin
 *.o
 
+.pulse-cookie
+
 *#*
 
 logs/
