@@ -19,7 +19,7 @@ DEFAULT_CHUNK_SIZE = 1024
 BITS_PER_BYTE = 8
 DEBUG = False
 
-DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~pi/echomesh/assets/audio/')
+DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 

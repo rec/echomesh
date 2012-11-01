@@ -12,7 +12,7 @@ LOGGER = Log.logger(__name__)
 
 GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
 GIT_LOG = ['log', '-n1', '--abbrev=40']
-GIT_DIRECTORY = os.path.expanduser('~pi/echomesh/')
+GIT_DIRECTORY = os.path.expanduser('~/echomesh/')
 
 def run_git_command(command, config=None, cwd=None):
   binary = GIT_BINARY
