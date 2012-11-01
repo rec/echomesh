@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import getpass
+import os
 import os.path
 import sys
 import yaml
@@ -9,14 +11,14 @@ from network import Address
 from util import File
 from util import Merge
 
-CONFIG_FILE = '~pi/echomesh/config/config.yml'
-NODE_CONFIG_FILE = '~pi/echomesh/config/node-config.yml'
+CONFIG_FILE = '~/echomesh/config/config.yml'
+NODE_CONFIG_FILE = '~/echomesh/config/node-config.yml'
 
 # Local configuration for this account.
-LOCAL_FILE = '~pi/.echomesh'
+LOCAL_FILE = '~/.echomesh'
 
 # Stores the last dynamic configuration update.
-LOCAL_CHANGED_FILE = os.path.expanduser('~pi/.echomesh-changed')
+LOCAL_CHANGED_FILE = os.path.expanduser('~/.echomesh-changed')
 
 STORE_LOCAL_CHANGED_FILE = True
 
@@ -24,6 +26,10 @@ CONFIG = None
 
 def recalculate():
   global CONFIG
+
+  # HACK to deal with running as root.
+  if getpass.getuser() == 'root':
+    os.environ['HOME'] = 'home/pi'
 
   CONFIG = Merge.merge_into_all(
     File.yaml_load(CONFIG_FILE),

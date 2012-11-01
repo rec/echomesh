@@ -20,8 +20,8 @@ from util import Log
 from util.Openable import Openable
 from util.Closer import Closer
 
-DEFAULT_SCORE = '~pi/echomesh/score/score.yml'
-LOCAL_SCORE = os.path.expanduser('~pi/.echomesh-score')
+DEFAULT_SCORE = '~/echomesh/score/score.yml'
+LOCAL_SCORE = os.path.expanduser('~/.echomesh-score')
 
 LOGGER = Log.logger(__name__)
 

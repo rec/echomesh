@@ -15,7 +15,7 @@ LOGGING = Log.logger(__name__)
 if Platform.IS_MAC:
   IMAGE = '/development/echomesh/data/ball.gif'
 else:
-  IMAGE = '~pi/echomesh/data/ball.gif'
+  IMAGE = '~/echomesh/data/ball.gif'
 
 def _make_screen(config):
   dconf = config['display']
