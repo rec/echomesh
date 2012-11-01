@@ -37,7 +37,11 @@ class Envelope(object):
     try:
       items = zip(iter(d1), iter(d2))
     except TypeError:
-      return d1 * (1 - ratio) + d2 * ratio
+      try:
+        return d1 * (1 - ratio) + d2 * ratio
+      except:
+        print(d1, d2, ratio)
+        raise
 
     return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
 

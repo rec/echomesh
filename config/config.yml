@@ -6,14 +6,14 @@ audio:
   library: pyaudio
 
   output:
-    enable: false
+    enable: true
 
   input:
-    enable: false
+    enable: true
     samplerate: 8000
     name: AK5370
     periodsize: 160
-    verbose: true
+    verbose: false
 
     chunksize: 1024
     grouping_window: 2

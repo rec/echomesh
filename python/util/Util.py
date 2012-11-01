@@ -17,11 +17,3 @@ def get_and_increment_index_file(f, open=open):
     output.write(index)
   return index
 
-def call_if_different(callback, initial=None):
-  old_val = [initial]
-  def cb(value):
-    if value != old_val[0]:
-      old_val[0] = value
-      callback(value)
-  return cb
-
