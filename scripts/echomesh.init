@@ -1,74 +1,126 @@
 #!/bin/sh
-# Start/stop the echomesh daemon.
-#
 ### BEGIN INIT INFO
 # Provides:          echomesh
 # Required-Start:    $all
-# Required-Stop:     
+# Required-Stop:     $all
+# Should-Start:      $all
+# Should-Stop:       $all
 # Default-Start:     2 3 4 5
-# Default-Stop:
-# Short-Description: Run the echomesh program
-# Description:       A noisy array of reactive computers
+# Default-Stop:      0 1 6
+# Short-Description: simple distributed compiler client and server
 ### END INIT INFO
 
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DESC="echomesh daemon"
 NAME=echomesh
-DAEMONUSER=pi 
+DAEMONUSER=pi
 DAEMON=/home/pi/echomesh/scripts/echomesh.sh
-PIDDIR=/home/pi/echomesh/logs
-PIDFILE=$PIDDIR/echomeshd.pid
-SCRIPTNAME=/etc/init.d/"$NAME"
+DAEMON_ARGS="--pid-file=/var/run/$NAME.pid --log-file=/var/log/$NAME.log --daemon"
 
-DISALLOW_MODULE_LOADING=1
-
-test -f $DAEMON || exit 0
+set -e
 
 . /lib/lsb/init-functions
 
+# Reads config file (will override defaults above)
 [ -r /etc/default/echomesh ] && . /etc/default/echomesh
 
+test -x $DAEMON || exit 0
 
-echomesh_start () {
-  log_daemon_msg "Starting system Echomesh Daemon"
-  if [ ! -d $PIDDIR ]; then
-    mkdir -p $PIDDIR
-    chown $DAEMONUSER:$DAEMONUSER $PIDDIR
-  fi
-  start-stop-daemon -x $DAEMON --pidfile $PIDFILE --start -- --system --disallow-exit --disallow-module-loading=$DISALLOW_MODULE_LOADING --daemonize --log-target=syslog --high-priority --make-pidfile --background
-  status=$?
-  log_end_msg ${status}
-}
+# construct access list
+ALLOW=""
+for net in $ALLOWEDNETS
+do
+	ALLOW="$ALLOW --allow $net"
+done
 
-echomesh_stop () {
-  log_daemon_msg "Stopping system Echomesh Daemon"
-  start-stop-daemon --pidfile $PIDFILE --stop --retry 5 || echo -n "...which is not running"
-  log_end_msg $?
+if test -n "$ALLOW"; then
+	DAEMON_ARGS="$DAEMON_ARGS $ALLOW"
+fi
+
+if test -n "$LISTENER"; then
+	DAEMON_ARGS="$DAEMON_ARGS --listen $LISTENER"
+fi
+
+if test -n "$NICE"; then
+	if [ "$NICE" -ge 0 ] && [ "$NICE" -le 20 ]; then
+		DAEMON_ARGS="$DAEMON_ARGS --nice $NICE"
+	fi
+fi
+
+if test -n "$JOBS"; then
+	DAEMON_ARGS="$DAEMON_ARGS --jobs $JOBS"
+fi
+
+if [ "$ZEROCONF" = "true" ] || [ "$ZEROCONF" = "YES" ]; then
+	DAEMON_ARGS="$DAEMON_ARGS --zeroconf"
+fi
+
+should_start() {
+	# we need permission to write to the pid file
+	touch /var/run/$NAME.pid
+	chown $DAEMONUSER /var/run/$NAME.pid
 }
 
 case "$1" in
-  start|stop)
-    echomesh_${1}
-    ;;
-  restart|reload|force-reload)
-    if [ -s $PIDFILE ] && kill -0 $(cat $PIDFILE) >/dev/null 2>&1; then
-      echomesh_stop
-      echomesh_start
-    fi
-    ;;
-  force-stop)
-    echomesh_stop
-    killall python || true
-    sleep 2
-    killall -9 python || true
-    ;;
+  start)
+	should_start
+	log_begin_msg "Starting $DESC: $NAME"
+	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
+  --user $DAEMONUSER --oknodo \
+	--exec $DAEMON -- $DAEMON_ARGS ||
+	{
+	    code=$?
+	    log_warning_msg "$0: start failed with error code $code" >&2
+	    log_end_msg $code
+	    exit $code
+	}
+	log_end_msg 0
+	;;
+  stop)
+	log_begin_msg "Stopping $DESC: $NAME"
+	start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
+		--oknodo \
+		--exec $DAEMON ||
+	{
+	    code=$?
+	    log_warning_msg "$0: stop failed with error code $code" >&2
+	    log_end_msg $code
+	    exit $code
+	}
+	rm -f /var/run/$NAME.pid >/dev/null 2>&1
+	log_end_msg 0
+	;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	log_begin_msg "Restarting $DESC: $NAME"
+	start-stop-daemon --stop --quiet --pidfile /var/run/$NAME.pid \
+		--oknodo \
+		--exec $DAEMON
+	sleep 1
+	should_start
+	start-stop-daemon --start --quiet --pidfile /var/run/$NAME.pid \
+    --user $DAEMONUSER --oknodo
+	{
+	    code=$?
+	    rm -f /var/run/$NAME.pid >/dev/null 2>&1
+	    log_warning_msg "$0: restart failed with error code $code" >&2
+	    log_end_msg $code
+	    exit $code
+	}
+	log_end_msg 0
+	;;
   status)
-    status_of_proc -p $PIDFILE "$DAEMON" "Echomesh" && exit 0 || exit $?
-    ;;
+	status_of_proc $DAEMON $NAME
+	;;
   *)
-    echo "Usage: /etc/init.d/echomesh {start|stop|force-stop|restart|reload|force-reload|status}"
-    exit 1
-    ;;
+	N=/etc/init.d/$NAME
+	echo "Usage: $N {start|stop|restart|force-reload|status}" >&2
+	exit 1
+	;;
 esac
 
 exit 0

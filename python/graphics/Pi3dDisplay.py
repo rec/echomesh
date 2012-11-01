@@ -28,7 +28,7 @@ DISPLAY = pi3d.display()
 DISPLAY.create2D(*DIMENSIONS)
 DISPLAY.setBackColour(*BACKGROUND)
 
-DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
+DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~pi/echomesh/assets/image/')
 
 TEXTURES = pi3d.textures()
 

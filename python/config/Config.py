@@ -9,14 +9,14 @@ from network import Address
 from util import File
 from util import Merge
 
-CONFIG_FILE = '~/echomesh/config/config.yml'
-NODE_CONFIG_FILE = '~/echomesh/config/node-config.yml'
+CONFIG_FILE = '~pi/echomesh/config/config.yml'
+NODE_CONFIG_FILE = '~pi/echomesh/config/node-config.yml'
 
 # Local configuration for this account.
-LOCAL_FILE = '~/.echomesh'
+LOCAL_FILE = '~pi/.echomesh'
 
 # Stores the last dynamic configuration update.
-LOCAL_CHANGED_FILE = os.path.expanduser('~/.echomesh-changed')
+LOCAL_CHANGED_FILE = os.path.expanduser('~pi/.echomesh-changed')
 
 STORE_LOCAL_CHANGED_FILE = True
 
