@@ -95,6 +95,7 @@ class Microphone(ThreadLoop.ThreadLoop):
 
   def start(self):
     if Config.is_enabled('audio', 'input'):
+      print('!!!! ENABLED!')
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
       use_default = self.aconfig.get('use_default', False)
       LOGGER.info('Starting pyaudio')

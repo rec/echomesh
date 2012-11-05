@@ -1,20 +1,8 @@
 hofmann:
-  audio:
-    input:
-      use_default: true
-
   control_program: true
 
 Asimov:
-  audio:
-    input:
-      use_default: true
-
   control_program: true
 
 pearl:
-  audio:
-    input:
-      use_default: true
-
   control_program: true
