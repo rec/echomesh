@@ -43,7 +43,7 @@ class Echomesh(Openable):
     self.closer = Closer()
 
     self.microphone = Microphone.Microphone(self.config, self._mic_event)
-    self.control_program = self.config.get('control_program', False)
+    self.control_program = Config.is_control_program()
 
     self.load_score()
 

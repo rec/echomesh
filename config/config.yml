@@ -21,8 +21,6 @@ audio:
       medium: -15
       loud: 0
 
-control_program: false
-
 discovery:
   port: 1238
   timeout: 0.10
