@@ -1,18 +1,18 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
+from contextlib import closing
 import os
 import socket
 
 from util import Platform
 
-
 def ip_address():
-  s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-  s.connect(('8.8.8.8', 80))
-  name = s.getsockname()[0]
-  s.close()
-  return name
-
+  try:
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as s:
+      s.connect(('8.8.8.8', 80))
+      return s.getsockname()[0]
+  except:
+    return '(none)'
 
 if Platform.IS_LINUX:
   import fcntl, socket, struct
