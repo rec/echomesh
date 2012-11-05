@@ -2,7 +2,6 @@
 .svn
 *.pyc
 *.pyo
-*.bin
 *.o
 
 .pulse-cookie
