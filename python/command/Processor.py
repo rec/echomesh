@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from config import Config
-from git import Git
+from network import Git
 from util import File
 from util import Log
 

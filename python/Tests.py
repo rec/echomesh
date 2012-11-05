@@ -1,57 +1,4 @@
 """
-
->>> String.truncate('hello', 6)
-u'hello'
-
->>> String.truncate('hello', 5)
-u'hello'
-
->>> String.truncate('hello', 4)
-u'h...'
-
->>> String.truncate('hello', 3)
-u'...'
-
->>> String.truncate('hello', 2)
-u'..'
-
->>> String.truncate('hello', 1)
-u'.'
-
->>> String.truncate('hello', 0)
-u''
-
->>> String.truncate_suffix('hello', ' suf', 9)
-u'hello suf'
-
->>> String.truncate_suffix('hello', ' suf', 8)
-u'h... suf'
-
->>> String.truncate_suffix('hello', ' suf', 7)
-u'... suf'
-
->>> String.truncate_suffix('hello', ' suf', 6)
-u'.. suf'
-
->>> String.truncate_suffix('hello', ' suf', 5)
-u'. suf'
-
->>> String.truncate_suffix('hello', ' suf', 4)
-u' suf'
-
->>> cb = Util.call_if_different(print)
-
->>> cb(1)
-1
-
->>> cb(1)
-
->>> cb(2)
-2
-
->>> cb(1)
-1
-
 >>> env = Envelope.Envelope([[0, 5.0], [1, 10.0], [2, 20.0]])
 
 >>> env.interpolate(-1)
@@ -114,7 +61,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from util import Average
 from util import Envelope
 from util import Merge
-from util import String
 from util import Util
 
 if __name__ == "__main__":
