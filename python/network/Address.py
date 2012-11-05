@@ -1,5 +1,7 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
+# This code is duplicated in https://github.com/rec/git-twit/tree/master/network.
+
 from contextlib import closing
 import os
 import socket
