@@ -10,6 +10,7 @@ import yaml
 from network import Address
 from util import File
 from util import Merge
+from util import Platform
 
 CONFIG_FILE = '~/echomesh/config/config.yml'
 NODE_CONFIG_FILE = '~/echomesh/config/node-config.yml'
@@ -53,9 +54,12 @@ def remove_local():
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
 # because we'd have to revert the main config to its original value "in place".
 
+def is_control_program():
+  return CONFIG.get('control_program', not Platform.IS_LINUX)
+
 def is_enabled(*parts):
   config = CONFIG
-  control_program = config.get('control_program', False)
+  control_program = is_control_program()
   for p in parts:
     config = config.get(p, {})
 

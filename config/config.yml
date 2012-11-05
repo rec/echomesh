@@ -5,11 +5,7 @@ allow_shutdown: true
 audio:
   library: pyaudio
 
-  output:
-    enable: true
-
   input:
-    enable: true
     samplerate: 8000
     name: AK5370
     periodsize: 160
@@ -24,8 +20,6 @@ audio:
       quiet: -25
       medium: -15
       loud: 0
-
-control_program: false
 
 discovery:
   port: 1238

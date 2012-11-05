@@ -37,7 +37,7 @@ class Router(object):
     self.echomesh.receive_event(event)
 
   def halt(self, data):
-    if not self._is_control_program():
+    if not Config.is_control_program():
       LOGGER.info('Quitting');
       self.echomesh.close()
 
@@ -75,12 +75,9 @@ class Router(object):
 
   def _close_and_run(self, msg, cmd):
     LOGGER.info(msg)
-    if not self._is_control_program() and self.config['allow_shutdown']:
+    if not Config.is_control_program() and self.config['allow_shutdown']:
       Subprocess.run(cmd)
       self.halt(cmd)
-
-  def _is_control_program(self):
-    return self.echomesh.config['control_program']
 
 def router(echomesh, clients):
   def _error(data):
