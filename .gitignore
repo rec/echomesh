@@ -1,7 +1,5 @@
 *~
 .svn
-*.pyc
-*.pyo
 *.o
 
 .pulse-cookie
