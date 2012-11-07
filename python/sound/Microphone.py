@@ -72,12 +72,15 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.set_config(config)
     self.callback = callback
     self.previous_level = None
+    self.errors = 0
 
   def run(self):
     def get_next_level():
       while self.is_open:
         try:
           yield get_mic_level(self.stream.read(self.chunksize))
+        except IOError:
+          self.errors += 1
         except:
           LOGGER.critical(traceback.format_exc())
 

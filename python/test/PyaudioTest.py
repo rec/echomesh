@@ -11,8 +11,7 @@ CHUNK = 1024
 # Initialize PyAudio
 pyaud = pyaudio.PyAudio()
 
-if READ:
-
+def read():
   INPUT_INDEX = int(sys.argv[1])
 
   # Open input stream, 16-bit mono at 44100 Hz
@@ -32,8 +31,7 @@ if READ:
     # Show the volume and pitch
     print analyse.loudness(samps), analyse.musical_detect_pitch(samps)
 
-else:
-
+def write():
   if len(sys.argv) < 2:
     print("Plays a wave file.\n\nUsage: %s filename.wav" % sys.argv[0])
     sys.exit(-1)
@@ -53,7 +51,9 @@ else:
 
   data = wf.readframes(CHUNK)
 
+  chunks = 0
   while data != '':
+    chunks += 1
     stream.write(data)
     data = wf.readframes(CHUNK)
 
@@ -61,3 +61,6 @@ else:
   stream.close()
 
   pyaud.terminate()
+  print('Terminated after %d chunks of size %d' % (chunks, CHUNK))
+
+read() if READ else write()

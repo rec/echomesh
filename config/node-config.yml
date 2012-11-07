@@ -1,0 +1,3 @@
+Chairman:
+  control_program: true
+  audio: {input: {enable: true}, output: {enable: true}}
