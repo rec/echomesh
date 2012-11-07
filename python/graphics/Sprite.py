@@ -71,5 +71,5 @@ class ImageSprite(Sprite):
     height = self.image.iy * size
     rotation = self.rotation.interpolate(elapsed)
 
-    from graphics.pi3d import pi3d
-    pi3d.sprite(self.image, x, y, z, width, height, rotation)
+    from pi3d import Draw
+    Draw.sprite(self.image, x, y, z, width, height, rotation)

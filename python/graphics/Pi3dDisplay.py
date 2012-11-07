@@ -5,11 +5,11 @@ import os.path
 import random
 import time
 
+from pi3d.Display import Display
+from pi3d.Texture import Textures
+
 from config import Config
-
 from graphics import Rect
-from graphics.pi3d import pi3d
-
 from util import Log
 from util.File import FileExpander
 from util.ThreadLoop import ThreadLoop
@@ -25,13 +25,13 @@ DIMENSIONS = _DCONF.get('dimensions', DEFAULT_DIMENSIONS)
 
 DEFAULT_FPS = 60.0
 
-DISPLAY = pi3d.display()
+DISPLAY = Display()
 DISPLAY.create2D(*DIMENSIONS)
 DISPLAY.setBackColour(*BACKGROUND)
 
 DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
 
-TEXTURES = pi3d.textures()
+TEXTURES = Textures()
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh, config):
