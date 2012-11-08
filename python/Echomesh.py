@@ -15,6 +15,7 @@ from graphics import Display
 from network import Clients
 from network import Discovery
 from sound import Microphone
+from sound import SetOutput
 from util import File
 from util import Log
 from util.Openable import Openable
@@ -42,6 +43,7 @@ class Echomesh(Openable):
     self.display = Display.display(self, self.config)
     self.closer = Closer()
 
+    SetOutput.set_output(self.config.get('audio', {}).get('route', None))
     self.microphone = Microphone.Microphone(self.config, self._mic_event)
     self.control_program = Config.is_control_program()
 

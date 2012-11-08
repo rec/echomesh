@@ -5,6 +5,9 @@ allow_shutdown: true
 audio:
   library: pyaudio
 
+  output:
+    route: audio
+
   input:
     samplerate: 8000
     name: AK5370

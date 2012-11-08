@@ -55,12 +55,16 @@ def remove_local():
 # because we'd have to revert the main config to its original value "in place".
 
 def is_control_program():
+  """is_headless() is True if Echomesh responds to keyboard commands."""
   return CONFIG.get('control_program', not Platform.IS_LINUX)
+
+def is_headless():
+  """is_headless() is True if Echomesh cannot do graphics, sound or scores."""
+  return CONFIG.get('headless', not Platform.IS_LINUX)
 
 def is_enabled(*parts):
   config = CONFIG
-  control_program = is_control_program()
   for p in parts:
     config = config.get(p, {})
 
-  return config.get('enable', not control_program)
+  return config.get('enable', not is_headless())
