@@ -1,29 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import time
-
 from util import Poisson
-from util.ThreadLoop import ThreadLoop
+from command.CommandLoop import CommandLoop
 
-DEFAULT_TIMEOUT = 0.5
 DEFAULT_INTERVAL = 10.0
 
-class RandomCommand(ThreadLoop):
-  def __init__(self, score, rule, timeout=DEFAULT_TIMEOUT):
-    ThreadLoop.__init__(self)
-    self.score = score
-    self.rule = rule
-    self.mean = rule.get('data', {}).get('mean', DEFAULT_INTERVAL)
-    keys = list(rule.get('mapping', {}).iterkeys())
-    self.event = dict(key=keys[0] if keys else 'none')
-    self._next_event(time.time())
+class RandomCommand(CommandLoop):
+  def __init__(self, score, element, timeout=None):
+    CommandLoop.__init__(self, score, element, timeout)
+    self.mean = element.get('data', {}).get('mean', DEFAULT_INTERVAL)
+    self.command = element.get('command', {})
+    assert self.command['function']
 
-  def _next_event(self, t):
-    self.time = t + Poisson.next_poisson(self.mean)
+  def _next_time(self, t):
+    return t + Poisson.next_poisson(self.mean)
 
-  def run(self):
-    t = time.time()
-    if t >= self.time:
-      self.score.execute_rule(self.rule, self.event)
-      self._next_event(t)
-    time.sleep(min(DEFAULT_TIMEOUT, self.time - t))
+  def _command(self, t):
+    self.execute_command(self.command)

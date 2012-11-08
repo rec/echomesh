@@ -62,9 +62,13 @@ def is_headless():
   """is_headless() is True if Echomesh cannot do graphics, sound or scores."""
   return CONFIG.get('headless', not Platform.IS_LINUX)
 
-def is_enabled(*parts):
-  config = CONFIG
-  for p in parts:
-    config = config.get(p, {})
+def get(parts, default=None):
+  assert parts
 
-  return config.get('enable', not is_headless())
+  config = CONFIG
+  for p in parts[:-1]:
+    config = config.get(p, {})
+  return config.get(parts[-1], default)
+
+def is_enabled(*parts):
+  return get(parts + ('enable',), not is_headless())

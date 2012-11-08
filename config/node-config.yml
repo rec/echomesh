@@ -1,3 +1,6 @@
 Chairman:
   control_program: true
 
+hofmann:
+  headless: true
+  score: {enable: true}

@@ -6,13 +6,13 @@
 #
 #   1. We have four machines: President, Chairman, Treasurer and Secretary.
 #   2. A Machine receive Events and sends them to the whole system.
-#   3. There's a list of Rules.
-#   4. If a Rule triggers on an Event, it triggers a Function.
+#   3. There's a list of Elements.
+#   4. If a Element triggers on an Event, it triggers a Function.
 #
 #
 # 1. Events.
 #
-# We only have two classes of Event right now - mic and random.
+# We have three classes of Event right now - mic, random and sequence
 #
 # mic Events happen when there's a gross input level change on one of the
 # microhones.
@@ -20,11 +20,14 @@
 # random Events occur intermittently "on their own steam" - just to keep
 # things going if nothing has happened.
 #
+# sequence Events occur at a sequence of times in the future.
+
 #
-# 2. Rules
 #
-# This whole file is nothing more than a list of Rules, so you'll see a lot of
-# examples of Rules below.  (Technically, we are using the YAML data language,
+# 2. Elements
+#
+# This whole file is nothing more than a list of Elements, so you'll see a lot of
+# examples of Elements below.  (Technically, we are using the YAML data language,
 # which is upwardly compatible with JSON - see here:
 # http://www.yaml.org/spec/1.2/spec.html#Preview )
 #
@@ -83,25 +86,25 @@
 
 
 #
-# And now for some specific examples of Rules!
+# And now for some specific examples of Elements!
 #
 
-type: mic           # This rule triggers when a microphone changes levels.
+type: mic           # This element triggers when a microphone changes levels.
 
-source: President   # This means that this rule only triggers on events coming
+source: President   # This means that this element only triggers on events coming
                     # FROM the Machine named President.
 
-target: President   # This means that this rule only triggers ON the Machine
+target: President   # This means that this element only triggers ON the Machine
                     # named President.
                     #
-                    # If you omit the "source" field, the rule will trigger on
+                    # If you omit the "source" field, the element will trigger on
                     # all incoming events regardless of source Machine
                     #
-                    # If you omit the "target" field, the rule will trigger on
+                    # If you omit the "target" field, the element will trigger on
                     # all Machines.
 
 
-# The mapping section of a Rule is a table of events for incoming data.
+# The mapping section of a Element is a table of events for incoming data.
 #
 
 mapping:
@@ -122,9 +125,9 @@ mapping:
         - [15, [100, 1000]]  #  Move to [100, 1000] by time 15
 
 ---
-# Rules are separated by three dashes, as in the line above.
+# Elements are separated by three dashes, as in the line above.
 
-# This is a random rule that triggers automatically based on a random
+# This is a random element that triggers automatically based on a random
 # variable.
 
 type: random
@@ -135,23 +138,70 @@ data:
   distribution: poisson      # Select the distribution of these events.
                              # Today, we only have one distribution, poisson,
                              # so you don't have to specify it.
+command:
+  function: select           # Select a function at random
+  arguments:                 # The list of functions from which to select!
+    -
+      function: image
+      keywords:
+        image: $random
+        position: [[0, [100, 100]], [20, [1000, 1000]]]
+        size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+        rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
 
-mapping:
-  event:                     # This mapping is always "event" for random events.
-    function: select         # Select a function at random
-    arguments:               # The list of functions from which to select!
-      -
-        function: image
-        keywords:
-          image: $random
-          position: [[0, [100, 100]], [20, [1000, 1000]]]
-          size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
-          rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+    -
+      function: image
+      keywords:
+        image: $random
+        position: [200, 200]
+        loops: 3
+        size: [[0, 0.10], [1, 5.0], [2, 0.0]]
 
-      -
-        function: image
-        keywords:
-          image: $random
-          position: [200, 200]
-          loops: 3
-          size: [[0, 0.10], [1, 5.0], [2, 0.0]]
+---
+
+# This is a sequence element that triggers events in temporal sequence.
+
+type: sequence
+
+commands:
+  -
+    time: 0
+    function: image
+    keywords:
+      image: $random
+      position: [[0, [100, 100]], [20, [1000, 1000]]]
+      size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+      rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+
+  -
+    time: 3.0
+    function: image
+    keywords:
+      image: $random
+      position: [[0, [100, 100]], [20, [1000, 1000]]]
+      size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+      rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+  -
+    time: 10.0
+    function: image
+    keywords:
+      image: $random
+      position: [[0, [100, 100]], [20, [1000, 1000]]]
+      size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+      rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+  -
+    time: 11.0
+    function: image
+    keywords:
+      image: $random
+      position: [[0, [100, 100]], [20, [1000, 1000]]]
+      size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+      rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+  -
+    time: 12.0
+    function: image
+    keywords:
+      image: $random
+      position: [[0, [100, 100]], [20, [1000, 1000]]]
+      size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+      rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]

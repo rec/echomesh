@@ -26,7 +26,7 @@ class Echomesh(Openable):
   def __init__(self):
     Openable.__init__(self)
     self.config = Config.CONFIG
-    self.autostart = (self.config.get('autostart', True) or len(sys.argv) < 2 or
+    self.autostart = (Config.get(['autostart'], True) or len(sys.argv) < 2 or
                       sys.argv[1] != 'autostart')
 
     if not self.autostart:
@@ -39,7 +39,7 @@ class Echomesh(Openable):
     self.display = Display.display(self, self.config)
     self.closer = Closer()
 
-    SetOutput.set_output(self.config.get('audio', {}).get('route', None))
+    SetOutput.set_output(Config.get(['audio', 'route']))
     self.microphone = Microphone.Microphone(self.config, self._mic_event)
     self.control_program = Config.is_control_program()
 
@@ -50,7 +50,7 @@ class Echomesh(Openable):
       from command.Score import Score
       from command import Functions
 
-      score = self.config.get('score', None)
+      score = Config.get(['score', 'file'])
       functions = Functions.functions(self, self.display)
       self.score = Score(score, functions)
     else:
@@ -106,8 +106,7 @@ class Echomesh(Openable):
     self.clients.start()
     self.microphone.start()
 
-    dconf = self.config['display']
-    display_threaded = dconf.get('threaded', False)
+    display_threaded = Config.get(['display', 'threaded'], False)
     if display_threaded or not self.display:
       self.display and self.display.start()
       if self.control_program:
@@ -119,7 +118,7 @@ class Echomesh(Openable):
       self.display.loop()  # Blocks until complete
 
   def _keyboard_input(self):
-    sleep = self.config.get('opening_sleep', 0.5)
+    sleep = Config.get(['opening_sleep'], 0.5)
     if sleep:
       time.sleep(sleep)
 
