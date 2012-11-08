@@ -11,3 +11,7 @@ class DefaultFile(object):
     if not os.path.isabs(file):
       file = os.path.join(self.directory, file)
     return file
+
+  def relpath(self, file):
+    f = os.path.relpath(file, self.directory)
+    return file if f.startswith('..') else f

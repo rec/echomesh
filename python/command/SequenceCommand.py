@@ -16,6 +16,7 @@ class SequenceCommand(CommandLoop):
 
   def _next_time(self, t):
     if self.next_command < len(self.commands):
+      LOGGER.info('Running command %d', self.next_command)
       return self._command_time()
     else:
       LOGGER.info('Sequence finished')

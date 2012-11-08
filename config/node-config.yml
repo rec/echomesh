@@ -1,5 +1,7 @@
 Chairman:
   control_program: true
+  score:
+    file: test.yml
 
 hofmann:
   headless: true

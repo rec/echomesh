@@ -23,9 +23,12 @@ class Score(Closer):
   def __init__(self, scorefile, functions, target=Address.NODENAME):
     Closer.__init__(self)
     elements = File.yaml_load_all(LOCAL_SCORE)
-    if not elements:
+    if elements:
+      scorefile = LOCAL_SCORE
+    else:
       scorefile = DEFAULT_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
       elements = File.yaml_load_all(scorefile)
+    LOGGER.info('Loading score %s', DEFAULT_DIRECTORY.relpath(scorefile))
     self.functions = functions
     self.target = target
     self.set_elements(elements)
@@ -40,7 +43,7 @@ class Score(Closer):
           self.elements[rt] = self.elements.get(rt, []) + [r]
 
   def receive_event(self, event):
-    elements = self.elements.get(event['event'], None)
+    elements = self.elements.get(event['event'], [])
     for e in elements:
       if (e
           and e.get('source', self.target) == event.get('source', self.target)

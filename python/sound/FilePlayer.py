@@ -48,7 +48,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
   HANDLERS = dict(au=sunau, aifc=aifc, aiff=aifc, wav=wave)
   DTYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
-  def __init__(self, filename, level=1.0, pan=0, loops=1,
+  def __init__(self, file, level=1.0, pan=0, loops=1,
                chunk_size=DEFAULT_CHUNK_SIZE):
     ThreadLoop.ThreadLoop.__init__(self)
 
@@ -58,8 +58,15 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.pan = Envelope.make_envelope(pan)
     self.loops = loops
 
-    filename = DEFAULT_AUDIO_DIRECTORY.expand(filename)
-    self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')
+    filename = DEFAULT_AUDIO_DIRECTORY.expand(file)
+    filetype = sndhdr.what(filename)[0]
+    handler = FilePlayer.HANDLERS.get(filetype, None)
+    if not handler:
+      LOGGER.error("Can't understand the file type of file %s", filename)
+      self.close()
+      return
+
+    self.file_stream = handler.open(filename, 'rb')
     self.sample_width = self.file_stream.getsampwidth()
 
     (self.channels, self.sample_width, self.sampling_rate,
