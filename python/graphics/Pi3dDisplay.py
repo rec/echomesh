@@ -11,6 +11,7 @@ from pi3d.Texture import Textures
 from config import Config
 from graphics import Rect
 from util import Log
+from util.DefaultFile import DefaultFile
 from util.File import FileExpander
 from util.ThreadLoop import ThreadLoop
 
@@ -29,7 +30,7 @@ DISPLAY = Display()
 DISPLAY.create2D(*DIMENSIONS)
 DISPLAY.setBackColour(*BACKGROUND)
 
-DEFAULT_IMAGE_DIRECTORY = os.path.expanduser('~/echomesh/assets/image/')
+DEFAULT_IMAGE_DIRECTORY = DefaultFile('~/echomesh/assets/image/')
 
 TEXTURES = Textures()
 
@@ -63,10 +64,9 @@ class Pi3dDisplay(ThreadLoop):
 
   def load_texture(self, imagefile):
     if imagefile == '$random':
-      imagefile = random.choice(os.listdir(DEFAULT_IMAGE_DIRECTORY))
-    imagefile = os.path.expanduser(imagefile)
-    if not imagefile.startswith('/'):
-      imagefile = DEFAULT_IMAGE_DIRECTORY + imagefile
+      imagefile = random.choice(os.listdir(DEFAULT_IMAGE_DIRECTORY.directory))
+
+    imagefile = DEFAULT_IMAGE_DIRECTORY.expand(imagefile)
     texture = self.texture_cache.get(imagefile, None)
     if not texture:
       LOGGER.info(imagefile)

@@ -1,18 +1,29 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from command import RandomCommand
+import os.path
+
+from command.RandomCommand import RandomCommand
 
 from network import Address
 
-from util.Closer import Closer
+from util import File
 from util import Log
-from command.RandomCommand import RandomCommand
+from util.Closer import Closer
+from util.DefaultFile import DefaultFile
 
 LOGGER = Log.logger(__name__)
 
+DEFAULT_DIRECTORY = DefaultFile('~/echomesh/score')
+DEFAULT_SCORE = 'score.yml'
+LOCAL_SCORE = os.path.expanduser('~/.echomesh-score')
+
 class Score(Closer):
-  def __init__(self, rules, functions, target=Address.NODENAME):
+  def __init__(self, scorefile, functions, target=Address.NODENAME):
     Closer.__init__(self)
+    rules = File.yaml_load_all(LOCAL_SCORE)
+    if not rules:
+      scorefile = DEFAULT_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
+      rules = File.yaml_load_all(scorefile)
     self.functions = functions
     self.target = target
     self.set_rules(rules)

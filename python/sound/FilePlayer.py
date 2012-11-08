@@ -12,13 +12,13 @@ import wave
 
 from sound import Sound
 from util import Envelope
+from util.DefaultFile import DefaultFile
 from util import ThreadLoop
 
 DEFAULT_CHUNK_SIZE = 1024
-# DEFAULT_CHUNK_SIZE = 8
 BITS_PER_BYTE = 8
 
-DEFAULT_AUDIO_DIRECTORY = os.path.expanduser('~/echomesh/assets/audio/')
+DEFAULT_AUDIO_DIRECTORY = DefaultFile('~/echomesh/assets/audio/')
 OUTPUT_DEVICE_INDEX = -1
 MAX_DEVICE_NUMBERS = 8
 
@@ -58,10 +58,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.pan = Envelope.make_envelope(pan)
     self.loops = loops
 
-    filename = os.path.expanduser(filename)
-    if not filename.startswith('/'):  # TODO: windows
-      filename = DEFAULT_AUDIO_DIRECTORY + filename
-    filetype = sndhdr.what(filename)[0]
+    filename = DEFAULT_AUDIO_DIRECTORY.expand(filename)
     self.file_stream = FilePlayer.HANDLERS[filetype].open(filename, 'rb')
     self.sample_width = self.file_stream.getsampwidth()
 

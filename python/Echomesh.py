@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import contextlib
 import os
-import os.path
 import sys
 import threading
 import time
@@ -20,9 +19,6 @@ from util import File
 from util import Log
 from util.Openable import Openable
 from util.Closer import Closer
-
-DEFAULT_SCORE = '~/echomesh/score/score.yml'
-LOCAL_SCORE = os.path.expanduser('~/.echomesh-score')
 
 LOGGER = Log.logger(__name__)
 
@@ -54,11 +50,9 @@ class Echomesh(Openable):
       from command.Score import Score
       from command import Functions
 
-      score = File.yaml_load_all(LOCAL_SCORE)
-      if not score:
-        score_file = self.config.get('score', DEFAULT_SCORE)
-        score = File.yaml_load_all(score_file)
-      self.score = Score(score, Functions.functions(self, self.display))
+      score = self.config.get('score', None)
+      functions = Functions.functions(self, self.display)
+      self.score = Score(score, functions)
     else:
       self.score = Openable()
 
