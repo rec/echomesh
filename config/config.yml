@@ -30,7 +30,7 @@ discovery:
 
 display:
   dimensions: [960, 0, 960, 600, 0]
-  frames_per_second: 30
+  frames_per_second: 10
   full_screen: true
   library: pi3d
 

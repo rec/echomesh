@@ -1,0 +1,17 @@
+---
+
+# This is a sequence element that triggers events in temporal sequence.
+
+type: sequence
+
+commands:
+  -
+    time: 0
+    function: audio
+    keywords:
+      file: saw-2450.wav
+  -
+    time: 3.0
+    function: audio
+    keywords:
+      file: long-saw.wav
