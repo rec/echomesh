@@ -1,7 +1,7 @@
 *~
 .svn
 *.o
-
+.DS_Store
 .pulse-cookie
 
 *#*
