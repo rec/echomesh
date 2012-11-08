@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
+import traceback
 
 from config import Config
 from network import Git
@@ -48,18 +49,23 @@ def _usage():
   LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))
 
 def _play(filename):
-  from sound import FilePlayer
+  try:
+    from sound import FilePlayer
 
-  FilePlayer.FilePlayer(filename).start()
-  time.sleep(2)
-  FilePlayer.FilePlayer(filename, level=0.5).start()
+    FilePlayer.FilePlayer(filename).start()
+    time.sleep(2)
+    FilePlayer.FilePlayer(filename, level=0.5).start()
 
-  time.sleep(2)
-  FilePlayer.FilePlayer(filename, pan=1.0).start()
+    time.sleep(2)
+    FilePlayer.FilePlayer(filename, pan=1.0).start()
 
-  time.sleep(2)
-  pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
-  FilePlayer.FilePlayer(filename, pan=pan).start()
+    time.sleep(2)
+    pan = [[0, -1], [1, 1], [2, -1], [3, 1], [4, -1]]
+    FilePlayer.FilePlayer(filename, pan=pan).start()
+
+  except:
+    LOGGER.error('Unable to play file %s', filename)
+    LOGGER.error(traceback.format_exc())
 
 def _config(filename=Config.CONFIG_FILE):
   config = File.yaml_load_all(filename)
@@ -71,7 +77,7 @@ def _config(filename=Config.CONFIG_FILE):
 def _file_command(echomesh, cmd, *args):
   if cmd == 'play':
     if args:
-      _play(args)
+      _play(args[0])
     else:
       LOGGER.error('play needs a file argument' % cmd)
 
