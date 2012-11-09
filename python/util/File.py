@@ -36,13 +36,3 @@ def yaml_load(fname, allow_empty=True):
   else:
     return {}
 
-class FileExpander(object):
-  def __init__(self, default):
-    self.default = os.expanduser(default)
-
-  def expand(self, file):
-    file = os.path.expanduser(file)
-    if os.path.isabs(file):
-      return file
-    else:
-      return os.path.join(self.default, file)

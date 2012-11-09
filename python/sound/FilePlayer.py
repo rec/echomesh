@@ -18,7 +18,7 @@ from util import ThreadLoop
 DEFAULT_CHUNK_SIZE = 1024
 BITS_PER_BYTE = 8
 
-DEFAULT_AUDIO_DIRECTORY = DefaultFile('~/echomesh/assets/audio/')
+DEFAULT_AUDIO_DIRECTORY = DefaultFile('assets/audio')
 OUTPUT_DEVICE_INDEX = -1
 MAX_DEVICE_NUMBERS = 8
 

@@ -12,14 +12,14 @@ from util import File
 from util import Merge
 from util import Platform
 
-CONFIG_FILE = '~/echomesh/config/config.yml'
-NODE_CONFIG_FILE = '~/echomesh/config/node-config.yml'
+CONFIG_FILE = 'config/config.yml'
+NODE_CONFIG_FILE = 'config/node-config.yml'
 
 # Local configuration for this account.
-LOCAL_FILE = '~/.echomesh'
+LOCAL_FILE = 'local/config.yml'
 
 # Stores the last dynamic configuration update.
-LOCAL_CHANGED_FILE = os.path.expanduser('~/.echomesh-changed')
+LOCAL_CHANGED_FILE = 'local/config-changed.yml'
 
 STORE_LOCAL_CHANGED_FILE = True
 

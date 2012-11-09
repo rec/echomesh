@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import contextlib
 import os
+import os.path
 import sys
 import threading
 import time
@@ -144,4 +145,5 @@ class Echomesh(Openable):
     self.score.join()
 
 if __name__ == '__main__':
+  os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
   Echomesh().run()

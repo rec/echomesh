@@ -12,7 +12,6 @@ from config import Config
 from graphics import Rect
 from util import Log
 from util.DefaultFile import DefaultFile
-from util.File import FileExpander
 from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
@@ -30,7 +29,7 @@ DISPLAY = Display()
 DISPLAY.create2D(*DIMENSIONS)
 DISPLAY.setBackColour(*BACKGROUND)
 
-DEFAULT_IMAGE_DIRECTORY = DefaultFile('~/echomesh/assets/image/')
+DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
 
 TEXTURES = Textures()
 

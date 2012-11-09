@@ -14,9 +14,9 @@ from util.DefaultFile import DefaultFile
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_DIRECTORY = DefaultFile('~/echomesh/score')
+DEFAULT_DIRECTORY = DefaultFile('score')
 DEFAULT_SCORE = 'score.yml'
-LOCAL_SCORE = os.path.expanduser('~/.echomesh-score')
+LOCAL_SCORE = 'local/echomesh-score.yml'
 INDEPENDENT_COMMANDS = dict(random=RandomCommand, sequence=SequenceCommand)
 
 class Score(Closer):
