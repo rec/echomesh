@@ -101,14 +101,16 @@ class Echomesh(Openable):
         except:
           LOGGER.critical(traceback.format_exc())
     else:
-      LOGGER.info("Not autostarting because autostart = False")
+      LOGGER.info("Not autostarting because autostart=False")
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
 
   def _run(self):
-    LOGGER.info('About to _run')
-    self.discovery.start()
+    if not self.discovery.start():
+      self.close()
+      return
+
     self.clients.start()
     self.microphone.start()
 
@@ -128,6 +130,11 @@ class Echomesh(Openable):
     if sleep:
       time.sleep(sleep)
 
+    print()
+    print('           echomesh')
+    print()
+    print('Type help for a list of commands')
+    print()
     while self.is_open:
       if not self.process(raw_input('echomesh: ').strip(), self):
         self.close()

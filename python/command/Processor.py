@@ -45,8 +45,9 @@ _UPDATE_GIT = (
   #  ('push', 'origin', 'master'),
   )
 
-def _usage():
-  LOGGER.error('Commands are %s', ', '.join(ALL_COMMANDS))
+def _usage(is_error=True):
+  logger = LOGGER.error if is_error else LOGGER.info
+  logger('Commands are %s', ', '.join(ALL_COMMANDS))
 
 def _play(filename):
   try:
@@ -90,7 +91,7 @@ def _simple_command(echomesh, cmd):
     return False
 
   elif cmd == 'help':
-    _usage()
+    _usage(False)
 
   elif cmd == 'list':
     for client in echomesh.clients.get_clients().itervalues():

@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import errno
+import socket
 import threading
 import traceback
 import yaml
@@ -8,40 +10,44 @@ import Queue
 
 from network import Address
 from network import Broadcast
-from util import Openable
+from util.Closer import Closer
 from util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Discovery(Openable.Openable):
+class Discovery(Closer):
   DOCUMENT_START = '---\n'
   DOCUMENT_END = '....\n'
 
   def __init__(self, config, callbacks):
-    Openable.Openable.__init__(self)
+    Closer.__init__(self)
     self.config = config
     self.queue = Queue.Queue()
 
     self.callbacks = callbacks
 
-    self.is_running = True
-
+  def start(self):
     port = self.config['discovery']['port']
-    self.receive_socket = Broadcast.ReceiveSocket(port)
-    self.send_socket = Broadcast.SendSocket(port)
+    try:
+      self.receive_socket = Broadcast.ReceiveSocket(port)
+      self.add_closer(self.receive_socket)
+      self.send_socket = Broadcast.SendSocket(port)
+      self.add_closer(self.send_socket)
+
+    except socket.error as e:
+      if e.errno == errno.EADDRINUSE:
+        LOGGER.error('An echomesh node is already running on this machine')
+        self.close()
+        return False
+      else:
+        raise
 
     self.receive_thread = threading.Thread(target=self._run_receive)
     self.send_thread = threading.Thread(target=self._run_send)
-    LOGGER.info('Starting discovery on port %d', port)
-
-  def start(self):
     self.receive_thread.start()
     self.send_thread.start()
-
-  def close(self):
-    Openable.Openable.close(self)
-    self.send_socket.close()
-    self.receive_socket.close()
+    LOGGER.info('Started discovery on port %d', port)
+    return True
 
   def send(self, **data):
     if 'source' not in data:
@@ -50,8 +56,15 @@ class Discovery(Openable.Openable):
     self.queue.put(data)
 
   def join(self):
-    self.receive_thread.join()
-    self.send_thread.join()
+    try:
+      self.receive_thread.join()
+    except:
+      pass
+
+    try:
+      self.send_thread.join()
+    except:
+      pass
 
   def _run_receive(self):
     try:
