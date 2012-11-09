@@ -60,8 +60,9 @@ class Discovery(Openable.Openable):
         if pckt:
           self.callbacks(yaml.safe_load(pckt))
     except:
-      LOGGER.critical(traceback.format_exc())
-      self.close()
+      if self.is_open:
+        LOGGER.critical(traceback.format_exc())
+        self.close()
 
   def _run_send(self):
     try:
@@ -73,8 +74,9 @@ class Discovery(Openable.Openable):
         except Queue.Empty:
           pass
     except:
-      LOGGER.critical(traceback.format_exc())
-      self.close()
+      if self.is_open:
+        LOGGER.critical(traceback.format_exc())
+        self.close()
 
   def _error(self, data):
     LOGGER.error('No callbacks for type %s', data['type'])

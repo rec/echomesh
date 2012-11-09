@@ -1,5 +1,6 @@
 type: config
 
+control_program: true
 allow_shutdown: true
 
 audio:

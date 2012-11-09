@@ -5,3 +5,4 @@ import platform
 SYSTEM = platform.system()
 IS_LINUX = (SYSTEM == 'Linux')
 IS_MAC = (SYSTEM == 'Darwin')
+IS_WINDOWS = (SYSTEM == 'Windows')

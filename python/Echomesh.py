@@ -47,7 +47,8 @@ class Echomesh(Openable):
     self.load_score()
 
   def load_score(self):
-    if Config.is_enabled('score'):
+    self.score_enabled = Config.is_enabled('score')
+    if self.score_enabled:
       from command.Score import Score
       from command import Functions
 
@@ -76,7 +77,10 @@ class Echomesh(Openable):
     self.discovery.send(**data)
 
   def receive_event(self, event):
-    self.score.receive_event(event)
+    if self.score_enabled:
+      self.score.receive_event(event)
+    else:
+      LOGGER.info('Event: %(event)s, %(key)s', event)
 
   def set_score(self, score):
     File.yaml_dump_all(LOCAL_SCORE, score)
@@ -103,6 +107,7 @@ class Echomesh(Openable):
     self.send(type='event', event='mic', key=level)
 
   def _run(self):
+    LOGGER.info('About to _run')
     self.discovery.start()
     self.clients.start()
     self.microphone.start()
@@ -145,5 +150,4 @@ class Echomesh(Openable):
     self.score.join()
 
 if __name__ == '__main__':
-  os.chdir(os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))))
   Echomesh().run()

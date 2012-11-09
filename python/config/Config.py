@@ -28,12 +28,16 @@ CONFIG = None
 def recalculate():
   global CONFIG
 
+  path = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
+  os.chdir(path)
+
   # HACK to deal with running as root.
   if getpass.getuser() == 'root':
     os.environ['HOME'] = 'home/pi'
 
+  assert os.path.exists(CONFIG_FILE)
   CONFIG = Merge.merge_into_all(
-    File.yaml_load(CONFIG_FILE),
+    File.yaml_load(CONFIG_FILE, False),
     File.yaml_load(NODE_CONFIG_FILE.strip()).get(Address.NODENAME, {}),
     File.yaml_load(LOCAL_FILE),
     File.yaml_load(LOCAL_CHANGED_FILE))
