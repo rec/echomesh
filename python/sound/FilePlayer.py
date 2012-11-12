@@ -10,16 +10,23 @@ import struct
 import sunau
 import wave
 
+from config import Config
 from sound import Sound
 from util import Envelope
+from util import Log
 from util.DefaultFile import DefaultFile
-from util import ThreadLoop
+from util import Subprocess
+from util.ThreadLoop import ThreadLoop
+
+LOGGER = Log.logger(__name__)
 
 DEFAULT_CHUNK_SIZE = 1024
+DEFAULT_FRAMES_PER_BUFFER = 4096
+
 BITS_PER_BYTE = 8
 
 DEFAULT_AUDIO_DIRECTORY = DefaultFile('assets/audio')
-OUTPUT_DEVICE_INDEX = -1
+OUTPUT_DEVICE_INDEX = Config.get(['audio', 'output', 'device'], 0)
 MAX_DEVICE_NUMBERS = 8
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
@@ -37,23 +44,25 @@ def pan_to_angle(pan):
 
 def calculate_pan(pan):
   """Pan two mono sources in the stereo field."""
-  if pan < -1: pan = -1
-  elif pan > 1: pan = 1
+  if pan < -1:
+    pan = -1
+  elif pan > 1:
+    pan = 1
 
   angle = pan_to_angle(pan)
   return math.cos(angle), math.sin(angle)
 
 
-class FilePlayer(ThreadLoop.ThreadLoop):
+class FilePlayer(ThreadLoop):
   HANDLERS = dict(au=sunau, aifc=aifc, aiff=aifc, wav=wave)
   DTYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
-  def __init__(self, file, level=1.0, pan=0, loops=1,
-               chunk_size=DEFAULT_CHUNK_SIZE):
-    ThreadLoop.ThreadLoop.__init__(self)
+  def __init__(self, file, level=1, pan=0, loops=1):
+    super(FilePlayer, self).__init__()
 
     self.debug = True
-    self.chunk_size = chunk_size
+    self.passthrough = (level == 1 and pan == 0)
+
     self.level = Envelope.make_envelope(level)
     self.pan = Envelope.make_envelope(pan)
     self.loops = loops
@@ -75,39 +84,50 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     self.request_channels = 2 if self.pan else self.channels
     self.format = Sound.PYAUDIO.get_format_from_width(self.sample_width)
     self.samples_per_frame = self.sample_width * self.channels
+    self.loop_number = 0
     self.restart_sound()
 
   def open_stream(self, index):
     try:
+      frames_per_buffer = Config.get(['audio', 'output', 'frames_per_buffer'],
+                                     DEFAULT_FRAMES_PER_BUFFER)
       return Sound.PYAUDIO.open(format=self.format,
                                 channels=self.request_channels,
                                 rate=self.sampling_rate,
                                 output=True,
-                                output_device_index=index)
+                                output_device_index=index,
+                                frames_per_buffer=frames_per_buffer)
     except:
       return None
 
   def restart_sound(self):
+    self._close_stream()
     global OUTPUT_DEVICE_INDEX
     if OUTPUT_DEVICE_INDEX is -1:
       for i in range(MAX_DEVICE_NUMBERS):
         self.audio_stream = self.open_stream(i)
         if self.audio_stream:
+          LOGGER.info('Successfully opened output stream on index %d', i)
           OUTPUT_DEVICE_INDEX = i
           break
     else:
       self.audio_stream = self.open_stream(OUTPUT_DEVICE_INDEX)
 
-    assert self.audio_stream
+    if not self.audio_stream:
+      LOGGER.error("Couldn't reopen sound on loop %d", self.loop_number)
+      self.close()
     self.time = 0
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)
-    self.loop_number = 0
 
   def close(self):
-    ThreadLoop.ThreadLoop.close(self)
-    self.audio_stream.stop_stream()
-    self.audio_stream.close()
+    super(FilePlayer, self).close()
+    self._close_stream()
+
+  def _close_stream(self):
+    if getattr(self, 'audio_stream', None):
+      self.audio_stream.stop_stream()
+      self.audio_stream.close()
 
   def _convert(self, frames):
     frames = numpy.fromstring(frames, dtype=self.dtype)
@@ -122,24 +142,38 @@ class FilePlayer(ThreadLoop.ThreadLoop):
       return uninterleave(frames)
 
   def run(self):
-    frames = self.file_stream.readframes(self.chunk_size)
+    chunk_size = Config.get(['audio', 'output', 'chunk_size'],
+                            DEFAULT_CHUNK_SIZE)
+    frames = self.file_stream.readframes(chunk_size)
     if not frames:
       self.loop_number += 1
       if self.loop_number < self.loops:
         self.restart_sound()
+        if not self.is_open:
+          return
       else:
         self.close()
         return
 
-    new_time = self.time + float(len(frames)) / (self.samples_per_frame
-                                                 * self.sampling_rate)
+    self.time =+ len(frames) / float((self.samples_per_frame *
+                                      self.sampling_rate))
 
+    frames = self._pan_and_fade(frames)
+    try:
+      self.audio_stream.write(frames)
+    except:
+      if self.is_open:
+        raise
+
+  def _pan_and_fade(self, frames):
+    if self.passthrough:
+      return frames
     left, right = self._convert(frames)
     if self.level.is_constant:
       left *= self.current_level
       right *= self.current_level
     else:
-      next_level = self.level.interpolate(new_time)
+      next_level = self.level.interpolate(self.time)
       levels = numpy.linspace(self.current_level, next_level, len(left))
       left *= levels
       right *= levels
@@ -150,7 +184,7 @@ class FilePlayer(ThreadLoop.ThreadLoop):
       left *= lpan
       right *= rpan
     else:
-      next_pan = self.pan.interpolate(new_time)
+      next_pan = self.pan.interpolate(self.time)
       angles = numpy.linspace(pan_to_angle(self.current_pan),
                               pan_to_angle(next_pan), len(left))
 
@@ -158,12 +192,14 @@ class FilePlayer(ThreadLoop.ThreadLoop):
       right *= numpy.sin(angles)
       self.current_pan = next_pan
 
-    frames = interleave(left, right).tostring()
+    return interleave(left, right).tostring()
 
-    self.time = new_time
-    try:
-      self.audio_stream.write(frames)
-    except:
-      if self.is_open:
-        raise
+def play_with_aplay(file, **kwds):
+  file = DEFAULT_AUDIO_DIRECTORY.expand(file)
+  result, returncode = Subprocess.run(['/usr/bin/aplay', file])
+  if returncode:
+    LOGGER.error('Unable to play file %s using aplay', file)
 
+def play(**keywords):
+  aplay = Config.get(['audio', 'output', 'use_aplay'], False)
+  return (play_with_aplay if aplay else FilePlayer)(**keywords)

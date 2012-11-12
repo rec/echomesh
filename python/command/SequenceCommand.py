@@ -16,15 +16,15 @@ class SequenceCommand(CommandLoop):
 
   def _next_time(self, t):
     if self.next_command < len(self.commands):
-      LOGGER.info('Running command %d', self.next_command)
+      LOGGER.debug('Running command %d', self.next_command)
       return self._command_time()
     else:
-      LOGGER.info('Sequence finished')
+      LOGGER.debug('Sequence finished')
       self.close()
       return 0
 
   def _command(self, t):
     while self.next_command < len(self.commands) and self._command_time() <= t:
-      LOGGER.info('%d', self.next_command)
+      LOGGER.debug('%d', self.next_command)
       self.execute_command(self.commands[self.next_command])
       self.next_command += 1

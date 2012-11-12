@@ -36,13 +36,13 @@ def functions(echomesh, display):
       LOGGER.info('Playing an image')
 
   if Config.is_enabled('audio', 'output'):
-    from sound.FilePlayer import FilePlayer
+    from sound import FilePlayer
     def play_audio(score, event, **keywords):
       try:
-        player = FilePlayer(**keywords)
-        player.start()
-        echomesh.add_closer(player)
-        return player
+        player = FilePlayer.play(**keywords)
+        if player:
+          player.start()
+          echomesh.add_closer(player)
       except:
         LOGGER.error("Didn't understand play_audio arguments %s", keywords)
         LOGGER.critical(traceback.format_exc())

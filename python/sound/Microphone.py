@@ -108,7 +108,7 @@ class Microphone(ThreadLoop):
     if Config.is_enabled('audio', 'input'):
       LOGGER.info('Microphone starting')
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
-      use_default = self.aconfig.get('use_default', False)
+      use_default = self.aconfig.get('use_default', True)
       sample_bytes = self.aconfig.get('sample_bytes', DEFAULT_SAMPLE_BYTES)
       LOGGER.info('Microphone thread started')
       self.stream = get_pyaudio_stream(rate, use_default, sample_bytes)

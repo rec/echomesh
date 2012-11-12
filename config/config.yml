@@ -7,8 +7,8 @@ audio:
     route: audio
 
   input:
-    samplerate: 1000
-    sample_bytes: 1
+    samplerate: 8000
+    sample_bytes: 2
     name: AK5370
     periodsize: 160
     verbose: false
