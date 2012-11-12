@@ -70,6 +70,7 @@ def get(parts, default=None):
   assert parts
 
   config = CONFIG
+  assert config
   for p in parts[:-1]:
     config = config.get(p, {})
   return config.get(parts[-1], default)

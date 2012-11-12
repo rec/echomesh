@@ -4,18 +4,23 @@ import threading
 import traceback
 
 from util import Log
-from util.Openable import Openable
+from util.Closer import Closer
 
 LOGGER = Log.logger(__name__)
 
-class ThreadLoop(Openable):
-  def __init__(self, run=None, openable=None, name=None):
+class ThreadLoop(Closer):
+  def __init__(self, run=None, openable=None, name=None,
+               report_errors_when_closed=False):
     super(ThreadLoop, self).__init__()
     self.openable = openable or self
     self.name = name or repr(self)
+    has_run = getattr(self, 'run', None)
+    self.report_errors_when_closed = report_errors_when_closed
     if run:
-      assert not getattr(self, 'run', None)
+      assert not has_run
       self.run = run
+    else:
+      assert has_run
 
   def start(self):
     LOGGER.debug('starting %s', self.name)
@@ -37,4 +42,6 @@ class ThreadLoop(Openable):
       while self.is_open:
         self.run()
     except:
-      LOGGER.critical(traceback.format_exc())
+      if self.is_open or self.report_errors_when_closed:
+        LOGGER.critical(traceback.format_exc())
+      self.close()

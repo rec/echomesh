@@ -31,7 +31,14 @@ class Score(Closer):
     LOGGER.info('Loading score %s', DEFAULT_DIRECTORY.relpath(scorefile))
     self.functions = functions
     self.target = target
+    self.starters = []
     self.set_elements(elements)
+
+  def start(self):
+    for s in self.starters:
+      s.start()
+      self.add_closer(s)
+    self.starters = []
 
   def set_elements(self, elements):
     self.close_all()
@@ -85,8 +92,6 @@ class Score(Closer):
     if ok:
       cmd = INDEPENDENT_COMMANDS.get(element.get('type', ''), None)
       if cmd:
-        closer = cmd(self, element)
-        self.add_closer(closer)
-        closer.start()
+        self.starters.append(cmd(self, element))
 
     return ok

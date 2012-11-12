@@ -14,24 +14,23 @@ from config import Config
 from util import MakeDirs
 
 DEFAULT_LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
-LOG_FORMAT = Config.CONFIG['logging'].get('format', DEFAULT_LOG_FORMAT)
-
 DEFAULT_LOG_LEVEL = 'INFO'
-LOG_LEVEL_STR = Config.CONFIG['logging'].get('level', DEFAULT_LOG_LEVEL).upper()
+
+LOG_FORMAT = Config.get(['logging', 'format'], DEFAULT_LOG_FORMAT)
+LOG_LEVEL_STR = Config.get(['logging','level'], DEFAULT_LOG_LEVEL).upper()
 LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
 
-def _get_handler(config):
-  lconf = config['logging']
-  f = lconf.get('file', None)
+def _get_handler():
+  f = Config.get(['logging', 'file'], None)
   if f:
     MakeDirs.parent_makedirs(f)
     handler = logging.FileHandler(f)
     return handler
 
-HANDLER = _get_handler(Config.CONFIG)
+HANDLER = _get_handler()
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')

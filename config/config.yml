@@ -7,9 +7,8 @@ audio:
     route: audio
 
   input:
-    enable: false
-    samplerate: 4000
-#    sample_bytes: 1
+    samplerate: 1000
+    sample_bytes: 1
     name: AK5370
     periodsize: 160
     verbose: false
@@ -38,9 +37,12 @@ git:
   user: rec
   project: echomesh
 
-logging:
+#logging:
 #  file: ~/log/echomesh.log  # Uncomment to create a file
-  level: debug
+#  level: debug
+
+sequence:
+  delay: 5.0
 
 shorten:
   enable: true

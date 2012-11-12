@@ -34,9 +34,8 @@ DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
 TEXTURES = Textures()
 
 class Pi3dDisplay(ThreadLoop):
-  def __init__(self, echomesh, config):
-    ThreadLoop.__init__(self, name='Pi3dDisplay')
-    self.config = config
+  def __init__(self, echomesh):
+    ThreadLoop.__init__(self)
     self.echomesh = echomesh
     self.textures = TEXTURES
     self.texture_cache = {}
@@ -57,7 +56,7 @@ class Pi3dDisplay(ThreadLoop):
       s.update(t)
     self.display.swapBuffers()
 
-    fps = self.config['display'].get('frames_per_second', 0)
+    fps = Config.get(['display', 'frames_per_second'], 0)
     if fps and fps > 0:
       time.sleep(1.0 / fps)
 

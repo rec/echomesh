@@ -8,31 +8,62 @@ import traceback
 import yaml
 import Queue
 
+from config import Config
 from network import Address
 from network import Broadcast
 from util.Closer import Closer
+from util.ThreadLoop import ThreadLoop
 from util import Log
 
+DEFAULT_TIMEOUT = 0.500
+DEFAULT_PORT = 1238
 LOGGER = Log.logger(__name__)
+
+def _timeout():
+  return Config.get(('discovery', 'timeout'), DEFAULT_TIMEOUT)
+
+class ReceiveThread(ThreadLoop):
+  def __init__(self, port, callback):
+    super(ReceiveThread, self).__init__()
+    self.socket = Broadcast.ReceiveSocket(port)
+    self.callback = callback
+
+  def run(self):
+    pckt = self.socket.receive(_timeout())
+    if pckt:
+      self.callback(yaml.safe_load(pckt))
+
+class SendThread(ThreadLoop):
+  def __init__(self, port, queue):
+    super(SendThread, self).__init__()
+    self.socket = Broadcast.SendSocket(port)
+    self.queue = queue
+
+  def run(self):
+    try:
+      item = self.queue.get(True, _timeout())
+      value = yaml.safe_dump(item)
+      self.socket.write(value)
+    except Queue.Empty:
+      pass
 
 class Discovery(Closer):
   DOCUMENT_START = '---\n'
   DOCUMENT_END = '....\n'
 
-  def __init__(self, config, callbacks):
-    Closer.__init__(self)
-    self.config = config
+  def __init__(self, callbacks):
+    super(Discovery, self).__init__()
+    self.callbacks = callbacks
     self.queue = Queue.Queue()
 
-    self.callbacks = callbacks
-
   def start(self):
-    port = self.config['discovery']['port']
+    port = Config.get(['discovery', 'port'], DEFAULT_PORT)
     try:
-      self.receive_socket = Broadcast.ReceiveSocket(port)
-      self.add_closer(self.receive_socket)
-      self.send_socket = Broadcast.SendSocket(port)
-      self.add_closer(self.send_socket)
+      self.receive_thread = ReceiveThread(port, self.callbacks)
+      self.mutual_closer(self.receive_thread)
+
+      self.send_thread = SendThread(port, self.queue)
+      self.mutual_closer(self.send_thread)
 
     except socket.error as e:
       if e.errno == errno.EADDRINUSE:
@@ -42,8 +73,6 @@ class Discovery(Closer):
       else:
         raise
 
-    self.receive_thread = threading.Thread(target=self._run_receive)
-    self.send_thread = threading.Thread(target=self._run_send)
     self.receive_thread.start()
     self.send_thread.start()
     LOGGER.info('Started discovery on port %d', port)
@@ -66,32 +95,6 @@ class Discovery(Closer):
     except:
       pass
 
-  def _run_receive(self):
-    try:
-      while self.is_open:
-        pckt = self.receive_socket.receive(self.config['discovery']['timeout'])
-        if pckt:
-          self.callbacks(yaml.safe_load(pckt))
-      LOGGER.debug('receive thread ending')
-    except:
-      if self.is_open:
-        LOGGER.critical(traceback.format_exc())
-        self.close()
-
-  def _run_send(self):
-    try:
-      while self.is_open:
-        try:
-          item = self.queue.get(True, self.config['discovery']['timeout'])
-          value = yaml.safe_dump(item)
-          self.send_socket.write(value)
-        except Queue.Empty:
-          pass
-      LOGGER.debug('send thread ending')
-    except:
-      if self.is_open:
-        LOGGER.critical(traceback.format_exc())
-        self.close()
 
   def _error(self, data):
     LOGGER.error('No callbacks for type %s', data['type'])

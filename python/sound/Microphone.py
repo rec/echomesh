@@ -40,7 +40,6 @@ def get_pyaudio_stream(rate, use_default, sample_bytes):
                         input_device_index=i, input=True)
     LOGGER.info('Opened pyaudio stream %d', i)
     return stream
-    # TODO: move format into config.
 
   if use_default:
     index = pyaud.get_default_input_device_info()['index']
@@ -67,9 +66,9 @@ def get_mic_level(data, length=-1, dtype=None):
   return analyse.loudness(samps)
 
 class Microphone(ThreadLoop):
-  def __init__(self, config, callback):
+  def __init__(self, callback):
     super(Microphone, self).__init__()
-    self.set_config(config)
+    self.set_config()
     self.callback = callback
     self.previous_level = None
     self.errors = 0
@@ -79,16 +78,13 @@ class Microphone(ThreadLoop):
       while self.is_open:
         try:
           yield get_mic_level(self.stream.read(self.chunksize))
-          print('!!!')
+        except GeneratorExit:
+          pass
         except IOError:
-          if False:
-            if self.errors > 2000:
-              self.close()
-              LOGGER.error('Too many errors, closed')
-            if not (self.errors % 20):
-              time.sleep(20)
-              LOGGER.debug('More errors ')
           self.errors += 1
+          if not (self.errors % 20):
+            LOGGER.error('errors %d', self.errors)
+
         except:
           LOGGER.critical(traceback.format_exc())
 
@@ -110,20 +106,22 @@ class Microphone(ThreadLoop):
 
   def start(self):
     if Config.is_enabled('audio', 'input'):
+      LOGGER.info('Microphone starting')
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
       use_default = self.aconfig.get('use_default', False)
       sample_bytes = self.aconfig.get('sample_bytes', DEFAULT_SAMPLE_BYTES)
-      LOGGER.info('Starting pyaudio')
+      LOGGER.info('Microphone thread started')
       self.stream = get_pyaudio_stream(rate, use_default, sample_bytes)
+    else:
+      LOGGER.info('Mic thread disabled')
 
     if getattr(self, 'stream', None):
       super(Microphone, self).start()
     else:
       self.close()
 
-  def set_config(self, config):
-    self.config = config
-    self.aconfig = config['audio']['input']
+  def set_config(self):
+    self.aconfig = Config.get(['audio', 'input'], {})
     self.levels = Levels.Levels(**self.aconfig['levels'])
     self.chunksize = min(max(self.aconfig.get('chunksize', DEFAULT_CHUNK_SIZE),
                              MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)

@@ -23,10 +23,9 @@ from util.Closer import Closer
 
 LOGGER = Log.logger(__name__)
 
-class Echomesh(Openable):
+class Echomesh(Closer):
   def __init__(self):
-    Openable.__init__(self)
-    self.config = Config.CONFIG
+    super(Echomesh, self).__init__()
     self.autostart = (Config.get(['autostart'], True) or len(sys.argv) < 2 or
                       sys.argv[1] != 'autostart')
 
@@ -35,13 +34,12 @@ class Echomesh(Openable):
 
     self.clients = Clients.Clients(self)
     callbacks = Router.router(self, self.clients)
-    self.discovery = Discovery.Discovery(self.config, callbacks)
+    self.discovery = Discovery.Discovery(callbacks)
     self.process = Processor.process
-    self.display = Display.display(self, self.config)
-    self.closer = Closer()
+    self.display = Display.display(self)
 
     SetOutput.set_output(Config.get(['audio', 'route']))
-    self.microphone = Microphone.Microphone(self.config, self._mic_event)
+    self.microphone = Microphone.Microphone(self._mic_event)
     self.control_program = Config.is_control_program()
 
     self.load_score()
@@ -55,14 +53,14 @@ class Echomesh(Openable):
       score = Config.get(['score', 'file'])
       functions = Functions.functions(self, self.display)
       self.score = Score(score, functions)
+      self.score.start()
     else:
       self.score = Openable()
 
   def remove_local(self):
     try:
       Config.remove_local()
-      self.config = Config.CONFIG
-      self.microphone.set_config(self.config)
+      self.microphone.set_config()
 
     except OSError as e:
       LOGGER.warn("No local file %s" % Config.LOCAL_CHANGED_FILE)
@@ -86,12 +84,9 @@ class Echomesh(Openable):
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 
-  def add_closer(self, closer):
-    self.closer.add_closer(closer)
-
   def set_config(self, config):
     Config.change(config)
-    self.microphone.set_config(config)
+    self.microphone.set_config()
 
   def run(self):
     if self.autostart:
@@ -142,10 +137,9 @@ class Echomesh(Openable):
 
   def close(self):
     if self.is_open:
-      Openable.close(self)
       LOGGER.info('closing')
       self.discovery.close()
-      self.closer.close()
+      super(Echomesh, self).close()
       self.microphone.close()
       self.display and self.display.close()
       self.score.close()

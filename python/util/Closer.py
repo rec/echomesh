@@ -9,7 +9,7 @@ LOGGER = Log.logger(__name__)
 
 class Closer(Openable):
   def __init__(self, *closers):
-    Openable.__init__(self)
+    super(Closer, self).__init__()
     try:
       self.closers = weakref.WeakSet(closers)
     except:
@@ -17,6 +17,10 @@ class Closer(Openable):
 
   def add_closer(self, *closers):
     self.closers.update(closers)
+
+  def mutual_closer(self, closer):
+    self.add_closer(closer)
+    closer.add_closer(self)
 
   def close_all(self):
     for c in self.closers:
@@ -28,7 +32,7 @@ class Closer(Openable):
     self.closers.clear()
 
   def close(self):
-    Openable.close(self)
+    super(Closer, self).close()
     self.close_all()
 
   def join(self):

@@ -76,7 +76,7 @@ class Router(object):
   def _close_and_run(self, msg, cmd):
     LOGGER.info(msg)
     if (not Config.is_control_program() and
-        self.config.get('allow_shutdown', True)):
+        Config.get(['allow_shutdown'], True)):
       Subprocess.run(cmd)
       self.halt(cmd)
 

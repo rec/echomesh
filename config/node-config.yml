@@ -2,6 +2,7 @@ Chairman:
   control_program: true
   score:
     file: test.yml
+#  audio: {input: {enable: false}, output: {enable: true}}
 
 hofmann:
   headless: true
