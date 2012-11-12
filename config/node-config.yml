@@ -1,8 +1,7 @@
 Chairman:
-  control_program: true
+  control_program: false
   score:
     file: test.yml
-#  audio: {input: {enable: false}, output: {enable: true}}
   audio: {input: {verbose: false, use_default: true, enable: false},
           output: {use_aplay: true}}
   display: {enable: false}

@@ -18,6 +18,7 @@ DEFAULT_CARD_FORMAT = 'sysdefault:CARD=%s'
 DEFAULT_SAMPLE_RATE = 4000
 DEFAULT_PERIOD_SIZE = 160
 DEFAULT_CHUNK_SIZE = 1024
+DEFAULT_USE_DEFAULT = True
 MIN_CHUNK_SIZE = 16
 MAX_CHUNK_SIZE = 2048
 MAX_INPUT_DEVICES = 6
@@ -108,7 +109,7 @@ class Microphone(ThreadLoop):
     if Config.is_enabled('audio', 'input'):
       LOGGER.info('Microphone starting')
       rate = self.aconfig.get('samplerate', DEFAULT_SAMPLE_RATE)
-      use_default = self.aconfig.get('use_default', True)
+      use_default = self.aconfig.get('use_default', DEFAULT_USE_DEFAULT)
       sample_bytes = self.aconfig.get('sample_bytes', DEFAULT_SAMPLE_BYTES)
       LOGGER.info('Microphone thread started')
       self.stream = get_pyaudio_stream(rate, use_default, sample_bytes)

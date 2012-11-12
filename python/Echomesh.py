@@ -103,6 +103,7 @@ class Echomesh(Closer):
 
   def _run(self):
     if not self.discovery.start():
+      LOGGER.error("Closing because Discovery didn't start")
       self.close()
       return
 
@@ -114,12 +115,13 @@ class Echomesh(Closer):
       self.display and self.display.start()
       if self.control_program:
         self._keyboard_input()
+      self._join()
 
     else:
       if self.control_program:
         threading.Thread(target=self._keyboard_input).start()
       self.display.loop()  # Blocks until complete
-      LOGGER.info('Finished Echomesh._run')
+    LOGGER.info('Finished Echomesh._run')
 
   def _keyboard_input(self):
     sleep = Config.get(['opening_sleep'], 0.5)
