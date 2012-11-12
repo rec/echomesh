@@ -79,6 +79,7 @@ class Microphone(ThreadLoop):
       while self.is_open:
         try:
           yield get_mic_level(self.stream.read(self.chunksize))
+          print('!!!')
         except IOError:
           if False:
             if self.errors > 2000:

@@ -72,6 +72,7 @@ class Discovery(Closer):
         pckt = self.receive_socket.receive(self.config['discovery']['timeout'])
         if pckt:
           self.callbacks(yaml.safe_load(pckt))
+      LOGGER.debug('receive thread ending')
     except:
       if self.is_open:
         LOGGER.critical(traceback.format_exc())
@@ -86,6 +87,7 @@ class Discovery(Closer):
           self.send_socket.write(value)
         except Queue.Empty:
           pass
+      LOGGER.debug('send thread ending')
     except:
       if self.is_open:
         LOGGER.critical(traceback.format_exc())

@@ -161,5 +161,9 @@ class FilePlayer(ThreadLoop.ThreadLoop):
     frames = interleave(left, right).tostring()
 
     self.time = new_time
-    self.audio_stream.write(frames)
+    try:
+      self.audio_stream.write(frames)
+    except:
+      if self.is_open:
+        raise
 
