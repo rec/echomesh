@@ -3,8 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from config import Config
 from util import Log
 
-from util.ThreadLoop import ThreadLoop
-
 LOGGER = Log.logger(__name__)
 
 def display(echomesh, config):

@@ -215,3 +215,11 @@ q. Similarly, you can turn off moving averages by setting the moving_window para
 
 r. Don't forget to turn off audio.input.verbose to false and then to check the configuration changes into git when you're finished.
 
+
+How to kill an echomesh that doesn't stop on quit
+--------------------------------------------------
+
+a. Open a terminal.
+b. Type:
+
+    sudo killall python

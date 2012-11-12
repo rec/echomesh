@@ -6,3 +6,8 @@ Chairman:
 hofmann:
   headless: true
   score: {enable: true}
+
+Treasurer:
+  control_program: true
+  score:
+    file: marek.yml

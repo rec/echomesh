@@ -1,8 +1,5 @@
 type: config
 
-control_program: true
-allow_shutdown: true
-
 audio:
   library: pyaudio
 
@@ -10,7 +7,8 @@ audio:
     route: audio
 
   input:
-    samplerate: 8000
+    samplerate: 4000
+#    sample_bytes: 1
     name: AK5370
     periodsize: 160
     verbose: false
@@ -41,7 +39,7 @@ git:
 
 logging:
 #  file: ~/log/echomesh.log  # Uncomment to create a file
-  level: info
+  level: debug
 
 shorten:
   enable: true

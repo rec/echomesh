@@ -21,7 +21,7 @@
 # things going if nothing has happened.
 #
 # sequence Events occur at a sequence of times in the future.
-
+#
 #
 #
 # 2. Elements
@@ -82,9 +82,9 @@
 #               the screen.  If you have any Envelope keywords, this is
 #               optional, and the image will be shown for the duration of the
 #               longest envelope.
-
-
-
+#
+#
+#
 #
 # And now for some specific examples of Elements!
 #
@@ -125,6 +125,7 @@ mapping:
         - [15, [100, 1000]]  #  Move to [100, 1000] by time 15
 
 ---
+
 # Elements are separated by three dashes, as in the line above.
 
 # This is a random element that triggers automatically based on a random
@@ -133,7 +134,7 @@ mapping:
 type: random
 
 data:
-  mean: 3.0                  # Trigger on average every 20 seconds.
+  mean: 3.0                  # Trigger on average every 3 seconds.
 
   distribution: poisson      # Select the distribution of these events.
                              # Today, we only have one distribution, poisson,
@@ -145,17 +146,18 @@ command:
       function: image
       keywords:
         image: $random
-        position: [[0, [100, 100]], [20, [1000, 1000]]]
-        size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
-        rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+        position: [200, 200]
+        loops: 3
+        size: [[0, 0.10], [1, 5.0], [2, 0.0]]
 
     -
       function: image
       keywords:
         image: $random
-        position: [200, 200]
-        loops: 3
-        size: [[0, 0.10], [1, 5.0], [2, 0.0]]
+        position: [[0, [100, 100]], [20, [1000, 1000]]]
+        size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
+        rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
+
 
 ---
 

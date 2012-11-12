@@ -124,6 +124,7 @@ class Echomesh(Openable):
       if self.control_program:
         threading.Thread(target=self._keyboard_input).start()
       self.display.loop()  # Blocks until complete
+      LOGGER.info('Finished Echomesh._run')
 
   def _keyboard_input(self):
     sleep = Config.get(['opening_sleep'], 0.5)
@@ -142,7 +143,7 @@ class Echomesh(Openable):
   def close(self):
     if self.is_open:
       Openable.close(self)
-      LOGGER.info('echomesh closing')
+      LOGGER.info('closing')
       self.discovery.close()
       self.closer.close()
       self.microphone.close()
@@ -151,10 +152,15 @@ class Echomesh(Openable):
       self._join()
 
   def _join(self):
+    LOGGER.debug('joining')
     self.display and self.display.join()
+    LOGGER.debug('display joined')
     self.discovery.join()
+    LOGGER.debug('discovery joined')
     self.microphone.join()
+    LOGGER.debug('mic joined')
     self.score.join()
+    LOGGER.debug('joined')
 
 if __name__ == '__main__':
   Echomesh().run()

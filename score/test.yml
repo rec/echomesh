@@ -10,8 +10,13 @@ commands:
     function: audio
     keywords:
       file: saw-2450.wav
+      pan: [[0, -1], [10, 1], [11, -1]]
+
   -
     time: 3.0
     function: audio
     keywords:
       file: long-saw.wav
+      level: 1.0
+      pan: 0.0
+      loops: 1

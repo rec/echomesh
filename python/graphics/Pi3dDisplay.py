@@ -35,7 +35,7 @@ TEXTURES = Textures()
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh, config):
-    ThreadLoop.__init__(self)
+    ThreadLoop.__init__(self, name='Pi3dDisplay')
     self.config = config
     self.echomesh = echomesh
     self.textures = TEXTURES
