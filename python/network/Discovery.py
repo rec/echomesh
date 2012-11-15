@@ -4,6 +4,7 @@ import copy
 import errno
 import socket
 import threading
+import time
 import traceback
 import yaml
 import Queue
@@ -31,7 +32,9 @@ class ReceiveThread(ThreadLoop):
   def run(self):
     pckt = self.socket.receive(_timeout())
     if pckt:
+      LOGGER.info('receiving %s', pckt)
       self.callback(yaml.safe_load(pckt))
+
 
 class SendThread(ThreadLoop):
   def __init__(self, port, queue):
@@ -46,6 +49,9 @@ class SendThread(ThreadLoop):
       self.socket.write(value)
     except Queue.Empty:
       pass
+    if self.is_open:
+      time.sleep(_timeout())
+
 
 class Discovery(Closer):
   DOCUMENT_START = '---\n'

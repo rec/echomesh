@@ -64,11 +64,9 @@ class Router(object):
   def rerun(self, data):
     self._error(data)
 
-  def start(self, data):
-    self._error(data)
-
   def stop(self, data):
-    self._error(data)
+    if not Config.is_control_program():
+      self.echomesh.close()
 
   def _error(self, data):
     LOGGER.error("Command '%s' not implemented", data['type'])

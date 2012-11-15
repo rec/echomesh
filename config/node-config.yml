@@ -1,11 +1,3 @@
-Chairman:
-  control_program: false
-  score:
-    file: test.yml
-  audio: {input: {verbose: false, use_default: true, enable: false},
-          output: {use_aplay: true}}
-  display: {enable: false}
-
 hofmann:
   headless: true
   score: {enable: true}

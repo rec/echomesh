@@ -19,7 +19,6 @@ REMOTE_COMMANDS = (
   'rerun',
   'restart',
   'shutdown',
-  'start',
   'stop',
   'update',
   )
