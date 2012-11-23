@@ -13,15 +13,17 @@ class Clients(object):
   TYPE = 'client'
 
   def __init__(self, echomesh):
-    self._clients = {}
     self.lock = threading.RLock()
     self.echomesh = echomesh
     self.type = Clients.TYPE
+    source = Address.NODENAME
     self.data = dict(type=self.type,
                      time=time.time(),
-                     source=Address.NODENAME,
+                     source=source,
                      mac_address=Address.MAC_ADDRESS,
                      ip_address=Address.IP_ADDRESS)
+
+    self._clients = {source: self.data}
 
   def _send(self):
     self.echomesh.send(**self.data)
@@ -32,15 +34,13 @@ class Clients(object):
   def new_client(self, data):
     with Locker.Locker(self.lock):
       source = data['source']
-      c = self._clients.get(source, None)
-      if c != data:
+      client = self._clients.get(source, None)
+      if client != data:
         self._clients[source] = data
-        if c != self.data:
+        if client != self.data:
           LOGGER.info('New client %s', source)
           self._send()
-        else:
-          LOGGER.info('self client')
 
-  def get_clients(self):
+  def getclients(self):
     with Locker.Locker(self.lock):
       return copy.deepcopy(self._clients)

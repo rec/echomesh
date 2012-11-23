@@ -101,6 +101,5 @@ class Discovery(Closer):
     except:
       pass
 
-
   def _error(self, data):
     LOGGER.error('No callbacks for type %s', data['type'])
