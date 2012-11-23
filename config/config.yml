@@ -4,8 +4,6 @@ audio:
   library: pyaudio
 
   output:
-    route: audio
-
   input:
     samplerate: 8000
     sample_bytes: 2

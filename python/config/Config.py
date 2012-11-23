@@ -73,6 +73,8 @@ def get(parts, default=None):
   assert config
   for p in parts[:-1]:
     config = config.get(p, {})
+    if config is None:
+      config = {}
   return config.get(parts[-1], default)
 
 def is_enabled(*parts):
