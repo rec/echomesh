@@ -38,4 +38,3 @@ def logger(name=None):
     log.addHandler(HANDLER)
 
   return log
-

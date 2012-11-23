@@ -2,52 +2,33 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
+from command import ReadScore
+
 from command.RandomCommand import RandomCommand
 from command.SequenceCommand import SequenceCommand
 
 from network import Address
 
-from util import File
 from util import Log
 from util.Closer import Closer
-from util.DefaultFile import DefaultFile
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_DIRECTORY = DefaultFile('score')
-DEFAULT_SCORE = 'score.yml'
-LOCAL_SCORE = 'local/echomesh-score.yml'
-INDEPENDENT_COMMANDS = dict(random=RandomCommand, sequence=SequenceCommand)
+COMMANDS = dict(random=RandomCommand, sequence=SequenceCommand)
 
 class Score(Closer):
   def __init__(self, scorefile, functions, target=Address.NODENAME):
-    Closer.__init__(self)
-    elements = File.yaml_load_all(LOCAL_SCORE)
-    if elements:
-      scorefile = LOCAL_SCORE
-    else:
-      scorefile = DEFAULT_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
-      elements = File.yaml_load_all(scorefile)
-    LOGGER.info('Loading score %s', DEFAULT_DIRECTORY.relpath(scorefile))
+    super(Score, self).__init__()
     self.functions = functions
     self.target = target
-    self.starters = []
-    self.set_elements(elements)
+    self.scorefile = scorefile
+    self.elements, self.starters = ReadScore.read_score(self, COMMANDS)
 
   def start(self):
     for s in self.starters:
       s.start()
       self.add_closer(s)
     self.starters = []
-
-  def set_elements(self, elements):
-    self.close_all()
-    self.elements = {}
-    if elements:
-      for r in elements:
-        if self.validate_element(r):
-          rt = r['type']
-          self.elements[rt] = self.elements.get(rt, []) + [r]
 
   def receive_event(self, event):
     elements = self.elements.get(event['event'], [])
@@ -80,18 +61,3 @@ class Score(Closer):
       closer = function(self, event, *arguments, **keywords)
       if closer:
         self.add_closer(closer)
-
-  def validate_element(self, element):
-    ok = True
-    for command in element.get('mapping', {}).itervalues():
-      cmd = command.get('function', None)
-      if cmd not in self.functions:
-        ok = False
-        LOGGER.error("Didn't understand command %s in element %s", cmd, element)
-
-    if ok:
-      cmd = INDEPENDENT_COMMANDS.get(element.get('type', ''), None)
-      if cmd:
-        self.starters.append(cmd(self, element))
-
-    return ok
