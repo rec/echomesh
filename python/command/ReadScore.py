@@ -6,9 +6,17 @@ from util import Log
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_DIRECTORY = DefaultFile('score')
+DEFAULT_SCORE_DIRECTORY = DefaultFile('score')
+DEFAULT_ELEMENT_DIRECTORY = DefaultFile('element')
 DEFAULT_SCORE = 'score.yml'
 LOCAL_SCORE = 'local/echomesh-score.yml'
+
+def resolve_element(element):
+  filename = element.get('filename', None)
+  if filename:
+    return File.yaml_load(DEFAULT_ELEMENT_DIRECTORY.expand(filename))
+  else:
+    return element
 
 class ScoreReader(object):
   def __init__(self, score, commands):
@@ -19,7 +27,7 @@ class ScoreReader(object):
     result = {}
     starters = []
     for e in elements:
-      ok, starter = self.validate_element(e)
+      ok, starter = self.validate_element(resolve_element(e))
       if ok:
         if starter:
           starters.append(starter)
@@ -46,9 +54,10 @@ def load_score_elements(scorefile):
   if elements:
     scorefile = LOCAL_SCORE
   else:
-    scorefile = DEFAULT_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
-    elements = File.yaml_load_all(scorefile)
-  LOGGER.info('Loading score %s', DEFAULT_DIRECTORY.relpath(scorefile))
+    scorefile = DEFAULT_SCORE_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
+
+  elements = File.yaml_load_all(scorefile)
+  LOGGER.info('Loading score %s', DEFAULT_SCORE_DIRECTORY.relpath(scorefile))
   return elements
 
 def read_score(score, commands):
