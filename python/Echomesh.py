@@ -18,18 +18,20 @@ from sound import Microphone
 from sound import SetOutput
 from util import File
 from util import Log
-from util.Openable import Openable
 from util.Closer import Closer
+from util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
+
 
 class Echomesh(Closer):
   def __init__(self):
     super(Echomesh, self).__init__()
-    self.autostart = (Config.get(['autostart'], True) or len(sys.argv) < 2 or
+    self.can_start = (Config.get(['autostart'], True) or
+                      len(sys.argv) < 2 or
                       sys.argv[1] != 'autostart')
 
-    if not self.autostart:
+    if not self.can_start:
       return
 
     self.clients = Clients.Clients(self)
@@ -89,7 +91,7 @@ class Echomesh(Closer):
     self.microphone.set_config()
 
   def run(self):
-    if self.autostart:
+    if self.can_start:
       with contextlib.closing(self):
         try:
           self._run()
@@ -97,6 +99,16 @@ class Echomesh(Closer):
           LOGGER.critical(traceback.format_exc())
     else:
       LOGGER.info("Not autostarting because autostart=False")
+
+  def close(self):
+    if self.is_open:
+      LOGGER.info('closing')
+      self.discovery.close()
+      super(Echomesh, self).close()
+      self.microphone.close()
+      self.display and self.display.close()
+      self.score.close()
+      self._join()
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
@@ -137,16 +149,6 @@ class Echomesh(Closer):
       if not self.process(raw_input('echomesh: ').strip(), self):
         self.close()
 
-  def close(self):
-    if self.is_open:
-      LOGGER.info('closing')
-      self.discovery.close()
-      super(Echomesh, self).close()
-      self.microphone.close()
-      self.display and self.display.close()
-      self.score.close()
-      self._join()
-
   def _join(self):
     LOGGER.debug('joining')
     self.display and self.display.join()
@@ -157,6 +159,7 @@ class Echomesh(Closer):
     LOGGER.debug('mic joined')
     self.score.join()
     LOGGER.debug('joined')
+
 
 if __name__ == '__main__':
   Echomesh().run()

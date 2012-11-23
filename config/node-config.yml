@@ -6,3 +6,4 @@ Treasurer:
   control_program: true
   score:
     file: marek.yml
+  autostart: false
