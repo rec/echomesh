@@ -48,7 +48,7 @@ def _usage(is_error=True):
   logger = LOGGER.error if is_error else LOGGER.info
   logger('Commands are %s', ', '.join(ALL_COMMANDS))
 
-def _config(filename=Config.CONFIG_FILE):
+def _config(filename):
   config = File.yaml_load_all(filename)
   if config:
     echomesh.send(type='config', data=config)

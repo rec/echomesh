@@ -12,22 +12,13 @@ from util import File
 from util import Merge
 from util import Platform
 
-CONFIG_FILE = 'config/config.yml'
-NODE_CONFIG_FILE = 'config/node-config.yml'
+def _config_file(node):
+  return os.path.join('nodes', node, 'config.yml')
 
-# Local configuration for this account.
-LOCAL_FILE = 'local/config.yml'
-
-# Stores the last dynamic configuration update.
-LOCAL_CHANGED_FILE = 'local/config-changed.yml'
-
-STORE_LOCAL_CHANGED_FILE = True
-
-CONFIG = None
+def _load(node):
+  return File.yaml_load(_config_file(node))
 
 def recalculate():
-  global CONFIG
-
   path = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
   os.chdir(path)
 
@@ -35,25 +26,23 @@ def recalculate():
   if getpass.getuser() == 'root':
     os.environ['HOME'] = 'home/pi'
 
-  assert os.path.exists(CONFIG_FILE)
-  CONFIG = Merge.merge_into_all(
-    File.yaml_load(CONFIG_FILE, False),
-    File.yaml_load(NODE_CONFIG_FILE.strip()).get(Address.NODENAME, {}),
-    File.yaml_load(LOCAL_FILE),
-    File.yaml_load(LOCAL_CHANGED_FILE))
+  configs = [_load('global'), _load(Address.NODENAME), _load('local')]
 
   if len(sys.argv) > 1:
-    Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1].strip()))
+    configs.append(File.yaml_load(sys.argv[1].strip()))
 
-recalculate()
+  return Merge.merge_all(*configs)
+
+CONFIG = recalculate()
 
 def change(config):
   File.yaml_dump_all(LOCAL_CHANGED_FILE, config)
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
 
 def remove_local():
-  os.remove(LOCAL_CHANGED_FILE)
-  recalculate()
+  os.remove(_config_file('local'))
+  global CONFIG
+  CONFIG = recalculate()
 
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
 # because we'd have to revert the main config to its original value "in place".

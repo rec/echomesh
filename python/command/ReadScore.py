@@ -1,15 +1,29 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
+
+from network import Address
+
 from util.DefaultFile import DefaultFile
 from util import File
 from util import Log
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_SCORE_DIRECTORY = DefaultFile('score')
 DEFAULT_ELEMENT_DIRECTORY = DefaultFile('element')
-DEFAULT_SCORE = 'score.yml'
-LOCAL_SCORE = 'local/echomesh-score.yml'
+
+DEFAULT_SCORE_FILE = 'score.yml'
+
+def _score_file(node, scorefile):
+  if not scorefile.endswith('.yml'):
+    scorefile += '.yml'
+  return os.path.join('nodes', node, 'score', *scorefile.split('/'))
+
+def _get_score_file(scorefile):
+  for node in ['local', Address.NODENAME, 'global']:
+    f = _score_file(node, scorefile)
+    if os.path.exists(f):
+      return f
 
 def resolve_element(element):
   filename = element.get('filename', None)
@@ -50,15 +64,13 @@ class ScoreReader(object):
     return ok, starter
 
 def load_score_elements(scorefile):
-  elements = File.yaml_load_all(LOCAL_SCORE)
-  if elements:
-    scorefile = LOCAL_SCORE
+  f = _get_score_file(scorefile or DEFAULT_SCORE_FILE)
+  if f:
+    LOGGER.info('Loading score %s', f)
+    return File.yaml_load_all(f)
   else:
-    scorefile = DEFAULT_SCORE_DIRECTORY.expand(scorefile or DEFAULT_SCORE)
-
-  elements = File.yaml_load_all(scorefile)
-  LOGGER.info('Loading score %s', DEFAULT_SCORE_DIRECTORY.relpath(scorefile))
-  return elements
+    LOGGER.error("Can't find score %s", f)
+    return []
 
 def read_score(score, commands):
   return ScoreReader(score, commands).read(load_score_elements(score.scorefile))
