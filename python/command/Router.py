@@ -27,6 +27,7 @@ class Router(object):
     self.clients.new_client(data)
 
   def config(self, msg):
+    # TODO: probably needs fixing.
     config = msg.get('data', None)
     if data:
       self.echomesh.set_config(config)
@@ -73,8 +74,7 @@ class Router(object):
 
   def _close_and_run(self, msg, cmd):
     LOGGER.info(msg)
-    if (not Config.is_control_program() and
-        Config.get(['allow_shutdown'], True)):
+    if (not Config.is_control_program() and Config.get('allow_shutdown')):
       Subprocess.run(cmd)
       self.halt(cmd)
 

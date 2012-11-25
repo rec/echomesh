@@ -16,18 +16,9 @@ from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_BACKGROUND = 0, 0, 0, 1
-DEFAULT_DIMENSIONS = 0, 0, 0, 0, 0
-
-_DCONF = Config.CONFIG.get('display', {})
-BACKGROUND = _DCONF.get('background', DEFAULT_BACKGROUND)
-DIMENSIONS = _DCONF.get('dimensions', DEFAULT_DIMENSIONS)
-
-DEFAULT_FPS = 60.0
-
 DISPLAY = Display()
-DISPLAY.create2D(*DIMENSIONS)
-DISPLAY.setBackColour(*BACKGROUND)
+DISPLAY.create2D(*Config.get('display', 'dimensions'))
+DISPLAY.setBackColour(*Config.get('display', 'background'))
 
 DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
 
@@ -56,7 +47,7 @@ class Pi3dDisplay(ThreadLoop):
       s.update(t)
     self.display.swapBuffers()
 
-    fps = Config.get(['display', 'frames_per_second'], 0)
+    fps = Config.get('display', 'frames_per_second')
     if fps and fps > 0:
       time.sleep(1.0 / fps)
 

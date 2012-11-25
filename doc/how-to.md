@@ -197,15 +197,15 @@ h. To calibrate the microphone, go back to the control program and again edit th
 
 i. To change the assignment of levels to names, edit the table called audio/input/levels.
 
-j. There are three smoothing parameters in audio/input: chunksize, grouping_window and moving_window.
+j. There are three smoothing parameters in audio/input: chunk_size, grouping_size and window_size.
 
 k. The smoothing parameters control how the steady stream of level input data is converted into a small number of level names.
 
-l. The program takes one chunksize of audio data and computes its audio level.
+l. The program takes one chunk_size of audio data and computes its audio level.
 
-m. It is inadvisable to raise the chunksize too high, because if you don't consume all the audio data in time the program crashes due to an issue in the audio library.  It is also inadvisable to lower the chunksize too much because you won't get accurate levels.  Echomesh will restrict any chunksize you enter to between 16 and 2048.
+m. It is inadvisable to raise the chunk_size too high, because if you don't consume all the audio data in time the program crashes due to an issue in the audio library.  It is also inadvisable to lower the chunk_size too much because you won't get accurate levels.  Echomesh will restrict any chunk_size you enter to between 16 and 2048.
 
-n. The grouping_window parameter controls how many chunksizes are averaged together to make one group.
+n. The grouping_window parameter controls how many chunk_sizes are averaged together to make one group.
 
 o. The moving_average parameter then takes a moving (smoothed) average over the groups.
 

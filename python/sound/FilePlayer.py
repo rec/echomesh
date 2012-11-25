@@ -20,13 +20,10 @@ from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_CHUNK_SIZE = 1024
-DEFAULT_FRAMES_PER_BUFFER = 4096
-
 BITS_PER_BYTE = 8
 
 DEFAULT_AUDIO_DIRECTORY = DefaultFile('assets/audio')
-OUTPUT_DEVICE_INDEX = Config.get(['audio', 'output', 'device'], 0)
+OUTPUT_DEVICE_INDEX = Config.get('audio', 'output', 'device')
 MAX_DEVICE_NUMBERS = 8
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
@@ -89,8 +86,7 @@ class FilePlayer(ThreadLoop):
 
   def open_stream(self, index):
     try:
-      frames_per_buffer = Config.get(['audio', 'output', 'frames_per_buffer'],
-                                     DEFAULT_FRAMES_PER_BUFFER)
+      frames_per_buffer = Config.get('audio', 'output', 'frames_per_buffer')
       return Sound.PYAUDIO.open(format=self.format,
                                 channels=self.request_channels,
                                 rate=self.sampling_rate,
@@ -142,8 +138,7 @@ class FilePlayer(ThreadLoop):
       return uninterleave(frames)
 
   def run(self):
-    chunk_size = Config.get(['audio', 'output', 'chunk_size'],
-                            DEFAULT_CHUNK_SIZE)
+    chunk_size = Config.get('audio', 'output', 'chunk_size')
     frames = self.file_stream.readframes(chunk_size)
     if not frames:
       self.loop_number += 1
@@ -201,5 +196,5 @@ def play_with_aplay(file, **kwds):
     LOGGER.error('Unable to play file %s using aplay', file)
 
 def play(**keywords):
-  aplay = Config.get(['audio', 'output', 'use_aplay'], False)
+  aplay = Config.get('audio', 'output', 'use_aplay')
   return (play_with_aplay if aplay else FilePlayer)(**keywords)

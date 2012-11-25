@@ -16,12 +16,10 @@ from util.Closer import Closer
 from util.ThreadLoop import ThreadLoop
 from util import Log
 
-DEFAULT_TIMEOUT = 0.500
-DEFAULT_PORT = 1238
 LOGGER = Log.logger(__name__)
 
 def _timeout():
-  return Config.get(('discovery', 'timeout'), DEFAULT_TIMEOUT)
+  return Config.get('discovery', 'timeout')
 
 class ReceiveThread(ThreadLoop):
   def __init__(self, port, callback):
@@ -63,7 +61,7 @@ class Discovery(Closer):
     self.queue = Queue.Queue()
 
   def start(self):
-    port = Config.get(['discovery', 'port'], DEFAULT_PORT)
+    port = Config.get('discovery', 'port')
     try:
       self.receive_thread = ReceiveThread(port, self.callbacks)
       self.mutual_closer(self.receive_thread)

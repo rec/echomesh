@@ -26,7 +26,8 @@ def recalculate():
   if getpass.getuser() == 'root':
     os.environ['HOME'] = 'home/pi'
 
-  configs = [_load('global'), _load(Address.NODENAME), _load('local')]
+  nodes = 'default', 'global', Address.NODENAME, 'local'
+  configs = [_load(n) for n in nodes]
 
   if len(sys.argv) > 1:
     configs.append(File.yaml_load(sys.argv[1].strip()))
@@ -55,16 +56,15 @@ def is_headless():
   """is_headless() is True if Echomesh cannot do graphics, sound or scores."""
   return CONFIG.get('headless', not Platform.IS_LINUX)
 
-def get(parts, default=None):
+def get(*parts):
   assert parts
 
   config = CONFIG
-  assert config
-  for p in parts[:-1]:
-    config = config.get(p, {})
+  for p in parts:
     if config is None:
       config = {}
-  return config.get(parts[-1], default)
+    config = config.get(p, {})
+  return config
 
 def is_enabled(*parts):
   return get(parts + ('enable',), not is_headless())

@@ -23,12 +23,10 @@ from util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 
-
 class Echomesh(Closer):
   def __init__(self):
     super(Echomesh, self).__init__()
-    self.can_start = (Config.get(['autostart'], True) or
-                      len(sys.argv) < 2 or
+    self.can_start = (Config.get('autostart') or len(sys.argv) < 2 or
                       sys.argv[1] != 'autostart')
 
     if not self.can_start:
@@ -40,7 +38,7 @@ class Echomesh(Closer):
     self.process = Processor.process
     self.display = Display.display(self)
 
-    SetOutput.set_output(Config.get(['audio', 'route']))
+    SetOutput.set_output(Config.get('audio', 'route'))
     self.microphone = Microphone.Microphone(self._mic_event)
     self.control_program = Config.is_control_program()
 
@@ -52,7 +50,7 @@ class Echomesh(Closer):
       from command.Score import Score
       from command import Functions
 
-      score = Config.get(['score', 'file'])
+      score = Config.get('score', 'file')
       functions = Functions.functions(self, self.display)
       self.score = Score(score, functions)
       self.score.start()
@@ -60,6 +58,7 @@ class Echomesh(Closer):
       self.score = Openable()
 
   def remove_local(self):
+    # TODO: this probably doesn't work any more.
     try:
       Config.remove_local()
       self.microphone.set_config()
@@ -122,7 +121,7 @@ class Echomesh(Closer):
     self.clients.start()
     self.microphone.start()
 
-    display_threaded = Config.get(['display', 'threaded'], False)
+    display_threaded = Config.get('display', 'threaded')
     if display_threaded or not self.display:
       self.display and self.display.start()
       if self.control_program:
@@ -136,7 +135,7 @@ class Echomesh(Closer):
     LOGGER.info('Finished Echomesh._run')
 
   def _keyboard_input(self):
-    sleep = Config.get(['opening_sleep'], 0.5)
+    sleep = Config.get('opening_sleep')
     if sleep:
       time.sleep(sleep)
 

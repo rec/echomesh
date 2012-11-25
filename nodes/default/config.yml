@@ -1,0 +1,71 @@
+type: config
+
+allow_shutdown: true
+
+autostart: true
+
+audio:
+  library: pyaudio
+
+  input:
+    average:
+      chunk_size: 1024
+      group_size: 0
+      window_size: 0
+    frames_per_buffer: 4096
+    name: AK5370
+    periodsize: 160
+    sample_bytes: 2
+    sample_rate: 4000
+    use_default_channel: true
+    verbose: false
+
+    levels:
+      silent: -37
+      quiet: -25
+      medium: -15
+      loud: 0
+
+  output:
+    device: 0
+    route: audio
+    use_aplay: false
+
+
+# control_program: not Platform.IS_LINUX
+
+discovery:
+  port: 1238
+  timeout: 0.10
+
+display:
+  background: [0, 0, 0, 1]
+  dimensions: [0, 0, 0, 0, 0]
+  frames_per_second: 0
+  full_screen: true
+  library: pi3d
+  threaded: false
+
+git:
+  user: rec
+  project: echomesh
+
+# headless: not Platform.IS_LINUX
+
+logging:
+  file:
+  format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
+  level: info
+
+sequence:
+  delay: 5.0
+
+shorten:
+  enable: true
+  include_url: true
+  index_file: /home/tom/shortenIndex.txt
+  prefix: e
+  url: "http://ax.to"
+  use_index_url: true
+
+opening_sleep: 0.5

@@ -49,6 +49,7 @@ def _usage(is_error=True):
   logger('Commands are %s', ', '.join(ALL_COMMANDS))
 
 def _config(filename):
+  # TODO: probably needs fixing.
   config = File.yaml_load_all(filename)
   if config:
     echomesh.send(type='config', data=config)
