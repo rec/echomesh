@@ -24,6 +24,8 @@ DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
 
 TEXTURES = Textures()
 
+PI3D_DISPLAY = None
+
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh):
     ThreadLoop.__init__(self)
@@ -34,6 +36,8 @@ class Pi3dDisplay(ThreadLoop):
     self.count = 0
     self.display = DISPLAY
     self.preload()
+    global PI3D_DISPLAY
+    PI3D_DISPLAY = self
 
   def add_sprite(self, sprite):
     self.sprites.insert(0, sprite)

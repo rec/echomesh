@@ -8,6 +8,7 @@ import threading
 import time
 import traceback
 
+from command.Functions import FUNCTIONS
 from command import Processor
 from command import Router
 from config import Config
@@ -18,12 +19,13 @@ from sound import Microphone
 from sound import SetOutput
 from util import File
 from util import Log
-from util.Closer import Closer
+from util import Closer
 from util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
+ECHOMESH = None
 
-class Echomesh(Closer):
+class Echomesh(Closer.Closer):
   def __init__(self):
     super(Echomesh, self).__init__()
     self.can_start = (Config.get('autostart') or len(sys.argv) < 2 or
@@ -31,6 +33,11 @@ class Echomesh(Closer):
 
     if not self.can_start:
       return
+    if ECHOMESH:
+      LOGGER.error('There is more than one instance of Echomesh')
+    else:
+      global ECHOMESH
+      ECHOMESH = self
 
     self.clients = Clients.Clients(self)
     callbacks = Router.router(self, self.clients)
@@ -47,12 +54,10 @@ class Echomesh(Closer):
   def load_score(self):
     self.score_enabled = Config.is_enabled('score')
     if self.score_enabled:
-      from command.Score import Score
       from command import Functions
+      from command import Score
 
-      score = Config.get('score', 'file')
-      functions = Functions.functions(self, self.display)
-      self.score = Score(score, functions)
+      self.score = Score.Score(Config.get('score', 'file'), FUNCTIONS)
       self.score.start()
     else:
       self.score = Openable()
@@ -101,6 +106,7 @@ class Echomesh(Closer):
 
   def close(self):
     if self.is_open:
+      Closer.on_exit()
       LOGGER.info('closing')
       self.discovery.close()
       super(Echomesh, self).close()

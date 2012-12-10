@@ -111,14 +111,14 @@ mapping:
   silent:    # Trigger this Function when the microphone goes "silent"
     function: image
     keywords:
-      image: ghost.gif       # Show ghost.gif
+      file: ghost.gif       # Show ghost.gif
       position: [100, 100]   # at [100, 100]
       duration: 10.0         # for 10 seconds.
 
   quiet:     # Trigger this Function when the microphone goes "quiet"
     function: image
     keywords:
-      image: goblin.gif
+      file: goblin.gif
       position:
         - [0, [100, 100]]    #  Start at 100, 100 at time 0.
         - [5, [1000, 100]]   #  Move to [1000, 100] by time 5
@@ -140,12 +140,12 @@ data:
                              # Today, we only have one distribution, poisson,
                              # so you don't have to specify it.
 command:
-  function: select           # Select a function at random
+  function: random           # Select a function at random
   arguments:                 # The list of functions from which to select!
     -
       function: image
       keywords:
-        image: $random
+        file: $random
         position: [200, 200]
         loops: 3
         size: [[0, 0.10], [1, 5.0], [2, 0.0]]
@@ -153,7 +153,7 @@ command:
     -
       function: image
       keywords:
-        image: $random
+        file: $random
         position: [[0, [100, 100]], [20, [1000, 1000]]]
         size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
         rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
@@ -170,7 +170,7 @@ commands:
     time: 0
     function: image
     keywords:
-      image: $random
+      file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
@@ -179,7 +179,7 @@ commands:
     time: 3.0
     function: image
     keywords:
-      image: $random
+      file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
@@ -187,7 +187,7 @@ commands:
     time: 10.0
     function: image
     keywords:
-      image: $random
+      file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
@@ -195,7 +195,7 @@ commands:
     time: 11.0
     function: image
     keywords:
-      image: $random
+      file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
@@ -203,7 +203,7 @@ commands:
     time: 12.0
     function: image
     keywords:
-      image: $random
+      file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]

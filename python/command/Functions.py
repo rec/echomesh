@@ -4,9 +4,12 @@ import random
 import traceback
 
 from config import Config
+from util import Closer
 from util import Log
 
 LOGGER = Log.logger(__name__)
+
+FUNCTIONS = {}
 
 def select_random(score, event, *choices):
   if choices:
@@ -25,36 +28,32 @@ def select_random(score, event, *choices):
 def print_function(score, event, *args):
   print(*args)
 
-def functions(echomesh, display):
+def play_image(score, event, **keywords):
   if Config.is_enabled('display'):
     from graphics.Sprite import ImageSprite
-
-    def play_image(score, event, **keywords):
-      ImageSprite(display, **keywords)
+    ImageSprite(**keywords)
   else:
-    def play_image(score, event, **keywords):
-      LOGGER.info('Playing an image')
+    LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
 
+def play_audio(score, event, **keywords):
   if Config.is_enabled('audio', 'output'):
     from sound import FilePlayer
-    def play_audio(score, event, **keywords):
-      try:
-        player = FilePlayer.play(**keywords)
-        if player:
-          player.start()
-          echomesh.add_closer(player)
-      except:
-        LOGGER.error("Didn't understand play_audio arguments %s", keywords)
-        LOGGER.critical(traceback.format_exc())
+    player = FilePlayer.play(**keywords)
+    if player:
+      player.start()
+      Closer.close_on_exit(player)
   else:
-    def play_audio(score, event, **keywords):
-      LOGGER.info('Playing an image')
+    LOGGER.info('Playing audio')
 
+def register(**kwds):
+  for name, function in kwds:
+    if name in FUNCTIONS:
+      LOGGER.error('Duplicate function name %s', name)
+    FUNCTIONS[name] = function
 
-  return dict(
-    audio=play_audio,
-    image=play_image,
-    print=print_function,
-    select=select_random,
-    )
+register(audio=play_audio,
+         image=play_image,
+         print=print_function,
+         random=select_random,
+         )
 

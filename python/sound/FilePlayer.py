@@ -94,7 +94,7 @@ class FilePlayer(ThreadLoop):
                                 output_device_index=index,
                                 frames_per_buffer=frames_per_buffer)
     except:
-      return None
+      pass
 
   def restart_sound(self):
     self._close_stream()
