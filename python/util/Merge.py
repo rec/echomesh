@@ -11,9 +11,10 @@ def merge(old, new):
 
   Note that lists are overwritten and not appended.
   """
-  if type(old) is type({}):
-    for k, v in new.iteritems():
-      old[k] = merge(old.get(k, None), v)
+  if type(old) is dict:
+    if type(new) is dict:
+      for k, v in new.iteritems():
+        old[k] = merge(old.get(k, None), v)
     return old
 
   else:
