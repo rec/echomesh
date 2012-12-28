@@ -26,6 +26,8 @@ LOGGER = Log.logger(__name__)
 ECHOMESH = None
 
 class Echomesh(Closer.Closer):
+  INSTANCE = None
+
   def __init__(self):
     super(Echomesh, self).__init__()
     self.can_start = (Config.get('autostart') or len(sys.argv) < 2 or
@@ -33,11 +35,10 @@ class Echomesh(Closer.Closer):
 
     if not self.can_start:
       return
-    if ECHOMESH:
+    if Echomesh.INSTANCE:
       LOGGER.error('There is more than one instance of Echomesh')
     else:
-      global ECHOMESH
-      ECHOMESH = self
+      Echomesh.INSTANCE = self
 
     self.clients = Clients.Clients(self)
     callbacks = Router.router(self, self.clients)
@@ -45,7 +46,7 @@ class Echomesh(Closer.Closer):
     self.process = Processor.process
     self.display = Display.display(self)
 
-    SetOutput.set_output(Config.get('audio', 'route'))
+    SetOutput.set_output(Config.get('audio', 'output', 'route'))
     self.microphone = Microphone.Microphone(self._mic_event)
     self.control_program = Config.is_control_program()
 
@@ -60,6 +61,8 @@ class Echomesh(Closer.Closer):
       self.score = Score.Score(Config.get('score', 'file'), FUNCTIONS)
       self.score.start()
     else:
+      LOGGER.info('Score disabled')
+      print(Config.CONFIG)
       self.score = Openable()
 
   def remove_local(self):

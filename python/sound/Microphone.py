@@ -72,7 +72,7 @@ class Microphone(ThreadLoop):
     chunk_size = Config.get('audio', 'input', 'average', 'chunk_size')
     self.chunk_size = min(max(chunk_size, MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)
 
-  def _get_next_level():
+  def _get_next_level(self):
     while self.is_open:
       try:
         self.level = Input.get_mic_level(self.stream.read(self.chunk_size))

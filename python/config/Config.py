@@ -63,8 +63,11 @@ def get(*parts):
   for p in parts:
     if config is None:
       config = {}
-    config = config.get(p, {})
+    config = config.get(p, None)
   return config
 
 def is_enabled(*parts):
-  return get(parts + ('enable',), not is_headless())
+  enabled = get(parts + ('enable',))
+  if enabled is None:
+    enabled = not is_headless()
+  return enabled

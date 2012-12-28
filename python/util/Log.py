@@ -19,7 +19,6 @@ LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
-
 def _get_handler():
   f = Config.get('logging', 'file')
   if f:
@@ -35,3 +34,7 @@ def logger(name=None):
     log.addHandler(HANDLER)
 
   return log
+
+LOGGER = logger(__name__)
+LOGGER.info('Log level is %s', LOG_LEVEL_STR)
+

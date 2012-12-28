@@ -46,7 +46,7 @@ def play_audio(score, event, **keywords):
     LOGGER.info('Playing audio')
 
 def register(**kwds):
-  for name, function in kwds:
+  for name, function in kwds.iteritems():
     if name in FUNCTIONS:
       LOGGER.error('Duplicate function name %s', name)
     FUNCTIONS[name] = function
@@ -56,4 +56,3 @@ register(audio=play_audio,
          print=print_function,
          random=select_random,
          )
-
