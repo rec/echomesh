@@ -40,7 +40,7 @@ discovery:
 
 display:
   background: [0, 0, 0, 1]
-  dimensions: [0, 0, 0, 0, 0]
+  dimensions: [0, 0, 0, 0]
   frames_per_second: 0
   full_screen: true
   library: pi3d
