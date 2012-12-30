@@ -6,7 +6,6 @@ import select
 import socket
 import sys
 import time
-import traceback
 
 from util.Openable import Openable
 from util import Platform

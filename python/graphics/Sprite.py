@@ -3,6 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import time
 
+from pi3d.shape import Sprite
+from pi3d.context.Light import Light
+from pi3d.Camera import Camera
+from pi3d.Shader import Shader
+
 from graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
 
 from util.Envelope import Envelope
@@ -10,64 +15,73 @@ from util import Log
 from util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
+DISPLAY = PI3D_DISPLAY.display
 
 DEFAULT_Z = -2.0
 
-class Sprite(Openable):
-  def update(self, t):
-    """Called on each clock tick.
-      t: the time in floating point seconds."""
-    pass
+CAMERA = Camera((0, 0, 0), (0, 0, -0.1),
+                (1, 1000, DISPLAY.win_width/1000.0, DISPLAY.win_height/1000.0))
+LIGHT = Light((10, 10, -20))
+SHADER = None  # Shader('shaders/uv_flat')
 
-class ImageSprite(Sprite):
+
+class ImageSprite(Sprite.ImageSprite, Openable):
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
-    Sprite.__init__(self)
-    self.imagename = file
-    LOGGER.debug('Opening sprite %s', self.imagename)
+    Openable.__init__(self)
+    self._imagename = file
+    LOGGER.debug('Opening sprite %s', self._imagename)
 
-    self.loops = loops
-    self.loop_number = 0
-    self.position = Envelope(position)
-    self.rotation = Envelope(rotation)
-    self.size = Envelope(size)
-    self.z = Envelope(z)
+    self._loops = loops
+    self._loop_number = 0
+    self._position = Envelope(position)
+    self._rotation = Envelope(rotation)
+    self._size = Envelope(size)
+    self._z = Envelope(z)
 
-    self.time = 0
+    x, y, z = self.coords(0)
+    texture = PI3D_DISPLAY.load_texture(file)
+    Sprite.ImageSprite.__init__(self, texture,
+                                SHADER, camera=CAMERA, light=LIGHT,
+                                x=x, y=y, z=z)
+
+    self._time = 0
     if duration:
-      self.duration = duration
+      self._duration = duration
     else:
-      envs = [self.position, self.rotation, self.size]
-      self.duration = max(x.length() for x in envs)
+      envs = [self._position, self._rotation, self._size]
+      self._duration = max(x.length() for x in envs)
 
     PI3D_DISPLAY.add_sprite(self)
 
-  def update(self, t):
+  def coords(self, t):
+    x, y = self._position.interpolate(t)
+    z = self._z.interpolate(t)
+    return x, y, z
+
+  def repaint(self, t):
     if not hasattr(self, 'image'):
-      if self.imagename and PI3D_DISPLAY:
-        self.image = PI3D_DISPLAY.load_texture(self.imagename)
+      if self._imagename and PI3D_DISPLAY:
+        self._image = PI3D_DISPLAY.load_texture(self._imagename)
       else:
-        self.image = None
+        self._image = None
         LOGGER.error('No image in image arguments')
 
-    if not self.time:
-      self.time = t
-    elapsed = t - self.time
-    if elapsed > self.duration:
-      self.loop_number += 1
-      if self.loop_number < self.loops:
-        self.time = 0
+    if not self._time:
+      self._time = t
+    elapsed = t - self._time
+    if elapsed > self._duration:
+      self._loop_number += 1
+      if self._loop_number < self._loops:
+        self._time = 0
         elapsed = 0
       else:
         self.close()
         return
 
-    x, y = self.position.interpolate(elapsed)
-    z = self.z.interpolate(elapsed)
-    size = self.size.interpolate(elapsed)
-    width = self.image.ix * size
-    height = self.image.iy * size
-    rotation = self.rotation.interpolate(elapsed)
+    self.position(*self.coords(elapsed))
+    size = self._size.interpolate(elapsed)
+    self.scale(size, size, size)
+    self.rotateToZ(self._rotation.interpolate(elapsed))
 
-    from pi3d import Draw
-    Draw.sprite(self.image, x, y, z, width, height, rotation)
+    self.draw()

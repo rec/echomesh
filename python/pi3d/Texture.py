@@ -2,121 +2,107 @@ import ctypes
 import Image
 
 from pi3d import *
-from pi3d import Utility
+from pi3d.util.Loadable import Loadable
 
 MAX_SIZE = 1024
+DEFER_TEXTURE_LOADING = True
 
-#load a texture specifying RGB or RGBA
-def _load_tex(fileString,flip,size,blend):
-  s = fileString + ' '
-  im = Image.open(fileString)
-  ix, iy = im.size
-  s += '(%s)' % im.mode
-  if im.mode == 'RGBA' or im.mode == 'LA':
-    RGBv = GL_RGBA
-    RGBs = 'RGBA'
-  else:
-    RGBv = GL_RGB
-    RGBs = 'RGB'
+def round_up_to_power_of_2(x):
+  p = 1
+  while p <= x:
+    p += p
+  return p
 
-  # work out if sizes are not to the power of 2 or >512
-  # TODO: why must texture sizes be a power of 2?
-  xx = 0
-  yy = 0
-  nx, ny = ix, iy
-  while (2**xx) < nx:
-    xx += 1
-  while (2**yy) < ny:
-    yy+=1
-  if (2 ** xx) > nx:
-    nx = 2 ** xx
-  if (2 ** yy) > ny:
-    ny=2 ** yy
-  nx = min(nx, MAX_SIZE)
-  ny = min(ny, MAX_SIZE)
+class Texture(Loadable):
+  def __init__(self, file_string, blend=False, flip=False, size=0,
+               defer=DEFER_TEXTURE_LOADING):
+    super(Texture, self).__init__()
+    self.file_string = file_string
+    self.blend = blend
+    self.flip = flip
+    self.size = size
+    if defer:
+      self.load_disk()
+    else:
+      self.load_opengl()
 
-  if nx != ix or ny != iy or size>0:
+  def tex(self):
+    self.load_opengl()
+    return self._tex
+
+  def _unload_opengl(self):
+    texture_array = c_ints([self._tex.value])
+    opengles.glDeleteTextures(1, ctypes.addressof(texture_array))
+
+  def _load_disk(self):
+    s = self.file_string + ' '
+    im = Image.open(self.file_string)
+    self.ix, self.iy = im.size
+    s += '(%s)' % im.mode
+    self.alpha = (im.mode == 'RGBA' or im.mode == 'LA')
+
+    # work out if sizes are not to the power of 2 or >512
+    # TODO: why must texture sizes be a power of 2?
+    xx = 0
+    yy = 0
+    nx, ny = self.ix, self.iy
+    while (2 ** xx) < nx:
+      xx += 1
+    while (2 ** yy) < ny:
+      yy += 1
+    if (2 ** xx) > nx:
+      nx = 2 ** xx
+    if (2 ** yy) > ny:
+      ny = 2 ** yy
+    nx = min(nx, MAX_SIZE)
+    ny = min(ny, MAX_SIZE)
+
+    if nx != self.ix or ny != self.iy or self.size > 0:
+      if VERBOSE:
+        print self.self.ix, self.iy
+      if self.size > 0:
+        nx, ny = self.size, self.size
+      self.ix, self.iy = nx, ny
+      im = im.resize((self.ix, self.iy), Image.ANTIALIAS)
+      s += 'Resizing to: %d, %d' % (self.ix, self.iy)
+    else:
+      s += 'Bitmap size: %d, %d' % (self.ix, self.iy)
+
     if VERBOSE:
-      print ix, iy
-    if size > 0:
-      nx, ny = size, size
-    ix, iy = nx, ny
-    im = im.resize((ix, iy), Image.ANTIALIAS)
-    s += 'Resizing to: %d, %d' % (ix, iy)
-  else:
-    s += 'Bitmap size: %d, %d' % (ix, iy)
+      print 'Loading ...',s
 
-  if VERBOSE:
-    print 'Loading ...',s
+    if self.flip:
+      im = im.transpose(Image.FLIP_TOP_BOTTOM)
 
-  if flip:
-    im = im.transpose(Image.FLIP_TOP_BOTTOM)
+    RGBs = 'RGBA' if self.alpha else 'RGB'
+    self.image = im.convert(RGBs).tostring('raw',RGBs)
+    self._tex = ctypes.c_int()
 
-  image = im.convert(RGBs).tostring('raw',RGBs)
-  tex = ctypes.c_int()
-  opengles.glGenTextures(1, ctypes.byref(tex))
-  opengles.glBindTexture(GL_TEXTURE_2D, tex)
-  opengles.glTexImage2D(GL_TEXTURE_2D, 0, RGBv, ix, iy, 0, RGBv,
-                        GL_UNSIGNED_BYTE, ctypes.string_at(image, len(image)))
-  return ix, iy, tex, RGBs=='RGBA', blend
+  def _load_opengl(self):
+    opengles.glGenTextures(1, ctypes.byref(self._tex), 0)
+    opengles.glBindTexture(GL_TEXTURE_2D, self._tex)
+    RGBv = GL_RGBA if self.alpha else GL_RGB
+    opengles.glTexImage2D(GL_TEXTURE_2D, 0, RGBv, self.ix, self.iy, 0, RGBv,
+                          GL_UNSIGNED_BYTE,
+                          ctypes.string_at(self.image, len(self.image)))
+    opengles.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
+                             c_float(GL_LINEAR_MIPMAP_LINEAR))
+    opengles.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER,
+                             c_float(GL_LINEAR))
+    opengles.glGenerateMipmap(GL_TEXTURE_2D)
+    opengles.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
-class _Texture(object):
-  def __init__(self, fileString, flip=False, size=0, blend=False):
-    t = _load_tex(fileString, flip, size, blend)
-    self.ix, self.iy, self.tex, self.alpha, self.blend = t
 
-class Textures(object):
+class Cache(object):
   def __init__(self):
-    self.texs = (ctypes.c_int * 1024)()   #maximum of 1024 textures (just to be safe!)
-    self.tc = 0
+    self.clear()
 
-  def loadTexture(self, fileString, blend=False, flip=False, size=0):
-    # TODO: why are all these textures 'cached' without being retrievable?
-    # If they are cached at all, it should be keyed by the fileString.
-    texture = _Texture(fileString, flip, size, blend)
-    self.texs[self.tc] = texture.tex.value
-    self.tc += 1
+  def clear(self):
+    self.cache = {}
+
+  def create(self, file_string, blend=False, flip=False, size=0):
+    texture = self.cache.get((file_string, blend, flip, size), None)
+    if not texture:
+      texture = Texture(file_string, blend=blend, flip=flip, size=size)
+      self.cache[file_string] = texture
     return texture
-
-  def deleteAll(self):
-    if VERBOSE:
-      print '[Exit] Deleting textures ...'
-      opengles.glDeleteTextures(self.tc, addressof(self.texs))
-
-class Loader(object):
-  ALPHA_VALUE = c_float(0.6)  # TODO: where does this come from?
-  TEXTURE_SET = False
-
-  def __init__(self, texture, coords, vtype=GL_FLOAT):
-    self.texture = texture
-    self.coords = coords
-    self.vtype = vtype
-
-  def __enter__(self):
-    if self.texture:
-      Utility.texture_min_mag()
-      opengles.glEnableClientState(GL_TEXTURE_COORD_ARRAY)
-      opengles.glTexCoordPointer(2, self.vtype, 0, self.coords)
-      opengles.glBindTexture(GL_TEXTURE_2D, self.texture.tex)
-      opengles.glEnable(GL_TEXTURE_2D)
-      if self.texture.alpha:
-        if self.texture.blend:
-          opengles.glDisable(GL_DEPTH_TEST)
-          opengles.glEnable(GL_BLEND)
-          opengles.glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-        else:
-          opengles.glAlphaFunc(GL_GREATER, c_float(0.6))
-          opengles.glEnable(GL_ALPHA_TEST)
-      Loader.TEXTURE_SET = True
-
-  def __exit__(self, type, value, traceback):
-    if Loader.TEXTURE_SET:
-      opengles.glDisable(GL_TEXTURE_2D)
-      opengles.glDisable(GL_ALPHA_TEST)
-      opengles.glDisable(GL_BLEND)
-      opengles.glEnable(GL_DEPTH_TEST)
-
-      Loader.TEXTURE_SET = False
-      # This is why we have Loader.TEXTURE_SET - so that we can nest
-      # Loaders without calling the _exit__ function twice.
-

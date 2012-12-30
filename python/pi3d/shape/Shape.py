@@ -1,172 +1,294 @@
-import math
+from itertools import chain
+from numpy import array, dot, ravel
+from math import radians, pi, sin, cos
 
 from pi3d import *
-from pi3d import Texture
-from pi3d import Utility
+from pi3d.Buffer import Buffer
+from pi3d.context.TextureLoader import TextureLoader
+from pi3d.util import Utility
 
-class Shape(object):
-  def __init__(self, name, x, y, z, rx, ry, rz, sx, sy, sz, cx, cy, cz):
+from pi3d.util.Loadable import Loadable
+
+class Shape(Loadable):
+  def __init__(self, camera, light, name, x, y, z,   rx, ry, rz,   sx, sy, sz,   cx, cy, cz):
+    super(Shape, self).__init__()
     self.name = name
-    self.x = x                #position
-    self.y = y
-    self.z = z
-    self.rotx = rx                #rotation
-    self.roty = ry
-    self.rotz = rz
-    self.sx = sx                #scale
-    self.sy = sy
-    self.sz = sz
-    self.cx = cx                #center
-    self.cy = cy
-    self.cz = cz
+    # uniform variables all in one array!
+    self.unif = (c_float * 33)(x,y,z, rx,ry,rz, sx,sy,sz, cx,cy,cz, 0.5,0.5,0.5, 5000.0,0.8,0.0, 0.0,0.0,0.0, 0.0,0.0,0.0,
+      light.lightpos[0], light.lightpos[1], light.lightpos[2], 1.0,1.0,1.0, 0.1,0.1,0.1)
+    """ in shader array of vec3 uniform variables:
+    0  location 0-2
+    1  rotation 3-5
+    2  scale 6-8
+    3  offset 9-11
+    4  fog shade 12-14
+    5  fog distance and alph (only first two values used at moment) 15, 16
+    6  camera position  18-20
+    7  animation offets x, y, delta 21-23
+    8  light position, direction vector (if capacity for more lights is added these would go on the end of this list) 24-26
+    9  light strength per shade 27-29
+    10 light ambient values 30-32
+    """
 
-        #this should all be done with matrices!! ... just for testing ...
+    self.tr1 = array([[1.0, 0.0, 0.0, 0.0],[0.0, 1.0, 0.0, 0.0] ,[0.0, 0.0, 1.0, 0.0],[x-cx,y-cy,z-cz,1]])
+    s, c = sin(radians(self.unif[3])), cos(radians(self.unif[3]))
+    self.rox = array([[1.0, 0.0, 0.0, 0.0],[0.0, c, s, 0.0],[0.0, -s, c, 0.0],[0.0, 0.0, 0.0, 1.0]])
+    s, c = sin(radians(self.unif[4])), cos(radians(self.unif[4]))
+    self.roy = array([[c, 0.0, -s, 0.0],[0.0, 1.0, 0.0, 0.0],[s, 0.0, c, 0.0],[0.0, 0.0, 0.0, 1.0]])
+    s, c = sin(radians(self.unif[5])), cos(radians(self.unif[5]))
+    self.roz = array([[c, s, 0.0, 0.0],[-s, c, 0.0, 0.0],[0.0, 0.0, 1.0, 0.0],[0.0, 0.0, 0.0, 1.0]])
+    self.scl = array([[self.unif[6], 0.0, 0.0, 0.0],[0.0, self.unif[7], 0.0, 0.0],[0.0, 0.0, self.unif[8], 0.0],[0.0, 0.0, 0.0, 1.0]])
+    self.tr2 = array([[1.0,0.0,0.0,0.0], [0.0,1.0,0.0,0.0], [0.0,0.0,1.0,0.0], [self.unif[9], self.unif[10], self.unif[11], 1.0]])
+    self.MFlg = True
+    self.M = (c_float * 32)(0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0, 0,0,0,0)
 
-  def draw(self, tex=None, shl=GL_UNSIGNED_SHORT):
-    opengles.glShadeModel(GL_SMOOTH)
-    opengles.glVertexPointer(3, GL_FLOAT, 0, self.vertices)
-    opengles.glNormalPointer(GL_FLOAT, 0, self.normals)
-    with Texture.Loader(tex, self.tex_coords):
-      mtrx = (c_float * 16)()
-      opengles.glGetFloatv(GL_MODELVIEW_MATRIX, ctypes.byref(mtrx))
-      self.transform()
-      opengles.glDrawElements( self.ttype, self.ssize, shl , self.indices)
-      opengles.glLoadMatrixf(mtrx)
+    self.camera = camera
+    self.light = light
+    self.shader = None
+    self.textures = []
+
+    self.buf = []
+    # self.buf contains a buffer for each part of this shape that needs
+    # rendering with a different Shader/Texture. self.draw() relies on objects
+    # inheriting from this filling buf with at least one element.
+
+  def draw(self, shdr=None, txtrs=None, ntl=None, shny=None):
+    # if called without parameters there has to have been a previous call to
+    # set_draw_details() for all the Buffers in buf[]
+    shader = shdr or self.shader
+    assert shader
+    shader.use()
+
+    if self.MFlg == True:
+      # calculate rotation and translation matrix for this model
+      # using numpy
+      self.MRaw = dot(self.tr2,
+        dot(self.scl,
+        dot(self.roy,
+        dot(self.rox,
+        dot(self.roz, self.tr1)))))
+      self.M[0:16] = self.MRaw.ravel()
+      self.M[16:32] = dot(self.MRaw, self.camera.mtrx).ravel()
+      self.MFlg = False
+
+    elif self.camera.movedFlag: #only do this is not done because model moved
+      self.M[16:32] = dot(self.MRaw, self.camera.mtrx).ravel()
+
+    if self.camera.movedFlag:
+      self.unif[18:21] = self.camera.eye[0:3]
+
+    opengles.glUniformMatrix4fv(shader.unif_modelviewmatrix, 2, c_int(0),
+                                ctypes.byref(self.M))
+    # otherwise use existing version
+    opengles.glUniform3fv(shader.unif_unif, 11, ctypes.byref(self.unif))
+    for b in self.buf:
+      # Shape.draw has to be passed either parameter == None or values to pass on
+      b.draw(shdr, txtrs, ntl, shny)
+
+  def set_shader(self, shader):
+    self.shader = shader
+    for b in self.buf:
+      b.shader = shader
+
+  def set_normal_shine(self, normtex, ntiles = 1.0, shinetex = None, shiny = 0.0, is_uv=True):
+    if is_uv: ofst = 0
+    else: ofst = -1
+    for b in self.buf:
+      if b.textures == None:
+        b.textures = []
+      if is_uv and len(b.textures) == 0:
+        b.textures = [normtex]
+      while len(b.textures) < (2 + ofst):
+        b.textures.append(None)
+      b.textures[1 + ofst] = normtex
+      b.unib[0] = ntiles
+      if shinetex != None:
+        while len(b.textures) < (3 + ofst):
+          b.textures.append(None)
+        b.textures[2 + ofst] = shinetex
+        b.unib[1] = shiny
+
+  def set_fog(self, fogshade, fogdist):
+    # Set fog for this Shape, only it uses the shader smoothblend function from
+    # 1/3 fogdist to fogdist.
+    self.unif[12:15] = fogshade[0:3]
+    self.unif[15] = fogdist
 
   def scale(self, sx, sy, sz):
-    self.sx = sx
-    self.sy = sy
-    self.sz = sz
+    self.scl[0, 0] = sx
+    self.scl[1, 1] = sy
+    self.scl[2, 2] = sz
+    self.unif[6], self.unif[7], self.unif[8] = sx, sy, sz
+    self.MFlg = True
 
   def position(self, x, y, z):
-    self.x = x
-    self.y = y
-    self.z = z
+    self.tr1[3, 0] = x - self.unif[9]
+    self.tr1[3, 1] = y - self.unif[10]
+    self.tr1[3, 2] = z - self.unif[11]
+    self.unif[0], self.unif[1], self.unif[2] = x, y, z
+    self.MFlg = True
+
+  def positionX(self, v):
+    self.tr1[3, 0] = v - self.unif[9]
+    self.unif[0] = v
+    self.MFlg = True
+
+  def positionY(self, v):
+    self.tr1[3, 1] = v - self.unif[10]
+    self.unif[1] = v
+    self.MFlg = True
+
+  def positionZ(self, v):
+    self.tr1[3, 2] = v - self.unif[11]
+    self.unif[2] = v
+    self.MFlg = True
 
   def translate(self, dx, dy, dz):
-    self.x = self.x + dx
-    self.y = self.y + dy
-    self.z = self.z + dz
+    self.tr1[3, 0] += dx
+    self.tr1[3, 1] += dy
+    self.tr1[3, 2] += dz
+    self.MFlg = True
+    self.unif[0] += dx
+    self.unif[1] += dy
+    self.unif[2] += dz
+
+  def translateX(self, v):
+    self.tr1[3, 0] += v
+    self.unif[0] += v
+    self.MFlg = True
+
+  def translateY(self, v):
+    self.tr1[3, 1] += v
+    self.unif[1] += v
+    self.MFlg = True
+
+  def translateZ(self, v):
+    self.tr1[3, 2] += v
+    self.unif[2] += v
+    self.MFlg = True
 
   def rotateToX(self, v):
-    self.rotx = v
+    s, c = sin(radians(v)), cos(radians(v))
+    self.rox[1, 1] = self.rox[2, 2] = c
+    self.rox[1, 2] = s
+    self.rox[2, 1] = -s
+    self.unif[3] = v
+    self.MFlg = True
 
   def rotateToY(self, v):
-    self.roty = v
+    s, c = sin(radians(v)), cos(radians(v))
+    self.roy[0, 0] = self.roy[2, 2] = c
+    self.roy[0, 2] = -s
+    self.roy[2, 0] = s
+    self.unif[4] = v
+    self.MFlg = True
 
   def rotateToZ(self, v):
-    self.rotz = v
+    s, c = sin(radians(v)), cos(radians(v))
+    self.roz[0, 0] = self.roz[1, 1] = c
+    self.roz[0, 1] = s
+    self.roz[1, 0] = -s
+    self.unif[5] = v
+    self.MFlg = True
 
   def rotateIncX(self,v):
-    self.rotx += v
+    self.unif[3] += v
+    s, c = sin(radians(self.unif[3])), cos(radians(self.unif[3]))
+    self.rox[1, 1] = self.rox[2, 2] = c
+    self.rox[1, 2] = s
+    self.rox[2, 1] = -s
+    self.MFlg = True
 
   def rotateIncY(self,v):
-    self.roty += v
+    self.unif[4] += v
+    s, c = sin(radians(self.unif[4])), cos(radians(self.unif[4]))
+    self.roy[0, 0] = self.roy[2, 2] = c
+    self.roy[0, 2] = -s
+    self.roy[2, 0] = s
+    self.MFlg = True
 
   def rotateIncZ(self,v):
-    self.rotz += v
+    self.unif[5] += v
+    s, c = sin(radians(self.unif[5])), cos(radians(self.unif[5]))
+    self.roz[0, 0] = self.roz[1, 1] = c
+    self.roz[0, 1] = s
+    self.roz[1, 0] = -s
+    self.MFlg = True
 
-  # TODO: should be a method on Shape.
-  def add_vertex(self, x, y, z, nx, ny, nz, tx, ty):
+  def add_vertex(self, vert, norm, texc):
   # add vertex,normal and tex_coords ...
-    self.verts.extend([x, y, z])
-    self.norms.extend([nx, ny, nz])
-    self.texcoords.extend([tx, ty])
+    self.verts.append(vert)
+    self.norms.append(norm)
+    self.texcoords.append(texc)
 
-  # TODO: should be a method on Shape.
-  def add_tri(self, x, y, z):
+
+  def add_tri(self, indx):
   # add triangle refs.
-    self.inds.extend([x, y, z])
-
-  # position, rotate and scale an object
-  def transform(self):
-    Utility.translatef(self.x - self.cx, self.y - self.cy, self.z - self.cz)
-
-    # TODO: why the reverse order?
-    Utility.rotatef(self.rotz, 0, 0, 1)
-    Utility.rotatef(self.roty, 0, 1, 0)
-    Utility.rotatef(self.rotx, 1, 0, 0)
-    Utility.scalef(self.sx, self.sy, self.sz)
-    Utility.translatef(self.cx, self.cy, self.cz)
+    self.inds.append(indx)
 
   def lathe(self, path, rise=0.0, loops=1.0, tris=True):
     s = len(path)
     rl = int(self.sides * loops)
-    if tris:
-      ssize = rl * 6 * (s - 1)
-    else:
-      ssize = rl * 2 * (s - 1) + (s * 2) - 2
+    ssize = rl * 6 * (s-1)
 
     pn = 0
     pp = 0
     tcx = 1.0 / self.sides
-    pr = (math.pi / self.sides) * 2
+    pr = (pi / self.sides) * 2.0
     rdiv = rise / rl
-    ss = 0
+    ss=0
 
-    # Find largest and smallest y of the path used for stretching the texture over
-    p = [i[1] for i in path]
-    miny = min(*p)
-    maxy = max(*p)
+    #find largest and smallest y of the path used for stretching the texture over
+    miny = path[0][1]
+    maxy = path[s-1][1]
+    for p in range (0, s):
+      if path[p][1] < miny: miny = path[p][1]
+      if path[p][1] > maxy: maxy = path[p][1]
 
-    verts = []
-    norms = []
-    idx = []
-    tex_coords = []
+    verts=[]
+    norms=[]
+    idx=[]
+    tex_coords=[]
 
-    opx = path[0][0]
-    opy = path[0][1]
+    opx=path[0][0]
+    opy=path[0][1]
 
-    for p in range(s):
-      px = path[p][0]
-      py = path[p][1]
+    for p in range (0, s):
 
-      tcy = 1.0 - ((py - miny) / (maxy - miny))
+      px = path[p][0]*1.0
+      py = path[p][1]*1.0
 
-      #normal between path points
-      dx, dy = normalize_vector((opx, opy), (px, py))
+      tcy = 1.0 - ((py - miny)/(maxy - miny))
+
+      #normalized 2D vector between path points TODO numpy?
+      dx, dy = Utility.vec_normal(Utility.vec_sub((px, py), (opx, opy)))
 
       for r in range (0, rl):
-        cosr, sinr = Utility.from_polar_rad(pr * r)
-        # TODO: why the reversal?
-
-        verts.extend([px * sinr, py, px * cosr])
-        norms.extend([-sinr * dy, dx, -cosr * dy])
-        tex_coords.extend([tcx * r, tcy])
+        sinr = sin(pr * r)
+        cosr = cos(pr * r)
+        verts.append((px * sinr,py,px * cosr))
+        norms.append((-sinr*dy,dx,-cosr*dy))
+        tex_coords.append((1.0-tcx * r, tcy))
         py += rdiv
-
       #last path profile (tidies texture coords)
-      verts.extend([0, py, px])
-      norms.extend([0, dx, -dy])
-      tex_coords.extend([1.0, tcy])
+      verts.append((0,py,px))
+      norms.append((0,dx,-dy))
+      tex_coords.append((0,tcy))
 
       if p < s-1:
-        if tris:
-          # Create indices for GL_TRIANGLES
-          pn += (rl + 1)
-          for r in range(rl):
-            idx.extend([pp + r + 1, pp + r,
-                        pn + r, pn + r,
-                        pn + r + 1, pp + r + 1])
-            ss += 6
-          pp += (rl + 1)
-        else:
-          #Create indices for GL_TRIANGLE_STRIP
-          pn += (rl + 1)
-          for r in range(rl):
-            idx.extend([pp + r, pn + r])
-            ss += 2
-          idx.extend([pp + self.sides, pn + self.sides])
-          ss += 2
-          pp += (rl + 1)
+        pn += (rl+1)
+        for r in range (0, rl):
+          idx.append((pp+r+1,pp+r,pn+r))
+          idx.append((pn+r,pn+r+1,pp+r+1))
+        pp += (rl+1)
 
-      opx = px
-      opy = py
+      opx=px
+      opy=py
 
-    if VERBOSE:
-      print ssize, ss
+      #print verts,norms,idx
+    buf = Buffer(self, verts, tex_coords, idx, norms)
+    return buf
 
-    return (verts, norms, idx, tex_coords, ssize)
 
 def normalize_vector(begin, end):
   diff = [e - b for b, e in zip(begin, end)]

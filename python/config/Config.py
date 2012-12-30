@@ -12,6 +12,8 @@ from util import File
 from util import Merge
 from util import Platform
 
+ALLOW_EMPTY_OPTIONS = False
+
 def _config_file(node):
   return os.path.join('nodes', node, 'config.yml')
 
@@ -58,16 +60,24 @@ def is_headless():
 
 def get(*parts):
   assert parts
-
   config = CONFIG
+
+  def fail_on_none():
+    if config is None and not ALLOW_EMPTY_OPTIONS:
+      raise Exception('Empty configuation option for (%s)' % ', '.join(parts))
+
   for p in parts:
+    fail_on_none()
     if config is None:
       config = {}
+
     config = config.get(p, None)
+
+  fail_on_none()
   return config
 
 def is_enabled(*parts):
-  enabled = get(parts + ('enable',))
+  enabled = get(*(parts + ('enable',)))
   if enabled is None:
     enabled = not is_headless()
   return enabled

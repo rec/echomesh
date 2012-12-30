@@ -5,7 +5,6 @@ import errno
 import socket
 import threading
 import time
-import traceback
 import yaml
 import Queue
 

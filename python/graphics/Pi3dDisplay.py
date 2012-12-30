@@ -5,8 +5,8 @@ import os.path
 import random
 import time
 
-from pi3d.Display import Display
-from pi3d.Texture import Textures
+from pi3d import Display
+from pi3d import Texture
 
 from config import Config
 from graphics import Rect
@@ -16,22 +16,21 @@ from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-DISPLAY = Display()
-DISPLAY.create2D(*Config.get('display', 'dimensions'))
-DISPLAY.setBackColour(*Config.get('display', 'background'))
+DIMENSIONS = Config.get('display', 'dimensions')
+BACKGROUND = Config.get('display', 'background')
+
+DISPLAY = Display.create(False, *DIMENSIONS, background=BACKGROUND)
 
 DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
 
-TEXTURES = Textures()
-
 PI3D_DISPLAY = None
+DO_PRELOAD = not True
 
 class Pi3dDisplay(ThreadLoop):
   def __init__(self, echomesh):
-    ThreadLoop.__init__(self)
+    super(Pi3dDisplay, self).__init__()
     self.echomesh = echomesh
-    self.textures = TEXTURES
-    self.texture_cache = {}
+    self.texture_cache = Texture.Cache()
     self.sprites = []
     self.count = 0
     self.display = DISPLAY
@@ -39,44 +38,32 @@ class Pi3dDisplay(ThreadLoop):
     global PI3D_DISPLAY
     PI3D_DISPLAY = self
 
-  def add_sprite(self, sprite):
-    self.sprites.insert(0, sprite)
+  def add_sprite(self, *sprites):
+    self.display.add_sprites(*sprites)
 
   def run(self):
-    self.display.clear()
-
-    t = time.time()
-    self.sprites = [s for s in self.sprites if s.is_open]
-    for s in self.sprites:
-      s.update(t)
-    self.display.swapBuffers()
-
-    fps = Config.get('display', 'frames_per_second')
-    if fps and fps > 0:
-      time.sleep(1.0 / fps)
+    try:
+      self.display.frames_per_second = Config.get('display', 'frames_per_second')
+      self.is_open = self.display.loop_running()
+    except:
+      self.close()
+      import traceback
+      LOGGER.critical(traceback.format_exc())
+      raise
 
   def load_texture(self, imagefile):
     if imagefile == '$random':
       imagefile = random.choice(os.listdir(DEFAULT_IMAGE_DIRECTORY.directory))
 
     imagefile = DEFAULT_IMAGE_DIRECTORY.expand(imagefile)
-    texture = self.texture_cache.get(imagefile, None)
-    if not texture:
-      LOGGER.info(imagefile)
-      try:
-        texture = self.textures.loadTexture(imagefile)
-      except IOError:
-        LOGGER.error("Can't open image file %s", imagefile)
-      self.texture_cache[imagefile] = texture
-    return texture
+    return self.texture_cache.create(imagefile)
 
   def preload(self):
-    if True:
-      return
-    for imagefile in os.listdir(DEFAULT_IMAGE_DIRECTORY):
-      self.load_texture(imagefile)
+    if DO_PRELOAD:
+      for imagefile in os.listdir(DEFAULT_IMAGE_DIRECTORY):
+        self.load_texture(imagefile)
 
   def close(self):
-    ThreadLoop.close(self)
-    self.textures.deleteAll()
+    super(Pi3dDisplay, self).close()
     self.display.destroy()
+    self.echomesh.close()

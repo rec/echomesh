@@ -1,3 +1,8 @@
+# This is the default configuration for the entire system.
+# If you add a new configuration value, you must add its default value as an
+# entry in this file - this is automatically checked at runtime if the variable
+# Config.ALLOW_EMPTY_OPTIONS is False, which it is by default.
+
 type: config
 
 allow_shutdown: true
@@ -12,6 +17,7 @@ audio:
       chunk_size: 1024
       group_size: 0
       window_size: 0
+    enable: true
     frames_per_buffer: 4096
     name: AK5370
     periodsize: 160
@@ -31,8 +37,7 @@ audio:
     route: audio
     use_aplay: false
 
-
-# control_program: not Platform.IS_LINUX
+control_program: false
 
 discovery:
   port: 1238
@@ -41,6 +46,7 @@ discovery:
 display:
   background: [0, 0, 0, 1]
   dimensions: [0, 0, 0, 0]
+  enable: true
   frames_per_second: 0
   full_screen: true
   library: pi3d
@@ -50,12 +56,18 @@ git:
   user: rec
   project: echomesh
 
-# headless: not Platform.IS_LINUX
+headless: false
 
 logging:
-  file:
+  file: ""
   format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
   level: info
+
+opening_sleep: 0.5
+
+score:
+  enable: true
+  file: score.yml
 
 sequence:
   delay: 5.0
@@ -68,4 +80,3 @@ shorten:
   url: "http://ax.to"
   use_index_url: true
 
-opening_sleep: 0.5

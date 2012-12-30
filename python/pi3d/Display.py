@@ -1,195 +1,260 @@
 import math
-import Image
+import time
+import threading
+import traceback
 
 from pi3d import *
-from pi3d import Utility
+from pi3d.util.Locker import Locker
+from pi3d.util import Utility
+from pi3d.util.DisplayOpenGL import DisplayOpenGL
+
+LOGGER = Log.logger(__name__)
+
+CHECK_IF_DISPLAY_THREAD = True
+DISPLAY_THREAD = threading.current_thread()
+DISPLAY = None
+ALLOW_MULTIPLE_DISPLAYS = False
+RAISE_EXCEPTIONS = True
+
+DEFAULT_ASPECT = 60.0
+DEFAULT_DEPTH = 24
+DEFAULT_NEAR_3D = 0.5
+DEFAULT_FAR_3D = 800.0
+DEFAULT_NEAR_2D = -1.0
+DEFAULT_FAR_2D = 500.0
+
+def is_display_thread():
+  return not CHECK_IF_DISPLAY_THREAD or (
+    DISPLAY_THREAD is threading.current_thread())
 
 class Display(object):
-  def __init__(self):
+  def __init__(self, tkwin):
     """Opens up the OpenGL library and prepares a window for display."""
-    b = bcm.bcm_host_init()
+    if not ALLOW_MULTIPLE_DISPLAYS:
+      global DISPLAY
+      if DISPLAY:
+        LOGGER.warning('A second instance of Display was created')
+      else:
+        DISPLAY = self
 
-    #Get the width and height of the screen
-    width = c_int()
-    height = c_int()
-    s = bcm.graphics_get_display_size(0, ctypes.byref(width),
-                                      ctypes.byref(height))
-    assert s >= 0
+    self.tkwin = tkwin
 
-    self.max_width = width.value
-    self.max_height = height.value
+    self.sprites = []
+    self.sprites_to_load = set()
+    self.sprites_to_unload = set()
 
-    if VERBOSE:
-      print STARTUP_MESSAGE % dict(version=VERSION,
-                                   width=self.max_width,
-                                   height=self.max_height)
+    self.opengl = DisplayOpenGL()
+    self.max_width, self.max_height = self.opengl.width, self.opengl.height
+    self.internal_loop = False
+    self.external_loop = False
+    self.is_running = True
+    self.lock = threading.RLock()
 
-  def create_display(self, x=0, y=0, w=0, h=0, depth=24):
-    b = bcm.bcm_host_init()
-    self.display = openegl.eglGetDisplay(EGL_DEFAULT_DISPLAY)
-    assert self.display != EGL_NO_DISPLAY
+    LOGGER.info(STARTUP_MESSAGE)
 
-    r = openegl.eglInitialize(self.display,0,0)
-    #assert r == EGL_FALSE
+  def loop(self, loop_function=None):
+    LOGGER.debug('starting')
+    self.time = time.time()
+    assert not self.external_loop, "Use only one of loop and loop_running"
 
-    attribute_list = c_ints((EGL_RED_SIZE, 8,
-                             EGL_GREEN_SIZE, 8,
-                             EGL_BLUE_SIZE, 8,
-                             EGL_ALPHA_SIZE, 8,
-                             EGL_DEPTH_SIZE, 24,
-                             EGL_BUFFER_SIZE, 32,
-                             EGL_SURFACE_TYPE, EGL_WINDOW_BIT,
-                             EGL_NONE))
-    numconfig = c_int()
-    config = ctypes.c_void_p()
-    r = openegl.eglChooseConfig(self.display,
-                                ctypes.byref(attribute_list),
-                                ctypes.byref(config), 1,
-                                ctypes.byref(numconfig))
+    self.internal_loop = True
+    while self.is_running:
+      self._loop_begin()
+      if loop_function and loop_function():
+        self.stop()
+      else:
+        self._loop_end()
 
-    context_attribs = c_ints((EGL_CONTEXT_CLIENT_VERSION, 2, EGL_NONE))
-    self.context = openegl.eglCreateContext(self.display, config,
-                                            EGL_NO_CONTEXT, 0)
-    #ctypes.byref(context_attribs) )
-    assert self.context != EGL_NO_CONTEXT
+    self.destroy()
+    LOGGER.debug('stopped')
 
-    #Set the viewport position and size
+  def loop_running(self):
+    if self.is_running:
+      assert not self.internal_loop, "Use only one of loop and loop_running"
+      if self.external_loop:
+        self._loop_end()
+      else:
+        self.time = time.time()
+        self.external_loop = True  # First time.
+      self._loop_begin()
 
-    dst_rect = c_ints((x, y, w, h))
-    src_rect = c_ints((x, y, w << 16, h << 16))
+    else:
+      self._loop_end()
+      self.destroy()
 
-    self.dispman_display = bcm.vc_dispmanx_display_open(0) #LCD setting
-    self.dispman_update = bcm.vc_dispmanx_update_start(0)
-    self.dispman_element = bcm.vc_dispmanx_element_add(
-      self.dispman_update,
-      self.dispman_display,
-      0, ctypes.byref(dst_rect),
-      0, ctypes.byref(src_rect),
-      DISPMANX_PROTECTION_NONE,
-      0, 0, 0)
+    return self.is_running
 
-    nativewindow = c_ints((self.dispman_element, w, h + 1));
-    bcm.vc_dispmanx_update_submit_sync(self.dispman_update)
-
-    nw_p = ctypes.pointer(nativewindow)
-    self.nw_p = nw_p
-
-    self.surface = openegl.eglCreateWindowSurface(self.display, config, nw_p, 0)
-    assert self.surface != EGL_NO_SURFACE
-
-    r = openegl.eglMakeCurrent(self.display, self.surface, self.surface,
-                               self.context)
-    assert r
-
-    #Create viewport
-    opengles.glViewport(0, 0, w, h)
-
-    #Setup default hints
-    opengles.glEnable(GL_CULL_FACE)
-    #opengles.glShadeModel(GL_FLAT)
-    opengles.glEnable(GL_NORMALIZE)
-    opengles.glEnable(GL_DEPTH_TEST)
-
-    # Switches off alpha blending problem with desktop - is there a bug in the
-    # driver?
-    # Thanks to Roland Humphries who sorted this one!!
-    opengles.glColorMask(1, 1, 1, 0)
-
-    opengles.glEnableClientState(GL_VERTEX_ARRAY)
-    opengles.glEnableClientState(GL_NORMAL_ARRAY)
-
-    self.active = True
-
-  def create3D(self, x=0, y=0, w=0, h=0,
-               near=1.0, far=800.0, aspect=60.0, depth=24):
-    if w <= 0 or h <= 0:
-      w = self.max_width
-      h = self.max_height
-
+  def resize(self, x=0, y=0, w=0, h=0):
+    if w <= 0:
+      w = display.max_width
+    if h <= 0:
+      h = display.max_height
     self.win_width = w
     self.win_height = h
-    self.near = near
-    self.far = far
 
     self.left = x
     self.top = y
     self.right = x + w
     self.bottom = y + h
+    self.opengl.resize(x, y, w, h)
 
-    self.create_display(x, y, w, h, depth)
+  def add_sprites(self, *sprites):
+    with Locker(self.lock):
+      self.sprites_to_load.update(sprites)
 
-    #Setup perspective view
-    opengles.glMatrixMode(GL_PROJECTION)
-    Utility.load_identity()
-    hht = near * math.tan(math.radians(aspect / 2.0))
-    hwd = hht * w / h
-    opengles.glFrustumf(c_float(-hwd), c_float(hwd),
-                        c_float(-hht), c_float(hht),
-                        c_float(near), c_float(far))
-    opengles.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
-    opengles.glMatrixMode(GL_MODELVIEW)
-    Utility.load_identity()
+  def remove_sprites(self, *sprites):
+    with Locker(self.lock):
+      self.sprites_to_unload.update(sprites)
 
+  def _loop_begin(self):
+    self.clear()
+    with Locker(self.lock):
+      self.sprites_to_load, to_load = set(), self.sprites_to_load
+      self.sprites.extend(to_load)
+    self._for_each_sprite(lambda s: s.load_opengl(), to_load)
 
-  def create2D(self, x=0, y=0, w=0, h=0, depth=24, near=-1.0, far=100.0):
-    if w <= 0 or h <= 0:
-        w = self.max_width
-        h = self.max_height
+  def _loop_end(self):
+    with Locker(self.lock):
+      self.sprites_to_unload, to_unload = set(), self.sprites_to_unload
+      if to_unload:
+        self.sprites = (s for s in self.sprites if s in to_unload)
 
-    self.win_width = w
-    self.win_height = h
+    t = time.time()
+    self._for_each_sprite(lambda s: s.repaint(t))
 
-    self.create_display(x, y, w, h, depth)
+    self.swapBuffers()
 
-    opengles.glMatrixMode(GL_PROJECTION)
-    Utility.load_identity()
-    opengles.glOrthof(c_float(0), c_float(w), c_float(0),
-                      c_float(h), c_float(-1), c_float(500))
-    opengles.glMatrixMode(GL_MODELVIEW)
-    Utility.load_identity()
+    for sprite in to_unload:
+      sprite.unload_opengl()
+
+    if getattr(self, 'frames_per_second', 0):
+      self.time += 1.0 / self.frames_per_second
+      delta = self.time - time.time()
+      if delta > 0:
+        time.sleep(delta)
+
+  def _for_each_sprite(self, function, sprites=None):
+    if sprites is None:
+      sprites = self.sprites
+    for s in sprites:
+      try:
+        function(s)
+      except:
+        LOGGER.error(traceback.format_exc())
+        if RAISE_EXCEPTIONS:
+          raise
+
+  def stop(self):
+    self.is_running = False
+
+  def __del__(self):
+    self.destroy()
 
   def destroy(self):
-    if self.active:
-        openegl.eglSwapBuffers(self.display, self.surface);
-        openegl.eglMakeCurrent(self.display, EGL_NO_SURFACE, EGL_NO_SURFACE,
-                               EGL_NO_CONTEXT)
-        openegl.eglDestroySurface(self.display, self.surface)
-        openegl.eglDestroyContext(self.display, self.context)
-        openegl.eglTerminate(self.display)
-        bcm.vc_dispmanx_display_close(self.dispman_display)
-        bcm.vc_dispmanx_element_remove(self.dispman_update,self.dispman_element)
-        self.active = False
+    try:
+      self.opengl.destroy()
+    except:
+      pass
+    try:
+      self.mouse.stop()
+    except:
+      pass
+    try:
+      self.tkwin.destroy()
+    except:
+      pass
 
   def swapBuffers(self):
-    opengles.glFlush()
-    opengles.glFinish()
-    #clear_matrices
-    openegl.eglSwapBuffers(self.display, self.surface)
+    self.opengl.swapBuffers()
 
   def clear(self):
-    #opengles.glBindFramebuffer(GL_FRAMEBUFFER,0)
-    opengles.glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT)
+    # opengles.glBindFramebuffer(GL_FRAMEBUFFER,0)
+    opengles.glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
-  def setBackColour(self, r, g, b, a):
-    self.backColour=(r, g, b, a)
-    opengles.glClearColor(c_float(r), c_float(g), c_float(b), c_float(a))
-    if a < 1.0:
-      opengles.glColorMask(1, 1, 1, 1)
-        #switches off alpha blending with desktop (is there a bug in the driver?)
+  def set_background(self, r, g, b, alpha):
+    call_float(opengles.glClearColor, r, g, b, alpha)
+    opengles.glColorMask(1, 1, 1, 1 if alpha < 1.0 else 0)
+    #switches off alpha blending with desktop (is there a bug in the driver?)
+
+  def mouse_position(self):
+    if self.mouse:
+      return self.mouse.position()
+    elif self.tkwin:
+      return self.tkwin.winfo_pointerxy()
     else:
-        opengles.glColorMask(1, 1, 1, 0)
-
-  def screenshot(self, filestring):
-    if VERBOSE:
-      print "Taking screenshot to '",filestring,"'"
-
-    size = self.win_height * self.win_width * 3
-    img = (ctypes.c_char*size)()
-    opengles.glReadPixels(0,0,self.win_width,self.win_height,
-                          GL_RGB, GL_UNSIGNED_BYTE, ctypes.byref(img))
-    im = Image.frombuffer("RGB",(self.win_width,self.win_height),
-                          img, "raw", "RGB", 0,1)
-    im = im.transpose(Image.FLIP_TOP_BOTTOM)
-    im.save(filestring)
+      return -1, -1
 
 
+def create(is_3d=True, x=None, y=None, w=0, h=0, near=None, far=None,
+           aspect=DEFAULT_ASPECT, depth=DEFAULT_DEPTH, background=None,
+           tk=False, window_title='', window_parent=None, mouse=False):
+  if tk:
+    from pi3d.util import TkWin
+    if not (w and h):
+      # TODO: how do we do full-screen in tk?
+      LOGGER.error("Can't compute default window size when using tk")
+      raise Exception
+
+    tkwin = TkWin.TkWin(window_parent, window_title, w, h)
+    tkwin.update()
+    if x is None:
+      x = tkwin.winx
+    if y is None:
+      y = tkwin.winy
+
+  else:
+    tkwin = None
+    x = x or 0
+    y = y or 0
+
+  display = Display(tkwin)
+  if w <= 0:
+     w = display.max_width - 2 * x
+     if w <= 0:
+       w = display.max_width
+  if h <= 0:
+     h = display.max_height - 2 * y
+     if h <= 0:
+       h = display.max_height
+  LOGGER.debug('Display size is w=%d, h=%d', w, h)
+
+  if near is None:
+    near = DEFAULT_NEAR_3D if is_3d else DEFAULT_NEAR_2D
+  if far is None:
+    far = DEFAULT_FAR_3D if is_3d else DEFAULT_FAR_2D
+
+  display.win_width = w
+  display.win_height = h
+  display.near = near
+  display.far = far
+
+  display.left = x
+  display.top = y
+  display.right = x + w
+  display.bottom = y + h
+
+  display.opengl.create_display(x, y, w, h)
+  display.mouse = None
+
+  if mouse:
+    from pi3d.Mouse import Mouse
+    display.mouse = Mouse(width=w, height=h)
+    display.mouse.start()
+
+  opengles.glMatrixMode(GL_PROJECTION)
+  Utility.load_identity()
+  if is_3d:
+    hht = near * math.tan(math.radians(aspect / 2.0))
+    hwd = hht * w / h
+    call_float(opengles.glFrustumf, -hwd, hwd, -hht, hht, near, far)
+    opengles.glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST)
+  else:
+    call_float(opengles.glOrthof, 0, w, 0, h, near, far)
+
+  opengles.glMatrixMode(GL_MODELVIEW)
+  Utility.load_identity()
+
+  if background:
+    display.set_background(*background)
+
+  return display
