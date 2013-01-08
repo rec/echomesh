@@ -1,0 +1,19 @@
+# This is the default configuration for Darwin (Mac OS/X) systems.
+
+type: config
+
+audio:
+  input:
+    enable: false
+
+  output:
+    enable: false
+
+control_program: true
+
+display:
+  enable: false
+
+score:
+  enable: false
+  file: score.yml

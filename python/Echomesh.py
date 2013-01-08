@@ -68,7 +68,6 @@ class Echomesh(Closer.Closer):
       self.score.start()
     else:
       LOGGER.info('Score disabled')
-      print(Config.CONFIG)
       self.score = Openable()
 
   def remove_local(self):

@@ -26,7 +26,6 @@ def get_pyaudio_stream(rate, use_default, sample_bytes):
 
   if use_default:
     index = pyaud.get_default_input_device_info()['index']
-    print("Trying to open", index)
     return _make_stream(index)
   else:
     for i in range(MAX_INPUT_DEVICES):

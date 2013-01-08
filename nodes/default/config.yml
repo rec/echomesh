@@ -34,6 +34,7 @@ audio:
 
   output:
     device: 0
+    enable: false
     route: audio
     use_aplay: false
 

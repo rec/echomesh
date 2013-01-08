@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import math
 import pygame
-# import pygame.sprite
 
 from echomesh.graphics import Path
 from echomesh.util import Openable
@@ -32,7 +31,6 @@ class ImagePath(pygame.sprite.DirtySprite):
 
     self.begin, self.end = path
     self.rect.move_ip(self.begin)
-    # print(dir(self.rect))
 
   def update(self, time):
     pygame.sprite.DirtySprite.update(self)

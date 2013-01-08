@@ -25,7 +25,6 @@ class Envelope(object):
 
     t1, d1 = self.times[index - 1], self.data[index - 1]
     if time <= t1:
-      # print('here!', time, t1)
       return d1
 
     t2, d2 = self.times[index], self.data[index]
