@@ -36,7 +36,9 @@ audio:
     route: audio
     use_aplay: false
 
-control_program: false
+control_program:
+  enable: true
+  use_tk: true
 
 discovery:
   port: 1238
