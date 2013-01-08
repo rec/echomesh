@@ -28,14 +28,14 @@ def print_function(score, event, *args):
   print(*args)
 
 def play_image(score, event, **keywords):
-  if Config.is_enabled('display'):
+  if Config.get('pi3d', 'enable'):
     from echomesh.graphics.Sprite import ImageSprite
     ImageSprite(**keywords)
   else:
     LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
 
 def play_audio(score, event, **keywords):
-  if Config.is_enabled('audio', 'output'):
+  if Config.get('audio', 'output', 'enable'):
     from echomesh.sound import FilePlayer
     player = FilePlayer.play(**keywords)
     if player:

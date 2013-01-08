@@ -10,8 +10,6 @@ allow_shutdown: true
 autostart: true
 
 audio:
-  library: pyaudio
-
   input:
     average:
       chunk_size: 1024
@@ -44,14 +42,11 @@ discovery:
   port: 1238
   timeout: 0.10
 
-display:
+pi3d:
   background: [0, 0, 0, 1]
   dimensions: [0, 0, 0, 0]
-  enable: true
-  frames_per_second: 0
+  enable: false
   full_screen: true
-  library: pi3d
-  threaded: false
 
 git:
   user: rec
@@ -81,3 +76,4 @@ shorten:
   url: "http://ax.to"
   use_index_url: true
 
+update_interval: 0

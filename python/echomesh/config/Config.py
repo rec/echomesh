@@ -57,11 +57,7 @@ def remove_local():
 
 def is_control_program():
   """is_headless() is True if Echomesh responds to keyboard commands."""
-  return CONFIG.get('control_program', not Platform.IS_LINUX)
-
-def is_headless():
-  """is_headless() is True if Echomesh cannot do graphics, sound or scores."""
-  return CONFIG.get('headless', not Platform.IS_LINUX)
+  return CONFIG.get('control_program', 'enable')
 
 def get(*parts):
   assert parts
@@ -80,9 +76,3 @@ def get(*parts):
 
   fail_on_none()
   return config
-
-def is_enabled(*parts):
-  enabled = get(*(parts + ('enable',)))
-  if enabled is None:
-    enabled = not is_headless()
-  return enabled

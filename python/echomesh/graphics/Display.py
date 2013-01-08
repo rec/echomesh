@@ -6,6 +6,6 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def display(echomesh):
-  if Config.is_enabled('display'):
+  if Config.get('pi3d', 'enable'):
     from echomesh.graphics import Pi3dDisplay
     return Pi3dDisplay.Pi3dDisplay(echomesh)

@@ -54,12 +54,12 @@ class Echomesh(Closer.Closer):
 
     SetOutput.set_output(Config.get('audio', 'output', 'route'))
     self.microphone = Microphone.Microphone(self._mic_event)
-    self.control_program = Config.is_control_program()
+    self.control_program = Config.get('control_program', 'enable')
 
     self.load_score()
 
   def load_score(self):
-    self.score_enabled = Config.is_enabled('score')
+    self.score_enabled = Config.get('score', 'enable')
     if self.score_enabled:
       from echomesh.command import Functions
       from echomesh.command import Score
@@ -135,17 +135,16 @@ class Echomesh(Closer.Closer):
     self.clients.start()
     self.microphone.start()
 
-    display_threaded = Config.get('display', 'threaded')
-    if display_threaded or not self.display:
-      self.display and self.display.start()
+    if self.display:
+      if self.control_program:
+        threading.Thread(target=self._keyboard_input).start()
+      self.display.loop()  # Blocks until complete
+
+    else:
       if self.control_program:
         self._keyboard_input()
       self._join()
 
-    else:
-      if self.control_program:
-        threading.Thread(target=self._keyboard_input).start()
-      self.display.loop()  # Blocks until complete
     LOGGER.info('Finished Echomesh._run')
 
   def _keyboard_input(self):

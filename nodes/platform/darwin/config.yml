@@ -11,7 +11,7 @@ audio:
 
 control_program: true
 
-display:
+pi3d:
   enable: false
 
 score:

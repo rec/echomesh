@@ -38,7 +38,7 @@ class Router(object):
     self.echomesh.receive_event(event)
 
   def halt(self, data):
-    if not Config.is_control_program():
+    if not Config.get('control_program', 'enable'):
       LOGGER.info('Quitting');
       self.echomesh.close()
 

@@ -53,7 +53,7 @@ class Microphone(ThreadLoop):
 
   def start(self):
     self.reset_levels()
-    if Config.is_enabled('audio', 'input'):
+    if Config.get('audio', 'input', 'enable'):
       LOGGER.info('Microphone starting')
       rate = Config.get('audio', 'input', 'sample_rate')
       use_default = Config.get('audio', 'input', 'use_default_channel')

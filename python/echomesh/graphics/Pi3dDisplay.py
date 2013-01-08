@@ -16,8 +16,8 @@ from pi3d import Texture
 
 LOGGER = Log.logger(__name__)
 
-DIMENSIONS = Config.get('display', 'dimensions')
-BACKGROUND = Config.get('display', 'background')
+DIMENSIONS = Config.get('pi3d', 'dimensions')
+BACKGROUND = Config.get('pi3d', 'background')
 
 DISPLAY = Display.create(False, *DIMENSIONS, background=BACKGROUND)
 
@@ -43,7 +43,7 @@ class Pi3dDisplay(ThreadLoop):
 
   def run(self):
     try:
-      self.display.frames_per_second = Config.get('display', 'frames_per_second')
+      self.display.frames_per_second = Config.get('update_interval')
       self.is_open = self.display.loop_running()
     except:
       self.close()
