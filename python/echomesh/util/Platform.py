@@ -2,7 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import platform
 
-SYSTEM = platform.system()
-IS_LINUX = (SYSTEM == 'Linux')
-IS_MAC = (SYSTEM == 'Darwin')
-IS_WINDOWS = (SYSTEM == 'Windows')
+PLATFORM = platform.system()
+
+IS_LINUX = (PLATFORM == 'Linux')
+IS_MAC = (PLATFORM == 'Darwin')
+IS_WINDOWS = (PLATFORM == 'Windows')
+
+assert IS_LINUX or IS_MAC or IS_WINDOWS
