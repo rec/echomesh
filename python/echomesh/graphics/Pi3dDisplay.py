@@ -5,14 +5,14 @@ import os.path
 import random
 import time
 
+from echomesh.config import Config
+from echomesh.graphics import Rect
+from echomesh.util import Log
+from echomesh.util.DefaultFile import DefaultFile
+from echomesh.util.ThreadLoop import ThreadLoop
+
 from pi3d import Display
 from pi3d import Texture
-
-from config import Config
-from graphics import Rect
-from util import Log
-from util.DefaultFile import DefaultFile
-from util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 

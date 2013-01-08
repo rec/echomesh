@@ -2,11 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from network import Address
+from echomesh.network import Address
 
-from util.DefaultFile import DefaultFile
-from util import File
-from util import Log
+from echomesh.util.DefaultFile import DefaultFile
+from echomesh.util import File
+from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 

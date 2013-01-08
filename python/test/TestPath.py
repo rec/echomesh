@@ -4,8 +4,8 @@ import pygame
 import sys
 import time
 
-from graphics import Display
-from graphics import Path
+from echomesh.graphics import Display
+from echomesh.graphics import Path
 
 BLACK = (0, 0, 0)
 RED = (255, 0, 0)

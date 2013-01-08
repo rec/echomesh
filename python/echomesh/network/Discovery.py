@@ -8,12 +8,12 @@ import time
 import yaml
 import Queue
 
-from config import Config
-from network import Address
-from network import Broadcast
-from util.Closer import Closer
-from util.ThreadLoop import ThreadLoop
-from util import Log
+from echomesh.config import Config
+from echomesh.network import Address
+from echomesh.network import Broadcast
+from echomesh.util.Closer import Closer
+from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 

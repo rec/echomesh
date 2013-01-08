@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import weakref
 
-from util import Log
-from util.Openable import Openable
+from echomesh.util import Log
+from echomesh.util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 

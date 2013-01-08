@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import traceback
 
-from util import Log
-from util.Closer import Closer
+from echomesh.util import Log
+from echomesh.util.Closer import Closer
 
 LOGGER = Log.logger(__name__)
 

@@ -2,10 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from config import Config
-from network import Git
-from util import Log
-from util import Subprocess
+from echomesh.config import Config
+from echomesh.network import Git
+from echomesh.util import Log
+from echomesh.util import Subprocess
 
 LOGGER = Log.logger(__name__)
 

@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 import traceback
 
-from config import Config
-from sound import Input
-from sound import Levels
-from util import Average
-from util import Log
-from util import Openable
-from util import Platform
-from util.ThreadLoop import ThreadLoop
-from util import Util
+from echomesh.config import Config
+from echomesh.sound import Input
+from echomesh.sound import Levels
+from echomesh.util import Average
+from echomesh.util import Log
+from echomesh.util import Openable
+from echomesh.util import Platform
+from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util import Util
 
 LOGGER = Log.logger(__name__)
 

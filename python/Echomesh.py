@@ -8,19 +8,25 @@ import threading
 import time
 import traceback
 
-from command.Functions import FUNCTIONS
-from command import Processor
-from command import Router
-from config import Config
-from graphics import Display
-from network import Clients
-from network import Discovery
-from sound import Microphone
-from sound import SetOutput
-from util import File
-from util import Log
-from util import Closer
-from util.Openable import Openable
+from echomesh.command.Functions import FUNCTIONS
+
+from echomesh.command import Processor
+from echomesh.command import Router
+
+from echomesh.config import Config
+
+from echomesh.graphics import Display
+
+from echomesh.network import Clients
+from echomesh.network import Discovery
+
+from echomesh.sound import Microphone
+from echomesh.sound import SetOutput
+
+from echomesh.util import File
+from echomesh.util import Log
+from echomesh.util import Closer
+from echomesh.util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 ECHOMESH = None
@@ -55,8 +61,8 @@ class Echomesh(Closer.Closer):
   def load_score(self):
     self.score_enabled = Config.is_enabled('score')
     if self.score_enabled:
-      from command import Functions
-      from command import Score
+      from echomesh.command import Functions
+      from echomesh.command import Score
 
       self.score = Score.Score(Config.get('score', 'file'), FUNCTIONS)
       self.score.start()

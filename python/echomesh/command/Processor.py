@@ -2,10 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from config import Config
-from network import Git
-from util import File
-from util import Log
+from echomesh.config import Config
+from echomesh.network import Git
+from echomesh.util import File
+from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
@@ -58,7 +58,7 @@ def _config(filename):
 def _file_command(echomesh, cmd, *args):
   if cmd == 'play':
     if args:
-      from sound.FilePlayer import FilePlayer
+      from echomesh.sound.FilePlayer import FilePlayer
       FilePlayer.player(file=args[0])
     else:
       LOGGER.error('play needs a file argument' % cmd)

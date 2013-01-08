@@ -5,8 +5,8 @@ import math
 import pygame
 # import pygame.sprite
 
-from graphics import Path
-from util import Openable
+from echomesh.graphics import Path
+from echomesh.util import Openable
 
 class ImagePath(pygame.sprite.DirtySprite):
   def __init__(self, image, angle, duration, display):

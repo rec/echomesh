@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from command.CommandLoop import CommandLoop
-from util import Log
+from echomesh.command.CommandLoop import CommandLoop
+from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 

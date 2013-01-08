@@ -7,10 +7,10 @@ import os.path
 import sys
 import yaml
 
-from network import Address
-from util import File
-from util import Merge
-from util import Platform
+from echomesh.network import Address
+from echomesh.util import File
+from echomesh.util import Merge
+from echomesh.util import Platform
 
 ALLOW_EMPTY_OPTIONS = False
 

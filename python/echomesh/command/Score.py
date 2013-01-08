@@ -2,15 +2,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from command import ReadScore
+from echomesh.command import ReadScore
 
-from command.RandomCommand import RandomCommand
-from command.SequenceCommand import SequenceCommand
+from echomesh.command.RandomCommand import RandomCommand
+from echomesh.command.SequenceCommand import SequenceCommand
 
-from network import Address
+from echomesh.network import Address
 
-from util import Log
-from util.Closer import Closer
+from echomesh.util import Log
+from echomesh.util.Closer import Closer
 
 LOGGER = Log.logger(__name__)
 

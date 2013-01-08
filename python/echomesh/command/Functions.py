@@ -2,9 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import random
 
-from config import Config
-from util import Closer
-from util import Log
+from echomesh.config import Config
+from echomesh.util import Closer
+from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
@@ -29,14 +29,14 @@ def print_function(score, event, *args):
 
 def play_image(score, event, **keywords):
   if Config.is_enabled('display'):
-    from graphics.Sprite import ImageSprite
+    from echomesh.graphics.Sprite import ImageSprite
     ImageSprite(**keywords)
   else:
     LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
 
 def play_audio(score, event, **keywords):
   if Config.is_enabled('audio', 'output'):
-    from sound import FilePlayer
+    from echomesh.sound import FilePlayer
     player = FilePlayer.play(**keywords)
     if player:
       player.start()

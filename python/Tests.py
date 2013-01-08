@@ -58,10 +58,10 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from util import Average
-from util import Envelope
-from util import Merge
-from util import Util
+from echomesh.util import Average
+from echomesh.util import Envelope
+from echomesh.util import Merge
+from echomesh.util import Util
 
 if __name__ == "__main__":
   import doctest

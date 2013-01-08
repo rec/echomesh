@@ -8,11 +8,11 @@ from pi3d.context.Light import Light
 from pi3d.Camera import Camera
 from pi3d.Shader import Shader
 
-from graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
+from echomesh.graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
 
-from util.Envelope import Envelope
-from util import Log
-from util.Openable import Openable
+from echomesh.util.Envelope import Envelope
+from echomesh.util import Log
+from echomesh.util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 DISPLAY = PI3D_DISPLAY.display

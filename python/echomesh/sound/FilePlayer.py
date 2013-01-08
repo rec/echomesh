@@ -10,13 +10,13 @@ import struct
 import sunau
 import wave
 
-from config import Config
-from sound import Sound
-from util import Envelope
-from util import Log
-from util.DefaultFile import DefaultFile
-from util import Subprocess
-from util.ThreadLoop import ThreadLoop
+from echomesh.config import Config
+from echomesh.sound import Sound
+from echomesh.util import Envelope
+from echomesh.util import Log
+from echomesh.util.DefaultFile import DefaultFile
+from echomesh.util import Subprocess
+from echomesh.util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 

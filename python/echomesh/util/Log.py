@@ -10,8 +10,8 @@ import logging
 import logging.config
 import sys
 
-from config import Config
-from util import MakeDirs
+from echomesh.config import Config
+from echomesh.util import MakeDirs
 
 LOG_FORMAT = Config.get('logging', 'format')
 LOG_LEVEL_STR = Config.get('logging','level').upper()

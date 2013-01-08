@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from util import Log
-from util.ThreadLoop import ThreadLoop
+from echomesh.util import Log
+from echomesh.util.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
