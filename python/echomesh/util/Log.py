@@ -10,23 +10,29 @@ import logging
 import logging.config
 import sys
 
-from echomesh.config import Config
 from echomesh.util import MakeDirs
 
-LOG_FORMAT = Config.get('logging', 'format')
-LOG_LEVEL_STR = Config.get('logging','level').upper()
+try:
+  from echomesh.config import Config
+
+  LOG_FORMAT = Config.get('logging', 'format')
+  LOG_LEVEL_STR = Config.get('logging','level').upper()
+  LOG_FILE = Config.get('logging', 'file')
+
+except ImportError:
+  LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
+  LOG_LEVEL_STR = 'INFO'
+  LOG_FILE = ''
+
 LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 
 logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
 
-def _get_handler():
-  f = Config.get('logging', 'file')
-  if f:
-    MakeDirs.parent_makedirs(f)
-    handler = logging.FileHandler(f)
-    return handler
-
-HANDLER = _get_handler()
+if LOG_FILE:
+  MakeDirs.parent_makedirs(LOG_FILE)
+  HANDLER = logging.FileHandler(LOG_FILE)
+else:
+  HANDLER = None
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')

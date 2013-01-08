@@ -4,7 +4,8 @@ import threading
 import time
 
 from echomesh.network import Address
-from echomesh.network import Locker
+
+from echomesh.util import Locker
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
