@@ -3,14 +3,17 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 
 from echomesh.command import ReadScore
-
+from echomesh.command.Functions import FUNCTIONS
 from echomesh.command.RandomCommand import RandomCommand
 from echomesh.command.SequenceCommand import SequenceCommand
+
+from echomesh.config import Config
 
 from echomesh.network import Address
 
 from echomesh.util import Log
 from echomesh.util.Closer import Closer
+
 
 LOGGER = Log.logger(__name__)
 
@@ -61,3 +64,9 @@ class Score(Closer):
       closer = function(self, event, *arguments, **keywords)
       if closer:
         self.add_closer(closer)
+
+def make_score():
+  score = Score(Config.get('score', 'file'), FUNCTIONS)
+  score.start()
+  return score
+

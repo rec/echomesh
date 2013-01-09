@@ -8,10 +8,9 @@ import threading
 import time
 import traceback
 
-from echomesh.command.Functions import FUNCTIONS
-
 from echomesh.command import Processor
 from echomesh.command import Router
+from echomesh.command import Score
 
 from echomesh.config import Config
 
@@ -23,10 +22,9 @@ from echomesh.network import Discovery
 from echomesh.sound import Microphone
 from echomesh.sound import SetOutput
 
+from echomesh.util import Closer
 from echomesh.util import File
 from echomesh.util import Log
-from echomesh.util import Closer
-from echomesh.util.Openable import Openable
 
 LOGGER = Log.logger(__name__)
 ECHOMESH = None
@@ -41,6 +39,7 @@ class Echomesh(Closer.Closer):
 
     if not self.can_start:
       return
+
     if Echomesh.INSTANCE:
       LOGGER.error('There is more than one instance of Echomesh')
     else:
@@ -56,19 +55,7 @@ class Echomesh(Closer.Closer):
     self.microphone = Microphone.Microphone(self._mic_event)
     self.control_program = Config.get('control_program', 'enable')
 
-    self.load_score()
-
-  def load_score(self):
-    self.score_enabled = Config.get('score', 'enable')
-    if self.score_enabled:
-      from echomesh.command import Functions
-      from echomesh.command import Score
-
-      self.score = Score.Score(Config.get('score', 'file'), FUNCTIONS)
-      self.score.start()
-    else:
-      LOGGER.info('Score disabled')
-      self.score = Openable()
+    self.score = Score.make_score()
 
   def remove_local(self):
     # TODO: this probably doesn't work any more.
@@ -81,7 +68,6 @@ class Echomesh(Closer.Closer):
 
     try:
       os.remove(LOCAL_SCORE)
-      self.load_score()
     except OSError as e:
       LOGGER.warn("No local score file %s", LOCAL_SCORE)
 
@@ -89,10 +75,7 @@ class Echomesh(Closer.Closer):
     self.discovery.send(**data)
 
   def receive_event(self, event):
-    if self.score_enabled:
-      self.score.receive_event(event)
-    else:
-      LOGGER.info('Event: %(event)s, %(key)s', event)
+    self.score.receive_event(event)
 
   def set_score(self, score):
     File.yaml_dump_all(LOCAL_SCORE, score)

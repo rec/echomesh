@@ -7,19 +7,12 @@ import os.path
 import sys
 import yaml
 
-from echomesh.network import Address
+from echomesh.config import Nodes
 from echomesh.util import File
 from echomesh.util import Merge
 from echomesh.util import Platform
 
 ALLOW_EMPTY_OPTIONS = False
-
-def _config_file(nodes):
-  nodes = ['nodes'] + nodes + ['config.yml']
-  return os.path.join(*nodes)
-
-def _load(nodes):
-  return File.yaml_load(_config_file(nodes))
 
 def recalculate():
   path = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
@@ -29,12 +22,7 @@ def recalculate():
   if getpass.getuser() == 'root':
     os.environ['HOME'] = 'home/pi'
 
-  nodes = [['default'],
-           ['global'],
-           ['name', Address.NODENAME],
-           ['platform', Platform.PLATFORM],
-           ['local']]
-  configs = [_load(n) for n in nodes]
+  configs = Nodes.load_all('config.yml')
 
   if len(sys.argv) > 1:
     configs.append(File.yaml_load(sys.argv[1].strip()))
