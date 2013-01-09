@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
+from echomesh.config import CommandFile
+
 from echomesh.network import Address
 
 from echomesh.util.DefaultFile import DefaultFile
@@ -11,19 +13,6 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 DEFAULT_ELEMENT_DIRECTORY = DefaultFile('element')
-
-DEFAULT_SCORE_FILE = 'score.yml'
-
-def _score_file(node, scorefile):
-  if not scorefile.endswith('.yml'):
-    scorefile += '.yml'
-  return os.path.join('nodes', node, 'score', *scorefile.split('/'))
-
-def _get_score_file(scorefile):
-  for node in ['local', Address.NODENAME, 'global']:
-    f = _score_file(node, scorefile)
-    if os.path.exists(f):
-      return f
 
 def resolve_element(element):
   filename = element.get('filename', None)
@@ -64,7 +53,7 @@ class ScoreReader(object):
     return ok, starter
 
 def load_score_elements(scorefile):
-  f = _get_score_file(scorefile or DEFAULT_SCORE_FILE)
+  f = CommandFile.resolve('scores/%s' % scorefile)
   if f:
     LOGGER.info('Loading score %s', f)
     return File.yaml_load_all(f)

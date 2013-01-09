@@ -22,6 +22,7 @@ LOGGER = Log.logger(__name__)
 
 BITS_PER_BYTE = 8
 
+# https://github.com/rec/echomesh/issues/115
 DEFAULT_AUDIO_DIRECTORY = DefaultFile('assets/audio')
 OUTPUT_DEVICE_INDEX = Config.get('audio', 'output', 'device')
 MAX_DEVICE_NUMBERS = 8

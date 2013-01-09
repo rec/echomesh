@@ -13,13 +13,13 @@ PATH = ['default',
         'local']
 
 def join(node, filename):
-  return os.path.join('nodes', node, filename)
+  return os.path.join('command', node, filename.split('/'))
 
-def load_any(*filepath):
+def resolve(filename):
   for p in PATH:
-    fp = join(p, filepath)
+    fp = join(p, filename)
     if os.path.exists(fp):
       return fp
 
-def load_all(*filepath):
-  return [File.yaml_load(join(p, *filepath)) for p in PATH]
+def load_all(filename):
+  return [File.yaml_load(join(p, filename)) for p in PATH]

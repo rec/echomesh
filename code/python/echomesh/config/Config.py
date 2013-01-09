@@ -7,7 +7,7 @@ import os.path
 import sys
 import yaml
 
-from echomesh.config import Nodes
+from echomesh.config import CommandFile
 from echomesh.util import File
 from echomesh.util import Merge
 from echomesh.util import Platform
@@ -22,7 +22,7 @@ def recalculate():
   if getpass.getuser() == 'root':
     os.environ['HOME'] = 'home/pi'
 
-  configs = Nodes.load_all('config.yml')
+  configs = CommandFile.load_all('config.yml')
 
   if len(sys.argv) > 1:
     configs.append(File.yaml_load(sys.argv[1].strip()))
