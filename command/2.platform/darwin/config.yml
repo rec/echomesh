@@ -9,7 +9,8 @@ audio:
   output:
     enable: false
 
-control_program: true
+control_program:
+  enable: true
 
 pi3d:
   enable: false

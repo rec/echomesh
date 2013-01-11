@@ -2,24 +2,23 @@ import os
 
 from echomesh.network import Address
 
-from echomesh.util import File
-from echomesh.util import Platform
 from echomesh.util import Log
+from echomesh.util import Platform
 
-PATH = ['default',
-        'global',
-        os.path.join('name', Address.NODENAME),
-        os.path.join('platform', Platform.PLATFORM),
-        'local']
+LEVELS = [
+  '0.local',
+  os.path.join('1.name', Address.NODENAME),
+  os.path.join('2.platform', Platform.PLATFORM),
+  '3.global',
+  '4.default',
+  ]
 
-def join(node, filename):
-  return os.path.join('command', node, filename.split('/'))
+def expand(filename):
+  path = filename.split('/')
+  return [os.path.join('command', i, *path) for i in LEVELS]
 
 def resolve(filename):
-  for p in PATH:
-    fp = join(p, filename)
-    if os.path.exists(fp):
-      return fp
+  for f in expand(filename):
+    if os.path.exists(f):
+      return f
 
-def load_all(filename):
-  return [File.yaml_load(join(p, filename)) for p in PATH]

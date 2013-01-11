@@ -9,6 +9,9 @@ from contextlib import closing
 def open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
+def yaml_load_stream(s):
+  return list(yaml.safe_load_all(s))
+
 def yaml_load_all(fname, allow_empty=True):
   opened = False
   try:
@@ -20,7 +23,7 @@ def yaml_load_all(fname, allow_empty=True):
       raise
 
   with closing(f):
-    return list(yaml.safe_load_all(f))
+    return yaml_load_stream(f)
 
 def yaml_dump_all(fname, *items):
   try:
