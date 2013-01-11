@@ -23,6 +23,7 @@ except ImportError:
   LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
   LOG_LEVEL_STR = 'INFO'
   LOG_FILE = ''
+  raise
 
 LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 

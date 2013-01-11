@@ -2,7 +2,6 @@ import os
 
 from echomesh.network import Address
 
-from echomesh.util import Log
 from echomesh.util import Platform
 
 LEVELS = [

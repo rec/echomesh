@@ -17,33 +17,37 @@ from echomesh.util.file import File
 
 ALLOW_EMPTY_OPTIONS = False
 
+# If running as root, export user pi's home directory as $HOME.
+if getpass.getuser() == 'root':
+  os.environ['HOME'] = '/home/pi'
+
+# Change directory to the echomesh root directory.
+path = dirname(dirname(dirname(abspath(sys.argv[0]))))
+os.chdir(path)
+
 def _add_exception_suffix(e, suffix):
   e.args = tuple(a + suffix for a in e.args)
 
-def recalculate():
-  # If running as root, export user pi's home directory as $HOME.
-  if getpass.getuser() == 'root':
-    os.environ['HOME'] = '/home/pi'
-
-  # Change directory to the echomesh root directory.
-  path = dirname(dirname(dirname(abspath(sys.argv[0]))))
-  os.chdir(path)
-
-  config = {}
-
+def _merge_level_files():
   # Load merged configuration file from the command directory hierarchy.
+  config = None
   for f in reversed(CommandFile.expand('config.yml')):
     try:
       cfg = File.yaml_load(f)
     except:
       raise Exception('Error in configuration file %s' % f)
 
-    try:
-      Merge.merge(config, cfg)
-    except Exception as e:
-      _add_exception_suffix(e, ' in configuration file %s' % f)
-      raise
+    if config is None:
+      config = cfg
+    else:
+      try:
+        Merge.merge(config, cfg)
+      except Exception as e:
+        _add_exception_suffix(e, ' in configuration file %s' % f)
+        raise
+  return config
 
+def _merge_command_line_arguments(config):
   for i, arg in enumerate(sys.argv):
     if i:
       try:
@@ -56,10 +60,9 @@ def recalculate():
       except Exception as e:
         _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
         raise
-
   return config
 
-CONFIG = recalculate()
+CONFIG = _merge_command_line_arguments(_merge_level_files())
 
 def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""

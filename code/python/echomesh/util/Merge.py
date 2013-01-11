@@ -7,17 +7,21 @@ def merge(old, new):
   nothing = ()
   for key, new_v in new.iteritems():
     old_v = old.get(key, nothing)
+
+    if old_v is nothing:
+      raise Exception('Tried to override non-existent key ' + key)
+
     if isinstance(old_v, dict):
       if isinstance(new_v, dict):
         old[key] = merge(old_v, new_v)
       else:
-        raise Exception('Tried to override dict with non-dict')
+        raise Exception('Tried to override dict with non-dict for key ' + key)
 
     elif old_v is nothing or not isinstance(new_v, dict):
       old[key] = new_v
 
     else:
-      raise Exception('Tried to override non-dict with dict')
+      raise Exception('Tried to override non-dict with dict for key ' + key)
 
   return old
 
