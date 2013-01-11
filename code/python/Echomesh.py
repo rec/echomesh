@@ -54,11 +54,13 @@ class Echomesh(Closer.Closer):
 
   def start(self):
     if self.data_socket:
-      with contextlib.closing(self):
-        try:
-          self._run()
-        except:
-          LOGGER.critical(traceback.format_exc())
+      try:
+        self._run()
+      except:
+        LOGGER.critical(traceback.format_exc())
+      finally:
+        self.close()
+        LOGGER.info('Finished Echomesh')
 
   def _run(self):
     self.peers.start()
@@ -71,8 +73,6 @@ class Echomesh(Closer.Closer):
     if self.display:
       self.display.loop()
     self._join()
-
-    LOGGER.info('Finished Echomesh._run')
 
   def remove_local(self):
     # TODO: this probably doesn't work any more.
