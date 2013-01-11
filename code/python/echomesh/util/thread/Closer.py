@@ -7,43 +7,47 @@ from echomesh.util.thread import Locker
 LOGGER = Log.logger(__name__)
 
 class Closer(Openable.Openable):
-  def __init__(self):
-    super(Closer, self).__init__()
-    self.closers = []
+  def __init__(self, parent=None):
+    super(Closer, self).__init__(parent=parent)
+    self.openables = []
     self.lock = Locker.Lock()
 
-  def add_closer(self, *closers):
+  def _add(self, openables, is_mutual):
     with Locker.Locker(self.lock):
-      for c in closers:
-        c and self.closers.append(c)
+      for o in openables:
+        if o:
+          self.openables.append(o)
+          if is_mutual:
+            o.group = self
 
-  def start_all(self):
-    with Locker.Locker(self.lock):
-      for closer in self.closers:
-        closer.start()
+  def add_openable(self, *openables):
+    return self._add(openables, False)
 
-  def mutual_closer(self, *closers):
-    with Locker.Locker(self.lock):
-      for closer in closers:
-        self.add_closer(closer)
-        closer.add_closer(self)
+  def add_openable_mutual(self, *openables):
+    return self._add(openables, True)
 
-  def close_all(self):
+  def start(self):
+    super(Closer, self).start()
     with Locker.Locker(self.lock):
-      for c in list(self.closers):
-        try:
-          c and c.close()
-        except:
-          LOGGER.error("Couldn't close %s" % repr(c))
-      self.closers = []
+      for o in self.openables:
+        o.start()
 
   def close(self):
-    super(Closer, self).close()
-    self.close_all()
-
-  def join_all(self):
+    if not self.is_open:
+      return
     with Locker.Locker(self.lock):
-      for c in self.closers:
+      super(Closer, self).close()
+      for o in self.openables:
+        try:
+          o.close()
+        except:
+          LOGGER.error("Couldn't close %s" % o)
+      self.openables = []
+
+  def join(self):
+    super(Closer, self).join()
+    with Locker.Locker(self.lock):
+      for c in self.openables:
         try:
           c.join()
         except:

@@ -12,26 +12,21 @@ from echomesh.config import Config
 from echomesh.network import Address
 
 from echomesh.util import Log
-from echomesh.util.thread.Closer import Closer
+from echomesh.util.thread import Closer
 
 
 LOGGER = Log.logger(__name__)
 
 COMMANDS = dict(random=RandomCommand, sequence=SequenceCommand)
 
-class Score(Closer):
+class Score(Closer.Closer):
   def __init__(self, scorefile, functions, target=Address.NODENAME):
     super(Score, self).__init__()
     self.functions = functions
     self.target = target
     self.scorefile = scorefile
-    self.elements, self.starters = ReadScore.read_score(self, COMMANDS)
-
-  def start(self):
-    for s in self.starters:
-      s.start()
-      self.add_closer(s)
-    self.starters = []
+    self.elements, starters = ReadScore.read_score(self, COMMANDS)
+    self.add_openable(*starters)
 
   def receive_event(self, event):
     elements = self.elements.get(event['event'], [])

@@ -40,6 +40,7 @@ def play_audio(score, event, **keywords):
     player = FilePlayer.play(**keywords)
     if player:
       player.start()
+      # TODO: this should be attached to the score.
       Closer.close_on_exit(player)
   else:
     LOGGER.info('Playing audio')

@@ -6,8 +6,9 @@ import time
 from echomesh.util.thread import ThreadLoop
 
 class Keyboard(ThreadLoop.ThreadLoop):
-  def __init__(self, openable, sleep, message, processor, prompt='echomesh: '):
-    super(Keyboard, self).__init__(openable=openable)
+  def __init__(self, parent, sleep, message, processor, prompt='echomesh: '):
+    super(Keyboard, self).__init__()
+    self.parent = parent
     self.sleep = sleep
     self.message = message
     self.processor = processor
@@ -20,5 +21,6 @@ class Keyboard(ThreadLoop.ThreadLoop):
     if self.message:
       print(self.message)
       self.message = ''
-    if not self.processor(raw_input(self.prompt).strip()):
-      self.close()
+    while self.is_open:
+      if not self.processor(raw_input(self.prompt).strip()):
+        self.close()
