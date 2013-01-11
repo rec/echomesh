@@ -16,7 +16,7 @@ from echomesh.config import Config
 
 from echomesh.graphics import Display
 
-from echomesh.network import Clients
+from echomesh.network import Peers
 from echomesh.network import Discovery
 
 from echomesh.sound import Microphone
@@ -45,8 +45,8 @@ class Echomesh(Closer.Closer):
     else:
       Echomesh.INSTANCE = self
 
-    self.clients = Clients.Clients(self)
-    callbacks = Router.router(self, self.clients)
+    self.peers = Peers.Peers(self)
+    callbacks = Router.router(self, self.peers)
     self.discovery = Discovery.Discovery(callbacks)
     self.process = Processor.process
     self.display = Display.display(self)
@@ -115,7 +115,7 @@ class Echomesh(Closer.Closer):
       self.close()
       return
 
-    self.clients.start()
+    self.peers.start()
     self.microphone.start()
 
     if self.display:

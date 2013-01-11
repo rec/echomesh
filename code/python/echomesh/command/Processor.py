@@ -75,8 +75,8 @@ def _simple_command(echomesh, cmd):
     _usage(False)
 
   elif cmd == 'list':
-    for client in echomesh.clients.get_clients().itervalues():
-      LOGGER.info(client)
+    for peer in echomesh.peers.get_peers().itervalues():
+      LOGGER.info(peer)
 
   elif cmd == 'commit':
     LOGGER.info('Committing changes to the configuration')

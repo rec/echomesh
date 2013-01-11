@@ -45,17 +45,17 @@ The echomesh directory structure.
 
 The echomesh directory structure is organized by file type under the top directory.
 
-echomesh/
-  asset/
-  code/
-  command/
-    0.local/
-    1.name/
-    2.platform/
-    3.global/
-    4.default/
-  documentation/
-  log/
+2    echomesh/
+      asset/
+      code/
+      command/
+        0.local/
+        1.name/
+        2.platform/
+        3.global/
+        4.default/
+      documentation/
+      log/
 
 
 Assets:

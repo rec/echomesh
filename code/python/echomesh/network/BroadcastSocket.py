@@ -29,13 +29,13 @@ class Socket(Openable):
     super(Socket, self).close()
     self.socket.close()
 
-class SendSocket(Socket):
+class Send(Socket):
   def __init__(self, port):
     self.bind_port = 0
-    super(SendSocket, self).__init__(port)
+    super(Send, self).__init__(port)
 
   def _open(self):
-    super(SendSocket, self)._open()
+    super(Send, self)._open()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def write(self, data):
@@ -45,14 +45,14 @@ class SendSocket(Socket):
       if self.is_open:
         raise
 
-class ReceiveSocket(Socket):
+class Receive(Socket):
   def __init__(self, port, buffer_size=DEFAULT_BUFFER_SIZE):
     self.bind_port = port
     self.buffer_size = buffer_size
-    super(ReceiveSocket, self).__init__(port)
+    super(Receive, self).__init__(port)
 
   def _open(self):
-    super(ReceiveSocket, self)._open()
+    super(Receive, self)._open()
     self.socket.setblocking(0)
 
   def receive(self, timeout):

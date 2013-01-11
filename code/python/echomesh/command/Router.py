@@ -16,15 +16,15 @@ RESTART_CMD = [SUDO, SHUTDOWN, '-r', 'now']
 GIT_UPDATE = ['pull', 'origin', 'master']
 
 class Router(object):
-  def __init__(self, echomesh, clients):
+  def __init__(self, echomesh, peers):
     self.echomesh = echomesh
-    self.clients = clients
+    self.peers = peers
 
   def clear(self, data):
     self.echomesh.remove_local()
 
-  def client(self, data):
-    self.clients.new_client(data)
+  def peer(self, data):
+    self.peers.new_peer(data)
 
   def config(self, msg):
     # TODO: probably needs fixing.
@@ -78,9 +78,9 @@ class Router(object):
       Subprocess.run(cmd)
       self.halt(cmd)
 
-def router(echomesh, clients):
+def router(echomesh, peers):
   def _error(data):
     LOGGER.error("Didn't understand command '%s'", data['type'])
 
-  r = Router(echomesh, clients)
+  r = Router(echomesh, peers)
   return lambda data: getattr(r, data['type'], _error)(data)
