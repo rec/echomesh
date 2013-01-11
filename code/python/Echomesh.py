@@ -53,26 +53,24 @@ class Echomesh(Closer.Closer):
       self.score = Score.make_score()
 
   def start(self):
-    if self.data_socket:
-      try:
-        self._run()
-      except:
-        LOGGER.critical(traceback.format_exc())
-      finally:
-        self.close()
-        LOGGER.info('Finished Echomesh')
+    if not self.data_socket:
+      return
+    try:
+      self.peers.start()
+      self.microphone.start()
+      self.data_socket.start()
 
-  def _run(self):
-    self.peers.start()
-    self.microphone.start()
-    self.data_socket.start()
+      if Config.is_control_program():
+        threading.Thread(target=self._keyboard_input).start()
 
-    if Config.is_control_program():
-      threading.Thread(target=self._keyboard_input).start()
-
-    if self.display:
-      self.display.loop()
-    self._join()
+      if self.display:
+        self.display.loop()
+      self._join()
+    except:
+      LOGGER.critical(traceback.format_exc())
+    finally:
+      self.close()
+      LOGGER.info('Finished Echomesh')
 
   def remove_local(self):
     # TODO: this probably doesn't work any more.
