@@ -14,7 +14,7 @@ class Peers(object):
   TYPE = 'peer'
 
   def __init__(self, echomesh):
-    self.lock = threading.RLock()
+    self.lock = Locker.Lock()
     self.echomesh = echomesh
     self.type = Peers.TYPE
     source = Address.NODENAME
