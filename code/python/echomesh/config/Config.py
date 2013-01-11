@@ -77,7 +77,7 @@ def get(*parts):
   for p in parts:
     fail_on_none()
 
-    if type(config) is not dict:
+    if not isinstance(config, dict):
       if config is None:
         config = {}
       else:

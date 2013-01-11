@@ -7,13 +7,13 @@ def merge(old, new):
   nothing = ()
   for key, new_v in new.iteritems():
     old_v = old.get(key, nothing)
-    if type(old_v) is dict:
-      if type(new_v) is dict:
+    if isinstance(old_v, dict):
+      if isinstance(new_v, dict):
         old[key] = merge(old_v, new_v)
       else:
         raise Exception('Tried to override dict with non-dict')
 
-    elif old_v is nothing or type(new_v) is not dict:
+    elif old_v is nothing or not isinstance(new_v, dict):
       old[key] = new_v
 
     else:
