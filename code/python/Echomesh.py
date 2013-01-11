@@ -43,34 +43,33 @@ class Echomesh(Closer.Closer):
 
     self.peers = Peers.Peers(self)
     callbacks = Router.router(self, self.peers)
-    self.discovery = Discovery.Discovery(callbacks)
-    self.display = Display.display(self)
+    timeout = Config.get('discovery', 'timeout')
+    port = Config.get('discovery', 'port')
+    self.data_socket = DataSocket.data_socket(port, timeout, callbacks)
 
-    SetOutput.set_output(Config.get('audio', 'output', 'route'))
-    self.microphone = Microphone.Microphone(self._mic_event)
-    self.score = Score.make_score()
+    if self.data_socket:
+      self.display = Display.display(self)
+      self.microphone = Microphone.Microphone(self._mic_event)
+      self.score = Score.make_score()
 
   def start(self):
-    with contextlib.closing(self):
-      try:
-        self._run()
-      except:
-        LOGGER.critical(traceback.format_exc())
+    if self.data_socket:
+      with contextlib.closing(self):
+        try:
+          self._run()
+        except:
+          LOGGER.critical(traceback.format_exc())
 
   def _run(self):
-    if not self.discovery.start():
-      LOGGER.error("Closing because Discovery didn't start")
-      self.close()
-      return
-
     self.peers.start()
     self.microphone.start()
+    self.data_socket.start()
 
     if Config.is_control_program():
       threading.Thread(target=self._keyboard_input).start()
 
     if self.display:
-      self.display.loop()  # Blocks until complete
+      self.display.loop()
     self._join()
 
     LOGGER.info('Finished Echomesh._run')
@@ -91,7 +90,7 @@ class Echomesh(Closer.Closer):
 
   def send(self, **data):
     data['source'] = Address.NODENAME
-    self.discovery.data_socket.send(data)
+    self.data_socket.send(data)
 
   def receive_event(self, event):
     self.score.receive_event(event)
@@ -108,7 +107,7 @@ class Echomesh(Closer.Closer):
     if self.is_open:
       Closer.on_exit()
       LOGGER.info('closing')
-      self.discovery.close()
+      self.data_socket.close()
       super(Echomesh, self).close()
       self.microphone.close()
       self.display and self.display.close()
@@ -136,7 +135,7 @@ class Echomesh(Closer.Closer):
     LOGGER.debug('joining')
     self.display and self.display.join()
     LOGGER.debug('display joined')
-    self.discovery.data_socket.join()
+    self.data_socket.join()
     LOGGER.debug('discovery joined')
     self.microphone.join()
     LOGGER.debug('mic joined')
@@ -146,6 +145,7 @@ class Echomesh(Closer.Closer):
 
 if __name__ == '__main__':
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
+    SetOutput.set_output(Config.get('audio', 'output', 'route'))
     Echomesh().start()
   else:
     LOGGER.info("Not autostarting because autostart=False")
