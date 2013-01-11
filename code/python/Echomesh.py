@@ -36,12 +36,6 @@ class Echomesh(Closer.Closer):
 
   def __init__(self):
     super(Echomesh, self).__init__()
-    self.can_start = (Config.get('autostart') or len(sys.argv) < 2 or
-                      sys.argv[1] != 'autostart')
-
-    if not self.can_start:
-      return
-
     if Echomesh.INSTANCE:
       LOGGER.error('There is more than one instance of Echomesh')
     else:
@@ -57,16 +51,11 @@ class Echomesh(Closer.Closer):
     self.score = Score.make_score()
 
   def start(self):
-    if not self.can_start:
-      LOGGER.info("Not autostarting because autostart=False")
-      return
-
     with contextlib.closing(self):
       try:
         self._run()
       except:
         LOGGER.critical(traceback.format_exc())
-
 
   def remove_local(self):
     # TODO: this probably doesn't work any more.
@@ -159,4 +148,7 @@ class Echomesh(Closer.Closer):
 
 
 if __name__ == '__main__':
-  Echomesh().start()
+  if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
+    Echomesh().start()
+  else:
+    LOGGER.info("Not autostarting because autostart=False")
