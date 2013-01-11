@@ -28,7 +28,7 @@ class Closer(Openable.Openable):
       closer.add_closer(self)
 
   def close_all(self):
-    for c in self.closers:
+    for c in list(self.closers):
       try:
         if c and c.is_open:
           c.close()
@@ -41,7 +41,7 @@ class Closer(Openable.Openable):
     self.close_all()
 
   def join_all(self):
-    for c in self.closers:
+    for c in list(self.closers):
       try:
         c.join()
       except:

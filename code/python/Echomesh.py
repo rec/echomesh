@@ -66,14 +66,12 @@ class Echomesh(Closer.Closer):
     self.peers.start()
     self.microphone.start()
 
-    if self.display:
-      if Config.is_control_program():
-        threading.Thread(target=self._keyboard_input).start()
-      self.display.loop()  # Blocks until complete
+    if Config.is_control_program():
+      threading.Thread(target=self._keyboard_input).start()
 
-    else:
-      if Config.is_control_program():
-        self._keyboard_input()
+    if self.display:
+      self.display.loop()  # Blocks until complete
+    self._join()
 
     LOGGER.info('Finished Echomesh._run')
 
