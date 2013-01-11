@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.TimeLoop import TimeLoop
+from echomesh.util.thread.TimeLoop import TimeLoop
 
 class CommandLoop(TimeLoop):
   def __init__(self, score, element, timeout=None):

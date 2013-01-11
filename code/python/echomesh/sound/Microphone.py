@@ -7,11 +7,10 @@ from echomesh.config import Config
 from echomesh.sound import Input
 from echomesh.sound import Levels
 from echomesh.util import Log
-from echomesh.util.thread import Openable
 from echomesh.util import Platform
-from echomesh.util.thread import ThreadLoop
-from echomesh.util import Util
 from echomesh.util.math import Average
+from echomesh.util.thread import Openable
+from echomesh.util.thread import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 

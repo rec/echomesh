@@ -47,16 +47,15 @@ def recalculate():
   for i, arg in enumerate(sys.argv):
     if i:
       try:
-        cfg = File.yaml_load_stream(arg)
+        cfgs = File.yaml_load_stream(arg)
       except:
         raise Exception('Error in command line argument %d: "%s"' % (i, arg))
 
-    try:
-      Merge.merge(config, cfg)
-    except Exception as e:
-      _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
-      raise
-
+      try:
+        Merge.merge_all(config, *cfgs)
+      except Exception as e:
+        _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
+        raise
 
   return config
 
