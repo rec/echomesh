@@ -14,21 +14,15 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Discovery(Closer.Closer):
-  DOCUMENT_START = '---\n'
-  DOCUMENT_END = '....\n'
-
   def __init__(self, callbacks):
     super(Discovery, self).__init__()
     self.callbacks = callbacks
 
   def start(self):
+    timeout = Config.get('discovery', 'timeout')
     port = Config.get('discovery', 'port')
     try:
-      self._receive = DataSocket.Receive(port, self.callbacks)
-      self.mutual_closer(self._receive)
-
-      self._send = DataSocket.Send(port)
-      self.mutual_closer(self._send)
+      self.data_socket = DataSocket.SendReceive(port, timeout, self.callbacks)
 
     except socket.error as e:
       if e.errno == errno.EADDRINUSE:
@@ -38,8 +32,9 @@ class Discovery(Closer.Closer):
       else:
         raise
 
-    self._receive.start()
-    self._send.start()
+    self.mutual_closer(self.data_socket)
+    self.data_socket.start()
+
     LOGGER.info('Started discovery on port %d', port)
     return True
 
@@ -47,16 +42,11 @@ class Discovery(Closer.Closer):
     if 'source' not in data:
       data = dict(**data)
       data['source'] = Address.NODENAME
-    self._send.send(data)
+    self.data_socket.send(data)
 
   def join(self):
     try:
-      self._receive.join()
-    except:
-      pass
-
-    try:
-      self._send.join()
+      self.data_socket.join()
     except:
       pass
 

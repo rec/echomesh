@@ -3,11 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import weakref
 
 from echomesh.util import Log
-from echomesh.util.Openable import Openable
+from echomesh.util import Openable
 
 LOGGER = Log.logger(__name__)
 
-class Closer(Openable):
+class Closer(Openable.Openable):
   def __init__(self, *closers):
     super(Closer, self).__init__()
     try:
@@ -15,12 +15,17 @@ class Closer(Openable):
     except:
       self.closers = set()  # TODO: make sure this works in 2.6
 
+  def start_all(self):
+    for closer in self.closers:
+      closer.start()
+
   def add_closer(self, *closers):
     self.closers.update(closers)
 
-  def mutual_closer(self, closer):
-    self.add_closer(closer)
-    closer.add_closer(self)
+  def mutual_closer(self, *closers):
+    for closer in closers:
+      self.add_closer(closer)
+      closer.add_closer(self)
 
   def close_all(self):
     for c in self.closers:
@@ -35,7 +40,7 @@ class Closer(Openable):
     super(Closer, self).close()
     self.close_all()
 
-  def join(self):
+  def join_all(self):
     for c in self.closers:
       try:
         c.join()
