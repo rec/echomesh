@@ -63,7 +63,7 @@ def recalculate():
 CONFIG = recalculate()
 
 def is_control_program():
-  """is_headless() is True if Echomesh responds to keyboard commands."""
+  """is_control_program() is True if Echomesh responds to keyboard commands."""
   return CONFIG.get('control_program', 'enable')
 
 def get(*parts):

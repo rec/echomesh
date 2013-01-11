@@ -17,8 +17,9 @@ from echomesh.config import Config
 from echomesh.graphics import Display
 
 from echomesh.network import Address
-from echomesh.network import Peers
+from echomesh.network import DataSocket
 from echomesh.network import Discovery
+from echomesh.network import Peers
 
 from echomesh.sound import Microphone
 from echomesh.sound import SetOutput
@@ -49,14 +50,23 @@ class Echomesh(Closer.Closer):
     self.peers = Peers.Peers(self)
     callbacks = Router.router(self, self.peers)
     self.discovery = Discovery.Discovery(callbacks)
-    self.process = Processor.process
     self.display = Display.display(self)
 
     SetOutput.set_output(Config.get('audio', 'output', 'route'))
     self.microphone = Microphone.Microphone(self._mic_event)
-    self.control_program = Config.get('control_program', 'enable')
-
     self.score = Score.make_score()
+
+  def start(self):
+    if not self.can_start:
+      LOGGER.info("Not autostarting because autostart=False")
+      return
+
+    with contextlib.closing(self):
+      try:
+        self._run()
+      except:
+        LOGGER.critical(traceback.format_exc())
+
 
   def remove_local(self):
     # TODO: this probably doesn't work any more.
@@ -87,16 +97,6 @@ class Echomesh(Closer.Closer):
     Config.change(config)
     self.microphone.set_config()
 
-  def run(self):
-    if self.can_start:
-      with contextlib.closing(self):
-        try:
-          self._run()
-        except:
-          LOGGER.critical(traceback.format_exc())
-    else:
-      LOGGER.info("Not autostarting because autostart=False")
-
   def close(self):
     if self.is_open:
       Closer.on_exit()
@@ -121,12 +121,12 @@ class Echomesh(Closer.Closer):
     self.microphone.start()
 
     if self.display:
-      if self.control_program:
+      if Config.is_control_program():
         threading.Thread(target=self._keyboard_input).start()
       self.display.loop()  # Blocks until complete
 
     else:
-      if self.control_program:
+      if Config.is_control_program():
         self._keyboard_input()
       self._join()
 
@@ -143,7 +143,7 @@ class Echomesh(Closer.Closer):
     print('Type help for a list of commands')
     print()
     while self.is_open:
-      if not self.process(raw_input('echomesh: ').strip(), self):
+      if not Processor.process(raw_input('echomesh: ').strip(), self):
         self.close()
 
   def _join(self):
@@ -159,4 +159,4 @@ class Echomesh(Closer.Closer):
 
 
 if __name__ == '__main__':
-  Echomesh().run()
+  Echomesh().start()
