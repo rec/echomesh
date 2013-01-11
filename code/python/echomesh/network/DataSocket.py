@@ -1,4 +1,5 @@
 import Queue
+import socket
 import time
 import yaml
 
@@ -57,3 +58,12 @@ class SendReceive(Closer.Closer):
   def start(self):
     self._receive.start()
     self._send.start()
+
+def data_socket(port, timeout, callback):
+  try:
+    return SendReceive(port, timeout, callback)
+  except socket.error as e:
+    if e.errno == errno.EADDRINUSE:
+      LOGGER.error('Another DataSocket is already running on port %d', port)
+    else:
+      raise

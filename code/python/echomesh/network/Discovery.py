@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 import errno
-import socket
 import threading
 
 from echomesh.config import Config
@@ -21,16 +20,10 @@ class Discovery(Closer.Closer):
   def start(self):
     timeout = Config.get('discovery', 'timeout')
     port = Config.get('discovery', 'port')
-    try:
-      self.data_socket = DataSocket.SendReceive(port, timeout, self.callbacks)
-
-    except socket.error as e:
-      if e.errno == errno.EADDRINUSE:
-        LOGGER.error('An echomesh node is already running on this machine')
-        self.close()
-        return False
-      else:
-        raise
+    self.data_socket = DataSocket.data_socket(port, timeout, self.callbacks)
+    if not self.data_socket:
+      self.close()
+      return False
 
     self.mutual_closer(self.data_socket)
     self.data_socket.start()
