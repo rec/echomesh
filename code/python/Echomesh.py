@@ -28,9 +28,15 @@ from echomesh.util import Log
 from echomesh.util.file import File
 
 from echomesh.util.thread import Closer
+from echomesh.util.thread import Keyboard
 
 LOGGER = Log.logger(__name__)
 ECHOMESH = None
+MESSAGE = """
+           echomesh
+Type help for a list of commands
+
+"""
 
 class Echomesh(Closer.Closer):
   INSTANCE = None
@@ -49,6 +55,14 @@ class Echomesh(Closer.Closer):
     self.data_socket = DataSocket.data_socket(port, timeout, callbacks)
 
     if self.data_socket:
+      processor = lambda x: Processor.process(x, self)
+      if Config.is_control_program:
+        self.keyboard = Keyboard.Keyboard(openable=self,
+                                          sleep=Config.get('opening_sleep'),
+                                          message=MESSAGE,
+                                          processor=processor)
+      else:
+        self.keyboard = None
       self.display = Display.display(self)
       self.microphone = Microphone.Microphone(self._mic_event)
       self.score = Score.make_score()
@@ -60,12 +74,8 @@ class Echomesh(Closer.Closer):
       self.peers.start()
       self.microphone.start()
       self.data_socket.start()
-
-      if Config.is_control_program():
-        threading.Thread(target=self._keyboard_input).start()
-
-      if self.display:
-        self.display.loop()
+      self.keyboard and self.keyboard.start()
+      self.display and self.display.loop()
       self._join()
     except:
       LOGGER.critical(traceback.format_exc())
@@ -110,37 +120,18 @@ class Echomesh(Closer.Closer):
       super(Echomesh, self).close()
       self.microphone.close()
       self.display and self.display.close()
+      self.keyboard and self.keyboard.close()
       self.score.close()
       self._join()
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
 
-  def _keyboard_input(self):
-    sleep = Config.get('opening_sleep')
-    if sleep:
-      time.sleep(sleep)
-
-    print()
-    print('           echomesh')
-    print()
-    print('Type help for a list of commands')
-    print()
-    while self.is_open:
-      if not Processor.process(raw_input('echomesh: ').strip(), self):
-        self.close()
-
   def _join(self):
-    LOGGER.debug('joining')
     self.display and self.display.join()
-    LOGGER.debug('display joined')
     self.data_socket.join()
-    LOGGER.debug('discovery joined')
     self.microphone.join()
-    LOGGER.debug('mic joined')
     self.score.join()
-    LOGGER.debug('joined')
-
 
 if __name__ == '__main__':
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':

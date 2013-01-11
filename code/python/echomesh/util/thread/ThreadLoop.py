@@ -35,6 +35,8 @@ class ThreadLoop(Closer):
 
   def close(self):
     super(ThreadLoop, self).close()
+    if self is not self.openable:
+      self.openable.close()
     LOGGER.debug('closing %s', self.name)
 
   def loop(self):
