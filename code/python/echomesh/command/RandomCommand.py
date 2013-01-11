@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Poisson
 from echomesh.command.CommandLoop import CommandLoop
+from echomesh.util.math import Poisson
 
 DEFAULT_INTERVAL = 10.0
 

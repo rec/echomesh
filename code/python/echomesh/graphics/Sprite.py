@@ -10,9 +10,9 @@ from pi3d.Shader import Shader
 
 from echomesh.graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
 
-from echomesh.util.Envelope import Envelope
 from echomesh.util import Log
-from echomesh.util.Openable import Openable
+from echomesh.util.thread.Openable import Openable
+from echomesh.util.math.Envelope import Envelope
 
 LOGGER = Log.logger(__name__)
 DISPLAY = PI3D_DISPLAY.display

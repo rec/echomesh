@@ -10,7 +10,7 @@ import logging
 import logging.config
 import sys
 
-from echomesh.util import MakeDirs
+from echomesh.util.file import MakeDirs
 
 try:
   from echomesh.config import Config

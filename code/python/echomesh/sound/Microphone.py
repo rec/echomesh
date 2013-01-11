@@ -6,12 +6,12 @@ import traceback
 from echomesh.config import Config
 from echomesh.sound import Input
 from echomesh.sound import Levels
-from echomesh.util import Average
 from echomesh.util import Log
-from echomesh.util import Openable
+from echomesh.util.thread import Openable
 from echomesh.util import Platform
-from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util.thread import ThreadLoop
 from echomesh.util import Util
+from echomesh.util.math import Average
 
 LOGGER = Log.logger(__name__)
 
@@ -21,7 +21,7 @@ DEFAULT_CHUNK_SIZE = 1024
 MIN_CHUNK_SIZE = 16
 MAX_CHUNK_SIZE = 2048
 
-class Microphone(ThreadLoop):
+class Microphone(ThreadLoop.ThreadLoop):
   def __init__(self, callback):
     super(Microphone, self).__init__()
     self.set_config()

@@ -8,8 +8,8 @@ import time
 from echomesh.config import Config
 from echomesh.graphics import Rect
 from echomesh.util import Log
-from echomesh.util.DefaultFile import DefaultFile
-from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util.file import DefaultFile
+from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 from pi3d import Display
 from pi3d import Texture
@@ -21,7 +21,7 @@ BACKGROUND = Config.get('pi3d', 'background')
 
 DISPLAY = Display.create(False, *DIMENSIONS, background=BACKGROUND)
 
-DEFAULT_IMAGE_DIRECTORY = DefaultFile('assets/image')
+DEFAULT_IMAGE_DIRECTORY = DefaultFile.DefaultFile('assets/image')
 
 PI3D_DISPLAY = None
 DO_PRELOAD = not True

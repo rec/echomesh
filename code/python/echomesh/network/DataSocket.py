@@ -6,8 +6,8 @@ import yaml
 from echomesh.config import Config
 from echomesh.network import BroadcastSocket
 from echomesh.util import Log
-from echomesh.util import ThreadLoop
-from echomesh.util import Closer
+from echomesh.util.thread import ThreadLoop
+from echomesh.util.thread import Closer
 
 LOGGER = Log.logger(__name__)
 

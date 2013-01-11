@@ -12,7 +12,7 @@ from echomesh.config import Config
 from echomesh.network import Address
 
 from echomesh.util import Log
-from echomesh.util.Closer import Closer
+from echomesh.util.thread.Closer import Closer
 
 
 LOGGER = Log.logger(__name__)

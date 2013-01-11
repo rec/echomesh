@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.util import Log
-from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util.thread import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
 DEFAULT_TIMEOUT = 0.5
 
-class TimeLoop(ThreadLoop):
+class TimeLoop(ThreadLoop.ThreadLoop):
   def __init__(self, timeout=None):
-    ThreadLoop.__init__(self)
+    super(TimeLoop, self).__init__()
     self.timeout = timeout or DEFAULT_TIMEOUT
 
   def start(self):

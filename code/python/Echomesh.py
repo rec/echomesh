@@ -18,15 +18,16 @@ from echomesh.graphics import Display
 
 from echomesh.network import Address
 from echomesh.network import DataSocket
-from echomesh.network import Discovery
 from echomesh.network import Peers
 
 from echomesh.sound import Microphone
 from echomesh.sound import SetOutput
 
-from echomesh.util import Closer
-from echomesh.util import File
 from echomesh.util import Log
+
+from echomesh.util.file import File
+
+from echomesh.util.thread import Closer
 
 LOGGER = Log.logger(__name__)
 ECHOMESH = None

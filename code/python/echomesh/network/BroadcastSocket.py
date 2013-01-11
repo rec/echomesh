@@ -7,7 +7,7 @@ import socket
 import sys
 import time
 
-from echomesh.util.Openable import Openable
+from echomesh.util.thread.Openable import Openable
 from echomesh.util import Platform
 
 DEFAULT_PORT = 1248

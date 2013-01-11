@@ -6,13 +6,13 @@ from echomesh.config import CommandFile
 
 from echomesh.network import Address
 
-from echomesh.util.DefaultFile import DefaultFile
-from echomesh.util import File
+from echomesh.util.file import DefaultFile
+from echomesh.util.file import File
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_ELEMENT_DIRECTORY = DefaultFile('element')
+DEFAULT_ELEMENT_DIRECTORY = DefaultFile.DefaultFile('element')
 
 def resolve_element(element):
   filename = element.get('filename', None)

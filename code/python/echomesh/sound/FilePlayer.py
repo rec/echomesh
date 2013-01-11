@@ -12,18 +12,18 @@ import wave
 
 from echomesh.config import Config
 from echomesh.sound import Sound
-from echomesh.util import Envelope
+from echomesh.util.math import Envelope
 from echomesh.util import Log
-from echomesh.util.DefaultFile import DefaultFile
+from echomesh.util.file import DefaultFile
 from echomesh.util import Subprocess
-from echomesh.util.ThreadLoop import ThreadLoop
+from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
 BITS_PER_BYTE = 8
 
 # https://github.com/rec/echomesh/issues/115
-DEFAULT_AUDIO_DIRECTORY = DefaultFile('assets/audio')
+DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('assets/audio')
 OUTPUT_DEVICE_INDEX = Config.get('audio', 'output', 'device')
 MAX_DEVICE_NUMBERS = 8
 

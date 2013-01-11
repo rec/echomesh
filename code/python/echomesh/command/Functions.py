@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import random
 
 from echomesh.config import Config
-from echomesh.util import Closer
+from echomesh.util.thread import Closer
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

@@ -11,9 +11,9 @@ from os.path import abspath, dirname
 import yaml
 
 from echomesh.config import CommandFile
-from echomesh.util import File
 from echomesh.util import Merge
 from echomesh.util import Platform
+from echomesh.util.file import File
 
 ALLOW_EMPTY_OPTIONS = False
 

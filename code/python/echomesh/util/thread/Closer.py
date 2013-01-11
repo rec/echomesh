@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import weakref
 
 from echomesh.util import Log
-from echomesh.util import Openable
+from echomesh.util.thread import Openable
 
 LOGGER = Log.logger(__name__)
 

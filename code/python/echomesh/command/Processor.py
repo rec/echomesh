@@ -4,8 +4,8 @@ import time
 
 from echomesh.config import Config
 from echomesh.network import Git
-from echomesh.util import File
 from echomesh.util import Log
+from echomesh.util.file import File
 
 LOGGER = Log.logger(__name__)
 
