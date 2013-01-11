@@ -57,6 +57,26 @@ class Echomesh(Closer.Closer):
       except:
         LOGGER.critical(traceback.format_exc())
 
+  def _run(self):
+    if not self.discovery.start():
+      LOGGER.error("Closing because Discovery didn't start")
+      self.close()
+      return
+
+    self.peers.start()
+    self.microphone.start()
+
+    if self.display:
+      if Config.is_control_program():
+        threading.Thread(target=self._keyboard_input).start()
+      self.display.loop()  # Blocks until complete
+
+    else:
+      if Config.is_control_program():
+        self._keyboard_input()
+
+    LOGGER.info('Finished Echomesh._run')
+
   def remove_local(self):
     # TODO: this probably doesn't work any more.
     try:
@@ -99,27 +119,6 @@ class Echomesh(Closer.Closer):
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
-
-  def _run(self):
-    if not self.discovery.start():
-      LOGGER.error("Closing because Discovery didn't start")
-      self.close()
-      return
-
-    self.peers.start()
-    self.microphone.start()
-
-    if self.display:
-      if Config.is_control_program():
-        threading.Thread(target=self._keyboard_input).start()
-      self.display.loop()  # Blocks until complete
-
-    else:
-      if Config.is_control_program():
-        self._keyboard_input()
-      self._join()
-
-    LOGGER.info('Finished Echomesh._run')
 
   def _keyboard_input(self):
     sleep = Config.get('opening_sleep')
