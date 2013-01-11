@@ -16,6 +16,7 @@ from echomesh.config import Config
 
 from echomesh.graphics import Display
 
+from echomesh.network import Address
 from echomesh.network import Peers
 from echomesh.network import Discovery
 
@@ -72,7 +73,8 @@ class Echomesh(Closer.Closer):
       LOGGER.warn("No local score file %s", LOCAL_SCORE)
 
   def send(self, **data):
-    self.discovery.send(**data)
+    data['source'] = Address.NODENAME
+    self.discovery.data_socket.send(data)
 
   def receive_event(self, event):
     self.score.receive_event(event)
@@ -148,7 +150,7 @@ class Echomesh(Closer.Closer):
     LOGGER.debug('joining')
     self.display and self.display.join()
     LOGGER.debug('display joined')
-    self.discovery.join()
+    self.discovery.data_socket.join()
     LOGGER.debug('discovery joined')
     self.microphone.join()
     LOGGER.debug('mic joined')
