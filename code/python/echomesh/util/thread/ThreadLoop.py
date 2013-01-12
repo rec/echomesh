@@ -33,7 +33,6 @@ class ThreadLoop(Closer):
       self.thread.join()
     except:
       pass  # Swallow errors!  TODO
-    LOGGER.debug('Thread join for "%s" DONE', self.name)
 
   def loop(self):
     try:

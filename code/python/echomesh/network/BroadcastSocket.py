@@ -59,7 +59,7 @@ class Receive(Socket):
     try:
       result = select.select([self.socket], [], [], timeout)
       return result[0] and result[0][0].recv(self.buffer_size)
-    except select.error:
+    except:
       if self.is_open:
         raise
 
