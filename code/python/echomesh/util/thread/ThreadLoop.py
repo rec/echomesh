@@ -23,11 +23,12 @@ class ThreadLoop(Closer):
 
   def start(self):
     super(ThreadLoop, self).start()
-    LOGGER.debug('starting %s', self.name)
     self.thread = threading.Thread(target=self.loop)
     self.thread.start()
 
   def join(self):
+    super(ThreadLoop, self).join()
+    LOGGER.debug('Thread join')
     try:
       self.thread.join()
     except:

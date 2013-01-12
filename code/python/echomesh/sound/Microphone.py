@@ -52,14 +52,11 @@ class Microphone(ThreadLoop.ThreadLoop):
 
   def start(self):
     self.reset_levels()
-    if Config.get('audio', 'input', 'enable'):
-      LOGGER.info('Microphone starting')
-      rate = Config.get('audio', 'input', 'sample_rate')
-      use_default = Config.get('audio', 'input', 'use_default_channel')
-      sample_bytes = Config.get('audio', 'input', 'sample_bytes')
-      self.stream = Input.get_pyaudio_stream(rate, use_default, sample_bytes)
-    else:
-      LOGGER.info('Mic thread disabled')
+    LOGGER.info('Microphone starting')
+    rate = Config.get('audio', 'input', 'sample_rate')
+    use_default = Config.get('audio', 'input', 'use_default_channel')
+    sample_bytes = Config.get('audio', 'input', 'sample_bytes')
+    self.stream = Input.get_pyaudio_stream(rate, use_default, sample_bytes)
 
     if getattr(self, 'stream', None):
       super(Microphone, self).start()
@@ -87,4 +84,11 @@ class Microphone(ThreadLoop.ThreadLoop):
 
       except:
         LOGGER.critical(traceback.format_exc())
+
+
+def microphone(callback):
+  if Config.get('audio', 'input', 'enable'):
+    return Microphone(callback)
+  else:
+    LOGGER.info('Mic thread disabled')
 

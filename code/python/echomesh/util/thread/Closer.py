@@ -53,7 +53,10 @@ class Closer(Openable.Openable):
         except:
           pass
 
-EXIT_CLOSER = Closer()
+class _ExitCloser(Closer):
+  pass
+
+EXIT_CLOSER = _ExitCloser()
 
 def close_on_exit(to_close):
   EXIT_CLOSER.add_closer(to_close)

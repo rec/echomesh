@@ -62,3 +62,4 @@ class Receive(Socket):
     except select.error:
       if self.is_open:
         raise
+

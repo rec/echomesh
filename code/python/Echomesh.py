@@ -38,10 +38,11 @@ Type help for a list of commands
 def _make_keyboard(echomesh):
   if Config.is_control_program:
       processor = lambda x: Processor.process(x, echomesh)
-      keyboard =  Keyboard.Keyboard(parent=echomesh,
-                                    sleep=Config.get('opening_sleep'),
-                                    message=MESSAGE,
-                                    processor=processor)
+      return Keyboard.Keyboard(parent=echomesh,
+                               sleep=Config.get('opening_sleep'),
+                               message=MESSAGE,
+                               processor=processor)
+
 
 class Echomesh(Closer.Closer):
   INSTANCE = None
@@ -62,8 +63,12 @@ class Echomesh(Closer.Closer):
     self.add_openable_mutual(socket,
                              _make_keyboard(self),
                              Display.display(self),
-                             Microphone.Microphone(self._mic_event),
+                             Microphone.microphone(self._mic_event),
                              score)
+
+  def start(self):
+    super(Echomesh, self).start()
+    self.join()
 
   def _mic_event(self, level):
     self.send(type='event', event='mic', key=level)
