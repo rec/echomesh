@@ -56,7 +56,7 @@ class FilePlayer(ThreadLoop):
   DTYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
   def __init__(self, file, level=1, pan=0, loops=1):
-    super(FilePlayer, self).__init__()
+    super(FilePlayer, self).__init__(name='FilePlayer')
 
     self.debug = True
     self.passthrough = (level == 1 and pan == 0)

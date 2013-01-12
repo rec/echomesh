@@ -27,8 +27,10 @@ class DataSocket(Closer.Closer):
       else:
         raise
     self.add_openable_mutual(self.receive_socket, self.send_socket,
-                             ThreadLoop.ThreadLoop(run=self._run_receive),
-                             ThreadLoop.ThreadLoop(run=self._run_send))
+                             ThreadLoop.ThreadLoop(run=self._run_receive,
+                                                   name='receive'),
+                             ThreadLoop.ThreadLoop(run=self._run_send,
+                                                   name='send'))
 
     self.send = self.queue.put
 

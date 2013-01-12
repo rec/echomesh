@@ -7,7 +7,7 @@ DEFAULT_INTERVAL = 10.0
 
 class RandomCommand(CommandLoop):
   def __init__(self, score, element, timeout=None):
-    CommandLoop.__init__(self, score, element, timeout)
+    CommandLoop.__init__(self, score, element, timeout, name='RandomCommand')
     self.mean = element.get('data', {}).get('mean', DEFAULT_INTERVAL)
     self.command = element.get('command', {})
     assert self.command['function']

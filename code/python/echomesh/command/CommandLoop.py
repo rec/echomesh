@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util.thread.TimeLoop import TimeLoop
 
 class CommandLoop(TimeLoop):
-  def __init__(self, score, element, timeout=None):
-    TimeLoop.__init__(self, timeout)
+  def __init__(self, score, element, timeout=None, name='CommandLoop'):
+    TimeLoop.__init__(self, timeout, name=name)
     self.score = score
     self.element = element
 

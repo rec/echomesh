@@ -5,10 +5,11 @@ import time
 
 from echomesh.util.thread import ThreadLoop
 
+CLOSED = False
+
 class Keyboard(ThreadLoop.ThreadLoop):
   def __init__(self, parent, sleep, message, processor, prompt='echomesh: '):
-    super(Keyboard, self).__init__()
-    self.parent = parent
+    super(Keyboard, self).__init__(parent=parent, name='Keyboard')
     self.sleep = sleep
     self.message = message
     self.processor = processor
@@ -22,5 +23,9 @@ class Keyboard(ThreadLoop.ThreadLoop):
       print(self.message)
       self.message = ''
     while self.is_open:
+      global CLOSED
+      assert not CLOSED
+
       if not self.processor(raw_input(self.prompt).strip()):
+        CLOSED = True
         self.close()

@@ -10,8 +10,8 @@ LOGGER = Log.logger(__name__)
 DEFAULT_TIMEOUT = 0.5
 
 class TimeLoop(ThreadLoop.ThreadLoop):
-  def __init__(self, timeout=None):
-    super(TimeLoop, self).__init__()
+  def __init__(self, timeout=None, name='TimeLoop'):
+    super(TimeLoop, self).__init__(name=name)
     self.timeout = timeout or DEFAULT_TIMEOUT
 
   def start(self):

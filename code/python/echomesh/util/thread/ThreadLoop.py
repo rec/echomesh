@@ -11,7 +11,7 @@ LOGGER = Log.logger(__name__)
 class ThreadLoop(Closer):
   def __init__(self, run=None, parent=None, name=None,
                report_errors_when_closed=False):
-    super(ThreadLoop, self).__init__(parent)
+    super(ThreadLoop, self).__init__(parent=parent)
     self.name = name or repr(self)
     has_run = getattr(self, 'run', None)
     self.report_errors_when_closed = report_errors_when_closed
@@ -28,16 +28,18 @@ class ThreadLoop(Closer):
 
   def join(self):
     super(ThreadLoop, self).join()
-    LOGGER.debug('Thread join')
+    LOGGER.debug('Thread join for "%s"', self.name)
     try:
       self.thread.join()
     except:
       pass  # Swallow errors!  TODO
+    LOGGER.debug('Thread join for "%s" DONE', self.name)
 
   def loop(self):
     try:
       while self.is_open:
         self.run()
+      LOGGER.debug('Loop for "%s" has finished', self.name)
     except:
       if self.is_open or self.report_errors_when_closed:
         LOGGER.critical(traceback.format_exc())

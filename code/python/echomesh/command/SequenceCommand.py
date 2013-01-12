@@ -7,7 +7,7 @@ LOGGER = Log.logger(__name__)
 
 class SequenceCommand(CommandLoop):
   def __init__(self, score, element, timeout=None):
-    CommandLoop.__init__(self, score, element, timeout)
+    CommandLoop.__init__(self, score, element, timeout, name='RandomCommand')
     self.commands = element.get('commands', [])
     self.next_command = 0
 

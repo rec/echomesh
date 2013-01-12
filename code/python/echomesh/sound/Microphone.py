@@ -22,7 +22,7 @@ MAX_CHUNK_SIZE = 2048
 
 class Microphone(ThreadLoop.ThreadLoop):
   def __init__(self, callback):
-    super(Microphone, self).__init__()
+    super(Microphone, self).__init__(name='Microphone')
     self.set_config()
     self.callback = callback
     self.previous_level_name = None

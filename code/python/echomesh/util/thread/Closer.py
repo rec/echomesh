@@ -9,14 +9,14 @@ LOGGER = Log.logger(__name__)
 class Closer(Openable.Openable):
   def __init__(self, parent=None):
     super(Closer, self).__init__(parent=parent)
-    self.openables = []
+    self._openables = []
     self.lock = Locker.Lock()
 
   def _add(self, openables, is_mutual):
     with Locker.Locker(self.lock):
       for o in openables:
         if o:
-          self.openables.append(o)
+          self._openables.append(o)
           if is_mutual:
             o.group = self
 
@@ -26,32 +26,32 @@ class Closer(Openable.Openable):
   def add_openable_mutual(self, *openables):
     return self._add(openables, True)
 
+  def openables(self):
+    with Locker.Locker(self.lock):
+      return list(self._openables)
+
   def start(self):
     super(Closer, self).start()
-    with Locker.Locker(self.lock):
-      for o in self.openables:
-        o.start()
+    for o in self.openables():
+      o.start()
 
   def close(self):
-    if not self.is_open:
-      return
+    super(Closer, self).close()
+    for o in self.openables():
+      try:
+        o.close()
+      except:
+        LOGGER.error("Couldn't close %s" % o)
     with Locker.Locker(self.lock):
-      super(Closer, self).close()
-      for o in self.openables:
-        try:
-          o.close()
-        except:
-          LOGGER.error("Couldn't close %s" % o)
-      self.openables = []
+      self._openables = []
 
   def join(self):
     super(Closer, self).join()
-    with Locker.Locker(self.lock):
-      for c in self.openables:
-        try:
-          c.join()
-        except:
-          pass
+    for c in self.openables():
+      try:
+        c.join()
+      except:
+        pass
 
 class _ExitCloser(Closer):
   pass
