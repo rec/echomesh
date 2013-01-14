@@ -64,7 +64,6 @@ logging:
 opening_sleep: 0.5
 
 score:
-  enable: true
   file: score.yml
 
 sequence:

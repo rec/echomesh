@@ -17,6 +17,6 @@ class PeerSocket(Closer.Closer):
 
     self.add_openable_mutual(peers, self.socket)
 
-  def send(self, **data):
+  def send(self, data):
     data['source'] = Address.NODENAME
     self.socket.send(data)

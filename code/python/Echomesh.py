@@ -8,41 +8,18 @@ import threading
 import time
 import traceback
 
-from echomesh.command import Processor
 from echomesh.command import Score
-
 from echomesh.config import Config
-
 from echomesh.graphics import Display
-
 from echomesh.network import PeerSocket
-
 from echomesh.sound import Microphone
 from echomesh.sound import SetOutput
-
 from echomesh.util import Log
-
-from echomesh.util.file import File
-
 from echomesh.util.thread import Closer
 from echomesh.util.thread import Keyboard
 
 LOGGER = Log.logger(__name__)
 ECHOMESH = None
-MESSAGE = """
-           echomesh
-Type help for a list of commands
-
-"""
-
-def _make_keyboard(echomesh):
-  if Config.is_control_program:
-      processor = lambda x: Processor.process(x, echomesh)
-      return Keyboard.Keyboard(parent=echomesh,
-                               sleep=Config.get('opening_sleep'),
-                               message=MESSAGE,
-                               processor=processor)
-
 
 class Echomesh(Closer.Closer):
   INSTANCE = None
@@ -54,17 +31,20 @@ class Echomesh(Closer.Closer):
     else:
       Echomesh.INSTANCE = self
 
-    socket = PeerSocket.PeerSocket(self)
-    score = Score.make_score()
+    self.socket = PeerSocket.PeerSocket(self)
+    self.score = Score.make_score()
 
-    self.send = socket.send
-    self.receive = score.receive_event
-
-    self.add_openable_mutual(socket,
-                             _make_keyboard(self),
+    self.add_openable_mutual(self.socket,
+                             Keyboard.keyboard(self),
                              Display.display(self),
                              Microphone.microphone(self._mic_event),
-                             score)
+                             self.score)
+
+  def send(self, data):
+    self.socket.send(data)
+
+  def receive(self, event):
+    return self.score.receive_event(event)
 
   def start(self):
     super(Echomesh, self).start()
@@ -78,7 +58,6 @@ class Echomesh(Closer.Closer):
     try:
       Config.remove_local()
       self.microphone.set_config()
-
     except OSError as e:
       LOGGER.warn("No local file %s" % Config.LOCAL_CHANGED_FILE)
 
@@ -92,6 +71,7 @@ class Echomesh(Closer.Closer):
     self.microphone.set_config()
 
   def set_score(self, score):
+    from echomesh.util.file import File
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 

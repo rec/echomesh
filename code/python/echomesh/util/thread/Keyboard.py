@@ -3,9 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import time
 
+from echomesh.command import Processor
+from echomesh.config import Config
 from echomesh.util.thread import ThreadLoop
 
-CLOSED = False
+MESSAGE = """
+           echomesh
+Type help for a list of commands
+
+"""
 
 class Keyboard(ThreadLoop.ThreadLoop):
   def __init__(self, parent, sleep, message, processor, prompt='echomesh: '):
@@ -23,9 +29,14 @@ class Keyboard(ThreadLoop.ThreadLoop):
       print(self.message)
       self.message = ''
     while self.is_open:
-      global CLOSED
-      assert not CLOSED
-
       if not self.processor(raw_input(self.prompt).strip()):
-        CLOSED = True
         self.close()
+
+def keyboard(echomesh):
+  if Config.is_control_program():
+      processor = lambda x: Processor.process(x, echomesh)
+      return Keyboard.Keyboard(parent=echomesh,
+                               sleep=Config.get('opening_sleep'),
+                               message=MESSAGE,
+                               processor=processor)
+

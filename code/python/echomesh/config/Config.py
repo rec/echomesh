@@ -15,8 +15,6 @@ from echomesh.util import Merge
 from echomesh.util import Platform
 from echomesh.util.file import File
 
-ALLOW_EMPTY_OPTIONS = False
-
 # If running as root, export user pi's home directory as $HOME.
 if getpass.getuser() == 'root':
   os.environ['HOME'] = '/home/pi'
@@ -68,27 +66,33 @@ def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
   return CONFIG.get('control_program', 'enable')
 
+# Report on config items that aren't used.
+CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+
 def get(*parts):
-  assert parts
-  config = CONFIG
-
-  def fail_on_none():
-    if config is None and not ALLOW_EMPTY_OPTIONS:
-      raise Exception('Empty configuation option for (%s)' % ', '.join(parts))
-
-  for p in parts:
-    fail_on_none()
-
+  config, unvisited = CONFIG, CONFIGS_UNVISITED
+  def get_part(config, part):
     if not isinstance(config, dict):
-      if config is None:
-        config = {}
-      else:
-        raise Exception("Can't read configuration '%s:'" % ': '.join(parts))
+      raise Exception("Reached leaf configuration for %s" % ':'.join(parts))
+    value = config.get(part, None)
+    if value is None:
+      raise Exception("Couldn't find configuration %s" % ':'.join(parts))
+    return value
 
-    config = config.get(p, None)
+  for part in parts[:-1]:
+    config = get_part(config, part)
+    unvisited = get_parent(unvisited, part)
 
-  fail_on_none()
-  return config
+  last_part = parts[:-1]
+  valuee = get_part(config, last_part)
+
+  if isinstance(config, dict):
+    raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
+
+  CONFIGURATION
+
+  return value
+
 
 # The following code is all deprecated.
 # TODO: find a better way to broadcast persistent changes to all the nodes.
@@ -96,6 +100,10 @@ def get(*parts):
 def change(config):
   File.yaml_dump_all(LOCAL_CHANGED_FILE, config)
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
+
+
+# def unused_config():
+
 
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
 # because we'd have to revert the main config to its original value "in place".
