@@ -14,7 +14,6 @@ from echomesh.util.thread import Closer
 from echomesh.util.thread import Keyboard
 
 LOGGER = Log.logger(__name__)
-ECHOMESH = None
 
 class Echomesh(Closer.Closer):
   INSTANCE = None
