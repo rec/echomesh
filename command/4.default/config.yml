@@ -44,6 +44,8 @@ discovery:
   port: 1238
   timeout: 0.10
 
+dump_unused_configs: false
+
 pi3d:
   background: [0, 0, 0, 1]
   dimensions: [0, 0, 0, 0]

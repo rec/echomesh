@@ -90,8 +90,22 @@ def get(*parts):
   if isinstance(value, dict):
     raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
 
-  del config[last_part]
+  del unvisited[last_part]
   return value
+
+
+def get_unvisited():
+  def fix(d):
+    if isinstance(d, dict):
+      for k, v in list(d.iteritems()):
+        assert v is not None
+        fix(v)
+        if v == {}:
+          del d[k]
+    return d
+  if not True:
+    return CONFIGS_UNVISITED
+  return fix(copy.deepcopy(CONFIGS_UNVISITED))
 
 
 # The following code is all deprecated.

@@ -80,8 +80,9 @@ if __name__ == '__main__':
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
     SetOutput.set_output(Config.get('audio', 'output', 'route'))
     Echomesh().start()
-    import yaml
-    print(yaml.safe_dump(Config.CONFIGS_UNVISITED))
+    if Config.get('dump_unused_configs'):
+      import yaml
+      print(yaml.safe_dump(Config.get_unvisited()))
     Closer.on_exit()
   else:
     LOGGER.info("Not autostarting because autostart=False")
