@@ -16,5 +16,4 @@ pi3d:
   enable: false
 
 score:
-  enable: false
   file: score.yml
