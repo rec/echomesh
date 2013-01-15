@@ -81,16 +81,16 @@ def get(*parts):
 
   for part in parts[:-1]:
     config = get_part(config, part)
-    unvisited = get_parent(unvisited, part)
+    if unvisited:
+      unvisited = unvisited.get(part, None)
 
-  last_part = parts[:-1]
-  valuee = get_part(config, last_part)
+  last_part = parts[-1]
+  value = get_part(config, last_part)
 
-  if isinstance(config, dict):
+  if isinstance(value, dict):
     raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
 
-  CONFIGURATION
-
+  del config[last_part]
   return value
 
 
@@ -100,9 +100,6 @@ def get(*parts):
 def change(config):
   File.yaml_dump_all(LOCAL_CHANGED_FILE, config)
   Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
-
-
-# def unused_config():
 
 
 # TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,

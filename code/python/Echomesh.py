@@ -40,7 +40,7 @@ class Echomesh(Closer.Closer):
                              Microphone.microphone(self._mic_event),
                              self.score)
 
-  def send(self, data):
+  def send(self, **data):
     self.socket.send(data)
 
   def receive(self, event):
@@ -80,6 +80,8 @@ if __name__ == '__main__':
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
     SetOutput.set_output(Config.get('audio', 'output', 'route'))
     Echomesh().start()
+    import yaml
+    print(yaml.safe_dump(Config.CONFIGS_UNVISITED))
     Closer.on_exit()
   else:
     LOGGER.info("Not autostarting because autostart=False")

@@ -35,8 +35,8 @@ class Keyboard(ThreadLoop.ThreadLoop):
 def keyboard(echomesh):
   if Config.is_control_program():
       processor = lambda x: Processor.process(x, echomesh)
-      return Keyboard.Keyboard(parent=echomesh,
-                               sleep=Config.get('opening_sleep'),
-                               message=MESSAGE,
-                               processor=processor)
+      return Keyboard(parent=echomesh,
+                      sleep=Config.get('opening_sleep'),
+                      message=MESSAGE,
+                      processor=processor)
 

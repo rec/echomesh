@@ -8,14 +8,16 @@ import time
 from echomesh.network import Address
 
 from echomesh.util.thread import Locker
+from echomesh.util.thread import Openable
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Peers(object):
+class Peers(Openable.Openable):
   TYPE = 'peer'
 
   def __init__(self, echomesh):
+    super(Peers, self).__init__()
     self.lock = Locker.Lock()
     self.echomesh = echomesh
     self.type = Peers.TYPE
@@ -32,6 +34,7 @@ class Peers(object):
     self.echomesh.send(**self.data)
 
   def start(self):
+    super(Peers, self).start()
     self._send()
 
   def new_peer(self, data):
