@@ -50,7 +50,7 @@ class ImageSprite(Sprite.ImageSprite, Openable):
       self._duration = duration
     else:
       envs = [self._position, self._rotation, self._size]
-      self._duration = max(x.length() for x in envs)
+      self._duration = max(x.length for x in envs)
 
     PI3D_DISPLAY.add_sprite(self)
 

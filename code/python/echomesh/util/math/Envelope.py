@@ -2,51 +2,73 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import bisect
 
+def find(times, time, prev_slot, prev_slot_time):
+  if time < prev_slot_time:
+    prev_slot = 0
+
+  for prev_slot in range(prev_slot, len(times) - 1):
+    if time < times[prev_slot + 1]:
+      return prev_slot
+  return len(times) - 1;
+
+LOG_FILE = '/tmp/log.txt'
+
+with open(LOG_FILE, 'w') as f:
+  pass
+
+def LOG(*args):
+  with open(LOG_FILE, 'a') as f:
+    for a in args:
+      f.write(str(a))
+      f.write(', ')
+    f.write('\n')
+
 class Envelope(object):
   def __init__(self, data, find=bisect.bisect):
     self.find = find
     try:
       self.times, self.data = zip(*data)
+      self.length = self.times[-1]
       self.is_constant = False
-      self.last_time = -1
+      self.slot = 0
 
     except TypeError:
       self.data = data
       self.is_constant = True
-
-  def length(self):
-    return 0 if self.is_constant else self.times[-1]
+      self.length = 0
 
   def interpolate(self, time):
+    # LOG('interpolate', time, self.times)
     if self.is_constant:
       return self.data
 
-    index = self.find(self.times, time)
-    if index is 0:
+    if time <= 0.0:
       return self.data[0]
-    if index >= len(self.data):
+
+    if time >= self.length:
       return self.data[-1]
 
-    t1, d1 = self.times[index - 1], self.data[index - 1]
-    if time <= t1:
-      return d1
+    if time < self.times[self.slot]:
+      self.slot = 0
 
-    t2, d2 = self.times[index], self.data[index]
-    if time >= t2:
-      return d2
+    for self.slot in range(self.slot, len(self.times) - 1):
+      t1, t2 = self.times[self.slot:self.slot + 2]
+      if t1 <= time <= t2:
+        d1, d2 = self.data[self.slot:self.slot + 2]
+        ratio = float(time - t1) / (t2 - t1)
 
-    ratio = float(time - t1) / (t2 - t1)
+        try:
+          items = zip(iter(d1), iter(d2))
+        except TypeError:
+          try:
+            return d1 * (1 - ratio) + d2 * ratio
+          except:
+            print(d1, d2, ratio)
+            raise
 
-    try:
-      items = zip(iter(d1), iter(d2))
-    except TypeError:
-      try:
-        return d1 * (1 - ratio) + d2 * ratio
-      except:
-        print(d1, d2, ratio)
-        raise
+        return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
 
-    return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
+    assert False, "Envelope times are out of order."
 
 def make_envelope(data):
   return data if isinstance(data, Envelope) else Envelope(data)
