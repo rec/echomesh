@@ -75,14 +75,21 @@ class Echomesh(Closer.Closer):
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 
-
-if __name__ == '__main__':
+def startup():
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
     SetOutput.set_output(Config.get('audio', 'output', 'route'))
+    return True
+
+def shutdown():
+  if Config.get('dump_unused_configs'):
+    import yaml
+    print(yaml.safe_dump(Config.get_unvisited()))
+  Closer.on_exit()
+
+
+if __name__ == '__main__':
+  if startup():
     Echomesh().start()
-    if Config.get('dump_unused_configs'):
-      import yaml
-      print(yaml.safe_dump(Config.get_unvisited()))
-    Closer.on_exit()
+    shutdown()
   else:
     LOGGER.info("Not autostarting because autostart=False")
