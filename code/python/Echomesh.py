@@ -1,12 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import contextlib
 import os
-import os.path
 import sys
-import threading
-import time
-import traceback
 
 from echomesh.command import Score
 from echomesh.config import Config
