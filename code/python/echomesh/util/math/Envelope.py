@@ -3,10 +3,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import bisect
 
 class Envelope(object):
-  def __init__(self, data):
+  def __init__(self, data, find=bisect.bisect):
+    self.find = find
     try:
       self.times, self.data = zip(*data)
       self.is_constant = False
+      self.last_time = -1
+
     except TypeError:
       self.data = data
       self.is_constant = True
@@ -17,7 +20,8 @@ class Envelope(object):
   def interpolate(self, time):
     if self.is_constant:
       return self.data
-    index = bisect.bisect(self.times, time)
+
+    index = self.find(self.times, time)
     if index is 0:
       return self.data[0]
     if index >= len(self.data):
