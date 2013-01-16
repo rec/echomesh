@@ -2,31 +2,26 @@
 # The code implements an older version.
 #
 # This is a sample score file for echomesh.
-# As you've guessed, # introduces comments, and blank lines are ingored.
 #
-# Our model is simple:
+# The character # introduces comments.  The first several pages of this example
+# score are comments explaining how scores are put together.
 #
-#   1. We have four machines: President, Chairman, Treasurer and Secretary.
+#
+# *** The Model ***
+#
+# echomesh's model is simple:
+#
+#   1. There are multiple named machines:
+#      - In our installation today, we have President, Chairman, Treasurer
+#        and Secretary.
 #   2. A Machine receive Events and sends them to the whole system.
-#   3. There's a list of main Elements.
-#   4. If an Event matches a event mapping Element, it can trigger another Element.
+#   3. There's a main list of Elements called the Score.
+#   4. Scores are also elements so you can use Scores inside other Scores.
+#   5. With a Score, some Elements receive Events and route them to other
+#      Elements.
 #
 #
-# 1. Events.
-#
-# We have three classes of Event right now - mic, random and sequence
-#
-# mic Events happen when there's a gross input level change on one of the
-# microhones.
-#
-# random Events occur intermittently "on their own steam" - just to keep
-# things going if nothing has happened.
-#
-# sequence Events occur at a sequence of times in the future.
-#
-#
-#
-# 2. Elements
+#  *** Elements ***
 #
 # This whole file is nothing more than a list of Elements, so you'll see a lot of
 # examples of Elements below.  (Technically, we are using the YAML data language,
@@ -34,25 +29,40 @@
 # http://www.yaml.org/spec/1.2/spec.html#Preview )
 #
 #
+# *** Types of Elements ***
 #
-# 3. Functions
-#
-# We have four classes of Function right now.
-#
+# Some types of Element:
 #   audio: plays an audio clip
 #   image: shows and animates an image
 #   select: selects a Function (and arguments) at random from a list.
 #   print: prints a message on the console (for debugging).
 #
-# Functions have Envelope keywords - keywords that can change over time.
 #
-# You can specify these in two ways: you can specify a constant value, or you
+# *** Envelopes ***
+#
+# Some Elements have Envelope keywords - keywords that can change over time.
+#
+# You can specify Envelopes in two ways: you can specify a constant value, or you
 # can have a list of times (in seconds) and values, called an Envelope.  You'll
 # see examples of both cases below.  The system linearly interpolates between
 # points in an envelope.  You'll see examples below.
 #
 #
-# The audio Function has the following keywords:
+# *** Events ***
+#
+# We have three classes of Event right now - mic, random and sequence
+#
+# mic Events happen when there's a gross input level change on one of the
+# microhones.
+#
+# random Events occur intermittently "on their own time".
+#
+# sequence Events occur at a sequence of times in the future.
+#
+#
+#  *** Audio ***
+#
+# The audio Element has the following keywords:
 #
 #  - filename:  compulsory keyword that says which file to play.
 #
@@ -62,6 +72,8 @@
 #  - pan:       Envelope keyword giving the left/right pan.
 #               -1 is left, 1 is right - default is a constant 0 (center).
 #
+#
+# *** Image ***
 #
 # The image Function has the following keywords:
 #
@@ -85,13 +97,16 @@
 #               optional, and the image will be shown for the duration of the
 #               longest envelope.
 #
+# Note that at this time, image manipulation can only be done on the Raspberry Pi.
 #
 #
+# *** An actual Element ***
 #
-# And now for some specific examples of Elements!
-#
+# Finally - we're finished the comments, and now we'll get to see an actual
+# Element.
 
-type: event         # An event handler.
+
+type: event             # The Element is an event handler.
 
 arguments:
   -
@@ -130,11 +145,9 @@ keywords:
     type: something
 
 ---
+# Three dashes signifies the start of a new Element.
 
-# Elements are separated by three dashes, as in the line above.
-
-# This is a random element that triggers automatically based on a random
-# variable.
+# A Random Element that triggers automatically based on a random variable.
 
 type: random
 
@@ -145,7 +158,7 @@ keywords:
                              # Today, we only have one distribution, poisson,
                              # so you don't have to specify it.
 
-arguments:                    # The list of element from which to select.
+arguments:                   # The list of element from which to select.
   -
     type: image
     keywords:
@@ -165,7 +178,7 @@ arguments:                    # The list of element from which to select.
 
 ---
 
-# This is a sequence element that triggers events in temporal sequence.
+# The Sequence Element triggers events in temporal sequence.
 
 type: sequence
 
