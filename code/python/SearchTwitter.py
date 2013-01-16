@@ -10,15 +10,15 @@ def print_twitter(twitter):
   print()
 
 CLOSER = Closer.Closer()
-
 TAGS = []
+POLL_INTERVAL = 2.0
 
 def add_hashtag(*tags):
   for tag in tags:
     if not tag.startswith('#'):
       tag = '#' + tag
     TAGS.append(tag)
-    loop = SearchTwitter.Loop(tag, print_twitter)
+    loop = SearchTwitter.Loop(tag, print_twitter, interval=POLL_INTERVAL)
     loop.start()
     CLOSER.add_openable(loop)
   if tags:

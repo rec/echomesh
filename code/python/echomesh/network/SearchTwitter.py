@@ -42,16 +42,21 @@ class Search(object):
 
   def refresh(self):
     keywords = {'q': self.key}
-    if self.max_id_str:
+    first_time = not self.max_id_str
+    if not first_time:
       keywords['since_id'] = self.max_id_str
     raw = urllib2.urlopen(ROOT, urllib.urlencode(keywords)).read().decode('utf8')
     result = json.loads(raw)
     self.max_id_str = result['max_id_str']
-    for tweet in result['results'][:self.preload]:
+    tweets = result['results']
+    if first_time:
+      tweets = tweets[:self.preload]
+    for tweet in tweets:
       self.callback(process_tweet(tweet))
 
+
 class Loop(TimeLoop.TimeLoop):
-  def __init__(self, key, callback, interval=3, preload=1, name='SearchLoop',
+  def __init__(self, key, callback, interval=2, preload=1, name='SearchLoop',
                timeout=None):
     super(Loop, self).__init__(name=name, timeout=timeout, interval=interval)
     self.search = Search(key, callback, preload)
