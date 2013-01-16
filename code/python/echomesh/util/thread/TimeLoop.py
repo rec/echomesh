@@ -10,14 +10,15 @@ LOGGER = Log.logger(__name__)
 DEFAULT_TIMEOUT = 0.5
 
 class TimeLoop(ThreadLoop.ThreadLoop):
-  def __init__(self, timeout=None, name='TimeLoop'):
+  def __init__(self, timeout=None, name='TimeLoop', interval=1):
     super(TimeLoop, self).__init__(name=name)
     self.timeout = timeout or DEFAULT_TIMEOUT
+    self.interval = interval
 
   def start(self):
     self.start_time = time.time()
-    self.next_time = self._next_time(self.start_time)
-    ThreadLoop.start(self)
+    self.next_time = self.start_time
+    super(TimeLoop, self).start()
 
   def run(self):
     t = time.time()
@@ -31,6 +32,6 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     raise Exception('You must implement _event in your derived class')
 
   def _next_time(self, t):
-    raise Exception('You must implement _next_time in your derived class')
+    return t + self.interval
 
 

@@ -7,18 +7,13 @@ LOGGER = Log.logger(__name__)
 
 def load(element):
   filename = element.get('filename', None)
-  if not filename:
-    return element
+  if filename:
+    data = CommandFile.load('element', filename)
+    if data:
+      return data
+    LOGGER.error("Couldn't load element file %s", filename)
 
-  elements = CommandFile.load('element', filename)
-  if not elements:
-    LOGGER.warning('No elements were found in %s', filename)
-    return element
-
-  if len(elements) > 1:
-    LOGGER.warning('More than one element was found in %s', filename)
-
-  return elements[0]
+  return element
 
 def validate(element, functions):
   ok = True

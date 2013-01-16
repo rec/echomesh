@@ -15,13 +15,11 @@ from echomesh.util import Merge
 from echomesh.util import Platform
 from echomesh.util.file import File
 
-# If running as root, export user pi's home directory as $HOME.
-if getpass.getuser() == 'root':
-  os.environ['HOME'] = '/home/pi'
+CONFIG = None
 
-# Change directory to the echomesh root directory.
-path = dirname(dirname(dirname(abspath(sys.argv[0]))))
-os.chdir(path)
+# Report on config items that aren't used.
+CONFIGS_UNVISITED = None
+COMMAND_LINE_ARGUMENTS = []
 
 def _add_exception_suffix(e, suffix):
   e.args = tuple(a + suffix for a in e.args)
@@ -45,8 +43,8 @@ def _merge_level_files():
         raise
   return config
 
-def _merge_command_line_arguments(config):
-  for i, arg in enumerate(sys.argv):
+def _merge_command_line_arguments(args, config):
+  for i, arg in enumerate(args):
     if i:
       try:
         cfgs = File.yaml_load_stream(arg)
@@ -60,16 +58,27 @@ def _merge_command_line_arguments(config):
         raise
   return config
 
-CONFIG = _merge_command_line_arguments(_merge_level_files())
+def recalculate(*args):
+  global CONFIG, CONFIGS_UNVISITED
+  if not CONFIG:
+    # If running as root, export user pi's home directory as $HOME.
+    if getpass.getuser() == 'root':
+      os.environ['HOME'] = '/home/pi'
+
+    # Change directory to the echomesh root directory.
+    path = dirname(dirname(dirname(abspath(sys.argv[0]))))
+    os.chdir(path)
+
+    CONFIG = _merge_command_line_arguments(args, _merge_level_files())
+    CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
 
 def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
-  return CONFIG.get('control_program', 'enable')
-
-# Report on config items that aren't used.
-CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+  return get('control_program', 'enable')
 
 def get(*parts):
+  recalculate()
+
   config, unvisited = CONFIG, CONFIGS_UNVISITED
   def get_part(config, part):
     if not isinstance(config, dict):
@@ -92,7 +101,6 @@ def get(*parts):
 
   del unvisited[last_part]
   return value
-
 
 def get_unvisited():
   def fix(d):

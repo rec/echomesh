@@ -41,6 +41,9 @@ def merge(old, new):
 def difference(old, new):
   return merge_or_diff(False, old, new)
 
+def merge_all(target, *others):
+  return reduce(merge, others, target)
+
 """
 >>> Merge.merge({1:2, 3:5}, {1:4, 2:7})
 {1: 4, 2: 7, 3: 5}

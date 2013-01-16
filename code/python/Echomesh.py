@@ -3,8 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 
-from echomesh.command import Score
 from echomesh.config import Config
+Config.recalculate(*sys.argv)
+
+from echomesh.command import Score
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.sound import Microphone
@@ -79,7 +81,6 @@ def shutdown():
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
   Closer.on_exit()
-
 
 if __name__ == '__main__':
   if startup():
