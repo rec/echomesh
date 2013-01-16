@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import HTMLParser
 import Queue
 import json
 import urllib
@@ -9,6 +10,7 @@ import yaml
 from echomesh.util.thread import TimeLoop
 
 ROOT = 'http://search.twitter.com/search.json'
+PARSER = HTMLParser.HTMLParser()
 
 def get_image_url(image):
   try:
@@ -19,10 +21,14 @@ def get_image_url(image):
     return image
 
 def process_tweet(tweet):
-  return {'image': get_image_url(tweet.get('profile_image_url', '')),
-          'text': tweet.get('text', ''),
-          'user': tweet.get('from_user', ''),
-          'user_name': tweet.get('from_user_name', ''),
+  def get(name):
+    res = tweet.get(name, '')
+    return urllib.unquote(PARSER.unescape(res.encode('utf8')))
+
+  return {'image': get_image_url(get('profile_image_url')),
+          'text': get('text'),
+          'user': get('from_user'),
+          'user_name': get('from_user_name'),
           }
 
 
@@ -38,8 +44,8 @@ class Search(object):
     keywords = {'q': self.key}
     if self.max_id_str:
       keywords['since_id'] = self.max_id_str
-    raw = urllib2.urlopen(ROOT, urllib.urlencode(keywords))
-    result = json.load(raw)
+    raw = urllib2.urlopen(ROOT, urllib.urlencode(keywords)).read().decode('utf8')
+    result = json.loads(raw)
     self.max_id_str = result['max_id_str']
     for tweet in result['results'][:self.preload]:
       self.callback(process_tweet(tweet))

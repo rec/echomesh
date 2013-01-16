@@ -4,17 +4,33 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.network import SearchTwitter
 from echomesh.util.thread import Closer
 
+def print_twitter(twitter):
+  print('name:', twitter['user_name'])
+  print('text:', twitter['text'])
+  print()
+
+CLOSER = Closer.Closer()
+
+TAGS = []
+
+def add_hashtag(*tags):
+  for tag in tags:
+    if not tag.startswith('#'):
+      tag = '#' + tag
+    TAGS.append(tag)
+    loop = SearchTwitter.Loop(tag, print_twitter)
+    loop.start()
+    CLOSER.add_openable(loop)
+  print('Now following', *TAGS)
+
 if __name__ == '__main__':
-  with Closer.Closer() as closer:
-    tags = []
-    while closer.is_open:
-      tag = raw_input('Enter a tag or quit to exit\n').strip()
-      if tag == 'quit':
-        closer.close()
-      else:
-        tags.append(tag)
-        print('Now following', *tags)
-        loop = SearchTwitter.Loop(tag, print)
-        loop.start()
-        closer.add_openable(loop)
+  import sys
+
+  add_hashtag(*sys.argv[1:])
+  while CLOSER.is_open:
+    tag = raw_input('Enter a tag or quit to exit\n').strip()
+    if tag == 'quit':
+      CLOSER.close()
+    elif tag:
+      add_hashtag(tag)
 
