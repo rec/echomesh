@@ -21,7 +21,8 @@ def add_hashtag(*tags):
     loop = SearchTwitter.Loop(tag, print_twitter)
     loop.start()
     CLOSER.add_openable(loop)
-  print('Now following', *TAGS)
+  if tags:
+    print('Now following', *TAGS)
 
 if __name__ == '__main__':
   import sys
