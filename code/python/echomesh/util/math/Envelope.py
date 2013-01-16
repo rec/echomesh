@@ -2,27 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import bisect
 
-def find(times, time, prev_slot, prev_slot_time):
-  if time < prev_slot_time:
-    prev_slot = 0
-
-  for prev_slot in range(prev_slot, len(times) - 1):
-    if time < times[prev_slot + 1]:
-      return prev_slot
-  return len(times) - 1;
-
-LOG_FILE = '/tmp/log.txt'
-
-with open(LOG_FILE, 'w') as f:
-  pass
-
-def LOG(*args):
-  with open(LOG_FILE, 'a') as f:
-    for a in args:
-      f.write(str(a))
-      f.write(', ')
-    f.write('\n')
-
 class Envelope(object):
   def __init__(self, data, find=bisect.bisect):
     self.find = find

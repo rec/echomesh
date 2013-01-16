@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from echomesh.command import ReadScore
 from echomesh.command.Functions import FUNCTIONS
 from echomesh.command.RandomCommand import RandomCommand
 from echomesh.command.SequenceCommand import SequenceCommand
@@ -13,7 +12,8 @@ from echomesh.network import Address
 
 from echomesh.util import Log
 from echomesh.util.thread import Closer
-
+from echomesh.config import CommandFile
+from echomesh.command import Element
 
 LOGGER = Log.logger(__name__)
 
@@ -24,9 +24,21 @@ class Score(Closer.Closer):
     super(Score, self).__init__()
     self.functions = functions
     self.target = target
-    self.scorefile = scorefile
-    self.elements, starters = ReadScore.read_score(self, COMMANDS)
-    self.add_openable(*starters)
+    self.score_by_type = {}
+
+    for element in CommandFile.load('score', scorefile):
+      if not Element.validate(element, self.functions):
+        LOGGER.error("Didn't understand command %s in element %s", cmd, element)
+        continue
+
+      t = element.get('type', None)
+      if not t:
+        LOGGER.error('No type field in element')
+        continue
+
+      self.score_by_type[t] = self.score_by_type.get(t, []) + [element]
+      f = self.functions.get(t, None)
+      self.add_openable(f and f(self, element))
 
   def receive_event(self, event):
     elements = self.elements.get(event['event'], [])

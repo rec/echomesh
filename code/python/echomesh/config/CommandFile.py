@@ -1,8 +1,8 @@
 import os
 
 from echomesh.network import Address
-
 from echomesh.util import Platform
+from echomesh.util.file import File
 
 LEVELS = [
   '0.local',
@@ -12,12 +12,17 @@ LEVELS = [
   '4.default',
   ]
 
-def expand(filename):
+def expand(*path):
+  # These first two lines are to make sure we split on / for Windows and others.
+  filename = '/'.join(path)
   path = filename.split('/')
   return [os.path.join('command', i, *path) for i in LEVELS]
 
-def resolve(filename):
-  for f in expand(filename):
+def resolve(*path):
+  for f in expand(*path):
     if os.path.exists(f):
       return f
 
+def load(*path):
+  f = resolve(*path)
+  return f and File.yaml_load_all(f)
