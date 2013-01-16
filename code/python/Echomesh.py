@@ -45,7 +45,7 @@ class Echomesh(Closer.Closer):
     self.join()
 
   def _mic_event(self, level):
-    self.send(type='event', event='mic', key=level)
+    self.send(type='event', event_type='mic', key=level)
 
   # TODO: these next methods don't work any more.
   def remove_local(self):

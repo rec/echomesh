@@ -24,7 +24,7 @@ class Score(Closer.Closer):
     super(Score, self).__init__()
     self.functions = functions
     self.target = target
-    self.score_by_type = {}
+    self.elements_by_type = {}
 
     for element in CommandFile.load('score', scorefile):
       if not Element.validate(element, self.functions):
@@ -36,41 +36,40 @@ class Score(Closer.Closer):
         LOGGER.error('No type field in element')
         continue
 
-      self.score_by_type[t] = self.score_by_type.get(t, []) + [element]
+      self.elements_by_type[t] = self.elements_by_type.get(t, []) + [element]
       f = self.functions.get(t, None)
       self.add_openable(f and f(self, element))
 
   def receive_event(self, event):
-    elements = self.elements.get(event['event'], [])
-    for e in elements:
-      if (e
-          and e.get('source', self.target) == event.get('source', self.target)
-          and e.get('target', self.target) == self.target):
+    event_type = event.get('event_type', None)
+    if not event_type:
+      LOGGER.error('No event_type in event %s', event)
+      return
+
+    event_source = event.get('source', self.target)
+    for element in self.elements_by_type.get(event_type, []):
+      if (element.get('source', self.target) == event_source
+          and element.get('target', self.target) == self.target):
         key = event.get('key', {})
-        mapping = element.get('mapping', {})
-        command = mapping.get(key, {})
-        self.execute_command(command, event)
+        command = element.get('mapping', {}).get(key, {})
+        if command:
+          self.execute_command(command, event)
 
   def execute_command(self, command, event=None):
-    if command:
-      LOGGER.debug('Executing element %s', command)
-      function_name = command.get('function', '')
-      if not function_name:
-        LOGGER.error('No function in command %s', command)
-        if True:
-          raise Exception
-        return
+    LOGGER.debug('Executing element %s', command)
+    function_name = command.get('function', '')
+    if not function_name:
+      LOGGER.error('No function in command %s', command)
+      return
 
-      function = self.functions.get(function_name, None)
-      if not function:
-        LOGGER.error("Didn't understand function %s", function_name)
-        return
+    function = self.functions.get(function_name, None)
+    if not function:
+      LOGGER.error("Didn't understand function %s", function_name)
+      return
 
-      arguments = command.get('arguments', [])
-      keywords = command.get('keywords', {})
-      closer = function(self, event, *arguments, **keywords)
-      if closer:
-        self.add_closer(closer)
+    arguments = command.get('arguments', [])
+    keywords = command.get('keywords', {})
+    self.add_openable(function(self, event, *arguments, **keywords))
 
 def make_score():
   score = Score(Config.get('score', 'file'), FUNCTIONS)
