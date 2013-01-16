@@ -102,9 +102,7 @@
 #
 # *** An actual Element ***
 #
-# Finally - we're finished the comments, and now we'll get to see an actual
-# Element.
-
+# We finally get to see an actual Element:
 
 type: event             # The Element is an event handler.
 
@@ -132,7 +130,7 @@ keywords:
       position: [100, 100]   # at [100, 100]
       duration: 10.0         # for 10 seconds.
 
-  quiet:     # Trigger this Function when the microphone goes "quiet"
+  loud:     # Trigger this Function when the microphone goes "loud"
     type: image
     keywords:
       file: goblin.gif
@@ -147,7 +145,7 @@ keywords:
 ---
 # Three dashes signifies the start of a new Element.
 
-# A Random Element that triggers automatically based on a random variable.
+# The Random Element triggers automatically based on a random variable.
 
 type: random
 
@@ -158,7 +156,7 @@ keywords:
                              # Today, we only have one distribution, poisson,
                              # so you don't have to specify it.
 
-arguments:                   # The list of element from which to select.
+arguments:                   # Select one of these elements at random.
   -
     type: image
     keywords:
