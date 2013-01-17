@@ -101,25 +101,22 @@
 #
 # We finally get to see an actual Element:
 
-type: event             # The Element is an event handler.
+type: handler       # This Element is an event handler.
+subtype: mic        # This element triggers when a microphone changes levels.
 
-arguments:
-  -
-    event_type: mic     # This element triggers when a microphone changes levels.
+source: President   # This means that this element only triggers on events coming
+                    # FROM the Machine named President.
 
-    source: President   # This means that this element only triggers on events coming
-                        # FROM the Machine named President.
+target: President   # This means that this element only triggers ON the Machine
+                    # named President.
+                    #
+                    # If you omit the "source" field, the element will trigger on
+                    # all incoming events regardless of source Machine
+                    #
+                    # If you omit the "target" field, the element will trigger on
+                    # all Machines.
 
-    target: President   # This means that this element only triggers ON the Machine
-                        # named President.
-                        #
-                        # If you omit the "source" field, the element will trigger on
-                        # all incoming events regardless of source Machine
-                        #
-                        # If you omit the "target" field, the element will trigger on
-                        # all Machines.
-
-keywords:
+mapping:
   silent:    # Trigger this Function when the microphone goes "silent"
     type: image
     keywords:
@@ -145,31 +142,28 @@ keywords:
 # The Random Element triggers automatically based on a random variable.
 
 type: random
+subtype: poisson
 
-keywords:
-  mean: 3.0                  # Trigger on average every 3 seconds.
+mean: 3.0                  # Trigger on average every 3 seconds.
 
-  distribution: poisson      # Select the distribution of these events.
-                             # Today, we only have one distribution, poisson,
-                             # so you don't have to specify it.
-
-arguments:                   # Select one of these elements at random.
+choices:                 # Select one of these elements at random.
   -
-    type: image
-    keywords:
+    weight: 2
+    element:
+      type: image
       file: $random
       position: [200, 200]
       loops: 3
       size: [[0, 0.10], [1, 5.0], [2, 0.0]]
 
   -
-    type: image
-    keywords:
+    weight: 3
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
-
 
 ---
 
@@ -180,41 +174,40 @@ type: sequence
 arguments:
   -
     time: 0
-    type: image
-    keywords:
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
-
   -
     time: 3.0
-    type: image
-    keywords:
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 10.0
-    type: image
-    keywords:
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 11.0
-    type: image
-    keywords:
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 12.0
-    type: image
-    keywords:
+    element:
+      type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
       size: [[0, 0.10], [5, 1.0], [10, 0.0], [18, 1.0], [20, 0.10]]

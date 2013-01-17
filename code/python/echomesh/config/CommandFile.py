@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
 
 from echomesh.network import Address
@@ -22,7 +24,3 @@ def resolve(*path):
   for f in expand(*path):
     if os.path.exists(f):
       return f
-
-def load(*path):
-  f = resolve(*path)
-  return f and File.yaml_load_all(f)
