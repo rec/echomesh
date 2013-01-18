@@ -1,14 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command.CommandLoop import CommandLoop
+from echomesh.util.thread.TimeLoop import TimeLoop
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class SequenceCommand(CommandLoop):
-  def __init__(self, score, element, timeout=None):
-    CommandLoop.__init__(self, score, element, timeout, name='RandomCommand')
-    self.commands = element.get('commands', [])
+class SequenceCommand(TimeLoop):
+  def __init__(self, parent, element):
+    super(SequenceCommand, self).__init__(name='SequenceCommand')
+    self.parent = parent
+    self.elements = element.get('commands', [])
     self.next_command = 0
 
   def _command_time(self):

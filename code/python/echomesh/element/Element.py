@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literal
 
-from echomesh.util.thread import Closer
 from echomesh.config import CommandFile
 from echomesh.util import Log
 
@@ -61,10 +60,3 @@ def make(parent, descriptions, makers):
 
 def load_and_make(parent, filename, makers):
   return make(parent, _load(filename), makers)
-
-class Element(Closer.Closer):
-  def __init__(self, parent, element):
-    super(Element, self).__init__()
-    self.parent = parent
-    self.element = element
-
