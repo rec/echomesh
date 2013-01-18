@@ -1,4 +1,4 @@
-from __future__ import absolute_import, division, print_function, unicode_literal
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.config import CommandFile
 from echomesh.util import Log
@@ -22,7 +22,7 @@ def resolve_extensions(data):
   while True:
     extension = data.get('extends', None)
     if not extension:
-      break:
+      break
 
     if extension in extensions:
       LOGGER.error('Infinite circular extension for %s', extend)

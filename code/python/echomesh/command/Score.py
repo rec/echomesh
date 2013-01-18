@@ -25,7 +25,7 @@ class Score(Closer.Closer):
     self.makers = makers
     self.parent = parent
     self.handlers = {}
-    self.elements = Load.load_and_make(scorefile, self, makers)
+    self.elements = Load.load_and_make(self, scorefile, makers)
 
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler
