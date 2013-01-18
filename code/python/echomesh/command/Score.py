@@ -13,8 +13,7 @@ from echomesh.network import Address
 from echomesh.util import Log
 from echomesh.util.thread import Closer
 from echomesh.config import CommandFile
-from echomesh.config import Loader
-from echomesh.command import Element
+from echomesh.element import Load
 
 LOGGER = Log.logger(__name__)
 
@@ -26,7 +25,7 @@ class Score(Closer.Closer):
     self.makers = makers
     self.parent = parent
     self.handlers = {}
-    self.elements = Element.load_all(scorefile, self, makers)
+    self.elements = Load.load_and_make(scorefile, self, makers)
 
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler

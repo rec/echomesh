@@ -28,10 +28,9 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     if self.is_open:
       time.sleep(min(DEFAULT_TIMEOUT, self.next_time - t))
 
-  def _command(self, t):
-    raise Exception('You must implement _event in your derived class')
-
   def _next_time(self, t):
     return t + self.interval
 
+  def _command(self, t):
+    raise Exception('You must implement _event in your derived class')
 

@@ -5,9 +5,12 @@ import Queue
 import json
 import urllib
 import urllib2
-import yaml
 
+from echomesh.util import Log
+from echomesh.util.thread import Closer
 from echomesh.util.thread import TimeLoop
+
+LOGGER = Log.logger(__name__)
 
 ROOT = 'http://search.twitter.com/search.json'
 PARSER = HTMLParser.HTMLParser()
@@ -56,14 +59,13 @@ class Search(object):
 
 
 class Loop(TimeLoop.TimeLoop):
-  def __init__(self, key, callback, interval=2, preload=1, name='SearchLoop',
+  def __init__(self, search, callback, interval=2, preload=1, name='SearchLoop',
                timeout=None):
     super(Loop, self).__init__(name=name, timeout=timeout, interval=interval)
-    self.search = Search(key, callback, preload)
+    self.search = Search(search, callback, preload)
 
   def start(self):
     super(Loop, self).start()
 
   def _command(self, t):
     self.search.refresh()
-

@@ -30,8 +30,12 @@ class Closer(Openable.Openable):
     with Locker.Locker(self.lock):
       return list(self._openables)
 
+  def remove_openable(self, *openables):
+    with Locker.Locker(self.lock):
+      for o in openables:
+        self._openables.remove(o)
+
   def start(self):
-    super(Closer, self).start()
     for o in self.openables():
       o.start()
 

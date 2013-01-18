@@ -1,13 +1,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command.CommandLoop import CommandLoop
+from echomesh.util.thread import TimeLoop
 from echomesh.util.math import Poisson
 
 DEFAULT_INTERVAL = 10.0
 
-class RandomCommand(CommandLoop):
-  def __init__(self, score, element, timeout=None):
-    CommandLoop.__init__(self, score, element, timeout, name='RandomCommand')
+class RandomCommand(TimeLoop.TimeLoop):
+  def __init__(self, parent, element):
+    super(RandomCommand, self).__init__(name='RandomCommand')
+    se
     self.mean = element.get('data', {}).get('mean', DEFAULT_INTERVAL)
     self.command = element.get('command', {})
     assert self.command['function']

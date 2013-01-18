@@ -3,9 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.config import Config
-from echomesh.network import Git
 from echomesh.util import Log
 from echomesh.util.file import File
+
+from gittwit.git import Git
 
 LOGGER = Log.logger(__name__)
 

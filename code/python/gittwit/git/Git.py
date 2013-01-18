@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-# This code duplicates code in https://github.com/rec/git-twit/blob/master/git/Git.py
-
 import os.path
 import subprocess
 import traceback
@@ -13,6 +11,7 @@ from echomesh.util import Subprocess
 LOGGER = Log.logger(__name__)
 
 GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
+GIT_LOG = ['log', '-n1', '--abbrev=40']
 GIT_DIRECTORY = '.'
 
 def run_git_command(command, config=None, cwd=None, log_commands=False):
