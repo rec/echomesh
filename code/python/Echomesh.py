@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 
-from echomesh.config import Config
+from echomesh.base import Config
 Config.recalculate(*sys.argv)
 
 from echomesh.command import Score
@@ -67,7 +67,7 @@ class Echomesh(Closer.Closer):
     self.microphone.set_config()
 
   def set_score(self, score):
-    from echomesh.util.file import File
+    from echomesh.base import File
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 

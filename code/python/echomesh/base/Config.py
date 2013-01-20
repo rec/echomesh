@@ -10,10 +10,10 @@ from os.path import abspath, dirname
 
 import yaml
 
-from echomesh.config import CommandFile
-from echomesh.util import Merge
-from echomesh.util import Platform
-from echomesh.util.file import File
+from echomesh.base import CommandFile
+from echomesh.base import File
+from echomesh.base import Merge
+from echomesh.base import Platform
 
 CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.

@@ -8,7 +8,7 @@ import sys
 import time
 
 from echomesh.util.thread.Openable import Openable
-from echomesh.util import Platform
+from echomesh.base import Platform
 
 DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024

@@ -3,11 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 import traceback
 
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.sound import Input
 from echomesh.sound import Levels
 from echomesh.util import Log
-from echomesh.util import Platform
+from echomesh.base import Platform
 from echomesh.util.math import Average
 from echomesh.util.thread import Openable
 from echomesh.util.thread import ThreadLoop

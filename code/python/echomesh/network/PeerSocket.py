@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.command import Router
-from echomesh.config import Config
-from echomesh.network import Address
+from echomesh.base import Config
+from echomesh.base import Address
 from echomesh.network import DataSocket
 from echomesh.network import Peers
 from echomesh.util.thread import Closer

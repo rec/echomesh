@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import subprocess
 
 from echomesh.util import Log
-from echomesh.util import Platform
+from echomesh.base import Platform
 
 LOGGER = Log.logger(__name__)
 

@@ -5,7 +5,7 @@ import os
 import threading
 import time
 
-from echomesh.network import Address
+from echomesh.base import Address
 
 from echomesh.util.thread import Locker
 from echomesh.util.thread import Openable

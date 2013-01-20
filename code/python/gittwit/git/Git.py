@@ -4,8 +4,8 @@ import os.path
 import subprocess
 import traceback
 
+from echomesh.base import Platform
 from echomesh.util import Log
-from echomesh.util import Platform
 from echomesh.util import Subprocess
 
 LOGGER = Log.logger(__name__)

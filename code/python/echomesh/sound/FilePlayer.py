@@ -10,7 +10,7 @@ import struct
 import sunau
 import wave
 
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.sound import Sound
 from echomesh.util.math import Envelope
 from echomesh.util import Log

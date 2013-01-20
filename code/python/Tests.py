@@ -58,7 +58,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Merge
+from echomesh.base import Merge
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
 

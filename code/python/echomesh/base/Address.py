@@ -4,7 +4,7 @@ from contextlib import closing
 import platform
 import socket
 
-from echomesh.util import Platform
+from echomesh.base import Platform
 
 def ip_address():
   try:

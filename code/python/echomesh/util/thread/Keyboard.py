@@ -4,7 +4,7 @@ import threading
 import time
 
 from echomesh.command import Processor
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.util.thread import ThreadLoop
 
 MESSAGE = """

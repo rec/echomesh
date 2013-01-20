@@ -2,9 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.util import Log
-from echomesh.util.file import File
+from echomesh.base import File
 
 from gittwit.git import Git
 

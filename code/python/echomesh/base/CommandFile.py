@@ -2,12 +2,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from os.path import exists, join
 
-from echomesh.network import Address
+from echomesh.base import Address
 
 NAME = Address.NODENAME
 
 def _compute_levels():
-  from echomesh.util import Platform
+  from echomesh.base import Platform
 
   paths = ['local',
            join('name', NAME),
@@ -33,7 +33,7 @@ def load_with_error(*path):
   data, error = [], None
   f = resolve(*path)
   if f:
-    from echomesh.util.file import File
+    from echomesh.base import File
 
     data = File.yaml_load_all(f) or []
     if not data:

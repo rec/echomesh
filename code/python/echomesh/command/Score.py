@@ -2,9 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.element import Load
-from echomesh.network import Address
+from echomesh.base import Address
 from echomesh.util import Log
 from echomesh.util.thread import Closer
 

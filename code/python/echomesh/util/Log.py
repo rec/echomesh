@@ -13,7 +13,7 @@ import sys
 from echomesh.util.file import MakeDirs
 
 try:
-  from echomesh.config import Config
+  from echomesh.base import Config
 
   LOG_FORMAT = Config.get('logging', 'format')
   LOG_LEVEL_STR = Config.get('logging','level').upper()

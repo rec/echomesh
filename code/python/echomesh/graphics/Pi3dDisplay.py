@@ -5,7 +5,7 @@ import os.path
 import random
 import time
 
-from echomesh.config import Config
+from echomesh.base import Config
 from echomesh.graphics import Rect
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
