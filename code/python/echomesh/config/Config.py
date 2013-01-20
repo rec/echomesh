@@ -16,10 +16,9 @@ from echomesh.util import Platform
 from echomesh.util.file import File
 
 CONFIG = None
-
-# Report on config items that aren't used.
-CONFIGS_UNVISITED = None
-COMMAND_LINE_ARGUMENTS = []
+CONFIGS_UNVISITED = None  # Report on config items that aren't used.
+CODE_PATH = None
+NAME = None
 
 def _add_exception_suffix(e, suffix):
   e.args = tuple(a + suffix for a in e.args)
@@ -59,15 +58,19 @@ def _merge_command_line_arguments(args, config):
   return config
 
 def recalculate(*args):
-  global CONFIG, CONFIGS_UNVISITED
+  global CONFIG, CONFIGS_UNVISITED, CODE_PATH
   if not CONFIG:
     # If running as root, export user pi's home directory as $HOME.
     if getpass.getuser() == 'root':
       os.environ['HOME'] = '/home/pi'
 
-    # Change directory to the echomesh root directory.
-    path = dirname(dirname(dirname(abspath(sys.argv[0]))))
-    os.chdir(path)
+    CODE_PATH = sys.path[0]
+
+    local_path = ''
+    if len(sys.argv) > 1:
+      arg = sys.argv[1]
+      if not arg[0] in '{[':
+        os.chdir(arg)
 
     CONFIG = _merge_command_line_arguments(args, _merge_level_files())
     CONFIGS_UNVISITED = copy.deepcopy(CONFIG)

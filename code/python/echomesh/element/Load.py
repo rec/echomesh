@@ -1,20 +1,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.config import CommandFile
+from echomesh.util import File
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def _load(*path):
-  f = CommandFile.resolve(*path)
-  if f:
-    data = File.yaml_load_all(f)
-    if data:
-      return data
-    LOGGER.error("Couldn't read Yaml from file %s", '/'.join(path))
-  else:
-    LOGGER.error("Couldn't find file %s", '/'.join(path))
-  return []
+def load(*path):
+  data, error = CommandFile.load_with_error(*path)
+  if error:
+    LOGGER.error(error)
+  return data
 
 def resolve_extensions(data):
   extensions = set()

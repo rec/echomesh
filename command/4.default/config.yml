@@ -80,3 +80,5 @@ shorten:
   use_index_url: true
 
 update_interval: 0
+
+version: 0.8
