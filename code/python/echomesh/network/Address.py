@@ -40,10 +40,3 @@ NODENAME = platform.uname()[1]
 
 NAMES = MAC_ADDRESS, IP_ADDRESS, NODENAME
 
-def print_all():
-  print(mac_address())
-  print(ip_address())
-  print(NODENAME)
-
-if __name__ == '__main__':
-  print_all()
