@@ -18,8 +18,6 @@ class Random(TimeLoop.TimeLoop):
   def _command(self, t):
     self.execute_command(self.command)
 
-Element.register(Random)
-
 
 def select_random(score, event, *choices):
   if choices:

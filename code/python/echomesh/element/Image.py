@@ -14,5 +14,3 @@ class Image(Element.Element):
       ImageSprite(**description['keywords'])
     else:
       LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
-
-Element.register(Image)

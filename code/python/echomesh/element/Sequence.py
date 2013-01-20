@@ -28,4 +28,3 @@ class Sequence(Element.Loop):
       self.execute_command(self.commands[self.next_command])
       self.next_command += 1
 
-Element.register(Sequence)

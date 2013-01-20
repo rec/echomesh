@@ -1,8 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.config import CommandFile
-from echomesh.util import File
+from echomesh.element import Register
 from echomesh.util import Log
+from echomesh.util.file import File
 
 LOGGER = Log.logger(__name__)
 
@@ -41,7 +42,7 @@ def resolve_extensions(data):
   del result['extends']
   return result
 
-def make(parent, descriptions, makers):
+def make(parent, descriptions, makers=Register.ELEMENT_MAKERS):
   for desc in descriptions:
     desc = resolve_extensions(desc)
     t = desc.get('type', None)
@@ -54,5 +55,5 @@ def make(parent, descriptions, makers):
       else:
         yield maker(parent, desc)
 
-def load_and_make(parent, filename, makers):
-  return make(parent, _load(filename), makers)
+def load_and_make(parent, filename, makers=Register.ELEMENT_MAKERS):
+  return make(parent, load(filename), makers)

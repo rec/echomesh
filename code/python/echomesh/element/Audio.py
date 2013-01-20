@@ -14,5 +14,3 @@ class Audio(Element.Element):
       self.add_openable_mutual(FilePlayer.play(**description['keywords']))
     else:
       LOGGER.info('Playing audio')
-
-Element.register(Audio)

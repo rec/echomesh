@@ -13,5 +13,3 @@ class Print(Element.Element):
   def start(self):
     super(Print, self).start()
     LOGGER.info(descriptionn)
-
-Element.register(Print)
