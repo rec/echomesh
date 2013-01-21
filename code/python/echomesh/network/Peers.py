@@ -5,7 +5,7 @@ import os
 import threading
 import time
 
-from echomesh.base import Address
+from echomesh.base import Name
 
 from echomesh.util.thread import Locker
 from echomesh.util.thread import Openable
@@ -21,12 +21,12 @@ class Peers(Openable.Openable):
     self.lock = Locker.Lock()
     self.echomesh = echomesh
     self.type = Peers.TYPE
-    source = Address.NODENAME
+    source = Name.NAME
     self.data = dict(type=self.type,
                      time=time.time(),
                      source=source,
-                     mac_address=Address.MAC_ADDRESS,
-                     ip_address=Address.IP_ADDRESS)
+                     mac_address=Name.MAC_ADDRESS,
+                     ip_address=Name.IP_ADDRESS)
 
     self._peers = {source: self.data}
 

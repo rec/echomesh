@@ -4,7 +4,7 @@ import os.path
 
 from echomesh.base import Config
 from echomesh.element import Load
-from echomesh.base import Address
+from echomesh.base import Name
 from echomesh.util import Log
 from echomesh.util.thread import Closer
 

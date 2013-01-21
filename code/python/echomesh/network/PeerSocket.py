@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.command import Router
 from echomesh.base import Config
-from echomesh.base import Address
+from echomesh.base import Name
 from echomesh.network import DataSocket
 from echomesh.network import Peers
 from echomesh.util.thread import Closer
@@ -18,5 +18,5 @@ class PeerSocket(Closer.Closer):
     self.add_openable_mutual(peers, self.socket)
 
   def send(self, data):
-    data['source'] = Address.NODENAME
+    data['source'] = Name.NAME
     self.socket.send(data)

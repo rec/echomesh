@@ -1,8 +1,10 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
 from contextlib import closing
+from os.path import abspath, dirname
 import platform
 import socket
+import sys
 
 from echomesh.base import Platform
 
@@ -36,7 +38,14 @@ else:
 
 MAC_ADDRESS = mac_address()
 IP_ADDRESS = ip_address()
-NODENAME = platform.uname()[1]
+NAME = platform.uname()[1]
 
-NAMES = MAC_ADDRESS, IP_ADDRESS, NODENAME
+CODE_PATH = abspath(sys.path[0])
+ECHOMESH_PATH = dirname(dirname(CODE_PATH))
 
+def set_name(name):
+  global NAME
+  NAME = name
+
+def names():
+  return MAC_ADDRESS, IP_ADDRESS, NAME

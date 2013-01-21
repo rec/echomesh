@@ -12,8 +12,7 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
     if old_v is nothing:
       if is_merge:
         if require_old_key:
-          raise Exception('Tried to override non-existent key ' +
-                          ':'.join(new_path))
+          raise Exception('Tried to override non-existent key ' + new_path)
       else:
         continue
 
@@ -22,7 +21,7 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
         _merge_or_diff(is_merge, old_v, new_v, new_path, require_old_key)
       else:
         raise Exception('Tried to override dict with non-dict for key ' +
-                        ':'.join(new_path))
+                        new_path)
 
     elif not isinstance(new_v, dict):
       if is_merge:
@@ -32,7 +31,7 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
 
     else:
       raise Exception('Tried to override non-dict with dict for key ' +
-                      ':'.join(new_path))
+                      new_path)
 
   return old
 

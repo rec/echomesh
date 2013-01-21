@@ -4,75 +4,29 @@ import copy
 import getpass
 import os
 import sys
-import yaml
 
 from os.path import abspath, dirname
 
-import yaml
-
-from echomesh.base import CommandFile
-from echomesh.base import File
-from echomesh.base import Merge
+from echomesh.base import MergeConfig
 from echomesh.base import Platform
 
 CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
-CODE_PATH = None
-NAME = None
 
-def _add_exception_suffix(e, suffix):
-  e.args = tuple(a + suffix for a in e.args)
-
-def _merge_level_files():
-  # Load merged configuration file from the command directory hierarchy.
-  config = None
-  for f in reversed(CommandFile.expand('config.yml')):
-    try:
-      cfg = File.yaml_load(f)
-    except:
-      raise Exception('Error in configuration file %s' % f)
-
-    if config is None:
-      config = cfg
-    else:
-      try:
-        Merge.merge(config, cfg)
-      except Exception as e:
-        _add_exception_suffix(e, ' in configuration file %s' % f)
-        raise
-  return config
-
-def _merge_command_line_arguments(args, config):
-  for i, arg in enumerate(args):
-    if i:
-      try:
-        cfgs = File.yaml_load_stream(arg)
-      except:
-        raise Exception('Error in command line argument %d: "%s"' % (i, arg))
-
-      try:
-        Merge.merge_all(config, *cfgs)
-      except Exception as e:
-        _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
-        raise
-  return config
-
-def recalculate(*args):
-  global CONFIG, CONFIGS_UNVISITED, CODE_PATH
+def recalculate():
+  global CONFIG, CONFIGS_UNVISITED
   if not CONFIG:
     # If running as root, export user pi's home directory as $HOME.
     if getpass.getuser() == 'root':
       os.environ['HOME'] = '/home/pi'
 
-    CODE_PATH = sys.path[0]
-
     local_path = ''
-    if len(sys.argv) > 1:
-      arg = sys.argv[1]
-      if not arg[0] in '{[':
-        os.chdir(arg)
+    args = sys.argv[1:]
+    if args:
+      if not args[0][0] in '{[':
+        os.chdir(args.pop(0))
 
-    CONFIG = _merge_command_line_arguments(args, _merge_level_files())
+    CONFIG = MergeConfig.merge(args)
     CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
 
 def is_control_program():
@@ -80,8 +34,6 @@ def is_control_program():
   return get('control_program', 'enable')
 
 def get(*parts):
-  recalculate()
-
   config, unvisited = CONFIG, CONFIGS_UNVISITED
   def get_part(config, part):
     if not isinstance(config, dict):

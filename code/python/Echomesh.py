@@ -4,7 +4,7 @@ import os
 import sys
 
 from echomesh.base import Config
-Config.recalculate(*sys.argv)
+Config.recalculate()
 
 from echomesh.command import Score
 from echomesh.graphics import Display
