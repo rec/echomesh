@@ -48,7 +48,7 @@ def _recompute_name_from_map():
   if name_map:
     name_map = name_map[0]
     for n in Name.names():
-      name = name_map.get(n)
+      name = name_map.get(n, None)
       if name:
         Name.set_name(name)
         return
