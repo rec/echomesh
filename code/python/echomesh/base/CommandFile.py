@@ -32,10 +32,10 @@ def resolve(*path):
       return f
 
 def load_with_error(*path):
-  data, error = [], None
+  data, error = None, None
   f = resolve(*path)
   if f:
-    data = File.yaml_load_all(f) or []
+    data = File.yaml_load_all(f)
     if not data:
       error = "Couldn't read Yaml from file %s" % '/'.join(path)
   else:

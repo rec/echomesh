@@ -18,7 +18,7 @@ def yaml_load_all(fname, allow_empty=True):
     f = open_userfile(fname, 'r')
   except:
     if allow_empty:
-      return []
+      return None
     else:
       raise
 

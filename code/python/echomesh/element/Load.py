@@ -39,7 +39,8 @@ def resolve_extensions(data):
   result = {}
   for data in reversed(datas):
     result.update(data)
-  del result['extends']
+  if extensions:
+    del result['extends']
   return result
 
 def make(parent, descriptions, makers=Register.ELEMENT_MAKERS):
@@ -56,4 +57,7 @@ def make(parent, descriptions, makers=Register.ELEMENT_MAKERS):
         yield maker(parent, desc)
 
 def load_and_make(parent, filename, makers=Register.ELEMENT_MAKERS):
-  return make(parent, load(filename), makers)
+  data = load(filename)
+  if data is not None:
+    data = list(make(parent, data, makers))
+  return data

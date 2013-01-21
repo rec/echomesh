@@ -17,6 +17,9 @@ class Score(Closer.Closer):
     self.handlers = {}
     self.elements = Load.load_and_make(self, scorefile)
 
+    if self.elements is None:
+      raise Exception('Unable to open score file %s' % scorefile)
+
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler
 
