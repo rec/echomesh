@@ -61,6 +61,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Merge
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
+from echomesh.util.math import WeightedRandom
 
 if __name__ == "__main__":
   import doctest

@@ -9,9 +9,9 @@ from echomesh.element import Register
 
 DEFAULT_INTERVAL = 10.0
 
-class Random(Element.Element):
+class Select(Element.Element):
   def __init__(self, parent, description):
-    super(Random, self).__init__(parent, description, name='RandomCommand')
+    super(Select, self).__init__(parent, description, name='SelectCommand')
     self.mean = description.get('mean', DEFAULT_INTERVAL)
 
     total_weight, weights_counted = 0, 0
@@ -20,7 +20,7 @@ class Random(Element.Element):
     for choice in description.get('choices', []):
       weight = choice.get('weight', None)
       if weight is not None:
-        assert weight >= 0, "Random weights can't be negative"
+        assert weight >= 0, "Select weights can't be negative"
         weights_counted += 1
         total_weight += weight
       weights.append(weight)
@@ -42,27 +42,4 @@ class Random(Element.Element):
     element = self.elements(index)
     element.execute()
 
-
-class RandomInterval(Element.Loop):
-  def _next_time(self, t):
-    return t + Poisson.next_poisson(self.mean)
-
-  def _command(self, t):
-    self.execute_command(self.command)
-
-
-def select_random(score, event, *choices):
-  if choices:
-    item = random.choice(choices)
-    function_name = item.get('function', None)
-    function = score.functions.get(function_name, None)
-    if function:
-      keywords = item.get('keywords', {})
-      arguments = item.get('arguments', [])
-      function(score, event, *arguments, **keywords)
-    else:
-      LOGGER.error('No function named "%s": %s, %s', function_name, item, choices)
-  else:
-    LOGGER.error('No arguments to select_random')
-
-Register.register(Random)
+Register.register(Select)

@@ -14,6 +14,9 @@ class Element(Closer.Closer):
     self.description = description
     self.element = self
 
+  def execute(self):
+    pass
+
   def read_repeated(self, name):
     elements = []
     desc = self.description.get(name, None)

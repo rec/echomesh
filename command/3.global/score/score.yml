@@ -144,7 +144,7 @@ subtype: poisson
 
 mean: 3.0                  # Trigger on average every 3 seconds.
 
-choices:                 # Select one of these elements at random.
+choices:                   # Select one of these elements at random.
   -
     weight: 2
     element:
