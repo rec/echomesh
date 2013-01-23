@@ -12,7 +12,7 @@ class Image(Element.Element):
     super(Image, self).__init__(parent, description)
     if Config.get('pi3d', 'enable'):
       from echomesh.graphics.Sprite import ImageSprite
-      ImageSprite(**description['keywords'])
+      ImageSprite(**description)
     else:
       LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
 

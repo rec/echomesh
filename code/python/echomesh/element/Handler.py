@@ -15,7 +15,7 @@ class Handler(Element.Element):
     self.target = description.get('target', Name.NAME)
     self.source = description.get('source', None)
     self.mapping = description.get('mapping', {})
-    self.handlers = Load.make(parent, description.get('handlers', []))
+    self.read_repeated('handlers')
 
     for k, v in self.mapping.iteritems():
       self.mapping[k] = Load.make(self, v)[0]

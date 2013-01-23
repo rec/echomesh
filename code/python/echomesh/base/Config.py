@@ -54,7 +54,11 @@ def get(*parts):
   if isinstance(value, dict):
     raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
 
-  del unvisited[last_part]
+  try:
+    del unvisited[last_part]
+  except:
+    pass
+
   return value
 
 def get_unvisited():

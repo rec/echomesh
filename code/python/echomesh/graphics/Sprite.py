@@ -27,7 +27,8 @@ SHADER = None  # Shader('shaders/uv_flat')
 
 class ImageSprite(Sprite.ImageSprite, Openable):
   def __init__(self, file=None, loops=1,
-               position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z):
+               position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
+               **kwds):
     Openable.__init__(self)
     self._imagename = file
     LOGGER.debug('Opening sprite %s', self._imagename)

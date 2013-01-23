@@ -13,9 +13,10 @@ def load(*path):
     LOGGER.error(error)
   return data
 
-def resolve_extensions(data):
+def _resolve_extensions(data):
   extensions = set()
   datas = [data]
+
   while True:
     extension = data.get('extends', None)
     if not extension:
@@ -25,7 +26,7 @@ def resolve_extensions(data):
       LOGGER.error('Infinite circular extension for %s', extend)
       break
 
-    data = _load(extension)
+    data = load(extension)
     if not data:
       LOGGER.error("Couldn't find extension for %s", extend)
       break
@@ -44,7 +45,7 @@ def resolve_extensions(data):
   return result
 
 def _make_element(parent, desc):
-  desc = resolve_extensions(desc)
+  desc = _resolve_extensions(desc)
   t = desc.get('type', None)
   if not t:
     LOGGER.error('No type field in element %s', desc)
@@ -58,8 +59,13 @@ def _make_element(parent, desc):
 def make(parent, *descriptions):
   elements = []
   for desc in descriptions:
-    element = _make_element(parent, desc)
-    if element:
-      elements.append(element)
+    try:
+      element = _make_element(parent, desc)
+    except:
+      LOGGER.error("Couldn't read element from description %s", desc)
+    else:
+      if element:
+        elements.append(element)
+
   return elements
 
