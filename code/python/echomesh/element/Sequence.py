@@ -1,12 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.element import Element
+from echomesh.element import Loop
 from echomesh.element import Register
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Sequence(Element.Loop):
+class Sequence(Loop.Loop):
   def __init__(self, parent, description):
     super(Sequence, self).__init__(parent, description, name='Sequence')
     # TODO: fix this
