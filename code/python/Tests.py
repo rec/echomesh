@@ -54,6 +54,28 @@
 >>> list(Average.average(range(8), grouped_window=2, moving_window=2))
 [1.5, 3.5, 5.5]
 
+>>> wr = WeightedRandom([None])
+>>> wr.select()
+0
+
+>>> wr = WeightedRandom([1])
+>>> wr.select()
+0
+
+>>> wr = WeightedRandom([None, None])
+>>> wr.select(0.4)
+0
+
+>>> wr.select(0.6)
+1
+
+>>> wr = WeightedRandom([1, None])
+>>> wr.select(0.4)
+0
+
+>>> wr.select(0.6)
+1
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -61,7 +83,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Merge
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
-from echomesh.util.math import WeightedRandom
+from echomesh.util.math.WeightedRandom import WeightedRandom
 
 if __name__ == "__main__":
   import doctest

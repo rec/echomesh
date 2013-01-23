@@ -20,8 +20,11 @@ class WeightedRandom(object):
       total_weight += (mean_weight if w is None else w)
       self.totals[i] = total_weight
 
-  def select(self):
+  def select(self, random_value=None):
     import bisect, random
-    rnd = random.random() * self.totals[-1]
+    if random_value is None:
+      import random
+      random_value = random.random()
+    rnd = random_value * self.totals[-1]
     return bisect.bisect_right(self.totals, rnd)
 
