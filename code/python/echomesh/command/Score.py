@@ -15,10 +15,10 @@ class Score(Closer.Closer):
     super(Score, self).__init__()
     self.parent = parent
     self.handlers = {}
-    self.elements = Load.load_and_make(self, scorefile)
-
-    if self.elements is None:
+    data = Load.load(scorefile)
+    if not data:
       raise Exception('Unable to open score file %s' % scorefile)
+    self.elements = Load.make(self, *data)
 
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler

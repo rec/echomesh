@@ -1,10 +1,10 @@
 
 python/echomesh/base/CommandFile.py,133
-def _compute_levels(10,248
-def expand(22,562
-def resolve(30,805
-def load_with_error(35,885
-def _recompute_name_from_map(47,1172
+def _compute_levels(10,245
+def expand(22,577
+def resolve(29,805
+def load_with_error(34,885
+def _recompute_name_from_map(46,1168
 
 python/echomesh/base/Config.py,186
 def recalculate(16,329
@@ -20,27 +20,28 @@ python/echomesh/base/File.py,128
 def open_userfile(9,154
 def yaml_load_stream(12,240
 def yaml_load_all(15,303
-def yaml_dump_all(28,525
-def yaml_load(35,703
+def yaml_dump_all(28,527
+def yaml_load(35,705
 
 python/echomesh/base/Merge.py,91
 def _merge_or_diff(5,97
-def merge(39,1091
-def difference(42,1192
-def merge_all(45,1299
+def merge(38,1035
+def difference(41,1136
+def merge_all(44,1243
 
-python/echomesh/base/MergeConfig.py,124
-def _add_exception_suffix(6,154
-def _merge_level_files(9,238
-def _merge_command_line_arguments(28,742
-def merge(43,1172
+python/echomesh/base/MergeConfig.py,125
+def _add_exception_suffix(7,186
+def _merge_level_files(10,270
+def _merge_command_line_arguments(29,769
+def merge(44,1199
 
-python/echomesh/base/Name.py,122
-def ip_address(9,184
-  def get_hw_addr(21,509
-  def mac_address(28,771
-  def mac_address(33,844
-def set_name(44,1136
+python/echomesh/base/Name.py,142
+def ip_address(11,232
+  def get_hw_addr(23,557
+  def mac_address(30,819
+  def mac_address(35,892
+def set_name(46,1184
+def names(50,1233
 
 python/echomesh/command/Processor.py,116
 def _usage(47,815
@@ -69,31 +70,39 @@ def router(82,1989
   def _error(83,2018
 
 python/echomesh/command/Score.py,120
-class Score(13,303
-  def __init__(14,331
-  def add_handler(20,516
-  def receive_event(23,603
-def make_score(32,853
+class Score(13,300
+  def __init__(14,328
+  def add_handler(23,615
+  def receive_event(26,702
+def make_score(35,952
 
 python/echomesh/element/Audio.py,42
 class Audio(9,216
   def __init__(10,246
 
 python/echomesh/element/Element.py,85
-class Element(6,167
-  def __init__(7,197
-class Loop(15,469
-  def __init__(16,500
+class Element(7,201
+  def __init__(8,231
+class Loop(16,508
+  def __init__(17,539
+
+python/echomesh/element/Handler.py,66
+class Handler(11,281
+  def __init__(12,313
+  def handle(22,727
 
 python/echomesh/element/Image.py,42
 class Image(9,216
   def __init__(10,246
 
-python/echomesh/element/Load.py,93
-def load(10,253
-def resolve_extensions(16,372
-def make(45,1018
-def load_and_make(58,1414
+python/echomesh/element/Load.py,91
+def load(9,215
+def resolve_extensions(15,334
+def _make_element(45,999
+def make(57,1333
+
+python/echomesh/element/Maker.py,20
+def register(5,105
 
 python/echomesh/element/Print.py,62
 class Print(9,216
@@ -101,14 +110,11 @@ class Print(9,216
   def start(13,343
 
 python/echomesh/element/Random.py,116
-class Random(8,191
-  def __init__(9,224
-  def _next_time(15,471
-  def _command(18,546
-def select_random(22,612
-
-python/echomesh/element/Register.py,21
-def register(10,234
+class Random(8,186
+  def __init__(9,214
+  def _next_time(15,461
+  def _command(18,536
+def select_random(22,602
 
 python/echomesh/element/Sequence.py,120
 class Sequence(8,183
@@ -183,17 +189,17 @@ class DataSocket(14,276
   def _run_send(43,1328
 
 python/echomesh/network/Peers.py,131
-class Peers(16,315
-  def __init__(19,364
-  def _send(33,800
-  def start(36,856
-  def new_peer(40,924
-  def get_peers(51,1239
+class Peers(16,312
+  def __init__(19,361
+  def _send(33,788
+  def start(36,844
+  def new_peer(40,912
+  def get_peers(51,1227
 
 python/echomesh/network/PeerSocket.py,67
-class PeerSocket(10,303
-  def __init__(11,336
-  def send(20,713
+class PeerSocket(10,300
+  def __init__(11,333
+  def send(20,710
 
 python/echomesh/panel/Panel.py,42
 class Panel(8,136
@@ -379,8 +385,8 @@ class Loop(61,1541
   def _command(70,1864
 
 python/gittwit/twitter/Twitter.py,44
-def get_api(10,187
-def post_update(13,278
+def get_api(10,184
+def post_update(13,272
 
 python/gittwit/util/String.py,48
 def truncate(5,102
@@ -1607,6 +1613,8 @@ python/echomesh/panel/__init__.py,0
 python/echomesh/network/__init__.py,0
 
 python/echomesh/graphics/__init__.py,0
+
+python/echomesh/element/Register.py,0
 
 python/echomesh/element/__init__.py,0
 

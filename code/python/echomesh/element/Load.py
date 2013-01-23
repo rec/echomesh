@@ -43,21 +43,23 @@ def resolve_extensions(data):
     del result['extends']
   return result
 
-def make(parent, descriptions, makers=Register.ELEMENT_MAKERS):
-  for desc in descriptions:
-    desc = resolve_extensions(desc)
-    t = desc.get('type', None)
-    if not t:
-      LOGGER.error('No type field in element %s', desc)
+def _make_element(parent, desc):
+  desc = resolve_extensions(desc)
+  t = desc.get('type', None)
+  if not t:
+    LOGGER.error('No type field in element %s', desc)
+  else:
+    maker = Register.ELEMENT_MAKERS.get(t, None)
+    if not maker:
+      LOGGER.error('No element maker for type %s', t)
     else:
-      maker = makers.get(t, None)
-      if not maker:
-        LOGGER.error('No element maker for type %s', t)
-      else:
-        yield maker(parent, desc)
+      return maker(parent, desc)
 
-def load_and_make(parent, filename, makers=Register.ELEMENT_MAKERS):
-  data = load(filename)
-  if data is not None:
-    data = list(make(parent, data, makers))
-  return data
+def make(parent, *descriptions):
+  elements = []
+  for desc in descriptions:
+    element = _make_element(parent, desc)
+    if element:
+      elements.append(element)
+  return elements
+

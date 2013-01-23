@@ -8,7 +8,7 @@ def _add_exception_suffix(e, suffix):
   e.args = tuple(a + suffix for a in e.args)
 
 def _merge_level_files():
-  # Load merged configuration file from the command directory hierarchy.
+  # Merge configuration files from the command directory hierarchy.
   config = None
   for f in reversed(CommandFile.expand('config.yml')):
     try:

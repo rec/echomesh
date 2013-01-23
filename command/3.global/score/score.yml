@@ -117,24 +117,22 @@ target: President   # This means that this element only triggers ON the Machine
                     # all Machines.
 
 mapping:
-  silent:    # Trigger this Function when the microphone goes "silent"
+  silent:                  # Trigger this Function when the microphone goes "silent"
     type: image
-    keywords:
-      file: ghost.gif       # Show ghost.gif
-      position: [100, 100]   # at [100, 100]
-      duration: 10.0         # for 10 seconds.
+    file: ghost.gif        # Show ghost.gif
+    position: [100, 100]   # at [100, 100]
+    duration: 10.0         # for 10 seconds.
 
-  loud:     # Trigger this Function when the microphone goes "loud"
+  loud:                    # Trigger this Function when the microphone goes "loud"
     type: image
-    keywords:
-      file: goblin.gif
-      position:
-        - [0, [100, 100]]    #  Start at 100, 100 at time 0.
-        - [5, [1000, 100]]   #  Move to [1000, 100] by time 5
-        - [15, [100, 1000]]  #  Move to [100, 1000] by time 15
+    file: goblin.gif
+    position:
+      - [0, [100, 100]]    #  Start at 100, 100 at time 0.
+      - [5, [1000, 100]]   #  Move to [1000, 100] by time 5
+      - [15, [100, 1000]]  #  Move to [100, 1000] by time 15
 
   _default:  # Trigger for everything else.
-    type: something
+    type: print
 
 ---
 # Three dashes signifies the start of a new Element.

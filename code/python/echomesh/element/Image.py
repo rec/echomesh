@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.element import Element
+from echomesh.element import Register
 
 LOGGER = Log.logger(__name__)
 
@@ -14,3 +15,5 @@ class Image(Element.Element):
       ImageSprite(**description['keywords'])
     else:
       LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
+
+Register.register(Image)

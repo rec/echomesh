@@ -1,11 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.thread import TimeLoop
+from echomesh.element import Element
 from echomesh.util.math import Poisson
+from echomesh.element import Register
 
 DEFAULT_INTERVAL = 10.0
 
-class Random(TimeLoop.TimeLoop):
+class Random(Element.Loop):
   def __init__(self, parent, element):
     super(Random, self).__init__(name='RandomCommand')
     self.mean = element.get('data', {}).get('mean', DEFAULT_INTERVAL)
@@ -32,3 +33,5 @@ def select_random(score, event, *choices):
       LOGGER.error('No function named "%s": %s, %s', function_name, item, choices)
   else:
     LOGGER.error('No arguments to select_random')
+
+Register.register(Random)

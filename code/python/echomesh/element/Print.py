@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.element import Element
+from echomesh.element import Register
 
 LOGGER = Log.logger(__name__)
 
@@ -13,3 +14,5 @@ class Print(Element.Element):
   def start(self):
     super(Print, self).start()
     LOGGER.info(descriptionn)
+
+Register.register(Print)

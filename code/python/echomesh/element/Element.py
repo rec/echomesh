@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.element import Load
 from echomesh.util.thread import Closer
 from echomesh.util.thread import TimeLoop
 
@@ -8,7 +9,7 @@ class Element(Closer.Closer):
     super(Element, self).__init__()
     self.parent = parent
     self.description = description
-    self.elements = list(make(self, description.get('elements', [])))
+    self.elements = list(Load.make(self, description.get('elements', [])))
     self.add_openable(*self.elements)
     self.element = self
 
