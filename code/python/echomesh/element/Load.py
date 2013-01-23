@@ -63,6 +63,8 @@ def make(parent, *descriptions):
       element = _make_element(parent, desc)
     except:
       LOGGER.error("Couldn't read element from description %s", desc)
+      import traceback
+      LOGGER.error(traceback.format_exc())
     else:
       if element:
         elements.append(element)

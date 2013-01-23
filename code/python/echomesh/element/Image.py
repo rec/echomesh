@@ -14,6 +14,6 @@ class Image(Element.Element):
       from echomesh.graphics.Sprite import ImageSprite
       ImageSprite(**description)
     else:
-      LOGGER.info('Playing image %s', keywords.get('image', '(none)'))
+      LOGGER.info('Playing image %s', description.get('file', '(none)'))
 
 Register.register(Image)
