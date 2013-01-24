@@ -5,7 +5,7 @@ from echomesh.element import Loop
 from echomesh.element import Register
 from gittwit.twitter.Search import Search
 
-DEFAULT_INTERVAL = 1.0
+DEFAULT_INTERVAL = 10.0
 DEFAULT_PRELOAD = 1
 
 class TwitterSearch(Loop.Loop):
@@ -27,8 +27,7 @@ class TwitterSearch(Loop.Loop):
     if self.handler:
       self.handler.handle(twitter)
 
-  def loop(self):
-    print('!!!!!')
+  def loop(self, t):
     for s in self.searches:
       s.refresh()
 

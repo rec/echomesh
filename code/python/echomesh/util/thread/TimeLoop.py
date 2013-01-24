@@ -32,7 +32,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
         self.next_loop_time = self.next_time(t)
 
     if self.is_running:
-      time.sleep(min(DEFAULT_TIMEOUT, self.next_time - t))
+      time.sleep(min(DEFAULT_TIMEOUT, self.next_loop_time - t))
 
   def next_time(self, t):
     return t + self.interval

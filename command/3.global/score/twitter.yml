@@ -1,7 +1,7 @@
 type: TwitterSearch
-interval: 10
+interval: 1
 search:
-  - "#echomesh"
-  - "#tomswirly"
+  - "#baseball"
+  - "#love"
 handler:
   type: print

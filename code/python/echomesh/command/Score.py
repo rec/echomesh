@@ -21,6 +21,7 @@ class Score(RunnableOwner):
       raise Exception('Unable to open score file %s' % scorefile)
     self.elements = Load.make(self, data)
     LOGGER.info('Loaded score "%s"', scorefile)
+    self.add_slave(*self.elements)
 
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler

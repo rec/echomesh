@@ -26,7 +26,7 @@ def json_to_tweet(tweet):
   except:
     pass
 
-  return {'image': image,
+  return {'image_url': image_url,
           'text': get('text'),
           'user': get('from_user'),
           'user_name': get('from_user_name'),
