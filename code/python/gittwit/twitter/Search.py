@@ -63,8 +63,8 @@ class Loop(TimeLoop):
     super(Loop, self).__init__(name=name, timeout=timeout, interval=interval)
     self.search = Search(search, callback, preload)
 
-  def start(self):
-    super(Loop, self).start()
+  def run(self):
+    super(Loop, self).run()
 
   def _command(self, t):
     self.search.refresh()

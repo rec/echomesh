@@ -23,7 +23,7 @@ class MultiSearch(RunnableOwner):
                   name = '%s:%s' % (self.name, self.index))
       self.searches[search] = loop
       self.add_slave(loop)
-      loop.start()
+      loop.run()
 
   def remove(self, search):
     loop = self.searches.get(search, None)

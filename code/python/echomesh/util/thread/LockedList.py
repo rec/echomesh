@@ -20,6 +20,7 @@ class LockedList(object):
         function(e)
       except:
         LOGGER.error("Couldn't %s on %s", function, e)
+        raise
 
   def clear(self):
     with Locker.Locker(self._lock):

@@ -22,19 +22,20 @@ class ThreadLoop(RunnableOwner):
       assert has_target
 
   def start(self):
-    def loop_target():
-      try:
-        while self.is_running:
-          self.target()
-        LOGGER.debug('Loop for "%s" has finished', self.name)
-      except:
-        if self.is_running or self.report_errors_when_closed:
-          LOGGER.critical(traceback.format_exc())
-        self.stop()
+    if not self.is_running:
+      def loop_target():
+        try:
+          while self.is_running:
+            self.target()
+          LOGGER.debug('Loop for "%s" has finished', self.name)
+        except:
+          if self.is_running or self.report_errors_when_closed:
+            LOGGER.critical(traceback.format_exc())
+          self.stop()
 
-    super(ThreadLoop, self).start()
-    self.thread = threading.Thread(target=loop_target)
-    self.thread.start()
+      super(ThreadLoop, self).start()
+      self.thread = threading.Thread(target=loop_target)
+      self.thread.start()
 
   def join(self):
     super(ThreadLoop, self).join()

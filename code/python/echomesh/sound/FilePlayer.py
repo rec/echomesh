@@ -138,7 +138,7 @@ class FilePlayer(ThreadLoop):
     else:
       return uninterleave(frames)
 
-  def run(self):
+  def start(self):
     chunk_size = Config.get('audio', 'output', 'chunk_size')
     frames = self.file_stream.readframes(chunk_size)
     if not frames:

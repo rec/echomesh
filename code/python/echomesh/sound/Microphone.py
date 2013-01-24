@@ -32,7 +32,7 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.max_level = self.level
     self.min_level = 0.0
 
-  def run(self):
+  def start(self):
     average = Average.average(
       self._get_next_level(),
       moving_window=Config.get('audio', 'input', 'average', 'window_size'),

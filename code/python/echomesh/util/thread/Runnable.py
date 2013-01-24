@@ -6,9 +6,10 @@ LOGGER = Log.logger(__name__)
 
 class Runnable(object):
   def __init__(self):
-    self.is_running = True
+    self.is_running = False
 
   def start(self):
+    self.is_running = True
     LOGGER.debug('Starting %s', self)
 
   def stop(self):
