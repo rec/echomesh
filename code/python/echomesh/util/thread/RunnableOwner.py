@@ -2,13 +2,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Log
 from echomesh.util.thread.LockedList import LockedList
-from echomesh.util.thread import Runnable
+from echomesh.util.thread.Runnable import Runnable
 
 LOGGER = Log.logger(__name__)
 
-class Closer(Runnable.Runnable):
+class RunnableOwner(Runnable):
   def __init__(self):
-    super(Closer, self).__init__()
+    super(RunnableOwner, self).__init__()
     self.openables = LockedList()
     self.closeables = LockedList()
 
@@ -26,25 +26,14 @@ class Closer(Runnable.Runnable):
       c and c.closeables.add(self)
 
   def start(self):
-    super(Closer, self).start()
+    super(RunnableOwner, self).start()
     self.openables.foreach(lambda e: e.start())
 
   def close(self):
     if self.is_running:
-      super(Closer, self).close()
+      super(RunnableOwner, self).close()
       self.closeables.foreach(lambda e: e.close())
 
   def join(self):
-    super(Closer, self).join()
+    super(RunnableOwner, self).join()
     self.openables.foreach(lambda e: e.join())
-
-class _ExitCloser(Closer):
-  pass
-
-EXIT_CLOSER = _ExitCloser()
-
-def close_on_exit(to_close):
-  EXIT_CLOSER.add_slave(to_close)
-
-def on_exit():
-  EXIT_CLOSER.close()

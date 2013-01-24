@@ -1,13 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Router
 from echomesh.base import Config
 from echomesh.base import Name
+from echomesh.command import Router
 from echomesh.network import DataSocket
 from echomesh.network import Peers
-from echomesh.util.thread import Closer
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
-class PeerSocket(Closer.Closer):
+class PeerSocket(RunnableOwner):
   def __init__(self, echomesh):
     super(PeerSocket, self).__init__()
     peers = Peers.Peers(echomesh)

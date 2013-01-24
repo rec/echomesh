@@ -12,12 +12,12 @@ from echomesh.network import PeerSocket
 from echomesh.sound import Microphone
 from echomesh.sound import SetOutput
 from echomesh.util import Log
-from echomesh.util.thread import Closer
 from echomesh.util.thread import Keyboard
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 LOGGER = Log.logger(__name__)
 
-class Echomesh(Closer.Closer):
+class Echomesh(RunnableOwner):
   INSTANCE = None
 
   def __init__(self):
@@ -80,7 +80,6 @@ def shutdown():
   if Config.get('dump_unused_configs'):
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
-  Closer.on_exit()
 
 if __name__ == '__main__':
   if startup():

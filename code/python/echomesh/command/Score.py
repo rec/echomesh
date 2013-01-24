@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 
 from echomesh.base import Config
+from echomesh.base import Name
 from echomesh.element import Load
 from echomesh.element import Make
-from echomesh.base import Name
 from echomesh.util import Log
-from echomesh.util.thread import Closer
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 LOGGER = Log.logger(__name__)
 
-class Score(Closer.Closer):
+class Score(RunnableOwner):
   def __init__(self, scorefile, parent=None):
     super(Score, self).__init__()
     self.parent = parent

@@ -7,8 +7,7 @@ import urllib
 import urllib2
 
 from echomesh.util import Log
-from echomesh.util.thread import Closer
-from echomesh.util.thread import TimeLoop
+from echomesh.util.thread.TimeLoop import TimeLoop
 
 LOGGER = Log.logger(__name__)
 
@@ -58,7 +57,7 @@ class Search(object):
       self.callback(process_tweet(tweet))
 
 
-class Loop(TimeLoop.TimeLoop):
+class Loop(TimeLoop):
   def __init__(self, search, callback, interval=2, preload=1, name='SearchLoop',
                timeout=None):
     super(Loop, self).__init__(name=name, timeout=timeout, interval=interval)

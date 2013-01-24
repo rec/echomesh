@@ -4,11 +4,11 @@ import threading
 import traceback
 
 from echomesh.util import Log
-from echomesh.util.thread.Closer import Closer
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 LOGGER = Log.logger(__name__)
 
-class ThreadLoop(Closer):
+class ThreadLoop(RunnableOwner):
   def __init__(self, target=None, name=None,
                report_errors_when_closed=False):
     super(ThreadLoop, self).__init__()

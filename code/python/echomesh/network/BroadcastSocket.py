@@ -7,15 +7,15 @@ import socket
 import sys
 import time
 
-from echomesh.util.thread import Closer
 from echomesh.base import Platform
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024
 
 USAGE = '%s read | write' % sys.argv[0]
 
-class Socket(Closer.Closer):
+class Socket(RunnableOwner):
   def __init__(self, port):
     super(Socket, self).__init__()
     self.port = port

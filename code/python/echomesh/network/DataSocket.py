@@ -6,12 +6,12 @@ import yaml
 from echomesh.base import Config
 from echomesh.network import BroadcastSocket
 from echomesh.util import Log
-from echomesh.util.thread import Closer
 from echomesh.util.thread import ThreadLoop
+from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 LOGGER = Log.logger(__name__)
 
-class DataSocket(Closer.Closer):
+class DataSocket(RunnableOwner):
   def __init__(self, port, timeout, callback):
     super(DataSocket, self).__init__()
     self.timeout = timeout
