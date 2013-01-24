@@ -19,7 +19,7 @@ class Score(RunnableOwner):
     data = Load.load(scorefile)
     if not data:
       raise Exception('Unable to open score file %s' % scorefile)
-    self.elements = Load.make(self, *data)
+    self.elements = Load.make(self, data)
 
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler

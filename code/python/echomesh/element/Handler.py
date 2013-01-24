@@ -16,14 +16,10 @@ class Handler(Element.Element):
     self.source = description.get('source', None)
     self.mapping = description.get('mapping', {})
     handlers = description.get('handlers', [])
-    self.handlers = Load.make(self, *handlers)
+    self.handlers = Load.make(self, handlers)
 
     for key, element in self.mapping.iteritems():
-      map_entries = Load.make(self, element)
-      if not map_entries:
-        LOGGER.error("No map entries for key %s, element %s", key, element)
-        raise Exception("No map entries" )
-      self.mapping[key] = map_entries[0]
+      self.mapping[key] = Load.make_one(self, element)
 
   def handle(self, event):
     if (event.get('source', self.source) == self.source and

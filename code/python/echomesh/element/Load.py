@@ -23,13 +23,11 @@ def _resolve_extensions(data):
       break
 
     if extension in extensions:
-      LOGGER.error('Infinite circular extension for %s', extend)
-      break
+      raise Exception('Infinite circular extension for %s' % extend)
 
     data = load(extension)
     if not data:
-      LOGGER.error("Couldn't find extension for %s", extend)
-      break
+      raise Exception("Couldn't find extension for %s" % extend)
 
     if len(data) > 1:
       LOGGER.error("More than one element in extension %s", extend)
@@ -44,30 +42,17 @@ def _resolve_extensions(data):
     del result['extends']
   return result
 
-def _make_element(parent, desc):
+def make_one(parent, desc):
   desc = _resolve_extensions(desc)
   t = desc.get('type', None)
   if not t:
-    LOGGER.error('No type field in element %s', desc)
-  else:
-    maker = Register.ELEMENT_MAKERS.get(t, None)
-    if not maker:
-      LOGGER.error('No element maker for type %s', t)
-    else:
-      return maker(parent, desc)
+    raise Exception('No type field in element %s' % desc)
 
-def make(parent, *descriptions):
-  elements = []
-  for desc in descriptions:
-    try:
-      element = _make_element(parent, desc)
-    except:
-      LOGGER.error("Couldn't read element from description %s", desc)
-      import traceback
-      LOGGER.error(traceback.format_exc())
-    else:
-      if element:
-        elements.append(element)
+  maker = Register.ELEMENT_MAKERS.get(t, None)
+  if not maker:
+    raise Exception('No element maker for type %s' % t)
 
-  return elements
+  return maker(parent, desc)
 
+def make(parent, descriptions):
+  return [make_one(parent, d) for d in descriptions]

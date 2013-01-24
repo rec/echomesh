@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.element import Load
 from echomesh.util import Log
 from echomesh.util.thread.RunnableOwner import RunnableOwner
 

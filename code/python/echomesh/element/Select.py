@@ -1,18 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element import Element
+from echomesh.element import Load
 from echomesh.util.math.WeightedRandom import WeightedRandom
 from echomesh.element import Register
 
 class Select(Element.Element):
   def __init__(self, parent, description):
-    super(Select, self).__init__(parent, description, name='element.Select')
+    super(Select, self).__init__(parent, description)
     choices = description.get('choices', [])
     self.random = WeightedRandom(c.get('weight', None) for c in choices)
-    self.elements = [Load.make(self, c['element']) for c in choices]
-    self.add_closer(*self.elements)
+    self.elements = [Load.make_one(self, c['element']) for c in choices]
+    self.add_slave(*self.elements)
 
-  def execute(self):
-    return self.elements[self.random.select()].execute()
+  def start(self):
+    return self.elements[self.random.select()].start()
 
 Register.register(Select)

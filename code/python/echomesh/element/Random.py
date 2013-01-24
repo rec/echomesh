@@ -3,35 +3,24 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import bisect
 import random
 
+from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.util.math import Poisson
 from echomesh.element import Register
+from echomesh.util.math import Poisson
 
 DEFAULT_INTERVAL = 10.0
 
 class Random(Loop.Loop):
   def __init__(self, parent, description):
     super(Random, self).__init__(parent, description, name='Random')
+    self.mean = description.get('mean', DEFAULT_INTERVAL)
+    self.element = Load.make_one(self, description['element'])
+    self.add_slave(self.element)
 
-  def _next_time(self, t):
+  def next_time(self, t):
     return t + Poisson.next_poisson(self.mean)
 
-  def _loop(self, t):
-    self.execute_command(self.command)
-
-
-def select_random(score, event, *choices):
-  if choices:
-    item = random.choice(choices)
-    function_name = item.get('function', None)
-    function = score.functions.get(function_name, None)
-    if function:
-      keywords = item.get('keywords', {})
-      arguments = item.get('arguments', [])
-      function(score, event, *arguments, **keywords)
-    else:
-      LOGGER.error('No function named "%s": %s, %s', function_name, item, choices)
-  else:
-    LOGGER.error('No arguments to select_random')
+  def loop(self, t):
+    self.element.start()
 
 Register.register(Random)
