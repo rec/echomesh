@@ -7,32 +7,30 @@ import urllib
 import urllib2
 
 from echomesh.util import Log
-from echomesh.util.thread.TimeLoop import TimeLoop
 
 LOGGER = Log.logger(__name__)
 
 ROOT = 'http://search.twitter.com/search.json'
 PARSER = HTMLParser.HTMLParser()
 
-def get_image_url(image):
-  try:
-    short_image = image.replace('_normal.', '.')
-    urllib2.urlopen(short_image)
-    return short_image
-  except:
-    return image
-
-def process_tweet(tweet):
+def json_to_tweet(tweet):
   def get(name):
     res = tweet.get(name, '')
     return urllib.unquote(PARSER.unescape(res.encode('utf8')))
 
-  return {'image': get_image_url(get('profile_image_url')),
+  image_url = get('profile_image_url')
+  try:
+    short_url = image_url.replace('_normal.', '.')
+    urllib2.urlopen(short_url)
+    image_url = short_url
+  except:
+    pass
+
+  return {'image': image,
           'text': get('text'),
           'user': get('from_user'),
           'user_name': get('from_user_name'),
           }
-
 
 class Search(object):
   def __init__(self, key, callback, preload=1):
@@ -54,17 +52,5 @@ class Search(object):
     if first_time:
       tweets = tweets[:self.preload]
     for tweet in tweets:
-      self.callback(process_tweet(tweet))
+      self.callback(json_to_tweet(tweet))
 
-
-class Loop(TimeLoop):
-  def __init__(self, search, callback, interval=2, preload=1, name='SearchLoop',
-               timeout=None):
-    super(Loop, self).__init__(name=name, timeout=timeout, interval=interval)
-    self.search = Search(search, callback, preload)
-
-  def run(self):
-    super(Loop, self).run()
-
-  def _command(self, t):
-    self.search.refresh()

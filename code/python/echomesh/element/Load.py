@@ -44,7 +44,7 @@ def _resolve_extensions(data):
 
 def make_one(parent, desc):
   desc = _resolve_extensions(desc)
-  t = desc.get('type', None)
+  t = desc.get('type', None).lower()
   if not t:
     raise Exception('No type field in element %s' % desc)
 

@@ -14,6 +14,7 @@ class Select(Element.Element):
     self.add_slave(*self.elements)
 
   def start(self):
-    return self.elements[self.random.select()].start()
+    super(Select, self).start()
+    self.elements[self.random.select()].start()
 
 Register.register(Select)
