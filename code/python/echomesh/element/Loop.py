@@ -12,7 +12,7 @@ class Loop(Element.Element):
       next_time=getattr(self, 'next_time', None),
       loop=getattr(self, 'loop', None))
 
-    self.add_slave_closer(self.time_loop)
+    self.add_mutual_stop_slave(self.time_loop)
 
   # You can implement Loop.next_time and Loop.loop to override the methods in
   # TimeLoop.

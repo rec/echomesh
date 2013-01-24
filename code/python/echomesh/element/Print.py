@@ -10,12 +10,13 @@ LOGGER = Log.logger(__name__)
 class Print(Element.Element):
   def __init__(self, parent, description):
     super(Print, self).__init__(parent, description)
+    self.message = description.get('message', '')
 
   def start(self):
     super(Print, self).start()
-    LOGGER.info(self.description)
+    LOGGER.info(self.message)
 
   def handle(self, event):
-    LOGGER.info(event)
+    LOGGER.info('%s: %s', self.message, event)
 
 Register.register(Print)

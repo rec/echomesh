@@ -11,16 +11,23 @@ class RunnableOwner(Runnable):
     super(RunnableOwner, self).__init__()
     self.runnables = LockedList()
     self.stoppables = LockedList()
+    self.joinables = LockedList()
 
   def add_slave(self, *slaves):
     self.runnables.add(*slaves)
     self.stoppables.add(*slaves)
+    self.joinables.add(*slaves)
+
+  def add_stop_slave(self, *slaves):
+    self.stoppables.add(*slaves)
+    self.joinables.add(*slaves)
 
   def remove_slave(self, *slaves):
     self.runnables.remove(*slaves)
     self.stoppables.remove(*slaves)
+    self.joinables.remove(*slaves)
 
-  def add_slave_closer(self, *clients):
+  def add_mutual_stop_slave(self, *clients):
     self.add_slave(*clients)
     for c in clients:
       c and c.stoppables.add(self)

@@ -30,7 +30,7 @@ class DataSocket(RunnableOwner):
     send = ThreadLoop.ThreadLoop(target=self._send, name='send')
     receive = ThreadLoop.ThreadLoop(target=self._receive, name='receive')
 
-    self.add_slave_closer(self.receive_socket, self.send_socket, receive, send)
+    self.add_mutual_stop_slave(self.receive_socket, self.send_socket, receive, send)
     self.send = self.queue.put
 
   def _receive(self):

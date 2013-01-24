@@ -30,10 +30,10 @@ class Echomesh(RunnableOwner):
     self.socket = PeerSocket.PeerSocket(self)
     self.score = Score.make_score()
 
-    self.add_slave_closer(self.socket,
-                          Keyboard.keyboard(self),
-                          Display.display(self),
-                          Microphone.microphone(self._mic_event))
+    self.add_mutual_stop_slave(self.socket,
+                               Keyboard.keyboard(self),
+                               Display.display(self),
+                               Microphone.microphone(self._mic_event))
     self.add_slave(self.score)
 
   def send(self, **data):

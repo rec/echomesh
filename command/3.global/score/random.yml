@@ -1,0 +1,21 @@
+type: Random
+mean: 3.0
+
+element:
+  type: Select
+  choices:
+    -
+      weight: 3
+      element:
+        type: print
+        message: one
+    -
+      element:
+        type: print
+        message: two
+
+    -
+      weight: 1
+      element:
+        type: print
+        message: three

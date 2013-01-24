@@ -16,7 +16,7 @@ class PeerSocket(RunnableOwner):
                                         Router.router(echomesh, peers))
 
     self.add_slave(peers)
-    self.add_slave_closer(self.socket)
+    self.add_mutual_stop_slave(self.socket)
 
   def send(self, data):
     data['source'] = Name.NAME
