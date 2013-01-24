@@ -11,8 +11,8 @@ class Print(Element.Element):
   def __init__(self, parent, description):
     super(Print, self).__init__(parent, description)
 
-  def start(self):
-    super(Print, self).start()
+  def run(self):
+    super(Print, self).run()
     LOGGER.info(descriptionn)
 
 Register.register(Print)

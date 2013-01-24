@@ -35,6 +35,6 @@ class Score(RunnableOwner):
 
 def make_score():
   score = Score(Config.get('score', 'file'))
-  score.start()
+  score.run()
   return score
 

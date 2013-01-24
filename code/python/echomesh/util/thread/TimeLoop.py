@@ -18,10 +18,10 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     self.loop = loop or self.loop
     self.next_time = next_time or self.next_time
 
-  def start(self):
+  def run(self):
     self.start_time = time.time()
     self.next_loop_time = self.start_time
-    super(TimeLoop, self).start()
+    super(TimeLoop, self).run()
 
   def target(self):
     t = time.time()

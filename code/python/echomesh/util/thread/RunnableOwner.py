@@ -9,31 +9,31 @@ LOGGER = Log.logger(__name__)
 class RunnableOwner(Runnable):
   def __init__(self):
     super(RunnableOwner, self).__init__()
-    self.openables = LockedList()
-    self.closeables = LockedList()
+    self.runnables = LockedList()
+    self.stoppables = LockedList()
 
   def add_slave(self, *slaves):
-    self.openables.add(*slaves)
-    self.closeables.add(*slaves)
+    self.runnables.add(*slaves)
+    self.stoppables.add(*slaves)
 
   def remove_slave(self, *slaves):
-    self.openables.remove(*slaves)
-    self.closeables.remove(*slaves)
+    self.runnables.remove(*slaves)
+    self.stoppables.remove(*slaves)
 
   def add_slave_closer(self, *clients):
     self.add_slave(*clients)
     for c in clients:
-      c and c.closeables.add(self)
+      c and c.stoppables.add(self)
 
-  def start(self):
-    super(RunnableOwner, self).start()
-    self.openables.foreach(lambda e: e.start())
+  def run(self):
+    super(RunnableOwner, self).run()
+    self.runnables.foreach(lambda e: e.run())
 
   def close(self):
     if self.is_running:
       super(RunnableOwner, self).close()
-      self.closeables.foreach(lambda e: e.close())
+      self.stoppables.foreach(lambda e: e.close())
 
   def join(self):
     super(RunnableOwner, self).join()
-    self.openables.foreach(lambda e: e.join())
+    self.runnables.foreach(lambda e: e.join())

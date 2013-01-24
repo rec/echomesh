@@ -42,8 +42,8 @@ class Echomesh(RunnableOwner):
   def receive(self, event):
     return self.score.receive_event(event)
 
-  def start(self):
-    super(Echomesh, self).start()
+  def run(self):
+    super(Echomesh, self).run()
     self.join()
 
   def _mic_event(self, level):
@@ -83,7 +83,7 @@ def shutdown():
 
 if __name__ == '__main__':
   if startup():
-    Echomesh().start()
+    Echomesh().run()
     shutdown()
   else:
     LOGGER.info("Not autostarting because autostart=False")

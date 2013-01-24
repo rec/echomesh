@@ -8,7 +8,7 @@ class Runnable(object):
   def __init__(self):
     self.is_running = True
 
-  def start(self):
+  def run(self):
     LOGGER.debug('Starting %s', self)
 
   def close(self):

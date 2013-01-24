@@ -49,7 +49,7 @@ class Microphone(ThreadLoop.ThreadLoop):
         self.callback(level_name)
         self.previous_level_name = level_name
 
-  def start(self):
+  def run(self):
     self.reset_levels()
     LOGGER.info('Microphone starting')
     rate = Config.get('audio', 'input', 'sample_rate')
@@ -58,7 +58,7 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.stream = Input.get_pyaudio_stream(rate, use_default, sample_bytes)
 
     if getattr(self, 'stream', None):
-      super(Microphone, self).start()
+      super(Microphone, self).run()
     else:
       self.close()
 
