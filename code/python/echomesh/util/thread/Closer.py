@@ -11,17 +11,14 @@ class Closer(Openable.Openable):
     super(Closer, self).__init__()
     self.openables = LockedList()
     self.closeables = LockedList()
-    self.joinables = LockedList()
 
   def add_slave(self, *slaves):
     self.openables.add(*slaves)
     self.closeables.add(*slaves)
-    self.joinables.add(*slaves)
 
   def remove_slave(self, *slaves):
     self.openables.remove(*slaves)
     self.closeables.remove(*slaves)
-    self.joinables.remove(*slaves)
 
   def add_slave_closer(self, *clients):
     self.add_slave(*clients)
@@ -39,7 +36,7 @@ class Closer(Openable.Openable):
 
   def join(self):
     super(Closer, self).join()
-    self.joinables.foreach(lambda e: e.join())
+    self.openables.foreach(lambda e: e.join())
 
 class _ExitCloser(Closer):
   pass
