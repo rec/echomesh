@@ -15,7 +15,8 @@ class PeerSocket(Closer.Closer):
                                         Config.get('discovery', 'timeout'),
                                         Router.router(echomesh, peers))
 
-    self.add_openable_mutual(peers, self.socket)
+    self.add_slave(peers)
+    self.add_slave_closer(self.socket)
 
   def send(self, data):
     data['source'] = Name.NAME

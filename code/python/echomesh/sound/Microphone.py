@@ -9,7 +9,6 @@ from echomesh.sound import Levels
 from echomesh.util import Log
 from echomesh.base import Platform
 from echomesh.util.math import Average
-from echomesh.util.thread import Openable
 from echomesh.util.thread import ThreadLoop
 
 LOGGER = Log.logger(__name__)
@@ -40,7 +39,7 @@ class Microphone(ThreadLoop.ThreadLoop):
       grouped_window=Config.get('audio', 'input', 'average', 'group_size'))
 
     for level in average:
-      if not self.is_open:
+      if not self.is_running:
         return
       if Config.get('audio', 'input', 'verbose'):
         LOGGER.info('%s: %.2f', self.levels.name(level), level)
@@ -69,7 +68,7 @@ class Microphone(ThreadLoop.ThreadLoop):
     self.chunk_size = min(max(chunk_size, MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)
 
   def _get_next_level(self):
-    while self.is_open:
+    while self.is_running:
       try:
         self.level = Input.get_mic_level(self.stream.read(self.chunk_size))
         self.max_level = max(self.level, self.max_level)

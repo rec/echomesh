@@ -9,21 +9,31 @@ from echomesh.util.thread.Closer import Closer
 LOGGER = Log.logger(__name__)
 
 class ThreadLoop(Closer):
-  def __init__(self, run=None, parent=None, name=None,
+  def __init__(self, target=None, name=None,
                report_errors_when_closed=False):
-    super(ThreadLoop, self).__init__(parent=parent)
+    super(ThreadLoop, self).__init__()
     self.name = name or repr(self)
-    has_run = getattr(self, 'run', None)
+    has_target = getattr(self, 'target', None)
     self.report_errors_when_closed = report_errors_when_closed
-    if run:
-      assert not has_run
-      self.run = run
+    if target:
+      assert not has_target
+      self.target = target
     else:
-      assert has_run
+      assert has_target
 
   def start(self):
+    def loop_target():
+      try:
+        while self.is_running:
+          self.target()
+        LOGGER.debug('Loop for "%s" has finished', self.name)
+      except:
+        if self.is_running or self.report_errors_when_closed:
+          LOGGER.critical(traceback.format_exc())
+        self.close()
+
     super(ThreadLoop, self).start()
-    self.thread = threading.Thread(target=self.loop)
+    self.thread = threading.Thread(target=loop_target)
     self.thread.start()
 
   def join(self):
@@ -34,12 +44,3 @@ class ThreadLoop(Closer):
     except:
       pass  # Swallow errors!  TODO
 
-  def loop(self):
-    try:
-      while self.is_open:
-        self.run()
-      LOGGER.debug('Loop for "%s" has finished', self.name)
-    except:
-      if self.is_open or self.report_errors_when_closed:
-        LOGGER.critical(traceback.format_exc())
-      self.close()

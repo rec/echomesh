@@ -145,7 +145,7 @@ class FilePlayer(ThreadLoop):
       self.loop_number += 1
       if self.loop_number < self.loops:
         self.restart_sound()
-        if not self.is_open:
+        if not self.is_running:
           return
       else:
         self.close()
@@ -158,7 +158,7 @@ class FilePlayer(ThreadLoop):
     try:
       self.audio_stream.write(frames)
     except:
-      if self.is_open:
+      if self.is_running:
         raise
 
   def _pan_and_fade(self, frames):

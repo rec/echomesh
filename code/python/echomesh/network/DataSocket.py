@@ -26,27 +26,26 @@ class DataSocket(Closer.Closer):
         raise Exception('A DataSocket is already running on port %d'  % port)
       else:
         raise
-    self.add_openable_mutual(self.receive_socket, self.send_socket,
-                             ThreadLoop.ThreadLoop(run=self._run_receive,
-                                                   name='receive'),
-                             ThreadLoop.ThreadLoop(run=self._run_send,
-                                                   name='send'))
 
+    send = ThreadLoop.ThreadLoop(target=self._send, name='send')
+    receive = ThreadLoop.ThreadLoop(target=self._receive, name='receive')
+
+    self.add_slave_closer(self.receive_socket, self.send_socket, receive, send)
     self.send = self.queue.put
 
-  def _run_receive(self):
+  def _receive(self):
     pckt = self.receive_socket.receive(self.timeout)
     if pckt:
       LOGGER.info('receiving %s', pckt)
       self.callback(yaml.safe_load(pckt))
 
-  def _run_send(self):
+  def _send(self):
     try:
       item = self.queue.get(True, self.timeout)
       value = yaml.safe_dump(item)
       self.send_socket.write(value)
     except Queue.Empty:
       pass
-    if self.is_open:
+    if self.is_running:
       time.sleep(self.timeout)
 

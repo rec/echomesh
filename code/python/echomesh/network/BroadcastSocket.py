@@ -7,7 +7,7 @@ import socket
 import sys
 import time
 
-from echomesh.util.thread.Openable import Openable
+from echomesh.util.thread import Closer
 from echomesh.base import Platform
 
 DEFAULT_PORT = 1248
@@ -15,7 +15,7 @@ DEFAULT_BUFFER_SIZE = 1024
 
 USAGE = '%s read | write' % sys.argv[0]
 
-class Socket(Openable):
+class Socket(Closer.Closer):
   def __init__(self, port):
     super(Socket, self).__init__()
     self.port = port
@@ -42,7 +42,7 @@ class Send(Socket):
     try:
       self.socket.sendto(data, ('<broadcast>', self.port))
     except:
-      if self.is_open:
+      if self.is_running:
         raise
 
 class Receive(Socket):
@@ -60,6 +60,6 @@ class Receive(Socket):
       result = select.select([self.socket], [], [], timeout)
       return result[0] and result[0][0].recv(self.buffer_size)
     except:
-      if self.is_open:
+      if self.is_running:
         raise
 

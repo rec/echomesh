@@ -23,7 +23,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     self.next_loop_time = self.start_time
     super(TimeLoop, self).start()
 
-  def run(self):
+  def target(self):
     t = time.time()
     if t >= self.next_loop_time:
       self.loop(t)
@@ -31,7 +31,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
       if self.next_loop_time <= t:
         self.next_loop_time = self.next_time(t)
 
-    if self.is_open:
+    if self.is_running:
       time.sleep(min(DEFAULT_TIMEOUT, self.next_time - t))
 
   def next_time(self, t):

@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.util import Log
-from echomesh.util.thread import Openable
 
 LOGGER = Log.logger(__name__)
 

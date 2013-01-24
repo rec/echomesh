@@ -22,7 +22,7 @@ class MultiSearch(Closer.Closer):
       loop = Loop(search, self.callback, self.interval, self.preload,
                   name = '%s:%s' % (self.name, self.index))
       self.searches[search] = loop
-      self.add_openable(loop)
+      self.add_slave(loop)
       loop.start()
 
   def remove(self, search):
@@ -30,7 +30,7 @@ class MultiSearch(Closer.Closer):
     if loop:
       del self.searches[search]
       loop.stop()
-      self.remove_openable(loop)
+      self.remove_slave(loop)
 
     else:
       LOGGER.error('No search %s', search)

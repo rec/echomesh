@@ -5,24 +5,16 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Openable(object):
-  def __init__(self, parent=None):
-    self.is_open = True
-    self.set_parent(parent)  # TODO: get rid of the whole parent idea in favor
-                             # of Closer.
-
-  def set_parent(self, parent):
-    self.parent = parent
+  def __init__(self):
+    self.is_running = True
 
   def start(self):
     LOGGER.debug('Starting %s', self)
 
   def close(self):
-    if self.is_open:
+    if self.is_running:
       LOGGER.debug('Closing %s', self)
-      self.is_open = False
-      if self.parent:
-        LOGGER.debug('Closing parent %s', self.parent)
-        self.parent and self.parent.close()
+      self.is_running = False
 
   def join(self):
     LOGGER.debug('Joining %s', self)

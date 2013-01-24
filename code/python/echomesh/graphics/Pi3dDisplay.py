@@ -44,7 +44,7 @@ class Pi3dDisplay(ThreadLoop):
   def run(self):
     try:
       self.display.frames_per_second = Config.get('update_interval')
-      self.is_open = self.display.loop_running()
+      self.is_running = self.display.loop_running()
     except:
       self.close()
       import traceback

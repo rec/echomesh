@@ -12,7 +12,7 @@ class Audio(Element.Element):
     super(Audio, self).__init__(parent, description)
     if Config.get('audio', 'output', 'enable'):
       from echomesh.sound import FilePlayer
-      self.add_openable_mutual(FilePlayer.play(**description['keywords']))
+      self.add_slave_closer(FilePlayer.play(**description['keywords']))
     else:
       LOGGER.info('Playing audio')
 
