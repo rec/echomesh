@@ -2,11 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Log
 from echomesh.util.thread.LockedList import LockedList
-from echomesh.util.thread import Openable
+from echomesh.util.thread import Runnable
 
 LOGGER = Log.logger(__name__)
 
-class Closer(Openable.Openable):
+class Closer(Runnable.Runnable):
   def __init__(self):
     super(Closer, self).__init__()
     self.openables = LockedList()

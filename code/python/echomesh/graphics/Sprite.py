@@ -11,7 +11,7 @@ from pi3d.Shader import Shader
 from echomesh.graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
 
 from echomesh.util import Log
-from echomesh.util.thread.Openable import Openable
+from echomesh.util.thread.Runnable import Runnable
 from echomesh.util.math.Envelope import Envelope
 
 LOGGER = Log.logger(__name__)
@@ -25,11 +25,11 @@ LIGHT = Light((10, 10, -20))
 SHADER = None  # Shader('shaders/uv_flat')
 
 
-class ImageSprite(Sprite.ImageSprite, Openable):
+class ImageSprite(Sprite.ImageSprite, Runnable):
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
                **kwds):
-    Openable.__init__(self)
+    Runnable.__init__(self)
     self._imagename = file
     LOGGER.debug('Opening sprite %s', self._imagename)
 

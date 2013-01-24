@@ -4,7 +4,7 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Openable(object):
+class Runnable(object):
   def __init__(self):
     self.is_running = True
 

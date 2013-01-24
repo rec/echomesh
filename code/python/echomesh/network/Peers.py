@@ -8,12 +8,12 @@ import time
 from echomesh.base import Name
 
 from echomesh.util.thread import Locker
-from echomesh.util.thread import Openable
+from echomesh.util.thread import Runnable
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Peers(Openable.Openable):
+class Peers(Runnable.Runnable):
   TYPE = 'peer'
 
   def __init__(self, echomesh):
