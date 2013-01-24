@@ -30,7 +30,7 @@ class ThreadLoop(RunnableOwner):
       except:
         if self.is_running or self.report_errors_when_closed:
           LOGGER.critical(traceback.format_exc())
-        self.close()
+        self.stop()
 
     super(ThreadLoop, self).start()
     self.thread = threading.Thread(target=loop_target)

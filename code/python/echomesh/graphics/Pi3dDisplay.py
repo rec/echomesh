@@ -46,7 +46,7 @@ class Pi3dDisplay(ThreadLoop):
       self.display.frames_per_second = Config.get('update_interval')
       self.is_running = self.display.loop_running()
     except:
-      self.close()
+      self.stop()
       import traceback
       LOGGER.critical(traceback.format_exc())
       raise
@@ -63,7 +63,7 @@ class Pi3dDisplay(ThreadLoop):
       for imagefile in os.listdir(DEFAULT_IMAGE_DIRECTORY):
         self.load_texture(imagefile)
 
-  def close(self):
-    super(Pi3dDisplay, self).close()
+  def stop(self):
+    super(Pi3dDisplay, self).stop()
     self.display.destroy()
-    self.echomesh.close()
+    self.echomesh.stop()

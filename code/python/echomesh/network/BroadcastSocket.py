@@ -25,8 +25,8 @@ class Socket(RunnableOwner):
     self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     self.socket.bind(('', self.bind_port))
 
-  def close(self):
-    super(Socket, self).close()
+  def stop(self):
+    super(Socket, self).stop()
     self.socket.close()
 
 class Send(Socket):

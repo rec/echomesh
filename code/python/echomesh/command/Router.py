@@ -41,7 +41,7 @@ class Router(object):
   def halt(self, data):
     if not Config.is_control_program():
       LOGGER.info('Quitting');
-      self.echomesh.close()
+      self.echomesh.stop()
 
   def score(self, msg):
     score = msg.get('data', None)
@@ -68,7 +68,7 @@ class Router(object):
 
   def stop(self, data):
     if not Config.is_control_program():
-      self.echomesh.close()
+      self.echomesh.stop()
 
   def _error(self, data):
     LOGGER.error("Command '%s' not implemented", data['type'])

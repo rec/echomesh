@@ -20,7 +20,7 @@ class Sequence(Loop.Loop):
       return self._command_time()
     else:
       LOGGER.debug('Sequence finished')
-      self.close()
+      self.stop()
       return 0
 
   def _loop(self, t):

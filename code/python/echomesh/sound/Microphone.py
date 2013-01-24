@@ -60,7 +60,7 @@ class Microphone(ThreadLoop.ThreadLoop):
     if getattr(self, 'stream', None):
       super(Microphone, self).start()
     else:
-      self.close()
+      self.stop()
 
   def set_config(self):
     self.levels = Levels.Levels(**Config.get('audio', 'input', 'levels'))

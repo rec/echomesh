@@ -4,5 +4,5 @@ import pyaudio
 
 PYAUDIO = pyaudio.PyAudio()
 
-def close():
+def stop():
   PYAUDIO.terminate()

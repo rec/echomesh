@@ -11,7 +11,7 @@ class Runnable(object):
   def start(self):
     LOGGER.debug('Starting %s', self)
 
-  def close(self):
+  def stop(self):
     if self.is_running:
       LOGGER.debug('Closing %s', self)
       self.is_running = False
@@ -23,4 +23,4 @@ class Runnable(object):
     return self
 
   def __exit__(self, type, value, traceback):
-    self.close()
+    self.stop()

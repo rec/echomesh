@@ -77,7 +77,7 @@ class ImageSprite(Sprite.ImageSprite, Runnable):
         self._time = 0
         elapsed = 0
       else:
-        self.close()
+        self.stop()
         return
 
     self.position(*self.coords(elapsed))

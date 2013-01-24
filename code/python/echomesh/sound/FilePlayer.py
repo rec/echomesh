@@ -70,7 +70,7 @@ class FilePlayer(ThreadLoop):
     handler = FilePlayer.HANDLERS.get(filetype, None)
     if not handler:
       LOGGER.error("Can't understand the file type of file %s", filename)
-      self.close()
+      self.stop()
       return
 
     self.file_stream = handler.open(filename, 'rb')
@@ -112,13 +112,13 @@ class FilePlayer(ThreadLoop):
 
     if not self.audio_stream:
       LOGGER.error("Couldn't reopen sound on loop %d", self.loop_number)
-      self.close()
+      self.stop()
     self.time = 0
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)
 
-  def close(self):
-    super(FilePlayer, self).close()
+  def stop(self):
+    super(FilePlayer, self).stop()
     self._close_stream()
 
   def _close_stream(self):
@@ -148,7 +148,7 @@ class FilePlayer(ThreadLoop):
         if not self.is_running:
           return
       else:
-        self.close()
+        self.stop()
         return
 
     self.time =+ len(frames) / float((self.samples_per_frame *

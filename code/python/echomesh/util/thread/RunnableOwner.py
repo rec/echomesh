@@ -29,10 +29,10 @@ class RunnableOwner(Runnable):
     super(RunnableOwner, self).start()
     self.openables.foreach(lambda e: e.start())
 
-  def close(self):
+  def stop(self):
     if self.is_running:
-      super(RunnableOwner, self).close()
-      self.closeables.foreach(lambda e: e.close())
+      super(RunnableOwner, self).stop()
+      self.closeables.foreach(lambda e: e.stop())
 
   def join(self):
     super(RunnableOwner, self).join()
