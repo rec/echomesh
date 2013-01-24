@@ -16,7 +16,7 @@ class Random(Loop.Loop):
   def _next_time(self, t):
     return t + Poisson.next_poisson(self.mean)
 
-  def _command(self, t):
+  def _loop(self, t):
     self.execute_command(self.command)
 
 

@@ -15,16 +15,21 @@ class Handler(Element.Element):
     self.target = description.get('target', Name.NAME)
     self.source = description.get('source', None)
     self.mapping = description.get('mapping', {})
-    self.read_repeated('handlers')
+    handlers = description.get('handlers', [])
+    self.handlers = Load.make(self, *handlers)
 
-    for k, v in self.mapping.iteritems():
-      self.mapping[k] = Load.make(self, v)[0]
+    for key, element in self.mapping.iteritems():
+      map_entries = Load.make(self, element)
+      if not map_entries:
+        LOGGER.error("No map entries for key %s, element %s", key, element)
+        raise Exception("No map entries" )
+      self.mapping[key] = map_entries[0]
 
   def handle(self, event):
     if (event.get('source', self.source) == self.source and
         event.get('target', self.target) == self.target):
       key = event.get('key', None)
-      mapper = key and hasattr(key, '__hash__') and self.mapping.get(key, None)
+      mapper = key and hasattr(key, '__hash__') and self.mapping.get(key, [])
       if mapper:
         event = mapper(event)
 

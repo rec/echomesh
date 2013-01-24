@@ -7,7 +7,8 @@ LOGGER = Log.logger(__name__)
 class Openable(object):
   def __init__(self, parent=None):
     self.is_open = True
-    self.set_parent(parent)
+    self.set_parent(parent)  # TODO: get rid of the whole parent idea in favor
+                             # of Closer.
 
   def set_parent(self, parent):
     self.parent = parent

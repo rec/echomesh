@@ -9,9 +9,10 @@ class Select(Element.Element):
     super(Select, self).__init__(parent, description, name='element.Select')
     choices = description.get('choices', [])
     self.random = WeightedRandom(c.get('weight', None) for c in choices)
-    self.elements = [Load.make(self, c['element'] for c in choices)]
+    self.elements = [Load.make(self, c['element']) for c in choices]
+    self.add_closer(*self.elements)
 
   def execute(self):
-    return self.elements[self.random.select()].element.execute()
+    return self.elements[self.random.select()].execute()
 
 Register.register(Select)

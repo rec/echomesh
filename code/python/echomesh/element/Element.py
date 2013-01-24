@@ -11,17 +11,3 @@ class Element(Closer.Closer):
     super(Element, self).__init__()
     self.parent = parent
     self.description = description
-
-  # TODO: remove?
-  def read_repeated(self, name):
-    elements = []
-    desc = self.description.get(name, None)
-    if desc:
-      try:
-        elements = Load.make(self, desc)
-      except:
-        LOGGER.error("Couldn't read element description named %s from %s",
-                     name, desc)
-    setattr(self, name, elements)
-    self.add_openable(*elements)
-

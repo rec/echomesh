@@ -23,7 +23,7 @@ class Sequence(Loop.Loop):
       self.close()
       return 0
 
-  def _command(self, t):
+  def _loop(self, t):
     while self.next_command < len(self.commands) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
       self.execute_command(self.commands[self.next_command])
