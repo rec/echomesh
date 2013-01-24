@@ -13,6 +13,9 @@ class Print(Element.Element):
 
   def start(self):
     super(Print, self).start()
-    LOGGER.info(descriptionn)
+    LOGGER.info(self.description)
+
+  def handle(self, event):
+    LOGGER.info(event)
 
 Register.register(Print)

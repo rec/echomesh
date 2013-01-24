@@ -1,10 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.element import Load
 from echomesh.element import Loop
 from echomesh.element import Register
 from gittwit.twitter.Search import Search
 
-DEFAULT_INTERVAL = 10.0
+DEFAULT_INTERVAL = 1.0
 DEFAULT_PRELOAD = 1
 
 class TwitterSearch(Loop.Loop):
@@ -16,13 +17,19 @@ class TwitterSearch(Loop.Loop):
     if not isinstance(search, list):
       search = [search]
 
-    def callback(twitter):
-      pass
-    self.searches = [Search(s, callback, preload=preload) for s in search]
+    self.searches = [Search(s, self.callback, preload=preload) for s in search]
+    self.handler = description.get('handler', None)
+    if self.handler:
+      self.handler = Load.make_one(self, self.handler)
+    self.broadcast = description.get('broadcast', not self.handler)
 
   def callback(self, twitter):
-    # How exactly do we send events to the system?  Or do we call something
-    # on ourselves?
-    pass
+    if self.handler:
+      self.handler.handle(twitter)
+
+  def loop(self):
+    print('!!!!!')
+    for s in self.searches:
+      s.refresh()
 
 Register.register(TwitterSearch)

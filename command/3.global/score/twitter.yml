@@ -1,0 +1,7 @@
+type: TwitterSearch
+interval: 10
+search:
+  - "#echomesh"
+  - "#tomswirly"
+handler:
+  type: print

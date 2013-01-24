@@ -20,6 +20,9 @@ class Runnable(object):
   def join(self):
     LOGGER.debug('Joining %s', self)
 
+  def handle(self, event):
+    pass
+
   def __enter__(self):
     return self
 
