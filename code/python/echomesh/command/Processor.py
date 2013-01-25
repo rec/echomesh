@@ -15,16 +15,14 @@ class Processor(object):
     self._echomesh = echomesh
 
   def process(self, command):
-    self._parts = command.strip().split(' ')
+    command = command.strip()
+    self._parts = command and command.split(' ')
     if self._parts:
       self._cmd = self._parts[0]
       if self._cmd.startswith('_'):
-        self._error()
-        return
-      try:
-        return not getattr(self, self._cmd, self._error)()
-      except TypeError:
-        LOGGER.error('Wrong number of arguments for command "%s"', command)
+        return self._error()
+      else:
+        return getattr(self, self._cmd, self._error)()
 
   def clear(self): self._remote()
   def halt(self): self._remote()
@@ -76,7 +74,8 @@ class Processor(object):
       logger(*errors)
     else:
       logger = LOGGER.info
-    logger('Commands are %s', ', '.join(ALL_COMMANDS))
+    cmds = (s for s in dir(self) if not s.startswith('_'))
+    logger('Commands are %s', ', '.join(cmds))
 
   def _error(self):
     self._usage("Didn't understand command %s", self._cmd)

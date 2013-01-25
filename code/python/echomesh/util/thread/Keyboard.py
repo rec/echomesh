@@ -29,7 +29,7 @@ class Keyboard(ThreadLoop.ThreadLoop):
       print(self.message)
       self.message = ''
     while self.is_running:
-      if not self.processor(raw_input(self.prompt).strip()):
+      if self.processor(raw_input(self.prompt).strip()):
         self.stop()
 
 def keyboard(echomesh):
