@@ -5,7 +5,6 @@ from echomesh.base import Name
 from echomesh.util import Log
 from echomesh.element import Element
 from echomesh.element import Load
-from echomesh.element import Register
 
 LOGGER = Log.logger(__name__)
 
@@ -35,4 +34,4 @@ class Handler(Element.Element):
         event = handler.handle(event)
       return event
 
-Register.register(Handler)
+Element.register(Handler)

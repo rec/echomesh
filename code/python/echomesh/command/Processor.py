@@ -93,13 +93,14 @@ def process(command, echomesh):
   if not parts:
     return
 
-  cmd = parts[0]
+  cmd = parts.pop(0)
+
   if cmd in REMOTE_COMMANDS:
     echomesh.send(type=command)
 
   elif cmd in FILE_COMMANDS:
-    if len(parts) <= 2:
-      _file_command(echomesh, *parts)
+    if len(parts) <= 1:
+      _file_command(echomesh, cmd, *parts)
     else:
       LOGGER.error('Command %s has too many arguments' % cmd)
 

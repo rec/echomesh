@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.util.math.WeightedRandom import WeightedRandom
-from echomesh.element import Register
 
 class Select(Element.Element):
   def __init__(self, parent, description):
@@ -17,4 +16,4 @@ class Select(Element.Element):
     super(Select, self).start()
     self.elements[self.random.select()].start()
 
-Register.register(Select)
+Element.register(Select)

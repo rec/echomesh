@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.element import Element
 from echomesh.element import Loop
-from echomesh.element import Register
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -29,4 +29,4 @@ class Sequence(Loop.Loop):
       self.execute_command(self.commands[self.next_command])
       self.next_command += 1
 
-Register.register(Sequence)
+Element.register(Sequence)

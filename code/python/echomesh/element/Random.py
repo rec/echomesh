@@ -3,9 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import bisect
 import random
 
+from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.element import Register
 from echomesh.util.math import Poisson
 
 DEFAULT_INTERVAL = 10.0
@@ -23,4 +23,4 @@ class Random(Loop.Loop):
   def loop(self, t):
     self.element.start()
 
-Register.register(Random)
+Element.register(Random)

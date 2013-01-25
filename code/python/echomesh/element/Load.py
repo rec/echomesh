@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import CommandFile
 from echomesh.base import File
-from echomesh.element import Register
+from echomesh.element import Element
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -48,7 +48,7 @@ def make_one(parent, desc):
   if not t:
     raise Exception('No type field in element %s' % desc)
 
-  maker = Register.ELEMENT_MAKERS.get(t, None)
+  maker = Element.get_element_by_name(t, None)
   if not maker:
     raise Exception('No element maker for type %s' % t)
 

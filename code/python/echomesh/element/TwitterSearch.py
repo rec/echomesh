@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.element import Register
 from gittwit.twitter.Search import Search
 
 DEFAULT_INTERVAL = 10.0
@@ -31,4 +31,4 @@ class TwitterSearch(Loop.Loop):
     for s in self.searches:
       s.refresh()
 
-Register.register(TwitterSearch)
+Element.register(TwitterSearch)
