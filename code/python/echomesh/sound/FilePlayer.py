@@ -197,5 +197,7 @@ def play_with_aplay(file, **kwds):
     LOGGER.error('Unable to play file %s using aplay', file)
 
 def play(**keywords):
+  if 'type' in keywords:
+    del keywords['type']
   aplay = Config.get('audio', 'output', 'use_aplay')
   return (play_with_aplay if aplay else FilePlayer)(**keywords)

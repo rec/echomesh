@@ -11,9 +11,9 @@ from echomesh.util.thread.RunnableOwner import RunnableOwner
 
 LOGGER = Log.logger(__name__)
 
-class Score(RunnableOwner):
+class OldScore(RunnableOwner):
   def __init__(self, scorefile, parent=None):
-    super(Score, self).__init__()
+    super(OldScore, self).__init__()
     self.parent = parent
     self.handlers = {}
     data = Load.load(scorefile)
@@ -26,6 +26,7 @@ class Score(RunnableOwner):
   def add_handler(self, event_type, handler):
     self.handlers[event_type] = handler
 
+  # TODO: where does this code go?
   def receive_event(self, event):
     event_type = event.get('subtype', None)
     if event_type:
@@ -36,7 +37,7 @@ class Score(RunnableOwner):
 
 
 def make_score():
-  score = Score(Config.get('score', 'file'))
+  score = OldScore(Config.get('score', 'file'))
   score.start()
   return score
 

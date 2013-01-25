@@ -18,7 +18,7 @@ class RunnableOwner(Runnable):
     self.stoppables.add(*slaves)
     self.joinables.add(*slaves)
 
-  def add_stop_slave(self, *slaves):
+  def add_stop_only_slave(self, *slaves):
     self.stoppables.add(*slaves)
     self.joinables.add(*slaves)
 
