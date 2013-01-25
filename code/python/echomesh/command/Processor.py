@@ -10,105 +10,74 @@ from gittwit.git import Git
 
 LOGGER = Log.logger(__name__)
 
-# TODO: these are a subset the methods of Router, so we need
-# this information in two places... deal with that!
-REMOTE_COMMANDS = (
-  'clear',
-  'halt',
-  'refresh',
-  'rerun',
-  'restart',
-  'shutdown',
-  'stop',
-  'update',
-  )
+class Processor(object):
+  def __init__(self, echomesh):
+    self._echomesh = echomesh
 
-FILE_COMMANDS = (
-  'config',
-  'score',
-  'play',
-)
+  def process(self, command):
+    self._parts = command.strip().split(' ')
+    if self._parts:
+      self._cmd = self._parts[0]
+      if self._cmd.startswith('_'):
+        self._error()
+        return
+      try:
+        return not getattr(self, self._cmd, self._error)()
+      except TypeError:
+        LOGGER.error('Wrong number of arguments for command "%s"', command)
 
-SIMPLE_COMMANDS = (
-  'commit',
-  'help',
-  'list',
-  'quit',
-)
+  def clear(self): self._remote()
+  def halt(self): self._remote()
+  def refresh(self): self._remote()
+  def rerun(self): self._remote()
+  def restart(self): self._remote()
+  def shutdown(self): self._remote()
+  def stop(self): self._remote()
+  def update(self): self._remote()
+  def help(self): self._usage()
 
-ALL_COMMANDS = REMOTE_COMMANDS + FILE_COMMANDS + SIMPLE_COMMANDS
-
-_UPDATE_GIT = (
-  ('add', 'config/config.yml'),
-  ('commit', '-m', '"Automatic checkin of config file"'),
-  #  ('push', 'origin', 'master'),
-  )
-
-def _usage(is_error=True):
-  logger = LOGGER.error if is_error else LOGGER.info
-  logger('Commands are %s', ', '.join(ALL_COMMANDS))
-
-def _config(filename):
-  # TODO: probably needs fixing.
-  config = File.yaml_load_all(filename)
-  if config:
-    echomesh.send(type='config', data=config)
-  else:
-    LOGGER.error("Didn't get any data from file %s", filename)
-
-def _file_command(echomesh, cmd, *args):
-  if cmd == 'play':
-    if args:
-      from echomesh.sound.FilePlayer import FilePlayer
-      FilePlayer.player(file=args[0])
+  def config(self):
+    # TODO: badly needs fixing.
+    filename = self._parts[1]
+    config = File.yaml_load_all(filename)
+    if config:
+      self._echomesh.send(type='config', data=config)
     else:
-      LOGGER.error('play needs a file argument' % cmd)
+      LOGGER.error("Didn't get any data from file %s", filename)
 
-  else:
-    _config(*args)
+  def commit(self):
+    # TODO: fix
+    _UPDATE_GIT = (
+      ('add', 'config/config.yml'),
+      ('commit', '-m', '"Automatic checkin of config file"'),
+      #  ('push', 'origin', 'master'),
+      )
 
-def _simple_command(echomesh, cmd):
-  if cmd == 'quit':
-    LOGGER.info('quitting')
-    return False
-
-  elif cmd == 'help':
-    _usage(False)
-
-  elif cmd == 'list':
-    for peer in echomesh.peers.get_peers().itervalues():
-      LOGGER.info(peer)
-
-  elif cmd == 'commit':
     LOGGER.info('Committing changes to the configuration')
     if Git.run_git_commands(*_UPDATE_GIT):
       LOGGER.info('Changes committed')
     else:
       LOGGER.info('Changes were NOT committed')
 
-  return True
+  def nodes(self):
+    for peer in self._echomesh.peers.get_peers().itervalues():
+      LOGGER.info(peer)
 
-def process(command, echomesh):
-  parts = command.strip().split(' ')
-  if not parts:
-    return
+  def quit(self):
+    LOGGER.info('quitting')
+    return True
 
-  cmd = parts.pop(0)
+  def _remote(self):
+    self._echomesh.send(type=self._cmd)
 
-  if cmd in REMOTE_COMMANDS:
-    echomesh.send(type=command)
-
-  elif cmd in FILE_COMMANDS:
-    if len(parts) <= 1:
-      _file_command(echomesh, cmd, *parts)
+  def _usage(self, *errors):
+    if errors:
+      logger = LOGGER.error
+      logger(*errors)
     else:
-      LOGGER.error('Command %s has too many arguments' % cmd)
+      logger = LOGGER.info
+    logger('Commands are %s', ', '.join(ALL_COMMANDS))
 
-  elif cmd in SIMPLE_COMMANDS:
-    return _simple_command(echomesh, cmd)
+  def _error(self):
+    self._usage("Didn't understand command %s", self._cmd)
 
-  elif cmd:
-    LOGGER.error("Didn't understand command '%s'", cmd)
-    _usage()
-
-  return True

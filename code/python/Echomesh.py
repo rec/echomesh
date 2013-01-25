@@ -28,6 +28,7 @@ class Echomesh(RunnableOwner):
       Echomesh.INSTANCE = self
 
     self.socket = PeerSocket.PeerSocket(self)
+    self.peers = self.socket.peers
     self.score = Score.make_score()
 
     self.add_mutual_stop_slave(self.socket,
