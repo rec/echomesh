@@ -37,5 +37,3 @@ def keyboard(echomesh):
     processor = Processor.Processor(echomesh).process
     sleep = Config.get('opening_sleep')
     return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
-
-

@@ -7,6 +7,7 @@ import sys
 import weakref
 
 from os.path import abspath, dirname
+from python.weakref import WeakSet
 
 from echomesh.base import MergeConfig
 from echomesh.base import Name
@@ -15,20 +16,15 @@ from echomesh.base import Platform
 CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
-CLIENTS = []
+CLIENTS = WeakSet()
 
 def add_client(client):
-  CLIENTS.append(weakref.ref(client))
+  CLIENTS.add(client)
   client.config_update()
 
 def update_clients():
-  global CLIENTS
-  old_clients, CLIENTS = CLIENTS, []
-  for c in old_clients:
-    cl = c()
-    if cl:
-      CLIENTS.append(c)
-      cl.config_update()
+  for c in CLIENTS:
+    cl.config_update()
 
 def recalculate(perform_update=False):
   global CONFIG, CONFIGS_UNVISITED
@@ -53,7 +49,7 @@ def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
   return get('control_program', 'enable')
 
-def get(*parts):
+def _get(parts, dict_forbidden):
   config, unvisited = CONFIG, CONFIGS_UNVISITED
   def get_part(config, part):
     if not isinstance(config, dict):
@@ -71,7 +67,7 @@ def get(*parts):
   last_part = parts[-1]
   value = get_part(config, last_part)
 
-  if isinstance(value, dict):
+  if dict_forbidden and isinstance(value, dict):
     raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
 
   try:
@@ -80,6 +76,15 @@ def get(*parts):
     pass
 
   return value
+
+def get(*parts):
+  return _get(parts, dict_forbidden=True)
+
+def get_dict(*parts):
+  d = _get(parts, dict_forbidden=False)
+  assert isinstance(d, dict)
+  return d
+
 
 def get_unvisited():
   def fix(d):

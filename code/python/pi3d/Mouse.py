@@ -2,7 +2,6 @@ import signal
 import threading
 import traceback
 
-from pi3d.util.thread.Locker import Locker
 from pi3d.util import Log
 
 LOGGER = Log.logger(__name__)

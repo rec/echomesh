@@ -7,7 +7,7 @@ import time
 
 from echomesh.base import Name
 
-from echomesh.util.thread import Locker
+from threading import Lock
 from echomesh.util.thread import Runnable
 from echomesh.util import Log
 
@@ -18,7 +18,7 @@ class Peers(Runnable.Runnable):
 
   def __init__(self, echomesh):
     super(Peers, self).__init__()
-    self.lock = Locker.Lock()
+    self.lock = Lock()
     self.echomesh = echomesh
     self.type = Peers.TYPE
     source = Name.NAME
@@ -38,7 +38,7 @@ class Peers(Runnable.Runnable):
     self._send()
 
   def new_peer(self, data):
-    with Locker.Locker(self.lock):
+    with self.lock:
       source = data['source']
       peer = self._peers.get(source, None)
       if peer != data:
@@ -49,5 +49,5 @@ class Peers(Runnable.Runnable):
           return True
 
   def get_peers(self):
-    with Locker.Locker(self.lock):
+    with self.lock:
       return copy.deepcopy(self._peers)

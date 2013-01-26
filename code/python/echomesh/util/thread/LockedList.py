@@ -1,17 +1,17 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from threading import Lock
 from echomesh.util import Log
-from echomesh.util.thread import Locker
 
 LOGGER = Log.logger(__name__)
 
 class LockedList(object):
   def __init__(self):
     self._entries = []
-    self._lock = Locker.Lock()
+    self._lock = Lock()
 
   def entries(self):
-    with Locker.Locker(self._lock):
+    with self._lock:
       return self._entries[:]
 
   def foreach(self, function):
@@ -23,11 +23,11 @@ class LockedList(object):
         raise
 
   def clear(self):
-    with Locker.Locker(self._lock):
+    with self._lock:
       self._entries.clear()
 
   def add(self, *entries):
-    with Locker.Locker(self._lock):
+    with self._lock:
       for e in entries:
         if e and e not in self._entries:
           self._entries.append(e)
@@ -37,7 +37,7 @@ class LockedList(object):
       e and e.add(self)
 
   def remove(self, *entries):
-    with Locker.Locker(self._lock):
+    with self._lock:
       for e in entries:
         try:
           self._entries.remove(e)

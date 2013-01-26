@@ -4,7 +4,7 @@ type: config
 
 audio:
   input:
-    enable: false
+    enable: true
 
   output:
     enable: false

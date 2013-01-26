@@ -22,14 +22,13 @@ MAX_CHUNK_SIZE = 2048
 class Microphone(RunnableThread.RunnableThread):
   def __init__(self, callback):
     super(Microphone, self).__init__(name='Microphone')
-    self.set_config()
     self.callback = callback
     self.previous_level_name = None
     self.errors = 0
     Config.add_client(self)
 
   def config_update(self):
-    self.levels = Levels.Levels(**Config.get('audio', 'input', 'levels'))
+    self.levels = Levels.Levels(**Config.get_dict('audio', 'input', 'levels'))
     chunk_size = Config.get('audio', 'input', 'average', 'chunk_size')
     self.chunk_size = min(max(chunk_size, MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)
     self.moving_window = Config.get('audio', 'input', 'average', 'window_size')
