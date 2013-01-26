@@ -11,18 +11,18 @@ def resolve_scope(73,1828
 def scope_file(97,2462
 
 python/echomesh/base/Config.py,281
-def add_client(20,389
-def update_clients(24,477
-def recalculate(33,651
-def is_control_program(52,1119
-def _get(56,1268
-  def get_part(58,1349
-def get(84,2032
-def get_dict(87,2092
-def get_unvisited(93,2196
-  def fix(94,2217
-def change(111,2605
-def remove_local(119,2893
+def add_client(21,431
+def update_clients(25,503
+def recalculate(29,569
+def is_control_program(48,1037
+def _get(52,1186
+  def get_part(54,1267
+def get(80,1950
+def get_dict(83,2010
+def get_unvisited(89,2114
+  def fix(90,2135
+def change(107,2523
+def remove_local(115,2811
 
 python/echomesh/base/File.py,128
 def open_userfile(9,154
@@ -30,12 +30,6 @@ def yaml_load_stream(12,240
 def yaml_load_all(15,303
 def yaml_dump_all(28,527
 def yaml_load(35,731
-
-python/echomesh/base/Lock.py,89
-class Locker(7,126
-  def __init__(8,148
-  def __enter__(11,198
-  def __exit__(14,246
 
 python/echomesh/base/Merge.py,91
 def _merge_or_diff(5,97
@@ -57,11 +51,6 @@ def ip_address(13,255
 def set_name(49,1236
 def set_project_path(53,1285
 def names(60,1411
-
-python/echomesh/base/WeakClient.py,64
-class WeakClient(7,134
-  def __init__(8,160
-  def add(13,281
 
 python/echomesh/command/Processor.py,384
 class Processor(15,322
@@ -250,12 +239,12 @@ class DataSocket(14,297
   def _send(42,1235
 
 python/echomesh/network/Peers.py,131
-class Peers(16,305
-  def __init__(19,354
-  def _send(33,781
-  def start(36,837
-  def new_peer(40,905
-  def get_peers(51,1220
+class Peers(16,299
+  def __init__(19,348
+  def _send(33,768
+  def start(36,824
+  def new_peer(40,892
+  def get_peers(51,1192
 
 python/echomesh/network/PeerSocket.py,67
 class PeerSocket(10,321
@@ -368,14 +357,14 @@ class Keyboard(16,308
 def keyboard(35,849
 
 python/echomesh/util/thread/LockedList.py,170
-class LockedList(8,179
-  def __init__(9,205
-  def entries(13,282
-  def foreach(17,370
-  def clear(25,545
-  def add(29,629
-  def add_to(35,792
-  def remove(39,869
+class LockedList(8,173
+  def __init__(9,199
+  def entries(13,269
+  def foreach(17,342
+  def clear(25,517
+  def add(29,586
+  def add_to(35,734
+  def remove(39,811
 
 python/echomesh/util/thread/Runnable.py,170
 class Runnable(7,146
@@ -774,17 +763,17 @@ class ParseMtlTest(5,62
   def test_cow(9,130
   def test_teapot(12,219
 
-python/pi3d/Mouse.py,216
-class _Mouse(10,150
-  def __init__(19,325
-  def reset(31,659
-  def start(36,781
-  def run(41,886
-  def position(46,974
-  def velocity(50,1055
-  def _check_event(54,1138
-  def stop(83,1913
-def Mouse(86,1957
+python/pi3d/Mouse.py,215
+class _Mouse(9,107
+  def __init__(18,282
+  def reset(30,616
+  def start(35,738
+  def run(40,843
+  def position(45,931
+  def velocity(49,1012
+  def _check_event(53,1095
+  def stop(82,1870
+def Mouse(85,1914
 
 python/pi3d/Shader.py,173
 def _opengl_log(11,202
@@ -1123,6 +1112,45 @@ def limit(194,5503
 def angle_vecs(197,5567
 def calc_normal(221,6120
 def rotate(228,6277
+
+python/python/weakrefset.py,1022
+class _IterationGuard(11,113
+    def __init__(17,384
+    def __enter__(21,502
+    def __exit__(27,642
+class WeakSet(36,851
+    def __init__(37,874
+        def _remove(39,935
+    def _commit_removals(53,1399
+    def __iter__(59,1549
+    def __len__(66,1749
+    def __contains__(69,1828
+    def __reduce__(72,1901
+    def add(78,2045
+    def clear(83,2189
+    def copy(88,2308
+    def pop(91,2365
+    def remove(103,2711
+    def discard(108,2847
+    def update(113,2985
+    def __ior__(122,3255
+    def _apply(127,3387
+    def difference(135,3640
+    def difference_update(139,3755
+    def __isub__(146,4005
+    def intersection(155,4267
+    def intersection_update(159,4388
+    def __iand__(163,4568
+    def issubset(169,4758
+    def __le__(173,4875
+    def issuperset(176,4966
+    def __ge__(180,5089
+    def __eq__(183,5180
+    def symmetric_difference(188,5355
+    def symmetric_difference_update(192,5500
+    def __ixor__(199,5770
+    def union(208,6042
+    def isdisjoint(212,6141
 
 python/test/MacMicTest.py,202
 def get_rms(23,622
@@ -1627,6 +1655,10 @@ python/test/PygameTest.py,0
 python/test/LoggingTest.py,0
 
 python/test/__init__.py,0
+
+python/python/weakref.py,0
+
+python/python/__init__.py,0
 
 python/pi3d/util/__init__.py,0
 
