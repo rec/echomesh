@@ -4,13 +4,10 @@ import os
 import sys
 
 from echomesh.base import Config
-Config.recalculate()
-
 from echomesh.command import Score
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.sound import Microphone
-from echomesh.sound import SetOutput
 from echomesh.util import Log
 from echomesh.util.thread import Keyboard
 from echomesh.util.thread.RunnableOwner import RunnableOwner
@@ -71,20 +68,3 @@ class Echomesh(RunnableOwner):
     from echomesh.base import File
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
-
-def startup():
-  if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
-    SetOutput.set_output(Config.get('audio', 'output', 'route'))
-    return True
-
-def shutdown():
-  if Config.get('dump_unused_configs'):
-    import yaml
-    print(yaml.safe_dump(Config.get_unvisited()))
-
-if __name__ == '__main__':
-  if startup():
-    Echomesh().start()
-    shutdown()
-  else:
-    LOGGER.info("Not autostarting because autostart=False")

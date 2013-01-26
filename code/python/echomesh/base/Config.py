@@ -30,6 +30,8 @@ def recalculate():
     CONFIG = MergeConfig.merge(args)
     CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
 
+recalculate()
+
 def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
   return get('control_program', 'enable')
