@@ -2,7 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
+from echomesh.base import CommandFile
 from echomesh.base import Config
+from echomesh.base import File
+from echomesh.base import Merge
 from echomesh.util import Log
 from echomesh.util import Subprocess
 
@@ -28,12 +31,11 @@ class Router(object):
     self.peers.new_peer(data)
 
   def config(self, msg):
-    # TODO: probably needs fixing.
-    config = msg.get('data', None)
-    if data:
-      self.echomesh.set_config(config)
-    else:
-      LOGGER.error('Empty config data received')
+    scope, new_config = msg['scope'], msg['config']
+    f = CommandFile.command_file(scope, 'config.yml')
+    File.yaml_dump_all(f, Merge.merge(File.yaml_load(f), new_config,
+                                      require_old_key=False))
+    LOGGER.info('Changing configuration for %s', scope)
 
   def event(self, event):
     self.echomesh.receive_event(event)

@@ -95,4 +95,4 @@ def resolve_scope(scope):
   return '%s%s%s' % (new_prefix, body, suffix)
 
 def scope_file(scope, *path):
-  return _command_file(resolve_scope(scope), *path)
+  return command_file(resolve_scope(scope), *path)

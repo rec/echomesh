@@ -29,7 +29,7 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
       else:
         del old[key]
 
-    else:
+    elif require_old_key:
       raise Exception('Tried to override non-dict with dict for key ' +
                       new_path)
 

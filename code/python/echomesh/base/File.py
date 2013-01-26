@@ -28,9 +28,9 @@ def yaml_load_all(fname, allow_empty=True):
 def yaml_dump_all(fname, *items):
   try:
     with closing(open_userfile(fname, 'w')) as f:
-      yaml.safe_dump_all(f, items)
-  except:
-    print("Can't write filename", fname)
+      yaml.safe_dump_all(items, f)
+  except Exception as e:
+    print("Can't write filename", fname, e.message)
 
 def yaml_load(fname, allow_empty=True):
   y = yaml_load_all(fname, allow_empty)

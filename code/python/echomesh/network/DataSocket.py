@@ -36,7 +36,7 @@ class DataSocket(RunnableOwner):
   def _receive(self):
     pckt = self.receive_socket.receive(self.timeout)
     if pckt:
-      LOGGER.info('receiving %s', pckt)
+      LOGGER.debug('receiving %s', pckt)
       self.callback(yaml.safe_load(pckt))
 
   def _send(self):
