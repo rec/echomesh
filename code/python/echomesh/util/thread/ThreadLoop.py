@@ -4,44 +4,17 @@ import threading
 import traceback
 
 from echomesh.util import Log
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.RunnableThread import RunnableThread
 
 LOGGER = Log.logger(__name__)
 
-class ThreadLoop(RunnableOwner):
-  def __init__(self, target=None, name=None,
-               report_errors_when_closed=False):
-    super(ThreadLoop, self).__init__()
+class ThreadLoop(RunnableThread):
+  def __init__(self, single_loop=None, name=None, report_error=False):
+    super(ThreadLoop, self).__init__(report_error=report_error)
     self.name = name or repr(self)
-    has_target = getattr(self, 'target', None)
-    self.report_errors_when_closed = report_errors_when_closed
-    if target:
-      assert not has_target
-      self.target = target
-    else:
-      assert has_target
+    self.single_loop = single_loop or self.single_loop
+    assert self.single_loop
 
-  def start(self):
-    if not self.is_running:
-      def loop_target():
-        try:
-          while self.is_running:
-            self.target()
-          LOGGER.debug('Loop for "%s" has finished', self.name)
-        except:
-          if self.is_running or self.report_errors_when_closed:
-            LOGGER.critical(traceback.format_exc())
-          self.stop()
-
-      super(ThreadLoop, self).start()
-      self.thread = threading.Thread(target=loop_target)
-      self.thread.start()
-
-  def join(self):
-    super(ThreadLoop, self).join()
-    LOGGER.debug('Thread join for "%s"', self.name)
-    try:
-      self.thread.join()
-    except:
-      pass  # Swallow errors!  TODO
-
+  def target(self):
+    while self.is_running:
+      self.single_loop()

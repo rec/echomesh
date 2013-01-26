@@ -10,7 +10,7 @@ class Loop(Element.Element):
       name=name,
       interval=interval,
       next_time=getattr(self, 'next_time', None),
-      loop=getattr(self, 'loop', None))
+      loop_target=getattr(self, 'loop_target', None))
 
     self.add_mutual_stop_slave(self.time_loop)
 

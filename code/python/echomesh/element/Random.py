@@ -20,7 +20,7 @@ class Random(Loop.Loop):
   def next_time(self, t):
     return t + Poisson.next_poisson(self.mean)
 
-  def loop(self, t):
+  def loop_target(self, t):
     self.element.start()
 
 Element.register(Random)

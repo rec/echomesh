@@ -5,7 +5,7 @@ import time
 
 from echomesh.command import Processor
 from echomesh.base import Config
-from echomesh.util.thread import ThreadLoop
+from echomesh.util.thread import RunnableThread
 
 MESSAGE = """
            echomesh
@@ -13,7 +13,7 @@ Type help for a list of commands
 
 """
 
-class Keyboard(ThreadLoop.ThreadLoop):
+class Keyboard(RunnableThread.RunnableThread):
   def __init__(self, sleep, message, processor, prompt='echomesh: '):
     super(Keyboard, self).__init__(name='Keyboard')
     self.sleep = sleep

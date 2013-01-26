@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 
-from echomesh.base import Config
 from echomesh.command import Score
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
@@ -46,23 +45,6 @@ class Echomesh(RunnableOwner):
 
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)
-
-  # TODO: these next methods don't work any more.
-  def remove_local(self):
-    try:
-      Config.remove_local()
-      self.microphone.set_config()
-    except OSError as e:
-      LOGGER.warn("No local file %s" % Config.LOCAL_CHANGED_FILE)
-
-    try:
-      os.remove(LOCAL_SCORE)
-    except OSError as e:
-      LOGGER.warn("No local score file %s", LOCAL_SCORE)
-
-  def set_config(self, config):
-    Config.change(config)
-    self.microphone.set_config()
 
   def set_score(self, score):
     from echomesh.base import File

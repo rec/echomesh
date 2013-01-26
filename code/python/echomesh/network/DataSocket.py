@@ -27,8 +27,8 @@ class DataSocket(RunnableOwner):
       else:
         raise
 
-    send = ThreadLoop.ThreadLoop(target=self._send, name='send')
-    receive = ThreadLoop.ThreadLoop(target=self._receive, name='receive')
+    send = ThreadLoop.ThreadLoop(single_loop=self._send, name='send')
+    receive = ThreadLoop.ThreadLoop(single_loop=self._receive, name='receive')
 
     self.add_mutual_stop_slave(self.receive_socket, self.send_socket, receive, send)
     self.send = self.queue.put

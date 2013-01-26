@@ -14,16 +14,18 @@ class Sequence(Loop.Loop):
   def _command_time(self):
     return self.commands[self.next_command].get('time', 0) + self.start_time
 
-  def _next_time(self, t):
+  def next_time(self, t):
     if self.next_command < len(self.commands):
       LOGGER.debug('Running command %d', self.next_command)
       return self._command_time()
     else:
       LOGGER.debug('Sequence finished')
+      # TODO: Bug - when the sequence starts to play the final event, it will
+      # shut down, even if the subevents have some time to go.
       self.stop()
       return 0
 
-  def _loop(self, t):
+  def loop_target(self, t):
     while self.next_command < len(self.commands) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
       self.execute_command(self.commands[self.next_command])

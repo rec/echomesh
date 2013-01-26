@@ -19,6 +19,7 @@ CLIENTS = []
 
 def add_client(client):
   CLIENTS.append(weakref.ref(client))
+  client.config_update()
 
 def update_clients():
   global CLIENTS
@@ -29,7 +30,7 @@ def update_clients():
       CLIENTS.append(c)
       cl.config_update()
 
-def recalculate():
+def recalculate(perform_update=False):
   global CONFIG, CONFIGS_UNVISITED
   # If running as root, export user pi's home directory as $HOME.
   if getpass.getuser() == 'root':
@@ -43,7 +44,8 @@ def recalculate():
 
   CONFIG = MergeConfig.merge(args)
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
-  update_clients()
+  if perform_update:
+    update_clients()
 
 recalculate()
 

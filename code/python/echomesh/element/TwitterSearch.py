@@ -27,7 +27,7 @@ class TwitterSearch(Loop.Loop):
     if self.handler:
       self.handler.handle(twitter)
 
-  def loop(self, t):
+  def loop_target(self, t):
     for s in self.searches:
       s.refresh()
 
