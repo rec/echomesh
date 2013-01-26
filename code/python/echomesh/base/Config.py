@@ -4,6 +4,7 @@ import copy
 import getpass
 import os
 import sys
+import weakref
 
 from os.path import abspath, dirname
 
@@ -14,21 +15,35 @@ from echomesh.base import Platform
 CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
+CLIENTS = []
+
+def add_client(client):
+  CLIENTS.append(weakref.ref(client))
+
+def update_clients():
+  global CLIENTS
+  old_clients, CLIENTS = CLIENTS, []
+  for c in old_clients:
+    cl = c()
+    if cl:
+      CLIENTS.append(c)
+      cl.config_update()
+
 def recalculate():
   global CONFIG, CONFIGS_UNVISITED
-  if not CONFIG:
-    # If running as root, export user pi's home directory as $HOME.
-    if getpass.getuser() == 'root':
-      os.environ['HOME'] = '/home/pi'
+  # If running as root, export user pi's home directory as $HOME.
+  if getpass.getuser() == 'root':
+    os.environ['HOME'] = '/home/pi'
 
-    local_path = ''
-    args = sys.argv[1:]
-    if args:
-      if not args[0][0] in '{[':
-        Name.set_project_path(args[0])
+  local_path = ''
+  args = sys.argv[1:]
+  if args:
+    if not args[0][0] in '{[':
+      Name.set_project_path(args[0])
 
-    CONFIG = MergeConfig.merge(args)
-    CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+  CONFIG = MergeConfig.merge(args)
+  CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+  update_clients()
 
 recalculate()
 
@@ -76,6 +91,7 @@ def get_unvisited():
   if not True:
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
+
 
 
 # The following code is all deprecated.
