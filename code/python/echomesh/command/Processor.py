@@ -36,23 +36,28 @@ class Processor(object):
   def help(self): self._usage()
 
   def config(self):
-    def error():
-      LOGGER.error('Usage: config scope command [... command] \n')
-
-    if len(self._parts) < 3:
-      return error()
+    if len(self._parts) < 2:
+      return LOGGER.error('Usage: config scope command [... command] ')
 
     try:
-      scope = CommandFile.resolve_scope(self.parts[1])
+      scope = CommandFile.resolve_scope(self._parts[1])
     except Exception as e:
-      return error(e.message)
+      return LOGGER.error(e.message)
+
+    if len(self._parts) == 2:
+      try:
+        config = open(CommandFile.command_file(scope, 'config.yml'), 'r').read()
+        LOGGER.info('\n' + config)
+      except IOError:
+        LOGGER.info('(none)')
+      return
 
     configs = []
-    for yaml in self.parts[2:]:
+    for yaml in self._parts[2:]:
       try:
         configs.extend(File.yaml_load_stream(yaml))
       except:
-        return error("Can't parse yaml argument '%s'" % yaml)
+        return Logger.error("Can't parse yaml argument '%s'" % yaml)
 
     self._remote(config=Merge.merge_all(*configs))
 

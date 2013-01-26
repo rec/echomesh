@@ -18,7 +18,7 @@ def expand(*path):
   retur = [join('command', i, *path) for i in _LEVELS]
   return retur
 
-def _command_file(*path):
+def command_file(*path):
   path = clean(*path)
   base = Name.ECHOMESH_PATH if path[0] == '4.default' else Name.PROJECT_PATH
   res = join(base, 'command', *path)
@@ -31,7 +31,7 @@ def _compute_levels():
            'global',
            'default']
   paths = ['%d.%s' % (i, p) for i, p in enumerate(paths)]
-  paths[4] = _command_file(paths[4])
+  paths[4] = command_file(paths[4])
   return paths
 
 _LEVELS = _compute_levels()
@@ -73,7 +73,7 @@ _SCOPES = ['local', 'name', 'platform', 'global', 'default']
 def resolve_scope(scope):
   match = _SCOPE_RE.match(scope)
   if not scope:
-    raise Exception("Didn't match: '%s'", scope)
+    raise Exception("Didn't match: '%s'" % scope)
 
   prefix, body, suffix = match.groups()
   if body not in _SCOPES:
@@ -92,7 +92,7 @@ def resolve_scope(scope):
   elif suffix:
     raise Exception("Name not needed for %s" % body)
 
-  return '%s%s%s' % new_prefix, body, suffix
+  return '%s%s%s' % (new_prefix, body, suffix)
 
 def scope_file(scope, *path):
   return _command_file(resolve_scope(scope), *path)
