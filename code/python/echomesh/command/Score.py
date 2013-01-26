@@ -28,7 +28,7 @@ class OldScore(RunnableOwner):
 
   # TODO: where does this code go?
   def receive_event(self, event):
-    event_type = event.get('subtype', None)
+    event_type = event.get('event_type', None)
     if event_type:
       for handler in self.handlers.get(event_type, []):
         handler.handle(event)

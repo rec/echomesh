@@ -36,7 +36,7 @@ class Echomesh(RunnableOwner):
   def send(self, **data):
     self.socket.send(data)
 
-  def receive(self, event):
+  def receive_event(self, event):
     return self.score.receive_event(event)
 
   def start(self):

@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.base import CommandFile
-from echomesh.base import Config
 from echomesh.base import File
 from echomesh.base import Merge
 from echomesh.util import Log

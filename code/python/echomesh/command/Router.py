@@ -23,6 +23,11 @@ class Router(object):
   def __init__(self, echomesh, peers):
     self.echomesh = echomesh
     self.peers = peers
+    Config.add_client(self)
+
+  def config_update(self):
+    self.control_program = Config.get('control_program', 'enable')
+    self.allow_shutdown = Config.get('allow_shutdown')
 
   def clear(self, data):
     self.echomesh.remove_local()
@@ -41,7 +46,7 @@ class Router(object):
     self.echomesh.receive_event(event)
 
   def halt(self, data):
-    if not Config.is_control_program():
+    if not self.is_control_program:
       LOGGER.info('Quitting');
       self.echomesh.stop()
 
@@ -69,7 +74,7 @@ class Router(object):
     self._error(data)
 
   def stop(self, data):
-    if not Config.is_control_program():
+    if not self.is_control_program:
       self.echomesh.stop()
 
   def _error(self, data):
@@ -77,7 +82,7 @@ class Router(object):
 
   def _close_and_run(self, msg, cmd):
     LOGGER.info(msg)
-    if (not Config.is_control_program() and Config.get('allow_shutdown')):
+    if self.allow_shutdown and not self.control_program:
       Subprocess.run(cmd)
       self.halt(cmd)
 
