@@ -33,6 +33,9 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
       raise Exception('Tried to override non-dict with dict for key ' +
                       new_path)
 
+    elif is_merge:
+      old[key] = new_v
+
   return old
 
 def merge(old, new, require_old_key=True):

@@ -37,7 +37,6 @@ class Processor(object):
   def help(self): self._usage()
 
   def config(self):
-    # TODO: special case for local
     if len(self._parts) < 2:
       return LOGGER.error('Usage: config scope command [... command] ')
 
@@ -60,7 +59,14 @@ class Processor(object):
     except:
       return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 
-    self._remote(scope=scope, config=Merge.merge_all(*configs))
+    config = Merge.merge_all(*configs)
+    if '0.local' in scope:
+      self._echomesh.socket.router({'type': 'config', 'config': config,
+                                    'scope': scope})
+    elif '4.default' in scope:
+      LOGGER.error("Can't make changes to default scope")
+    else:
+      self._remote(scope=scope, config=config)
 
   def nodes(self):
     for peer in self._echomesh.peers.get_peers().itervalues():

@@ -11,9 +11,10 @@ class PeerSocket(RunnableOwner):
   def __init__(self, echomesh):
     super(PeerSocket, self).__init__()
     self.peers = Peers.Peers(echomesh)
-    self.socket = DataSocket.DataSocket(Config.get('discovery', 'port'),
-                                        Config.get('discovery', 'timeout'),
-                                        Router.router(echomesh, self.peers))
+    self.router = Router.router(echomesh, self.peers)
+    port = Config.get('discovery', 'port')
+    timeout = Config.get('discovery', 'timeout')
+    self.socket = DataSocket.DataSocket(port, timeout, self.router)
 
     self.add_slave(self.peers)
     self.add_mutual_stop_slave(self.socket)
