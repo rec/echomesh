@@ -1,7 +1,9 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
 from contextlib import closing
-from os.path import abspath, dirname
+from os.path import abspath, dirname, expanduser
+
+import os
 import platform
 import socket
 import sys
@@ -42,10 +44,18 @@ NAME = platform.uname()[1]
 
 CODE_PATH = abspath(sys.path[0])
 ECHOMESH_PATH = dirname(dirname(CODE_PATH))
+PROJECT_PATH = ECHOMESH_PATH
 
 def set_name(name):
   global NAME
   NAME = name
+
+def set_project_path(path):
+  path = abspath(expanduser(path))
+  os.chdir(path)
+
+  global PROJECT_PATH
+  PROJECT_PATH = path
 
 def names():
   return MAC_ADDRESS, IP_ADDRESS, NAME

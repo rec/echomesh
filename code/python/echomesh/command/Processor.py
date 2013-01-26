@@ -2,9 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
+from echomesh.base import CommandFile
 from echomesh.base import Config
-from echomesh.util import Log
 from echomesh.base import File
+from echomesh.util import Log
 
 from gittwit.git import Git
 
@@ -35,27 +36,25 @@ class Processor(object):
   def help(self): self._usage()
 
   def config(self):
-    # TODO: badly needs fixing.
-    filename = self._parts[1]
-    config = File.yaml_load_all(filename)
-    if config:
-      self._echomesh.send(type='config', data=config)
-    else:
-      LOGGER.error("Didn't get any data from file %s", filename)
+    def error():
+      LOGGER.error('Usage: config scope command [... command] \n')
 
-  def commit(self):
-    # TODO: fix
-    _UPDATE_GIT = (
-      ('add', 'config/config.yml'),
-      ('commit', '-m', '"Automatic checkin of config file"'),
-      #  ('push', 'origin', 'master'),
-      )
+    if len(self._parts) < 3:
+      return error()
 
-    LOGGER.info('Committing changes to the configuration')
-    if Git.run_git_commands(*_UPDATE_GIT):
-      LOGGER.info('Changes committed')
-    else:
-      LOGGER.info('Changes were NOT committed')
+    try:
+      scope = CommandFile.resolve_scope(self.parts[1])
+    except Exception as e:
+      return error(e.message)
+
+    configs = []
+    for yaml in self.parts[2:]:
+      try:
+        configs.extend(File.yaml_load_stream(yaml))
+      except:
+        return error("Can't parse yaml argument '%s'" % yaml)
+
+    self._remote(config=Merge.merge_all(*configs))
 
   def nodes(self):
     for peer in self._echomesh.peers.get_peers().itervalues():
@@ -65,8 +64,8 @@ class Processor(object):
     LOGGER.info('quitting')
     return True
 
-  def _remote(self):
-    self._echomesh.send(type=self._cmd)
+  def _remote(self, **kwds):
+    self._echomesh.send(type=self._cmd, **kwds)
 
   def _usage(self, *errors):
     if errors:

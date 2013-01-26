@@ -136,10 +136,17 @@
 >>> wr.select(50 * s)
 5
 
+>> resolve_scope('abc')
+
+>> resolve_scope('local')
+
+
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.base.CommandFile import resolve_scope
 from echomesh.base import Merge
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope

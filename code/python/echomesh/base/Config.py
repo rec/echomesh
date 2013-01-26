@@ -8,6 +8,7 @@ import sys
 from os.path import abspath, dirname
 
 from echomesh.base import MergeConfig
+from echomesh.base import Name
 from echomesh.base import Platform
 
 CONFIG = None
@@ -24,7 +25,7 @@ def recalculate():
     args = sys.argv[1:]
     if args:
       if not args[0][0] in '{[':
-        os.chdir(args.pop(0))
+        Name.set_project_path(args[0])
 
     CONFIG = MergeConfig.merge(args)
     CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
@@ -90,4 +91,3 @@ def remove_local():
   os.remove(_config_file('local'))
   global CONFIG
   CONFIG = recalculate()
-

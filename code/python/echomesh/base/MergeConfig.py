@@ -17,6 +17,7 @@ def _merge_level_files():
       raise Exception('Error in configuration file %s' % f)
 
     if config is None:
+      assert cfg, "Unabled to read default config file %s" % f
       config = cfg
     else:
       try:
@@ -28,16 +29,17 @@ def _merge_level_files():
 
 def _merge_command_line_arguments(args, config):
   for i, arg in enumerate(args):
-    try:
-      cfgs = File.yaml_load_stream(arg)
-    except:
-      raise Exception('Error in command line argument %d: "%s"' % (i, arg))
+    if i:
+      try:
+        cfgs = File.yaml_load_stream(arg)
+      except:
+        raise Exception('Error in command line argument %d: "%s"' % (i, arg))
 
-    try:
-      Merge.merge_all(config, *cfgs)
-    except Exception as e:
-      _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
-      raise
+      try:
+        Merge.merge_all(config, *cfgs)
+      except Exception as e:
+        _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
+        raise
   return config
 
 def merge(args):
