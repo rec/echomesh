@@ -5,6 +5,7 @@ import time
 from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.base import File
+from echomesh.base import Merge
 from echomesh.util import Log
 
 from gittwit.git import Git
@@ -52,12 +53,11 @@ class Processor(object):
         LOGGER.info('(none)')
       return
 
-    configs = []
-    for yaml in self._parts[2:]:
-      try:
-        configs.extend(File.yaml_load_stream(yaml))
-      except:
-        return Logger.error("Can't parse yaml argument '%s'" % yaml)
+    try:
+      parts = ' '.join(self._parts[2:])
+      configs = File.yaml_load_stream(parts)
+    except:
+      return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 
     self._remote(config=Merge.merge_all(*configs))
 
