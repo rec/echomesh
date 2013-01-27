@@ -4,21 +4,41 @@ import pyaudio
 
 PYAUDIO = pyaudio.PyAudio()
 
-def get_index(is_input, name=None):
-  if not name:
-    if is_input:
-      info = PYAUD.get_default_input_device_info()
-    else:
-      info = PYAUD.get_default_output_device_info()
-    return info['index']
+INPUT, OUTPUT = True, False
 
+def get_default_device(is_input):
+  if is_input:
+    return PYAUDIO.get_default_input_device_info()
+  else:
+    return PYAUDIO.get_default_output_device_info()
+
+def get_default_index(is_input):
+  return get_default_device(is_input)['index']
+
+def get_index_from_name(is_input, name):
+  name = name.lower()
   inout_field = 'maxInputChannels' if is_input else 'maxOutputChannels'
   for i in range(PYAUDIO.get_device_count()):
     info = PYAUDIO.get_device_info_by_index(i)
-    if info['name'].startswith(name) and info[inout_field]:
+    if info['name'].lower().startswith(name) and info[inout_field]:
       return i
 
   return -1
+
+def get_index(is_input, name, index):
+  if name:
+    name_index = get_index_from_name(is_input, name)
+    if name_index >= 0:
+      return name_index
+  if index >= 0:
+    return index
+  return get_default_index(is_input)
+
+def get_input_index(name, index):
+  return get_index(True, name, index)
+
+def get_output_index(name, index):
+  return get_index(False, name, index)
 
 
 def stop():

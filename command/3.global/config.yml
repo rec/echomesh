@@ -1,1 +1,2 @@
 score: {file: global/audio.yml}
+audio: {input: {name: ak5370}}

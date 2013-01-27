@@ -7,6 +7,7 @@ from echomesh.base import Config
 from echomesh.base import Platform
 from echomesh.sound import Input
 from echomesh.sound import Levels
+from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util.math import Average
 from echomesh.util.thread import RunnableThread
@@ -20,6 +21,8 @@ MIN_CHUNK_SIZE = 16
 MAX_CHUNK_SIZE = 2048
 
 class Microphone(RunnableThread.RunnableThread):
+  COMPARE_ATTRIBUTES = 'index', 'name', 'rate', 'sample_bytes'
+
   def __init__(self, callback):
     super(Microphone, self).__init__(name='Microphone')
     self.callback = callback
@@ -27,19 +30,24 @@ class Microphone(RunnableThread.RunnableThread):
     self.errors = 0
     Config.add_client(self)
 
-  def config_update(self):
-    self.levels = Levels.Levels(**Config.get_dict('audio', 'input', 'levels'))
-    chunk_size = Config.get('audio', 'input', 'average', 'chunk_size')
+  def config_update(self, get):
+    def state():
+      return [getattr(self, a, 0) for a in Microphone.COMPARE_ATTRIBUTES]
+    old = state()
+    chunk_size = get('audio', 'input', 'average', 'chunk_size')
     self.chunk_size = min(max(chunk_size, MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)
-    self.moving_window = Config.get('audio', 'input', 'average', 'window_size')
-    self.grouped_window = Config.get('audio', 'input', 'average', 'group_size')
-    self.rate = Config.get('audio', 'input', 'sample_rate')
-    self.use_default = Config.get('audio', 'input', 'use_default_channel')
-    self.sample_bytes = Config.get('audio', 'input', 'sample_bytes')
-    self.verbose = Config.get('audio', 'input', 'verbose')
-    self.name = Config.get('audio', 'input', 'name')
-    self.index = Config.get('audio', 'input', 'index')
-    # TODO: restart the py_audio_stream.
+    self.grouped_window = get('audio', 'input', 'average', 'group_size')
+    self.index = Sound.get_input_index(get('audio', 'input', 'name'),
+                                       get('audio', 'input', 'index'))
+    self.levels = Levels.Levels(**get('audio', 'input', 'levels'))
+    self.moving_window = get('audio', 'input', 'average', 'window_size')
+    self.name = get('audio', 'input', 'name')
+    self.rate = get('audio', 'input', 'sample_rate')
+    self.sample_bytes = get('audio', 'input', 'sample_bytes')
+    self.verbose = get('audio', 'input', 'verbose')
+    if self.is_running and state() != old:
+      # TODO: restart the py_audio_stream.
+      pass
 
   def reset_levels(self):
     self.level = -100.0

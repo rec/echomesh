@@ -22,7 +22,6 @@ audio:
     periodsize: 160
     sample_bytes: 2
     sample_rate: 4000
-    use_default_channel: true
     verbose: false
 
     levels:
@@ -33,7 +32,7 @@ audio:
 
   output:
     device: 0
-    enable: false
+    enable: true
     route: audio
     use_aplay: false
 

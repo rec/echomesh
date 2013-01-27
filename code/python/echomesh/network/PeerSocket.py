@@ -33,9 +33,9 @@ class PeerSocket(RunnableOwner):
     self.add_mutual_stop_slave(self.socket)
     self.socket.start()
 
-  def config_update(self):
-    self.port, old_port = Config.get('discovery', 'port'), self.port
-    self.timeout = Config.get('discovery', 'timeout')
+  def config_update(self, get):
+    self.port, old_port = get('discovery', 'port'), self.port
+    self.timeout = get('discovery', 'timeout')
     if self.is_running and self.socket:
       if port == old_port:
         self.socket.timeout = timeout

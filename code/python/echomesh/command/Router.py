@@ -25,9 +25,9 @@ class Router(object):
     self.peers = peers
     Config.add_client(self)
 
-  def config_update(self):
-    self.control_program = Config.get('control_program', 'enable')
-    self.allow_shutdown = Config.get('allow_shutdown')
+  def config_update(self, get):
+    self.control_program = get('control_program', 'enable')
+    self.allow_shutdown = get('allow_shutdown')
 
   def clear(self, data):
     self.echomesh.remove_local()

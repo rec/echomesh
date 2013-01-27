@@ -4,7 +4,6 @@ import copy
 import getpass
 import os
 import sys
-import weakref
 
 from os.path import abspath, dirname
 from python.weakref import WeakSet
@@ -20,11 +19,11 @@ CLIENTS = WeakSet()
 
 def add_client(client):
   CLIENTS.add(client)
-  client.config_update()
+  client.config_update(get)
 
 def update_clients():
   for c in CLIENTS:
-    cl.config_update()
+    cl.config_update(get)
 
 def recalculate(perform_update=False):
   global CONFIG, CONFIGS_UNVISITED
@@ -49,7 +48,7 @@ def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
   return get('control_program', 'enable')
 
-def _get(parts, dict_forbidden):
+def get(*parts):
   config, unvisited = CONFIG, CONFIGS_UNVISITED
   def get_part(config, part):
     if not isinstance(config, dict):
@@ -67,24 +66,12 @@ def _get(parts, dict_forbidden):
   last_part = parts[-1]
   value = get_part(config, last_part)
 
-  if dict_forbidden and isinstance(value, dict):
-    raise Exception("Didn't reach leaf configuration for %s" % ':'.join(parts))
-
   try:
     del unvisited[last_part]
   except:
     pass
 
   return value
-
-def get(*parts):
-  return _get(parts, dict_forbidden=True)
-
-def get_dict(*parts):
-  d = _get(parts, dict_forbidden=False)
-  assert isinstance(d, dict)
-  return d
-
 
 def get_unvisited():
   def fix(d):
@@ -98,21 +85,3 @@ def get_unvisited():
   if not True:
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
-
-
-
-# The following code is all deprecated.
-# TODO: find a better way to broadcast persistent changes to all the nodes.
-
-def change(config):
-  File.yaml_dump_all(LOCAL_CHANGED_FILE, config)
-  Merge.merge_into(CONFIG, File.yaml_load(sys.argv[1]))
-
-
-# TODO: a "clear" command that undoes the "change" command.  A tiny bit tricky,
-# because we'd have to revert the main config to its original value "in place".
-
-def remove_local():
-  os.remove(_config_file('local'))
-  global CONFIG
-  CONFIG = recalculate()
