@@ -29,6 +29,8 @@ MAX_DEVICE_NUMBERS = 8
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
+# TODO: config client
+
 def interleave(left, right):
   """Convert two mono sources into one stereo source."""
   return numpy.ravel(numpy.vstack((left, right)), order='F')

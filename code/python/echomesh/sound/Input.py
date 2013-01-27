@@ -5,9 +5,10 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 MAX_INPUT_DEVICES = 6
+TRY_ALL_DEVICES = False
 
 # TODO: a better way to identify that stream.
-def get_pyaudio_stream(rate, use_default, sample_bytes):
+def get_pyaudio_stream(name, index, rate, sample_bytes):
   import pyaudio
 
   pyaud = pyaudio.PyAudio()
@@ -21,13 +22,13 @@ def get_pyaudio_stream(rate, use_default, sample_bytes):
   def _make_stream(i):
     stream = pyaud.open(format=format, channels=1, rate=rate,
                         input_device_index=i, input=True)
-    LOGGER.info('Opened pyaudio stream %d', i)
+
+    LOGGER.info('Opened pyaudio stream %s',
+                pyaud.get_device_info_by_index(i)['name'])
     return stream
 
-  if use_default:
-    index = pyaud.get_default_input_device_info()['index']
-    return _make_stream(index)
-  else:
+  if TRY_ALL_DEVICES:
+  # Consider removing this.
     for i in range(MAX_INPUT_DEVICES):
       try:
         stream = _make_stream(i)
@@ -35,6 +36,21 @@ def get_pyaudio_stream(rate, use_default, sample_bytes):
       except:
         pass
 
+  if index is None:
+    if name:
+      for i in range(pyaudio.get_device_count()):
+        if pyaud.get_device_info_by_index(i)['name'].startswith(name):
+          index = i
+          break
+      else:
+        LOGGER.error("Didn't find audio input device named %s", name)
+
+    if index is None:
+      index = pyaud.get_default_input_device_info()['index']
+  return _make_stream(index)
+
+
+  else:
   LOGGER.error("Couldn't create pyaudio input stream %d", rate)
 
 def get_mic_level(data, length=-1, dtype=None):

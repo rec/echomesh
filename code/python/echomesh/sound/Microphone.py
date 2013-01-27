@@ -4,10 +4,10 @@ import time
 import traceback
 
 from echomesh.base import Config
+from echomesh.base import Platform
 from echomesh.sound import Input
 from echomesh.sound import Levels
 from echomesh.util import Log
-from echomesh.base import Platform
 from echomesh.util.math import Average
 from echomesh.util.thread import RunnableThread
 
