@@ -31,7 +31,8 @@ audio:
       loud: 0
 
   output:
-    device: 0
+    name: ''
+    index: -1
     enable: true
     route: audio
     use_aplay: false

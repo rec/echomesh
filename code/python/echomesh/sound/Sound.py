@@ -25,7 +25,10 @@ def get_index_from_name(is_input, name):
 
   return -1
 
-def get_index(is_input, name, index):
+def get_index(is_input, get):
+  inout = 'input' if is_input else 'output'
+  name = get('audio', inout, 'name')
+  index = get('audio', inout, 'index')
   if name:
     name_index = get_index_from_name(is_input, name)
     if name_index >= 0:
@@ -34,12 +37,8 @@ def get_index(is_input, name, index):
     return index
   return get_default_index(is_input)
 
-def get_input_index(name, index):
-  return get_index(True, name, index)
+def get_input_index(get):
+  return get_index(True, get)
 
-def get_output_index(name, index):
-  return get_index(False, name, index)
-
-
-def stop():
-  PYAUDIO.terminate()
+def get_output_index(get):
+  return get_index(False, get)

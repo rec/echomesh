@@ -37,8 +37,7 @@ class Microphone(RunnableThread.RunnableThread):
     chunk_size = get('audio', 'input', 'average', 'chunk_size')
     self.chunk_size = min(max(chunk_size, MIN_CHUNK_SIZE), MAX_CHUNK_SIZE)
     self.grouped_window = get('audio', 'input', 'average', 'group_size')
-    self.index = Sound.get_input_index(get('audio', 'input', 'name'),
-                                       get('audio', 'input', 'index'))
+    self.index = Sound.get_input_index(get)
     self.levels = Levels.Levels(**get('audio', 'input', 'levels'))
     self.moving_window = get('audio', 'input', 'average', 'window_size')
     self.name = get('audio', 'input', 'name')
