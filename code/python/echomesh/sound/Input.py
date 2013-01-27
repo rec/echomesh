@@ -22,21 +22,11 @@ def get_pyaudio_stream(name, index, rate, sample_bytes):
   def _make_stream(i):
     stream = pyaud.open(format=format, channels=1, rate=rate,
                         input_device_index=i, input=True)
-
     LOGGER.info('Opened pyaudio stream %s',
                 pyaud.get_device_info_by_index(i)['name'])
     return stream
 
-  if TRY_ALL_DEVICES:
-  # Consider removing this.
-    for i in range(MAX_INPUT_DEVICES):
-      try:
-        stream = _make_stream(i)
-        return stream
-      except:
-        pass
-
-  if index is None:
+  if index < 0:
     if name:
       for i in range(pyaudio.get_device_count()):
         if pyaud.get_device_info_by_index(i)['name'].startswith(name):
@@ -44,14 +34,9 @@ def get_pyaudio_stream(name, index, rate, sample_bytes):
           break
       else:
         LOGGER.error("Didn't find audio input device named %s", name)
-
-    if index is None:
+    if index < 0:
       index = pyaud.get_default_input_device_info()['index']
   return _make_stream(index)
-
-
-  else:
-  LOGGER.error("Couldn't create pyaudio input stream %d", rate)
 
 def get_mic_level(data, length=-1, dtype=None):
   import analyse
@@ -62,3 +47,14 @@ def get_mic_level(data, length=-1, dtype=None):
 
   samps = numpy.fromstring(data, dtype=dtype, count=length)
   return analyse.loudness(samps)
+
+
+def try_all_devices():
+  # consider removing this.
+  for i in range(MAX_INPUT_DEVICES):
+    try:
+      stream = _make_stream(i)
+      return stream
+    except:
+      pass
+

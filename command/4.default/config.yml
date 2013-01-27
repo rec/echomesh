@@ -17,8 +17,8 @@ audio:
       window_size: 0
     enable: true
     frames_per_buffer: 4096
-    name: None
-    index: None
+    name: ''
+    index: -1
     periodsize: 160
     sample_bytes: 2
     sample_rate: 4000
