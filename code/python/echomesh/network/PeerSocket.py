@@ -11,14 +11,36 @@ class PeerSocket(RunnableOwner):
   def __init__(self, echomesh):
     super(PeerSocket, self).__init__()
     self.peers = Peers.Peers(echomesh)
-    self.router = Router.router(echomesh, self.peers)
-    port = Config.get('discovery', 'port')
-    timeout = Config.get('discovery', 'timeout')
-    self.socket = DataSocket.DataSocket(port, timeout, self.router)
-
     self.add_slave(self.peers)
-    self.add_mutual_stop_slave(self.socket)
+    self.port = -1
+    self.socket = None
+    self.router = Router.router(echomesh, self.peers)
+
+    Config.add_client(self)
 
   def send(self, data):
-    data['source'] = Name.NAME
-    self.socket.send(data)
+    if self.is_running:
+      data['source'] = Name.NAME
+      self.socket.send(data)
+
+  def start(self):
+    if not self.socket:
+      self._make_socket()
+    super(PeerSocket, self).start()
+
+  def _make_socket(self):
+    self.socket = DataSocket.DataSocket(self.port, self.timeout, self.router)
+    self.add_mutual_stop_slave(self.socket)
+    self.socket.start()
+
+  def config_update(self):
+    self.port, old_port = Config.get('discovery', 'port'), self.port
+    self.timeout = Config.get('discovery', 'timeout')
+    if self.is_running and self.socket:
+      if port == old_port:
+        self.socket.timeout = timeout
+      else:
+        self.port = port
+        self.remove_slave(self.socket)
+        self.socket.stop()
+        self._make_socket()

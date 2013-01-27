@@ -3,7 +3,6 @@ import socket
 import time
 import yaml
 
-from echomesh.base import Config
 from echomesh.network import BroadcastSocket
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop

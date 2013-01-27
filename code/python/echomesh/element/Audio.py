@@ -15,4 +15,6 @@ class Audio(Element.Element):
     else:
       LOGGER.info('Playing audio')
 
+# TODO: config client.
+
 Element.register(Audio)

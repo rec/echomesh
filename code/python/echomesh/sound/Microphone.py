@@ -36,6 +36,7 @@ class Microphone(RunnableThread.RunnableThread):
     self.rate = Config.get('audio', 'input', 'sample_rate')
     self.use_default = Config.get('audio', 'input', 'use_default_channel')
     self.sample_bytes = Config.get('audio', 'input', 'sample_bytes')
+    self.verbose = Config.get('audio', 'input', 'verbose')
     # TODO: restart the py_audio_stream.
 
   def reset_levels(self):
@@ -52,7 +53,7 @@ class Microphone(RunnableThread.RunnableThread):
     for level in average:
       if not self.is_running:
         return
-      if Config.get('audio', 'input', 'verbose'):
+      if self.verbose:
         LOGGER.info('%s: %.2f', self.levels.name(level), level)
 
       level_name = self.levels.name(level)
