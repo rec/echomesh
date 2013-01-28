@@ -10,7 +10,6 @@ from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util.math import Envelope
 from echomesh.util import Log
-from echomesh.util.file import DefaultFile
 from echomesh.util import Subprocess
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
@@ -102,7 +101,7 @@ class FilePlayer(ThreadLoop):
     else:
       return Util.uninterleave(frames)
 
-  def one_loop(self):
+  def single_loop(self):
     frames = self.file_stream.readframes(self.chunk_size)
     if not frames:
       self.loop_number += 1
@@ -157,4 +156,10 @@ def play(**keywords):
   if 'type' in keywords:
     del keywords['type']
   aplay = Config.get('audio', 'output', 'use_aplay')
-  return (Util.play_with_aplay if aplay else FilePlayer)(**keywords)
+  if aplay:
+    return Util.play_with_aplay(**keywords)
+
+  try:
+    FilePlayer(**keywords)
+  except Exception as e:
+    LOGGER.error(e.message)

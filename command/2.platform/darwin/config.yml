@@ -2,13 +2,6 @@
 
 type: config
 
-audio:
-  input:
-    enable: true
-
-  output:
-    enable: false
-
 control_program:
   enable: true
 

@@ -6,7 +6,9 @@ import numpy
 import sunau
 import wave
 
+from echomesh.util import Log
 from echomesh.util import Subprocess
+from echomesh.util.file import DefaultFile
 
 LOGGER = Log.logger(__name__)
 

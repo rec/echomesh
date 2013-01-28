@@ -13,7 +13,7 @@ class Audio(Element.Element):
       from echomesh.sound import FilePlayer
       self.add_mutual_stop_slave(FilePlayer.play(**description))
     else:
-      LOGGER.info('Playing audio')
+      LOGGER.debug('Audio disabled for %s', description.get('file', None))
 
 # TODO: config client.
 
