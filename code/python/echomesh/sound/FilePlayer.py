@@ -25,7 +25,7 @@ MAX_DEVICE_NUMBERS = 8
 class FilePlayer(ThreadLoop):
   def __init__(self, file, level=1, pan=0, loops=1):
     super(FilePlayer, self).__init__(name='FilePlayer')
-
+    self.file = file
     self.debug = True
     self.passthrough = (level == 1 and pan == 0)
 
@@ -61,14 +61,18 @@ class FilePlayer(ThreadLoop):
 
   def open_stream(self):
     try:
-      return Sound.PYAUDIO.open(format=self.format,
-                                channels=self.request_channels,
-                                rate=self.sampling_rate,
-                                output=True,
-                                output_device_index=self.index,
-                                frames_per_buffer=self.frames_per_buffer)
+      stream =  Sound.PYAUDIO.open(format=self.format,
+                                   channels=self.request_channels,
+                                   rate=self.sampling_rate,
+                                   output=True,
+                                   output_device_index=self.index,
+                                   frames_per_buffer=self.frames_per_buffer)
     except:
-      pass
+      LOGGER.error('FAILED to open %s on port %s', self.file,
+                   Sound.get_device_info(self.index)['name'])
+    else:
+      LOGGER.info('Opened %s on port %s', self.file,
+                  Sound.get_device_info(self.index)['name'])
 
   def restart_sound(self):
     self._close_stream()

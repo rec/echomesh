@@ -42,3 +42,5 @@ def get_input_index(get):
 
 def get_output_index(get):
   return get_index(False, get)
+
+get_device_info = PYAUDIO.get_device_info_by_index
