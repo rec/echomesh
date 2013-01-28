@@ -36,6 +36,8 @@ audio:
     enable: true
     route: audio
     use_aplay: false
+    frames_per_buffer: 1024
+    chunk_size: 1024
 
 control_program:
   enable: true

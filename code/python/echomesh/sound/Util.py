@@ -12,7 +12,7 @@ from echomesh.util.file import DefaultFile
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('assets/audio')
+DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
 
 FILE_READERS = {'au': sunau, 'aifc': aifc, 'aiff': aifc, 'wav': wave}
 NUMPY_TYPES = {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}

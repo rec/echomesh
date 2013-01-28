@@ -21,7 +21,7 @@ BACKGROUND = Config.get('pi3d', 'background')
 
 DISPLAY = Display.create(False, *DIMENSIONS, background=BACKGROUND)
 
-DEFAULT_IMAGE_DIRECTORY = DefaultFile.DefaultFile('assets/image')
+DEFAULT_IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
 PI3D_DISPLAY = None
 DO_PRELOAD = not True

@@ -162,4 +162,4 @@ def play(**keywords):
   try:
     FilePlayer(**keywords)
   except Exception as e:
-    LOGGER.error(e.message)
+    LOGGER.error(e)
