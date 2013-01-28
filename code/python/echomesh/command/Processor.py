@@ -5,6 +5,7 @@ import time
 from echomesh.base import CommandFile
 from echomesh.base import File
 from echomesh.base import Merge
+from echomesh.sound import Sound
 from echomesh.util import Log
 
 from gittwit.git import Git
@@ -34,6 +35,7 @@ class Processor(object):
   def stop(self): self._remote()
   def update(self): self._remote()
   def help(self): self._usage()
+  def sound(self): Sound.list_ports()
 
   def config(self):
     if len(self._parts) < 2:

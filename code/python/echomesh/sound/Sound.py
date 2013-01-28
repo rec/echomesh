@@ -6,6 +6,10 @@ PYAUDIO = pyaudio.PyAudio()
 
 INPUT, OUTPUT = True, False
 
+def devices():
+  for i in range(PYAUDIO.get_device_count()):
+    yield PYAUDIO.get_device_info_by_index(i)
+
 def get_default_device(is_input):
   if is_input:
     return PYAUDIO.get_default_input_device_info()
@@ -18,10 +22,9 @@ def get_default_index(is_input):
 def get_index_from_name(is_input, name):
   name = name.lower()
   inout_field = 'maxInputChannels' if is_input else 'maxOutputChannels'
-  for i in range(PYAUDIO.get_device_count()):
-    info = PYAUDIO.get_device_info_by_index(i)
-    if info['name'].lower().startswith(name) and info[inout_field]:
-      return i
+  for d in devices():
+    if d['name'].lower().startswith(name) and d[inout_field]:
+      return d['index']
 
   return -1
 
@@ -44,3 +47,11 @@ def get_output_index(get):
   return get_index(False, get)
 
 get_device_info = PYAUDIO.get_device_info_by_index
+
+LIST_FORMAT = ('{index}: {name:24}: {maxInputChannels} in, ' +
+               '{maxOutputChannels} out at {defaultSampleRate}Hz')
+
+def list_ports(print=print):
+  for d in devices():
+    print(LIST_FORMAT.format(**d))
+
