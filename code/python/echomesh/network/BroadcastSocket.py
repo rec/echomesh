@@ -8,14 +8,14 @@ import sys
 import time
 
 from echomesh.base import Platform
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 DEFAULT_PORT = 1248
 DEFAULT_BUFFER_SIZE = 1024
 
 USAGE = '%s read | write' % sys.argv[0]
 
-class Socket(RunnableOwner):
+class Socket(MasterRunnable):
   def __init__(self, port):
     super(Socket, self).__init__()
     self.port = port

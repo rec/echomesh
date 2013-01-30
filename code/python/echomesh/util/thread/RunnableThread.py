@@ -4,11 +4,11 @@ import threading
 import traceback
 
 from echomesh.util import Log
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class RunnableThread(RunnableOwner):
+class RunnableThread(MasterRunnable):
   def __init__(self, target=None, name=None, report_error=False):
     super(RunnableThread, self).__init__()
     self.name = name or repr(self)

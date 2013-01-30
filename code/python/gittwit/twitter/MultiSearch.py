@@ -1,10 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util import Log
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 from gittwit.twitter.Search import Loop
 
-class MultiSearch(RunnableOwner):
+class MultiSearch(MasterRunnable):
   def __init__(self, callback, interval=2, preload=1, name='MultiSearch'):
     super(MultiSearch, self).__init__()
     self.callback = callback

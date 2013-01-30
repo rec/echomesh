@@ -9,11 +9,11 @@ from echomesh.network import PeerSocket
 from echomesh.sound import Microphone
 from echomesh.util import Log
 from echomesh.util.thread import Keyboard
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class Echomesh(RunnableOwner):
+class Echomesh(MasterRunnable):
   INSTANCE = None
 
   def __init__(self):

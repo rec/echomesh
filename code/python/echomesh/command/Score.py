@@ -7,11 +7,11 @@ from echomesh.base import Name
 from echomesh.element import Load
 from echomesh.element import Make
 from echomesh.util import Log
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class OldScore(RunnableOwner):
+class OldScore(MasterRunnable):
   def __init__(self, scorefile, parent=None):
     super(OldScore, self).__init__()
     self.parent = parent
@@ -41,3 +41,11 @@ def make_score():
   score.start()
   return score
 
+"""
+
+When a handler starts, it goes up the parent tree until it finds a parent with
+an add_handler method, stores that parent, and then calls the method.
+
+When the handler ends, it
+
+"""

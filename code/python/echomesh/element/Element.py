@@ -1,12 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util import Log
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.Registry import Registry
 
 LOGGER = Log.logger(__name__)
 
-class Element(RunnableOwner):
+class Element(MasterRunnable):
   def __init__(self, parent, description):
     super(Element, self).__init__()
     self.parent = parent

@@ -6,9 +6,9 @@ from echomesh.util.thread.Runnable import Runnable
 
 LOGGER = Log.logger(__name__)
 
-class RunnableOwner(Runnable):
+class MasterRunnable(Runnable):
   def __init__(self):
-    super(RunnableOwner, self).__init__()
+    super(MasterRunnable, self).__init__()
     self.runnables = LockedList()
     self.stoppables = LockedList()
     self.joinables = LockedList()
@@ -33,14 +33,14 @@ class RunnableOwner(Runnable):
       c and c.stoppables.add(self)
 
   def start(self):
-    super(RunnableOwner, self).start()
+    super(MasterRunnable, self).start()
     self.runnables.foreach(lambda e: e.start())
 
   def stop(self):
     if self.is_running:
-      super(RunnableOwner, self).stop()
+      super(MasterRunnable, self).stop()
       self.stoppables.foreach(lambda e: e.stop())
 
   def join(self):
-    super(RunnableOwner, self).join()
+    super(MasterRunnable, self).join()
     self.runnables.foreach(lambda e: e.join())

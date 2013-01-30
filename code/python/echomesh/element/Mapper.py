@@ -7,13 +7,9 @@ from echomesh.element import Load
 
 LOGGER = Log.logger(__name__)
 
-class Handler(Element.Element):
+class Mapper(Element.Element):
   def __init__(self, parent, description):
-    super(Handler, self).__init__(parent, description)
-
-  def __init__(self, parent, description):
-    super(Handler, self).__init__(parent, description)
-
+    super(Mapper, self).__init__(parent, description)
     self.target = description.get('target', Name.NAME)
     self.source = description.get('source', None)
     self.mapping = description.get('mapping', {})
@@ -37,4 +33,4 @@ class Handler(Element.Element):
         event = handler.handle(event)
       return event
 
-Element.register(Handler)
+Element.register(Mapper)

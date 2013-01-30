@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from os.path import abspath, dirname, exists, join
+import os.path
 import re
 import sys
 
@@ -9,25 +9,24 @@ from echomesh.base import Name
 from echomesh.base import Platform
 
 def clean(*path):
-  return '/'.join(path).split('/')
+  return os.path.join(*path).split('/')
 
 def expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
-  filename = '/'.join(path)
-  path = filename.split('/')
-  retur = [join('command', i, *path) for i in _LEVELS]
+  path = clean(*path)
+  retur = [os.path.join('command', i, *path) for i in _LEVELS]
   return retur
 
 def command_file(*path):
   path = clean(*path)
   base = Name.ECHOMESH_PATH if path[0] == '4.default' else Name.PROJECT_PATH
-  res = join(base, 'command', *path)
+  res = os.path.join(base, 'command', *path)
   return res
 
 def _compute_levels():
   paths = ['local',
-           join('name', Name.NAME),
-           join('platform', Platform.PLATFORM),
+           os.path.join('name', Name.NAME),
+           os.path.join('platform', Platform.PLATFORM),
            'global',
            'default']
   paths = ['%d.%s' % (i, p) for i, p in enumerate(paths)]
@@ -38,7 +37,7 @@ _LEVELS = _compute_levels()
 
 def resolve(*path):
   for f in expand(*path):
-    if exists(f):
+    if os.path.exists(f):
       return f
 
 def load_with_error(*path):
@@ -47,9 +46,9 @@ def load_with_error(*path):
   if f:
     data = File.yaml_load_all(f)
     if not data:
-      error = "Couldn't read Yaml from file %s" % '/'.join(path)
+      error = "Couldn't read Yaml from file %s" % os.path.join(path)
   else:
-    error = "Couldn't find file %s" % '/'.join(path)
+    error = "Couldn't find file %s" % os.path.join(path)
 
   return data, error
 

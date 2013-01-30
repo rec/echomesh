@@ -5,9 +5,9 @@ from echomesh.base import Name
 from echomesh.command import Router
 from echomesh.network import DataSocket
 from echomesh.network import Peers
-from echomesh.util.thread.RunnableOwner import RunnableOwner
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
-class PeerSocket(RunnableOwner):
+class PeerSocket(MasterRunnable):
   def __init__(self, echomesh):
     super(PeerSocket, self).__init__()
     self.peers = Peers.Peers(echomesh)
