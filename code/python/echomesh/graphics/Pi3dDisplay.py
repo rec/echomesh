@@ -41,7 +41,7 @@ class Pi3dDisplay(ThreadLoop):
   def add_sprite(self, *sprites):
     self.display.add_sprites(*sprites)
 
-  def one_loop(self):
+  def single_loop(self):
     try:
       self.display.frames_per_second = Config.get('update_interval')
       self.is_running = self.display.loop_running()

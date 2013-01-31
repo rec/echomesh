@@ -5,7 +5,7 @@ import sys
 
 from echomesh.base import Config
 from echomesh.element import Make
-from echomesh.element import Score
+from echomesh.element import ScoreMaster
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.sound import Microphone
@@ -27,13 +27,16 @@ class Echomesh(MasterRunnable):
 
     self.socket = PeerSocket.PeerSocket(self)
     self.peers = self.socket.peers
-    self.score = Score.make_score(Config.get('score', 'file'))
+    self.score_master = ScoreMaster.ScoreMaster()
+    scorefile = Config.get('score', 'file')
+    if scorefile:
+      self.score_master.start_score(scorefile)
 
     self.add_mutual_stop_slave(self.socket,
                                Keyboard.keyboard(self),
                                Display.display(self),
                                Microphone.microphone(self._mic_event))
-    self.add_slave(self.score)
+    self.add_slave(self.score_master)
 
   def send(self, **data):
     self.socket.send(data)

@@ -32,7 +32,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     self.start_time = time.time()
     self.next_loop_time = self.start_time
 
-  def one_loop(self):
+  def single_loop(self):
     t = self.timer()
     if t >= self.next_loop_time:
       self.loop_target(t)

@@ -16,7 +16,7 @@ class Processor(object):
   def __init__(self, echomesh):
     self._echomesh = echomesh
 
-  def process(self, command):
+  def __call__(self, command):
     command = command.strip()
     self._parts = command and command.split(' ')
     if self._parts:
@@ -36,6 +36,29 @@ class Processor(object):
   def update(self): self._remote()
   def help(self): self._usage()
   def sound(self): Sound.list_ports()
+
+  def scores(self):
+    LOGGER.info(', '.join(self._echomesh.score_master.score_names()))
+
+  def start(self):
+    if len(self._parts) < 2:
+      return LOGGER.error('Usage: start scorefile')
+    scorefile = self._parts[1]
+    if self._echomesh.score_master.start_score(scorefile):
+      LOGGER.info('Started score %s', scorefile)
+    else:
+      LOGGER.error('Failed to start score %s', scorefile)
+
+  def stop(self):
+    if len(self._parts) < 2:
+      return LOGGER.error('Usage: stop scorefile')
+    scorefile = self._parts[1]
+    score = self._echomesh.score_master.get_score(scorefile)
+    if score:
+      score.stop()
+      LOGGER.info("Stopped score %s", scorefile)
+    else:
+      LOGGER.error("Couldn't find score %s", scorefile)
 
   def config(self):
     if len(self._parts) < 2:

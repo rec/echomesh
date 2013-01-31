@@ -1,31 +1,65 @@
-class Scores(MasterRunnable.MasterRunnable):
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+import threading
+import weakref
+
+from echomesh.base import Config
+from echomesh.element import Element
+from echomesh.element import Load
+from echomesh.element import Score
+from echomesh.util.thread import MasterRunnable
+from echomesh.util import Log
+from echomesh.util import UniqueName
+
+from python.collections import OrderedDict
+
+LOGGER = Log.logger(__name__)
+
+_SCORE = 'score/'
+
+class ScoreMaster(MasterRunnable.MasterRunnable):
   def __init__(self):
-    super(Scores, self).__init__()
-    self.scores = {}
+    super(ScoreMaster, self).__init__()
+    self.scores = OrderedDict()
+    self.lock = threading.RLock()
 
-  def start(self):
-    self.is_running = True
-
-  def make_score(self, scorefile):
+  def start_score(self, scorefile):
     elements = Load.load(scorefile)
     if not elements:
-      raise Exception('Unable to open score file %s' % scorefile)
+      LOGGER.error('Unable to open score file %s' % scorefile)
+      return
+
     description = {'elements': elements, 'type': 'score'}
-    score = Score(None, description)
-    name = self._make_name(scorefile)
-    self.scores[name] = score
+    score = Score.Score(None, description)
+    if scorefile.startswith(_SCORE):
+      name = scorefile[len(_SCORE):]
+    else:
+      name = scorefile
+    with self.lock:
+      self._clean()
+      name = UniqueName.unique_name(name, self.scores)
+      self.scores[name] = score
     score.name = name
+    score.start()
+    self.add_slave(score)
     return score
 
-  def _make_name(self, scorefile):
-    while scorefile in self.elements:
-      match = MATCH_NAME.match(scorefile)
-      if match:
-        base, suffix = match.groups()
-        suffix = str(1 + int(suffix))
-      else:
-        base, suffix = score_file, '0'
-      scorefile = '%s.%d' % (base, suffix)
+  def _clean(self):
+    remove = [k for (k, v) in self.scores.iteritems() if not v.is_running]
+    self.remove_slave(*remove)
+    self.scores = {k: v for (k, v) in self.scores.iteritems() if v.is_running}
 
-    return scorefile
+  def score_names(self):
+    with self.lock:
+      self._clean()
+      return [k for (k, v) in self.scores.iteritems()]
 
+  def get_score(self, name):
+    with self.lock:
+      score = self.scores.get(name, None)
+      if score:
+        return score
+
+      for k, v in self.scores.iteritems():
+        if k.startswith(name):
+          return v
