@@ -51,7 +51,7 @@ class Router(object):
       self.echomesh.stop()
 
   def score(self, msg):
-    score = msg.get('data', None)
+    score = msg.get('data')
     if score:
       self.echomesh.set_score(score)
     else:

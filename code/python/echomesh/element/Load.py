@@ -18,7 +18,7 @@ def _resolve_extensions(data):
   datas = [data]
 
   while True:
-    extension = data.get('extends', None)
+    extension = data.get('extends')
     if not extension:
       break
 
@@ -44,7 +44,7 @@ def _resolve_extensions(data):
 
 def make_one(parent, desc):
   desc = _resolve_extensions(desc)
-  t = desc.get('type', None).lower()
+  t = desc.get('type', '').lower()
   if not t:
     raise Exception('No type field in element %s' % desc)
 

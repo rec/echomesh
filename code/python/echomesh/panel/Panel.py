@@ -8,7 +8,7 @@ from Tkinter import Tk
 class Panel(Tk):
   @functools.wraps(Tk.__init__)
   def __init__(self, **kwds):
-    display = os.environ.get('DISPLAY', None)
+    display = os.environ.get('DISPLAY')
     if not display:
       os.environ['DISPLAY'] = ':0'
     Tk.__init__(self, **kwds)

@@ -39,7 +39,7 @@ class Peers(Runnable.Runnable):
   def new_peer(self, data):
     with self.lock:
       source = data['source']
-      peer = self._peers.get(source, None)
+      peer = self._peers.get(source)
       if peer != data:
         self._peers[source] = data
         if peer != self.data:

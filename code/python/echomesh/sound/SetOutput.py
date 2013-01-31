@@ -11,7 +11,7 @@ COMMANDS = dict(default='0', audio='1', hdmi='2')
 
 def set_output(output):
   if Platform.IS_LINUX:
-    command = COMMANDS.get(output, None)
+    command = COMMANDS.get(output)
     if not command:
       LOGGER.error("Didn't understand output '%s'", output)
       return

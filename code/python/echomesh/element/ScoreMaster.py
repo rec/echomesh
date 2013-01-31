@@ -56,7 +56,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def get_score(self, name):
     with self.lock:
-      score = self.scores.get(name, None)
+      score = self.scores.get(name)
       if score:
         return score
 

@@ -18,7 +18,7 @@ class TwitterSearch(Loop.Loop):
       search = [search]
 
     self.searches = [Search(s, self.callback, preload=preload) for s in search]
-    self.handler = description.get('handler', None)
+    self.handler = description.get('handler')
     if self.handler:
       self.handler = Load.make_one(self, self.handler)
     self.broadcast = description.get('broadcast', not self.handler)

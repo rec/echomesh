@@ -11,7 +11,7 @@ class Mapper(Element.Element):
   def __init__(self, parent, description):
     super(Mapper, self).__init__(parent, description)
     self.target = description.get('target', Name.NAME)
-    self.source = description.get('source', None)
+    self.source = description.get('source')
     self.mapping = description.get('mapping', {})
     handlers = description.get('handlers', [])
     self.handlers = Load.make(self, handlers)
@@ -23,7 +23,7 @@ class Mapper(Element.Element):
     # TODO: this should go elsewhere.
     if (event.get('source', self.source) == self.source and
         event.get('target', self.target) == self.target):
-      key = event.get('key', None)
+      key = event.get('key')
       mapper = key and hasattr(key, '__hash__') and self.mapping.get(key, [])
       if mapper:
         event = mapper(event)

@@ -35,7 +35,7 @@ class FilePlayer(ThreadLoop):
 
     filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(file)
     filetype = sndhdr.what(filename)[0]
-    handler = Util.FILE_READERS.get(filetype, None)
+    handler = Util.FILE_READERS.get(filetype)
     if not handler:
       LOGGER.error("Can't understand the file type of file %s", filename)
       self.stop()

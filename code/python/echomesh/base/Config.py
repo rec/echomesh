@@ -53,7 +53,7 @@ def get(*parts):
   def get_part(config, part):
     if not isinstance(config, dict):
       raise Exception("Reached leaf configuration for %s" % ':'.join(parts))
-    value = config.get(part, None)
+    value = config.get(part)
     if value is None:
       raise Exception("Couldn't find configuration %s" % ':'.join(parts))
     return value
@@ -61,7 +61,7 @@ def get(*parts):
   for part in parts[:-1]:
     config = get_part(config, part)
     if unvisited:
-      unvisited = unvisited.get(part, None)
+      unvisited = unvisited.get(part)
 
   last_part = parts[-1]
   value = get_part(config, last_part)

@@ -9,7 +9,7 @@ class Registry(object):
     name = name or item.__name__
     if self.case_insensitive:
       name = name.lower()
-    old_item = self.registry.get(name, None)
+    old_item = self.registry.get(name)
     if old_item is not item:
       if old_item:
         raise Exception('Conflicting registrations for %s' % name)

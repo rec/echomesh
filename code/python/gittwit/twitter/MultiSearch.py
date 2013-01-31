@@ -26,7 +26,7 @@ class MultiSearch(MasterRunnable):
       loop.run()
 
   def remove(self, search):
-    loop = self.searches.get(search, None)
+    loop = self.searches.get(search)
     if loop:
       del self.searches[search]
       loop.stop()
