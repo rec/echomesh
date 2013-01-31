@@ -89,21 +89,14 @@ class Router(22,545
 def router(89,2325
   def _error(90,2354
 
-python/echomesh/command/Score.py,124
-class OldScore(14,357
-  def __init__(15,389
-  def add_handler(26,761
-  def receive_event(30,883
-def make_score(39,1136
-
 python/echomesh/Echomesh.py,171
-class Echomesh(16,424
-  def __init__(19,475
-  def send(36,1043
-  def receive_event(39,1097
-  def _on_start(42,1175
-  def _mic_event(46,1252
-  def set_score(49,1341
+class Echomesh(17,458
+  def __init__(20,509
+  def send(37,1077
+  def receive_event(40,1131
+  def _on_start(43,1209
+  def _mic_event(46,1249
+  def set_score(49,1338
 
 python/echomesh/element/Audio.py,42
 class Audio(9,216
@@ -113,26 +106,25 @@ python/echomesh/element/Element.py,44
 class Element(9,253
   def __init__(10,284
 
-python/echomesh/element/Handler.py,114
+python/echomesh/element/Handler.py,92
 class Handler(10,248
   def __init__(11,280
   def _on_start(15,410
-  def _on_stop(30,825
-  def handle(40,1202
+  def _on_stop(29,769
 
 python/echomesh/element/Image.py,42
 class Image(9,216
   def __init__(10,246
 
 python/echomesh/element/List.py,40
-class List(6,157
-  def __init__(7,186
+class List(7,175
+  def __init__(8,204
 
 python/echomesh/element/Load.py,89
 def load(10,252
 def _resolve_extensions(16,371
 def make_one(45,1021
-def make(57,1342
+def make(58,1371
 
 python/echomesh/element/Loop.py,40
 class Loop(6,164
@@ -155,10 +147,13 @@ class Random(13,283
   def next_time(20,575
   def loop_target(23,649
 
-python/echomesh/element/Score.py,64
-class Score(6,156
-  def __init__(7,186
-def make_score(12,360
+python/echomesh/element/Score.py,140
+class Score(7,189
+  def __init__(8,219
+  def add_handler(15,436
+  def remove_handler(23,668
+  def handle(27,812
+def make_score(31,925
 
 python/echomesh/element/Select.py,66
 class Select(7,217
@@ -230,11 +225,11 @@ class Socket(18,366
   def _on_stop(29,661
 class Send(33,731
   def _on_start(34,751
-  def write(38,878
-class Receive(45,1024
-  def __init__(46,1047
-  def _on_start(51,1210
-  def receive(55,1298
+  def write(38,879
+class Receive(45,1025
+  def __init__(46,1048
+  def _on_start(51,1211
+  def receive(55,1303
 
 python/echomesh/network/DataSocket.py,93
 class DataSocket(13,266
@@ -356,11 +351,12 @@ class WeightedRandom(3,84
   def __init__(4,114
   def select(23,713
 
-python/echomesh/util/Registry.py,83
+python/echomesh/util/Registry.py,102
 class Registry(3,84
   def __init__(4,108
   def register(8,222
   def get(18,544
+  def dump(21,626
 
 python/echomesh/util/Subprocess.py,16
 def run(10,200
@@ -390,18 +386,18 @@ class MasterRunnable(9,252
   def add_mutual_stop_slave(30,833
   def start(35,965
   def stop(40,1105
-  def join(45,1239
+  def join(46,1269
 
 python/echomesh/util/thread/Runnable.py,196
 class Runnable(7,146
   def __init__(8,170
   def start(11,221
-  def stop(17,359
-  def join(23,492
-  def _on_stop(26,547
-  def _on_start(29,579
-  def __enter__(32,612
-  def __exit__(35,652
+  def stop(17,360
+  def join(23,494
+  def _on_stop(26,549
+  def _on_start(29,581
+  def __enter__(32,614
+  def __exit__(35,654
 
 python/echomesh/util/thread/ThreadLoop.py,69
 class ThreadLoop(11,244
@@ -409,7 +405,7 @@ class ThreadLoop(11,244
   def target(18,532
 
 python/echomesh/util/thread/ThreadRunnable.py,141
-class RunnableThread(11,244
+class ThreadRunnable(11,244
   def __init__(12,282
   def _on_start(18,504
     def target(19,527

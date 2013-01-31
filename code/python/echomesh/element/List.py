@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element import Element
 from echomesh.element import Score
 
+# TODO: fix this.
 class List(Element.Element):
   def __init__(self, parent, description):
     super(Score, self).__init__(parent, description)

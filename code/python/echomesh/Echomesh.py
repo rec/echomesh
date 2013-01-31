@@ -3,7 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 
-from echomesh.command import Score
+from echomesh.element import Make
+from echomesh.element import Score
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.sound import Microphone

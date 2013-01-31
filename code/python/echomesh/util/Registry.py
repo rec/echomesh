@@ -17,3 +17,7 @@ class Registry(object):
 
   def get(self, name, default=None):
     return self.registry.get(name, default)
+
+  def dump(self, print=print):
+    for k, v in self.registry.iteritems():
+      print(k, v)

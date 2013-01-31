@@ -50,6 +50,7 @@ def make_one(parent, desc):
 
   maker = Element.get_element_by_name(t, None)
   if not maker:
+    Element._REGISTRY.dump()
     raise Exception('No element maker for type %s' % t)
 
   return maker(parent, desc)

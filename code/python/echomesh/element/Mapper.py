@@ -20,6 +20,7 @@ class Mapper(Element.Element):
       self.mapping[key] = Load.make_one(self, element)
 
   def handle(self, event):
+    # TODO: this should go elsewhere.
     if (event.get('source', self.source) == self.source and
         event.get('target', self.target) == self.target):
       key = event.get('key', None)
