@@ -69,7 +69,7 @@ logging:
 opening_sleep: 0.5
 
 score:
-  file: score/score.yml
+  file: ''
 
 sequence:
   delay: 5.0

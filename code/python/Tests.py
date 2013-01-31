@@ -136,10 +136,20 @@
 >>> wr.select(50 * s)
 5
 
->> resolve_scope('abc')
+>>> unique_name('', [])
+u''
 
->> resolve_scope('local')
+>>> unique_name('foo', ['bar', 'baz'])
+u'foo'
 
+>>> unique_name('bar', ['bar', 'baz'])
+u'bar.1'
+
+>>> unique_name('bar', ['bar', 'baz', 'bar.1',])
+u'bar.2'
+
+>>> unique_name('bar.1', ['bar', 'baz', 'bar.1',])
+u'bar.2'
 
 
 """
@@ -148,6 +158,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base.CommandFile import resolve_scope
 from echomesh.base import Merge
+from echomesh.util.UniqueName import unique_name
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
 from echomesh.util.math.WeightedRandom import WeightedRandom

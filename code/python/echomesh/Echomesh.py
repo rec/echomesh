@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import sys
 
+from echomesh.base import Config
 from echomesh.element import Make
 from echomesh.element import Score
 from echomesh.graphics import Display
@@ -26,7 +27,7 @@ class Echomesh(MasterRunnable):
 
     self.socket = PeerSocket.PeerSocket(self)
     self.peers = self.socket.peers
-    self.score = Score.make_score()
+    self.score = Score.make_score(Config.get('score', 'file'))
 
     self.add_mutual_stop_slave(self.socket,
                                Keyboard.keyboard(self),
