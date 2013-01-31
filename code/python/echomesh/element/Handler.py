@@ -10,10 +10,24 @@ LOGGER = Log.logger(__name__)
 class Handler(Element.Element):
   def __init__(self, parent, description):
     super(Handler, self).__init__(parent, description)
+    self.handler_parent = None
 
-  def __init__(self, parent, description):
-    super(Handler, self).__init__(parent, description)
+  def _on_start(self):
+    p = self
+    while p:
+      add_handler = getattr(p, 'add_handler', None)
+      if add_handler:
+        self.handler_parent = p
+        add_handler(self)
+        break
+      p, childp = p.parent, p
+      if childp == p:
+        LOGGER.error('Found a recursive handler loop')
+        break
+    if not self.handler_parent:
+      LOGGER.warning("Didn't find a handler parent for %s", self)
 
+  def _on_stop(self):
     self.target = description.get('target', Name.NAME)
     self.source = description.get('source', None)
     self.mapping = description.get('mapping', {})

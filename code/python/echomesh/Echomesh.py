@@ -39,8 +39,7 @@ class Echomesh(MasterRunnable):
   def receive_event(self, event):
     return self.score.receive_event(event)
 
-  def start(self):
-    super(Echomesh, self).start()
+  def _on_start(self):
     self.join()
 
   def _mic_event(self, level):

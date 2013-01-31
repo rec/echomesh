@@ -33,13 +33,15 @@ class MasterRunnable(Runnable):
       c and c.stoppables.add(self)
 
   def start(self):
-    super(MasterRunnable, self).start()
-    self.runnables.foreach(lambda e: e.start())
+    if not self.is_running:
+      super(MasterRunnable, self).start()
+      self.runnables.foreach(lambda e: e.start())
 
   def stop(self):
     if self.is_running:
-      super(MasterRunnable, self).stop()
+      self.is_running = False
       self.stoppables.foreach(lambda e: e.stop())
+      super(MasterRunnable, self).stop()
 
   def join(self):
     super(MasterRunnable, self).join()

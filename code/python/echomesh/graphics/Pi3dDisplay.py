@@ -63,7 +63,7 @@ class Pi3dDisplay(ThreadLoop):
       for imagefile in os.listdir(DEFAULT_IMAGE_DIRECTORY):
         self.load_texture(imagefile)
 
-  def stop(self):
+  def _on_stop(self):
     super(Pi3dDisplay, self).stop()
     self.display.destroy()
     self.echomesh.stop()

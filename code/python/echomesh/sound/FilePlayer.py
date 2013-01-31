@@ -84,8 +84,7 @@ class FilePlayer(ThreadLoop):
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)
 
-  def stop(self):
-    super(FilePlayer, self).stop()
+  def _on_stop(self):
     self._close_stream()
 
   def _close_stream(self):

@@ -12,7 +12,7 @@ class Select(Element.Element):
     self.elements = [Load.make_one(self, c['element']) for c in choices]
     self.add_stop_only_slave(*self.elements)
 
-  def start(self):
+  def _on_start(self):
     super(Select, self).start()
     self.elements[self.random.select()].start()
 

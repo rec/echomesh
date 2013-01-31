@@ -19,23 +19,20 @@ class Socket(MasterRunnable):
   def __init__(self, port):
     super(Socket, self).__init__()
     self.port = port
-    self._open()
+    self.bind_port = 0
+    self.socket = None
 
-  def _open(self):
+  def _on_start(self):
     self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     self.socket.bind(('', self.bind_port))
 
-  def stop(self):
-    super(Socket, self).stop()
+  def _on_stop(self):
     self.socket.close()
+    self.socket = None
 
 class Send(Socket):
-  def __init__(self, port):
-    self.bind_port = 0
-    super(Send, self).__init__(port)
-
-  def _open(self):
-    super(Send, self)._open()
+  def _on_start(self):
+    super(Send, self)._on_start()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def write(self, data):
@@ -47,12 +44,12 @@ class Send(Socket):
 
 class Receive(Socket):
   def __init__(self, port, buffer_size=DEFAULT_BUFFER_SIZE):
+    super(Receive, self).__init__(port)
     self.bind_port = port
     self.buffer_size = buffer_size
-    super(Receive, self).__init__(port)
 
-  def _open(self):
-    super(Receive, self)._open()
+  def _on_start(self):
+    super(Receive, self)._on_start()
     self.socket.setblocking(0)
 
   def receive(self, timeout):

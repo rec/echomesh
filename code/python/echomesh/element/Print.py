@@ -10,8 +10,7 @@ class Print(Element.Element):
     super(Print, self).__init__(parent, description)
     self.message = description.get('message', '')
 
-  def start(self):
-    super(Print, self).start()
+  def _on_start(self):
     LOGGER.info(self.message)
 
   def handle(self, event):

@@ -8,31 +8,33 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class RunnableThread(MasterRunnable):
+class ThreadRunnable(MasterRunnable):
   def __init__(self, target=None, name=None, report_error=False):
-    super(RunnableThread, self).__init__()
+    super(ThreadRunnable, self).__init__()
     self.name = name or repr(self)
     self.target = target or self.target
+    self.report_error = report_error
 
-  def start(self):
-    if not self.is_running:
-      super(RunnableThread, self).start()
-      self.thread = threading.Thread(target=self._runner)
-      self.thread.start()
+  def _on_start(self):
+    def target():
+      try:
+        self.target()
+      except:
+        if self.is_running or self.report_error:
+          LOGGER.critical(traceback.format_exc())
+        self.stop()
+    self.thread = threading.Thread(target=target)
+    self.thread.start()
+
+  def _on_stop(self):
+    self.thread.stop()
 
   def join(self):
-    super(RunnableThread, self).join()
+    super(ThreadRunnable, self).join()
     LOGGER.debug('Thread join for "%s"', self.name)
     try:
       self.thread.join()
     except:
       pass
 
-  def _runner(self):
-    try:
-      self.target()
-    except:
-      if self.is_running or self.report_error:
-        LOGGER.critical(traceback.format_exc())
-      self.stop()
 

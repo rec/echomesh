@@ -10,7 +10,7 @@ from echomesh.sound import Levels
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util.math import Average
-from echomesh.util.thread import RunnableThread
+from echomesh.util.thread import ThreadRunnable
 
 LOGGER = Log.logger(__name__)
 
@@ -20,7 +20,7 @@ DEFAULT_CHUNK_SIZE = 1024
 MIN_CHUNK_SIZE = 16
 MAX_CHUNK_SIZE = 2048
 
-class Microphone(RunnableThread.RunnableThread):
+class Microphone(ThreadRunnable.ThreadRunnable):
   COMPARE_ATTRIBUTES = 'index', 'name', 'rate', 'sample_bytes'
 
   def __init__(self, callback):
@@ -70,15 +70,13 @@ class Microphone(RunnableThread.RunnableThread):
         self.callback(level_name)
         self.previous_level_name = level_name
 
-  def start(self):
+  def _on_start(self):
     self.reset_levels()
     LOGGER.info('Microphone starting')
     self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rate,
                                            self.sample_bytes)
 
-    if getattr(self, 'stream', None):
-      super(Microphone, self).start()
-    else:
+    if not getattr(self, 'stream', None):
       self.stop()
 
   def _get_next_level(self):
