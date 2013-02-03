@@ -17,18 +17,7 @@ import operator
 
 exprStack = []
 
-def pushFirst( strg, loc, toks ):
-    exprStack.append( toks[0] )
-def pushUMinus( strg, loc, toks ):
-    for t in toks:
-      if t == '-':
-        exprStack.append( 'unary -' )
-        #~ exprStack.append( '-1' )
-        #~ exprStack.append( '*' )
-      else:
-        break
-
-def BNF():
+def bnf(exprStack):
     """
     expop   :: '^'
     multop  :: '*' | '/'
@@ -39,6 +28,18 @@ def BNF():
     term    :: factor [ multop factor ]*
     expr    :: term [ addop term ]*
     """
+    def pushFirst( strg, loc, toks ):
+        exprStack.append( toks[0] )
+
+    def pushUMinus( strg, loc, toks ):
+        for t in toks:
+          if t == '-':
+            exprStack.append( 'unary -' )
+            #~ exprStack.append( '-1' )
+            #~ exprStack.append( '*' )
+          else:
+            break
+
     point = Literal( "." )
     e     = CaselessLiteral( "E" )
     #~ fnumber = Combine( Word( "+-"+nums, nums ) +
@@ -110,7 +111,7 @@ def run_test():
         global exprStack
         exprStack = []
         try:
-            results = BNF().parseString( s, parseAll=True )
+            results = bnf(exprStack).parseString( s, parseAll=True )
             val = evaluateStack( exprStack[:] )
         except ParseException as e:
             print s, "failed parse:", str(pe)
