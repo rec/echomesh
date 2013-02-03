@@ -107,17 +107,15 @@ def evaluateStack(s):
 
 def parse_and_evaluate(expression, exprStack=None):
   exprStack = exprStack or []
-  results = bnf(exprStack).parseString(s, parseAll=True)
+  results = bnf(exprStack).parseString(expression, parseAll=True)
   val = evaluateStack(exprStack[:])
-  return val
+  return results, val
 
 def run_test():
     def test(s, expVal):
         exprStack = []
-
         try:
-            results = bnf(exprStack).parseString(s, parseAll=True)
-            val = evaluateStack(exprStack[:])
+            results, val = parse_and_evaluate(s, exprStack)
         except ParseException as e:
             print s, 'failed parse:', str(pe)
         except Exception as e:
