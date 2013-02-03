@@ -85,6 +85,7 @@ fn  = { 'sin' : math.sin,
         'trunc' : lambda a: int(a),
         'round' : round,
         'sgn' : lambda a: abs(a)>epsilon and cmp(a,0) or 0}
+
 def evaluateStack(s):
     op = s.pop()
     if op == 'unary -':
@@ -104,9 +105,16 @@ def evaluateStack(s):
     else:
         return float(op)
 
+def parse_and_evaluate(expression, exprStack=None):
+  exprStack = exprStack or []
+  results = bnf(exprStack).parseString(s, parseAll=True)
+  val = evaluateStack(exprStack[:])
+  return val
+
 def run_test():
     def test(s, expVal):
         exprStack = []
+
         try:
             results = bnf(exprStack).parseString(s, parseAll=True)
             val = evaluateStack(exprStack[:])
