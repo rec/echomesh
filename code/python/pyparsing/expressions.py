@@ -105,87 +105,8 @@ def evaluateStack(s):
     else:
         return float(op)
 
-def parse_and_evaluate(expression, exprStack=None):
+def evaluate(expression, exprStack=None):
   exprStack = exprStack or []
   bnf(exprStack).parseString(expression, parseAll=True)
   return evaluateStack(exprStack[:])
 
-def run_test():
-    def test(s, expVal):
-        exprStack = []
-        try:
-            val = parse_and_evaluate(s, exprStack)
-        except ParseException as e:
-            print s, 'failed parse:', str(pe)
-        except Exception as e:
-            print s, 'failed eval:', str(e)
-        else:
-            if val == expVal:
-                print s, '=', val, '=>', exprStack
-            else:
-                print s+'!!!', val, '!=', expVal, '=>', exprStack
-
-    test('9', 9)
-    test('-9', -9)
-    test('--9', 9)
-    test('-E', -math.e)
-    test('9 + 3 + 6', 9 + 3 + 6)
-    test('9 + 3 / 11', 9 + 3.0 / 11)
-    test('(9 + 3)', (9 + 3))
-    test('(9+3) / 11', (9+3.0) / 11)
-    test('9 - 12 - 6', 9 - 12 - 6)
-    test('9 - (12 - 6)', 9 - (12 - 6))
-    test('2*3.14159', 2*3.14159)
-    test('3.1415926535*3.1415926535 / 10', 3.1415926535*3.1415926535 / 10)
-    test('PI * PI / 10', math.pi * math.pi / 10)
-    test('PI*PI/10', math.pi*math.pi/10)
-    test('PI^2', math.pi**2)
-    test('round(PI^2)', round(math.pi**2))
-    test('6.02E23 * 8.048', 6.02E23 * 8.048)
-    test('e / 3', math.e / 3)
-    test('sin(PI/2)', math.sin(math.pi/2))
-    test('trunc(E)', int(math.e))
-    test('trunc(-E)', int(-math.e))
-    test('round(E)', round(math.e))
-    test('round(-E)', round(-math.e))
-    test('E^PI', math.e**math.pi)
-    test('2^3^2', 2**3**2)
-    test('2^3+2', 2**3+2)
-    test('2^3+5', 2**3+5)
-    test('2^9', 2**9)
-    test('sgn(-2)', -1)
-    test('sgn(0)', 0)
-    test('foo(0.1)', 1)
-    test('sgn(0.1)', 1)
-
-if __name__ == '__main__':
-    run_test()
-
-"""
-Test output:
->pythonw -u fourFn.py
-9 = 9.0 ['9'] => ['9']
-9 + 3 + 6 = 18.0 ['9', '+', '3', '+', '6'] => ['9', '3', '+', '6', '+']
-9 + 3 / 11 = 9.27272727273 ['9', '+', '3', '/', '11'] => ['9', '3', '11', '/', '+']
-(9 + 3) = 12.0 [] => ['9', '3', '+']
-(9+3) / 11 = 1.09090909091 ['/', '11'] => ['9', '3', '+', '11', '/']
-9 - 12 - 6 = -9.0 ['9', '-', '12', '-', '6'] => ['9', '12', '-', '6', '-']
-9 - (12 - 6) = 3.0 ['9', '-'] => ['9', '12', '6', '-', '-']
-2*3.14159 = 6.28318 ['2', '*', '3.14159'] => ['2', '3.14159', '*']
-3.1415926535*3.1415926535 / 10 = 0.986960440053 ['3.1415926535', '*', '3.1415926535', '/', '10'] => ['3.1415926535', '3.1415926535', '*', '10', '/']
-PI * PI / 10 = 0.986960440109 ['PI', '*', 'PI', '/', '10'] => ['PI', 'PI', '*', '10', '/']
-PI*PI/10 = 0.986960440109 ['PI', '*', 'PI', '/', '10'] => ['PI', 'PI', '*', '10', '/']
-PI^2 = 9.86960440109 ['PI', '^', '2'] => ['PI', '2', '^']
-6.02E23 * 8.048 = 4.844896e+024 ['6.02E23', '*', '8.048'] => ['6.02E23', '8.048', '*']
-e / 3 = 0.90609394282 ['E', '/', '3'] => ['E', '3', '/']
-sin(PI/2) = 1.0 ['sin', 'PI', '/', '2'] => ['PI', '2', '/', 'sin']
-trunc(E) = 2 ['trunc', 'E'] => ['E', 'trunc']
-E^PI = 23.1406926328 ['E', '^', 'PI'] => ['E', 'PI', '^']
-2^3^2 = 512.0 ['2', '^', '3', '^', '2'] => ['2', '3', '2', '^', '^']
-2^3+2 = 10.0 ['2', '^', '3', '+', '2'] => ['2', '3', '^', '2', '+']
-2^9 = 512.0 ['2', '^', '9'] => ['2', '9', '^']
-sgn(-2) = -1 ['sgn', '-2'] => ['-2', 'sgn']
-sgn(0) = 0 ['sgn', '0'] => ['0', 'sgn']
-sgn(0.1) = 1 ['sgn', '0.1'] => ['0.1', 'sgn']
->Exit code: 0
-"""

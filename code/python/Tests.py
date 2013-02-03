@@ -45,6 +45,29 @@
 >>> env2.interpolate(3)
 [20.0, 200.0]
 
+>>> env2 = Envelope.Envelope([[0, [5.0, 50.0]], [1, [10.0, 100.0]], [2, [20.0, 200.0]]])
+
+>>> env2.interpolate(-1)
+[5.0, 50.0]
+
+>>> env2.interpolate(0)
+[5.0, 50.0]
+
+>>> env2.interpolate(0.5)
+[7.5, 75.0]
+
+>>> env2.interpolate(1)
+[10.0, 100.0]
+
+>>> env2.interpolate(1.5)
+[15.0, 150.0]
+
+>>> env2.interpolate(2)
+[20.0, 200.0]
+
+>>> env2.interpolate(3)
+[20.0, 200.0]
+
 >>> list(Average.average(range(8), moving_window=2))
 [0.5, 1.5, 2.5, 3.5, 4.5, 5.5, 6.5]
 
@@ -160,6 +183,9 @@ u'bar.2'
 >>> Units.convert('12 db')
 3.9810717055349722
 
+>>> Units.convert('12dB')
+3.9810717055349722
+
 >>> Units.convert('10 semitones')
 1.7817974362806785
 
@@ -177,6 +203,10 @@ u'bar.2'
 
 >>> Units.convert('-103.4 semitones')
 0.0025475626362608667
+
+>>> Units.convert('10ms')
+0.01
+
 
 >>> test_parse('9')
 9.0
@@ -291,7 +321,7 @@ from pyparsing.pyparsing import ParseException
 
 def test_parse(s):
   try:
-    return expressions.parse_and_evaluate(s)
+    return expressions.evaluate(s)
   except ParseException as pe:
     return 'failed parse: ' + str(pe)
   except Exception as e:

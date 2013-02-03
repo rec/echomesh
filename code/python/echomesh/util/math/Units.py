@@ -17,9 +17,10 @@ def make_log(scale, exponent):
   return lambda number: log_scale(number, scale, exponent)
 
 _UNITS = {
-  ('db', 'decibel', 'decibels'): make_log(20, 10),
-  ('semitones', 'semitone'): make_log(12, 2),
   ('cents', 'cent'): make_log(1200, 2),
+  ('db', 'decibels', 'decibel'): make_log(20, 10),
+  ('ms', 'milliseconds', 'millisecond'): lambda ms: ms / 1000,
+  ('semitones', 'semitone'): make_log(12, 2),
 }
 
 def _unit_lookup(units):
@@ -50,7 +51,6 @@ def _to_number(number):
     number, period, exponent, unit = m.groups()
     is_float = period or exponent
     number = (is_float and float or int)(number)
-
 
 
 def convert(number):
