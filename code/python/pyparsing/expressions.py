@@ -60,7 +60,7 @@ def bnf(exprStack):
     pi    = CaselessLiteral('PI')
 
     expr = Forward()
-    atom_parts = pi | e | fnumber | ident + lpar + expr + rpar | ident
+    atom_parts = pi | e | fnumber | xnumber | ident + lpar + expr + rpar | ident
     atom_action = atom_parts.setParseAction(pushFirst)
     group = Group(lpar + expr + rpar)
     atom = ((0, None) * minus + atom_action | group).setParseAction(pushUMinus)
