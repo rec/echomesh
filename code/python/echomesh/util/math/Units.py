@@ -8,6 +8,7 @@ from python import six
 _UNIT = r'\s* ( [a-z]* ) \s* $'
 _NUMBER = re.compile(r'( [+-]? \d* (\.?) \d* ( e [+-]? \d+ )? )' + _UNIT, re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )' + _UNIT, re.X)
+_ANY_UNIT = re.compile(r'(.*)' + _UNIT, re.X)
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
@@ -29,6 +30,28 @@ def _unit_lookup(units):
   return result
 
 _UNIT_LOOKUP = _unit_lookup(_UNITS)
+
+
+def _to_number(number):
+  if number.startswith('0x'):
+    # A hex number, must be integer.
+    m = _HEX.match(number)
+    if not m:
+      raise Exception("Can't understand hex number %s" % number)
+    number, unit = m.groups()
+    number = int(number, 16)
+
+  else:
+    # Not hex, might be an integer or a float.
+    m = _NUMBER.match(number)
+    if not m:
+      raise Exception("Can't understand number %s" % number)
+
+    number, period, exponent, unit = m.groups()
+    is_float = period or exponent
+    number = (is_float and float or int)(number)
+
+
 
 def convert(number):
   if not isinstance(number, six.string_types):
