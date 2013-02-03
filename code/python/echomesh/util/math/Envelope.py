@@ -6,18 +6,21 @@ class Envelope(object):
   def __init__(self, data, find=bisect.bisect):
     self.find = find
     try:
-      self.times, self.data = zip(*data)
-      self.length = self.times[-1]
-      self.is_constant = False
-      self.slot = 0
-
-    except TypeError:
-      self.data = data
-      self.is_constant = True
-      self.length = 0
+      items = data.iteritems()
+    except AttributeError:
+      try:
+        items = iter(data)
+      except TypeError:
+        self.data = data
+        self.is_constant = True
+        self.length = 0
+        return
+    self.times, self.data = zip(*data)
+    self.length = self.times[-1]
+    self.is_constant = False
+    self.slot = 0
 
   def interpolate(self, time):
-    # LOG('interpolate', time, self.times)
     if self.is_constant:
       return self.data
 

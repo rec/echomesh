@@ -1,7 +1,7 @@
 type: TwitterSearch
 interval: 1
 search:
-  - "#baseball"
+  - "#baseball"  # You need quotes around these strings because of the hashtags.
   - "#love"
 handler:
   type: print

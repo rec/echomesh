@@ -151,6 +151,32 @@ u'bar.2'
 >>> unique_name('bar.1', ['bar', 'baz', 'bar.1',])
 u'bar.2'
 
+>>> Units.convert(12)
+12
+
+>>> Units.convert('12')
+12
+
+>>> Units.convert('12 db')
+3.9810717055349722
+
+>>> Units.convert('10 semitones')
+1.7817974362806785
+
+>>> Units.convert('-1 semitone')
+0.9438743126816935
+
+>>> Units.convert('50 cents')
+1.029302236643492
+
+>>> Units.convert('50 cent')
+1.029302236643492
+
+>>> Units.convert('-1.034E+2 semitones')
+0.0025475626362608667
+
+>>> Units.convert('-103.4 semitones')
+0.0025475626362608667
 
 """
 
@@ -161,6 +187,7 @@ from echomesh.base import Merge
 from echomesh.util.UniqueName import unique_name
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
+from echomesh.util.math import Units
 from echomesh.util.math.WeightedRandom import WeightedRandom
 
 if __name__ == "__main__":
