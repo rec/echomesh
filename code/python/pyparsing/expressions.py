@@ -9,8 +9,9 @@
 #
 # Copyright 2003-2009 by Paul McGuire
 #
-from pyparsing import Literal,CaselessLiteral,Word,Group,Optional,\
-    ZeroOrMore,Forward,nums,alphas,Regex,ParseException
+from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
+    ZeroOrMore, Forward, nums, alphas, Regex, ParseException
+
 import math
 import operator
 
@@ -27,7 +28,6 @@ def pushUMinus( strg, loc, toks ):
       else:
         break
 
-bnf = None
 def BNF():
     """
     expop   :: '^'
@@ -39,40 +39,38 @@ def BNF():
     term    :: factor [ multop factor ]*
     expr    :: term [ addop term ]*
     """
-    global bnf
-    if not bnf:
-        point = Literal( "." )
-        e     = CaselessLiteral( "E" )
-        #~ fnumber = Combine( Word( "+-"+nums, nums ) +
-                           #~ Optional( point + Optional( Word( nums ) ) ) +
-                           #~ Optional( e + Word( "+-"+nums, nums ) ) )
-        fnumber = Regex(r"[+-]?\d+(:?\.\d*)?(:?[eE][+-]?\d+)?")
-        ident = Word(alphas, alphas+nums+"_$")
+    point = Literal( "." )
+    e     = CaselessLiteral( "E" )
+    #~ fnumber = Combine( Word( "+-"+nums, nums ) +
+                       #~ Optional( point + Optional( Word( nums ) ) ) +
+                       #~ Optional( e + Word( "+-"+nums, nums ) ) )
+    fnumber = Regex(r"[+-]?\d+(:?\.\d*)?(:?[eE][+-]?\d+)?")
+    ident = Word(alphas, alphas+nums+"_$")
 
-        plus  = Literal( "+" )
-        minus = Literal( "-" )
-        mult  = Literal( "*" )
-        div   = Literal( "/" )
-        lpar  = Literal( "(" ).suppress()
-        rpar  = Literal( ")" ).suppress()
-        addop  = plus | minus
-        multop = mult | div
-        expop = Literal( "^" )
-        pi    = CaselessLiteral( "PI" )
+    plus  = Literal( "+" )
+    minus = Literal( "-" )
+    mult  = Literal( "*" )
+    div   = Literal( "/" )
+    lpar  = Literal( "(" ).suppress()
+    rpar  = Literal( ")" ).suppress()
+    addop  = plus | minus
+    multop = mult | div
+    expop = Literal( "^" )
+    pi    = CaselessLiteral( "PI" )
 
-        expr = Forward()
-        atom = ((0,None)*minus + ( pi | e | fnumber | ident + lpar + expr + rpar | ident ).setParseAction( pushFirst ) |
-                Group( lpar + expr + rpar )).setParseAction(pushUMinus)
+    expr = Forward()
+    atom = ((0,None)*minus + ( pi | e | fnumber | ident + lpar + expr + rpar | ident ).setParseAction( pushFirst ) |
+            Group( lpar + expr + rpar )).setParseAction(pushUMinus)
 
-        # by defining exponentiation as "atom [ ^ factor ]..." instead of "atom [ ^ atom ]...", we get right-to-left exponents, instead of left-to-righ
-        # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
-        factor = Forward()
-        factor << atom + ZeroOrMore( ( expop + factor ).setParseAction( pushFirst ) )
+    # by defining exponentiation as "atom [ ^ factor ]..." instead of "atom [ ^ atom ]...", we get right-to-left exponents, instead of left-to-righ
+    # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
+    factor = Forward()
+    factor << atom + ZeroOrMore( ( expop + factor ).setParseAction( pushFirst ) )
 
-        term = factor + ZeroOrMore( ( multop + factor ).setParseAction( pushFirst ) )
-        expr << term + ZeroOrMore( ( addop + term ).setParseAction( pushFirst ) )
-        bnf = expr
-    return bnf
+    term = factor + ZeroOrMore( ( multop + factor ).setParseAction( pushFirst ) )
+    expr << term + ZeroOrMore( ( addop + term ).setParseAction( pushFirst ) )
+    return expr
+
 
 # map operator symbols to corresponding arithmetic operations
 epsilon = 1e-12
