@@ -107,9 +107,8 @@ def evaluateStack(s):
 
 def parse_and_evaluate(expression, exprStack=None):
   exprStack = exprStack or []
-  results = bnf(exprStack).parseString(expression, parseAll=True)
-  val = evaluateStack(exprStack[:])
-  return val
+  bnf(exprStack).parseString(expression, parseAll=True)
+  return evaluateStack(exprStack[:])
 
 def run_test():
     def test(s, expVal):
