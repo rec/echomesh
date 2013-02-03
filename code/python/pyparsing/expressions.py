@@ -60,7 +60,8 @@ def bnf(exprStack):
     pi    = CaselessLiteral('PI')
 
     expr = Forward()
-    atom = ((0,None)*minus + (pi | e | fnumber | ident + lpar + expr + rpar | ident).setParseAction(pushFirst) |
+    atom_parts = pi | e | fnumber | ident + lpar + expr + rpar | ident
+    atom = ((0, None) * minus + atom_parts.setParseAction(pushFirst) |
             Group(lpar + expr + rpar)).setParseAction(pushUMinus)
 
     # by defining exponentiation as 'atom [ ^ factor ]...' instead of 'atom [ ^ atom ]...', we get right-to-left exponents, instead of left-to-righ
