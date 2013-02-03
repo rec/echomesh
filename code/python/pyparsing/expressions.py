@@ -61,8 +61,9 @@ def bnf(exprStack):
 
     expr = Forward()
     atom_parts = pi | e | fnumber | ident + lpar + expr + rpar | ident
-    atom = ((0, None) * minus + atom_parts.setParseAction(pushFirst) |
-            Group(lpar + expr + rpar)).setParseAction(pushUMinus)
+    atom_action = atom_parts.setParseAction(pushFirst)
+    group = Group(lpar + expr + rpar)
+    atom = ((0, None) * minus + atom_action | group).setParseAction(pushUMinus)
 
     # by defining exponentiation as 'atom [ ^ factor ]...' instead of 'atom [ ^ atom ]...', we get right-to-left exponents, instead of left-to-righ
     # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
