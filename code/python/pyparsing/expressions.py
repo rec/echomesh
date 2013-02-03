@@ -45,6 +45,7 @@ def bnf(exprStack):
                        #~ Optional(point + Optional(Word(nums))) +
                        #~ Optional(e + Word('+-'+nums, nums)))
     fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
+    xnumber = Regex(r'0 [xX] [0-9 a-f A-F]+', re.X)
     ident = Word(alphas, alphas+nums+'_$')
 
     plus  = Literal('+')
