@@ -14,6 +14,7 @@ from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
 
 import math
 import operator
+import re
 
 def bnf(exprStack):
     """
@@ -43,7 +44,7 @@ def bnf(exprStack):
     #~ fnumber = Combine(Word('+-'+nums, nums) +
                        #~ Optional(point + Optional(Word(nums))) +
                        #~ Optional(e + Word('+-'+nums, nums)))
-    fnumber = Regex(r'[+-]?\d+(:?\.\d*)?(:?[eE][+-]?\d+)?')
+    fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
     ident = Word(alphas, alphas+nums+'_$')
 
     plus  = Literal('+')
