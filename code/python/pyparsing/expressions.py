@@ -15,8 +15,6 @@ from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
 import math
 import operator
 
-exprStack = []
-
 def bnf(exprStack):
     """
     expop   :: '^'
@@ -28,48 +26,48 @@ def bnf(exprStack):
     term    :: factor [ multop factor ]*
     expr    :: term [ addop term ]*
     """
-    def pushFirst( strg, loc, toks ):
-        exprStack.append( toks[0] )
+    def pushFirst(strg, loc, toks):
+        exprStack.append(toks[0])
 
-    def pushUMinus( strg, loc, toks ):
+    def pushUMinus(strg, loc, toks):
         for t in toks:
           if t == '-':
-            exprStack.append( 'unary -' )
-            #~ exprStack.append( '-1' )
-            #~ exprStack.append( '*' )
+            exprStack.append('unary -')
+            #~ exprStack.append('-1')
+            #~ exprStack.append('*')
           else:
             break
 
-    point = Literal( '.' )
-    e     = CaselessLiteral( 'E' )
-    #~ fnumber = Combine( Word( '+-'+nums, nums ) +
-                       #~ Optional( point + Optional( Word( nums ) ) ) +
-                       #~ Optional( e + Word( '+-'+nums, nums ) ) )
+    point = Literal('.')
+    e     = CaselessLiteral('E')
+    #~ fnumber = Combine(Word('+-'+nums, nums) +
+                       #~ Optional(point + Optional(Word(nums))) +
+                       #~ Optional(e + Word('+-'+nums, nums)))
     fnumber = Regex(r'[+-]?\d+(:?\.\d*)?(:?[eE][+-]?\d+)?')
     ident = Word(alphas, alphas+nums+'_$')
 
-    plus  = Literal( '+' )
-    minus = Literal( '-' )
-    mult  = Literal( '*' )
-    div   = Literal( '/' )
-    lpar  = Literal( '(' ).suppress()
-    rpar  = Literal( ')' ).suppress()
+    plus  = Literal('+')
+    minus = Literal('-')
+    mult  = Literal('*')
+    div   = Literal('/')
+    lpar  = Literal('(').suppress()
+    rpar  = Literal(')').suppress()
     addop  = plus | minus
     multop = mult | div
-    expop = Literal( '^' )
-    pi    = CaselessLiteral( 'PI' )
+    expop = Literal('^')
+    pi    = CaselessLiteral('PI')
 
     expr = Forward()
-    atom = ((0,None)*minus + ( pi | e | fnumber | ident + lpar + expr + rpar | ident ).setParseAction( pushFirst ) |
-            Group( lpar + expr + rpar )).setParseAction(pushUMinus)
+    atom = ((0,None)*minus + (pi | e | fnumber | ident + lpar + expr + rpar | ident).setParseAction(pushFirst) |
+            Group(lpar + expr + rpar)).setParseAction(pushUMinus)
 
     # by defining exponentiation as 'atom [ ^ factor ]...' instead of 'atom [ ^ atom ]...', we get right-to-left exponents, instead of left-to-righ
     # that is, 2^3^2 = 2^(3^2), not (2^3)^2.
     factor = Forward()
-    factor << atom + ZeroOrMore( ( expop + factor ).setParseAction( pushFirst ) )
+    factor << atom + ZeroOrMore((expop + factor).setParseAction(pushFirst))
 
-    term = factor + ZeroOrMore( ( multop + factor ).setParseAction( pushFirst ) )
-    expr << term + ZeroOrMore( ( addop + term ).setParseAction( pushFirst ) )
+    term = factor + ZeroOrMore((multop + factor).setParseAction(pushFirst))
+    expr << term + ZeroOrMore((addop + term).setParseAction(pushFirst))
     return expr
 
 
@@ -87,32 +85,31 @@ fn  = { 'sin' : math.sin,
         'trunc' : lambda a: int(a),
         'round' : round,
         'sgn' : lambda a: abs(a)>epsilon and cmp(a,0) or 0}
-def evaluateStack( s ):
+def evaluateStack(s):
     op = s.pop()
     if op == 'unary -':
-        return -evaluateStack( s )
+        return -evaluateStack(s)
     if op in '+-*/^':
-        op2 = evaluateStack( s )
-        op1 = evaluateStack( s )
-        return opn[op]( op1, op2 )
+        op2 = evaluateStack(s)
+        op1 = evaluateStack(s)
+        return opn[op](op1, op2)
     elif op == 'PI':
         return math.pi # 3.1415926535
     elif op == 'E':
         return math.e  # 2.718281828
     elif op in fn:
-        return fn[op]( evaluateStack( s ) )
+        return fn[op](evaluateStack(s))
     elif op[0].isalpha():
         raise Exception('invalid identifier "%s"' % op)
     else:
-        return float( op )
+        return float(op)
 
 def run_test():
-    def test( s, expVal ):
-        global exprStack
+    def test(s, expVal):
         exprStack = []
         try:
-            results = bnf(exprStack).parseString( s, parseAll=True )
-            val = evaluateStack( exprStack[:] )
+            results = bnf(exprStack).parseString(s, parseAll=True)
+            val = evaluateStack(exprStack[:])
         except ParseException as e:
             print s, 'failed parse:', str(pe)
         except Exception as e:
@@ -123,38 +120,38 @@ def run_test():
             else:
                 print s+'!!!', val, '!=', expVal, results, '=>', exprStack
 
-    test( '9', 9 )
-    test( '-9', -9 )
-    test( '--9', 9 )
-    test( '-E', -math.e )
-    test( '9 + 3 + 6', 9 + 3 + 6 )
-    test( '9 + 3 / 11', 9 + 3.0 / 11 )
-    test( '(9 + 3)', (9 + 3) )
-    test( '(9+3) / 11', (9+3.0) / 11 )
-    test( '9 - 12 - 6', 9 - 12 - 6 )
-    test( '9 - (12 - 6)', 9 - (12 - 6) )
-    test( '2*3.14159', 2*3.14159 )
-    test( '3.1415926535*3.1415926535 / 10', 3.1415926535*3.1415926535 / 10 )
-    test( 'PI * PI / 10', math.pi * math.pi / 10 )
-    test( 'PI*PI/10', math.pi*math.pi/10 )
-    test( 'PI^2', math.pi**2 )
-    test( 'round(PI^2)', round(math.pi**2) )
-    test( '6.02E23 * 8.048', 6.02E23 * 8.048 )
-    test( 'e / 3', math.e / 3 )
-    test( 'sin(PI/2)', math.sin(math.pi/2) )
-    test( 'trunc(E)', int(math.e) )
-    test( 'trunc(-E)', int(-math.e) )
-    test( 'round(E)', round(math.e) )
-    test( 'round(-E)', round(-math.e) )
-    test( 'E^PI', math.e**math.pi )
-    test( '2^3^2', 2**3**2 )
-    test( '2^3+2', 2**3+2 )
-    test( '2^3+5', 2**3+5 )
-    test( '2^9', 2**9 )
-    test( 'sgn(-2)', -1 )
-    test( 'sgn(0)', 0 )
-    test( 'foo(0.1)', 1 )
-    test( 'sgn(0.1)', 1 )
+    test('9', 9)
+    test('-9', -9)
+    test('--9', 9)
+    test('-E', -math.e)
+    test('9 + 3 + 6', 9 + 3 + 6)
+    test('9 + 3 / 11', 9 + 3.0 / 11)
+    test('(9 + 3)', (9 + 3))
+    test('(9+3) / 11', (9+3.0) / 11)
+    test('9 - 12 - 6', 9 - 12 - 6)
+    test('9 - (12 - 6)', 9 - (12 - 6))
+    test('2*3.14159', 2*3.14159)
+    test('3.1415926535*3.1415926535 / 10', 3.1415926535*3.1415926535 / 10)
+    test('PI * PI / 10', math.pi * math.pi / 10)
+    test('PI*PI/10', math.pi*math.pi/10)
+    test('PI^2', math.pi**2)
+    test('round(PI^2)', round(math.pi**2))
+    test('6.02E23 * 8.048', 6.02E23 * 8.048)
+    test('e / 3', math.e / 3)
+    test('sin(PI/2)', math.sin(math.pi/2))
+    test('trunc(E)', int(math.e))
+    test('trunc(-E)', int(-math.e))
+    test('round(E)', round(math.e))
+    test('round(-E)', round(-math.e))
+    test('E^PI', math.e**math.pi)
+    test('2^3^2', 2**3**2)
+    test('2^3+2', 2**3+2)
+    test('2^3+5', 2**3+5)
+    test('2^9', 2**9)
+    test('sgn(-2)', -1)
+    test('sgn(0)', 0)
+    test('foo(0.1)', 1)
+    test('sgn(0.1)', 1)
 
 if __name__ == '__main__':
     run_test()
