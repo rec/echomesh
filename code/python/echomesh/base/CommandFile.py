@@ -14,8 +14,7 @@ def clean(*path):
 def expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
   path = clean(*path)
-  retur = [os.path.join('command', i, *path) for i in _LEVELS]
-  return retur
+  return [os.path.join('command', i, *path) for i in _LEVELS]
 
 def command_file(*path):
   path = clean(*path)
