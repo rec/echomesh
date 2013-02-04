@@ -1,8 +1,8 @@
+# This element plays stereo-2450.wav three times at a lower volume.
+
 type: audio
 file: stereo-2450.wav
 loops: 3
-level:
-  0:00: 0
-  0:20: -2db
-  1:00: -5 db
-  1:34: -10dB
+level: -3.2 db
+
+# ...or you can use units like decibels...

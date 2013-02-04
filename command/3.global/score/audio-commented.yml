@@ -1,0 +1,4 @@
+# This element plays the audio file stereo-2450.wav once and then stops.
+
+type: audio                # Every element must have a type.
+file: stereo-2450.wav      # This is the file that gets played.

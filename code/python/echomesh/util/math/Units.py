@@ -8,20 +8,24 @@ from python import six
 
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
-_ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z]* ) \s* $', re.X)
+_ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
 
 def make_log(scale, exponent):
-  return lambda number: log_scale(number, scale, exponent)
+  return lambda x: log_scale(x, scale, exponent)
+
+def make_scale(scale):
+  return lambda x: x * scale
 
 _UNITS_SOURCE = {
   ('cents', 'cent'): make_log(1200, 2),
   ('db', 'decibels', 'decibel'): make_log(20, 10),
-  ('min', 'minutes', 'minute'): lambda ms: ms / 1000,
-  ('ms', 'milliseconds', 'millisecond'): lambda ms: ms / 1000,
-  ('s', 'seconds', 'second', 'sec'): lambda s: s,
+  ('min', 'minutes', 'minute'): make_scale(60),
+  ('ms', 'milliseconds', 'millisecond'): make_scale(1 / 1000),
+  ('%', 'percent'): make_scale(1 / 100),
+  ('s', 'seconds', 'second', 'sec'): make_scale(1)
   ('semitones', 'semitone'): make_log(12, 2),
 }
 

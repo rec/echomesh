@@ -1,7 +1,21 @@
+# This is an example of an Element that uses Events.
+#
+# It searches Twitter for one or more keys at regular intervals and sends out
+# Events for each new Tweet.
+
 type: TwitterSearch
-interval: 1
+
+interval: 1 second     # Search once a second.
+
 search:
-  - "#baseball"  # You need quotes around these strings because of the hashtags.
-  - "#love"
+  - xyzzy              # Search for any Twitter containing the string xyzzy.
+  - "#baseball"        # Search for the hashtag #baseball.
+                       # You have to put #baseball in quotes so it doesn't
+                       # become a comment!
+
 handler:
-  type: print
+  type: print          # Print the twitter to the console.
+
+# The handler section is optional.
+# Were there no handlers, Events would be passed up to the Score.
+

@@ -11,5 +11,5 @@ class FactoryDict(dict):
     return value
 
   def __repr__(self):
-    drep = super(FactoryDict, self).__repr__()
-    return 'FactoryDict(%s, %s)' % (self.factory, drep)
+    rep = super(FactoryDict, self).__repr__()
+    return 'FactoryDict(%s, %s)' % (self.factory, rep)

@@ -22,18 +22,33 @@ class CacheDirectory(object):
     self.manifest = File.yaml_load(self.manifest_file)
 
   def get_file(self, key):
+    return self._get_file_and_new_contents()[0]
+
+  def get_contents(self, key):
+    filename, contents = self._get_file_and_new_contents()
+    if contents:
+      return contents
+    with open(filename, 'rb') as f:
+      return f.read()
+
+  def _get_file_and_new_contents(self, key):
     filename = self.manifest.get(key)
+    contents = None
     if not filename:
       filename = self._key_to_file(key)
+      with open(filename, 'wb') as f:
+        contents = self._get_file_contents(key)
+        f.write(contents)
 
       self._fill_file(filename)
       self.manifest[key] = filename
       File.yaml_dump_one(self.manifest)
-    return file
+
+    return filename, contents
 
   def _key_to_file(self, key):
     return _BAD_CHARS.sub('', key.lower())
 
-  def _fill_file(self, filename):
-    pass
+  def _get_file_contents(self, key):
+    raise Exception('Must override _get_file_contents')
 
