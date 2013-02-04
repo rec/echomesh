@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy
 import re
 
+from pyparsing import expressions
 from python import six
 
 _UNIT = r'\s* ( [a-z]* ) \s* $'
@@ -41,19 +42,20 @@ def convert(number):
   number = number.lower()
   unit_match = _ANY_UNIT.match(number)
   if unit_match:
-    unit = unit_match.groups()
+    number, unit = unit_match.groups()
   else:
     unit = ''
 
+  hex_match = _HEX.match(number)
   if number.startswith('0x'):
     # A hex number, must be integer.
-    m = _HEX.match(number)
-    if not m:
+    hex_match = _HEX.match(number)
+    if not hex_match:
       raise Exception("Can't understand hex number %s" % number)
-    number, unit = m.groups()
-    number = int(number, 16)
-
+    number = int(hex_match.groups()[0], 16)
   else:
+
+
     # Not hex, might be an integer or a float.
     m = _NUMBER.match(number)
     if not m:

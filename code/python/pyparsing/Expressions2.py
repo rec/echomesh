@@ -106,11 +106,18 @@ def evaluateStack(s):
         return fn[op](evaluateStack(s))
     elif op[0].isalpha():
         raise Exception('invalid identifier "%s"' % op)
-    else:
+    elif op.startswith('0x') or op.startswith('0X'):
+        return int(op, 16)
+    elif '.' in op or 'e' in op or 'E' in op:
         return float(op)
+    else:
+        return int(op)
 
 def evaluate(expression, exprStack=None):
   exprStack = exprStack or []
   bnf(exprStack).parseString(expression, parseAll=True)
   return evaluateStack(exprStack[:])
 
+from pyparsing import ParserElement
+
+ParserElement.verbose_stacktrace = True

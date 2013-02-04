@@ -209,34 +209,34 @@ u'bar.2'
 
 
 >>> test_parse('9')
-9.0
+9
 
 >>> test_parse('-9')
--9.0
+-9
 
 >>> test_parse('--9')
-9.0
+9
 
 >>> test_parse('-E')
 -2.718281828459045
 
 >>> test_parse('9 + 3 + 6')
-18.0
+18
 
 >>> test_parse('9 + 3 / 11')
 9.272727272727273
 
 >>> test_parse('(9 + 3)')
-12.0
+12
 
 >>> test_parse('(9+3) / 11')
 1.0909090909090908
 
 >>> test_parse('9 - 12 - 6')
--9.0
+-9
 
 >>> test_parse('9 - (12 - 6)')
-3.0
+3
 
 >>> test_parse('2*3.14159')
 6.28318
@@ -281,16 +281,16 @@ u'bar.2'
 23.140692632779263
 
 >>> test_parse('2^3^2')
-512.0
+512
 
 >>> test_parse('2^3+2')
-10.0
+10
 
 >>> test_parse('2^3+5')
-13.0
+13
 
 >>> test_parse('2^9')
-512.0
+512
 
 >>> test_parse('sgn(-2)')
 -1
@@ -303,6 +303,12 @@ u'failed eval: invalid identifier "foo"'
 
 >>> test_parse('sgn(0.1)')
 1
+
+>>> test_parse('0x01')
+1
+
+>>> test_parse('0xff')
+255
 
 """
 
