@@ -229,6 +229,9 @@ u'bar.2'
 >>> Units.convert('13 + 12 ms')
 0.025
 
+>>> Units.convert('1/2sec')
+0.5
+
 >>> test_parse('9')
 9
 

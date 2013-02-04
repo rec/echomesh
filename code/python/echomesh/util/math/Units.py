@@ -21,6 +21,7 @@ _UNITS_SOURCE = {
   ('db', 'decibels', 'decibel'): make_log(20, 10),
   ('min', 'minutes', 'minute'): lambda ms: ms / 1000,
   ('ms', 'milliseconds', 'millisecond'): lambda ms: ms / 1000,
+  ('s', 'seconds', 'second', 'sec'): lambda s: s,
   ('semitones', 'semitone'): make_log(12, 2),
 }
 
