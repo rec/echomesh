@@ -4,7 +4,7 @@ import ctypes
 from random import randint
 
 from pi3d.Texture import Texture
-from pi3d.shape.Shape import Shape
+from pi3d.Shape import Shape
 from pi3d.Buffer import Buffer
 
 #########################################################################################
@@ -47,6 +47,16 @@ class polygon():
 
 
 def loadFileEGG(model, fileName):
+  """Loads an panda3d egg file to produce Buffer object
+  as part of a Shape. 
+  
+  Arguments:
+    *model*
+      Model object to add to.
+    *fileName*
+      Path and name of egg file relative to top directory.
+      
+  """
   model.coordinateSystem = "Y-up"
   model.materialList = {}
   model.textureList = {}
@@ -186,11 +196,11 @@ def loadFileEGG(model, fileName):
         else: model.vNormal = False
 
         if model.coordinateSystem == "Z-Up":
-          thisV = [structVList[vpKey][j].coords[1], structVList[vpKey][j].coords[2], structVList[vpKey][j].coords[0]]
-          thisN = [structVList[vpKey][j].normal[1], structVList[vpKey][j].normal[2], structVList[vpKey][j].normal[0]]
+          thisV = [structVList[vpKey][j].coords[1], structVList[vpKey][j].coords[2], -structVList[vpKey][j].coords[0]]
+          thisN = [structVList[vpKey][j].normal[1], structVList[vpKey][j].normal[2], -structVList[vpKey][j].normal[0]]
         else:
-          thisV = structVList[vpKey][j].coords
-          thisN = structVList[vpKey][j].normal
+          thisV = [structVList[vpKey][j].coords[0], structVList[vpKey][j].coords[1], -structVList[vpKey][j].coords[2]]
+          thisN = [structVList[vpKey][j].normal[0], structVList[vpKey][j].normal[1], -structVList[vpKey][j].normal[2]]
         g_vertices.append(thisV)
         if model.vNormal: nml = thisN
         else: nml = structPList[p].normal
@@ -203,7 +213,7 @@ def loadFileEGG(model, fileName):
         nv += 1
       n = nv - startV - 1
       for j in range(1,n):
-        g_indices.append((startV, startV + j, startV + j + 1))
+        g_indices.append((startV, startV + j + 1, startV + j))
     
     ilen = len(g_vertices)
     if ilen > 0:
@@ -254,23 +264,3 @@ def loadFileEGG(model, fileName):
       for i in xrange(len(x[3])): model.materialList[x[1]][x[3][i][1]] = x[3][i][2]
     if "<Group>" in x[0]:
       groupDrill(x[3], x[1])
-
-
-# groupDrill(l, "") # recursively break down groups - TODO this doesn't actually work properly because of split() on <Group>
-
-def texSwap(self, texID, fileName):
-  texToUse = None
-  texToSwap = None
-  for t in self.textureList:
-    if fileName in self.textureList[t]["filename"]: # NB this is a bit slacker than using == but easier to use
-      texToSwap = self.textureList[t]["texID"]
-      break
-  for g in self.vGroup:
-     if self.vGroup[g]["texID"] == texToSwap: self.vGroup[g]["texID"] = texID
-  return texToSwap # this texture is returned so it can be used or held by the calling code and reinserted if need be
-
-
-#########################################################################################
-#
-#########################################################################################
-

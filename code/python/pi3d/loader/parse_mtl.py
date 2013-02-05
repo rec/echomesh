@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-from pi3d.util import Log
+from echomesh.util import Log
 
 RAISE_EXCEPTION_ON_ERROR = True
 LOGGER = Log.logger(__name__)
@@ -69,7 +69,7 @@ class Materials(object):
     self.materials[self.identifier] = self.material
 
   def set_property(self, name, args):
-    prop = Materials.PROPERTIES.get(name)
+    prop = Materials.PROPERTIES.get(name, None)
     if not prop:
       LOGGER.error('ERROR: Don\'t understand property "%s"', name)
       if RAISE_EXCEPTION_ON_ERROR:

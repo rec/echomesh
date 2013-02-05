@@ -1,7 +1,9 @@
 import ctypes
 
-from pi3d import *
-from pi3d.util import Log
+from echomesh.util import Log
+
+from pi3d.constants import *
+from pi3d.util.Ctypes import c_chars
 
 # This class based on Peter de Rivaz's mandlebrot example + Tim Skillman's work on pi3d2
 LOGGER = Log.logger(__name__)
@@ -15,13 +17,50 @@ def _opengl_log(shader, function, caption):
   LOGGER.info('%s: %s', caption, log.value)
 
 class Shader(object):
+  """This compiles and holds the shaders to be used to render the Shape Buffers
+  using their draw() methods. Generally you will choose and load the Shader
+  explicitly as part of the program, however some i.e. defocus are loaded
+  automatically when you create an instance of the Defocus class. Shaders can
+  be 're-used' to draw different objects and the same object can be drawn using
+  different Shaders.
+  
+  The shaders included with the pi3d module fall into two categories:
+  
+  * Textured - generally defined using the **uv** prefix, where an image needs
+    to be loaded via the Texture class which is then mapped to the surface
+    of the object. The **2d_flat** shader is a special case of a textured shader
+    which maps pixels in an image to pixels on the screen with an optional
+    scaling and offset.
+  * Material - generally defined using the **mat** prefix, where a material
+    shade (rgb) has to be set for the object to be rendered
+    
+  Within these categories the shaders have been subdivided with a postfix to
+  give full names like uv_flat, mat_bump etc:
+  
+  * flat - no lighting is used, the shade rendered is the rgb value of the 
+    texture or material
+  * light - Light direction, shade and ambient shade are used give a 3D effect
+    to the surface
+  * bump - a normal map texture needs to be loaded as well and this will be
+    used to give much finer 3D effect to the surface than can be defined by
+    the resolution of the vertices. The effect of the normal map drops with
+    distance to give a detailed foreground without tiling artifacts in the
+    distance. The shader is passed a variable to use for tiling the normal
+    map which may be different from the tiling of the general texture. If
+    set to 0.0 then no normal mapping will occur.
+  * reflect - in addition to a normal map an image needs to be supplied to
+    act as a reflection. The shader is passed a value from 0.0 to 1.0 to 
+    determine the strength of the reflection.
+    
+  The reason for using a host of different shaders rather than one that can
+  do everything is that 'if' statements within the shader language are **very**
+  time consuming.
+  """
   def __init__(self, shfile):
     """
-    shfile -- path/name without vs or fs ending i.e. "shaders/bumpShade"
-    textures[] -- array of Texture() objects 0.texture map 1.normal map 2.reflection map
-    scene -- Scene() object
-    bumpTiles -- number to subdivide UV map by for normal texture map, 0.0 disables
-    shiny -- proportion of shininess 0.0 to 1.0, 0.0 disables
+    Arguments:
+      *shfile*
+        path/name without vs or fs ending i.e. "shaders/uv_light"
     """
 
     #self.scene = scene
@@ -47,22 +86,10 @@ class Shader(object):
 
     self.attr_vertex = opengles.glGetAttribLocation(self.program, "vertex")
     self.attr_normal = opengles.glGetAttribLocation(self.program, "normal")
-    #self.unif_lightpos = opengles.glGetUniformLocation(self.program, "lightpos")
+
     self.unif_modelviewmatrix = opengles.glGetUniformLocation(self.program, "modelviewmatrix")
     self.unif_cameraviewmatrix = opengles.glGetUniformLocation(self.program, "cameraviewmatrix")
-    #self.unif_ntiles = opengles.glGetUniformLocation(self.program, "ntiles")
-    #self.unif_shiny = opengles.glGetUniformLocation(self.program, "shiny")
-    #self.unif_fogshade = opengles.glGetUniformLocation(self.program, "fogshade")
-    #self.unif_fogdist = opengles.glGetUniformLocation(self.program, "fogdist")
-    #self.unif_eye = opengles.glGetUniformLocation(self.program, "eye")
-    #self.unif_rtn = opengles.glGetUniformLocation(self.program, "rtn")
-    #self.unif_blend = opengles.glGetUniformLocation(self.program, "blend")
-    #self.unif_material = opengles.glGetUniformLocation(self.program, "material")
-    # attemp to offload matrix work to shader
-    #self.unif_locn = opengles.glGetUniformLocation(self.program, "locn")
-    #self.unif_rotn = opengles.glGetUniformLocation(self.program, "rotn")
-    #self.unif_scle = opengles.glGetUniformLocation(self.program, "scle")
-    #self.unif_ofst = opengles.glGetUniformLocation(self.program, "ofst")
+
     self.unif_unif = opengles.glGetUniformLocation(self.program, "unif")
     self.unif_unib = opengles.glGetUniformLocation(self.program, "unib")
 
@@ -71,10 +98,13 @@ class Shader(object):
     self.unif_tex = []
     self.texture = []
     for t in range(3):
-      self.unif_tex.append(opengles.glGetUniformLocation(self.program, "tex"+str(t))) #tex0 texture tex1 bump tex2 reflection
-      opengles.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, c_float(GL_LINEAR_MIPMAP_NEAREST))
-      opengles.glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, c_float(GL_LINEAR_MIPMAP_NEAREST))
-
+      self.unif_tex.append(opengles.glGetUniformLocation(self.program, "tex"+str(t)))
+      """
+      *NB*
+        for *uv* shaders tex0=texture tex1=normal map tex2=reflection
+      
+        for *mat* shaders tex0=normal map tex1=reflection
+      """
     self.use()
 
   def use(self):
@@ -84,17 +114,19 @@ class Shader(object):
   def showshaderlog(self,shader):
     """Prints the compile log for a shader"""
     N=1024
-    log=(c_char*N)()
-    loglen=c_int()
-    opengles.glGetShaderInfoLog(shader,N,ctypes.byref(loglen),ctypes.byref(log))
+    log = (ctypes.c_char * N)()
+    loglen = ctypes.c_int()
+    opengles.glGetShaderInfoLog(shader, N, ctypes.byref(loglen),
+                                ctypes.byref(log))
     print log.value
 
   def showprogramlog(self,shader):
     """Prints the compile log for a program"""
-    N=1024
-    log=(c_char*N)()
-    loglen=c_int()
-    opengles.glGetProgramInfoLog(shader,N,ctypes.byref(loglen),ctypes.byref(log))
+    N = 1024
+    log = (ctypes.c_char * N)()
+    loglen = ctypes.c_int()
+    opengles.glGetProgramInfoLog(shader, N, ctypes.byref(loglen),
+                                 ctypes.byref(log))
     print log.value
 
   def loadShader(self, sfile):
