@@ -15,7 +15,7 @@ def wheel_color(rotation=0):
       rotation, but you can use numbers greater than 1 or negative numbers.
 
   """
-  rgb = numpy.array([0, 0, 0])
+  rgb = numpy.array([0.0, 0.0, 0.0])
 
   # Divide the rotation into three segments
   rotation = (rotation % 1.0) * 3.0
@@ -41,7 +41,7 @@ def gamma_correct(x, gamma_table=GAMMA_TABLE):
   return gamma_table[min(x * steps, steps - 1)]
 
 class ChannelOrder(object):
-  RGB = lambda r, g, b: r, g, b
-  GRB = lambda r, g, b: g, r, b
-  BRG = lambda r, g, b: b, r, g
+  RGB = lambda r, g, b: (r, g, b)
+  GRB = lambda r, g, b: (g, r, b)
+  BRG = lambda r, g, b: (b, r, g)
 
