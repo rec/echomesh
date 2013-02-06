@@ -17,7 +17,9 @@ def shutdown():
 
 if __name__ == '__main__':
   if startup():
-    Echomesh.Echomesh().start()
+    echomesh = Echomesh.Echomesh()
+    echomesh.start()
+    echomesh.join()
     shutdown()
   else:
     from echomesh.util import Log

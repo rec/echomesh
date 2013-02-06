@@ -19,11 +19,7 @@ DISPLAY = PI3D_DISPLAY.display
 
 DEFAULT_Z = -2.0
 
-CAMERA = Camera((0, 0, 0), (0, 0, -0.1),
-                (1, 1000, DISPLAY.win_width/1000.0, DISPLAY.win_height/1000.0))
-LIGHT = Light((10, 10, -20))
 SHADER = None  # Shader('shaders/uv_flat')
-
 
 class ImageSprite(Sprite.ImageSprite, Runnable):
   def __init__(self, file=None, loops=1,
@@ -42,9 +38,7 @@ class ImageSprite(Sprite.ImageSprite, Runnable):
 
     x, y, z = self.coords(0)
     texture = PI3D_DISPLAY.load_texture(file)
-    Sprite.ImageSprite.__init__(self, texture,
-                                SHADER, camera=CAMERA, light=LIGHT,
-                                x=x, y=y, z=z)
+    Sprite.ImageSprite.__init__(self, texture, SHADER, x=x, y=y, z=z)
 
     self._time = 0
     if duration:

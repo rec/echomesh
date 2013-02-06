@@ -32,10 +32,11 @@ class Echomesh(MasterRunnable):
     if scorefile:
       self.score_master.start_score(scorefile)
 
-    self.add_mutual_stop_slave(self.socket,
-                               Keyboard.keyboard(self),
-                               Display.display(self),
-                               Microphone.microphone(self._mic_event))
+    self.display = Display.Display()
+    mic = Microphone.microphone(self._mic_event)
+    kbd = Keyboard.keyboard(self)
+
+    self.add_mutual_stop_slave(self.socket, kbd, self.display, mic)
     self.add_slave(self.score_master)
 
   def send(self, **data):
@@ -44,9 +45,6 @@ class Echomesh(MasterRunnable):
   def receive_event(self, event):
     return self.score.receive_event(event)
 
-  def _on_start(self):
-    self.join()
-
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)
 
@@ -54,3 +52,6 @@ class Echomesh(MasterRunnable):
     from echomesh.base import File
     File.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
+
+  def _on_start(self):
+    self.display.run()

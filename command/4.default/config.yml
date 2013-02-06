@@ -50,10 +50,17 @@ discovery:
 dump_unused_configs: false
 
 pi3d:
-  background: [0, 0, 0, 1]
-  dimensions: [0, 0, 0, 0]
+  aspect: 60.0
+  background: null  # Can be a 4-tuple: r, g, b, alpha.
+  depth: 24
+  dimensions: null  # Can be a 4-tuple: x, y, width, height
   enable: false
+  far: null
+  frames_per_second: 0
   full_screen: true
+  near: null
+  tk: False
+  window_title: ''
 
 git:
   user: rec
