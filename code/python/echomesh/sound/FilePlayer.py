@@ -158,11 +158,10 @@ class FilePlayer(ThreadLoop):
 def play(**keywords):
   if 'type' in keywords:
     del keywords['type']
-  aplay = Config.get('audio', 'output', 'use_aplay')
-  if aplay:
-    return Util.play_with_aplay(**keywords)
+  if 'use_aplay' in keywords:
+    use_aplay = keywords['use_aplay']
+    del keywords['use_aplay']
+  else:
+    use_aplay = Config.get('audio', 'output', 'use_aplay')
 
-  try:
-    FilePlayer(**keywords)
-  except Exception as e:
-    LOGGER.error(e)
+  return (Util.play_with_aplay if use_aplay else FilePlayer)(**keywords)

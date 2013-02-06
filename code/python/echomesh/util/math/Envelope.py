@@ -1,14 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import bisect
 from python import six
 
 from echomesh.util.math import Units
 
 class Envelope(object):
-  def __init__(self, data, find=bisect.bisect):
-    self.find = find
-
+  def __init__(self, data):
     iterator = None
     if not isinstance(data, six.string_types):
       try:
