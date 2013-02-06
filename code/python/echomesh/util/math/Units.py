@@ -20,14 +20,18 @@ def make_scale(scale):
   return lambda x: x * scale
 
 UNITS_SOURCE = {
-  ('cents', 'cent'): make_log(1200, 2),
-  ('db', 'decibels', 'decibel'): make_log(20, 10),
-  ('min', 'minutes', 'minute'): make_scale(60),
-  ('ms', 'milliseconds', 'millisecond'): make_scale(1 / 1000),
   ('%', 'percent'): make_scale(1 / 100),
+  ('cent', 'cents'): make_log(1200, 2),
+  ('db', 'decibel', 'decibels'): make_log(20, 10),
+  ('millisecond', 'milliseconds', 'ms'): make_scale(1 / 1000),
+  ('min', 'minute', 'minutes'): make_scale(60),
   ('s', 'seconds', 'second', 'sec'): make_scale(1),
-  ('semitones', 'semitone'): make_log(12, 2),
+  ('semitone', 'semitones'): make_log(12, 2),
 }
+
+def list_units(separator='\n  '):
+  keys = UNITS_SOURCE.iterkeys()
+  return separator + separator.join((', '.join(k) for k in keys))
 
 UNITS = {}
 

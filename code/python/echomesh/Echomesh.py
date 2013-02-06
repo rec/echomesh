@@ -36,8 +36,8 @@ class Echomesh(MasterRunnable):
     mic = Microphone.microphone(self._mic_event)
     kbd = Keyboard.keyboard(self)
 
-    self.add_mutual_stop_slave(self.socket, kbd, self.display, mic)
-    self.add_slave(self.score_master)
+    self.add_mutual_stop_slave(self.socket, kbd, mic)
+    self.add_slave(self.score_master, self.display)
 
   def send(self, **data):
     self.socket.send(data)
