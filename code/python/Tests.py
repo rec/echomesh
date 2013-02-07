@@ -344,6 +344,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base.CommandFile import resolve_scope
 from echomesh.base import Merge
 from echomesh.graphics import WheelColor
+from echomesh.graphics import Color
 from echomesh.util.UniqueName import unique_name
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope

@@ -4,8 +4,8 @@ import numpy
 
 from echomesh.graphics import GammaTable
 
-class ChannelOrder(object):
-
+# Inspired by:
+# https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
 class LEDBank(object):
   RGB_ORDER = lambda r, g, b: (r, g, b)
   GRB_ORDER = lambda r, g, b: (g, r, b)

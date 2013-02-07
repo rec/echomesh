@@ -2,6 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import numpy
 
+# Inspired by
+# https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
+
 def wheel_color(rotation=0):
   """
   Return a color from a color wheel.
