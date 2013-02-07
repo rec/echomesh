@@ -1,49 +1,51 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
-import math
-import pygame
+if False:
 
-from echomesh.graphics import Path
+  import copy
+  import math
+  import pygame
 
-class ImagePath(pygame.sprite.DirtySprite):
-  def __init__(self, image, angle, duration, display):
-    pygame.sprite.DirtySprite.__init__(self)
+  from echomesh.graphics import Path
 
-    self.image = pygame.image.load(image)
-    self.rect = self.image.get_rect()
-    self.display = display
+  class ImagePath(pygame.sprite.DirtySprite):
+    def __init__(self, image, angle, duration, display):
+      pygame.sprite.DirtySprite.__init__(self)
 
-    # Inflate to the right and down by the width of the image.
-    width = display.size[0] + self.rect.width
-    height = display.size[1] + self.rect.height
+      self.image = pygame.image.load(image)
+      self.rect = self.image.get_rect()
+      self.display = display
 
-    path = Path.path(angle, width, height)
+      # Inflate to the right and down by the width of the image.
+      width = display.size[0] + self.rect.width
+      height = display.size[1] + self.rect.height
 
-    # Move back to the origin.
-    for p in path:
-      p[0] -= self.rect.width
-      p[1] -= self.rect.height
+      path = Path.path(angle, width, height)
 
-    self.duration = duration * 1000.0
-    self.start = 0
+      # Move back to the origin.
+      for p in path:
+        p[0] -= self.rect.width
+        p[1] -= self.rect.height
 
-    self.begin, self.end = path
-    self.rect.move_ip(self.begin)
+      self.duration = duration * 1000.0
+      self.start = 0
 
-  def update(self, time):
-    pygame.sprite.DirtySprite.update(self)
-    self.display.dirty(self.rect)
-    now = self.display.time
-    if not self.start:
-      self.start = now
+      self.begin, self.end = path
+      self.rect.move_ip(self.begin)
 
-    ratio = (now - self.start) / self.duration
-    if ratio <= 1:
-      x = self.begin[0] + (self.end[0] - self.begin[0]) * ratio
-      y = self.begin[1] + (self.end[1] - self.begin[1]) * ratio
-      self.rect.move_ip((x - self.rect.x, y - self.rect.y))
-      self.dirty = 1
+    def update(self, time):
+      pygame.sprite.DirtySprite.update(self)
       self.display.dirty(self.rect)
-    else:
-      self.display.remove_sprite(self)
+      now = self.display.time
+      if not self.start:
+        self.start = now
+
+      ratio = (now - self.start) / self.duration
+      if ratio <= 1:
+        x = self.begin[0] + (self.end[0] - self.begin[0]) * ratio
+        y = self.begin[1] + (self.end[1] - self.begin[1]) * ratio
+        self.rect.move_ip((x - self.rect.x, y - self.rect.y))
+        self.dirty = 1
+        self.display.dirty(self.rect)
+      else:
+        self.display.remove_sprite(self)

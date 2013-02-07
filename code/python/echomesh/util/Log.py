@@ -19,11 +19,10 @@ try:
   LOG_LEVEL_STR = Config.get('logging','level').upper()
   LOG_FILE = Config.get('logging', 'file')
 
-except ImportError:
+except Exception:
   LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
   LOG_LEVEL_STR = 'INFO'
   LOG_FILE = ''
-  raise
 
 LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
 
@@ -43,5 +42,5 @@ def logger(name=None):
   return log
 
 LOGGER = logger(__name__)
-LOGGER.info('Log level is %s', LOG_LEVEL_STR)
+LOGGER.debug('Log level is %s', LOG_LEVEL_STR)
 

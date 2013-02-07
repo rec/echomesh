@@ -341,6 +341,9 @@ u'failed eval: invalid identifier "foo"'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+open('/tmp/path.txt', 'wb').write(str(sys.path))
+
 from echomesh.base.CommandFile import resolve_scope
 from echomesh.base import Merge
 from echomesh.graphics import WheelColor
@@ -361,7 +364,3 @@ def test_parse(s):
     return 'failed parse: ' + str(pe)
   except Exception as e:
     return 'failed eval: ' + str(e)
-
-if __name__ == "__main__":
-  import doctest
-  doctest.testmod()

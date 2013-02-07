@@ -16,6 +16,7 @@ CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
 CLIENTS = WeakSet()
+ARGS = []
 
 def add_client(client):
   CLIENTS.add(client)
@@ -25,24 +26,28 @@ def update_clients():
   for c in CLIENTS:
     cl.config_update(get)
 
-def recalculate(perform_update=False):
+def set_args(args):
+  global ARGS
+  ARGS = args[1:]
+
+def recalculate(perform_update=False, args=None):
+  if args:
+    set_args(args)
   global CONFIG, CONFIGS_UNVISITED
   # If running as root, export user pi's home directory as $HOME.
   if getpass.getuser() == 'root':
     os.environ['HOME'] = '/home/pi'
 
   local_path = ''
-  args = sys.argv[1:]
+  args = ARGS[:]
   if args:
     if not args[0][0] in '{[':
-      Name.set_project_path(args[0])
+      Name.set_project_path(args.pop(0))
 
   CONFIG = MergeConfig.merge(args)
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
   if perform_update:
     update_clients()
-
-recalculate()
 
 def is_control_program():
   """is_control_program() is True if Echomesh responds to keyboard commands."""
