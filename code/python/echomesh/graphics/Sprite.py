@@ -4,27 +4,20 @@ import os.path
 import time
 
 from pi3d.shape import Sprite
-from pi3d.context.Light import Light
-from pi3d.Camera import Camera
-from pi3d.Shader import Shader
 
-from echomesh.graphics.Pi3dDisplay import PI3D_DISPLAY  # TODO: remove this.
-
+from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.thread.Runnable import Runnable
 from echomesh.util.math.Envelope import Envelope
 
 LOGGER = Log.logger(__name__)
-DISPLAY = PI3D_DISPLAY.display
 
 DEFAULT_Z = -2.0
-
-SHADER = None  # Shader('shaders/uv_flat')
 
 class ImageSprite(Sprite.ImageSprite, Runnable):
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
-               **kwds):
+               shader=None, **kwds):
     Runnable.__init__(self)
     self._imagename = file
     LOGGER.debug('Opening sprite %s', self._imagename)

@@ -9,23 +9,27 @@ LOGGER = Log.logger(__name__)
 class Display(Runnable.Runnable):
   def __init__(self):
     super(Display, self).__init__()
-    self.display = None
-    if Config.get('pi3d', 'enable'):
-      import pi3d.Display
+    if not Config.get('pi3d', 'enable'):
+      self.display = None
+      return
 
-      keywords = {}
-      background = Config.get('pi3d', 'background')
-      if background:
-        keywords.update(background=background)
-      dimensions = Config.get('pi3d', 'dimensions')
-      if dimensions:
-        x, y, width, height = dimensions
-        keywords.update(x=x, y=y, width=width, height=height)
-      for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
-        keywords[k] = Config.get('pi3d', k)
+    keywords = {}
 
-      self.display = pi3d.Display.create(**keywords)
-      Config.add_client(self)
+    background = Config.get('pi3d', 'background')
+    if background:
+      keywords.update(background=background)
+
+    dimensions = Config.get('pi3d', 'dimensions')
+    if dimensions:
+      x, y, width, height = dimensions
+      keywords.update(x=x, y=y, width=width, height=height)
+
+    for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
+      keywords[k] = Config.get('pi3d', k)
+
+    import pi3d.Display
+    self.display = pi3d.Display.create(**keywords)
+    Config.add_client(self)
 
   def config_update(self, get):
     if self.display:
@@ -36,10 +40,12 @@ class Display(Runnable.Runnable):
       self.display.first_time = True
       self.display.is_running = True
 
-  def run(self):
+  def _on_stop(self):
+    self.display and self.display.stop()
+
+  def loop(self):
     while self.is_running and self.display and self.display.loop_running():
       pass
-    self.stop()
 
   # TODO: This is old code!
   def load_texture(self, imagefile):
