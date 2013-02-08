@@ -1,6 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+
 from echomesh.base import Config  # Must be the first import in the main file.
+
+Config.recalculate(args=sys.args)
 
 from echomesh import Echomesh
 from echomesh.sound import SetOutput

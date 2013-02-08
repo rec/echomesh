@@ -8,9 +8,10 @@ LOGGER = Log.logger(__name__)
 
 class Display(Runnable.Runnable):
   def __init__(self):
+    super(Display, self).__init__()
     self.display = None
     if Config.get('pi3d', 'enable'):
-      from pi3d import Display
+      import pi3d.Display
 
       keywords = {}
       background = Config.get('pi3d', 'background')
@@ -23,8 +24,8 @@ class Display(Runnable.Runnable):
       for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
         keywords[k] = Config.get('pi3d', k)
 
-      self.display = Display.create(**keywords)
-      Config.add_client(self):
+      self.display = pi3d.Display.create(**keywords)
+      Config.add_client(self)
 
   def config_update(self, get):
     if self.display:

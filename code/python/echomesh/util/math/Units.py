@@ -19,21 +19,25 @@ def make_log(scale, exponent):
 def make_scale(scale):
   return lambda x: x * scale
 
-_UNITS_SOURCE = {
-  ('cents', 'cent'): make_log(1200, 2),
-  ('db', 'decibels', 'decibel'): make_log(20, 10),
-  ('min', 'minutes', 'minute'): make_scale(60),
-  ('ms', 'milliseconds', 'millisecond'): make_scale(1 / 1000),
+UNITS_SOURCE = {
   ('%', 'percent'): make_scale(1 / 100),
-  ('s', 'seconds', 'second', 'sec'): make_scale(1)
-  ('semitones', 'semitone'): make_log(12, 2),
+  ('cent', 'cents'): make_log(1200, 2),
+  ('db', 'decibel', 'decibels'): make_log(20, 10),
+  ('millisecond', 'milliseconds', 'ms'): make_scale(1 / 1000),
+  ('min', 'minute', 'minutes'): make_scale(60),
+  ('s', 'seconds', 'second', 'sec'): make_scale(1),
+  ('semitone', 'semitones'): make_log(12, 2),
 }
 
-_UNITS = {}
+def list_units(separator='\n  '):
+  keys = UNITS_SOURCE.iterkeys()
+  return separator + separator.join((', '.join(k) for k in keys))
 
-for _keys, _v in _UNITS_SOURCE.iteritems():
+UNITS = {}
+
+for _keys, _v in UNITS_SOURCE.iteritems():
   for _k in _keys:
-    _UNITS[_k] = _v
+    UNITS[_k] = _v
 
 def convert_time(t):
   time_match = _TIME.match(t)
@@ -74,7 +78,7 @@ def convert(number):
 
   if unit_match:
     prefix, unit = unit_match.groups()
-    unit_converter = _UNITS.get(unit)
+    unit_converter = UNITS.get(unit)
     if unit_converter:
       return unit_converter(convert_number(prefix))
 

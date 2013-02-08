@@ -7,6 +7,7 @@ from echomesh.base import File
 from echomesh.base import Merge
 from echomesh.sound import Sound
 from echomesh.util import Log
+from echomesh.util.math import Units
 
 from gittwit.git import Git
 
@@ -36,6 +37,8 @@ class Processor(object):
   def update(self): self._remote()
   def help(self): self._usage()
   def sound(self): Sound.list_ports()
+  def units(self):
+    LOGGER.info('\nUnits are: %s', Units.list_units())
 
   def scores(self):
     LOGGER.info(', '.join(self._echomesh.score_master.score_names()))
@@ -110,8 +113,8 @@ class Processor(object):
     else:
       logger = LOGGER.info
     cmds = (s for s in dir(self) if not s.startswith('_'))
-    logger('Commands are %s', ', '.join(cmds))
+    logger('\nCommands are:\n  %s', ', '.join(cmds))
 
   def _error(self):
-    self._usage("Didn't understand command %s", self._cmd)
+    self._usage("\nDidn't understand command %s", self._cmd)
 

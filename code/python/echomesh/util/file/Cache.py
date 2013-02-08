@@ -14,7 +14,7 @@ MANIFEST_NAME = 'manifest.yml'
 
 _BAD_CHARS = re.compile(r'[^\w\s]+')
 
-class CacheDirectory(object):
+class Cache(object):
   def __init__(self, name):
     self.cachedir = CommandFile.clean('cache', name)
     MakeDirs.makedirs(self.cachedir)

@@ -334,12 +334,20 @@ u'failed eval: invalid identifier "foo"'
 # >>> test_parse('0xff')  # Doesn't yet work.
 # 255
 
+>>> [WheelColor.wheel_color(r / 10.0) for r in range(11)]
+[array([ 0.,  1.,  0.]), array([ 0.3,  0.7,  0. ]), array([ 0.6,  0.4,  0. ]), array([ 0.9,  0.1,  0. ]), array([ 0. ,  0.2,  0.8]), array([ 0. ,  0.5,  0.5]), array([ 0. ,  0.8,  0.2]), array([ 0.9,  0. ,  0.1]), array([ 0.6,  0. ,  0.4]), array([ 0.3,  0. ,  0.7]), array([ 0.,  1.,  0.])]
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+open('/tmp/path.txt', 'wb').write(str(sys.path))
+
 from echomesh.base.CommandFile import resolve_scope
 from echomesh.base import Merge
+from echomesh.graphics import WheelColor
+from echomesh.graphics import Color
 from echomesh.util.UniqueName import unique_name
 from echomesh.util.math import Average
 from echomesh.util.math import Envelope
@@ -356,7 +364,3 @@ def test_parse(s):
     return 'failed parse: ' + str(pe)
   except Exception as e:
     return 'failed eval: ' + str(e)
-
-if __name__ == "__main__":
-  import doctest
-  doctest.testmod()
