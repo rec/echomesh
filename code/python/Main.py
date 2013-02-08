@@ -4,7 +4,7 @@ import sys
 
 from echomesh.base import Config  # Must be the first import in the main file.
 
-Config.recalculate(args=sys.args)
+Config.recalculate(args=sys.argv)
 
 from echomesh import Echomesh
 from echomesh.sound import SetOutput
