@@ -3,18 +3,21 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import time
 
-from pi3d.shape import Sprite
-
 from echomesh.graphics import Shader
 from echomesh.util import Log
-from echomesh.util.thread.Runnable import Runnable
 from echomesh.util.math.Envelope import Envelope
+from echomesh.util.thread.Runnable import Runnable
+from pi3d import Display
+from pi3d import Texture
+from pi3d.shape import Sprite
 
 LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = -2.0
 
 class ImageSprite(Sprite.ImageSprite, Runnable):
+  CACHE = Texture.Cache()
+
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
                shader=None, **kwds):
@@ -30,8 +33,9 @@ class ImageSprite(Sprite.ImageSprite, Runnable):
     self._z = Envelope(z)
 
     x, y, z = self.coords(0)
-    texture = PI3D_DISPLAY.load_texture(file)
-    Sprite.ImageSprite.__init__(self, texture, SHADER, x=x, y=y, z=z)
+    texture = ImageSprite.CACHE.create(file, defer=True)
+    Sprite.ImageSprite.__init__(self, texture, shader=Shader.shader(shader),
+                                x=x, y=y, z=z)
 
     self._time = 0
     if duration:
@@ -39,8 +43,6 @@ class ImageSprite(Sprite.ImageSprite, Runnable):
     else:
       envs = [self._position, self._rotation, self._size]
       self._duration = max(x.length for x in envs)
-
-    PI3D_DISPLAY.add_sprite(self)
 
   def coords(self, t):
     x, y = self._position.interpolate(t)
@@ -73,3 +75,10 @@ class ImageSprite(Sprite.ImageSprite, Runnable):
     self.rotateToZ(self._rotation.interpolate(elapsed))
 
     self.draw()
+
+  def _on_start(self):
+    Display.INSTANCE.add_sprites(self)
+
+  def _on_stop(self):
+    Display.INSTANCE.remove_sprites(self)
+

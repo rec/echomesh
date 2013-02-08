@@ -78,7 +78,7 @@ class FilePlayer(ThreadLoop):
     self._close_stream()
     self.audio_stream = self.open_stream()
     if not self.audio_stream:
-      LOGGER.error("Couldn't reopen sound on loop %d", self.loop_number)
+      LOGGER.error("Couldn't open sound on loop %d", self.loop_number)
       self.stop()
     self.time = 0
     self.current_level = self.level.interpolate(0)
@@ -105,6 +105,10 @@ class FilePlayer(ThreadLoop):
       return Util.uninterleave(frames)
 
   def single_loop(self):
+    if not self.audio_stream:
+      # TODO: why should I have to do this given that restart_sound calls stop?
+      self.stop()
+      return
     frames = self.file_stream.readframes(self.chunk_size)
     if not frames:
       self.loop_number += 1
