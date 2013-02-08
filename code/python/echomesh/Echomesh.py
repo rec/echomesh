@@ -54,4 +54,4 @@ class Echomesh(MasterRunnable):
     self.score.set_score(score)
 
   def _on_start(self):
-    self.display.run()
+    self.display.loop()

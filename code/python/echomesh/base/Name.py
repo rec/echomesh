@@ -49,8 +49,20 @@ def set_name(name):
   global NAME
   NAME = name
 
-def set_project_path(path):
-  path = os.path.abspath(os.path.expanduser(path))
+def _not_possible_project(path):
+  for d in 'asset', 'command':
+    if not os.path.exists(os.path.join(path, d)):
+      return True
+
+def set_project_path(original_path):
+  path = os.path.abspath(os.path.expanduser(original_path))
+
+  while _not_possible_project(path):
+    p = os.path.dirname(path)
+    if p == path:
+      print("The path %s wasn't in an echomesh project " % original_path)
+      return
+
   os.chdir(path)
 
   global PROJECT_PATH
