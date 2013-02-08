@@ -16,37 +16,43 @@ class Reserver(object):
   reserve it.
   """
   def __init__(self, lock=None):
-    self.reserved = collections.defaultdict(lambda: 0)
-    self.reserved_uniquely = set()
+    self._reserved = collections.defaultdict(lambda: 0)
+    self._reserved_uniquely = set()
     self.lock = lock or threading.Lock()
 
-  def reserve(self, items):
+  def reserved(self):
     with self.lock:
-      res = self.reserved_uniquely.intersection(items)
+      return self._reserved.keys()
+
+  def reserve(self, *items):
+    with self.lock:
+      res = self._reserved_uniquely.intersection(items)
       if res:
-        raise Exception('%s are already uniquely reserved.' % ', '.join(res))
+        print(res)
+        raise Exception('%s are already uniquely reserved.' % res)
       for item in items:
-        self.reserved[item] += 1
+        self._reserved[item] += 1
 
   def reserve_uniquely(self, *items):
     with self.lock:
-      res = [i for i in items if self.reserved[i]]
+      res = [i for i in items if self._reserved[i]]
       if res:
-        raise Exception('%s are already reserved.' % ', '.join(res))
+        raise Exception('%s are already reserved.' % res)
       for item in items:
-        self.reserved[item] += 1
-      self.reserved_uniquely.update(items)
+        self._reserved[item] += 1
+      self._reserved_uniquely.update(items)
 
-  def release(self, *items):
+  def unreserve(self, *items):
     with self.lock:
       not_reserved = []
       for item in items:
-        count = self.reserved[item]
+        count = self._reserved[item]
         if count <= 1:
           if count < 1:
             not_reserved.append(item)
-          del self.reserved[item]
+          del self._reserved[item]
         else:
-          self.reserved[item] = count - 1
-
-      self.reserved_uniquely.difference_update(items)
+          self._reserved[item] = count - 1
+      self._reserved_uniquely.difference_update(items)
+    if not_reserved:
+      LOGGER.warning("Some items were not reserved: %s", not_reserved)
