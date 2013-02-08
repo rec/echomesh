@@ -8,7 +8,7 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def load(*path):
-  data, error = CommandFile.load_with_error(*path)
+  data, error = CommandFile.load_with_error('element', *path)
   if error:
     LOGGER.error(error)
   return data

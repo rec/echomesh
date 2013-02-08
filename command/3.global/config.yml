@@ -1,2 +1,2 @@
-score: {file: global/audio.yml}
+score: {file: non-existent.yml}
 audio: {input: {name: ak5370}}

@@ -45,9 +45,9 @@ def load_with_error(*path):
   if f:
     data = File.yaml_load_all(f)
     if not data:
-      error = "Couldn't read Yaml from file %s" % os.path.join(path)
+      error = "Couldn't read Yaml from file %s" % os.path.join(*path)
   else:
-    error = "Couldn't find file %s" % os.path.join(path)
+    error = "Couldn't find file %s" % os.path.join(*path)
 
   return data, error
 
