@@ -29,17 +29,16 @@ def _merge_level_files():
 
 def _merge_command_line_arguments(args, config):
   for i, arg in enumerate(args):
-    if i:
-      try:
-        cfgs = File.yaml_load_stream(arg)
-      except:
-        raise Exception('Error in command line argument %d: "%s"' % (i, arg))
+    try:
+      cfgs = File.yaml_load_stream(arg)
+    except:
+      raise Exception('Error in command line argument %d: "%s"' % (i, arg))
 
-      try:
-        Merge.merge_all(config, *cfgs)
-      except Exception as e:
-        _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
-        raise
+    try:
+      Merge.merge_all(config, *cfgs)
+    except Exception as e:
+      _add_exception_suffix(e, ' in command line argument %d: "%s"' % (i, arg))
+      raise
   return config
 
 def merge(args):

@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import getpass
 import os
-import sys
 
 from os.path import abspath, dirname
 from python.weakref import WeakSet
