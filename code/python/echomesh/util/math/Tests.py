@@ -217,6 +217,15 @@
 >>> Units.convert('1/2sec')
 0.5
 
+>>> Units.convert('1Hz')
+1.0
+
+>>> Units.convert('10 hertz')
+0.1
+
+>>> Units.convert('10 kilohertz')
+0.0001
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals

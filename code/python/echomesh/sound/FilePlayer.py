@@ -109,6 +109,7 @@ class FilePlayer(ThreadLoop):
       # TODO: why should I have to do this given that restart_sound calls stop?
       self.stop()
       return
+
     frames = self.file_stream.readframes(self.chunk_size)
     if not frames:
       self.loop_number += 1

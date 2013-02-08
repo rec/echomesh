@@ -19,10 +19,15 @@ def make_log(scale, exponent):
 def make_scale(scale):
   return lambda x: x * scale
 
+def inverse_scale(scale=1.0):
+  return lambda x: 1.0 / (scale * x)
+
 UNITS_SOURCE = {
   ('%', 'percent'): make_scale(1 / 100),
   ('cent', 'cents'): make_log(1200, 2),
   ('db', 'decibel', 'decibels'): make_log(20, 10),
+  ('cps', 'hz', 'hertz'): inverse_scale(),
+  ('khz', 'khertz', 'kilohertz'): inverse_scale(1000),
   ('millisecond', 'milliseconds', 'ms'): make_scale(1 / 1000),
   ('min', 'minute', 'minutes'): make_scale(60),
   ('s', 'seconds', 'second', 'sec'): make_scale(1),
