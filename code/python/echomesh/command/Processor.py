@@ -96,11 +96,11 @@ class Processor(object):
       self._remote(scope=scope, config=config)
 
   def nodes(self):
-    for peer in self._echomesh.peers.get_peers().itervalues():
-      LOGGER.info(peer)
+    peers = '\n'.join(self._echomesh.peers.get_peers().itervalues())
+    LOGGER.info('\n%s', peer)
 
   def quit(self):
-    LOGGER.info('quitting')
+    LOGGER.debug('quitting')
     return True
 
   def _remote(self, **kwds):

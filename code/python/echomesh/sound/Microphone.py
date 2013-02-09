@@ -72,7 +72,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
 
   def _on_start(self):
     self.reset_levels()
-    LOGGER.info('Microphone starting')
+    LOGGER.debug('Microphone starting')
     self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rate,
                                            self.sample_bytes)
 

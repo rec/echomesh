@@ -22,8 +22,8 @@ def get_pyaudio_stream(name, index, rate, sample_bytes):
   def _make_stream(i):
     stream = pyaud.open(format=format, channels=1, rate=rate,
                         input_device_index=i, input=True)
-    LOGGER.info('Opened pyaudio stream %s',
-                pyaud.get_device_info_by_index(i)['name'])
+    LOGGER.debug('Opened pyaudio stream %s',
+                 pyaud.get_device_info_by_index(i)['name'])
     return stream
 
   if index < 0:

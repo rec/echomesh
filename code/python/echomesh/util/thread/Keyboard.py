@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
 import threading
 import time
 
@@ -14,12 +15,13 @@ Type help for a list of commands
 """
 
 class Keyboard(ThreadRunnable.ThreadRunnable):
-  def __init__(self, sleep, message, processor, prompt='echomesh: '):
+  def __init__(self, sleep, message, processor, prompt='echomesh: ', output=sys.stdout):
     super(Keyboard, self).__init__(name='Keyboard')
     self.sleep = sleep
     self.message = message
     self.processor = processor
     self.prompt = prompt
+    self.output = output
 
   def target(self):
     if self.sleep:
@@ -29,7 +31,9 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       print(self.message)
       self.message = ''
     while self.is_running:
-      if self.processor(raw_input(self.prompt).strip()):
+      self.output.write(self.prompt)
+      self.output.flush()
+      if self.processor(raw_input().strip()):
         self.stop()
 
 def keyboard(echomesh):

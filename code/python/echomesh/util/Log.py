@@ -12,35 +12,35 @@ import sys
 
 from echomesh.util.file import MakeDirs
 
+class ConfigSetter(object):
+  def config_update(self, get):
+    if get:
+      self.kwds = {'format': get('logging', 'format')}
+      f = get('logging', 'file')
+      if f:
+        self.kwds['filename'] = f
+
+      self.log_level = get('logging','level').upper()
+
+    else:
+      self.kwds = {'format': '%(asctime)s %(levelname)s: %(name)s: %(message)s'}
+      self.log_level = 'INFO'
+
+    self.kwds['level'] = getattr(logging, self.log_level)
+    if 'filename' not in self.kwds:
+      self.kwds['stream'] = sys.stdout
+    logging.basicConfig(**self.kwds)
+
+CONFIG = ConfigSetter()
 try:
   from echomesh.base import Config
+  Config.add_client(CONFIG)
+except:
+  CONFIG.config_update(None)
 
-  LOG_FORMAT = Config.get('logging', 'format')
-  LOG_LEVEL_STR = Config.get('logging','level').upper()
-  LOG_FILE = Config.get('logging', 'file')
-
-except Exception:
-  LOG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
-  LOG_LEVEL_STR = 'INFO'
-  LOG_FILE = ''
-
-LOG_LEVEL = getattr(logging, LOG_LEVEL_STR)
-
-logging.basicConfig(level=LOG_LEVEL, format=LOG_FORMAT)
-
-if LOG_FILE:
-  MakeDirs.parent_makedirs(LOG_FILE)
-  HANDLER = logging.FileHandler(LOG_FILE)
-else:
-  HANDLER = logging.StreamHandler(sys.stdout)
 
 def logger(name=None):
-  log = logging.getLogger(name or 'logging')
-  if HANDLER and HANDLER not in log.handlers:
-    log.addHandler(HANDLER)
-
-  return log
+  return logging.getLogger(name or 'logging')
 
 LOGGER = logger(__name__)
-LOGGER.debug('Log level is %s', LOG_LEVEL_STR)
-
+LOGGER.debug('Log level is %s', CONFIG.log_level)
