@@ -17,6 +17,8 @@ class Envelope(object):
           pass
 
     if iterator:
+      iterator = list(iterator)
+      print('!!!!', iterator)
       self.times, self.data = zip(*sorted(iterator))
       self.times = [Units.convert(t) for t in self.times]
       self.length = self.times[-1]

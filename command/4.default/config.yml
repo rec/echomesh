@@ -55,7 +55,7 @@ pi3d:
   background: null  # Can be a 4-tuple: r, g, b, alpha.
   depth: 24
   dimensions: null  # Can be a 4-tuple: x, y, width, height
-  enable: false
+  enable: true
   far: null
   frames_per_second: 0
   full_screen: true

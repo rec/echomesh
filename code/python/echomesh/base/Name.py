@@ -54,7 +54,8 @@ def _not_possible_project(path):
     if not os.path.exists(os.path.join(path, d)):
       return True
 
-def set_project_path(original_path):
+def set_project_path(original_path=None):
+  original_path = original_path or (os.path.abspath(os.curdir))
   path = os.path.abspath(os.path.expanduser(original_path))
 
   while _not_possible_project(path):
@@ -62,6 +63,7 @@ def set_project_path(original_path):
     if p == path:
       print("The path %s wasn't in an echomesh project " % original_path)
       return
+    path = p
 
   os.chdir(path)
 

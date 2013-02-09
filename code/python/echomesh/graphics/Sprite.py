@@ -3,20 +3,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import time
 
+import pi3d
+
 from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.math.Envelope import Envelope
 from echomesh.util.thread.Runnable import Runnable
-from pi3d import Display
-from pi3d import Texture
-from pi3d.shape import Sprite
 
 LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = -2.0
 
-class ImageSprite(Sprite.ImageSprite, Runnable):
-  CACHE = Texture.Cache()
+class ImageSprite(pi3d.ImageSprite, Runnable):
+  CACHE = pi3d.TextureCache()
 
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,

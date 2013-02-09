@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from pi3d.Shader import Shader
+import pi3d
 
 _VERTEX_SHADER = """
 precision highp float;
@@ -45,8 +45,8 @@ void main(void) {
 }
 """
 
-SHADER = Shader.Shader(vshader_source=_VERTEX_SHADER,
-                       fshader_source=_FRAGMENT_SHADER)
+SHADER = pi3d.Shader(vshader_source=_VERTEX_SHADER,
+                     fshader_source=_FRAGMENT_SHADER)
 
 def shader(shader_file=None):
-  return Shader.Shader(shfile=shader_file) if shader_file else SHADER
+  return pi3d.Shader(shfile=shader_file) if shader_file else SHADER
