@@ -13,11 +13,11 @@ def _merge_level_files():
   for f in reversed(CommandFile.expand('config.yml')):
     try:
       cfg = File.yaml_load(f)
-    except:
+    except Exception as e:
       _add_exception_suffix(e, ' loading configuration file %s' % f)
 
     if config is None:
-      assert cfg, "Unabled to read default config file %s" % f
+      assert cfg, "Unable to read default config file %s" % f
       config = cfg
     else:
       try:
@@ -30,20 +30,19 @@ def _merge_level_files():
 def _merge_command_line_arguments(args, config):
   # Merge in command line arguments.
   for i, arg in enumerate(args):
-    if arg and arg[0] == '{':
+    if arg.startswith('{'):
       try:
         cfgs = File.yaml_load_stream(arg)
-      except:
-        _add_exception_suffix(e, ' parsing command line argument %d: "%s"' %
-                              (i, arg))
-        raise
+      except Exception as e:
+        print('Error %s parsing command line argument %d: "%s"' %
+              (str(e), i, arg))
 
       try:
         Merge.merge_all(config, *cfgs)
       except Exception as e:
-        _add_exception_suffix(e, ' merging command line argument %d: "%s"' %
-                              (i, arg))
-        raise
+        print('Error %s merging command line argument %d: "%s"' %
+              (str(e), i, arg))
+
   return config
 
 def merge(args):

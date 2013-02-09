@@ -24,9 +24,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.lock = threading.RLock()
 
   def start_score(self, scorefile):
-    elements, error = CommandFile.load(scorefile)
+    elements, error = CommandFile.load('element', scorefile)
     if error:
-      LOGGER.error('Unable to open score file %s because %', scorefile, error)
+      LOGGER.error('%s: %s', scorefile, error)
       return
 
     description = {'elements': elements, 'type': 'score'}

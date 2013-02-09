@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
+import traceback
 
 from echomesh.base import CommandFile
 from echomesh.base import File
@@ -18,14 +19,18 @@ class Processor(object):
     self._echomesh = echomesh
 
   def __call__(self, command):
-    command = command.strip()
-    self._parts = command and command.split(' ')
-    if self._parts:
-      self._cmd = self._parts[0]
-      if self._cmd.startswith('_'):
-        return self._error()
-      else:
-        return getattr(self, self._cmd, self._error)()
+    try:
+      command = command.strip()
+      self._parts = command and command.split(' ')
+      if self._parts:
+        self._cmd = self._parts[0]
+        if self._cmd.startswith('_'):
+          return self._error()
+        else:
+          return getattr(self, self._cmd, self._error)()
+    except Exception as e:
+      LOGGER.error('%s', str(e))
+      LOGGER.error(traceback.format_exc())
 
   def clear(self): self._remote()
   def halt(self): self._remote()
