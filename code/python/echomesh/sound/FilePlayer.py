@@ -1,6 +1,7 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import numpy
 import os.path
 import sndhdr
 import struct
@@ -146,7 +147,7 @@ class FilePlayer(ThreadLoop):
       self.current_level = next_level
 
     if self.pan.is_constant:
-      lpan, rpan = calculate_pan(self.current_pan)
+      lpan, rpan = Util.calculate_pan(self.current_pan)
       left *= lpan
       right *= rpan
     else:

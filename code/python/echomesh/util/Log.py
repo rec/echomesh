@@ -32,7 +32,7 @@ if LOG_FILE:
   MakeDirs.parent_makedirs(LOG_FILE)
   HANDLER = logging.FileHandler(LOG_FILE)
 else:
-  HANDLER = None
+  HANDLER = logging.StreamHandler(sys.stdout)
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
