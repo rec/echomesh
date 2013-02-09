@@ -61,12 +61,12 @@ class FilePlayer(ThreadLoop):
 
   def open_stream(self):
     try:
-      stream =  Sound.PYAUDIO.open(format=self.format,
-                                   channels=self.request_channels,
-                                   rate=self.sampling_rate,
-                                   output=True,
-                                   output_device_index=self.index,
-                                   frames_per_buffer=self.frames_per_buffer)
+      return Sound.PYAUDIO.open(format=self.format,
+                                channels=self.request_channels,
+                                rate=self.sampling_rate,
+                                output=True,
+                                output_device_index=self.index,
+                                frames_per_buffer=self.frames_per_buffer)
     except:
       LOGGER.error('FAILED to open %s on port %s', self.file,
                    Sound.get_device_info(self.index)['name'])
