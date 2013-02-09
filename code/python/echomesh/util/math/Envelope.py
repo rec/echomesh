@@ -6,28 +6,20 @@ from echomesh.util.math import Units
 
 class Envelope(object):
   def __init__(self, data):
-    iterator = None
-    if not isinstance(data, six.string_types):
-      try:
-        iterator = data.iteritems()
-      except AttributeError:
-        try:
-          iterator = iter(data)
-        except TypeError:
-          pass
-
-    if iterator:
-      iterator = list(iterator)
-      print('!!!!', iterator)
+    try:
+      iterator = data.iteritems()
+    except AttributeError:
+      # It's a constant value.
+      self.data = [data]
+      self.is_constant = True
+      self.length = 0
+    else:
+      # It's a dictionary of times and data.
       self.times, self.data = zip(*sorted(iterator))
       self.times = [Units.convert(t) for t in self.times]
       self.length = self.times[-1]
       self.is_constant = False
       self.slot = 0
-    else:
-      self.data = [data]
-      self.is_constant = True
-      self.length = 0
 
     self.data = [Units.convert(d) for d in self.data]
 
@@ -50,11 +42,7 @@ class Envelope(object):
         try:
           items = zip(iter(d1), iter(d2))
         except TypeError:
-          try:
-            return d1 * (1 - ratio) + d2 * ratio
-          except:
-            print(d1, d2, ratio)
-            raise
+          return d1 * (1 - ratio) + d2 * ratio
 
         return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
 
