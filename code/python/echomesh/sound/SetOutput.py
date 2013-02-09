@@ -20,4 +20,4 @@ def set_output(output):
     if returncode:
       LOGGER.error("Couldn't open output %s\n%s", output, result)
     else:
-      LOGGER.info('Set audio output to %s', output)
+      LOGGER.debug('Set audio output to %s', output)

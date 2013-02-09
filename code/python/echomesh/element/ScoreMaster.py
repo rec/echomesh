@@ -3,9 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import weakref
 
+from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.element import Element
-from echomesh.element import Load
 from echomesh.element import Score
 from echomesh.util.thread import MasterRunnable
 from echomesh.util import Log
@@ -24,9 +24,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.lock = threading.RLock()
 
   def start_score(self, scorefile):
-    elements = Load.load(scorefile)
-    if not elements:
-      LOGGER.error('Unable to open score file %s' % scorefile)
+    elements, error = CommandFile.load(scorefile)
+    if error:
+      LOGGER.error('Unable to open score file %s because %', scorefile, error)
       return
 
     description = {'elements': elements, 'type': 'score'}

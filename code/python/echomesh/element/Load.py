@@ -7,12 +7,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def load(*path):
-  data, error = CommandFile.load_with_error('element', *path)
-  if error:
-    LOGGER.error(error)
-  return data
-
 def _resolve_extensions(data):
   extensions = set()
   datas = [data]
@@ -25,9 +19,9 @@ def _resolve_extensions(data):
     if extension in extensions:
       raise Exception('Infinite circular extension for %s' % extend)
 
-    data = load(extension)
-    if not data:
-      raise Exception("Couldn't find extension for %s" % extend)
+    data, error = CommandFile.load(extension)
+    if error:
+      raise Exception("Couldn't find extension for %s: %s" % extend, error)
 
     if len(data) > 1:
       LOGGER.error("More than one element in extension %s", extend)

@@ -1,13 +1,28 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+
 import sys
+
+def _p(msg='.'):
+  print(msg, end='')
+  sys.stdout.flush()
+
+_p('Loading echomesh')
+
+_p()
 
 from echomesh.base import Config  # Must be the first import in the main file.
 
+_p()
+
 Config.recalculate(args=sys.argv)
+
+_p()
 
 from echomesh import Echomesh
 from echomesh.sound import SetOutput
+
+_p()
 
 def startup():
   if Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart':
@@ -20,8 +35,11 @@ def shutdown():
     print(yaml.safe_dump(Config.get_unvisited()))
 
 if __name__ == '__main__':
+  _p()
   if startup():
+    _p()
     echomesh = Echomesh.Echomesh()
+    print('Loaded.')
     echomesh.start()
     echomesh.join()
     shutdown()

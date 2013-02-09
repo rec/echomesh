@@ -9,7 +9,6 @@ from echomesh.base import Config
 from echomesh.util.thread import ThreadRunnable
 
 MESSAGE = """
-           echomesh
 Type help for a list of commands
 
 """
@@ -24,6 +23,8 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     self.output = output
 
   def target(self):
+    self.output.write('\n')
+    self.output.flush()
     if self.sleep:
       time.sleep(self.sleep)
       self.sleep = 0

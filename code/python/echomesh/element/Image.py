@@ -10,8 +10,13 @@ class Image(Element.Element):
   def __init__(self, parent, description):
     super(Image, self).__init__(parent, description)
     if Config.get('pi3d', 'enable'):
-      from echomesh.graphics.Sprite import ImageSprite
-      ImageSprite(**description)
+      from echomesh.graphics.ImageSprite import ImageSprite
+      try:
+        self.sprite = ImageSprite(**description)
+      except Exception as e:
+        LOGGER.error('%s', str(e))
+      else:
+        self.add_slave(self.sprite)
     else:
       LOGGER.info('Playing image %s', description.get('file', '(none)'))
 

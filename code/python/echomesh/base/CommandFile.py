@@ -39,7 +39,7 @@ def resolve(*path):
     if os.path.exists(f):
       return f
 
-def load_with_error(*path):
+def load(*path):
   data, error = None, None
   f = resolve(*path)
   if f:
@@ -52,7 +52,7 @@ def load_with_error(*path):
   return data, error
 
 def _recompute_name_from_map():
-  name_map, error = load_with_error('name_map.yml')
+  name_map, error = load('name_map.yml')
   if name_map:
     name_map = name_map[0]
     for n in Name.names():

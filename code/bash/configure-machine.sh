@@ -1,11 +1,14 @@
 apt-get update
 
 apt-get install python2.7-dev distcc emacs git libasound2-dev libboost-dev libmad0-dev madplay oss-compat pulseaudio pulseaudio-utils
-apt-get install cython python-alsaaudio python-imaging python-pygame python-httplib2 python-setuptools python-pyaudio
+apt-get install cython python-alsaaudio python-imaging python-pygame python-httplib2 python-setuptools python-pyaudio python-pyalsa
+
+apt-get install locate
+apt-get install ffmpeg
 
 # some missing...
 
-apt-get install ffmpeg
+
 
 # python-scipy
 
