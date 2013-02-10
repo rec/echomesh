@@ -12,7 +12,7 @@ def _open_userfile(fname, perms='r'):
 def load_stream(s):
   return list(yaml.safe_load_all(s))
 
-def load_one(s):
+def decode(s):
   return yaml.safe_load(s)
 
 def read(fname, allow_empty=True):
