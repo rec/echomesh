@@ -9,7 +9,7 @@ from contextlib import closing
 def _open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
-def load_stream(s):
+def decode_all(s):
   return list(yaml.safe_load_all(s))
 
 def decode(s):
@@ -26,7 +26,7 @@ def read(fname, allow_empty=True):
       raise
 
   with closing(f):
-    return load_stream(f)
+    return decode_all(f)
 
 def write(fname, *items):
   try:

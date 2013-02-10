@@ -32,7 +32,7 @@ def _merge_command_line_arguments(args, config):
   for i, arg in enumerate(args):
     if arg.startswith('{'):
       try:
-        cfgs = Yaml.load_stream(arg)
+        cfgs = Yaml.decode_all(arg)
       except Exception as e:
         print('Error %s parsing command line argument %d: "%s"' %
               (str(e), i, arg))
