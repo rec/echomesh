@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os
 import os.path
 import yaml
 
@@ -9,13 +8,16 @@ from contextlib import closing
 def _open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
-def decode_all(s):
-  return list(yaml.safe_load_all(s))
+def encode(item):
+  return yaml.safe_dump(item)
 
 def decode(s):
+  return list(yaml.safe_load_all(s))
+
+def decode_one(s):
   return yaml.safe_load(s)
 
-def read_all(fname, allow_empty=True):
+def read(fname, allow_empty=True):
   opened = False
   try:
     f = _open_userfile(fname, 'r')
@@ -26,7 +28,7 @@ def read_all(fname, allow_empty=True):
       raise
 
   with closing(f):
-    return decode_all(f)
+    return decode(f)
 
 def write(fname, *items):
   try:
@@ -35,5 +37,3 @@ def write(fname, *items):
   except Exception as e:
     print("Can't write filename", fname, e.message)
 
-def encode(item):
-  return yaml.safe_dump(item)

@@ -36,7 +36,7 @@ class DataSocket(MasterRunnable):
     pckt = self.receive_socket.receive(self.timeout)
     if pckt:
       LOGGER.debug('receiving %s', pckt)
-      self.callback(Yaml.decode(pckt))
+      self.callback(Yaml.decode_one(pckt))
 
   def _send(self):
     try:

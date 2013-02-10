@@ -87,7 +87,7 @@ class Processor(object):
 
     try:
       parts = ' '.join(self._parts[2:])
-      configs = Yaml.decode_all(parts)
+      configs = Yaml.decode(parts)
     except:
       return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 

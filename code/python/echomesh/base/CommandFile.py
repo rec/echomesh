@@ -42,7 +42,7 @@ def load(*path):
   data, error = None, None
   f = resolve(*path)
   if f:
-    data = Yaml.read_all(f)
+    data = Yaml.read(f)
     if not data:
       error = "Couldn't read Yaml from file %s" % os.path.join(*path)
   else:

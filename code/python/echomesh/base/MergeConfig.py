@@ -24,8 +24,8 @@ def merge(args):
   config = None
 
   files = reversed(CommandFile.expand('config.yml'))
-  file_iter = _parse(files, Yaml.read_all, 'config file')
-  arg_iter = _parse(args, Yaml.decode_all, 'command line argument')
+  file_iter = _parse(files, Yaml.read, 'config file')
+  arg_iter = _parse(args, Yaml.decode, 'command line argument')
 
   for cfg, item, message in itertools.chain(file_iter, arg_iter):
     if config is None:
@@ -33,7 +33,7 @@ def merge(args):
       config = cfg
     else:
       try:
-        Merge.merge(config, cfg)
+        Merge.merge_strict(config, cfg)
       except Exception as e:
         _add_exception_suffix(e, message, 'merging', item)
   return config
