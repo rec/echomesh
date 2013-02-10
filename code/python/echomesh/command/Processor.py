@@ -4,7 +4,7 @@ import time
 import traceback
 
 from echomesh.base import CommandFile
-from echomesh.base import File
+from echomesh.base import Yaml
 from echomesh.base import Merge
 from echomesh.sound import Sound
 from echomesh.util import Log
@@ -79,7 +79,7 @@ class Processor(object):
 
     if len(self._parts) == 2:
       try:
-        config = open(CommandFile.command_file(scope, 'config.yml'), 'r').read()
+        config = open(CommandFile.config_file(scope), 'r').read()
         LOGGER.info('\n' + config)
       except IOError:
         LOGGER.info('(none)')
@@ -87,7 +87,7 @@ class Processor(object):
 
     try:
       parts = ' '.join(self._parts[2:])
-      configs = File.yaml_load_stream(parts)
+      configs = Yaml.yaml_load_stream(parts)
     except:
       return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 

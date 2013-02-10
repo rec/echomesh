@@ -4,7 +4,7 @@ import os.path
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
-from echomesh.base import File
+from echomesh.base import Yaml
 from echomesh.base import Merge
 from echomesh.util import Log
 from echomesh.util import Subprocess
@@ -37,9 +37,9 @@ class Router(object):
 
   def config(self, msg):
     scope, new_config = msg['scope'], msg['config']
-    f = CommandFile.command_file(scope, 'config.yml')
-    config = Merge.merge(File.yaml_load(f), new_config, require_old_key=False)
-    File.yaml_dump_all(f, config)
+    f = CommandFile.config_file(scope)
+    config = Merge.merge(Yaml.yaml_load(f), new_config, require_old_key=False)
+    Yaml.yaml_dump_all(f, config)
     LOGGER.info('Changing configuration for %s', scope)
 
   def event(self, event):

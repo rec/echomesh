@@ -49,8 +49,8 @@ class Echomesh(MasterRunnable):
     self.send(type='event', event_type='mic', key=level)
 
   def set_score(self, score):
-    from echomesh.base import File
-    File.yaml_dump_all(LOCAL_SCORE, score)
+    from echomesh.base import Yaml
+    Yaml.yaml_dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 
   def _on_start(self):

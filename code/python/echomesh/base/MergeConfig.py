@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import CommandFile
-from echomesh.base import File
+from echomesh.base import Yaml
 from echomesh.base import Merge
 
 def _add_exception_suffix(e, suffix):
@@ -12,7 +12,7 @@ def _merge_level_files():
   config = None
   for f in reversed(CommandFile.expand('config.yml')):
     try:
-      cfg = File.yaml_load(f)
+      cfg = Yaml.yaml_load(f)
     except Exception as e:
       _add_exception_suffix(e, ' loading configuration file %s' % f)
 
@@ -32,7 +32,7 @@ def _merge_command_line_arguments(args, config):
   for i, arg in enumerate(args):
     if arg.startswith('{'):
       try:
-        cfgs = File.yaml_load_stream(arg)
+        cfgs = Yaml.yaml_load_stream(arg)
       except Exception as e:
         print('Error %s parsing command line argument %d: "%s"' %
               (str(e), i, arg))

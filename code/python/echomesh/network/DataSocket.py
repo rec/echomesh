@@ -1,8 +1,11 @@
 import Queue
 import socket
 import time
-import yaml
 
+
+
+
+from echomesh.base import Yaml
 from echomesh.network import BroadcastSocket
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
@@ -36,12 +39,12 @@ class DataSocket(MasterRunnable):
     pckt = self.receive_socket.receive(self.timeout)
     if pckt:
       LOGGER.debug('receiving %s', pckt)
-      self.callback(yaml.safe_load(pckt))
+      self.callback(Yaml.yaml_load_one(pckt))
 
   def _send(self):
     try:
       item = self.queue.get(True, self.timeout)
-      value = yaml.safe_dump(item)
+      value = Yaml.yaml_dump_one(item)
       self.send_socket.write(value)
     except Queue.Empty:
       pass

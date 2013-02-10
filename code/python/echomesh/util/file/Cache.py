@@ -5,7 +5,7 @@ import os.path
 import re
 
 from echomesh.base import CommandFile
-from echomesh.base import File
+from echomesh.base import Yaml
 from echomesh.util import FactoryDict
 from echomesh.util import UniqueName
 from echomesh.util.file import MakeDirs
@@ -19,7 +19,7 @@ class Cache(object):
     self.cachedir = CommandFile.clean('cache', name)
     MakeDirs.makedirs(self.cachedir)
     self.manifest_file = os.join(self.cachedir, MANIFEST_NAME)
-    self.manifest = File.yaml_load(self.manifest_file)
+    self.manifest = Yaml.yaml_load(self.manifest_file)
 
   def get_file(self, key):
     return self._get_file_and_new_contents()[0]
@@ -42,7 +42,7 @@ class Cache(object):
 
       self._fill_file(filename)
       self.manifest[key] = filename
-      File.yaml_dump_one(self.manifest)
+      Yaml.yaml_dump_one(self.manifest)
 
     return filename, contents
 

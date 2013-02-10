@@ -4,35 +4,34 @@ import os.path
 import re
 import sys
 
-from echomesh.base import File
+from echomesh.base import Yaml
 from echomesh.base import Name
 from echomesh.base import Platform
 
 def clean(*path):
   return os.path.join(*path).split('/')
 
-def expand(*path):
-  # These first two lines are to make sure we split on / for Windows and others.
-  path = clean(*path)
-  return [os.path.join('command', i, *path) for i in _LEVELS]
-
-def command_file(*path):
+def _command_file(*path):
   path = clean(*path)
   base = Name.ECHOMESH_PATH if path[0] == '4.default' else Name.PROJECT_PATH
   res = os.path.join(base, 'command', *path)
   return res
 
-def _compute_levels():
-  paths = ['local',
-           os.path.join('name', Name.NAME),
-           os.path.join('platform', Platform.PLATFORM),
-           'global',
-           'default']
-  paths = ['%d.%s' % (i, p) for i, p in enumerate(paths)]
-  paths[4] = command_file(paths[4])
-  return paths
+def _command_path(*tags):
+  return ([
+    '0.local',
+    '1.name/' + Name.NAME] +
+    [('2.tag/' + t) for t in tags] +
+    ['3.platform/' + Platform.PLATFORM,
+     '4.global',
+      _command_file('5.default')])
 
-_LEVELS = _compute_levels()
+_COMMAND_PATH = _command_path()
+
+def expand(*path):
+  # These first two lines are to make sure we split on / for Windows and others.
+  path = clean(*path)
+  return [os.path.join('command', i, *path) for i in _COMMAND_PATH]
 
 def resolve(*path):
   for f in expand(*path):
@@ -43,7 +42,7 @@ def load(*path):
   data, error = None, None
   f = resolve(*path)
   if f:
-    data = File.yaml_load_all(f)
+    data = Yaml.yaml_load_all(f)
     if not data:
       error = "Couldn't read Yaml from file %s" % os.path.join(*path)
   else:
@@ -62,11 +61,11 @@ def _recompute_name_from_map():
         return
 
 _recompute_name_from_map()
-_LEVELS = _compute_levels()
+_COMMAND_PATH = _command_path()
 
-_SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: /\w+ )? ) $', re.X)
+_SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
 
-_SCOPES = ['local', 'name', 'platform', 'global', 'default']
+_SCOPES = ['local', 'tag', 'name', 'platform', 'global', 'default']
 
 def resolve_scope(scope):
   match = _SCOPE_RE.match(scope)
@@ -92,5 +91,5 @@ def resolve_scope(scope):
 
   return '%s%s%s' % (new_prefix, body, suffix)
 
-def scope_file(scope, *path):
-  return command_file(resolve_scope(scope), *path)
+def config_file(scope):
+  return _command_file(scope, 'config.yml')

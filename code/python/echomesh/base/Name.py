@@ -1,11 +1,12 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
-from contextlib import closing
 import os.path
 import os
 import platform
 import socket
 import sys
+
+from contextlib import closing
 
 from echomesh.base import Platform
 
