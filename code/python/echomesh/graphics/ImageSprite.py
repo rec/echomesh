@@ -7,12 +7,15 @@ import pi3d
 
 from echomesh.graphics import Shader
 from echomesh.util import Log
+from echomesh.util.file import DefaultFile
 from echomesh.util.math.Envelope import Envelope
 from echomesh.util.thread.Runnable import Runnable
 
 LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = -2.0
+
+IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
 class ImageSprite(pi3d.ImageSprite, Runnable):
   CACHE = pi3d.TextureCache()
@@ -21,7 +24,7 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
                shader=None, **kwds):
     Runnable.__init__(self)
-    self._imagename = file
+    self._imagename = IMAGE_DIRECTORY.expand(file)
     LOGGER.debug('Opening sprite %s', self._imagename)
 
     self._loops = loops
@@ -32,9 +35,9 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
     self._z = Envelope(z)
 
     x, y, z = self.coords(0)
-    texture = ImageSprite.CACHE.create(file, defer=True)
-    Sprite.ImageSprite.__init__(self, texture, shader=Shader.shader(shader),
-                                x=x, y=y, z=z)
+    texture = ImageSprite.CACHE.create(self._imagename, defer=True)
+    pi3d.ImageSprite.__init__(self, texture, shader=Shader.shader(shader),
+                              x=x, y=y, z=z)
 
     self._time = 0
     if duration:
