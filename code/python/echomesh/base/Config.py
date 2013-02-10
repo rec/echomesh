@@ -5,7 +5,8 @@ import getpass
 import os
 
 from os.path import abspath, dirname
-from python.weakref import WeakSet
+
+from compatibility.weakref import WeakSet
 
 from echomesh.base import MergeConfig
 from echomesh.base import Name

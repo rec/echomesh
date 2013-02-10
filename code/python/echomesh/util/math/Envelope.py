@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from python import six
-
 from echomesh.util.math import Units
 
 class Envelope(object):

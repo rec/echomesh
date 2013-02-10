@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import numpy
 import re
 
+from compatibility import six
 from pyparsing import Expressions
-from python import six
 
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)

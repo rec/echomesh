@@ -3,6 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import weakref
 
+from compatibility.collections import OrderedDict
+
 from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.element import Element
@@ -10,8 +12,6 @@ from echomesh.element import Score
 from echomesh.util.thread import MasterRunnable
 from echomesh.util import Log
 from echomesh.util import UniqueName
-
-from python.collections import OrderedDict
 
 LOGGER = Log.logger(__name__)
 
