@@ -50,7 +50,7 @@ class Echomesh(MasterRunnable):
 
   def set_score(self, score):
     from echomesh.base import Yaml
-    Yaml.yaml_dump_all(LOCAL_SCORE, score)
+    Yaml.dump_all(LOCAL_SCORE, score)
     self.score.set_score(score)
 
   def _on_start(self):

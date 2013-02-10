@@ -87,7 +87,7 @@ class Processor(object):
 
     try:
       parts = ' '.join(self._parts[2:])
-      configs = Yaml.yaml_load_stream(parts)
+      configs = Yaml.load_stream(parts)
     except:
       return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 

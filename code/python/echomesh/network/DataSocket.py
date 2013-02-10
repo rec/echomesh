@@ -39,12 +39,12 @@ class DataSocket(MasterRunnable):
     pckt = self.receive_socket.receive(self.timeout)
     if pckt:
       LOGGER.debug('receiving %s', pckt)
-      self.callback(Yaml.yaml_load_one(pckt))
+      self.callback(Yaml.load_one(pckt))
 
   def _send(self):
     try:
       item = self.queue.get(True, self.timeout)
-      value = Yaml.yaml_dump_one(item)
+      value = Yaml.dump_one(item)
       self.send_socket.write(value)
     except Queue.Empty:
       pass
