@@ -28,7 +28,7 @@ def load_all(fname, allow_empty=True):
   with closing(f):
     return load_stream(f)
 
-def dump_all(fname, *items):
+def write(fname, *items):
   try:
     with closing(_open_userfile(fname, 'w')) as f:
       yaml.safe_dump_all(items, f)
