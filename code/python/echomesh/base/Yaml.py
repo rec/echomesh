@@ -15,7 +15,7 @@ def load_stream(s):
 def load_one(s):
   return yaml.safe_load(s)
 
-def load_all(fname, allow_empty=True):
+def read(fname, allow_empty=True):
   opened = False
   try:
     f = _open_userfile(fname, 'r')
@@ -36,7 +36,7 @@ def write(fname, *items):
     print("Can't write filename", fname, e.message)
 
 def load(fname, allow_empty=True):
-  y = load_all(fname, allow_empty)
+  y = read(fname, allow_empty)
   if y:
     return y[0]
   else:
