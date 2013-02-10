@@ -15,6 +15,7 @@ def _merge_level_files():
       cfg = Yaml.read_one(f)
     except Exception as e:
       _add_exception_suffix(e, ' loading configuration file %s' % f)
+      raise
 
     if config is None:
       assert cfg, "Unable to read default config file %s" % f

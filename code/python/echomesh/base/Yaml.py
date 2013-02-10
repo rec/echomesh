@@ -15,7 +15,7 @@ def decode_all(s):
 def decode(s):
   return yaml.safe_load(s)
 
-def read(fname, allow_empty=True):
+def read_all(fname, allow_empty=True):
   opened = False
   try:
     f = _open_userfile(fname, 'r')
@@ -36,7 +36,7 @@ def write(fname, *items):
     print("Can't write filename", fname, e.message)
 
 def read_one(fname, allow_empty=True):
-  y = read(fname, allow_empty)
+  y = read_all(fname, allow_empty)
   if y:
     return y[0]
   else:
