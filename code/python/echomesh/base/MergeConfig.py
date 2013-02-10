@@ -12,7 +12,7 @@ def _merge_level_files():
   config = None
   for f in reversed(CommandFile.expand('config.yml')):
     try:
-      cfg = Yaml.load(f)
+      cfg = Yaml.read_one(f)
     except Exception as e:
       _add_exception_suffix(e, ' loading configuration file %s' % f)
 

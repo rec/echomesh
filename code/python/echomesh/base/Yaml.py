@@ -35,7 +35,7 @@ def write(fname, *items):
   except Exception as e:
     print("Can't write filename", fname, e.message)
 
-def load(fname, allow_empty=True):
+def read_one(fname, allow_empty=True):
   y = read(fname, allow_empty)
   if y:
     return y[0]

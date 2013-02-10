@@ -19,7 +19,7 @@ class Cache(object):
     self.cachedir = CommandFile.clean('cache', name)
     MakeDirs.makedirs(self.cachedir)
     self.manifest_file = os.join(self.cachedir, MANIFEST_NAME)
-    self.manifest = Yaml.load(self.manifest_file)
+    self.manifest = Yaml.read_one(self.manifest_file)
 
   def get_file(self, key):
     return self._get_file_and_new_contents()[0]
