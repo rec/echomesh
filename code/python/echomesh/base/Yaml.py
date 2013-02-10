@@ -42,5 +42,5 @@ def read_one(fname, allow_empty=True):
   else:
     return {}
 
-def dump_one(item):
+def encode(item):
   return yaml.safe_dump(item)
