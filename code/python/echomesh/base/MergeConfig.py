@@ -21,11 +21,11 @@ def _parse(items, parser, message):
       raise
 
 def merge(args):
+  config = None
+
   files = reversed(CommandFile.expand('config.yml'))
   file_iter = _parse(files, Yaml.read_all, 'config file')
-  args = (a for a in args if a[0] in '{[')
   arg_iter = _parse(args, Yaml.decode_all, 'command line argument')
-  config = None
 
   for cfg, item, message in itertools.chain(file_iter, arg_iter):
     if config is None:

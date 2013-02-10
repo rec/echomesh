@@ -35,12 +35,5 @@ def write(fname, *items):
   except Exception as e:
     print("Can't write filename", fname, e.message)
 
-def read_one(fname, allow_empty=True):
-  y = read_all(fname, allow_empty)
-  if y:
-    return y[0]
-  else:
-    return {}
-
 def encode(item):
   return yaml.safe_dump(item)

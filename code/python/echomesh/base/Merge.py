@@ -38,19 +38,28 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
 
   return old
 
-def merge(old, new, require_old_key=True):
-  return _merge_or_diff(True, old, new, require_old_key)
+def merge_strict(old, new):
+  return _merge_or_diff(True, old, new, True)
 
-def difference(old, new, require_old_key=True):
-  return _merge_or_diff(False, old, new, require_old_key)
+def merge(old, new):
+  return _merge_or_diff(True, old, new, False)
+
+def difference_strict(old, new):
+  return _merge_or_diff(False, old, new, True)
+
+def difference(old, new):
+  return _merge_or_diff(False, old, new, False)
+
+def merge_all_strict(target, *others):
+  return reduce(merge_strict, others, target)
 
 def merge_all(target, *others):
   return reduce(merge, others, target)
 
 """
->>> Merge.merge({1:2, 3:5}, {1:4, 2:7})
+>>> Merge.merge_strict({1:2, 3:5}, {1:4, 2:7})
 {1: 4, 2: 7, 3: 5}
 
->>> Merge.merge_all({1:2, 3:5}, {1:4, 2:7}, {1:23, 5:1000})
+>>> Merge.merge_all_strict({1:2, 3:5}, {1:4, 2:7}, {1:23, 5:1000})
 {1: 23, 2: 7, 3: 5, 5: 1000}
 """

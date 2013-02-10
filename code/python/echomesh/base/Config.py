@@ -37,9 +37,12 @@ def recalculate(perform_update=False, args=None):
   if getpass.getuser() == 'root':
     os.environ['HOME'] = '/home/pi'
 
+  def is_yaml(x):
+    return x[0] in '{['
+
   local_path = ''
   if ARGUMENTS:
-    if not ARGUMENTS[0][0] in '{[':
+    if not is_yaml(ARGUMENTS[0]):
       local_path = ARGUMENTS.pop(0)
 
   if local_path == 'autostart':
@@ -51,7 +54,7 @@ def recalculate(perform_update=False, args=None):
 
   global CONFIG, CONFIGS_UNVISITED
 
-  CONFIG = MergeConfig.merge(ARGUMENTS)
+  CONFIG = MergeConfig.merge(a for a in ARGUMENTS if is_yaml(a))
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
   if perform_update:
     update_clients()
