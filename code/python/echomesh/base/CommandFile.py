@@ -55,6 +55,9 @@ def load(*path):
 
   return data, error
 
+def config_file(scope):
+  return _command_file(scope, 'config.yml')
+
 def _recompute_command_path():
   def lookup(name):
     name_map, error = load(name)
@@ -74,6 +77,7 @@ def _recompute_command_path():
         tags = [tags]
       TAGS[:] = tags
   return _command_path()
+
 
 _COMMAND_PATH = _recompute_command_path()
 
@@ -105,5 +109,3 @@ def resolve_scope(scope):
 
   return '%s%s%s' % (new_prefix, body, suffix)
 
-def config_file(scope):
-  return _command_file(scope, 'config.yml')
