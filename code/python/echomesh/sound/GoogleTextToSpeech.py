@@ -16,7 +16,7 @@ def text_to_speech(text, tl='en'):
 
   """
   params = dict(PARAMS, q=text, tl=tl)
-  r = requests.get(URL, params=params, headers=headers)
+  r = requests.get(URL, params=params, headers=HEADERS)
   if not r.ok:
     raise Exception("%d: couldn't read URL %s for '%s'" %
                     (r.status_code, r.url, text))
@@ -26,4 +26,4 @@ class TextToSpeechCache(Cache.Cache):
   def _get_file_contents(self, key):
     return text_to_speech(key)
 
-CACHE = TextToSpeechCache(name='text-to-speech')
+CACHE = TextToSpeechCache(name='text-to-speech', suffix='.mp3')

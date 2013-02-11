@@ -11,6 +11,7 @@ autostart: true
 
 audio:
   input:
+    aplay_binary: ''
     average:
       chunk_size: 1024
       group_size: 0

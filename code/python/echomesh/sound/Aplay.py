@@ -17,6 +17,7 @@ LOGGER = Log.logger(__name__)
 DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
 
 def play(file, **kwds):
+  print(file)
   file = DEFAULT_AUDIO_DIRECTORY.expand(file)
   binary = Config.get('audio', 'input', 'aplay_binary')
   if not binary:

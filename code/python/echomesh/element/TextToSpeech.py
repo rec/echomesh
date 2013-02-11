@@ -14,10 +14,13 @@ class TextToSpeech(Element.Element):
   def handle(self, event):
     text = event.get('text')
     if text:
+      f = '(cache failed)'
       try:
-        Aplay.play(GoogleTextToSpeech.CACHE(text))
+        f = GoogleTextToSpeech.CACHE.get_file(text)
+        Aplay.play(f)
       except Exception as e:
-        LOGGER.error("Couldn't speak text '%s', exception %s" % (text, e))
+        LOGGER.error("Couldn't speak text '%s' from file %s, exception %s" %
+                     (text, f, e))
 
 
 Element.register(TextToSpeech, 'speak')
