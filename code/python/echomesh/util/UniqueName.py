@@ -23,4 +23,3 @@ def unique_file_name(fname, suffix):
   def matcher(name):
     return os.path.exists('%s.%s' % (name, suffix))
   return '%s.%s' % (unique_name_match(fname, matcher), suffix)
-

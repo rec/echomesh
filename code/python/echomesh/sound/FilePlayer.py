@@ -7,6 +7,7 @@ import sndhdr
 import struct
 
 from echomesh.base import Config
+from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util.math import Envelope
@@ -170,4 +171,4 @@ def play(**keywords):
   else:
     use_aplay = Config.get('audio', 'output', 'use_aplay')
 
-  return (Util.play_with_aplay if use_aplay else FilePlayer)(**keywords)
+  return (Aplay.play if use_aplay else FilePlayer)(**keywords)

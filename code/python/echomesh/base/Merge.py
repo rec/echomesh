@@ -55,11 +55,3 @@ def merge_all_strict(target, *others, **kwds):
 
 def merge_all(target, *others, **kwds):
   return reduce(merge, others + (kwds, ), target)
-
-"""
->>> Merge.merge_strict({1:2, 3:5}, {1:4, 2:7})
-{1: 4, 2: 7, 3: 5}
-
->>> Merge.merge_all_strict({1:2, 3:5}, {1:4, 2:7}, {1:23, 5:1000})
-{1: 23, 2: 7, 3: 5, 5: 1000}
-"""

@@ -66,5 +66,5 @@ u'bar.2'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.Reserver import Reserver
 from echomesh.util.UniqueName import unique_name
+from echomesh.util.Reserver import Reserver

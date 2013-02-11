@@ -5,6 +5,7 @@ import os.path
 import re
 
 from echomesh.base import CommandFile
+from echomesh.base import Merge
 from echomesh.base import Yaml
 from echomesh.util import FactoryDict
 from echomesh.util import UniqueName
@@ -16,10 +17,10 @@ _BAD_CHARS = re.compile(r'[^\w\s]+')
 
 class Cache(object):
   def __init__(self, name):
-    self.cachedir = CommandFile.clean('cache', name)
+    self.cachedir = os.path.join(*CommandFile.clean('cache', name))
     MakeDirs.makedirs(self.cachedir)
-    self.manifest_file = os.join(self.cachedir, MANIFEST_NAME)
-    self.manifest = Merge.merge(*Yaml.read(self.manifest_file))
+    self.manifest_file = os.path.join(self.cachedir, MANIFEST_NAME)
+    self.manifest = Merge.merge_all(*Yaml.read(self.manifest_file))
 
   def get_file(self, key):
     return self._get_file_and_new_contents()[0]

@@ -23,13 +23,7 @@ def text_to_speech(text, tl='en'):
   return r.content
 
 class TextToSpeechCache(Cache.Cache):
-  INSTANCE = None
-
-  @classmethod
-  def instance(cls):
-    if not cls.INSTANCE:
-      cls.INSTANCE = TextToSpeechCache(name='text-to-speech')
-
   def _get_file_contents(self, key):
     return text_to_speech(key)
 
+CACHE = TextToSpeechCache(name='text-to-speech')
