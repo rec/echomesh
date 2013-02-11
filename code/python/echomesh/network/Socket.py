@@ -16,6 +16,9 @@ class Socket(MasterRunnable):
 
   def _on_start(self):
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
+    self._start_socket()
+
+  def _start_socket(self):
     self.socket.bind((self.hostname, self.bind_port))
 
   def _on_stop(self):
