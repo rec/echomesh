@@ -50,8 +50,8 @@ def difference_strict(old, new):
 def difference(old, new):
   return _merge_or_diff(False, old, new, False)
 
-def merge_all_strict(target, *others, **kwds):
-  return reduce(merge_strict, others + (kwds, ), target)
+def merge_all_strict(*others, **kwds):
+  return reduce(merge_strict, others + (kwds, ), {})
 
-def merge_all(target, *others, **kwds):
-  return reduce(merge, others + (kwds, ), target)
+def merge_all(*others, **kwds):
+  return reduce(merge, others + (kwds, ), {})
