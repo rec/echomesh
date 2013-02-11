@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
-import traceback
 
 from echomesh.base import CommandFile
 from echomesh.base import Merge
@@ -31,8 +30,7 @@ class Processor(object):
         else:
           return getattr(self, self._cmd, self._error)()
     except Exception as e:
-      LOGGER.error('%s', str(e))
-      LOGGER.error(traceback.format_exc())
+      Log.exception(LOGGER, e)
 
   def clear(self): self._remote()
   def halt(self): self._remote()

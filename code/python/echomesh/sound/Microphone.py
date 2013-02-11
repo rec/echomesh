@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import time
-import traceback
 
 from echomesh.base import Config
 from echomesh.base import Platform
@@ -94,7 +93,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
           LOGGER.error('errors %d', self.errors)
 
       except:
-        LOGGER.critical(traceback.format_exc())
+        Log.exception(LOGGER, e)
 
 
 def microphone(callback):

@@ -28,9 +28,7 @@ class Echomesh(MasterRunnable):
     self.socket = PeerSocket.PeerSocket(self)
     self.peers = self.socket.peers
     self.score_master = ScoreMaster.ScoreMaster()
-    scorefile = Config.get('score', 'file')
-    if scorefile:
-      self.score_master.start_score(scorefile)
+    self.scorefile = Config.get('score', 'file')
 
     self.display = Display.Display()
     mic = Microphone.microphone(self._mic_event)
@@ -54,4 +52,6 @@ class Echomesh(MasterRunnable):
     self.score.set_score(score)
 
   def _on_start(self):
+    if self.scorefile:
+      self.score_master.start_score(self.scorefile)
     self.display.loop()

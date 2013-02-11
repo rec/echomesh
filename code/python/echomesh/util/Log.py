@@ -9,6 +9,7 @@ LOGGER = Log.logger(__name__)
 import logging
 import logging.config
 import sys
+import traceback
 
 from echomesh.util.file import MakeDirs
 
@@ -44,3 +45,8 @@ def logger(name=None):
 
 LOGGER = logger(__name__)
 LOGGER.debug('Log level is %s', CONFIG.log_level)
+
+def exception(logger, e):
+  logger.error('%s\n', str(e))
+  logger.error(traceback.format_exc())
+

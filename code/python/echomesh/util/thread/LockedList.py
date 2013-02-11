@@ -5,6 +5,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
+FAIL_ON_EXCEPTION = True
+
 class LockedList(object):
   def __init__(self):
     self._entries = []
@@ -18,9 +20,11 @@ class LockedList(object):
     for e in self.entries():
       try:
         function(e)
-      except:
+      except Exception as e:
         LOGGER.error("Couldn't %s on %s", function, e)
-        raise
+        Log.exception(LOGGER, e)
+        if FAIL_ON_EXCEPTION:
+          raise
 
   def clear(self):
     with self._lock:

@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import threading
-import traceback
 
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -19,9 +18,9 @@ class ThreadRunnable(MasterRunnable):
     def target():
       try:
         self.target()
-      except:
+      except Exception as e:
         if self.is_running or self.report_error:
-          LOGGER.critical(traceback.format_exc())
+          Log.exception(LOGGER, e)
         self.stop()
     self.thread = threading.Thread(target=target)
     self.thread.start()

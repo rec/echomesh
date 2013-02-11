@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import threading
-import traceback
 
 from echomesh.util import Log
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable

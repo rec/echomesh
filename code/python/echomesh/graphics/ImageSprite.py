@@ -52,12 +52,14 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
     return x, y, z
 
   def repaint(self, t):
-    if not hasattr(self, 'image'):
-      if self._imagename and PI3D_DISPLAY:
-        self._image = PI3D_DISPLAY.load_texture(self._imagename)
-      else:
-        self._image = None
-        LOGGER.error('No image in image arguments')
+    if False:
+      # TODO: probably can delete this.
+      if not hasattr(self, 'image'):
+        if self._imagename and PI3D_DISPLAY:
+          self._image = PI3D_DISPLAY.load_texture(self._imagename)
+        else:
+          self._image = None
+          LOGGER.error('No image in image arguments')
 
     if not self._time:
       self._time = t
@@ -79,8 +81,8 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
     self.draw()
 
   def _on_start(self):
-    Display.INSTANCE.add_sprites(self)
+    pi3d.Display.Display.INSTANCE.add_sprites(self)
 
   def _on_stop(self):
-    Display.INSTANCE.remove_sprites(self)
+    pi3d.Display.Display.INSTANCE.remove_sprites(self)
 
