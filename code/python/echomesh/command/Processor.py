@@ -49,6 +49,10 @@ class Processor(object):
   def scores(self):
     LOGGER.info(', '.join(self._echomesh.score_master.score_names()))
 
+  def info(self):
+    info = '\n'.join('%s: %s' % i for i in CommandFile.info().iteritems())
+    LOGGER.info('\n%s\n', info)
+
   def start(self):
     if len(self._parts) < 2:
       return LOGGER.error('Usage: start scorefile')

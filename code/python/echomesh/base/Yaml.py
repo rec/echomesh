@@ -23,7 +23,7 @@ def read(fname, allow_empty=True):
     f = _open_userfile(fname, 'r')
   except:
     if allow_empty:
-      return None
+      return []
     else:
       raise
 

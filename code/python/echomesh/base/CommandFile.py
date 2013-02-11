@@ -38,7 +38,8 @@ def expand(*path):
   return [os.path.join('command', i, *path) for i in _COMMAND_PATH]
 
 def resolve(*path):
-  for f in expand(*path):
+  x = expand(*path)
+  for f in x:
     if os.path.exists(f):
       return f
 
@@ -75,7 +76,9 @@ def _recompute_command_path():
       if isinstance(tags, six.string_types):
         tags = [tags]
       TAGS[:] = tags
-  return _command_path()
 
+_recompute_command_path()
+_COMMAND_PATH = _command_path()
 
-_COMMAND_PATH = _recompute_command_path()
+def info():
+  return Merge.merge_all(Name.info(), Path.info(), tags=TAGS)

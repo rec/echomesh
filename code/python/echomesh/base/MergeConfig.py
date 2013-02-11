@@ -3,8 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import itertools
 
 from echomesh.base import CommandFile
-from echomesh.base import Yaml
 from echomesh.base import Merge
+from echomesh.base import Path
+from echomesh.base import Yaml
 
 def _add_exception_suffix(e, *suffixes):
   suffix = ' '.join(suffixes)
@@ -13,6 +14,9 @@ def _add_exception_suffix(e, *suffixes):
 def _parse(items, parser, message):
   for item in items:
     try:
+      pi = parser(item)
+      if pi is None:
+        print(parser, item)
       for cfg in parser(item):
         if cfg:
           yield cfg, item, message
@@ -20,7 +24,8 @@ def _parse(items, parser, message):
       _add_exception_suffix(e, message, 'parsing', item)
       raise
 
-def merge(args):
+def merge():
+  args = Path.yaml_args()
   config = None
 
   files = reversed(CommandFile.expand('config.yml'))

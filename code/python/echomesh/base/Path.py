@@ -6,15 +6,24 @@ import sys
 
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
-PROJECT_PATH = ECHOMESH_PATH
+
+def yaml_args():
+  return [a for a in sys.argv if _is_yaml(a)]
+
+def _is_yaml(x):
+  return x and (x[0] in '{[')
 
 def _not_possible_project(path):
   for d in 'asset', 'command':
     if not os.path.exists(os.path.join(path, d)):
       return True
 
-def set_project_path(original_path=None):
-  original_path = original_path or (os.path.abspath(os.curdir))
+def _set_project_path():
+  arg = (sys.argv + [''])[1]
+  if arg == 'autostart':
+    arg = ''
+
+  original_path = arg or (os.path.abspath(os.curdir))
   path = os.path.abspath(os.path.expanduser(original_path))
 
   while _not_possible_project(path):
@@ -24,8 +33,12 @@ def set_project_path(original_path=None):
       return
     path = p
 
-  os.chdir(path)
+  return path
 
-  global PROJECT_PATH
-  PROJECT_PATH = path
+PROJECT_PATH = _set_project_path()
+os.chdir(PROJECT_PATH)
 
+def info():
+  return {'project_path': PROJECT_PATH,
+          'code_path': CODE_PATH,
+          'echomesh_path': ECHOMESH_PATH}

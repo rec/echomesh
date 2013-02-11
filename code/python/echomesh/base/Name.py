@@ -39,9 +39,9 @@ else:
 
 MAC_ADDRESS = mac_address()
 IP_ADDRESS = ip_address()
-UNAME = platform.uname()[1]
-
+UNAME = platform.uname()[1].lower()
 NAME = UNAME
+
 def set_name(name):
   global NAME
   NAME = name
@@ -57,3 +57,9 @@ def lookup(table, default=None):
     if value is not none:
       return value
   return default
+
+def info():
+  return {'name': NAME,
+          'uname': UNAME,
+          'mac address': MAC_ADDRESS,
+          'ip address': IP_ADDRESS}

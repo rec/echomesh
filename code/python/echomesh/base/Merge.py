@@ -50,11 +50,11 @@ def difference_strict(old, new):
 def difference(old, new):
   return _merge_or_diff(False, old, new, False)
 
-def merge_all_strict(target, *others):
-  return reduce(merge_strict, others, target)
+def merge_all_strict(target, *others, **kwds):
+  return reduce(merge_strict, others + (kwds, ), target)
 
-def merge_all(target, *others):
-  return reduce(merge, others, target)
+def merge_all(target, *others, **kwds):
+  return reduce(merge, others + (kwds, ), target)
 
 """
 >>> Merge.merge_strict({1:2, 3:5}, {1:4, 2:7})

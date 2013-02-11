@@ -9,7 +9,6 @@ from os.path import abspath, dirname
 from compatibility.weakref import WeakSet
 
 from echomesh.base import MergeConfig
-from echomesh.base import Path
 from echomesh.base import Platform
 
 CONFIG = None
@@ -17,8 +16,6 @@ CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
 CLIENTS = WeakSet()
 ARGUMENTS = []
-
-WAS_AUTOSTARTED = False
 
 def add_client(client):
   CLIENTS.add(client)
@@ -37,24 +34,9 @@ def recalculate(perform_update=False, args=None):
   if getpass.getuser() == 'root':
     os.environ['HOME'] = '/home/pi'
 
-  def is_yaml(x):
-    return x[0] in '{['
-
-  local_path = ''
-  if ARGUMENTS:
-    if not is_yaml(ARGUMENTS[0]):
-      local_path = ARGUMENTS.pop(0)
-
-  if local_path == 'autostart':
-    global WAS_AUTOSTARTED
-    WAS_AUTOSTARTED = True
-    local_path = ''
-
-  Path.set_project_path(local_path)
-
   global CONFIG, CONFIGS_UNVISITED
 
-  CONFIG = MergeConfig.merge(a for a in ARGUMENTS if is_yaml(a))
+  CONFIG = MergeConfig.merge()
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
   if perform_update:
     update_clients()
