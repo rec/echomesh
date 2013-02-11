@@ -1,7 +1,10 @@
 # This is the default configuration for the entire system.
+#
 # If you add a new configuration value, you must add its default value as an
-# entry in this file - this is automatically checked at runtime if the variable
-# Config.ALLOW_EMPTY_OPTIONS is False, which it is by default.
+# entry in this file - this is automatically checked at runtime if the Python
+# variable Config.ALLOW_EMPTY_OPTIONS is False, which it is by default, so if
+# you try to get a configuration that doesn't exist in the default file, you'll
+# throw an Exception.
 
 type: config
 
@@ -45,24 +48,13 @@ control_program:
   enable: true
   use_tk: true
 
+diagnostics:
+  dump_unused_configs: false
+  dump_startup_times: false
+
 discovery:
   port: 1238
   timeout: 0.10
-
-dump_unused_configs: false
-
-pi3d:
-  aspect: 60.0
-  background: null  # Can be a 4-tuple: r, g, b, alpha.
-  depth: 24
-  dimensions: null  # Can be a 4-tuple: x, y, width, height
-  enable: true
-  far: null
-  frames_per_second: 0
-  full_screen: true
-  near: null
-  tk: False
-  window_title: ''
 
 git:
   user: rec
@@ -76,6 +68,19 @@ logging:
   level: info
 
 opening_sleep: 0.5
+
+pi3d:
+  aspect: 60.0
+  background: [0, 0, 0, 0]  # Red, green, blue, alpha.
+  depth: 24
+  dimensions: null  # Can be a 4-tuple: x, y, width, height.
+  enable: true
+  far: null
+  frames_per_second: 30
+  full_screen: true
+  near: null
+  tk: False
+  window_title: ''
 
 score:
   file: ''

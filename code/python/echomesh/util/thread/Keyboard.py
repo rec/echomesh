@@ -8,9 +8,7 @@ from echomesh.command import Processor
 from echomesh.base import Config
 from echomesh.util.thread import ThreadRunnable
 
-MESSAGE = """
-Type help for a list of commands
-
+MESSAGE = """Type help for a list of commands.
 """
 
 class Keyboard(ThreadRunnable.ThreadRunnable):

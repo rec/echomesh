@@ -35,7 +35,8 @@ class Echomesh(MasterRunnable):
     kbd = Keyboard.keyboard(self)
 
     self.add_mutual_stop_slave(self.socket, kbd, mic)
-    self.add_slave(self.score_master, self.display)
+    self.add_slave(self.score_master)
+    self.add_stop_only_slave(self.display)
 
   def send(self, **data):
     self.socket.send(data)
@@ -54,4 +55,7 @@ class Echomesh(MasterRunnable):
   def _on_start(self):
     if self.scorefile:
       self.score_master.start_score(self.scorefile)
+    self.display.start()
+
+  def loop(self):
     self.display.loop()
