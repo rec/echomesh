@@ -42,7 +42,7 @@ class Cache(object):
 
       self._fill_file(filename)
       self.manifest[key] = filename
-      Yaml.encode(self.manifest)
+      Yaml.encode_one(self.manifest)
 
     return filename, contents
 
