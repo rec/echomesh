@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
+def _merge_or_diff(old, new, is_merge, require_old_key, path=''):
   """Merges two dictionaries, mutating the dictionary "old"."""
   nothing = ()
 
@@ -26,7 +26,7 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
 
     if isinstance(old_v, dict):
       if isinstance(new_v, dict):
-        _merge_or_diff(is_merge, old_v, new_v, new_path, require_old_key)
+        _merge_or_diff(old_v, new_v, is_merge, new_path, require_old_key)
       else:
         raise Exception('Tried to override dict with non-dict for key ' +
                         new_path)
@@ -47,19 +47,19 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
   return old
 
 def difference_strict(old, new):
-  return _merge_or_diff(False, old, new, True)
+  return _merge_or_diff(old, new, False, True)
 
 def difference(old, new):
-  return _merge_or_diff(False, old, new, False)
+  return _merge_or_diff(old, new, False, False)
 
-def merge_all_strict(*others, **kwds):
-  def merge_strict(old, new):
-    return _merge_or_diff(True, old, new, True)
-
-  return reduce(merge_strict, others + (kwds, ), None)
-
-def merge_all(*others, **kwds):
+def merge_strict(*others, **kwds):
   def merge(old, new):
-    return _merge_or_diff(True, old, new, False)
+    return _merge_or_diff(old, new, True, True)
+
+  return reduce(merge, others + (kwds, ), None)
+
+def merge(*others, **kwds):
+  def merge(old, new):
+    return _merge_or_diff(old, new, True, False)
 
   return reduce(merge, others + (kwds, ), None)

@@ -20,7 +20,7 @@ class Cache(object):
     self.cachedir = os.path.join(*CommandFile.clean('cache', name))
     MakeDirs.makedirs(self.cachedir)
     self.manifest_file = os.path.join(self.cachedir, MANIFEST_NAME)
-    self.manifest = Merge.merge_all(*Yaml.read(self.manifest_file))
+    self.manifest = Merge.merge(*Yaml.read(self.manifest_file))
 
   def get_file(self, key):
     return self._get_file_and_new_contents()[0]

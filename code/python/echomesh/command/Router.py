@@ -39,7 +39,7 @@ class Router(object):
     scope, new_config = msg['scope'], msg['config']
     f = CommandFile.config_file(scope)
     configs = Yaml.read(f) + [new_config]
-    Yaml.write(f, Merge.merge_all(*configs))
+    Yaml.write(f, Merge.merge(*configs))
     LOGGER.info('Changing configuration for %s', scope)
 
   def event(self, event):

@@ -62,7 +62,7 @@ def _recompute_command_path():
   def lookup(name):
     name_map, error = load(name)
     if name_map:
-      return Name.lookup(Merge.merge_all(*name_map))
+      return Name.lookup(Merge.merge(*name_map))
 
   name = lookup('name_map.yml')
   if name:
@@ -81,4 +81,4 @@ _recompute_command_path()
 _COMMAND_PATH = _command_path()
 
 def info():
-  return Merge.merge_all(Name.info(), tags=TAGS)
+  return Merge.merge(Name.info(), tags=TAGS)

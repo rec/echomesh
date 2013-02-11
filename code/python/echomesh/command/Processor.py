@@ -98,7 +98,7 @@ class Processor(object):
     except:
       return LOGGER.error("Can't parse yaml argument '%s'" % yaml)
 
-    config = Merge.merge_all_strict(*configs)
+    config = Merge.merge_strict(*configs)
     if '0.local' in scope:
       self._echomesh.socket.router({'type': 'config', 'config': config,
                                     'scope': scope})
