@@ -4,8 +4,9 @@ import time
 import traceback
 
 from echomesh.base import CommandFile
-from echomesh.base import Yaml
 from echomesh.base import Merge
+from echomesh.base import Path
+from echomesh.base import Yaml
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Scope
@@ -50,7 +51,8 @@ class Processor(object):
     LOGGER.info(', '.join(self._echomesh.score_master.score_names()))
 
   def info(self):
-    info = '\n'.join('%s: %s' % i for i in CommandFile.info().iteritems())
+    info = Merge.merge_all(CommandFile.info(), Path.info())
+    info = '\n'.join('%s: %s' % i for i in info.iteritems())
     LOGGER.info('\n%s\n', info)
 
   def start(self):
@@ -106,8 +108,9 @@ class Processor(object):
       self._remote(scope=scope, config=config)
 
   def nodes(self):
-    peers = '\n'.join(self._echomesh.peers.get_peers().itervalues())
-    LOGGER.info('\n%s', peer)
+    for name, peer in self._echomesh.peers.get_peers().iteritems():
+      info = '\n'.join('  %s: %s' % kv for kv in peer.iteritems())
+      LOGGER.info('\n%s:\n%s\n', name, info)
 
   def quit(self):
     LOGGER.debug('quitting')

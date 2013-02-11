@@ -81,4 +81,4 @@ _recompute_command_path()
 _COMMAND_PATH = _command_path()
 
 def info():
-  return Merge.merge_all(Name.info(), Path.info(), tags=TAGS)
+  return Merge.merge_all(Name.info(), tags=TAGS)
