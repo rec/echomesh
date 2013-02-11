@@ -4,33 +4,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import select
 import socket
-import sys
-import time
 
-from echomesh.base import Platform
-from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.network import Socket
 
-DEFAULT_PORT = 1248
-DEFAULT_BUFFER_SIZE = 1024
+DEFAULT_BUFFER_SIZE = 65536
 
-USAGE = '%s read | write' % sys.argv[0]
-
-class Socket(MasterRunnable):
+class Send(Socket.Socket):
   def __init__(self, port):
-    super(Socket, self).__init__()
-    self.port = port
-    self.bind_port = 0
-    self.socket = None
+    super(Send, self).__init__(port=port, bind_port=0,
+                               hostname='', socket_type=socket.SOCK_DGRAM)
 
-  def _on_start(self):
-    self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    self.socket.bind(('', self.bind_port))
-
-  def _on_stop(self):
-    self.socket.close()
-    self.socket = None
-
-class Send(Socket):
   def _on_start(self):
     super(Send, self)._on_start()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
@@ -42,10 +25,10 @@ class Send(Socket):
       if self.is_running:
         raise
 
-class Receive(Socket):
+class Receive(Socket.Socket):
   def __init__(self, port, buffer_size=DEFAULT_BUFFER_SIZE):
-    super(Receive, self).__init__(port)
-    self.bind_port = port
+    super(Receive, self).__init__(port=port, bind_port=port,
+                                  hostname='', socket_type=socket.SOCK_DGRAM)
     self.buffer_size = buffer_size
 
   def _on_start(self):
