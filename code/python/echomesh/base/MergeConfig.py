@@ -24,7 +24,7 @@ def _parse(items, parser, message):
       _add_exception_suffix(e, message, 'parsing', item)
       raise
 
-def merge():
+def merge_config():
   args = Path.yaml_args()
   config = None
 

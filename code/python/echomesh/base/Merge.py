@@ -46,12 +46,6 @@ def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
 
   return old
 
-def merge_strict(old, new):
-  return _merge_or_diff(True, old, new, True)
-
-def merge(old, new):
-  return _merge_or_diff(True, old, new, False)
-
 def difference_strict(old, new):
   return _merge_or_diff(False, old, new, True)
 
@@ -59,7 +53,13 @@ def difference(old, new):
   return _merge_or_diff(False, old, new, False)
 
 def merge_all_strict(*others, **kwds):
+  def merge_strict(old, new):
+    return _merge_or_diff(True, old, new, True)
+
   return reduce(merge_strict, others + (kwds, ), None)
 
 def merge_all(*others, **kwds):
+  def merge(old, new):
+    return _merge_or_diff(True, old, new, False)
+
   return reduce(merge, others + (kwds, ), None)

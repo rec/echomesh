@@ -36,7 +36,7 @@ def recalculate(perform_update=False, args=None):
 
   global CONFIG, CONFIGS_UNVISITED
 
-  CONFIG = MergeConfig.merge()
+  CONFIG = MergeConfig.merge_config()
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
   if perform_update:
     update_clients()
