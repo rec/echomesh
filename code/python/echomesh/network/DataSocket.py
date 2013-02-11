@@ -41,7 +41,7 @@ class DataSocket(MasterRunnable):
   def _send(self):
     try:
       item = self.queue.get(True, self.timeout)
-      value = Yaml.encode(item)
+      value = Yaml.encode_one(item)
       self.send_socket.write(value)
     except Queue.Empty:
       pass

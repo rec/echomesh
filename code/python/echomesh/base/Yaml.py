@@ -8,7 +8,7 @@ from contextlib import closing
 def _open_userfile(fname, perms='r'):
   return open(os.path.expanduser(fname), perms)
 
-def encode(item):
+def encode_one(item):
   return yaml.safe_dump(item)
 
 def decode(s):
