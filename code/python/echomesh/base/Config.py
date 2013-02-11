@@ -9,7 +9,7 @@ from os.path import abspath, dirname
 from compatibility.weakref import WeakSet
 
 from echomesh.base import MergeConfig
-from echomesh.base import Name
+from echomesh.base import Path
 from echomesh.base import Platform
 
 CONFIG = None
@@ -50,7 +50,7 @@ def recalculate(perform_update=False, args=None):
     WAS_AUTOSTARTED = True
     local_path = ''
 
-  Name.set_project_path(local_path)
+  Path.set_project_path(local_path)
 
   global CONFIG, CONFIGS_UNVISITED
 

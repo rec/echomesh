@@ -10,10 +10,10 @@ if __name__ == '__main__':
     sys.stdout.flush()
   p('Loading echomesh')
 
-  from echomesh.base import Name
+  from echomesh.base import Path
   p()
 
-  sys.path.append(os.path.join(Name.CODE_PATH, 'external'))
+  sys.path.append(os.path.join(Path.CODE_PATH, 'external'))
   p()
 
   from echomesh.base import Config  # Must be the first import.

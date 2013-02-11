@@ -51,4 +51,3 @@ class Cache(object):
 
   def _get_file_contents(self, key):
     raise Exception('Must override _get_file_contents')
-

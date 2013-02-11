@@ -2,26 +2,31 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 import re
-import sys
 
-from echomesh.base import Yaml
+from compatibility import six
+
 from echomesh.base import Name
+from echomesh.base import Merge
+from echomesh.base import Path
 from echomesh.base import Platform
+from echomesh.base import Yaml
+
+TAGS = []
 
 def clean(*path):
   return os.path.join(*path).split('/')
 
 def _command_file(*path):
   path = clean(*path)
-  base = Name.ECHOMESH_PATH if path[0] == '4.default' else Name.PROJECT_PATH
+  base = Path.ECHOMESH_PATH if path[0] == '4.default' else Path.PROJECT_PATH
   res = os.path.join(base, 'command', *path)
   return res
 
-def _command_path(*tags):
+def _command_path():
   return ([
     '0.local',
     '1.name/' + Name.NAME] +
-    [('2.tag/' + t) for t in tags] +
+    [('2.tag/' + t) for t in TAGS] +
     ['3.platform/' + Platform.PLATFORM,
      '4.global',
       _command_file('5.default')])
@@ -50,18 +55,27 @@ def load(*path):
 
   return data, error
 
-def _recompute_name_from_map():
-  name_map, error = load('name_map.yml')
-  if name_map:
-    name_map = name_map[0]
-    for n in Name.names():
-      name = name_map.get(n)
-      if name:
-        Name.set_name(name)
-        return
+def _recompute_command_path():
+  def lookup(name):
+    name_map, error = load(name)
+    if name_map:
+      return Name.lookup(Merge.merge_all(*name_map))
 
-_recompute_name_from_map()
-_COMMAND_PATH = _command_path()
+  name = lookup('name_map.yml')
+  if name:
+    Name.set_name(name)
+
+  tags = lookup('tag_map.yml')
+  if tags:
+    if isinstance(tags, dict):
+      print('Malformed tag_map.yml')
+    else:
+      if isinstance(tags, six.string_types):
+        tags = [tags]
+      TAGS[:] = tags
+  return _command_path()
+
+_COMMAND_PATH = _recompute_command_path()
 
 _SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
 
