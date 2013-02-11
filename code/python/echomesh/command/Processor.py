@@ -8,6 +8,7 @@ from echomesh.base import Yaml
 from echomesh.base import Merge
 from echomesh.sound import Sound
 from echomesh.util import Log
+from echomesh.util import Scope
 from echomesh.util.math import Units
 
 from gittwit.git import Git
@@ -73,7 +74,7 @@ class Processor(object):
       return LOGGER.error('Usage: config scope command [... command] ')
 
     try:
-      scope = CommandFile.resolve_scope(self._parts[1])
+      scope = Scope.resolve(self._parts[1])
     except Exception as e:
       return LOGGER.error(e.message)
 
