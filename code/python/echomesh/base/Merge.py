@@ -5,6 +5,14 @@ import copy
 def _merge_or_diff(is_merge, old, new, require_old_key, path=''):
   """Merges two dictionaries, mutating the dictionary "old"."""
   nothing = ()
+
+  if old is None:
+    old = {}
+    require_old_key = False
+  else:
+    # old = copy.deepcopy(old)
+    pass
+
   for key, new_v in new.iteritems():
     new_path = '%s:%s' % (path, key)
     old_v = old.get(key, nothing)
@@ -51,7 +59,7 @@ def difference(old, new):
   return _merge_or_diff(False, old, new, False)
 
 def merge_all_strict(*others, **kwds):
-  return reduce(merge_strict, others + (kwds, ), {})
+  return reduce(merge_strict, others + (kwds, ), None)
 
 def merge_all(*others, **kwds):
-  return reduce(merge, others + (kwds, ), {})
+  return reduce(merge, others + (kwds, ), None)
