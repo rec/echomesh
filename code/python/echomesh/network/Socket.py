@@ -5,6 +5,8 @@ import socket
 
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
+# See http://docs.python.org/2/howto/sockets.html
+
 class Socket(MasterRunnable):
   def __init__(self, port, bind_port, hostname, socket_type):
     super(Socket, self).__init__()
