@@ -3,6 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 
 from echomesh.graphics import GammaTable
+from echomesh.util import Importer
+numpy = Importer.imp('numpy')
 
 # Inspired by:
 # https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
@@ -24,7 +26,6 @@ class LEDBank(object):
     self.control_data = bytearray(3 * count + 4)
     self.control_data_dirty = False
 
-    import numpy
     self.led = numpy.array([0.0] * (3 * count))
     self.led_dirty = False
     self.lock = threading.Lock()

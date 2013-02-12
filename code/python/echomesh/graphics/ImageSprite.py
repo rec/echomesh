@@ -3,13 +3,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import time
 
-import pi3d
-
 from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
 from echomesh.util.math.Envelope import Envelope
 from echomesh.util.thread.Runnable import Runnable
+from echomesh.util import Importer
+
+pi3d = Importer.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 
@@ -17,13 +18,13 @@ DEFAULT_Z = -2.0
 
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
-class ImageSprite(pi3d.ImageSprite, Runnable):
-  CACHE = pi3d.TextureCache()
+class ImageSprite(Runnable):
+  CACHE = None
 
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
                shader=None, **kwds):
-    Runnable.__init__(self)
+    super(ImageSprite, self).__init__()
     self._imagename = IMAGE_DIRECTORY.expand(file)
     LOGGER.debug('Opening sprite %s', self._imagename)
 
@@ -35,11 +36,14 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
     self._z = Envelope(z)
 
     x, y, z = self.coords(0)
+    if not ImageSprite.CACHE:
+      ImageSprite.CACHE = pi3d.TextureCache()
     texture = ImageSprite.CACHE.create(self._imagename, defer=True)
-    pi3d.ImageSprite.__init__(self, texture,
-                              w=texture.ix, h=texture.iy,
-                              shader=Shader.shader(shader),
-                              x=x, y=y, z=z)
+    self.pi3d_sprite = pi3d.ImageSprite(texture,
+                                        w=texture.ix, h=texture.iy,
+                                        shader=Shader.shader(shader),
+                                        x=x, y=y, z=z)
+    setattr(self.pi3d_sprite, 'repaint', self.repaint)
 
     self._time = 0
     if duration:
@@ -66,16 +70,16 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
         self.stop()
         return
 
-    self.position(*self.coords(elapsed))
+    self.pi3d_sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    self.scale(size, size, size)
-    self.rotateToZ(self._rotation.interpolate(elapsed))
+    self.pi3d_sprite.scale(size, size, size)
+    self.pi3d_sprite.rotateToZ(self._rotation.interpolate(elapsed))
 
-    self.draw()
+    self.pi3d_sprite.draw()
 
   def _on_start(self):
-    pi3d.Display.Display.INSTANCE.add_sprites(self)
+    pi3d.Display.Display.INSTANCE.add_sprites(self.pi3d_sprite)
 
   def _on_stop(self):
-    pi3d.Display.Display.INSTANCE.remove_sprites(self)
+    pi3d.Display.Display.INSTANCE.remove_sprites(self.pi3d_sprite)
 

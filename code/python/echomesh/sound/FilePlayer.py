@@ -10,9 +10,12 @@ from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util.math import Envelope
+from echomesh.util import Importer
 from echomesh.util import Log
 from echomesh.util import Subprocess
 from echomesh.util.thread.ThreadLoop import ThreadLoop
+
+numpy = Importer.imp('numpy')
 
 LOGGER = Log.logger(__name__)
 
@@ -49,7 +52,7 @@ class FilePlayer(ThreadLoop):
      nsamples, c1, c2) = self.file_stream.getparams()
     self.dtype = Util.numpy_types()[self.sample_width]
     self.request_channels = 2 if self.pan else self.channels
-    self.format = Sound.PYAUDIO.get_format_from_width(self.sample_width)
+    self.format = Sound.PYAUDIO().get_format_from_width(self.sample_width)
     self.samples_per_frame = self.sample_width * self.channels
     self.loop_number = 0
     Config.add_client(self)
@@ -62,12 +65,12 @@ class FilePlayer(ThreadLoop):
 
   def open_stream(self):
     try:
-      return Sound.PYAUDIO.open(format=self.format,
-                                channels=self.request_channels,
-                                rate=self.sampling_rate,
-                                output=True,
-                                output_device_index=self.index,
-                                frames_per_buffer=self.frames_per_buffer)
+      return Sound.PYAUDIO().open(format=self.format,
+                                  channels=self.request_channels,
+                                  rate=self.sampling_rate,
+                                  output=True,
+                                  output_device_index=self.index,
+                                  frames_per_buffer=self.frames_per_buffer)
     except:
       LOGGER.error('FAILED to open %s on port %s', self.file,
                    Sound.get_device_info(self.index)['name'])
@@ -94,8 +97,6 @@ class FilePlayer(ThreadLoop):
       self.audio_stream.close()
 
   def _convert(self, frames):
-    import numpy
-
     frames = numpy.fromstring(frames, dtype=self.dtype)
     if self.sample_width is 1:
       frames *= 256.0
@@ -135,8 +136,6 @@ class FilePlayer(ThreadLoop):
         raise
 
   def _pan_and_fade(self, frames):
-    import numpy
-
     if self.passthrough:
       return frames
     left, right = self._convert(frames)

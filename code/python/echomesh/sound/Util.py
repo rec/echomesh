@@ -5,18 +5,18 @@ import math
 import sunau
 import wave
 
+from echomesh.util import Importer
+numpy = Importer.imp('numpy')
+
 FILE_READERS = {'au': sunau, 'aifc': aifc, 'aiff': aifc, 'wav': wave}
 
 def numpy_types():
-  import numpy
   return {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}
 
 # Adapted from http://flamingoengine.googlecode.com/svn-history/r70/trunk/backends/audio/pyaudio_mixer.py
 
 def interleave(left, right):
   """Convert two mono sources into one stereo source."""
-  import numpy
-
   return numpy.ravel(numpy.vstack((left, right)), order='F')
 
 def uninterleave(src):

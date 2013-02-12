@@ -1,6 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import pi3d
+from echomesh.util import Importer
+
+pi3d = Importer.imp('pi3d')
+
+def SHADER():
+  global _SHADER
+  if not _SHADER:
+    _SHADER = pi3d.Shader(vshader_source=_VERTEX_SHADER,
+                          fshader_source=_FRAGMENT_SHADER)
+  return _SHADER
+
+def shader(shader_file=None):
+  return pi3d.Shader(shfile=shader_file) if shader_file else SHADER()
+
 
 _VERTEX_SHADER = """
 precision highp float;
@@ -45,8 +58,5 @@ void main(void) {
 }
 """
 
-SHADER = pi3d.Shader(vshader_source=_VERTEX_SHADER,
-                     fshader_source=_FRAGMENT_SHADER)
+_SHADER = None
 
-def shader(shader_file=None):
-  return pi3d.Shader(shfile=shader_file) if shader_file else SHADER

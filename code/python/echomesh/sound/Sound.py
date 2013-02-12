@@ -1,20 +1,27 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import pyaudio
+from echomesh.util import Importer
+pyaudio = Importer.imp('pyaudio')
 
-PYAUDIO = pyaudio.PyAudio()
+_PYAUDIO = None
+
+def PYAUDIO():
+  global _PYAUDIO
+  if not _PYAUDIO:
+    _PYAUDIO = pyaudio.PyAudio()
+  return _PYAUDIO
 
 INPUT, OUTPUT = True, False
 
 def devices():
-  for i in range(PYAUDIO.get_device_count()):
-    yield PYAUDIO.get_device_info_by_index(i)
+  for i in range(PYAUDIO().get_device_count()):
+    yield PYAUDIO().get_device_info_by_index(i)
 
 def get_default_device(is_input):
   if is_input:
-    return PYAUDIO.get_default_input_device_info()
+    return PYAUDIO().get_default_input_device_info()
   else:
-    return PYAUDIO.get_default_output_device_info()
+    return PYAUDIO().get_default_output_device_info()
 
 def get_default_index(is_input):
   return get_default_device(is_input)['index']
@@ -46,7 +53,8 @@ def get_input_index(get):
 def get_output_index(get):
   return get_index(False, get)
 
-get_device_info = PYAUDIO.get_device_info_by_index
+def get_device_info():
+  return PYAUDIO().get_device_info_by_index()
 
 LIST_FORMAT = ('{index}: {name:24}: {maxInputChannels} in, ' +
                '{maxOutputChannels} out at {defaultSampleRate}Hz')
