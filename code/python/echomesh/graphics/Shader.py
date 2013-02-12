@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Importer
+from echomesh.util import ImportIf
 
-pi3d = Importer.imp('pi3d')
+pi3d = ImportIf.imp('pi3d')
 
 def SHADER():
   global _SHADER

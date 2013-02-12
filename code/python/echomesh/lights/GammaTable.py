@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Importer
-numpy = Importer.imp('numpy')
+from echomesh.util import ImportIf
+numpy = ImportIf.imp('numpy')
 
 GAMMA = 2.5
 GAMMA_TABLE_STEPS = 512

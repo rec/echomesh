@@ -21,7 +21,7 @@ def _parse(items, parser, message):
         if cfg:
           yield cfg, item, message
     except Exception as e:
-      _add_exception_suffix(e, message, 'parsing', item)
+      _add_exception_suffix(e, ' while parsing', message, item)
       raise
 
 def merge_config():
@@ -40,7 +40,7 @@ def merge_config():
       try:
         config = Merge.merge_strict(config, cfg)
       except Exception as e:
-        _add_exception_suffix(e, message, 'merging', item)
+        _add_exception_suffix(e, ' while merging', message, item)
         raise
 
   return config

@@ -3,16 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util.thread import Runnable
-from echomesh.util import Importer
+from echomesh.util import ImportIf
 
-pi3d = Importer.imp('pi3d')
+pi3d = ImportIf.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 
 class Display(Runnable.Runnable):
   def __init__(self):
     super(Display, self).__init__()
-    if not Config.get('pi3d', 'enable'):
+    if not Config.get('load_module', 'pi3d'):
       self.display = None
       return
 

@@ -2,11 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.sound import Sound
 from echomesh.util import Log
-from echomesh.util import Importer
+from echomesh.util import ImportIf
 
-analyse = Importer.imp('analyse')
-numpy = Importer.imp('numpy')
-pyaudio = Importer.imp('pyaudio')
+analyse = ImportIf.imp('analyse')
+numpy = ImportIf.imp('numpy')
+pyaudio = ImportIf.imp('pyaudio')
 
 LOGGER = Log.logger(__name__)
 

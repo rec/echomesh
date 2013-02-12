@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 ERROR_MESSAGE = 'You requested a feature that needs the Python library "%s".'
 EXCEPTION_TYPE = Exception
 
-class _ImportFailure(object):
-  def __init__(self, name):
-    self.name = name
+class Failure(object):
+  def __init__(self, message):
+    self.message = message
 
   def __getattr__(self, key):
-    raise EXCEPTION_TYPE(ERROR_MESSAGE % self.name)
+    raise EXCEPTION_TYPE(self.message)
 
-def imp(module):
+def imp(module, name=None):
   try:
     return __import__(module)
   except ImportError:
-    return _ImportFailure(module)
+    return Failure(ERROR_MESSAGE % (name or module))

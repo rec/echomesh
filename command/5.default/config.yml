@@ -62,6 +62,12 @@ git:
 
 headless: false
 
+load_module:
+  analyse: true
+  pi3d: true
+  pyaudio: true
+  numpy: true
+
 logging:
   file: ""
   format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
@@ -74,7 +80,6 @@ pi3d:
   background: [0, 0, 0, 0]  # Red, green, blue, alpha.
   depth: 24
   dimensions: null  # Can be a 4-tuple: x, y, width, height.
-  enable: true
   far: null
   frames_per_second: 30
   full_screen: true

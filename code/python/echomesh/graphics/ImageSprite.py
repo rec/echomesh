@@ -8,9 +8,9 @@ from echomesh.util import Log
 from echomesh.util.file import DefaultFile
 from echomesh.util.math.Envelope import Envelope
 from echomesh.util.thread.Runnable import Runnable
-from echomesh.util import Importer
+from echomesh.util import ImportIf
 
-pi3d = Importer.imp('pi3d')
+pi3d = ImportIf.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 

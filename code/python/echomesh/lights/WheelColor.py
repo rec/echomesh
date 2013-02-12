@@ -3,8 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 # Inspired by
 # https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
 
-from echomesh.util import Importer
-numpy = Importer.imp('numpy')
+from echomesh.util import ImportIf
+numpy = ImportIf.imp('numpy')
 
 def wheel_color(rotation=0):
   """

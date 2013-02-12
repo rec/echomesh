@@ -5,8 +5,8 @@ import math
 import sunau
 import wave
 
-from echomesh.util import Importer
-numpy = Importer.imp('numpy')
+from echomesh.util import ImportIf
+numpy = ImportIf.imp('numpy')
 
 FILE_READERS = {'au': sunau, 'aifc': aifc, 'aiff': aifc, 'wav': wave}
 

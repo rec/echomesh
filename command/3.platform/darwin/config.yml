@@ -5,5 +5,5 @@ type: config
 control_program:
   enable: true
 
-pi3d:
-  enable: false
+load_module:
+  pi3d: false

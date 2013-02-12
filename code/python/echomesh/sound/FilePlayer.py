@@ -10,12 +10,12 @@ from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util.math import Envelope
-from echomesh.util import Importer
+from echomesh.util import ImportIf
 from echomesh.util import Log
 from echomesh.util import Subprocess
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
-numpy = Importer.imp('numpy')
+numpy = ImportIf.imp('numpy')
 
 LOGGER = Log.logger(__name__)
 
