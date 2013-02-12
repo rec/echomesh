@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 # https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
 
 if False:
-  # TODO: why doesn't this work?
+  # TODO: why does this make our unit testing fail??
   from echomesh.util import ImportIf
   numpy = ImportIf.imp('numpy')
 
