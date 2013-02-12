@@ -1,7 +1,6 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import numpy
 import os.path
 import sndhdr
 import struct
@@ -48,7 +47,7 @@ class FilePlayer(ThreadLoop):
 
     (self.channels, self.sample_width, self.sampling_rate,
      nsamples, c1, c2) = self.file_stream.getparams()
-    self.dtype = Util.NUMPY_TYPES[self.sample_width]
+    self.dtype = Util.numpy_types()[self.sample_width]
     self.request_channels = 2 if self.pan else self.channels
     self.format = Sound.PYAUDIO.get_format_from_width(self.sample_width)
     self.samples_per_frame = self.sample_width * self.channels
@@ -95,6 +94,8 @@ class FilePlayer(ThreadLoop):
       self.audio_stream.close()
 
   def _convert(self, frames):
+    import numpy
+
     frames = numpy.fromstring(frames, dtype=self.dtype)
     if self.sample_width is 1:
       frames *= 256.0
@@ -134,6 +135,8 @@ class FilePlayer(ThreadLoop):
         raise
 
   def _pan_and_fade(self, frames):
+    import numpy
+
     if self.passthrough:
       return frames
     left, right = self._convert(frames)

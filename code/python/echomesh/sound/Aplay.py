@@ -1,11 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import aifc
-import math
-import numpy
-import sunau
-import wave
-
 from echomesh.base import Config
 from echomesh.base import Platform
 from echomesh.util import Log

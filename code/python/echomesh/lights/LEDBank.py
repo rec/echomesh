@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import numpy
 import threading
 
 from echomesh.graphics import GammaTable
@@ -24,6 +23,8 @@ class LEDBank(object):
     self.brightness = 1.0
     self.control_data = bytearray(3 * count + 4)
     self.control_data_dirty = False
+
+    import numpy
     self.led = numpy.array([0.0] * (3 * count))
     self.led_dirty = False
     self.lock = threading.Lock()

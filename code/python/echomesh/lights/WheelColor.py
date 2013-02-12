@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import numpy
-
 # Inspired by
 # https://github.com/adammhaile/RPi-LPD8806/blob/master/LPD8806.py#L90
 
@@ -15,6 +13,7 @@ def wheel_color(rotation=0):
       rotation, but you can use numbers greater than 1 or negative numbers.
 
   """
+  import numpy
   rgb = numpy.array([0.0, 0.0, 0.0])
 
   # Divide the rotation into three segments

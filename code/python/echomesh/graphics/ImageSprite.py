@@ -36,7 +36,9 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
 
     x, y, z = self.coords(0)
     texture = ImageSprite.CACHE.create(self._imagename, defer=True)
-    pi3d.ImageSprite.__init__(self, texture, shader=Shader.shader(shader),
+    pi3d.ImageSprite.__init__(self, texture,
+                              w=texture.ix, h=texture.iy,
+                              shader=Shader.shader(shader),
                               x=x, y=y, z=z)
 
     self._time = 0
@@ -52,15 +54,6 @@ class ImageSprite(pi3d.ImageSprite, Runnable):
     return x, y, z
 
   def repaint(self, t):
-    if False:
-      # TODO: probably can delete this.
-      if not hasattr(self, 'image'):
-        if self._imagename and PI3D_DISPLAY:
-          self._image = PI3D_DISPLAY.load_texture(self._imagename)
-        else:
-          self._image = None
-          LOGGER.error('No image in image arguments')
-
     if not self._time:
       self._time = t
     elapsed = t - self._time
