@@ -41,7 +41,7 @@ def make_one(parent, desc):
   if not t:
     raise Exception('No type field in element %s' % desc)
 
-  maker = Element.get_element_by_name(t, None)
+  maker = Element.get_element_by_name(t)
   if not maker:
     Element._REGISTRY.dump()
     raise Exception('No element maker for type %s' % t)
