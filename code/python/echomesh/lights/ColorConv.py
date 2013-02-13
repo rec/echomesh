@@ -20,7 +20,7 @@ def _prepare_colorarray(arr, dtype):
   return numpy.array(arr, dtype=dtype)
 
 
-def rgb_to_hsv(rgb, dtype=numpy.float32):
+def rgb_to_hsv(rgb, dtype=numpy.float64):
   """RGB to HSV color space conversion."""
   arr = _prepare_colorarray(rgb, dtype)
   out = numpy.empty_like(arr)
@@ -64,7 +64,7 @@ def rgb_to_hsv(rgb, dtype=numpy.float32):
   return out
 
 
-def hsv_to_rgb(hsv, dtype=numpy.float32):
+def hsv_to_rgb(hsv, dtype=numpy.float64):
   """HSV to RGB color space conversion."""
   arr = _prepare_colorarray(hsv, dtype)
 
