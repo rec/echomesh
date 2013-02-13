@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.lights import ColorConv
+from echomesh.color import ColorConv
 from echomesh.util import Importer
 
 numpy = Importer.imp('numpy')

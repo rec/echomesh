@@ -49,6 +49,4 @@ array([[[ 1. ,  1. ,  0. ],
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.lights import ColorConv
-from echomesh.lights import ColorSpread
-from echomesh.lights import WheelColor
+from echomesh.color import ColorConv, ColorSpread, WheelColor

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import threading
 
-from echomesh.graphics import GammaTable
+from echomesh.color import GammaTable
 from echomesh.util import ImportIf
 numpy = ImportIf.imp('numpy')
 

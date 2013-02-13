@@ -1,8 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# Made obsolete by ColorConv.
+
 import colorsys
 
-from echomesh.graphics import GammaTable
+from echomesh.color import GammaTable
 
 class Model(tuple):
   def __init__(self, values):
