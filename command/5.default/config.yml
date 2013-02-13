@@ -80,10 +80,10 @@ pi3d:
   background: [0, 0, 0, 0]  # Red, green, blue, alpha.
   depth: 24
   dimensions: null  # Can be a 4-tuple: x, y, width, height.
-  far: null
+  far: 100.0
   frames_per_second: 30
   full_screen: true
-  near: null
+  near: 1.0
   tk: False
   window_title: ''
 

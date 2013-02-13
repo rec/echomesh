@@ -15,7 +15,7 @@ pi3d = ImportIf.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_Z = -2.0
+DEFAULT_Z = 100.0
 
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
@@ -74,8 +74,8 @@ class ImageSprite(Runnable):
 
     self.pi3d_sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    self.pi3d_sprite.scale(size, size, size)
-    self.pi3d_sprite.rotateToZ(self._rotation.interpolate(elapsed))
+    # self.pi3d_sprite.scale(size, size, size)
+    # self.pi3d_sprite.rotateToZ(self._rotation.interpolate(elapsed))
 
     self.pi3d_sprite.draw()
 
