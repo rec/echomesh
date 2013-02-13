@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import threading
+
 from echomesh.base import Config
 from echomesh.base import Platform
 from echomesh.util import Log
@@ -10,7 +12,7 @@ LOGGER = Log.logger(__name__)
 
 DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
 
-def play(file, **kwds):
+def play(file, run_in_thread=True):
   file = DEFAULT_AUDIO_DIRECTORY.expand(file)
   binary = Config.get('audio', 'input', 'aplay_binary')
   if not binary:
@@ -19,10 +21,17 @@ def play(file, **kwds):
     elif Platform.IS_MAC:
       binary = '/usr/bin/afplay'
 
-  if binary:
+  if not binary:
+    LOGGER.error("Couldn't locate binary for platform %s", Platform.PLATFORM)
+    return
+
+  def play():
     result, returncode = Subprocess.run([binary, file])
     if returncode:
       LOGGER.error('Unable to play file %s using aplay', file)
-  else:
-    LOGGER.error("Couldn't locate binary for platform %s", Platform.PLATFORM)
 
+  if run_in_thread:
+    threading.Thread(target=play).start()
+
+  else:
+    player

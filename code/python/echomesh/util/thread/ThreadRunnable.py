@@ -23,6 +23,7 @@ class ThreadRunnable(MasterRunnable):
           Log.exception(LOGGER, e)
         self.stop()
     self.thread = threading.Thread(target=target)
+    self.thread.daemon = True
     self.thread.start()
 
   def _on_stop(self):
