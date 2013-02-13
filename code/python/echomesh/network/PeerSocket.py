@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import Name
-from echomesh.command import Router
+from echomesh.remote import Router
 from echomesh.network import DataSocket
 from echomesh.network import Peers
 from echomesh.util.thread.MasterRunnable import MasterRunnable
