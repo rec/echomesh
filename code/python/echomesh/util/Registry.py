@@ -8,6 +8,10 @@ class Registry(object):
     self.allow_prefixes = allow_prefixes
     self.none = object()
 
+  def register_all(self, **kwds):
+    for item_name, item in kwds.iteritems():
+      self.register(item_name, item)
+
   def register(self, item_name, item):
     if self.case_insensitive:
       item_name = item_name.lower()
@@ -21,6 +25,7 @@ class Registry(object):
     result = self.registry.get(name, self.none)
     if result is not self.none:
       return result
+
     if self.allow_prefixes:
       match = [v for (k, v) in self.registry.iteritems() if k.startswith(name)]
       if match:
@@ -29,6 +34,7 @@ class Registry(object):
             'Name "%s" matches multiple entries in registry %s: %s.' %
             (name, self.name, ', '.join(sorted(match))))
         return match[0]
+
     raise Exception("Didn't find \"%s\" in registry %s." % (name, self.name))
 
   def dump(self, print=print):

@@ -4,8 +4,8 @@ import sys
 import threading
 import time
 
-from echomesh.command import Processor
 from echomesh.base import Config
+from echomesh.command import Command
 from echomesh.util.thread import ThreadRunnable
 
 MESSAGE = """Type help for a list of commands.
@@ -37,6 +37,6 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
 
 def keyboard(echomesh):
   if Config.is_control_program():
-    processor = Processor.Processor(echomesh)
+    processor = lambda line: Command.execute(echomesh, line)
     sleep = Config.get('opening_sleep')
     return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
