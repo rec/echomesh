@@ -62,9 +62,34 @@ u'bar.2'
 >>> unique_name('bar.1', ['bar', 'baz', 'bar.1',])
 u'bar.2'
 
+>>> registry = Registry.Registry('test')
+>>> registry.register('foo', 'item1')
+>>> registry.register('fot', 'item2')
+>>> registry.register('bar', 'item3')
+>>> registry.get('foo')
+u'item1'
+
+>>> registry.get('b')
+u'item3'
+
+>>> registry_exception(registry, 'fo')
+Name "fo" matches multiple entries in registry test: item1, item2.
+
+>>> registry.allow_prefixes = False
+>>> registry_exception(registry, 'fo')
+Didn't find "fo" in registry test.
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util.UniqueName import unique_name
+from echomesh.util import Registry
 from echomesh.util.Reserver import Reserver
+
+def registry_exception(registry, name):
+  try:
+    print(registry.get(name))
+  except Exception as e:
+    print(e)
+
