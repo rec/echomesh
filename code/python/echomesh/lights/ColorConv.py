@@ -5,24 +5,24 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util import Importer
 numpy = Importer.imp('numpy')
 
-def _prepare_colorarray(arr):
+def _prepare_colorarray(arr, dtype):
   if isinstance(arr, numpy.ndarray):
     return arr
 
-  if not arr:
-    return numpy.array([])
+  if arr:
+    try:
+      arr[0][0]
+    except TypeError:
+      arr = [arr]
+  else:
+    arr = []
 
-  try:
-    arr[0][0]
-  except TypeError:
-    arr = [arr]
-
-  return numpy.array(arr)
+  return numpy.array(arr, dtype=dtype)
 
 
-def rgb_to_hsv(rgb):
+def rgb_to_hsv(rgb, dtype=numpy.float32):
   """RGB to HSV color space conversion."""
-  arr = _prepare_colorarray(rgb)
+  arr = _prepare_colorarray(rgb, dtype)
   out = numpy.empty_like(arr)
 
   # -- V channel
@@ -64,9 +64,9 @@ def rgb_to_hsv(rgb):
   return out
 
 
-def hsv_to_rgb(hsv):
+def hsv_to_rgb(hsv, dtype=numpy.float32):
   """HSV to RGB color space conversion."""
-  arr = _prepare_colorarray(hsv)
+  arr = _prepare_colorarray(hsv, dtype)
 
   hi = numpy.floor(arr[:, 0] * 6)
   f = arr[:, 0] * 6 - hi
