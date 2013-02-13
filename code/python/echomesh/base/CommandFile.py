@@ -47,9 +47,13 @@ def load(*path):
   data, error = None, None
   f = resolve(*path)
   if f:
-    data = Yaml.read(f)
-    if not data:
-      error = "Couldn't read Yaml from file %s" % os.path.join(*path)
+    try:
+      data = Yaml.read(f)
+    except Exception as e:
+      error = str(e)
+    else:
+      if not data:
+        error = "Couldn't read Yaml from file %s" % os.path.join(*path)
   else:
     error = "Couldn't find file %s" % os.path.join(*path)
 

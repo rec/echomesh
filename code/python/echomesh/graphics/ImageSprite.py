@@ -23,9 +23,16 @@ class ImageSprite(Runnable):
   CACHE = None
 
   def __init__(self, file=None, loops=1,
-               position=(0, 0), rotation=0, size=1, duration=0, z=DEFAULT_Z,
+               position=(0, 0), rotation=(0, 0, 0),
+               size=1, duration=0, z=DEFAULT_Z,
                shader=None, **kwds):
     super(ImageSprite, self).__init__()
+    if 'type' in kwds:
+      del kwds['type']
+    if kwds:
+      s = '' if len(kwds) is 1 else 's'
+      LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))
+
     self._imagename = IMAGE_DIRECTORY.expand(file)
     LOGGER.debug('Opening sprite %s', self._imagename)
 
@@ -50,7 +57,7 @@ class ImageSprite(Runnable):
     if duration:
       self._duration = Units.convert(duration)
     else:
-      envs = [self._position, self._rotation, self._size]
+      envs = [self._position, self._rotation, self._size, self._z]
       self._duration = max(x.length for x in envs)
 
   def coords(self, t):
@@ -74,8 +81,11 @@ class ImageSprite(Runnable):
 
     self.pi3d_sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    # self.pi3d_sprite.scale(size, size, size)
-    # self.pi3d_sprite.rotateToZ(self._rotation.interpolate(elapsed))
+    self.pi3d_sprite.scale(size, size, size)
+    xrot, yrot, zrot = self._rotation.interpolate(elapsed)
+    self.pi3d_sprite.rotateToX(xrot)
+    self.pi3d_sprite.rotateToY(yrot)
+    self.pi3d_sprite.rotateToZ(zrot)
 
     self.pi3d_sprite.draw()
 
