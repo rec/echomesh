@@ -8,6 +8,7 @@ from echomesh.element import Make
 from echomesh.element import ScoreMaster
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
+from echomesh.network import Peers
 from echomesh.sound import Microphone
 from echomesh.util import Log
 from echomesh.util.thread import Keyboard
@@ -25,10 +26,10 @@ class Echomesh(MasterRunnable):
     else:
       Echomesh.INSTANCE = self
 
-    self.socket = PeerSocket.PeerSocket(self)
-    self.peers = self.socket.peers
     self.score_master = ScoreMaster.ScoreMaster()
     self.scorefile = Config.get('score', 'file')
+    self.peers = Peers.Peers(self)
+    self.socket = PeerSocket.PeerSocket(self, self.peers)
 
     self.display = Display.Display()
     mic = Microphone.microphone(self._mic_event)

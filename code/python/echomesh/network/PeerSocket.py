@@ -2,21 +2,28 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import Name
+from echomesh.remote import Command
 from echomesh.remote import Router
 from echomesh.network import DataSocket
-from echomesh.network import Peers
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
+USE_ROUTER = not True
+
 class PeerSocket(MasterRunnable):
-  def __init__(self, echomesh):
+  def __init__(self, echomesh, peers):
     super(PeerSocket, self).__init__()
-    self.peers = Peers.Peers(echomesh)
+    self.echomesh = echomesh
+    self.peers = peers
     self.add_slave(self.peers)
     self.port = -1
     self.socket = None
-    self.router = Router.router(echomesh, self.peers)
+    if USE_ROUTER:
+      self.router = Router.router(echomesh, self.peers)
 
     Config.add_client(self)
+
+  def router(self, data):
+    Command.execute(self.echomesh, **data)
 
   def send(self, data):
     if self.is_running:

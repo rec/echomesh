@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Registry
 
-_REGISTRY = Registry.Registry('Commander')
+_REGISTRY = Registry.Registry('command line')
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
