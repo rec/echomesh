@@ -7,6 +7,7 @@ from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
 from echomesh.util.math.Envelope import Envelope
+from echomesh.util.math import Units
 from echomesh.util.thread.Runnable import Runnable
 from echomesh.util import ImportIf
 
@@ -47,7 +48,7 @@ class ImageSprite(Runnable):
 
     self._time = 0
     if duration:
-      self._duration = duration
+      self._duration = Units.convert(duration)
     else:
       envs = [self._position, self._rotation, self._size]
       self._duration = max(x.length for x in envs)
@@ -67,6 +68,7 @@ class ImageSprite(Runnable):
         self._time = 0
         elapsed = 0
       else:
+        LOGGER.debug('Stopping image sprite')
         self.stop()
         return
 
