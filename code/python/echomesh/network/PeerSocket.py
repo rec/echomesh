@@ -3,11 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.base import Name
 from echomesh.remote import Command
-from echomesh.remote import Router
 from echomesh.network import DataSocket
 from echomesh.util.thread.MasterRunnable import MasterRunnable
-
-USE_ROUTER = not True
 
 class PeerSocket(MasterRunnable):
   def __init__(self, echomesh, peers):
@@ -17,8 +14,6 @@ class PeerSocket(MasterRunnable):
     self.add_slave(self.peers)
     self.port = -1
     self.socket = None
-    if USE_ROUTER:
-      self.router = Router.router(echomesh, self.peers)
 
     Config.add_client(self)
 
