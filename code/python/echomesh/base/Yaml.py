@@ -5,8 +5,8 @@ import yaml
 
 from contextlib import closing
 
-def _open_userfile(fname, perms='r'):
-  return open(os.path.expanduser(fname), perms)
+def filename(name):
+  return name if name.endswith('.yml') else (name + '.yml')
 
 def encode_one(item):
   return yaml.safe_dump(item)
@@ -36,4 +36,7 @@ def write(fname, *items):
       yaml.safe_dump_all(items, f)
   except Exception as e:
     print("Can't write filename", fname, e.message)
+
+def _open_userfile(fname, perms='r'):
+  return open(os.path.expanduser(filename(fname)), perms)
 

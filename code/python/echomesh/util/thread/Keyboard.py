@@ -11,6 +11,8 @@ from echomesh.util.thread import ThreadRunnable
 MESSAGE = """Type help for a list of commands.
 """
 
+
+
 class Keyboard(ThreadRunnable.ThreadRunnable):
   def __init__(self, sleep, message, processor, prompt='echomesh: ', output=sys.stdout):
     super(Keyboard, self).__init__(name='Keyboard')
@@ -30,10 +32,32 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       print(self.message)
       self.message = ''
     while self.is_running:
-      self.output.write(self.prompt)
-      self.output.flush()
-      if self.processor(raw_input().strip()):
+      buffer = ''
+      first_time = True
+      brackets, braces = 0, 0
+      while first_time or brackets > 0 or braces > 0:
+        # Keep accepting new lines as long as we have a surplus of open
+        # brackets or braces.
+        if first_time:
+          first_time = False
+          self.output.write(self.prompt)
+        else:
+          self.output.write(' ' * len(self.prompt))
+        self.output.flush()
+
+        data = raw_input()
+        buffer += data
+
+        brackets += (data.count('[') - data.count(']'))
+        braces += (data.count('{') - data.count('}'))
+
+      if brackets < 0:
+        LOGGER.error('Too many ]')
+      elif braces < 0:
+        LOGGER.error('Too many }')
+      elif self.processor(buffer.strip()):
         self.stop()
+
 
 def keyboard(echomesh):
   if Config.is_control_program():

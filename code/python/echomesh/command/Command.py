@@ -7,6 +7,16 @@ LOGGER = Log.logger(__name__)
 
 Registry.register('quit', lambda e: True)
 
+def _fix_exception_message(m, name):
+  loc = m.find(')')
+  if loc >= 0:
+    m = m[loc + 1:]
+  m = (m.replace('1', '0').
+       replace('2', '1').
+       replace('3', '2').
+       replace('4', '3'))
+  return name + m
+
 def execute(echomesh, line):
   try:
     parts = line.split()
