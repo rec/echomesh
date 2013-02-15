@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Config, Info, Registry, Remote, Score
+from echomesh.command import Config, Registry, Remote, Score, Show
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

@@ -21,8 +21,7 @@ class LockedList(object):
       try:
         function(e)
       except Exception as e:
-        LOGGER.error("Couldn't %s on %s", function, e)
-        Log.exception(LOGGER, e)
+        LOGGER.error("Couldn't call %s", function, exc_info=1)
         if FAIL_ON_EXCEPTION:
           raise
 

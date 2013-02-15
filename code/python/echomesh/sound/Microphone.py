@@ -93,7 +93,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
           LOGGER.error('errors %d', self.errors)
 
       except:
-        Log.exception(LOGGER, e)
+        LOGGER.error(e, exc_info=1)
 
 
 def microphone(callback):

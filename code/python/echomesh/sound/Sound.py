@@ -56,10 +56,9 @@ def get_output_index(get):
 def get_device_info():
   return PYAUDIO().get_device_info_by_index()
 
-LIST_FORMAT = ('{index}: {name:24}: {maxInputChannels} in, ' +
+LIST_FORMAT = ('{name:24}: {maxInputChannels} in, ' +
                '{maxOutputChannels} out at {defaultSampleRate}Hz')
 
-def list_ports(print=print):
-  for d in devices():
-    print(LIST_FORMAT.format(**d))
 
+def info():
+  return {d['index']: LIST_FORMAT.format(**d) for d in devices()}

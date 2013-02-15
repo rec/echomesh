@@ -9,7 +9,10 @@ class Registry(object):
 
   def register_all(self, **kwds):
     for item_name, item in kwds.iteritems():
-      self.register(item_name, item)
+      help_text = None
+      if isinstance(item, (list, tuple)):
+        item, help_text = item
+      self.register(item_name, item, help_text)
 
   def register(self, item_name, item, help_text=None):
     if self.case_insensitive:
@@ -41,6 +44,12 @@ class Registry(object):
 
   def get_help(self, name):
     return self._get(name)[1]
+
+  def keys(self):
+    return self.registry.keys()
+
+  def keys_string(self):
+    return ', '.join(sorted(self.registry))
 
   def dump(self, print=print):
     for k, v in self.registry.iteritems():

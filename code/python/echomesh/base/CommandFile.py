@@ -10,8 +10,6 @@ from echomesh.base import Path
 from echomesh.base import Platform
 from echomesh.base import Yaml
 
-TAGS = []
-
 def clean(*path):
   return os.path.join(*path).split('/')
 
@@ -25,7 +23,7 @@ def _command_path():
   return ([
     '0.local',
     '1.name/' + Name.NAME] +
-    [('2.tag/' + t) for t in TAGS] +
+    [('2.tag/' + t) for t in Name.TAGS] +
     ['3.platform/' + Platform.PLATFORM,
      '4.global',
       _command_file('5.default')])
@@ -79,10 +77,7 @@ def _recompute_command_path():
     else:
       if isinstance(tags, six.string_types):
         tags = [tags]
-      TAGS[:] = tags
+      Name.TAGS[:] = tags
 
 _recompute_command_path()
 _COMMAND_PATH = _command_path()
-
-def info():
-  return Merge.merge(Name.info(), tags=TAGS)

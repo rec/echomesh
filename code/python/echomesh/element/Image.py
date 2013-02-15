@@ -14,7 +14,7 @@ class Image(Element.Element):
       try:
         self.sprite = ImageSprite(**description)
       except Exception as e:
-        Log.exception(LOGGER, e)
+        LOGGER.error(e, exc_info=1)
       else:
         self.add_slave(self.sprite)
     else:

@@ -5,7 +5,6 @@ import os
 import threading
 import time
 
-from echomesh.base import CommandFile
 from echomesh.base import Name
 
 from threading import Lock
@@ -23,7 +22,7 @@ class Peers(Runnable.Runnable):
     self.echomesh = echomesh
     self.type = Peers.TYPE
     source = Name.NAME
-    self.data = dict(CommandFile.info(),
+    self.data = dict(Name.info(),
                      type=self.type,
                      time=time.time(),
                      ascii_time=time.asctime(),

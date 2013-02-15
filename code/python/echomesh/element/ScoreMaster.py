@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import time
 import threading
 import weakref
 
@@ -40,21 +41,23 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     with self.lock:
       self._clean()
       name = UniqueName.unique_name(name, self.scores)
-      self.scores[name] = score
+      self.scores[name] = score, time.strftime('%H:%M:%S')
+
     score.name = name
     score.start()
     self.add_slave(score)
     return score
 
   def _clean(self):
-    remove = [k for (k, v) in self.scores.iteritems() if not v.is_running]
+    remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]
     self.remove_slave(*remove)
-    self.scores = {k: v for (k, v) in self.scores.iteritems() if v.is_running}
+    self.scores = {k: v for (k, v) in self.scores.iteritems()
+                   if v[0].is_running}
 
-  def score_names(self):
+  def info(self):
     with self.lock:
       self._clean()
-      return [k for (k, v) in self.scores.iteritems()]
+      return {k: v[1] for k, v in self.scores.iteritems()}
 
   def get_score(self, name):
     with self.lock:

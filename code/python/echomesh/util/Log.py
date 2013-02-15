@@ -3,13 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 """Typical usage:  at the top of your file:
 
 LOGGER = Log.logger(__name__)
-
 """
 
 import logging
 import logging.config
 import sys
-import traceback
 
 from echomesh.util.file import MakeDirs
 
@@ -39,14 +37,14 @@ try:
 except:
   CONFIG.config_update(None)
 
+def _print(string, *args):
+  print(string % args)
 
 def logger(name=None):
-  return logging.getLogger(name or 'logging')
+  log = logging.getLogger(name or 'logging')
+  setattr(log, 'print', _print)
+  return log
 
 LOGGER = logger(__name__)
 LOGGER.debug('Log level is %s', CONFIG.log_level)
-
-def exception(logger, e):
-  logger.error('%s\n', str(e))
-  logger.error(traceback.format_exc())
 

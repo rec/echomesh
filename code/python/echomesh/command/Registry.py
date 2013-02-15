@@ -8,5 +8,6 @@ def usage():
   return 'Commands are:\n  %s' % ', '.join(_REGISTRY.registry)
 
 get = _REGISTRY.get
+get_help = _REGISTRY.get_help
 register = _REGISTRY.register
 register_all = _REGISTRY.register_all

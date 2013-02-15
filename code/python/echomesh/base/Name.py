@@ -9,6 +9,8 @@ from contextlib import closing
 
 from echomesh.base import Platform
 
+TAGS = []
+
 def ip_address():
   try:
     with closing(socket.socket(socket.AF_INET, socket.SOCK_DGRAM)) as s:
@@ -59,7 +61,10 @@ def lookup(table, default=None):
   return default
 
 def info():
-  return {'name': NAME,
-          'uname': UNAME,
-          'mac address': MAC_ADDRESS,
-          'ip address': IP_ADDRESS}
+  return {
+    'ip address': IP_ADDRESS,
+    'mac address': MAC_ADDRESS,
+    'name': NAME,
+    'tags': TAGS,
+    'uname': UNAME,
+    }
