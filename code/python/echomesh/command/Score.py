@@ -5,32 +5,27 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def start(echomesh, *parts):
-  if len(parts) < 2:
-    return LOGGER.print_error('Usage: start scorefile')
-  scorefile = parts[1]
-  if echomesh.score_master.start_score(scorefile):
-    LOGGER.print('Started score %s', scorefile)
-  else:
-    LOGGER.print_error('Failed to start score %s', scorefile)
+def _stop_or_start(message, doer, scores):
+  try:
+    if not scores:
+      raise Exception('Usage: %s scorefile' % message)
+    for score in scores:
+      doer(score)
+  except Exception:
+    LOGGER.print_error("Couldn't %s", message, exc_info=1)
+
+def start(echomesh, *scores):
+  _stop_or_start('start', echomesh.score_master.start_score, scores)
 
 START_HELP = """
 Usage: start score [score...]
 
-Starts one or more scores running.  The command "show running" will
-list all the scores that are current running and their names.
+Starts one or more scores running.  The command "show running" show all the
+scores that are currently running.
 """
 
-def stop(echomesh, *parts):
-  if len(parts) < 2:
-    return LOGGER.print_error('Usage: stop scorefile')
-  scorefile = parts[1]
-  score = echomesh.score_master.get_score(scorefile)
-  if score:
-    score.stop()
-    LOGGER.print("Stopped score %s", scorefile)
-  else:
-    LOGGER.print_error("Couldn't find score %s", scorefile)
+def stop(echomesh, *scores):
+  _stop_or_start('stop', echomesh.score_master.stop_score, scores)
 
 STOP_HELP = """
 Usage: stop score [score...] | *

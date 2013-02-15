@@ -63,7 +63,10 @@ class Echomesh(MasterRunnable):
 
   def _on_start(self):
     if self.scorefile:
-      self.score_master.start_score(self.scorefile)
+      try:
+        self.score_master.start_score(self.scorefile)
+      except:
+        LOGGER.error("Couldn't start score %s", self.scorefile, exc_info=1)
     self.display.start()
 
   def loop(self):

@@ -34,8 +34,8 @@ def broadcast(echomesh, on_or_off):
 BROADCAST_HELP = """
 Set the broadcast mode on or off.
 
-When broadcast mode is on, all run and stop commands are sent to all echomesh
-nodes;  when broadcast mode is off, run and stop only go to this node.
+When broadcast mode is on, all start and stop commands are sent to all echomesh
+nodes;  when broadcast mode is off, start and stop only go to this node.
 """
 
 Registry.register('broadcast', broadcast, BROADCAST_HELP)

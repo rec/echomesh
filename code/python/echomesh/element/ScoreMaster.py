@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import time
+import collections
+import datetime
 import threading
+import time
 import weakref
 
 from compatibility.collections import OrderedDict
@@ -12,12 +14,18 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.element import Score
 from echomesh.util.thread import MasterRunnable
+from echomesh.util import GetPrefix
 from echomesh.util import Log
 from echomesh.util import UniqueName
 
 LOGGER = Log.logger(__name__)
 
-_SCORE = 'score/'
+def format_delta(t):
+  s = str(datetime.timedelta(t))
+  loc = s.find('.')
+  if loc > 0:
+    s = s[0:loc]
+  return s
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
   def __init__(self):
@@ -29,24 +37,31 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     scorefile = Yaml.filename(scorefile)
     elements, error = CommandFile.load('element', scorefile)
     if error:
-      LOGGER.error('%s: %s', scorefile, error)
-      return
+      raise Exception(error)
 
     description = {'elements': elements, 'type': 'score'}
     score = Score.Score(None, description)
-    if scorefile.startswith(_SCORE):
-      name = scorefile[len(_SCORE):]
-    else:
-      name = scorefile
+    name = scorefile
+
     with self.lock:
       self._clean()
       name = UniqueName.unique_name(name, self.scores)
-      self.scores[name] = score, time.strftime('%H:%M:%S')
+      self.scores[name] = score, time.time()
 
     score.name = name
     score.start()
     self.add_slave(score)
     return score
+
+  def stop_score(self, name):
+    if name == '*':
+      for score, t in self.scores.itervalues():
+        score.stop()
+      self.scores.clear()
+    else:
+      name = GetPrefix.get_prefix(self.scores, name)
+      score = self.scores.pop(name)
+      score.stop()
 
   def _clean(self):
     remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]
@@ -57,7 +72,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def info(self):
     with self.lock:
       self._clean()
-      return dict((k, v[1]) for k, v in self.scores.iteritems())
+      return dict((k, format_delta(v[1])) for k, v in self.scores.iteritems())
 
   def get_score(self, name):
     with self.lock:

@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.util import GetPrefix
 from echomesh.util import Join
 
 class Registry(object):
@@ -26,19 +27,7 @@ class Registry(object):
       self.registry[item_name] = item, help_text
 
   def _get(self, name):
-    result = self.registry.get(name)
-    if result:
-      return result
-
-    if self.allow_prefixes:
-      match = [v for (k, v) in self.registry.iteritems() if k.startswith(name)]
-      if match:
-        if len(match) > 1:
-          raise Exception(
-            'Name "%s" matches multiple commands for %s.' % (name, self.name))
-        return match[0]
-
-    raise Exception('"%s" is not a valid command for %s.' % (name, self.name))
+    return GetPrefix.get_prefix(self.registry, name)
 
   def get(self, name):
     return self._get(name)[0]
