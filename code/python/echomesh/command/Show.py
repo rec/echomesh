@@ -107,20 +107,19 @@ SHOW_NAMES = SHOW_REGISTRY.join_keys()
 SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
 
 def _show(echomesh, *parts):
-  name = None
-  for name in parts:
-    function = SHOW_REGISTRY.get(name)
-    if function:
-      LOGGER.print()
-      function(echomesh)
-      LOGGER.print()
-    else:
-      raise Exception("Didn't understand command 'show %s'. %s" %
-                      (name, SHOW_USAGE))
-  else:
+  if not parts:
     LOGGER.print('\n' + SHOW_USAGE)
-
-SHOW_HELP = """"show" siplays information about the current echomesh instance.
+  else:
+    for name in parts:
+      function = SHOW_REGISTRY.get(name)
+      if function:
+        LOGGER.print()
+        function(echomesh)
+        LOGGER.print()
+      else:
+        raise Exception("Didn't understand command 'show %s'. %s" %
+                        (name, SHOW_USAGE))
+SHOW_HELP = """"show" displays information about the current echomesh instance.
 
 """ + SHOW_USAGE
 
@@ -137,9 +136,8 @@ def _help(echomesh, *parts):
     elif cmd == 'show':
       sub = parts[0]
       help_text = SHOW_REGISTRY.get_help(sub)
-      LOGGER.print('%s:' % cmd)
-      LOGGER.print('  ', help_text or ('No help text available for "show %s"' %
-                                       sub))
+      LOGGER.print('show %s:' % sub)
+      LOGGER.print(help_text or ('No help text available for "show %s"' % sub))
     else:
       raise Exception("Command '%s' doesn't take any arguments.")
 

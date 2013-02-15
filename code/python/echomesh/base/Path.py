@@ -40,9 +40,9 @@ os.chdir(PROJECT_PATH)
 
 def info():
   return {
-    'Asset path': os.join(PROJECT_PATH, 'asset'),
+    'Asset path': os.path.join(PROJECT_PATH, 'asset'),
     'Code path': CODE_PATH,
-    'Command path': os.join(PROJECT_PATH, 'command'),
+    'Command path': os.path.join(PROJECT_PATH, 'command'),
     'Project path': PROJECT_PATH,
     'echomesh path': ECHOMESH_PATH,
     }
