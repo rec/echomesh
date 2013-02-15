@@ -39,6 +39,10 @@ PROJECT_PATH = _set_project_path()
 os.chdir(PROJECT_PATH)
 
 def info():
-  return {'project_path': PROJECT_PATH,
-          'code_path': CODE_PATH,
-          'echomesh_path': ECHOMESH_PATH}
+  return {
+    'Asset path': os.join(PROJECT_PATH, 'asset'),
+    'Code path': CODE_PATH,
+    'Command path': os.join(PROJECT_PATH, 'command'),
+    'Project path': PROJECT_PATH,
+    'echomesh path': ECHOMESH_PATH,
+    }

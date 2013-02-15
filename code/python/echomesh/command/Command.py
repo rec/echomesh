@@ -5,7 +5,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-Registry.register('quit', lambda e: True)
+Registry.register('quit', lambda e: True,
+                  'Quits the echomesh program.')
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
@@ -30,5 +31,6 @@ def execute(echomesh, line):
       raise Exception(_fix_exception_message(str(e), name))
 
   except Exception as e:
-    LOGGER.print_error(Registry.usage(), exc_info=1)
+    LOGGER.print_error("\nValid options are: " + Registry.join_keys(),
+                       exc_info=1)
 

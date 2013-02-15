@@ -14,6 +14,13 @@ def start(echomesh, *parts):
   else:
     LOGGER.print_error('Failed to start score %s', scorefile)
 
+START_HELP = """
+Usage: start score [score...]
+
+Starts one or more scores running.  The command "show running" will
+list all the scores that are current running and their names.
+"""
+
 def stop(echomesh, *parts):
   if len(parts) < 2:
     return LOGGER.print_error('Usage: stop scorefile')
@@ -25,8 +32,15 @@ def stop(echomesh, *parts):
   else:
     LOGGER.print_error("Couldn't find score %s", scorefile)
 
+STOP_HELP = """
+Usage: stop score [score...] | *
+
+Stops one or more scores.  The special score name '*' stops all the running
+scores at once.
+"""
+
 Registry.register_all(
-  start=start,
-  stop=stop,
+  start=(start, START_HELP),
+  stop=(stop, STOP_HELP),
 )
 

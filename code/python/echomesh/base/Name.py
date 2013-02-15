@@ -7,6 +7,7 @@ import socket
 
 from contextlib import closing
 
+from echomesh.base import Merge
 from echomesh.base import Platform
 
 TAGS = []
@@ -60,11 +61,18 @@ def lookup(table, default=None):
       return value
   return default
 
-def info():
+def addresses():
   return {
-    'ip address': IP_ADDRESS,
-    'mac address': MAC_ADDRESS,
-    'name': NAME,
-    'tags': TAGS,
-    'uname': UNAME,
+    'IP address': IP_ADDRESS,
+    'Mac address': MAC_ADDRESS,
     }
+
+def names():
+  return {
+    'echomesh name': NAME,
+    'Tags': TAGS,
+    'Machine name': UNAME,
+    }
+
+def info():
+  return Merge.merge(names(), addresses())

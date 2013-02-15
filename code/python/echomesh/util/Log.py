@@ -37,8 +37,11 @@ try:
 except:
   CONFIG.config_update(None)
 
-def _print(string, *args):
-  print(string % args)
+def _print(*args):
+  if args:
+    print(args[0] % args[1:])
+  else:
+    print()
 
 def _print_error(string, *args, **kwds):
   if kwds.get('exc_info'):

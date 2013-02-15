@@ -40,4 +40,8 @@ def config(echomesh, *parts):
   else:
     self._remote(scope=scope, config=config)
 
-Registry.register_all(config=config)
+CONFIG_HELP = """
+Set values in configuration files of a specific scope.
+"""
+
+Registry.register('config', config, CONFIG_HELP)

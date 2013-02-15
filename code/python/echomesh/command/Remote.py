@@ -5,14 +5,12 @@ from echomesh.command import Registry
 def remote(name):
   return lambda echomesh: echomesh.send(type=name)
 
-def _broadcast(echomesh, on_off=None):
-  pass
+COMMANDS = [
+  ('halt', 'Quit all the remote echomesh nodes.'),
+  ('restart', 'Restart the echomesh programs on all the remote nodes.'),
+  ('shutdown', 'Shutdown all the remote nodes.'),
+  ('update', 'Update all the remote nodes from git, then restart them.')
+  ]
 
-
-COMMANDS = ['clear', 'halt', 'refresh', 'rerun', 'restart', 'shutdown',
-            'update']
-
-for command in COMMANDS:
-  Registry.register(command, remote(command))
-
-Registry.register('broadcast', _broadcast)
+for command, help_text in COMMANDS:
+  Registry.register(command, remote(command), help_text)

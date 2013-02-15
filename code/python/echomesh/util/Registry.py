@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.util import Join
+
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True):
     self.registry = {}
@@ -33,8 +35,8 @@ class Registry(object):
       if match:
         if len(match) > 1:
           raise Exception(
-            'Name "%s" matches multiple entries in registry %s: %s.' %
-            (name, self.name, ', '.join(sorted(match))))
+            'Name "%s" matches multiple entries in registry %s.' %
+            (name, self.name))
         return match[0]
 
     raise Exception("Didn't find \"%s\" in registry %s." % (name, self.name))
@@ -48,8 +50,8 @@ class Registry(object):
   def keys(self):
     return self.registry.keys()
 
-  def keys_string(self):
-    return ', '.join(sorted(self.registry))
+  def join_keys(self):
+    return Join.join_words(*sorted(self.registry.iterkeys()))
 
   def dump(self, print=print):
     for k, v in self.registry.iteritems():

@@ -47,7 +47,7 @@ def convert_time(t, assume_minutes=True):
   time_match = _TIME.match(t)
   if time_match:
     hours, minutes, seconds = time_match.group(2, 3, 4)
-    float_seconds
+    float_seconds = '.' in seconds
     seconds = (float if float_seconds else int)(seconds)
     minutes = int(minutes)
 
