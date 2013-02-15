@@ -9,6 +9,7 @@ from echomesh.base import Merge
 from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.sound import Sound
+from echomesh.util import Flag
 from echomesh.util import Log
 from echomesh.util.math import Units
 
@@ -39,7 +40,7 @@ ELEMENTS_HELP = """
 Shows all the elements in all contexts
 """
 def elements(echomesh, *args):
-  flags = [a in args if a.startswith('-')]
+  flags = [Flag.split_flag(a) in args if a.startswith('-')]
   paths = [a in args if not a.startswith('-')]
 
   recursive = False
