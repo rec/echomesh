@@ -28,6 +28,13 @@ Shows:
 def addresses(echomesh):
   _info(Name.addresses())
 
+BROADCAST_HELP = """
+Shows if this echomesh is in broadcast made, meaning that run and stop commands
+are sent to all other nodes.
+"""
+def broadcast(echomesh):
+  LOGGER.print('Broadcast is ' + ('ON' if echomesh.broadcasting() else 'off'))
+
 NAMES_HELP = """
 Shows:
   The machine name (also called the uname).
@@ -94,6 +101,7 @@ def units(echomesh):
 
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
+  broadcast=(broadcast, BROADCAST_HELP),
   info=(info, INFO_HELP),
   names=(names, NAMES_HELP),
   nodes=(nodes, NODES_HELP),

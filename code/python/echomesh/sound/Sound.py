@@ -61,4 +61,4 @@ LIST_FORMAT = ('{name:24}: {maxInputChannels} in, ' +
 
 
 def info():
-  return {d['index']: LIST_FORMAT.format(**d) for d in devices()}
+  return dict((d['index'], LIST_FORMAT.format(**d)) for d in devices())

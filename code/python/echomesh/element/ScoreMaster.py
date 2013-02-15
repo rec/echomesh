@@ -51,13 +51,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def _clean(self):
     remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]
     self.remove_slave(*remove)
-    self.scores = {k: v for (k, v) in self.scores.iteritems()
-                   if v[0].is_running}
+    self.scores = dict((k, v) for (k, v) in self.scores.iteritems()
+                       if v[0].is_running)
 
   def info(self):
     with self.lock:
       self._clean()
-      return {k: v[1] for k, v in self.scores.iteritems()}
+      return dict((k, v[1]) for k, v in self.scores.iteritems())
 
   def get_score(self, name):
     with self.lock:

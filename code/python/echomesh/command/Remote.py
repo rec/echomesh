@@ -14,3 +14,7 @@ COMMANDS = [
 
 for command, help_text in COMMANDS:
   Registry.register(command, remote(command), help_text)
+
+def broadcast(on_or_off=None):
+  pass
+

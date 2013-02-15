@@ -40,6 +40,9 @@ class Echomesh(MasterRunnable):
     self.add_stop_only_slave(self.display)
     self.set_broadcasting(False)
 
+  def broadcasting(self):
+    return self._broadcasting
+
   def set_broadcasting(self, b):
     self._broadcasting = b
     self.keyboard.alert_mode = b
