@@ -73,11 +73,11 @@ u'item1'
 u'item3'
 
 >>> registry_exception(registry, 'fo')
-Name "fo" matches multiple entries in registry test.
+"fo" matches multiple commands: foo and fot.
 
 >>> registry.allow_prefixes = False
 >>> registry_exception(registry, 'fo')
-Didn't find "fo" in registry test.
+"fo" is not a valid command.
 
 >>> Join.join_words()
 u''
@@ -91,6 +91,24 @@ u'hello and goodbye'
 >>> Join.join_words('apples', 'oranges', 'pears')
 u'apples, oranges, and pears'
 
+>>> Flag.split_flag('')
+(u'', u'')
+
+>>> Flag.split_flag('-')
+(u'', u'')
+
+>>> Flag.split_flag('-x')
+(u'x', u'')
+
+>>> Flag.split_flag('--hello')
+(u'hello', u'')
+
+>>> Flag.split_flag('--hello=')
+(u'hello', u'')
+
+>>> Flag.split_flag('--hello=world')
+(u'hello', u'world')
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -98,6 +116,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util import Join
 from echomesh.util.UniqueName import unique_name
 from echomesh.util import Registry
+from echomesh.util import Flag
 from echomesh.util.Reserver import Reserver
 
 def registry_exception(registry, name):
@@ -105,4 +124,3 @@ def registry_exception(registry, name):
     print(registry.get(name))
   except Exception as e:
     print(e)
-

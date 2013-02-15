@@ -27,7 +27,8 @@ class Registry(object):
       self.registry[item_name] = item, help_text
 
   def _get(self, name):
-    return GetPrefix.get_prefix(self.registry, name)
+    return GetPrefix.get_prefix(self.registry, name,
+                                allow_prefixes=self.allow_prefixes)
 
   def get(self, name):
     return self._get(name)[0]
