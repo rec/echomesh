@@ -43,13 +43,18 @@ for _keys, _v in UNITS_SOURCE.iteritems():
   for _k in _keys:
     UNITS[_k] = _v
 
-def convert_time(t):
+def convert_time(t, assume_minutes=True):
   time_match = _TIME.match(t)
   if time_match:
     hours, minutes, seconds = time_match.group(2, 3, 4)
-    seconds = (float if '.' in seconds else int)(seconds)
+    float_seconds
+    seconds = (float if float_seconds else int)(seconds)
     minutes = int(minutes)
-    hours = int(hours or '0')
+
+    if assume_minutes or float_seconds or (hours is not None):
+      hours = int(hours or '0')
+    else:
+      hours, minutes, seconds = minutes, seconds, 0
 
     if seconds >= 60:
       raise Exception('Bad seconds field in time %s', t)
@@ -69,11 +74,11 @@ def convert_number(number):
     raise Exception("Can't understand hex number %s" % number)
   return int(hex_match.groups()[0], 16)
 
-def convert(number):
+def convert(number, assume_minutes=True):
   if not isinstance(number, six.string_types):
     return number
 
-  t = convert_time(number)
+  t = convert_time(number, assume_minutes)
   if t is not None:
     return t
 

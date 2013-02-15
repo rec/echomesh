@@ -7,6 +7,7 @@ from compatibility.collections import OrderedDict
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
+from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.element import Score
 from echomesh.util.thread import MasterRunnable
@@ -24,6 +25,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.lock = threading.RLock()
 
   def start_score(self, scorefile):
+    scorefile = Yaml.filename(scorefile)
     elements, error = CommandFile.load('element', scorefile)
     if error:
       LOGGER.error('%s: %s', scorefile, error)

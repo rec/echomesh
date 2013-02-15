@@ -28,4 +28,3 @@ class Score(Element.Element):
       handler.handle(event)
 
 Element.register(Score)
-
