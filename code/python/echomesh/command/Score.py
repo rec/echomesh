@@ -7,23 +7,23 @@ LOGGER = Log.logger(__name__)
 
 def start(echomesh, *parts):
   if len(parts) < 2:
-    return LOGGER.error('Usage: start scorefile')
+    return LOGGER.print_error('Usage: start scorefile')
   scorefile = parts[1]
   if echomesh.score_master.start_score(scorefile):
-    LOGGER.info('Started score %s', scorefile)
+    LOGGER.print('Started score %s', scorefile)
   else:
-    LOGGER.error('Failed to start score %s', scorefile)
+    LOGGER.print_error('Failed to start score %s', scorefile)
 
 def stop(echomesh, *parts):
   if len(parts) < 2:
-    return LOGGER.error('Usage: stop scorefile')
+    return LOGGER.print_error('Usage: stop scorefile')
   scorefile = parts[1]
   score = echomesh.score_master.get_score(scorefile)
   if score:
     score.stop()
-    LOGGER.info("Stopped score %s", scorefile)
+    LOGGER.print("Stopped score %s", scorefile)
   else:
-    LOGGER.error("Couldn't find score %s", scorefile)
+    LOGGER.print_error("Couldn't find score %s", scorefile)
 
 Registry.register_all(
   start=start,

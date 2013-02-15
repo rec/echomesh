@@ -30,6 +30,5 @@ def execute(echomesh, line):
       raise Exception(_fix_exception_message(str(e), name))
 
   except Exception as e:
-    LOGGER.error(str(e))
-    LOGGER.error(Registry.usage())
+    LOGGER.print_error(Registry.usage(), exc_info=1)
 

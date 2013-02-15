@@ -40,9 +40,15 @@ except:
 def _print(string, *args):
   print(string % args)
 
+def _print_error(string, *args, **kwds):
+  if kwds.get('exc_info'):
+    print(sys.exc_info()[1])
+  print('ERROR:', string % args)
+
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
   setattr(log, 'print', _print)
+  setattr(log, 'print_error', _print_error)
   return log
 
 LOGGER = logger(__name__)

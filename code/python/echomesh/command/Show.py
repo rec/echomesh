@@ -18,22 +18,22 @@ SHOW_REGISTRY = Registry.Registry('show command')
 
 def _help(echomesh, *parts):
   if not parts:
-    LOGGER.info(Registry.usage())
+    LOGGER.print(CommandRegistry.usage())
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
       help_text = CommandRegistry.get_help(cmd)
-      LOGGER.info(help_text or ('No help text available for "%s"' % cmd))
+      LOGGER.print(help_text or ('No help text available for "%s"' % cmd))
     elif cmd == 'show':
       sub = parts[0]
       help_text = SHOW_REGISTRY.get_help(sub)
-      LOGGER.info(help_text or ('No help text available for "show %s"' % sub))
+      LOGGER.print(help_text or ('No help text available for "show %s"' % sub))
     else:
       raise Exception("Command '%s' doesn't take any arguments.")
 
 def _info(d):
   s = '\n'.join('  %s: %s' % i for i in sorted(d.iteritems()))
-  LOGGER.info('\n\n%s\n' % s)
+  LOGGER.print('\n\n%s\n' % s)
 
 def names(echomesh):
   _info(Name.info())
@@ -51,7 +51,7 @@ def sound(echomesh):
   _info(Sound.info())
 
 def units(echomesh):
-  LOGGER.info('\nUnits are: %s', Units.list_units())
+  LOGGER.print('\nUnits are: %s', Units.list_units())
 
 SHOW_REGISTRY.register_all(
   names=(names, "List all the names and tags belonging to this instance."),
@@ -76,7 +76,7 @@ def _show(echomesh, *parts):
       raise Exception("Didn't understand command 'show %s'. %s" %
                       (name, SHOW_USAGE))
   else:
-    LOGGER.info('\n' + SHOW_USAGE)
+    LOGGER.print('\n' + SHOW_USAGE)
 
 
 CommandRegistry.register_all(
