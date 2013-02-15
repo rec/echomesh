@@ -35,11 +35,10 @@ class Registry(object):
       if match:
         if len(match) > 1:
           raise Exception(
-            'Name "%s" matches multiple entries in registry %s.' %
-            (name, self.name))
+            'Name "%s" matches multiple commands for %s.' % (name, self.name))
         return match[0]
 
-    raise Exception("Didn't find \"%s\" in registry %s." % (name, self.name))
+    raise Exception('"%s" is not a valid command for %s.' % (name, self.name))
 
   def get(self, name):
     return self._get(name)[0]
