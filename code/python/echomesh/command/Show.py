@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
 import os.path
 
 import echomesh.command.Registry as CommandRegistry
@@ -11,6 +12,7 @@ from echomesh.base import Path
 from echomesh.sound import Sound
 from echomesh.util import Flag
 from echomesh.util import Log
+from echomesh.util import Scope
 from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
@@ -36,16 +38,33 @@ are sent to all other nodes.
 def broadcast(echomesh):
   LOGGER.print('Broadcast is ' + ('ON' if echomesh.broadcasting() else 'off'))
 
+def _elements(path, resolve=False, scope='all', recursive=False):
+  printed = False
+  if scope == 'all':
+    for s in Scope.SCOPES:
+      printed = _elements(path, resolve, s, recursive) or printed
+  else:
+    scope = Scope.resolve(scope)
+    pathdir = os.path.join(Path.COMMAND_PATH, scope, path)
+    if is.path.isdir(pathdir):
+      printed_this_time = False
+      for f in os.listdir(pathdir):
+        if not printed_this_time:
+          printed_this_time = True
+          LOGGER.print('%s/%s:', scope, path)
+        stat = os.stat(f)
+        LOGGER.print('f:', f)
+
+  return printed
+
+
 ELEMENTS_HELP = """
 Shows all the elements in all contexts
 """
 def elements(echomesh, *args):
-  flags = [Flag.split_flag(a) in args if a.startswith('-')]
-  paths = [a in args if not a.startswith('-')]
-
-  recursive = False
-  scope = 'all'
-  hide = True
+  paths, flags = Flag.split_args(args)
+  for p in paths:
+    _elements(p, **flags)
 
 
 NAMES_HELP = """
