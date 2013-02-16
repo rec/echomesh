@@ -41,10 +41,6 @@ def recalculate(perform_update=False, args=None):
   if perform_update:
     update_clients()
 
-def is_control_program():
-  """is_control_program() is True if Echomesh responds to keyboard commands."""
-  return get('control_program', 'enable')
-
 def get(*parts):
   config, unvisited = CONFIG, CONFIGS_UNVISITED
   none = object()

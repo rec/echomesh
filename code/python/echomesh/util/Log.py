@@ -9,6 +9,8 @@ import logging
 import logging.config
 import sys
 
+VERBOSE_LOGGING = True
+
 from echomesh.util.file import MakeDirs
 
 class ConfigSetter(object):
@@ -29,7 +31,7 @@ class ConfigSetter(object):
     if 'filename' not in self.kwds:
       self.kwds['stream'] = sys.stdout
     # logging.basicConfig(**self.kwds)
-    logging.basicConfig(**dict((str(k), str(v)) for (k, v) in self.kwds.iteritems()))
+    logging.basicConfig(**dict((str(k), v) for (k, v) in self.kwds.iteritems()))
 
 CONFIG = ConfigSetter()
 try:
@@ -51,8 +53,8 @@ def _print_error(string, *args, **kwds):
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
-  setattr(log, 'print', _print)
-  setattr(log, 'print_error', _print_error)
+  setattr(log, 'print', log.info if VERBOSE_LOGGING else _print)
+  setattr(log, 'print_error', log.error if VERBOSE_LOGGING else _print_error)
   return log
 
 LOGGER = logger(__name__)

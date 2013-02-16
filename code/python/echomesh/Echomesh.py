@@ -66,6 +66,7 @@ class Echomesh(MasterRunnable):
       try:
         self.score_master.start_score(self.scorefile)
       except:
+        LOGGER.print_error("Couldn't start score %s", self.scorefile, exc_info=1)
         LOGGER.error("Couldn't start score %s", self.scorefile, exc_info=1)
     self.display.start()
 

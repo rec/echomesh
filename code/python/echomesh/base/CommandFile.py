@@ -45,26 +45,24 @@ def load(*path):
   data, error = None, None
   f = resolve(*path)
   if f:
-    try:
-      data = Yaml.read(f)
-    except Exception as e:
-      error = str(e)
-    else:
-      if not data:
-        error = "Couldn't read Yaml from file %s" % os.path.join(*path)
-  else:
-    error = "Couldn't find file %s" % os.path.join(*path)
+    data = Yaml.read(f)
+    if data:
+      return data
 
-  return data, error
+  raise Exception("Couldn't read Yaml from file %s" % os.path.join(*path))
 
 def config_file(scope):
   return _command_file(scope, 'config.yml')
 
 def _recompute_command_path():
   def lookup(name):
-    name_map, error = load(name)
-    if name_map:
-      return Name.lookup(Merge.merge(*name_map))
+    try:
+      name_map = load(name)
+    except:
+      pass
+    else:
+      if name_map:
+        return Name.lookup(Merge.merge(*name_map))
 
   name = lookup('name_map.yml')
   if name:

@@ -67,7 +67,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.stop()
 
 def keyboard(echomesh):
-  if Config.is_control_program():
+  if Config.get('control_program', 'enable'):
     processor = lambda line: Command.execute(echomesh, line)
     sleep = Config.get('opening_sleep')
     return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)

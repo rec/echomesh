@@ -18,9 +18,10 @@ def _resolve_extensions(data):
     if extension in extensions:
       raise Exception('Infinite circular extension for %s' % extend)
 
-    data, error = CommandFile.load(extension)
-    if error:
-      raise Exception("Couldn't find extension for %s: %s" % extend, error)
+    try:
+      data = CommandFile.load(extension)
+    except Exception as e:
+      raise Exception("Couldn't find extension for %s: %s" % extend, str(e))
 
     if len(data) > 1:
       LOGGER.error("More than one element in extension %s", extend)
