@@ -4,4 +4,4 @@ try:
   from weakref import WeakSet
 
 except:
-  from python.weakrefset import WeakSet
+  from .weakrefset import WeakSet

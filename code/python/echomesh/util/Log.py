@@ -28,7 +28,8 @@ class ConfigSetter(object):
     self.kwds['level'] = getattr(logging, self.log_level)
     if 'filename' not in self.kwds:
       self.kwds['stream'] = sys.stdout
-    logging.basicConfig(**self.kwds)
+    # logging.basicConfig(**self.kwds)
+    logging.basicConfig(**dict((str(k), str(v)) for (k, v) in self.kwds.iteritems()))
 
 CONFIG = ConfigSetter()
 try:

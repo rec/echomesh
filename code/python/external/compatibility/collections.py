@@ -4,4 +4,4 @@ try:
   from collections import OrderedDict
 
 except:
-  from python.ordereddict import OrderedDict
+  from .ordereddict import OrderedDict
