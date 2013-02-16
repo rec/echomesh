@@ -2,9 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 import os.path
+import time
 
 import echomesh.command.Registry as CommandRegistry
-from echomesh.util import Registry
 
 from echomesh.base import Merge
 from echomesh.base import Name
@@ -12,7 +12,9 @@ from echomesh.base import Path
 from echomesh.sound import Sound
 from echomesh.util import Flag
 from echomesh.util import Log
+from echomesh.util import Registry
 from echomesh.util import Scope
+from echomesh.util import SizeName
 from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
@@ -38,6 +40,12 @@ are sent to all other nodes.
 def broadcast(echomesh):
   LOGGER.print('Broadcast is ' + ('ON' if echomesh.broadcasting() else 'off'))
 
+
+def _time(t):
+  return time.strftime('%H:%M', time.localtime(t))
+
+ELEMENT_FORMAT = '%-28s %5s %9s %9s %9s'
+
 def _elements(path, resolve=False, scope='all', recursive=False):
   printed = False
   if scope == 'all':
@@ -45,16 +53,32 @@ def _elements(path, resolve=False, scope='all', recursive=False):
       printed = _elements(path, resolve, s, recursive) or printed
   else:
     scope = Scope.resolve(scope)
-    pathdir = os.path.join(Path.COMMAND_PATH, scope, path)
-    if is.path.isdir(pathdir):
+    pathdir = os.path.join(Path.COMMAND_PATH, scope, 'element', path)
+    if os.path.isdir(pathdir):
       printed_this_time = False
-      for f in os.listdir(pathdir):
+      for f in sorted(os.listdir(pathdir)):
+        joined_f = os.path.join(pathdir, f)
+        is_dir = os.path.isdir(joined_f)
+        if not (is_dir or f.endswith('yml')):
+          continue
         if not printed_this_time:
           printed_this_time = True
-          LOGGER.print('%s/%s:', scope, path)
-        stat = os.stat(f)
-        LOGGER.print('f:', f)
-
+          if not printed:
+            LOGGER.print(ELEMENT_FORMAT, 'File name', 'Size', 'Accessed',
+                         'Modified', 'Created')
+            printed = True
+          else:
+            LOGGER.print('\n')
+          LOGGER.print('  %s/%s:', scope, path)
+        if is_dir:
+          LOGGER.print('    %s/', f)
+        else:
+          stat = os.stat(joined_f)
+          LOGGER.print(ELEMENT_FORMAT,
+                       '    ' + f, SizeName.size_name(stat.st_size),
+                       _time(stat.st_atime),
+                       _time(stat.st_mtime),
+                       _time(stat.st_ctime))
   return printed
 
 
@@ -62,7 +86,8 @@ ELEMENTS_HELP = """
 Shows all the elements in all contexts
 """
 def elements(echomesh, *args):
-  paths, flags = Flag.split_args(args)
+  flags, paths = Flag.split_args(args)
+  paths = paths or ['']
   for p in paths:
     _elements(p, **flags)
 

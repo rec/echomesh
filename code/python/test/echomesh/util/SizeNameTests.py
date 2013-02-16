@@ -33,4 +33,3 @@ u'1G'
 """
 
 from echomesh.util import SizeName
-
