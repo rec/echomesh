@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Config, Registry, Remote, Score, Show
+from echomesh.command import Config, Help, Registry, Remote, Score, Show
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -15,7 +15,8 @@ def _fix_exception_message(m, name):
   m = (m.replace('1', '0').
        replace('2', '1').
        replace('3', '2').
-       replace('4', '3'))
+       replace('4', '3').
+       replace('1 arguments', '1 argument'))
   return name + m
 
 def execute(echomesh, line):
@@ -28,9 +29,9 @@ def execute(echomesh, line):
     try:
       return function(echomesh, *parts)
     except TypeError as e:
-      raise Exception(_fix_exception_message(str(e), name))
+      LOGGER.print_error((_fix_exception_message(str(e), name)))
 
   except Exception as e:
-    LOGGER.print_error("\nValid options are: " + Registry.join_keys(),
-                       exc_info=1)
+    LOGGER.print_error("%s\nValid options are: %s"  %
+                       (str(e), Registry.join_keys()))
 

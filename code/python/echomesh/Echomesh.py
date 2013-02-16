@@ -65,9 +65,9 @@ class Echomesh(MasterRunnable):
     if self.scorefile:
       try:
         self.score_master.start_score(self.scorefile)
-      except:
-        LOGGER.print_error("Couldn't start score %s", self.scorefile, exc_info=1)
-        LOGGER.error("Couldn't start score %s", self.scorefile, exc_info=1)
+      except Exception as e:
+        LOGGER.print_error("%s\nCouldn't start score %s.", str(e),
+                           self.scorefile)
     self.display.start()
 
   def loop(self):
