@@ -19,8 +19,15 @@ def _fix_exception_message(m, name):
        replace('1 arguments', '1 argument'))
   return name + m
 
+def usage():
+  return 'Valid options are:' + Registry.join_keys()
+
 def execute(echomesh, line):
   try:
+    line = line.strip()
+    if not line:
+      LOGGER.print('')
+      return
     parts = line.split()
     name = parts.pop(0)
     function = Registry.get(name)
@@ -29,9 +36,8 @@ def execute(echomesh, line):
     try:
       return function(echomesh, *parts)
     except TypeError as e:
-      LOGGER.print_error((_fix_exception_message(str(e), name)))
+      LOGGER.print_error((_fix_exception_message(str(e), name)), exc_info=0)
 
   except Exception as e:
-    LOGGER.print_error("%s\nValid options are: %s"  %
-                       (str(e), Registry.join_keys()))
+    LOGGER.print_error("%s\n%s", str(e), usage())
 

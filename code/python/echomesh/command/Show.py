@@ -9,7 +9,6 @@ from echomesh.command import Elements
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
-from echomesh.util import SizeName
 from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
@@ -18,7 +17,7 @@ SHOW_REGISTRY = Registry.Registry('show command')
 
 def _info(d, spaces='  '):
   s = '\n'.join('%s%s: %s' % (spaces, k, v) for k, v in sorted(d.iteritems()))
-  LOGGER.print(s)
+  LOGGER.print('\n' + s)
 
 
 ADDRESSES_HELP = """
@@ -94,7 +93,7 @@ Show all the sound interfaces available on this machine.
 """
 
 def sound(echomesh):
-  _info(Sound.info())
+ _info(Sound.info())
 
 UNITS_HELP = """
 Show the possible units that can be used in echomesh scores.
@@ -126,9 +125,7 @@ def _show(echomesh, *parts):
     for name in parts:
       function = SHOW_REGISTRY.get(name)
       if function:
-        LOGGER.print()
         function(echomesh)
-        LOGGER.print()
       else:
         raise Exception("Didn't understand command 'show %s'. %s" %
                         (name, SHOW_USAGE))
@@ -137,4 +134,3 @@ SHOW_HELP = """"show" displays information about the current echomesh instance.
 """ + SHOW_USAGE
 
 CommandRegistry.register_all(show=(_show, SHOW_HELP))
-
