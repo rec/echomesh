@@ -42,7 +42,6 @@ def resolve(*path):
       return f
 
 def load(*path):
-  data, error = None, None
   f = resolve(*path)
   if f:
     data = Yaml.read(f)

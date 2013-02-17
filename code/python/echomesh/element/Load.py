@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import CommandFile
+from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Log
 
@@ -14,19 +15,21 @@ def _resolve_extensions(data):
     extension = data.get('extends')
     if not extension:
       break
+    extension = Yaml.filename(extension)
 
     if extension in extensions:
-      raise Exception('Infinite circular extension for %s' % extend)
+      raise Exception('Infinite circular extension for %s' % extension)
 
     try:
-      data = CommandFile.load(extension)
+      data = CommandFile.load('score', extension)
     except Exception as e:
-      raise Exception("Couldn't find extension for %s: %s" % extend, str(e))
+      raise Exception("Couldn't find extension for %s: %s" % (extension, str(e)))
 
     if len(data) > 1:
-      LOGGER.error("More than one element in extension %s", extend)
+      LOGGER.error("More than one element in extension %s", extension)
+    data = data[0]
 
-    datas.append(data[0])
+    datas.append(data)
     extensions.add(extension)
 
   result = {}
@@ -34,9 +37,11 @@ def _resolve_extensions(data):
     result.update(data)
   if extensions:
     del result['extends']
+
   return result
 
 def make_one(parent, desc):
+  print('make_one', desc)
   desc = _resolve_extensions(desc)
   t = desc.get('type', '').lower()
   if not t:
