@@ -16,7 +16,12 @@ class Score(Element.Element):
     self.name = ''
 
   def add_handler(self, handler, *types):
-    for t in (types or [handler['event_type']]):
+    if not types:
+      types = handler.event_type
+      if not types:
+        raise Exception('Handler needs to have an event_type')
+      types = [types]
+    for t in (types or []):
       self.handlers.setdefault(t, set()).add(handler)
 
   def remove_handler(self, handler, *types):
@@ -25,7 +30,10 @@ class Score(Element.Element):
 
   def handle(self, event):
     if self.handlers:
-      handlers = self.handlers.get(event['type']) or []
+      event_type = event.get('event_type')
+      if not event_type:
+        raise Exception('The event %s had no type' % event)
+      handlers = self.handlers.get(event_type) or []
       for handler in handlers:
         handler.handle(event)
 

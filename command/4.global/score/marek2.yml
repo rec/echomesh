@@ -1,0 +1,16 @@
+type: Random
+mean: 3.0
+
+element:
+  type: Select
+  choices:
+    -
+      weight: 2
+      element:
+        extends: speak
+    -
+      weight: 3
+      element:
+        type: print
+        message: "echomesh: the wave of the future."
+

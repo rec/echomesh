@@ -3,11 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Name
 from echomesh.util import Log
 from echomesh.element import Element
+from echomesh.element import Handler
 from echomesh.element import Load
 
 LOGGER = Log.logger(__name__)
 
-class Mapper(Element.Element):
+class Mapper(Handler.Handler):
   def __init__(self, parent, description):
     super(Mapper, self).__init__(parent, description)
     self.target = description.get('target', Name.NAME)
@@ -21,12 +22,13 @@ class Mapper(Element.Element):
 
   def handle(self, event):
     # TODO: this should go elsewhere.
-    if (event.get('source', self.source) == self.source and
+    # TODO: this needs fixing
+    if True or (event.get('source', self.source) == self.source and
         event.get('target', self.target) == self.target):
       key = event.get('key')
-      mapper = key and hasattr(key, '__hash__') and self.mapping.get(key, [])
+      mapper = key and hasattr(key, '__hash__') and self.mapping.get(key)
       if mapper:
-        event = mapper(event)
+        event = mapper.handle(event)
 
       for handler in self.handlers:
         if not event:

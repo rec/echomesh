@@ -41,7 +41,6 @@ def _resolve_extensions(data):
   return result
 
 def make_one(parent, desc):
-  print('make_one', desc)
   desc = _resolve_extensions(desc)
   t = desc.get('type', '').lower()
   if not t:

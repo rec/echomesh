@@ -51,9 +51,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.add_slave(score)
     return [name]
 
-  def receive_event(self, event):
+  def handle(self, event):
     for score, t in self.scores.itervalues():
-      score.receive_event(event)
+      score.handle(event)
 
   def stop_score(self, name):
     if name == '*':

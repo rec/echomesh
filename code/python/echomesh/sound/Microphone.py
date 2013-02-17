@@ -103,3 +103,4 @@ def microphone(callback):
     return Microphone(callback)
   else:
     LOGGER.info('Mic thread disabled')
+

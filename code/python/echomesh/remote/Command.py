@@ -13,7 +13,7 @@ def execute(echomesh, type=None, **data):
     if not function:
       raise Exception("Didn't understand data type %s" % type)
 
-    return function(echomesh, **data)
+    return function(echomesh, type=type, **data)
 
   except Exception as e:
     LOGGER.error(str(e))

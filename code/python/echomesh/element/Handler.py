@@ -10,6 +10,7 @@ class Handler(Element.Element):
   def __init__(self, parent, description):
     super(Handler, self).__init__(parent, description)
     self.handler_parent = None
+    self.event_type = description.get('event_type')
 
   def _on_start(self):
     p = self

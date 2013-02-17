@@ -7,5 +7,5 @@
 *#*
 
 log/
-cache/
+# cache/
 code/TAGS

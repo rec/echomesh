@@ -14,7 +14,7 @@ def peer(echomesh, **data):
   echomesh.peers.new_peer(data)
 
 def event(echomesh, **data):
-  echomesh.receive_event(data)
+  echomesh.handle(data)
 
 def config(echomesh, scope, config):
   f = CommandFile.config_file(scope)
