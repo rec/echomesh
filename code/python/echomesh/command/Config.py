@@ -41,7 +41,11 @@ def config(echomesh, *parts):
     self._remote(scope=scope, config=config)
 
 CONFIG_HELP = """
-Set values in configuration files of a specific scope.
+The "config" command allows you to set data values in configuration files
+on your local node or on every node in your network.
+
+More documentation to come.
+
 """
 
 Registry.register('config', config, CONFIG_HELP)

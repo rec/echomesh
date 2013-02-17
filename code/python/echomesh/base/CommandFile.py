@@ -28,12 +28,12 @@ def _command_path():
      '4.global',
       _command_file('5.default')])
 
-_COMMAND_PATH = _command_path()
+COMMAND_PATH = _command_path()
 
 def expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
   path = clean(*path)
-  return [os.path.join('command', i, *path) for i in _COMMAND_PATH]
+  return [os.path.join('command', i, *path) for i in COMMAND_PATH]
 
 def resolve(*path):
   x = expand(*path)
@@ -78,4 +78,4 @@ def _recompute_command_path():
       Name.TAGS[:] = tags
 
 _recompute_command_path()
-_COMMAND_PATH = _command_path()
+COMMAND_PATH = _command_path()

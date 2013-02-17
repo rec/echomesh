@@ -5,7 +5,7 @@ import echomesh.command.Registry as CommandRegistry
 from echomesh.base import Merge
 from echomesh.base import Name
 from echomesh.base import Path
-from echomesh.command import Elements
+from echomesh.command import Scores
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
@@ -30,8 +30,12 @@ def addresses(echomesh):
 
 
 BROADCAST_HELP = """
-Shows if this echomesh is in broadcast made, meaning that run and stop commands
-are sent to all other nodes.
+Shows if this echomesh node is in broadcast made, meaning that its run and stop
+commands are sent to all other nodes.
+
+When a node is in broadcast mode, the standard "echomesh:" prompt is replaced
+by "echomesh!"
+
 """
 def broadcast(echomesh):
   LOGGER.print('Broadcast is ' + ('ON' if echomesh.broadcasting() else 'off'))
@@ -39,40 +43,51 @@ def broadcast(echomesh):
 
 
 NAMES_HELP = """
-Shows:
-  The machine name (also called the uname).
-  The echomesh name.
-  Any echomesh tags for this machine.
+"show names" shows you the following information about this echomesh node:
+
+  * The machine name (also called the uname for Linux machines).
+  * The echomesh name.  This is by default the machine name but can be changed
+    in the echomesh configuration.
+  * The echomesh tags for this machine, which are also set in the configuration.
 """
 
 def names(echomesh):
   _info(Name.names())
 
 INFO_HELP = """
-Shows the machine's "info", the list of identifying information sent from your
-machine to other echomesh nodes, which is a combination of the information from
-"show names" and "show addresses".
+"show info" shows your machine's info record.
+
+Info is the list of identifying information sent from your machine to other
+echomesh nodes - it is how you see remote nodes identified when you "show nodes"
+and it's how your machine will be identified remotely.
+
+info is made up of the "names" and "addresses" of this machine.
+
+See "help show names" and "help show addresses" for more information.
+
 """
 
 def info(echomesh):
   _info(Name.info())
 
-PATHS_HELP = """
-Paths are directories referenced by echomesh.
+DIRECTORIES_HELP = """
+"show path" shows directories that contain files used by echomesh:
 
-Shows:
-  The asset path, where images, audio and other assets are stored.
-  The code path, where the echomesh Python code is stored.
-  The command path, which holds configuration files and scores for your project.
-  The project path, the root of your project which holds assets and commands.
-  The echomesh path, which is the root of the echomesh installation.
+  * The asset directory, where images, audio and other assets are stored.
+  * The code directory, where the echomesh Python code is stored.
+  * The command directory, which holds configuration files and scores.
+  * The project directory, the project root containing assets and commands.
+  * The echomesh directory, which is the root of the echomesh installation.
 """
-def paths(echomesh):
+def directories(echomesh):
   _info(Path.info())
 
 NODES_HELP = """
-Shows a list of other echomesh nodes that have been detected on this network,
-together with their info.
+Each echomesh node knows about a list of other nodes on the same network.
+
+"show nodes" lists "info" for each known node on the network, including itself.
+
+See "help show info" for more information.
 """
 
 def nodes(echomesh):
@@ -81,8 +96,10 @@ def nodes(echomesh):
     _info(peer)
 
 RUNNING_HELP = """
-Shows all the scores that are now running, as well as the time they were
+"show running" shows all the elements now running, as well as the time they were
 started.
+
+See "help start" and "help stop" for more information.
 """
 
 def running(echomesh):
@@ -96,7 +113,10 @@ def sound(echomesh):
  _info(Sound.info())
 
 UNITS_HELP = """
-Show the possible units that can be used in echomesh scores.
+echomesh understands data expressed in a variety of units like Hz, percent,
+semitones and decibels.  "show units" lists these units and their synonyms
+(like seconds, sec, s or second).
+
 """
 
 def units(echomesh):
@@ -105,12 +125,13 @@ def units(echomesh):
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
-  elements=(Elements.elements, Elements.ELEMENTS_HELP),
+  directories=(directories, DIRECTORIES_HELP),
   info=(info, INFO_HELP),
   names=(names, NAMES_HELP),
   nodes=(nodes, NODES_HELP),
-  paths=(paths, PATHS_HELP),
   running=(running, RUNNING_HELP),
+  scopes=(Scores.scopes, Scores.SCOPES_HELP),
+  scores=(Scores.scores, Scores.SCORES_HELP),
   sound=(sound, SOUND_HELP),
   units=(units, UNITS_HELP),
 )

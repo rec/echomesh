@@ -35,7 +35,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def start_score(self, scorefile):
     scorefile = Yaml.filename(scorefile)
-    elements = CommandFile.load('element', scorefile)
+    elements = CommandFile.load('score', scorefile)
 
     description = {'elements': elements, 'type': 'score'}
     score = Score.Score(None, description)

@@ -7,9 +7,17 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
+HELP_TEXT = """
+echomesh knows the following commands:
+
+  %s
+
+and also accepts abbreviations like q, br or shut.
+"""
+
 def _help(echomesh, *parts):
   if not parts:
-    LOGGER.print('\nechomesh has the following commands: ' + Registry.join_keys())
+    LOGGER.print(HELP_TEXT % Registry.join_keys())
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
@@ -25,10 +33,16 @@ def _help(echomesh, *parts):
 
 
 HELP_HELP = """
-"help" lets you get information about echomesh commands.
+"help" gives you information about how echomesh commands work - "he" or "?"
+also work.
 
 You can get help on the following commands:
 
-  """ + Registry.join_keys()
+  %s
+
+for example, "help shutdown" or "help quit"
+and you can also use abbreviations like "? shut" or "? q"
+
+""" + Registry.join_keys()
 
 Registry.register('help', _help, HELP_HELP)
