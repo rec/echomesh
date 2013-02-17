@@ -1,5 +1,5 @@
 # This is the default configuration for Darwin (Mac OS/X) systems.
-
+# A comment.
 type: config
 
 control_program:
