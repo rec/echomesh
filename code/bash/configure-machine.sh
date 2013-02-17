@@ -5,6 +5,7 @@ apt-get install cython python-alsaaudio python-imaging python-pygame python-http
 
 apt-get install locate
 apt-get install ffmpeg
+sudo apt-get install mpg123
 
 # some missing...
 

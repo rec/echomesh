@@ -17,7 +17,7 @@ def play(file, run_in_thread=True):
   binary = Config.get('audio', 'input', 'aplay_binary')
   if not binary:
     if Platform.IS_LINUX:
-      binary = '/usr/bin/aplay'
+      binary = '/usr/bin/mpg123'
     elif Platform.IS_MAC:
       binary = '/usr/bin/afplay'
 
