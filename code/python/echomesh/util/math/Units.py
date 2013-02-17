@@ -77,6 +77,10 @@ def convert_number(number):
 def convert(number, assume_minutes=True):
   if not isinstance(number, six.string_types):
     return number
+  number = number.strip()
+
+  if number in ['infinite', 'infinity']:
+    return float('inf')
 
   t = convert_time(number, assume_minutes)
   if t is not None:

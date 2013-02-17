@@ -15,7 +15,7 @@ class Sequence(Loop.Loop):
     super(Sequence, self).__init__(parent, description, name='Sequence')
     duration = description.get('duration')
     self.duration = duration and Units.convert(duration)
-    self.loops = description.get('loops', 1)
+    self.loops = Units.convert(description.get('loops', 1))
     elements = description.get('elements', [])
 
     items = ((Units.convert(e.get('begin', 0)),
@@ -38,7 +38,7 @@ class Sequence(Loop.Loop):
         self.next_command = 0
         return self._command_time()
       else:
-        LOGGER.debug('Sequence finished')
+        LOGGER.info('Sequence finished')
         self.stop()
         return 0
 
