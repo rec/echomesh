@@ -78,7 +78,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
       LOGGER.error('Failed to open stream %s, %s', self.name, self.index)
       self.stop()
     else:
-      LOGGER.info('Microphone started.')
+      LOGGER.debug('Microphone started.')
 
   def _get_next_level(self):
     while self.is_running:
@@ -103,4 +103,3 @@ def microphone(callback):
     return Microphone(callback)
   else:
     LOGGER.info('Mic thread disabled')
-
