@@ -22,12 +22,14 @@ class TwitterSearch(Loop.Loop):
     if self.handler:
       self.handler = Load.make_one(self, self.handler)
     self.broadcast = description.get('broadcast', not self.handler)
+    print('Constructed!')
 
   def callback(self, twitter):
     if self.handler:
       self.handler.handle(twitter)
 
   def loop_target(self, t):
+    print('TwitterSearch: here!')
     for s in self.searches:
       s.refresh()
 

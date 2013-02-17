@@ -45,7 +45,3 @@ class TimeLoop(ThreadLoop.ThreadLoop):
 
   def next_time(self, t):
     return t + self.interval
-
-  def loop(self, t):
-    pass
-

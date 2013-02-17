@@ -98,12 +98,12 @@ class FilePlayer(ThreadLoop):
 
   def _convert(self, frames):
     frames = numpy.fromstring(frames, dtype=self.dtype)
-    if self.sample_width is 1:
+    if self.sample_width == 1:
       frames *= 256.0
-    elif self.sample_width is 4:
+    elif self.sample_width == 4:
       frames /= 65536.0
 
-    if self.channels is 1:
+    if self.channels == 1:
       return numpy.vstack((frames, numpy.array(frames)))
     else:
       return Util.uninterleave(frames)

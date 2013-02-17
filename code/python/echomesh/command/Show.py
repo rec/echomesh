@@ -103,6 +103,7 @@ See "help start" and "help stop" for more information.
 """
 
 def running(echomesh):
+  LOGGER.print('Job name  Running Time')
   _info(echomesh.score_master.info())
 
 SOUND_HELP = """

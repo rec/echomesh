@@ -17,7 +17,7 @@ def grouped_average(generator, window, partial=True):
   for x in generator:
     items.append(x)
     total += x
-    if len(items) is window:
+    if len(items) == window:
       yield total / window
       items = []
       total = 0

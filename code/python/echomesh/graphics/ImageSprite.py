@@ -30,7 +30,7 @@ class ImageSprite(Runnable):
     if 'type' in kwds:
       del kwds['type']
     if kwds:
-      s = '' if len(kwds) is 1 else 's'
+      s = '' if len(kwds) == 1 else 's'
       LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))
 
     self._imagename = IMAGE_DIRECTORY.expand(file)

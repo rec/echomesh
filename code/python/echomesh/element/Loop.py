@@ -12,7 +12,8 @@ class Loop(Element.Element):
       next_time=getattr(self, 'next_time', None),
       loop_target=getattr(self, 'loop_target', None))
 
-    self.add_mutual_stop_slave(self.time_loop)
+    self.add_slave(self.time_loop)
+    self.time_loop.add_stop_only_slave(self)
 
-  # You can implement Loop.next_time and Loop.loop to override the methods in
-  # TimeLoop.
+  # You can implement Loop.next_time and Loop.loop_target to override the
+  # methods in TimeLoop.

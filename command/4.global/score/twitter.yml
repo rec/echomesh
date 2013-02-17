@@ -18,4 +18,3 @@ handler:
 
 # The handler section is optional.
 # Were there no handlers, Events would be passed up to the Score.
-

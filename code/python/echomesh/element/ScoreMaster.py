@@ -21,7 +21,7 @@ from echomesh.util import UniqueName
 LOGGER = Log.logger(__name__)
 
 def format_delta(t):
-  s = str(datetime.timedelta(t))
+  s = str(datetime.timedelta(seconds=t))
   loc = s.find('.')
   if loc > 0:
     s = s[0:loc]
@@ -39,8 +39,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
     description = {'elements': elements, 'type': 'score'}
     score = Score.Score(None, description)
-    name = scorefile
 
+    name = scorefile[:-4]  # Remove .yaml.
     with self.lock:
       self._clean()
       name = UniqueName.unique_name(name, self.scores)
@@ -49,17 +49,20 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     score.name = name
     score.start()
     self.add_slave(score)
-    return score
+    return [name]
 
   def stop_score(self, name):
     if name == '*':
+      keys = self.scores.keys()
       for score, t in self.scores.itervalues():
         score.stop()
       self.scores.clear()
+      return keys
     else:
-      name = GetPrefix.get_prefix(self.scores, name)
-      score = self.scores.pop(name)
-      score.stop()
+      full_name, score_time = GetPrefix.get_prefix_and_match(self.scores, name)
+      del self.scores[full_name]
+      score_time[0].stop()
+      return [full_name]
 
   def _clean(self):
     remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]
@@ -70,7 +73,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def info(self):
     with self.lock:
       self._clean()
-      return dict((k, format_delta(v[1])) for k, v in self.scores.iteritems())
+      return dict((k, format_delta(time.time() - v[1])) for k, v in self.scores.iteritems())
 
   def get_score(self, name):
     with self.lock:

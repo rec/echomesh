@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.command import Registry
 from echomesh.util import Log
+from echomesh.util import Join
 
 LOGGER = Log.logger(__name__)
 
@@ -9,13 +10,23 @@ def _stop_or_start(message, doer, scores):
   try:
     if not scores:
       raise Exception('Usage: %s scorefile' % message)
+
+    results = []
     for score in scores:
-      doer(score)
-  except Exception:
-    LOGGER.print_error("Couldn't %s", message, exc_info=1)
+      results.extend(doer(score))
+
+    past = 'Stopped' if message == 'stop' else 'Started'
+    for name in results:
+      LOGGER.info('%s %s.', past, name)
+
+  except Exception as e:
+    LOGGER.print_error("Couldn't %s %s", message, Join.join_words(*scores),
+                       exc_info=1)
+
 
 def start(echomesh, *scores):
   _stop_or_start('start', echomesh.score_master.start_score, scores)
+
 
 START_HELP = """
 Usage: start score [score...]
