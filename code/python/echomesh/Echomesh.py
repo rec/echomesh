@@ -51,7 +51,7 @@ class Echomesh(MasterRunnable):
     self.socket.send(data)
 
   def receive_event(self, event):
-    return self.score.receive_event(event)
+    return self.score_master.receive_event(event)
 
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)

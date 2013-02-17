@@ -28,7 +28,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     assert self.loop_target
     assert self.next_time
 
-  def _on_start(self):
+  def _before_thread_start(self):
     self.start_time = time.time()
     self.next_loop_time = self.start_time
 

@@ -27,6 +27,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
     self.callback = callback
     self.previous_level_name = None
     self.errors = 0
+    self.stream = None
     Config.add_client(self)
 
   def config_update(self, get):
@@ -69,14 +70,15 @@ class Microphone(ThreadRunnable.ThreadRunnable):
         self.callback(level_name)
         self.previous_level_name = level_name
 
-  def _on_start(self):
+  def _before_thread_start(self):
     self.reset_levels()
-    LOGGER.debug('Microphone starting')
     self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rate,
                                            self.sample_bytes)
-
-    if not getattr(self, 'stream', None):
+    if not self.stream:
+      LOGGER.error('Failed to open stream %s, %s', self.name, self.index)
       self.stop()
+    else:
+      LOGGER.info('Microphone started.')
 
   def _get_next_level(self):
     while self.is_running:
@@ -93,7 +95,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
           LOGGER.error('errors %d', self.errors)
 
       except:
-        LOGGER.error(e, exc_info=1)
+        LOGGER.error('error', exc_info=1)
 
 
 def microphone(callback):

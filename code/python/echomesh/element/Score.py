@@ -8,7 +8,7 @@ from echomesh.element import Load
 
 class Score(Element.Element):
   def __init__(self, parent, description):
-    self.handlers = collections.defaultdict(set)
+    self.handlers = {}
 
     super(Score, self).__init__(parent, description)
     self.elements = Load.make(self, description['elements'])
@@ -17,14 +17,16 @@ class Score(Element.Element):
 
   def add_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):
-      self.handlers[t].add(handler)
+      self.handlers.setdefault(t, set()).add(handler)
 
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):
-      self.handlers[t].discard(handler)
+      self.handlers.get(t, set()).discard(handler)
 
   def handle(self, event):
-    for handler in self.handlers[event['type']]:
-      handler.handle(event)
+    if self.handlers:
+      handlers = self.handlers.get(event['type']) or []
+      for handler in handlers:
+        handler.handle(event)
 
 Element.register(Score)

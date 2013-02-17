@@ -15,6 +15,7 @@ class ThreadRunnable(MasterRunnable):
     self.report_error = report_error
 
   def _on_start(self):
+    self._before_thread_start()
     def target():
       try:
         self.target()
@@ -28,6 +29,13 @@ class ThreadRunnable(MasterRunnable):
 
   def _on_stop(self):
     self.thread.stop()
+    self._after_thread_stop()
+
+  def _before_thread_start(self):
+    pass
+
+  def _after_thread_stop(self):
+    pass
 
   def join(self):
     super(ThreadRunnable, self).join()
