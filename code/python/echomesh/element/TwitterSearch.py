@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
+from echomesh.util.math import Units
 from gittwit.twitter.Search import Search
 
 DEFAULT_INTERVAL = 10.0
@@ -10,7 +11,7 @@ DEFAULT_PRELOAD = 1
 
 class TwitterSearch(Loop.Loop):
   def __init__(self, parent, description):
-    interval = description.get('interval', DEFAULT_INTERVAL)
+    interval = Units.convert(description.get('interval', DEFAULT_INTERVAL))
     super(TwitterSearch, self).__init__(parent, description, interval=interval)
     preload = description.get('preload', DEFAULT_PRELOAD)
     search = description['search']
@@ -28,7 +29,6 @@ class TwitterSearch(Loop.Loop):
       self.handler.handle(twitter)
 
   def loop_target(self, t):
-    print('TwitterSearch: here!')
     for s in self.searches:
       s.refresh()
 
