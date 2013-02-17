@@ -1,5 +1,5 @@
 type: Random
-mean: 3.0
+mean: 3000.0 ms
 
 element:
   type: Select
@@ -7,7 +7,7 @@ element:
     -
       weight: 2
       element:
-        extends: speak
+        extends: speak.yml
     -
       weight: 3
       element:

@@ -25,7 +25,7 @@ audio:
     name: ''
     periodsize: 160
     sample_bytes: 2
-    sample_rate: 4000
+    sample_rate: 8000
     verbose: false
 
     levels:
