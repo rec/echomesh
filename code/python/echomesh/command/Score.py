@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Registry
+from echomesh.command import Register
 from echomesh.util import Log
 from echomesh.util import Join
 
@@ -45,7 +45,7 @@ Stops one or more scores.  The special score name '*' stops all the running
 scores at once.
 """
 
-Registry.register_all(
+Register.register_all(
   start=(start, START_HELP),
   stop=(stop, STOP_HELP),
 )

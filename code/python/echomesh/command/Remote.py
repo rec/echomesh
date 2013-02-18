@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Registry
+from echomesh.command import Register
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -16,7 +16,7 @@ COMMANDS = [
   ]
 
 for command, help_text in COMMANDS:
-  Registry.register(command, remote(command), help_text)
+  Register.register(command, remote(command), help_text)
 
 def broadcast(echomesh, on_or_off):
   on_or_off = on_or_off.lower()
@@ -38,4 +38,4 @@ When broadcast mode is on, all start and stop commands are sent to all echomesh
 nodes;  when broadcast mode is off, start and stop only go to this node.
 """
 
-Registry.register('broadcast', broadcast, BROADCAST_HELP)
+Register.register('broadcast', broadcast, BROADCAST_HELP)

@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Registry
+from echomesh.command import Register
 from echomesh.command import Show
 
 from echomesh.util import Log
@@ -17,11 +17,11 @@ and also accepts abbreviations like q, br or shut.
 
 def _help(echomesh, *parts):
   if not parts:
-    LOGGER.print(HELP_TEXT % Registry.join_keys())
+    LOGGER.print(HELP_TEXT % Register.join_keys())
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
-      help_text = Registry.get_help(cmd)
+      help_text = Register.get_help(cmd)
       LOGGER.print(help_text or ('No help text available for "%s"' % cmd))
     elif cmd == 'show':
       sub = parts[0]
@@ -43,6 +43,6 @@ You can get help on the following commands:
 for example, "help shutdown" or "help quit"
 and you can also use abbreviations like "? shut" or "? q"
 
-""" + Registry.join_keys()
+""" + Register.join_keys()
 
-Registry.register('help', _help, HELP_HELP)
+Register.register('help', _help, HELP_HELP)

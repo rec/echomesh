@@ -1,11 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Config, Help, Registry, Remote, Score, Show
+from echomesh.command import Config, Help, Register, Remote, Score, Show
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-Registry.register('quit', lambda e: True,
+Register.register('quit', lambda e: True,
                   'Quits the echomesh program.')
 
 def _fix_exception_message(m, name):
@@ -20,7 +20,7 @@ def _fix_exception_message(m, name):
   return name + m
 
 def usage():
-  return 'Valid options are:' + Registry.join_keys()
+  return 'Valid options are:' + Register.join_keys()
 
 def execute(echomesh, line):
   try:
@@ -30,7 +30,7 @@ def execute(echomesh, line):
       return
     parts = line.split()
     name = parts.pop(0)
-    function = Registry.get(name)
+    function = Register.get(name)
     if not function:
       raise Exception("Didn't understand function %s" % name)
     try:
