@@ -28,10 +28,11 @@ def format_delta(t):
   return s
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
-  def __init__(self):
+  def __init__(self, *scores):
     super(ScoreMaster, self).__init__()
     self.scores = OrderedDict()
     self.lock = threading.RLock()
+    self.scores_to_add = scores
 
   def start_score(self, scorefile):
     scorefile = Yaml.filename(scorefile)
@@ -67,6 +68,14 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       del self.scores[full_name]
       score_time[0].stop()
       return [full_name]
+
+  def _on_start(self):
+    for s in self.scores_to_add:
+      try:
+        self.start_score(s)
+      except Exception as e:
+        LOGGER.error("Couldn't start score %s:\n%s", s, str(e))
+    self.scores_to_add = ()
 
   def _clean(self):
     remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]

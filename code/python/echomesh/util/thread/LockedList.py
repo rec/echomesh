@@ -5,8 +5,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-FAIL_ON_EXCEPTION = True
-
 class LockedList(object):
   def __init__(self):
     self._entries = []
@@ -17,13 +15,13 @@ class LockedList(object):
       return self._entries[:]
 
   def foreach(self, function):
+    exceptions = []
     for e in self.entries():
       try:
         function(e)
-      except Exception as e:
-        LOGGER.error("Couldn't call %s", function, exc_info=1)
-        if FAIL_ON_EXCEPTION:
-          raise
+      except Exception as ex:
+        exceptions.append(ex)
+    return exceptions
 
   def clear(self):
     with self._lock:
@@ -45,5 +43,5 @@ class LockedList(object):
         try:
           self._entries.remove(e)
         except ValueError:
-          LOGGER.error('Tried to remove non-existent value %s from %s',
-                       e, self._entries)
+          LOGGER.warn('Tried to remove non-existent value %s from %s',
+                      e, self._entries)
