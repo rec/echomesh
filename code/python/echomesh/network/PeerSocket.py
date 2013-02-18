@@ -5,6 +5,7 @@ from echomesh.base import Name
 from echomesh.remote import Command
 from echomesh.network import DataSocket
 from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.util.math import Units
 
 class PeerSocket(MasterRunnable):
   def __init__(self, echomesh, peers):
@@ -36,7 +37,7 @@ class PeerSocket(MasterRunnable):
 
   def config_update(self, get):
     self.port, old_port = get('discovery', 'port'), self.port
-    self.timeout = get('discovery', 'timeout')
+    self.timeout = int(Units.convert(get('discovery', 'timeout')))
     if self.is_running and self.socket:
       if port == old_port:
         self.socket.timeout = timeout

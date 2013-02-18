@@ -29,8 +29,9 @@ def _set_project_path():
   while _not_possible_project(path):
     p = os.path.dirname(path)
     if p == path:
-      print("The path %s wasn't in an echomesh project " % original_path)
-      return
+      print("\nYour path %s isn't in an echomesh project." % original_path)
+      print("Defaulting to the echomesh path %s." % ECHOMESH_PATH)
+      return ECHOMESH_PATH
     path = p
 
   return path

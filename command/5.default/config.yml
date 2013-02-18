@@ -54,7 +54,7 @@ diagnostics:
 
 discovery:
   port: 1238
-  timeout: 0.10
+  timeout: 100 ms
 
 git:
   user: rec

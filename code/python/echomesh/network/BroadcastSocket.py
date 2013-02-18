@@ -39,7 +39,7 @@ class Receive(BroadcastSocket):
     try:
       result = select.select([self.socket], [], [], timeout)
       if result and result[0]:
-        return result[0][0].recv()
+        return result[0][0].recv(timeout)
     except:
       if self.is_running:
         raise
