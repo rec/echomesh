@@ -1,6 +1,9 @@
-import Queue
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import socket
 import time
+
+from six.moves import queue
 
 from echomesh.base import Yaml
 from echomesh.network import BroadcastSocket
@@ -15,7 +18,7 @@ class DataSocket(MasterRunnable):
     super(DataSocket, self).__init__()
     self.timeout = timeout
     self.callback = callback
-    self.queue = Queue.Queue()
+    self.queue = queue.Queue()
 
     try:
       self.receive_socket = BroadcastSocket.Receive(port)
@@ -43,7 +46,7 @@ class DataSocket(MasterRunnable):
       item = self.queue.get(True, self.timeout)
       value = Yaml.encode_one(item)
       self.send_socket.write(value)
-    except Queue.Empty:
+    except queue.Empty:
       pass
     if self.is_running:
       time.sleep(self.timeout)

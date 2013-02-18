@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from compatibility import six
+import six
 
 from echomesh.base import Name
 from echomesh.base import Merge
