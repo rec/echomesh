@@ -41,7 +41,11 @@ class Microphone(ThreadRunnable.ThreadRunnable):
     self.levels = Levels.Levels(**get('audio', 'input', 'levels'))
     self.moving_window = get('audio', 'input', 'average', 'window_size')
     self.name = get('audio', 'input', 'name')
-    self.rate = get('audio', 'input', 'sample_rate')
+    self.rates = get('audio', 'input', 'sample_rate')
+    try:
+      len(self.rates)
+    except TypeError:
+      self.rates = [self.rates]
     self.sample_bytes = get('audio', 'input', 'sample_bytes')
     self.verbose = get('audio', 'input', 'verbose')
     if self.is_running and state() != old:
@@ -71,14 +75,19 @@ class Microphone(ThreadRunnable.ThreadRunnable):
         self.previous_level_name = level_name
 
   def _before_thread_start(self):
-    self.reset_levels()
-    self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rate,
-                                           self.sample_bytes)
-    if not self.stream:
-      LOGGER.error('Failed to open stream %s, %s', self.name, self.index)
-      self.stop()
+    try:
+      self.reset_levels()
+      self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rates,
+                                             self.sample_bytes)
+    except:
+      LOGGER.error('Microphone error for %s, %s', self.name, self.index,
+                   exc_info=1)
     else:
-      LOGGER.debug('Microphone started.')
+      if not self.stream:
+        LOGGER.error('Failed to open stream %s, %s', self.name, self.index)
+        self.stop()
+      else:
+        LOGGER.debug('Microphone started.')
 
   def _get_next_level(self):
     while self.is_running:
