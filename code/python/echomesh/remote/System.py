@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from echomesh.remote import Registry
+from echomesh.remote import Register
 
 from echomesh.base import Config
 from echomesh.util import Log
@@ -33,7 +33,7 @@ def update(echomesh):
   Git.run_git_commands(GIT_UPDATE)
   restart(echomesh)
 
-Registry.register_all(
+Register.register_all(
   halt=halt,
   restart=restart,
   shutdown=shutdown,

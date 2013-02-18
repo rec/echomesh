@@ -5,7 +5,7 @@ import copy
 from echomesh.base import CommandFile
 from echomesh.base import Yaml
 from echomesh.base import Merge
-from echomesh.remote import Registry
+from echomesh.remote import Register
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -23,7 +23,7 @@ def config(echomesh, scope, config):
   # TODO: needs to propagate!
   LOGGER.info('Changing configuration for %s', scope)
 
-Registry.register_all(
+Register.register_all(
   config=config,
   event=event,
   peer=peer,

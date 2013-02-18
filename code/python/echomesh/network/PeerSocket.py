@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import Name
-from echomesh.remote import Command
 from echomesh.network import DataSocket
+from echomesh.remote import Remote
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.math import Units
 

@@ -1,10 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import echomesh.command.Registry as CommandRegistry
-
 from echomesh.base import Merge
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.command import Register
 from echomesh.command import Scores
 from echomesh.sound import Sound
 from echomesh.util import Log
@@ -155,4 +154,4 @@ SHOW_HELP = """"show" displays information about the current echomesh instance.
 
 """ + SHOW_USAGE
 
-CommandRegistry.register_all(show=(_show, SHOW_HELP))
+Register.register_all(show=(_show, SHOW_HELP))
