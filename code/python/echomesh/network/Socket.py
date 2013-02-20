@@ -10,6 +10,8 @@ LOGGER = Log.logger(__name__)
 
 # See http://docs.python.org/2/howto/sockets.html
 
+from six.moves import queue
+
 BUFFER_SIZE = 4096
 
 class Socket(MasterRunnable):
@@ -21,6 +23,15 @@ class Socket(MasterRunnable):
     self.socket_type = socket_type
     self.socket = None
 
+  def recv(self):
+    if self.is_running:
+      res = self.socket.recv(BUFFER_SIZE)
+      if not res:
+        # An empty packet means it's all over.
+        # http://docs.python.org/2/howto/sockets.html
+        self.close()
+      return res
+
   def _on_start(self):
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
     try:
@@ -29,13 +40,14 @@ class Socket(MasterRunnable):
       if 'Address already in use' in str(e):
         raise Exception('There is already an echomesh node running on port %d' %
                         self.bind_port)
+      self.stop()
 
   def _start_socket(self):
     self.socket.bind((self.hostname, self.bind_port))
 
   def _on_stop(self):
-    self.socket.close()
+    try:
+      self.socket.close()
+    except:
+      pass
     self.socket = None
-
-  def recv(self):
-    return self.is_running and self.socket.recv(BUFFER_SIZE)

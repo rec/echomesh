@@ -11,7 +11,10 @@ class ThreadRunnable(MasterRunnable):
   def __init__(self, target=None, name=None, report_error=False):
     super(ThreadRunnable, self).__init__()
     self.name = name or repr(self)
-    self.target = target or self.target
+    if target:
+      self.target = target
+    else:
+      assert self.target
     self.report_error = report_error
 
   def _on_start(self):
@@ -44,5 +47,3 @@ class ThreadRunnable(MasterRunnable):
       self.thread.join()
     except:
       pass
-
-
