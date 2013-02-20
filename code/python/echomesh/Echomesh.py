@@ -60,6 +60,9 @@ class Echomesh(MasterRunnable):
   def loop(self):
     self.display.loop()
 
+  def join(self):
+    self.socket.join()
+
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)
 

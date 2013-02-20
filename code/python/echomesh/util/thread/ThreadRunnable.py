@@ -42,8 +42,9 @@ class ThreadRunnable(MasterRunnable):
 
   def join(self):
     super(ThreadRunnable, self).join()
-    LOGGER.debug('Thread join for "%s"', self.name)
+    LOGGER.debug('Join for "%s"', self.name)
     try:
       self.thread.join()
     except:
       pass
+    LOGGER.debug('Finished join for "%s"', self.name)

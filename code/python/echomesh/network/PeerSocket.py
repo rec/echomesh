@@ -3,9 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.base import Name
 from echomesh.network import DataSocket
+from echomesh.network import YamlSocket
 from echomesh.remote import Remote
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.math import Units
+
+USE_YAML_SOCKET = True
 
 class PeerSocket(MasterRunnable):
   def __init__(self, echomesh, peers):
@@ -31,7 +34,10 @@ class PeerSocket(MasterRunnable):
       self._make_socket()
 
   def _make_socket(self):
-    self.socket = DataSocket.DataSocket(self.port, self.timeout, self.router)
+    if Config.get('discovery', 'use_yaml_sockets'):
+      self.socket = YamlSocket.DataSocket(self.port, self.timeout, self.router)
+    else:
+      self.socket = DataSocket.DataSocket(self.port, self.timeout, self.router)
     self.add_mutual_stop_slave(self.socket)
     self.socket.start()
 
