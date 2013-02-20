@@ -44,7 +44,7 @@ def run():
     sys.path.append(external)
   p()
 
-  from echomesh.base import Config  # Must be the first import.
+  from echomesh.base import Config
   p()  # 1215ms
 
   Config.recalculate(args=sys.argv)

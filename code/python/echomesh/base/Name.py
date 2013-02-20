@@ -52,10 +52,10 @@ def set_name(name):
 def lookup(table, default=None):
   """
   Look up the machine's name in a table, first by MAC address,
-  then by IP address and finally by uname.
+  then by IP address, then by echomesh name, and finally by uname.
   """
   none = object()
-  for name in MAC_ADDRESS, IP_ADDRESS, UNAME, NAME:
+  for name in MAC_ADDRESS, IP_ADDRESS, NAME, UNAME:
     value = table.get(name, none)
     if value is not none:
       return value

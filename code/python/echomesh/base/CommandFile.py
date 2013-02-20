@@ -19,8 +19,11 @@ def _command_file(*path):
   res = os.path.join(base, 'command', *path)
   return res
 
-def _command_path():
-  return ([
+COMMAND_PATH = None
+
+def compute_command_path():
+  global COMMAND_PATH
+  COMMAND_PATH = ([
     '0.local',
     '1.name/' + Name.NAME] +
     [('2.tag/' + t) for t in Name.TAGS] +
@@ -28,7 +31,7 @@ def _command_path():
      '4.global',
       _command_file('5.default')])
 
-COMMAND_PATH = _command_path()
+compute_command_path()
 
 def expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
@@ -53,28 +56,3 @@ def load(*path):
 def config_file(scope):
   return _command_file(scope, 'config.yml')
 
-def _recompute_command_path():
-  def lookup(name):
-    try:
-      name_map = load(name)
-    except:
-      pass
-    else:
-      if name_map:
-        return Name.lookup(Merge.merge(*name_map))
-
-  name = lookup('name_map.yml')
-  if name:
-    Name.set_name(name)
-
-  tags = lookup('tag_map.yml')
-  if tags:
-    if isinstance(tags, dict):
-      print('Malformed tag_map.yml')
-    else:
-      if isinstance(tags, six.string_types):
-        tags = [tags]
-      Name.TAGS[:] = tags
-
-_recompute_command_path()
-COMMAND_PATH = _command_path()

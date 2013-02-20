@@ -35,7 +35,7 @@ def merge_config():
       config = cfg
     else:
       try:
-        config = Merge.merge_strict(config, cfg)
+        config = Merge.merge_for_config(config, cfg)
       except Exception as e:
         _add_exception_suffix(e, ' while merging', message, item)
         raise

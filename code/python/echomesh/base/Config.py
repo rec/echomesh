@@ -3,12 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import getpass
 import os
+import six
 
 from os.path import abspath, dirname
 
 from compatibility.weakref import WeakSet
 
+from echomesh.base import CommandFile
 from echomesh.base import MergeConfig
+from echomesh.base import Name
 from echomesh.base import Platform
 
 CONFIG = None
@@ -36,8 +39,23 @@ def recalculate(perform_update=False, args=None):
 
   global CONFIG, CONFIGS_UNVISITED
 
+  # Do this the first time to get everything before tag and name resolution.
   CONFIG = MergeConfig.merge_config()
   CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+
+  name = Name.lookup(get('map', 'name'))
+  if name:
+    Name.set_name(name)
+
+  tags = Name.lookup(get('map', 'tags'))
+  if tags:
+    if isinstance(tags, six.string_types):
+      tags = [tags]
+    Name.TAGS = tags
+
+  if name or tags:
+    CommandFile.compute_command_path()
+
   if perform_update:
     update_clients()
 

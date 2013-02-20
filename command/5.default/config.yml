@@ -74,6 +74,10 @@ logging:
   format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
   level: info
 
+map:
+  name: {}
+  tag: {}
+
 opening_sleep: 0.5
 
 pi3d:

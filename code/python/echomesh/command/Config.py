@@ -31,7 +31,7 @@ def config(echomesh, *parts):
   except:
     return LOGGER.print_error("Can't parse yaml argument '%s'" % yaml)
 
-  config = Merge.merge_strict(*configs)
+  config = Merge.merge_for_config(*configs)
   if '0.local' in scope:
     echomesh.socket.router({'type': 'config', 'config': config,
                                   'scope': scope})
