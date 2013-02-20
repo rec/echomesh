@@ -5,7 +5,7 @@ import bisect
 from echomesh.util.math import Units
 from echomesh.util.math import SplitNumbers
 
-USE_BISECT = False
+USE_BISECT = True
 
 class Envelope(object):
   def __init__(self, data):
@@ -43,18 +43,19 @@ class Envelope(object):
       time = self.loop_length - time
 
     if USE_BISECT:
-      pass
-
-    if time < self.times[self.slot]:
-      self.slot = 0
-
-    for self.slot in range(self.slot, len(self.times) - 1):
-      t1, t2 = self.times[self.slot:self.slot + 2]
-      if t1 <= time <= t2:
-        break
+      self.slot = max(bisect.bisect(self.times, time) - 1, 0)
     else:
-      assert False, "Envelope times are out of order."
+      if time < self.times[self.slot]:
+        self.slot = 0
 
+      for self.slot in range(self.slot, len(self.times) - 1):
+        t1, t2 = self.times[self.slot:self.slot + 2]
+        if t1 <= time <= t2:
+          break
+      else:
+        assert False, "Envelope times are out of order."
+
+    t1, t2 = self.times[self.slot:self.slot + 2]
     d1, d2 = self.data[self.slot:self.slot + 2]
     ratio = float(time - t1) / (t2 - t1)
 
