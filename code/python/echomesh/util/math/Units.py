@@ -75,7 +75,7 @@ def convert_number(number):
   return int(hex_match.groups()[0], 16)
 
 def convert(number, assume_minutes=True):
-  if not isinstance(number, six.string_types):
+  if not (number and isinstance(number, six.string_types)):
     return number
   number = number.strip()
 
