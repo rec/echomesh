@@ -25,6 +25,8 @@ SCOPES_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
 configurations and scores live in one of five different types of "scopes".
 
+5.default:
+
 4.global:
   This is the global scope that comes with echomesh and contains only the
   default configuration, which cannot be changed by echomesh programs.
@@ -42,9 +44,6 @@ configurations and scores live in one of five different types of "scopes".
   This directory contains scores that are only associated with a machine with
   the given name.
 
-0.local:
-  These are temporary, local files that aren't stored anywhere else.  They're
-  used to make changes for experimentation.
 
 """
 

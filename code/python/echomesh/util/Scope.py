@@ -5,7 +5,7 @@ from echomesh.base import Platform
 
 _SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
 
-SCOPES = ['local', 'tag', 'name', 'platform', 'global', 'default']
+SCOPES = ['tag', 'name', 'platform', 'global', 'default']
 
 def resolve(scope):
   match = _SCOPE_RE.match(scope)
@@ -16,7 +16,7 @@ def resolve(scope):
   if body not in SCOPES:
     raise Exception("Didn't understand body %s" % body)
 
-  new_prefix = '%d.' % SCOPES.index(body)
+  new_prefix = '%d.' % (SCOPES.index(body) + 1)
   if prefix and prefix != new_prefix:
     raise Exception("Wrong prefix %s" % body)
 

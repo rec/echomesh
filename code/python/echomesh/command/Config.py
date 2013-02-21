@@ -32,10 +32,7 @@ def config(echomesh, *parts):
     return LOGGER.print_error("Can't parse yaml argument '%s'" % yaml)
 
   config = Merge.merge_for_config(*configs)
-  if '0.local' in scope:
-    echomesh.socket.router({'type': 'config', 'config': config,
-                                  'scope': scope})
-  elif '4.default' in scope:
+  if 'default' in scope:
     LOGGER.print_error("Can't make changes to default scope")
   else:
     self._remote(scope=scope, config=config)

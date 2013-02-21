@@ -24,7 +24,6 @@ COMMAND_PATH = None
 def compute_command_path():
   global COMMAND_PATH
   COMMAND_PATH = ([
-    '0.local',
     '1.name/' + Name.NAME] +
     [('2.tag/' + t) for t in Name.TAGS] +
     ['3.platform/' + Platform.PLATFORM,
