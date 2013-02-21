@@ -10,6 +10,7 @@ from echomesh.base import Yaml
 from echomesh.network import BroadcastSocket
 from echomesh.network.QueueReader import QueueReader
 from echomesh.network.SocketThread import SocketThread
+from echomesh.network.SelectLoop import SelectLoop
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 TIMEOUT = 0.5
@@ -24,7 +25,9 @@ class YamlSocket(MasterRunnable):
     def send_iterator():
       while self.is_running:
         try:
-          yield self._send.queue.get(self.timeout)
+          y = self._send.queue.get(self.timeout)
+          print('22222', y)
+          yield y
           yield {}  # Add padding for Yaml's off-by-one issue.
         except queue.Empty:
           continue
@@ -35,13 +38,16 @@ class YamlSocket(MasterRunnable):
     def receive_loop():
       reader = QueueReader(self._receive.queue, self, self.timeout)
       for y in yaml.safe_load_all(reader):
+        print('1111111111')
         if not self.is_running:
           return
         if y:  # Remove padding from Yaml's "off by one" issue.
+          print('1111111111', y)
           self.callback(y)
 
-    self._send = SocketThread(send_socket, target=send_loop)
-    self._receive = SocketThread(receive_socket, target=receive_loop)
+    self._send = SocketThread(send_socket, target=send_loop, name='send_thread')
+    self._receive = SocketThread(receive_socket, target=receive_loop,
+                                 name='receive_thread')
 
     self.add_mutual_stop_slave(self._send, self._receive)
 
@@ -59,6 +65,8 @@ class DataSocket(YamlSocket):
         raise Exception('A DataSocket is already running on port %d'  % port)
       else:
         raise
-    super(DataSocket, self).__init__(timeout, callback, send_socket, receive_socket)
-
+    super(DataSocket, self).__init__(
+      timeout, callback, send_socket, receive_socket)
+    self.select_loop = SelectLoop(self._receive)
+    self.add_slave(self.select_loop)
 

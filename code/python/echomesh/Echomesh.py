@@ -38,6 +38,7 @@ class Echomesh(MasterRunnable):
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
+    self.quitting = False
 
   def broadcasting(self):
     return self._broadcasting
@@ -61,7 +62,7 @@ class Echomesh(MasterRunnable):
     self.display.loop()
 
   def join(self):
-    self.socket.join()
+    self.keyboard.join()
 
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)

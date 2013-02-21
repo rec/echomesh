@@ -11,6 +11,7 @@ class BroadcastSocket(Socket.Socket):
   def __init__(self, port, bind_port):
     super(BroadcastSocket, self).__init__(
       port, bind_port, '', socket.SOCK_DGRAM)
+    self.max_size = 1024
 
 class Send(BroadcastSocket):
   def __init__(self, port):
@@ -19,7 +20,6 @@ class Send(BroadcastSocket):
   def _on_start(self):
     super(Send, self)._on_start()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    self.max_size = 1024
 
   def write(self, data):
     try:
@@ -45,7 +45,7 @@ class Receive(BroadcastSocket):
     try:
       result = select.select([self.socket], [], [], timeout)
       if result and result[0]:
-        return result[0][0].recv(timeout)
+        return result[0][0].recv(self.max_size)
     except:
       if self.is_running:
         raise

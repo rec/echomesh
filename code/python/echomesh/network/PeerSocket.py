@@ -22,7 +22,7 @@ class PeerSocket(MasterRunnable):
     Config.add_client(self)
 
   def router(self, data):
-    Command.execute(self.echomesh, **data)
+    Remote.execute(self.echomesh, **data)
 
   def send(self, data):
     if self.is_running:
@@ -43,7 +43,7 @@ class PeerSocket(MasterRunnable):
 
   def config_update(self, get):
     self.port, old_port = get('discovery', 'port'), self.port
-    self.timeout = int(Units.convert(get('discovery', 'timeout')))
+    self.timeout = Units.convert(get('discovery', 'timeout'))
     if self.is_running and self.socket:
       if port == old_port:
         self.socket.timeout = timeout

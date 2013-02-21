@@ -16,7 +16,7 @@ SHOW_REGISTRY = Registry.Registry('show command')
 
 def _info(d, spaces='  '):
   s = '\n'.join('%s%s: %s' % (spaces, k, v) for k, v in sorted(d.iteritems()))
-  LOGGER.print('\n' + s)
+  LOGGER.print('\n%s\n' % s)
 
 
 ADDRESSES_HELP = """

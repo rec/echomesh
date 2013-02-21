@@ -85,6 +85,9 @@ def run():
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
 
+  reason = 'at your request' if echomesh.quitting else 'due to a fatal error'
+  print('echomesh shut down %s.' % reason)
+
 
 if __name__ == '__main__':
   try:

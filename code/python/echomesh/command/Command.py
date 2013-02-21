@@ -7,8 +7,15 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-Register.register('quit', lambda e: True,
-                  'Quits the echomesh program.')
+def _quit(echomesh):
+  echomesh.quitting = True
+  return True
+
+QUIT_HELP = """
+"quit" or q stops all the elements running and quits the echomesh program.
+"""
+
+Register.register('quit', _quit, QUIT_HELP)
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
