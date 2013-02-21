@@ -48,6 +48,8 @@ control_program:
   enable: true
   use_tk: true
 
+delete_backups_after_transfer: false
+
 diagnostics:
   dump_unused_configs: false
   dump_startup_times: false
