@@ -19,10 +19,16 @@ class Send(BroadcastSocket):
   def _on_start(self):
     super(Send, self)._on_start()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    self.max_size = 1024
 
   def write(self, data):
     try:
-      self.socket.sendto(data, ('<broadcast>', self.port))
+      while data:
+        if len(data) <= self.max_size:
+          res, data = data, ''
+        else:
+          res, data = data[0:self.max_size], data[self.max_size:]
+        self.socket.sendto(res, ('<broadcast>', self.port))
     except:
       if self.is_running:
         raise

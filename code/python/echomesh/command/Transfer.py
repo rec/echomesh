@@ -1,5 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
+import os.path
+
+from echomesh.base import Path
+from echomesh.base import Yaml
 from echomesh.command import Register
 from echomesh.util import Log
 
@@ -18,7 +23,7 @@ def transfer(echomesh, *args):
       return
     args = ['*']
   if '*' in args or '.' in args:
-    args = [ '.']
+    args = ['']
 
   files = set()
   directories = set()
@@ -26,22 +31,26 @@ def transfer(echomesh, *args):
     f = os.path.join(Path.COMMAND_PATH, arg)
     if not os.path.exists(f):
       raise Exception("Command file %s doesn't exist.", f)
-    subtree = [d[0] for d in os.walk(f)]
-    if subtree:
-      files.update(subtree)
+    walk = os.walk(f)
+    if walk:
       directories.add(arg)
+      for root, dirs, fs in walk:
+        for ffs in fs:
+          if ffs.endswith('.yml'):
+            files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
+      LOGGER.debug('Adding directory %s', arg)
     else:
+      LOGGER.debug('Adding file %s', arg)
       files.add(f)
 
   files_table = {}
   for f in sorted(files):
-    if f.endswith('.yml'):
-      files_table[f] = Yaml.read(f)
+    LOGGER.debug('Reading file %s', f)
+    files_table[f] = Yaml.read(f)
 
   echomesh.send(type='transfer',
                 directories=sorted(directories),
                 files=files_table)
-
 
 
 TRANSFER_HELP = """

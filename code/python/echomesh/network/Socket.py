@@ -34,6 +34,7 @@ class Socket(MasterRunnable):
 
   def _on_start(self):
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
+    self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFFER_SIZE)
     try:
       self._start_socket()
     except Exception as e:
