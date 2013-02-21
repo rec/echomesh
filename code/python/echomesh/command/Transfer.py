@@ -1,0 +1,63 @@
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+from echomesh.command import Register
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
+
+TRANSFER_PROMPT =  """
+Are you sure you want to transfer all command files over to all echomesh nodes
+on this network, replacing whatever is there (y/N)?
+"""
+
+def transfer(echomesh, *args):
+  if not args:
+    LOGGER.print(TRANSFER_PROMPT)
+    if not raw_input().lower().startswith('y'):
+      LOGGER.print('Transfer cancelled.')
+      return
+    args = ['*']
+  if '*' in args or '.' in args:
+    args = [ '.']
+
+  files = set()
+  directories = set()
+  for arg in args:
+    f = os.path.join(Path.COMMAND_PATH, arg)
+    if not os.path.exists(f):
+      raise Exception("Command file %s doesn't exist.", f)
+    subtree = [d[0] for d in os.walk(f)]
+    if subtree:
+      files.update(subtree)
+      directories.add(arg)
+    else:
+      files.add(f)
+
+  files_table = {}
+  for f in sorted(files):
+    if f.endswith('.yml'):
+      files_table[f] = Yaml.read(f)
+
+  echomesh.send(type='transfer',
+                directories=sorted(directories),
+                files=files_table)
+
+
+
+TRANSFER_HELP = """
+Transfer files from this machine to other echomesh nodes.
+
+transfer file-or-directory [file-or-directory...]:
+  Transfers one or more command files or directories to other echomesh nodes.
+  Files or directories on the receiving end are removed and replaced by the
+  data from this node.
+
+transfer *
+  Transfers all command files to all other echomesh nodes.
+  Any other command files on other nodes will be deleted and overwritten.
+
+transfer
+  Like transfer *, but prompts to make sure that you want to do it.
+"""
+
+Register.register('transfer', transfer, TRANSFER_HELP)

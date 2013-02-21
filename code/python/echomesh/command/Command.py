@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.command import Broadcast, Config, Help, Register, Remote, Score
-from echomesh.command import Show
+from echomesh.command import Show, Transfer
 
 from echomesh.util import Log
 
