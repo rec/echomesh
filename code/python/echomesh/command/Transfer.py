@@ -6,6 +6,7 @@ import os.path
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Register
+from echomesh.util import Join
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -44,10 +45,15 @@ def transfer(echomesh, *args):
       files.add(f)
 
   files_table = {}
-  for f in sorted(files):
-    LOGGER.debug('Reading file %s', f)
-    files_table[f] = Yaml.read(f)
+  files = sorted(files)
+  for f in files:
+    stat = os.stat(f)
+    files_table[f] = {'contents': Yaml.read(f),
+                      'atime': stat.st_atime,
+                      'mtime': stat.st_mtime}
 
+  s = '' if len(files) is 1 else 's'
+  LOGGER.print('Transferred %d file%s.' % (len(files), s))
   echomesh.send(type='transfer',
                 directories=sorted(directories),
                 files=files_table)

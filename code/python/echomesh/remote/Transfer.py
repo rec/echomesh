@@ -14,6 +14,7 @@ from echomesh.util.file import MakeDirs
 LOGGER = Log.logger(__name__)
 
 def transfer(echomesh, **data):
+  LOGGER.info('!!!! here!!!!, \n%s', data)
   backup_directory = os.path.join(Path.COMMAND_PATH, '.echomesh-xfer')
   shutil.rmtree(backup_directory)
 
@@ -25,11 +26,12 @@ def transfer(echomesh, **data):
     MakeDirs.parent_makedirs(parent)
     shutil.move(os.path.join(Path.COMMAND_PATH, directory), parent)
 
-  for f, contents in data.get('files').iteritems():
+  for f, value in data.get('files').iteritems():
     fname = os.path.join(Path.COMMAND_PATH, f)
     MakeDirs.parent_makedirs(fname)
     with open(fname, 'w') as o:
-      o.write(Yaml.encode_one(contents))
+      o.write(Yaml.encode_one(value['contents']))
+    os.utime(fname, value['atime'], value['mtime'])
 
   if Config.get('delete_backups_after_transfer'):
     try:
