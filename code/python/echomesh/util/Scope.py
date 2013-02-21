@@ -5,7 +5,7 @@ from echomesh.base import Platform
 
 _SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
 
-SCOPES = ['tag', 'name', 'platform', 'global', 'default']
+SCOPES = ['tag', 'name', 'platform', 'master', 'default']
 
 def resolve(scope):
   match = _SCOPE_RE.match(scope)

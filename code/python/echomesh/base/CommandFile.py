@@ -27,7 +27,7 @@ def compute_command_path():
     '1.name/' + Name.NAME] +
     [('2.tag/' + t) for t in Name.TAGS] +
     ['3.platform/' + Platform.PLATFORM,
-     '4.global',
+     '4.master',
       _command_file('5.default')])
 
 compute_command_path()

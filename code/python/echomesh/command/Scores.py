@@ -26,10 +26,12 @@ In order to control multiple machines and configurations effectively, echomesh
 configurations and scores live in one of five different types of "scopes".
 
 5.default:
-
-4.global:
-  This is the global scope that comes with echomesh and contains only the
+  This is the default scope that comes with echomesh and contains only the
   default configuration, which cannot be changed by echomesh programs.
+
+4.master:
+  This is the master scope which contains your master score.  Most of your
+  work will be done here.
 
 3.platform:
   The platform scope contains scores that are specific to platform of the
