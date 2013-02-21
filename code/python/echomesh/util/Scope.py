@@ -6,7 +6,7 @@ from echomesh.base import Platform
 _SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
 
 SCOPES = ['tag', 'name', 'platform', 'master', 'default']
-SCOPE_LIST = ['%d.%s' % (1 + i, s) for i, s in enumerate(SCOPES)]
+SCOPE_DIRECTORIES = ['%d.%s' % (1 + i, s) for i, s in enumerate(SCOPES)]
 
 def resolve(scope):
   match = _SCOPE_RE.match(scope)

@@ -15,9 +15,10 @@ def clean(*path):
 
 def _command_file(*path):
   path = clean(*path)
-  base = Path.ECHOMESH_PATH if path[0] == '4.default' else Path.PROJECT_PATH
-  res = os.path.join(base, 'command', *path)
-  return res
+  if path[0] == '5.default':
+    return os.path.join(Path.CODE_PATH, 'echomesh', 'config', *path[1:])
+  else:
+    return os.path.join(Path.PROJECT_PATH, 'command', *path)
 
 COMMAND_PATH = None
 

@@ -49,7 +49,7 @@ def set_name(name):
   global NAME
   NAME = name
 
-def lookup(table, default=None):
+def lookup(table, dflt=None):
   """
   Look up the machine's name in a table, first by MAC address,
   then by IP address, then by echomesh name, and finally by uname.
@@ -59,7 +59,7 @@ def lookup(table, default=None):
     value = table.get(name, none)
     if value is not none:
       return value
-  return default
+  return dflt
 
 def addresses():
   return {
