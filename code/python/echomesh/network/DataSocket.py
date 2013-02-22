@@ -19,7 +19,6 @@ class DataSocket(MasterRunnable):
     super(DataSocket, self).__init__()
     self.timeout = timeout
     self.callback = callback
-    self.queue = queue.Queue()
 
     try:
       self.receive_socket = BroadcastSocket.Receive(port)
@@ -29,7 +28,6 @@ class DataSocket(MasterRunnable):
         raise Exception('A DataSocket is already running on port %d'  % port)
       else:
         raise
-    self.send = self.queue.put
 
   def _on_start(self):
     self.receive_socket.start()
@@ -38,6 +36,7 @@ class DataSocket(MasterRunnable):
     self.select_loop.start()
     self.send_thread = ThreadLoop.ThreadLoop(single_loop=self.send_socket.send)
     self.send_thread.start()
+    self.send = self.send_socket.queue.put
 
     self.add_slave(self.select_loop, self.send_thread,
                    self.receive_socket, self.send_socket)

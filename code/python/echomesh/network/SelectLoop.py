@@ -28,8 +28,6 @@ class SelectLoop(ThreadLoop.ThreadLoop):
           LOGGER.error("Got an update for a socket we didn't recognize.")
         elif not s.receive():
           self.remove_socket(socket)
-        else:
-          LOGGER.print("got something!")
 
   def remove_socket(self, socket):
     s = self.sockets.get(socket)

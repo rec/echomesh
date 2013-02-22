@@ -26,7 +26,7 @@ class Send(BroadcastSocket):
   def _raw_send(self, res):
     self.socket.sendto(res, ('<broadcast>', self.port))
 
-  def write(self, data):
+  def old_write(self, data):
     try:
       while data:
         if len(data) <= self.max_size:
@@ -47,7 +47,7 @@ class Receive(BroadcastSocket):
     super(Receive, self)._on_start()
     self.socket.setblocking(0)
 
-  def receive(self, timeout):
+  def old_receive(self, timeout):
     try:
       result = select.select([self.socket], [], [], timeout)
       if result and result[0]:
