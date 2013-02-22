@@ -36,9 +36,19 @@ class DataSocket(MasterRunnable):
     self.select_loop.start()
     self.send_thread = ThreadLoop.ThreadLoop(single_loop=self.send_socket.send)
     self.send_thread.start()
+
+    def receive():
+      try:
+        item = self.receive_socket.queue.get(timeout=self.timeout)
+      except queue.Empty:
+        return
+      self.callback(item)
+
+    self.receive_thread = ThreadLoop.ThreadLoop(single_loop=receive)
+    self.receive_thread.start()
     self.send = self.send_socket.queue.put
 
-    self.add_slave(self.select_loop, self.send_thread,
+    self.add_slave(self.select_loop, self.send_thread, self.receive_thread,
                    self.receive_socket, self.send_socket)
 
 

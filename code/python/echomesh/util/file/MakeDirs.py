@@ -16,6 +16,6 @@ def _makedirs(path):
 def makedirs(path):
   _makedirs(os.path.expanduser(path))
 
-def parent_makedirs(file):
-  _makedirs(os.path.dirname(os.path.expanduser(path)))
+def parent_makedirs(f):
+  _makedirs(os.path.dirname(os.path.expanduser(f)))
 

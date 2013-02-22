@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.remote import Register, Routing, System
+from echomesh.remote import Register, Routing, System, Transfer
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -17,5 +17,4 @@ def execute(echomesh, type=None, **data):
 
   except Exception as e:
     LOGGER.error(str(e))
-
-
+    raise

@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 import os.path
+import shutil
 
 from echomesh.remote import Register
 
@@ -14,15 +15,20 @@ from echomesh.util.file import MakeDirs
 LOGGER = Log.logger(__name__)
 
 def transfer(echomesh, **data):
-  LOGGER.info('!!!! here!!!!, \n%s', data)
   backup_directory = os.path.join(Path.COMMAND_PATH, '.echomesh-xfer')
-  shutil.rmtree(backup_directory)
 
-  if '.' in directories:
+  try:
+    shutil.rmtree(backup_directory)
+  except OSError:
+    pass
+
+  directories = data.get('directories', [])
+  if '' in directories:
     directories = os.listdir(Path.COMMAND_PATH)
 
-  for directory in data.get('directories', []):
-    parent = os.dirname(os.path.join(backup_directory, directory))
+  print('!!!', directories, data.keys())
+  for directory in directories:
+    parent = os.path.dirname(os.path.join(backup_directory, directory))
     MakeDirs.parent_makedirs(parent)
     shutil.move(os.path.join(Path.COMMAND_PATH, directory), parent)
 
@@ -31,7 +37,7 @@ def transfer(echomesh, **data):
     MakeDirs.parent_makedirs(fname)
     with open(fname, 'w') as o:
       o.write(Yaml.encode_one(value['contents']))
-    os.utime(fname, value['atime'], value['mtime'])
+    os.utime(fname, (value['atime'], value['mtime']))
 
   if Config.get('delete_backups_after_transfer'):
     try:
