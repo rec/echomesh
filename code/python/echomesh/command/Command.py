@@ -4,6 +4,7 @@ from echomesh.command import Broadcast, Config, Help, Register, Remote, Score
 from echomesh.command import Show, Transfer
 
 from echomesh.util import Log
+from echomesh.util import FindComment
 
 LOGGER = Log.logger(__name__)
 
@@ -21,7 +22,7 @@ Comment lines start with a # - everything after that is ignored.
 """
 
 Register.register('quit', _quit, QUIT_HELP)
-Register.register('#', lambda e: pass, COMMENT_HELP)
+Register.register('#', lambda e: None, COMMENT_HELP)
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
@@ -39,7 +40,7 @@ def usage():
 
 def execute(echomesh, line):
   try:
-    line = line.strip()
+    line = FindComment.remove_comment(line).strip()
     if not line:
       LOGGER.print('')
       return

@@ -6,6 +6,7 @@ from echomesh.util import Join
 
 LOGGER = Log.logger(__name__)
 
+######## TODO
 
 LOAD_HELP = """
 Usage: load SCORE [SCORE...] [as NAME NAME...]
@@ -16,6 +17,18 @@ load foo
 load foo.yml
 
 """
+
+def load(echomesh): pass
+
+RUN_HELP = """
+"""
+
+def run(echomesh): pass
+
+UNLOAD_HELP = """
+"""
+
+def unload(echomesh): pass
 
 def _stop_or_start(message, doer, elements):
   try:
