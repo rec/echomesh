@@ -16,35 +16,51 @@ Are you sure you want to transfer all command files over to all echomesh nodes
 on this network, replacing whatever is there (y/N)?
 """
 
-def transfer(echomesh, *args):
-  if not args:
+TRANSFER_ALL_FILES = True
+
+
+def transfer(echomesh, *path):
+  if not path:
     LOGGER.print(TRANSFER_PROMPT)
     if not raw_input().lower().startswith('y'):
       LOGGER.print('Transfer cancelled.')
       return
-    args = ['*']
-  if '*' in args or '.' in args:
-    args = ['']
+    path = ['*']
+  if '*' in path or '.' in path:
+    path = ['']
 
+  files, directories = _get_files_to_transfer(path)
+
+  s = '' if len(files) is 1 else 's'
+  LOGGER.print('Transferred %d file%s.' % (len(files), s))
+  echomesh.send(type='transfer',
+                directories=sorted(directories),
+                files=files)
+
+def _get_files_to_transfer(path):
   files = set()
   directories = set()
-  for arg in args:
-    f = os.path.join(Path.COMMAND_PATH, arg)
+
+  for p in path:
+    f = os.path.join(Path.COMMAND_PATH, p)
     if not os.path.exists(f):
       raise Exception("Command file %s doesn't exist.", f)
     walk = os.walk(f)
     if walk:
-      directories.add(arg)
+      directories.add(p)
       for root, dirs, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
-            if ffs.endswith('.yml'):
+            if TRANSFER_ALL_FILES or ffs.endswith('.yml'):
               files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
-      LOGGER.debug('Adding directory %s', arg)
+      LOGGER.debug('Adding directory %s', p)
     else:
-      LOGGER.debug('Adding file %s', arg)
+      LOGGER.debug('Adding file %s', p)
       files.add(f)
 
+  return _get_files_table(files), directories
+
+def _get_files_table(files):
   files_table = {}
   files = sorted(files)
   for f in files:
@@ -54,17 +70,14 @@ def transfer(echomesh, *args):
       with open(f, 'rb') as fs:
         contents = fs.read()
     except:
-      pass
+      LOGGER.error('Got an unexpected error reading a file %s', f, exc_info=1)
     else:
       files_table[f] = {'contents': contents,
                         'atime': stat.st_atime,
                         'mtime': stat.st_mtime}
+  return files_table
 
-  s = '' if len(files) is 1 else 's'
-  LOGGER.print('Transferred %d file%s.' % (len(files), s))
-  echomesh.send(type='transfer',
-                directories=sorted(directories),
-                files=files_table)
+
 
 
 TRANSFER_HELP = """

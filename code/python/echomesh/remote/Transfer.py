@@ -35,8 +35,6 @@ def transfer(echomesh, **data):
     fname = os.path.join(Path.COMMAND_PATH, f)
     MakeDirs.parent_makedirs(fname)
     with open(fname, 'w') as o:
-      print('!!!!', fname)
-      print(fname, value['contents'])
       o.write(value['contents'])
     os.utime(fname, (value['atime'], value['mtime']))
 
