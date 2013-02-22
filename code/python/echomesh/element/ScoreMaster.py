@@ -34,7 +34,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.lock = threading.RLock()
     self.scores_to_add = scores
 
-  def start_score(self, scorefile):
+  def load_score(self, scorefile):
     scorefile = Yaml.filename(scorefile)
     elements = CommandFile.load('score', scorefile)
 
@@ -48,9 +48,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       self.scores[name] = score, time.time()
 
     score.name = name
+    return score
+
+  def start_score(self, scorefile):
+    score = self.load_score(scorefile)
     score.start()
     self.add_slave(score)
-    return [name]
+    return [score.name]
 
   def handle(self, event):
     for score, t in self.scores.itervalues():

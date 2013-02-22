@@ -6,13 +6,24 @@ from echomesh.util import Join
 
 LOGGER = Log.logger(__name__)
 
-def _stop_or_start(message, doer, scores):
+
+LOAD_HELP = """
+Usage: load SCORE [SCORE...] [as NAME NAME...]
+
+Examples:
+
+load foo
+load foo.yml
+
+"""
+
+def _stop_or_start(message, doer, elements):
   try:
-    if not scores:
-      raise Exception('Usage: %s scorefile' % message)
+    if not elements:
+      raise Exception('Usage: %s element [element...]' % message)
 
     results = []
-    for score in scores:
+    for score in elements:
       results.extend(doer(score))
 
     past = 'Stopped' if message == 'stop' else 'Started'
@@ -20,33 +31,35 @@ def _stop_or_start(message, doer, scores):
       LOGGER.info('%s %s.', past, name)
 
   except Exception as e:
-    LOGGER.print_error("Couldn't %s %s", message, Join.join_words(*scores),
+    LOGGER.print_error("Couldn't %s %s", message, Join.join_words(*elements),
                        exc_info=1)
 
 
-def start(echomesh, *scores):
-  _stop_or_start('start', echomesh.score_master.start_score, scores)
+def start(echomesh, *elements):
+  _stop_or_start('start', echomesh.score_master.start_score, elements)
 
 
 START_HELP = """
-Usage: start score [score...]
+Usage: start element [element...]
 
-Starts one or more scores running.  The command "show running" show all the
-scores that are currently running.
+Starts one or more elements running.  The command "show elements" will show all the
+elements that are currently running.
 """
 
-def stop(echomesh, *scores):
-  _stop_or_start('stop', echomesh.score_master.stop_score, scores)
+def stop(echomesh, *elements):
+  _stop_or_start('stop', echomesh.score_master.stop_score, elements)
 
 STOP_HELP = """
-Usage: stop score [score...] | *
+Usage: stop element [element...] | *
 
-Stops one or more scores.  The special score name '*' stops all the running
-scores at once.
+Stops one or more elements.  The special element name '*' stops all the running
+elements at once.
 """
 
 Register.register_all(
+  load=(load, LOAD_HELP),
+  run=(run, RUN_HELP),
   start=(start, START_HELP),
   stop=(stop, STOP_HELP),
+  unload=(unload, UNLOAD_HELP),
 )
-

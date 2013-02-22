@@ -15,7 +15,13 @@ QUIT_HELP = """
 "quit" or q stops all the elements running and quits the echomesh program.
 """
 
+
+COMMENT_HELP = """
+Comment lines start with a # - everything after that is ignored.
+"""
+
 Register.register('quit', _quit, QUIT_HELP)
+Register.register('#', lambda e: pass, COMMENT_HELP)
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
