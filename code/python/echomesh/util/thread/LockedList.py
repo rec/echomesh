@@ -5,6 +5,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
+RAISE_EXCEPTIONS = True
+
 class LockedList(object):
   def __init__(self):
     self._entries = []
@@ -21,6 +23,8 @@ class LockedList(object):
         function(e)
       except Exception as ex:
         exceptions.append(ex)
+        if RAISE_EXCEPTIONS:
+          raise
     return exceptions
 
   def clear(self):

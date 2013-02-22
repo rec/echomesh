@@ -5,6 +5,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import select
 import socket
 
+SEND_FILE = open('/tmp/send.txt', 'w')
+
 from echomesh.network import Socket
 
 class BroadcastSocket(Socket.Socket):
@@ -21,6 +23,9 @@ class Send(BroadcastSocket):
     super(Send, self)._on_start()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
+  def _raw_send(self, res):
+    self.socket.sendto(res, ('<broadcast>', self.port))
+
   def write(self, data):
     try:
       while data:
@@ -28,7 +33,8 @@ class Send(BroadcastSocket):
           res, data = data, ''
         else:
           res, data = data[0:self.max_size], data[self.max_size:]
-        self.socket.sendto(res, ('<broadcast>', self.port))
+        SEND_FILE.write(res)
+        self._raw_send(res)
     except:
       if self.is_running:
         raise

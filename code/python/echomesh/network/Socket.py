@@ -2,6 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import select
 import socket
+import yaml
+
+from six.moves import queue
 
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util import Log
@@ -10,9 +13,10 @@ LOGGER = Log.logger(__name__)
 
 # See http://docs.python.org/2/howto/sockets.html
 
-from six.moves import queue
+MAX_SIZE = 1024
 
-BUFFER_SIZE = 4096
+SEGMENT = '\n---\n'
+TIMEOUT = 0.1
 
 class Socket(MasterRunnable):
   def __init__(self, port, bind_port, hostname, socket_type):
@@ -22,19 +26,52 @@ class Socket(MasterRunnable):
     self.hostname = hostname
     self.socket_type = socket_type
     self.socket = None
+    self.buffer = ''
+    self.queue = queue.Queue()
+    self.max_size = MAX_SIZE
 
-  def recv(self):
+  def receive(self):
+    if not self.is_running:
+      return False
+
+    res = self.socket.recv(self.max_size)
+    if not res:
+      # An empty packet means it's all over.
+      # http://docs.python.org/2/howto/sockets.html
+      self.stop()
+      return False
+
+    self.buffer += res
+    parts = self.buffer.split(SEGMENT)
+    self.buffer = parts.pop()
+    for part in parts:
+      if part:
+        try:
+          yaml_part = yaml.safe_load(part)
+        except:
+          LOGGER.error("Didn't understand incoming part %s", part, exc_info=1)
+        else:
+          self.queue.put(yaml_part)
+    return True
+
+  def send(self, timeout=TIMEOUT):
     if self.is_running:
-      res = self.socket.recv(BUFFER_SIZE)
-      if not res:
-        # An empty packet means it's all over.
-        # http://docs.python.org/2/howto/sockets.html
-        self.close()
-      return res
+      try:
+        item = self.queue.get(timeout=timeout)
+      except queue.Empty:
+        return
+
+      data = yaml.safe_dump(item) + SEGMENT
+      while data:
+        packet, data = data[0:self.max_size], data[self.max_size:]
+        self._raw_send(packet)
+
+  def _raw_send(self, packet):
+    pass
 
   def _on_start(self):
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
-    self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, BUFFER_SIZE)
+    self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.max_size)
     try:
       self._start_socket()
     except Exception as e:

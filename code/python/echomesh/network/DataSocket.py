@@ -7,6 +7,7 @@ from six.moves import queue
 
 from echomesh.base import Yaml
 from echomesh.network import BroadcastSocket
+from echomesh.network import SelectLoop
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -28,26 +29,17 @@ class DataSocket(MasterRunnable):
         raise Exception('A DataSocket is already running on port %d'  % port)
       else:
         raise
-
-    send = ThreadLoop.ThreadLoop(single_loop=self._send, name='send')
-    receive = ThreadLoop.ThreadLoop(single_loop=self._receive, name='receive')
-
-    self.add_mutual_stop_slave(self.receive_socket, self.send_socket, receive, send)
     self.send = self.queue.put
 
-  def _receive(self):
-    pckt = self.receive_socket.receive(self.timeout)
-    if pckt:
-      LOGGER.debug('receiving %s', pckt)
-      self.callback(Yaml.decode_one(pckt))
+  def _on_start(self):
+    self.receive_socket.start()
+    self.send_socket.start()
+    self.select_loop = SelectLoop.SelectLoop(self.receive_socket)
+    self.select_loop.start()
+    self.send_thread = ThreadLoop.ThreadLoop(single_loop=self.send_socket.send)
+    self.send_thread.start()
 
-  def _send(self):
-    try:
-      item = self.queue.get(True, self.timeout)
-      value = Yaml.encode_one(item)
-      self.send_socket.write(value)
-    except queue.Empty:
-      pass
-    if self.is_running:
-      time.sleep(self.timeout)
+    self.add_slave(self.select_loop, self.send_thread,
+                   self.receive_socket, self.send_socket)
+
 

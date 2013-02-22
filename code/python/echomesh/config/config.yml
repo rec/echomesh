@@ -57,7 +57,7 @@ diagnostics:
 discovery:
   port: 1238
   timeout: 100 ms
-  use_yaml_sockets: true
+  use_yaml_sockets: false
 
 git:
   user: rec

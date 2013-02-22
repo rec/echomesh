@@ -26,7 +26,6 @@ class YamlSocket(MasterRunnable):
       while self.is_running:
         try:
           y = self._send.queue.get(self.timeout)
-          print('22222', y)
           yield y
           yield {}  # Add padding for Yaml's off-by-one issue.
         except queue.Empty:
@@ -38,11 +37,9 @@ class YamlSocket(MasterRunnable):
     def receive_loop():
       reader = QueueReader(self._receive.queue, self, self.timeout)
       for y in yaml.safe_load_all(reader):
-        print('1111111111')
         if not self.is_running:
           return
         if y:  # Remove padding from Yaml's "off by one" issue.
-          print('1111111111', y)
           self.callback(y)
 
     self._send = SocketThread(send_socket, target=send_loop, name='send_thread')
@@ -55,18 +52,21 @@ class YamlSocket(MasterRunnable):
     self._send.queue.put(data)
 
 
-class DataSocket(YamlSocket):
-  def __init__(self, port, timeout, callback):
-    try:
-      send_socket = BroadcastSocket.Send(port)
-      receive_socket = BroadcastSocket.Receive(port)
-    except socket.error as e:
-      if e.errno == errno.EADDRINUSE:
-        raise Exception('A DataSocket is already running on port %d'  % port)
-      else:
-        raise
-    super(DataSocket, self).__init__(
-      timeout, callback, send_socket, receive_socket)
-    self.select_loop = SelectLoop(self._receive)
-    self.add_slave(self.select_loop)
+
+if False:
+
+  class DataSocket(YamlSocket):
+    def __init__(self, port, timeout, callback):
+      try:
+        send_socket = BroadcastSocket.Send(port)
+        receive_socket = BroadcastSocket.Receive(port)
+      except socket.error as e:
+        if e.errno == errno.EADDRINUSE:
+          raise Exception('A DataSocket is already running on port %d'  % port)
+        else:
+          raise
+      super(DataSocket, self).__init__(
+        timeout, callback, send_socket, receive_socket)
+      self.select_loop = SelectLoop(self._receive)
+      self.add_slave(self.select_loop)
 

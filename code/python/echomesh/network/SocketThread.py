@@ -8,15 +8,46 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class SocketThread(ThreadRunnable):
-  def __init__(self, socket, target, name):
+  def __init__(self, echomesh_socket, target, name):
     super(SocketThread, self).__init__(target=target)
-    self.socket = socket
+    self.echomesh_socket = echomesh_socket
+    self.socket = echomesh_socket.socket
     self.queue = queue.Queue()
-    self.add_mutual_stop_slave(self.socket)
+    self.add_mutual_stop_slave(self._socket)
     self.name = name
+    self.buffer = ''
 
-  def join(self):
-    LOGGER.debug('starting to join %s', self.name)
-    super(SocketThread, self).join()
-    LOGGER.debug('ended join %s', self.name)
+  def receive(self, packet):
+    self.buffer += data
+    parts = self.buffer.split(SEGMENT)
+    self.buffer = parts.pop()
+    for part in parts:
+      if part:
+        try:
+          yaml_part = yaml.safe_dump(part)
+        except:
+          LOGGER.error("Didn't understand incoming part %s", part, exc_info=1)
+        else:
+          self.queue.put(yaml_part)
 
+class SocketQueue(object):
+  def __init__(self, echomesh_socket, queue):
+    self.socket = echomesh_socket.socket
+    self.queue = queue.Queue()
+    self.buffer = ''
+    self.stop = echomesh_socket.stop
+    self.join = echomesh_socket.join
+
+  def receive(self, packet):
+    self.buffer += data
+    parts = self.buffer.split(SEGMENT)
+    self.buffer = parts.pop()
+    for part in parts:
+      if part:
+        try:
+          yaml_part = yaml.safe_dump(part)
+        except:
+          LOGGER.error("Didn't understand incoming packet %s", part, exc_info=1)
+        else:
+          if yaml_part:
+            self.queue.put(yaml_part)

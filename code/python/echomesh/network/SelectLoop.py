@@ -8,46 +8,47 @@ from echomesh.util.thread import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
+BUFFER_SIZE = 1024
 TIMEOUT = 0.100
 
 class SelectLoop(ThreadLoop.ThreadLoop):
-  def __init__(self, *socket_threads):
+  def __init__(self, *sockets):
     super(SelectLoop, self).__init__()
-    # Map Python sockets to our data sockets
-    self.socket_threads = list(socket_threads)
+    self.sockets = dict((s.socket, s) for s in sockets)
 
   def single_loop(self):
-    sockets = [st.socket.socket for st in self.socket_threads]
     try:
-      result = select.select(self.sockets, [], [], TIMEOUT)
-    except:
-      self.remove_bad()
+      result = select.select(self.sockets.keys(), [], [], TIMEOUT)
+    except Exception as e:
+      self._remove_bad()
     else:
       for socket in result[0]:
-        for st in self.socket_threads:
-          if st.socket.socket is socket:
-            packet = socket.recv(BUFFER_SIZE)
-            if packet:
-              st.queue.put(packet)
-            else:
-              LOGGER.error('A socket %s was closed.', str(socket))
-              self.remove_socket(st)
+        s = self.sockets.get(socket)
+        if not s:
+          LOGGER.error("Got an update for a socket we didn't recognize.")
+        elif not s.receive():
+          self.remove_socket(socket)
+        else:
+          LOGGER.print("got something!")
 
-  def remove_bad(self):
-    bad = []
-    for st in self.socket_threads:
+  def remove_socket(self, socket):
+    s = self.sockets.get(socket)
+    if s:
+      del self.sockets[socket]
+      s.stop()
+    else:
+      LOGGER.error("Tried to remove a socket we didn't know about.")
+
+  def _remove_bad(self):
+    for socket in self.sockets:
       try:
-        select.select([st.socket.socket], [], [], timeout=0)
+        select.select([socket], [], [], timeout=0)
       except:
-        bad.append(st)
+        bad.append(socket)
 
     if bad:
-      for st in bad:
+      for socket in bad:
         LOGGER.error('A socket %s went bad.', str(st))
-        self.remove_socket(st)
+        self._remove_socket(socket)
     else:
       LOGGER.error('Tried to remove_bad, but found none.')
-
-  def remove_socket(self, st):
-    self.socket_threads.remove(st)
-    st.stop()
