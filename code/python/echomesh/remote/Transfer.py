@@ -26,7 +26,6 @@ def transfer(echomesh, **data):
   if '' in directories:
     directories = os.listdir(Path.COMMAND_PATH)
 
-  print('!!!', directories, data.keys())
   for directory in directories:
     parent = os.path.dirname(os.path.join(backup_directory, directory))
     MakeDirs.parent_makedirs(parent)

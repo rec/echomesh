@@ -50,9 +50,9 @@ def transfer(echomesh, *args):
     stat = os.stat(f)
     contents = Yaml.read(f)
     if not contents:
-      LOGGER.error('Had an empty Yaml file')
+      LOGGER.error('Had an empty Yaml file %s', f)
     elif len(contents) > 1:
-      LOGGER.error('Had a Yaml file with %d elements', len(contents))
+      LOGGER.error('Had a Yaml file with %d elements %s', len(contents), f)
     else:
       files_table[f] = {'contents': contents[0],
                         'atime': stat.st_atime,
