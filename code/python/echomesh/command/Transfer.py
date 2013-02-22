@@ -56,7 +56,7 @@ def transfer(echomesh, *args):
     except:
       pass
     else:
-      files_table[f] = {'contents': contents[0],
+      files_table[f] = {'contents': contents,
                         'atime': stat.st_atime,
                         'mtime': stat.st_mtime}
 
