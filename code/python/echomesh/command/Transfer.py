@@ -36,9 +36,10 @@ def transfer(echomesh, *args):
     if walk:
       directories.add(arg)
       for root, dirs, fs in walk:
-        for ffs in fs:
-          if ffs.endswith('.yml'):
-            files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
+        if not root.startswith('.'):
+          for ffs in fs:
+            if ffs.endswith('.yml'):
+              files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
       LOGGER.debug('Adding directory %s', arg)
     else:
       LOGGER.debug('Adding file %s', arg)
@@ -48,11 +49,12 @@ def transfer(echomesh, *args):
   files = sorted(files)
   for f in files:
     stat = os.stat(f)
-    contents = Yaml.read(f)
-    if not contents:
-      LOGGER.error('Had an empty Yaml file %s', f)
-    elif len(contents) > 1:
-      LOGGER.error('Had a Yaml file with %d elements %s', len(contents), f)
+    contents = None
+    try:
+      with open(f, 'rb') as fs:
+        contents = fs.read()
+    except:
+      pass
     else:
       files_table[f] = {'contents': contents[0],
                         'atime': stat.st_atime,
