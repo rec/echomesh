@@ -25,4 +25,6 @@ When broadcast mode is on, all start and stop commands are sent to all echomesh
 nodes;  when broadcast mode is off, start and stop only go to this node.
 """
 
-Register.register('broadcast', broadcast, BROADCAST_HELP)
+SEE_ALSO = ['show broadcast']
+
+Register.register('broadcast', broadcast, BROADCAST_HELP, SEE_ALSO)

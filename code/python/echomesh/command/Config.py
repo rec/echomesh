@@ -45,4 +45,6 @@ More documentation to come.
 
 """
 
+SEE_ALSO = ['transfer', 'show scores']
+
 Register.register('config', config, CONFIG_HELP)

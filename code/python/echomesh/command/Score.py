@@ -9,18 +9,42 @@ LOGGER = Log.logger(__name__)
 ######## TODO
 
 LOAD_HELP = """
-Usage: load SCORE [SCORE...] [as NAME NAME...]
+Usage:
+
+  load SCORE [SCORE...] [as NAME NAME...]
+
+Loads the given scores into memory as elements but does not start them.
+
+You can specify element names for the scores by using the load ... as ...
+form - you'll get an error if these names don't exist.
+
+If you don't specify names, each new element will automatically be given a
+unique name based on its score name.
 
 Examples:
 
-load foo
-load foo.yml
+  load Lights
+  load Lights.yml
+  load Lights.yml as l1
+  load Lights Lights Lights as l1 l2 l3
 
+See also "help unload", "help start", "help stop", "help run".
 """
 
-def load(echomesh): pass
+
+
+def load(echomesh):
+  pass
 
 RUN_HELP = """
+Usage:
+
+  run SCORE [SCORE...] [as NAME NAME...]
+
+Loads the given scores and then starts them.
+
+See also "help load", "help start",
+
 """
 
 def run(echomesh): pass

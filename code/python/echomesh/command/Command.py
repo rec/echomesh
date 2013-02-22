@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Broadcast, Config, Help, Register, Remote, Score
-from echomesh.command import Show, Transfer
+from echomesh.command import Broadcast, Config, Register, Remote, Score, Show
+from echomesh.command import Transfer
 
 from echomesh.util import Log
 from echomesh.util import FindComment
@@ -23,6 +23,10 @@ Comment lines start with a # - everything after that is ignored.
 
 Register.register('quit', _quit, QUIT_HELP)
 Register.register('#', lambda e: None, COMMENT_HELP)
+Register.register('sample', None, 'This is a sample with just help')
+
+# Must be the last one to load.
+from echomesh.command import Help
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
@@ -36,7 +40,7 @@ def _fix_exception_message(m, name):
   return name + m
 
 def usage():
-  return 'Valid options are:' + Register.join_keys()
+  return 'Valid commands are: ' + Register.join_keys()
 
 def execute(echomesh, line):
   try:

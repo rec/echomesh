@@ -8,16 +8,16 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 HELP_TEXT = """
-echomesh knows the following commands:
+echomesh has the following help topics:
 
   %s
 
-and also accepts abbreviations like q, br or shut.
+Type "help TOPIC" for more information - for example, "help quit" or "help run".
 """
 
 def _help(echomesh, *parts):
   if not parts:
-    LOGGER.print(HELP_TEXT % Register.join_keys())
+    LOGGER.print(HELP_TEXT % Register.join_keys(command_only=False))
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
@@ -33,16 +33,22 @@ def _help(echomesh, *parts):
 
 
 HELP_HELP = """
-"help" gives you information about how echomesh commands work - "he" or "?"
-also work.
+"help" gives you information about how echomesh commands work.
+You can use "?" as a shortcut.
 
-You can get help on the following commands:
+For example, type "help shutdown" or "? quit" to get information about
+these commands.
 
-  %s
+You can also use unambiguous abbreviations like "he shut" or "? q".
 
-for example, "help shutdown" or "help quit"
-and you can also use abbreviations like "? shut" or "? q"
+For a list of topics, type "help".
+For a list of commands, type "help commands".
+"""
 
-""" + Register.join_keys()
+COMMANDS_HELP = """
+Echomesh has the following commands:
 
+  """
+
+Register.register('commands', None, COMMANDS_HELP, ['help'])
 Register.register('help', _help, HELP_HELP)

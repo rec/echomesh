@@ -17,4 +17,3 @@ COMMANDS = [
 
 for command, help_text in COMMANDS:
   Register.register(command, remote(command), help_text)
-
