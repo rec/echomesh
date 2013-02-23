@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
+import time
 
 from echomesh.base import Config
 from echomesh.element import Element
@@ -14,6 +15,13 @@ class Score(Element.Element):
     self.elements = Load.make(self, description['elements'])
     self.add_slave(*self.elements)
     self.name = ''
+    self.load_time, self.run_time, self.stop_time = time.time(), 0, 0
+
+  def _on_start(self):
+    self.run_time = time.time()
+
+  def _on_stop(self):
+    self.stop_time = time.time()
 
   def add_handler(self, handler, *types):
     if not types:

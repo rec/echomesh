@@ -3,10 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import collections
 import datetime
 import threading
-import time
 import weakref
-
-from compatibility.collections import OrderedDict
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
@@ -28,76 +25,107 @@ def format_delta(t):
   return s
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
+  STOP, START, UNLOAD = range(3)
+
   def __init__(self, *scores):
     super(ScoreMaster, self).__init__()
-    self.scores = OrderedDict()
-    self.lock = threading.RLock()
+    self.elements = {}
+    self.lock = threading.Lock()  # TODO: fill in locking
     self.scores_to_add = scores
 
-  def load_score(self, scorefile):
-    scorefile = Yaml.filename(scorefile)
-    elements = CommandFile.load('score', scorefile)
+  def load_scores(self, scores, names=None):
+    if names is None:
+      items = ((s, None) for s in scores)
+    else:
+      if len(names) > len(scores):
+        LOGGER.warning('You have more names than scores.')
+      items = itertools.izip_longest(scores, names)[:len(scores)]
 
-    description = {'elements': elements, 'type': 'score'}
-    score = Score.Score(None, description)
+    full_names = []
+    for scorefile, name in items:
+      scorefile = Yaml.filename(scorefile)
+      elements = CommandFile.load('score', scorefile)
 
-    name = scorefile[:-4]  # Remove .yaml.
-    with self.lock:
-      self._clean()
-      name = UniqueName.unique_name(name, self.scores)
-      self.scores[name] = score, time.time()
+      description = {'elements': elements, 'type': 'score'}
+      element = Score.Score(None, description)
 
-    score.name = name
-    return score
+      with self.lock:
+        if not name:
+          name = scorefile[:-4]  # Remove .yaml.
+        self._clean()
+        name = UniqueName.unique_name(name, self.elements)
+        self.elements[name] = element
+        full_names.append(name)
 
-  def start_score(self, scorefile):
-    score = self.load_score(scorefile)
-    score.start()
-    self.add_slave(score)
-    return [score.name]
+      element.name = name
+    return full_names
+
+  def run_scores(self, scores, names=None):
+    self.start_elements(self.load_scores(scores, names))
+
+  def start_elements(self, names):
+    return self._for_each_element(names, ScoreMaster.START)
+
+  def stop_elements(self, names):
+    return self._for_each_element(names, ScoreMaster.STOP)
+
+  def unload_elements(self, names):
+    return self._for_each_element(names, ScoreMaster.UNLOAD)
 
   def handle(self, event):
-    for score, t in self.scores.itervalues():
+    for score, t in self.elements.itervalues():
       score.handle(event)
-
-  def stop_score(self, name):
-    if name == '*':
-      keys = self.scores.keys()
-      for score, t in self.scores.itervalues():
-        score.stop()
-      self.scores.clear()
-      return keys
-    else:
-      full_name, score_time = GetPrefix.get_prefix_and_match(self.scores, name)
-      del self.scores[full_name]
-      score_time[0].stop()
-      return [full_name]
-
-  def _on_start(self):
-    for s in self.scores_to_add:
-      try:
-        self.start_score(s)
-      except Exception as e:
-        LOGGER.error("Couldn't start score %s:\n%s", s, str(e))
-    self.scores_to_add = ()
-
-  def _clean(self):
-    remove = [k for (k, v) in self.scores.iteritems() if not v[0].is_running]
-    self.remove_slave(*remove)
-    self.scores = dict((k, v) for (k, v) in self.scores.iteritems()
-                       if v[0].is_running)
 
   def info(self):
     with self.lock:
       self._clean()
-      return dict((k, format_delta(time.time() - v[1])) for k, v in self.scores.iteritems())
+      return dict((k, format_delta(time.time() - v[1])) for k, v in self.elements.iteritems())
 
   def get_score(self, name):
     with self.lock:
-      score = self.scores.get(name)
+      score = self.elements.get(name)
       if score:
         return score
 
-      for k, v in self.scores.iteritems():
+      for k, v in self.elements.iteritems():
         if k.startswith(name):
           return v
+
+  def _for_each_element(self, names, action):
+    if '*' in names:
+      names = self.elements.keys()
+    full_names = []
+    for name in names:
+      try:
+        full_name, element = GetPrefix.get_prefix_and_match(self.elements, name)
+      except Exception as e:
+        LOGGER.print_error('%s', str(e))
+      else:
+        full_names.append(full_name)
+
+        if action == ScoreMaster.START:
+          if element.is_running:
+            LOGGER.print_error('Element %s was already running.', full_name)
+          else:
+            element.start()
+        else:
+          if element.is_running:
+            element.stop()
+          elif action == ScoreMaster.STOP:
+            LOGGER.print_error('Element %s was not running.', name)
+
+          if action == ScoreMaster.UNLOAD:
+            del self.elements[full_name]
+
+    return full_names
+
+  def _on_start(self):
+    self.load_scores(self.scores_to_add)
+    self.scores_to_add = ()
+
+  def _clean(self):
+    remove = [k for (k, v) in self.elements.iteritems() if not v[0].is_running]
+    self.remove_slave(*remove)
+    self.elements = dict((k, v) for (k, v) in self.elements.iteritems()
+                       if v[0].is_running)
+

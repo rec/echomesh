@@ -13,7 +13,6 @@ class Select(Element.Element):
     self.add_stop_only_slave(*self.elements)
 
   def _on_start(self):
-    super(Select, self).start()
     self.elements[self.random.select()].start()
 
 Element.register(Select)

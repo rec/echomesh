@@ -3,6 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util import Join
 
 def get_prefix_and_match(table, name, allow_prefixes=True):
+  """
+  Looks up an entry in a table where unique prefixes are allowed.
+  """
   result = table.get(name)
   if result:
     return name, result

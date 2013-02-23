@@ -15,9 +15,10 @@ LOGGER = Log.logger(__name__)
 SHOW_REGISTRY = Registry.Registry('show command')
 
 def _info(d, spaces='  '):
-  s = '\n'.join('%s%s: %s' % (spaces, k, v) for k, v in sorted(d.iteritems()))
+  items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
+  length = max(len(k) for k, v in items)
+  s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
   LOGGER.print('\n%s\n' % s)
-
 
 ADDRESSES_HELP = """
 Shows:
@@ -94,15 +95,15 @@ def nodes(echomesh):
     LOGGER.print('%s: ' % name)
     _info(peer)
 
-RUNNING_HELP = """
-"show running" shows all the elements now running, as well as the time they were
-started.
+ELEMENTS_HELP = """
+"show elements" shows all the elements that have been loaded, as well as the
+time they were started.
 
 See "help start" and "help stop" for more information.
 """
 
-def running(echomesh):
-  LOGGER.print('Job name  Running Time')
+def elements(echomesh):
+  LOGGER.print('Job name  Elements Time')
   _info(echomesh.score_master.info())
 
 SOUND_HELP = """
@@ -129,7 +130,7 @@ SHOW_REGISTRY.register_all(
   info=(info, INFO_HELP),
   names=(names, NAMES_HELP),
   nodes=(nodes, NODES_HELP),
-  running=(running, RUNNING_HELP),
+  elements=(elements, ELEMENTS_HELP),
   scopes=(Scores.scopes, Scores.SCOPES_HELP),
   scores=(Scores.scores, Scores.SCORES_HELP),
   sound=(sound, SOUND_HELP),
@@ -150,7 +151,9 @@ def _show(echomesh, *parts):
       else:
         raise Exception("Didn't understand command 'show %s'. %s" %
                         (name, SHOW_USAGE))
-SHOW_HELP = """"show" displays information about the current echomesh instance.
+
+SHOW_HELP = """
+"show" displays information about the current echomesh instance.
 
 """ + SHOW_USAGE
 
