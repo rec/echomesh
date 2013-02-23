@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Join
 
-def get_prefix_and_match(table, name, allow_prefixes=True):
+def get_prefix_and_match(table, name, error_name, allow_prefixes=True):
   """
   Looks up an entry in a table where unique prefixes are allowed.
   """
@@ -17,9 +17,10 @@ def get_prefix_and_match(table, name, allow_prefixes=True):
     elif len(results) > 1:
       words = sorted(x[0] for x in results)
       cmds = Join.join_words(*words)
-      raise Exception('"%s" matches multiple commands: %s.' % (name, cmds))
+      raise Exception('"%s" matches multiple %ss: %s.' %
+                      (name, error_name, cmds))
 
-  raise Exception('"%s" is not a valid command.' % name)
+  raise Exception('"%s" is not a valid %s.' % (name, error_name))
 
-def get_prefix(table, name, allow_prefixes=True):
-  return get_prefix_and_match(table, name, allow_prefixes)[1]
+def get_prefix(table, name, error_name, allow_prefixes=True):
+  return get_prefix_and_match(table, name, error_name, allow_prefixes)[1]

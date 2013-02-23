@@ -33,7 +33,7 @@ class Registry(object):
       self.registry[item_name] = item, help_text, see_also
 
   def _get(self, name):
-    return GetPrefix.get_prefix_and_match(self.registry, name,
+    return GetPrefix.get_prefix_and_match(self.registry, name, self.name,
                                           allow_prefixes=self.allow_prefixes)
 
   def get(self, name):

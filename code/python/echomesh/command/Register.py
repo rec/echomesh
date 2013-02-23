@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Registry
 
-_REGISTRY = Registry.Registry('command line')
+_REGISTRY = Registry.Registry('command')
 
 get = _REGISTRY.get
 get_help = _REGISTRY.get_help

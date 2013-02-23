@@ -105,7 +105,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       full_names = []
       for name in names:
         try:
-          full_name, element = GetPrefix.get_prefix_and_match(self.elements, name)
+          full_name, element = GetPrefix.get_prefix_and_match(
+            self.elements, name, 'element')
         except Exception as e:
           LOGGER.print_error('%s', str(e))
         else:
