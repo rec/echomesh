@@ -24,6 +24,13 @@ def format_delta(t):
     s = s[0:loc]
   return s
 
+def format_score(score):
+  if is_running:
+    t = format_delta(time.time() - score.run_time)
+  else:
+    t = 'stopped'
+  return '%-8s  %s' % (t, score.scorefile)
+
 class ScoreMaster(MasterRunnable.MasterRunnable):
   STOP, START, UNLOAD = range(3)
 
@@ -47,7 +54,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       elements = CommandFile.load('score', scorefile)
 
       description = {'elements': elements, 'type': 'score'}
-      element = Score.Score(None, description)
+      element = Score.Score(None, description, scorefile)
 
       with self.lock:
         if not name:
@@ -79,7 +86,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def info(self):
     with self.lock:
       self._clean()
-      return dict((k, format_delta(time.time() - v[1])) for k, v in self.elements.iteritems())
+      return dict((k, format_score(s)) for k, s in self.elements.iteritems())
 
   def get_score(self, name):
     with self.lock:
@@ -92,35 +99,39 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           return v
 
   def _for_each_element(self, names, action):
-    if '*' in names:
-      names = self.elements.keys()
-    full_names = []
-    for name in names:
-      try:
-        full_name, element = GetPrefix.get_prefix_and_match(self.elements, name)
-      except Exception as e:
-        LOGGER.print_error('%s', str(e))
-      else:
-        full_names.append(full_name)
-
-        if action == ScoreMaster.START:
-          if element.is_running:
-            LOGGER.print_error('Element %s was already running.', full_name)
-          else:
-            element.start()
+    with self.lock:
+      if '*' in names:
+        names = self.elements.keys()
+      full_names = []
+      for name in names:
+        try:
+          full_name, element = GetPrefix.get_prefix_and_match(self.elements, name)
+        except Exception as e:
+          LOGGER.print_error('%s', str(e))
         else:
-          if element.is_running:
-            element.stop()
-          elif action == ScoreMaster.STOP:
-            LOGGER.print_error('Element %s was not running.', name)
+          full_names.append(full_name)
 
-          if action == ScoreMaster.UNLOAD:
-            del self.elements[full_name]
+          if action == ScoreMaster.START:
+            if element.is_running:
+              LOGGER.print_error('Element %s was already running.', full_name)
+            else:
+              element.start()
+          else:
+            if element.is_running:
+              element.stop()
+            elif action == ScoreMaster.STOP:
+              LOGGER.print_error('Element %s was not running.', name)
+
+            if action == ScoreMaster.UNLOAD:
+              del self.elements[full_name]
 
     return full_names
 
   def _on_start(self):
-    self.load_scores(self.scores_to_add)
+    try:
+      self.load_scores(self.scores_to_add)
+    except Exception as e:
+      LOGGER.error(str(e))
     self.scores_to_add = ()
 
   def _clean(self):

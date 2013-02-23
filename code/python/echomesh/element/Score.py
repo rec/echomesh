@@ -8,13 +8,12 @@ from echomesh.element import Element
 from echomesh.element import Load
 
 class Score(Element.Element):
-  def __init__(self, parent, description):
-    self.handlers = {}
-
+  def __init__(self, parent, description, scorefile):
     super(Score, self).__init__(parent, description)
+    self.scorefile = scorefile
+    self.handlers = {}
     self.elements = Load.make(self, description['elements'])
     self.add_slave(*self.elements)
-    self.name = ''
     self.load_time, self.run_time, self.stop_time = time.time(), 0, 0
 
   def _on_start(self):

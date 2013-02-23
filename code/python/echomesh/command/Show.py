@@ -15,9 +15,11 @@ LOGGER = Log.logger(__name__)
 SHOW_REGISTRY = Registry.Registry('show command')
 
 def _info(d, spaces='  '):
-  items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
-  length = max(len(k) for k, v in items)
-  s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
+  s = 'none'
+  if d:
+    items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
+    length = max(len(k) for k, v in items)
+    s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
   LOGGER.print('\n%s\n' % s)
 
 ADDRESSES_HELP = """
