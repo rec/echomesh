@@ -14,7 +14,7 @@ DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
 
 def play(file, run_in_thread=True):
   file = DEFAULT_AUDIO_DIRECTORY.expand(file)
-  binary = Config.get('audio', 'input', 'aplay_binary')
+  binary = Config.get('audio', 'output', 'aplay_binary')
   if not binary:
     if Platform.IS_LINUX:
       binary = '/usr/bin/mpg123'

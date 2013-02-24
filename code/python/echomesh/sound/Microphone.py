@@ -20,7 +20,7 @@ MIN_CHUNK_SIZE = 16
 MAX_CHUNK_SIZE = 2048
 
 class Microphone(ThreadRunnable.ThreadRunnable):
-  COMPARE_ATTRIBUTES = 'index', 'name', 'rate', 'sample_bytes'
+  COMPARE_ATTRIBUTES = 'device_index', 'device_name', 'rate', 'sample_bytes'
 
   def __init__(self, callback):
     super(Microphone, self).__init__(name='Microphone')
@@ -40,7 +40,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
     self.index = Sound.get_input_index(get)
     self.levels = Levels.Levels(**get('audio', 'input', 'levels'))
     self.moving_window = get('audio', 'input', 'average', 'window_size')
-    self.name = get('audio', 'input', 'name')
+    self.device_name = get('audio', 'input', 'device_name')
     self.rates = get('audio', 'input', 'sample_rate')
     try:
       len(self.rates)
@@ -77,14 +77,15 @@ class Microphone(ThreadRunnable.ThreadRunnable):
   def _before_thread_start(self):
     try:
       self.reset_levels()
-      self.stream = Input.get_pyaudio_stream(self.name, self.index, self.rates,
-                                             self.sample_bytes)
+      self.stream = Input.get_pyaudio_stream(
+        self.device_name, self.index, self.rates, self.sample_bytes)
     except:
-      LOGGER.error('Microphone error for %s, %s', self.name, self.index,
+      LOGGER.error('Microphone error for %s, %s', self.device_name, self.index,
                    exc_info=1)
     else:
       if not self.stream:
-        LOGGER.error('Failed to open stream %s, %s', self.name, self.index)
+        LOGGER.error('Failed to open stream %s, %s', self.device_name,
+                     self.index)
         self.stop()
       else:
         LOGGER.debug('Microphone started.')
@@ -112,7 +113,7 @@ def microphone(callback):
     try:
       return Microphone(callback)
     except Exception as e:
-      LOGGER.error('Failed to turn on mic because %s', str(e))
+      LOGGER.error('Failed to turn on mic because %s', str(e), exc_info=1)
   else:
     LOGGER.info('Mic thread disabled')
 

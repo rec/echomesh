@@ -8,80 +8,224 @@
 
 type: config
 
+# Can you remotely request the shutdown and restart of this machine?
 allow_shutdown: true
+
+# Enable autostart.
+#
+# You still have to configure your computer to automatically run echomesh before
+# this flag has any effect.  It's mostly used for temporarily turning off the
+# program actually starting while you're debugging it.
 
 autostart: true
 
 audio:
+   # This audio section is the longest section in the whole config file.
+
   input:
-    aplay_binary: ''
+    # This long section configures the audio input, usually a microphone.
+
+    # These numbers control the moving averages of the microphone levels that
+    # are used to trigger mic level changes.
     average:
-      chunk_size: 1024
-      group_size: 0
-      window_size: 0
+      chunk_size: 1024   # The number of samples in one chunk.
+      group_size: 1      # The number of chunks in a group.  All the samples in
+                         # group are averaged into one number.
+                         # A group_size of 1 (or empty) disables grouping.
+      window_size: 1     # The number of groups used for a moving average
+                         # window.  A window size of 1 or (or empty) disables
+                         # the moving average.
+
+    # If this is false, then audio input is disabled.
     enable: true
+
+    # The number of sample frames used per input buffer - you probably don't
+    # have to change this.
     frames_per_buffer: 4096
-    index: -1
-    name: ''
+
+    # device_index and device_name identity your audio input device.
+    # If there's a device_name, echomesh looks for an input device which starts
+    # with that.
+    #
+    # Otherwise, if the device_index is not negative, then echomesh uses that
+    # to look up the input audio device in the input audio device table.
+    #
+    # Otherwise, it uses the default input - most of the time, the default input
+    # will work perfectly well.
+    device_index: -1  # See https://github.com/rec/echomesh/issues/196.
+    device_name: ''
+
     periodsize: 160
+
+    # The number of bytes per input sample.
     sample_bytes: 2
+
+    # A list of possible sample rates.  When opening the input device, echomesh
+    # tries each of these rates in order, selecting the first one which works.
+    # All interfaces we have tested seem to support one of the sample rates
+    # in this default file.
     sample_rate: [4000, 8000, 16000]
+
+    # If verbose is true, then every incoming level from the microphone is
+    # printed on the console - very spammy.
     verbose: false
 
+    # This is a list of mapping from db levels to microphone levels.
+    # BUG: For the moment, you can't use unit conversions in this area, so
+    # don't put "db" after these numbers:
+    # https://github.com/rec/echomesh/issues/195
     levels:
       silent: -37
       quiet: -25
       medium: -15
       loud: 0
 
+  # We're still in the "audio:" section of the config file; next is the
+  # output subsection.
+
   output:
+    # This is the location of the binary for the aplay program used as an
+    # external player for mp3s.  The Mac and RP have good defaults if you
+    # leave this blank.
     aplay_binary: ''
+
     chunk_size: 1024
+
+    # Similar to device_index and device_name for input.
+    # Not being used, see https://github.com/rec/echomesh/issues/196.
+    device_index: -1
+    device_name: ''
+
     enable: true
+
+    # Size of the audio output buffer frame.
     frames_per_buffer: 1024
-    index: -1
-    name: ''
+
+    # Do we route the audio to the HD or the earphone audio jack?
+    # Disabled, see https://github.com/rec/echomesh/issues/197.
     route: audio
+
+    # Do we use aplay to play sound files, or do it internally with Python?
+    # At this time, we can only play mp3 files with aplay.
+    # aplay does not allow volume or pan envelopes.
     use_aplay: false
+
+# This little section controls whether you're running a control program
+# or a slave program, and whether that control program uses a Tk/GUI
+# interface (which isn't built yet).
 
 control_program:
   enable: true
   use_tk: true
 
+delay_before_keyboard_activates: 0.5 seconds
+
+# The "transfer" operation overwrites all the score files on all the target
+# machines.  A backup is made during the transfer in case it fails halfway
+# through.
+#
+# If :delete_backups_after_transfer is true, that backup is deleted after the
+# transfer is complete, otherwise that backup is kept around until the next
+# transfer is started.
+
 delete_backups_after_transfer: false
 
 diagnostics:
+  # The diagnostics section lets echomesh developers get more information
+  # about the running program.
+
+  # If true, on quit echomesh prints a list of configs that were never read.
   dump_unused_configs: false
+
+  # If true, on quit echomesh prints a list millisecond startup timings
+  # for the code in Main.py.
   dump_startup_times: false
 
+  # If true, when there's any exception in the system, the entire stack trace
+  # is printed out.
+  print_stack_traces: false
+
+
+# The discovery section controls how the echomesh unit contacts other nodes.
 discovery:
   port: 1238
   timeout: 100 ms
-  use_yaml_sockets: false
 
+# The git section sets the user, project name and server for a git repository
+# connected to the echomesh project.  Please note that you'll still have to
+# authenticate your machine to your git host if you want to check in changes
+# from remote hosts.
 git:
   user: rec
   project: echomesh
+  server: github.com
 
-headless: false
-
+# The load modules are third-party Python modules that are optional to the core
+# functional of the program but still extremely useful.
 load_module:
+  # This is the SoundAnalyse package:  https://pypi.python.org/pypi/SoundAnalyse.
+  # It's automatically included as part of echomesh so no need to turn this off.
   analyse: true
+
+  # This is the pi3d OpenGL ES 2.0 Python library for the Raspberry Pi:
+  # http://pi3d.github.com.  It does slick 3-D graphics.
+  #
+  # pi3d will only work for Raspberry Pi users and is disabled automatically
+  # for everyone else.
   pi3d: true
+
+  # This is the pyaudio port audio bindings:
+  # http://people.csail.mit.edu/hubert/pyaudio/
+  # It's available for most operating systems
   pyaudio: true
+
+  # This is probably installed on every target system and it's not entirely
+  # clear if the program would work without it since we have no test systems.
   numpy: true
 
+# The logging section controls the destination of informational and warning
+# messages.
 logging:
-  file: ""
+  # To redirect logging to a file, set :logging:file to point to the output
+  # file you want.  Note that the echomesh will overwrite old log files without
+  # a warning.
+  file: ""  # Empty means "don't log to a file".
+
+  # This is the output format for log messages - it includes
+  #   * the time
+  #   * the level of logging (debug, info, warn, error, critical)
+  #   * the name of the Python file it came from
+  #   * the actual message.
+  # You can certainly override this.
   format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
+
+  # This filters out the levels of logging.  At the default "info" level,
+  # you'll everything except debugging information.
   level: info
 
+# echomesh lets you assign names and tags to echomesh nodes by filling in this
+# :map area in your global score.  This is particularly handy when you have a
+# lot of machines with completely identical disk images that you need to keep
+# track of neatly.
+
 map:
+  # The name section assigns names to echomesh nodes.
+  #
+  # When echomesh starts up, it goes to the table in :map:name.
+  #
+  # First it looks in the table for its MAC address - the unique hardware
+  # signature of the machine.
+  # If it doesn't find the MAC address, it then looks for the IP address,
+  # the internet routing address of the machine.
   name: {}
   tag: {}
 
-opening_sleep: 0.5
+# The new section is reserved for configuration values for elements and commands
+#  written by third parties.
+new: {}
 
+# These are the configuration settings for the pi3d Open GL library - please
+# see http://pi3d.github.com
 pi3d:
   aspect: 60.0
   background: [0, 0, 0, 0]  # Red, green, blue, alpha.
@@ -94,20 +238,8 @@ pi3d:
   tk: False
   window_title: ''
 
+# Any score score:file: will be run on startup.
+# TODO: we should be able to run more scores, and use run-as as well.
 score:
   file: ''
 
-sequence:
-  delay: 5.0
-
-shorten:
-  enable: true
-  include_url: true
-  index_file: /home/tom/shortenIndex.txt
-  prefix: e
-  url: "http://ax.to"
-  use_index_url: true
-
-update_interval: 0
-
-version: 0.8

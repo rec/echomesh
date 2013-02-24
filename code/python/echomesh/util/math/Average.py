@@ -24,10 +24,10 @@ def grouped_average(generator, window, partial=True):
   if partial and items:
     yield total / len(items)
 
-def average(generator, moving_window=0, grouped_window=0, partial=True):
-  if grouped_window:
+def average(generator, moving_window=1, grouped_window=1, partial=True):
+  if grouped_window and grouped_window > 1:
     generator = grouped_average(generator, grouped_window, partial)
-  if moving_window:
+  if moving_window or moving_window > 1:
     generator = moving_average(generator, moving_window)
 
   return generator

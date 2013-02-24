@@ -105,8 +105,12 @@ See "help start" and "help stop" for more information.
 """
 
 def elements(echomesh):
-  LOGGER.print('Job name  Elements Time')
-  _info(echomesh.score_master.info())
+  info = echomesh.score_master.info()
+  if info:
+    LOGGER.print('Job name  Elements Time')
+    _info(info)
+  else:
+    LOGGER.print('No elements in memory')
 
 SOUND_HELP = """
 Show all the sound interfaces available on this machine.

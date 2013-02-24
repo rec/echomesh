@@ -9,7 +9,8 @@ import logging
 import logging.config
 import sys
 
-VERBOSE_LOGGING = not True
+VERBOSE_LOGGING = False
+PRINT_STACK_TRACES = False
 
 from echomesh.util.file import MakeDirs
 
@@ -37,6 +38,7 @@ CONFIG = ConfigSetter()
 try:
   from echomesh.base import Config
   Config.add_client(CONFIG)
+  PRINT_STACK_TRACES = Config.get('diagnostics', 'print_stack_traces')
 except:
   CONFIG.config_update(None)
 
@@ -44,7 +46,7 @@ def _print(string, *args):
   print(string % args)
 
 def _print_error(string, *args, **kwds):
-  if kwds.get('exc_info'):
+  if kwds.get('exc_info', PRINT_STACK_TRACES):
     print(sys.exc_info()[1])
   print('ERROR:', string % args)
 

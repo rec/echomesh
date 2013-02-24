@@ -37,8 +37,8 @@ def get_index_from_name(is_input, name):
 
 def get_index(is_input, get):
   inout = 'input' if is_input else 'output'
-  name = get('audio', inout, 'name')
-  index = get('audio', inout, 'index')
+  name = get('audio', inout, 'device_name')
+  index = get('audio', inout, 'device_index')
   if name:
     name_index = get_index_from_name(is_input, name)
     if name_index >= 0:

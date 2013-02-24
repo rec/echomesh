@@ -3,7 +3,7 @@ score:
 
 audio:
   input:
-    name: ak5370
+    device_name: ak5370
 
 map:
   name:
