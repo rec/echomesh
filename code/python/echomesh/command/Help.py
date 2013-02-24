@@ -50,5 +50,5 @@ Echomesh has the following commands:
 
   """
 
-Register.register('commands', None, COMMANDS_HELP, ['help'])
-Register.register('help', _help, HELP_HELP)
+Register.register(None, 'commands', COMMANDS_HELP, ['help'])
+Register.register(_help, 'help', HELP_HELP)

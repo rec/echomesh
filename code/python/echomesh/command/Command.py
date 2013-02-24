@@ -22,9 +22,9 @@ COMMENT_HELP = """
 Comment lines start with a # - everything after that is ignored.
 """
 
-Register.register('quit', _quit, QUIT_HELP)
-Register.register('#', lambda e: None, COMMENT_HELP)
-Register.register('sample', None, 'This is a sample with just help')
+Register.register(_quit, 'quit', QUIT_HELP)
+Register.register(lambda e: None, '#', COMMENT_HELP)
+Register.register(None, 'sample', 'This is a sample with just help')
 
 # Must be the last one to load.
 from echomesh.command import Help

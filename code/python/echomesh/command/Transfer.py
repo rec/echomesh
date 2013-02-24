@@ -95,4 +95,4 @@ transfer
   Like transfer *, but prompts to make sure that you want to do it.
 """
 
-Register.register('transfer', transfer, TRANSFER_HELP)
+Register.register(transfer, 'transfer', TRANSFER_HELP)

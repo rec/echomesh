@@ -27,4 +27,4 @@ nodes;  when broadcast mode is off, start and stop only go to this node.
 
 SEE_ALSO = ['show broadcast']
 
-Register.register('broadcast', broadcast, BROADCAST_HELP, SEE_ALSO)
+Register.register(broadcast, 'broadcast', BROADCAST_HELP, SEE_ALSO)

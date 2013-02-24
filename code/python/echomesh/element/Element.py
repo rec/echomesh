@@ -15,6 +15,6 @@ class Element(MasterRunnable):
 _REGISTRY = Registry(name='element')
 
 def register(element, name=None):
-  _REGISTRY.register(name or element.__name__, element)
+  _REGISTRY.register(element, name or element.__name__)
 
 get_element_by_name = _REGISTRY.get

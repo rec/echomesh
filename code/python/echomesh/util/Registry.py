@@ -19,18 +19,28 @@ class Registry(object):
           if len(item) > 2:
             see_also = item[2]
         item = item[0]
-      self.register(item_name, item, help_text, see_also)
+      self.register(item, item_name, help_text, see_also)
 
-  def register(self, item_name, item, help_text=None, see_also=None):
+  def module(self, module):
+    function_name = module.__name__
+    function = getattr(module, function_name.lower(), None)
+    help_text = getattr(module, 'HELP', None)
+    see_also = getattr(module, 'SEE_ALSO', None)
+    self.register(function, function_name, help_text, see_also)
+
+  def register(self, function, function_name=None,
+               help_text=None, see_also=None):
+    function_name = function_name or function.__name__
     if self.case_insensitive:
-      item_name = item_name.lower()
+      function_name = function_name.lower()
 
     none = object()
-    old_item, old_help = self.registry.get(item_name, (none, none))
-    if old_item is not item:
-      if old_item is not none:
-        raise Exception('Conflicting registrations for %s' % item_name)
-      self.registry[item_name] = item, help_text, see_also
+    old_function = self.registry.get(function_name, (none, none))[0]
+    if old_function is not function:
+      if old_function is not none:
+        raise Exception('Conflicting registrations for %s' % function_name)
+      self.registry[function_name] = function, help_text, see_also
+
 
   def _get(self, name):
     return GetPrefix.get_prefix_and_match(self.registry, name, self.name,
@@ -40,7 +50,7 @@ class Registry(object):
     return self._get(name)[1][0]
 
   def get_help(self, name):
-    full_name, (item, help_text, see_also) = self._get(name)
+    full_name, (_, help_text, see_also) = self._get(name)
 
     if full_name == 'commands':  # HACK.
       help_text += self.join_keys()
