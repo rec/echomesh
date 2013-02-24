@@ -3,13 +3,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.command import Broadcast, Config, Register, Remote, Score, Show
 from echomesh.command import Transfer
 
-from echomesh.util import Log
 from echomesh.util import FindComment
+from echomesh.util import Log
+from echomesh.util import Split
 
 LOGGER = Log.logger(__name__)
 
-def _quit(echomesh):
-  echomesh.quitting = True
+def _quit(echomesh_instance):
+  echomesh_instance.quitting = True
   return True
 
 QUIT_HELP = """
@@ -42,19 +43,19 @@ def _fix_exception_message(m, name):
 def usage():
   return 'Valid commands are: ' + Register.join_keys()
 
-def execute(echomesh, line):
+def execute(echomesh_instance, line):
   try:
     line = FindComment.remove_comment(line).strip()
     if not line:
       LOGGER.print('')
       return
-    parts = line.split()
+    parts = Split.split_words(line)
     name = parts.pop(0)
     function = Register.get(name)
     if not function:
       raise Exception("Didn't understand function %s" % name)
     try:
-      return function(echomesh, *parts)
+      return function(echomesh_instance, *parts)
     except TypeError as e:
       LOGGER.print_error((_fix_exception_message(str(e), name)))
 

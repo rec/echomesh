@@ -135,15 +135,15 @@ diagnostics:
   # about the running program.
 
   # If true, on quit echomesh prints a list of configs that were never read.
-  dump_unused_configs: false
+  unused_configs: false
 
   # If true, on quit echomesh prints a list millisecond startup timings
   # for the code in Main.py.
-  dump_startup_times: false
+  startup_times: false
 
   # If true, when there's any exception in the system, the entire stack trace
   # is printed out.
-  print_stack_traces: false
+  stack_traces: false
 
 
 # The discovery section controls how the echomesh unit contacts other nodes.
@@ -238,8 +238,26 @@ pi3d:
   tk: False
   window_title: ''
 
-# Any score score:file: will be run on startup.
-# TODO: we should be able to run more scores, and use run-as as well.
-score:
-  file: ''
+# Any scores in score:file: will be run on startup.
+# This can either be a single score, like:
+#
+#   score:  myScore.yml
+#
+# or a list of scores, like:
+#
+#   score:
+#     - myScore1.yml
+#     - myScore2.yml
+#
+# or, equivalently,
+#
+#   score: [myScore1.yml, myScore2.yml]
+#
+# or even a free-form list of scores and names
+#
+#   score:  myScore2.yml myScore1.yml as m1, m2
+#
+
+startup_scores: ''
+
 

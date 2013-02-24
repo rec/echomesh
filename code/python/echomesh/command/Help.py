@@ -15,7 +15,7 @@ echomesh has the following help topics:
 Type "help TOPIC" for more information - for example, "help quit" or "help run".
 """
 
-def _help(echomesh, *parts):
+def _help(echomesh_instance, *parts):
   if not parts:
     LOGGER.print(HELP_TEXT % Register.join_keys(command_only=False))
   else:

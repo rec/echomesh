@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util import GetPrefix
-from echomesh.util import Join
+from echomesh.util import String
 
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True):
@@ -46,7 +46,7 @@ class Registry(object):
       help_text += self.join_keys()
 
     if see_also:
-      also = Join.join_words(*('"help %s"' % h for h in see_also))
+      also = String.join_words(*('"help %s"' % h for h in see_also))
       return '%s\n\nSee also: %s\n' % (help_text, also)
     else:
       return help_text
@@ -56,7 +56,7 @@ class Registry(object):
 
   def join_keys(self, command_only=True):
     w = (k for (k, v) in self.registry.iteritems() if (not command_only) or v[0])
-    return Join.join_words(*sorted(w))
+    return String.join_words(*sorted(w))
 
   def dump(self, print=print):
     for k, v in self.registry.iteritems():

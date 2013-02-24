@@ -4,13 +4,15 @@ import collections
 import time
 
 from echomesh.base import Config
+from echomesh.element import Audio, Handler, Image, Mapper, Print, Random
+from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
 from echomesh.element import Element
 from echomesh.element import Load
 
-class Score(Element.Element):
-  def __init__(self, parent, description, scorefile):
-    super(Score, self).__init__(parent, description)
-    self.scorefile = scorefile
+class Root(Element.Element):
+  def __init__(self, parent, description, score_file):
+    super(Root, self).__init__(parent, description)
+    self.score_file = score_file
     self.handlers = {}
     self.elements = Load.make(self, description['elements'])
     self.add_slave(*self.elements)
@@ -44,4 +46,5 @@ class Score(Element.Element):
       for handler in handlers:
         handler.handle(event)
 
-Element.register(Score)
+Element.register(Root)
+

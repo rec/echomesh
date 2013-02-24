@@ -5,8 +5,6 @@ import re
 import six
 from pyparsing import Expressions
 
-from echomesh.base import Config
-
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
 _ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
@@ -100,4 +98,5 @@ def convert(number, assume_minutes=True):
   return convert_number(number)
 
 def get_config(*parts):
+  from echomesh.base import Config
   return convert(Config.get(*parts))

@@ -1,10 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os
-import sys
-
-from echomesh.base import Config
-from echomesh.element import Make
 from echomesh.element import ScoreMaster
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
@@ -26,7 +21,7 @@ class Echomesh(MasterRunnable):
     else:
       Echomesh.INSTANCE = self
 
-    self.score_master = ScoreMaster.ScoreMaster(Config.get('score', 'file'))
+    self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)
     self.socket = PeerSocket.PeerSocket(self, self.peers)
 
@@ -52,11 +47,6 @@ class Echomesh(MasterRunnable):
 
   def handle(self, event):
     return self.score_master.handle(event)
-
-  def set_score(self, score):
-    from echomesh.base import Yaml
-    Yaml.write(LOCAL_SCORE, score)
-    self.score.set_score(score)
 
   def loop(self):
     self.display.loop()

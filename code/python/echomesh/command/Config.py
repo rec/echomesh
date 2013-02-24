@@ -8,7 +8,7 @@ from echomesh.util import Scope
 
 LOGGER = Log.logger(__name__)
 
-def config(echomesh, *parts):
+def config(echomesh_instance, *parts):
   if len(parts) < 2:
     return LOGGER.print_error('Usage: config scope command [... command] ')
 

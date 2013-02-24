@@ -8,6 +8,7 @@ LOGGER = Log.logger(__name__)
 import logging
 import logging.config
 import sys
+import traceback
 
 VERBOSE_LOGGING = False
 PRINT_STACK_TRACES = False
@@ -38,7 +39,7 @@ CONFIG = ConfigSetter()
 try:
   from echomesh.base import Config
   Config.add_client(CONFIG)
-  PRINT_STACK_TRACES = Config.get('diagnostics', 'print_stack_traces')
+  STACK_TRACES = Config.get('diagnostics', 'stack_traces')
 except:
   CONFIG.config_update(None)
 
@@ -46,9 +47,9 @@ def _print(string, *args):
   print(string % args)
 
 def _print_error(string, *args, **kwds):
-  if kwds.get('exc_info', PRINT_STACK_TRACES):
-    print(sys.exc_info()[1])
-  print('ERROR:', string % args)
+  if kwds.get('exc_info', STACK_TRACES):
+    traceback.print_exc()
+  print('ERROR: %s\n%s' % (sys.exc_info()[1], string % args))
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')

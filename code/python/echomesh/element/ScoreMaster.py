@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import collections
 import datetime
+import itertools
+import six
 import threading
 import weakref
 
@@ -9,10 +11,11 @@ from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.base import Yaml
 from echomesh.element import Element
-from echomesh.element import Score
+from echomesh.element import Root
 from echomesh.util.thread import MasterRunnable
 from echomesh.util import GetPrefix
 from echomesh.util import Log
+from echomesh.util import Split
 from echomesh.util import UniqueName
 
 LOGGER = Log.logger(__name__)
@@ -29,37 +32,43 @@ def format_score(score):
     t = format_delta(time.time() - score.run_time)
   else:
     t = 'stopped'
-  return '%-8s  %s' % (t, score.scorefile)
+  return '%-8s  %s' % (t, score.score_file)
+
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
   STOP, START, UNLOAD = range(3)
 
-  def __init__(self, *scores):
+  def __init__(self):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()  # TODO: fill in locking
-    self.scores_to_add = scores
+    self.scores_to_add = Split.split_scores(Config.get('startup_scores'))
 
   def load_scores(self, scores, names=None):
-    if names is None:
+    if not names:
       items = ((s, None) for s in scores)
     else:
+      items = list(itertools.izip_longest(scores, names))
       if len(names) > len(scores):
         LOGGER.warning('You have more names than scores.')
-      items = itertools.izip_longest(scores, names)[:len(scores)]
+        items = items[:len(scores)]
 
     full_names = []
-    for scorefile, name in items:
-      scorefile = Yaml.filename(scorefile)
-      elements = CommandFile.load('score', scorefile)
+    for score_file, name in items:
+      score_file = Yaml.filename(score_file)
+      elements = CommandFile.load('score', score_file)
 
       description = {'elements': elements, 'type': 'score'}
-      element = Score.Score(None, description, scorefile)
+
+      try:
+        element = Root.Root(None, description, score_file)
+      except Exception as e:
+        LOGGER.print_error("Couldn't read score file %s", score_file)
+        continue
 
       with self.lock:
         if not name:
-          name = scorefile[:-4]  # Remove .yaml.
-        self._clean()
+          name = score_file[:-4]  # Remove .yaml.
         name = UniqueName.unique_name(name, self.elements)
         self.elements[name] = element
         full_names.append(name)
@@ -68,7 +77,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return full_names
 
   def run_scores(self, scores, names=None):
-    self.start_elements(self.load_scores(scores, names))
+    return self.start_elements(self.load_scores(scores, names))
 
   def start_elements(self, names):
     return self._for_each_element(names, ScoreMaster.START)
@@ -80,12 +89,11 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return self._for_each_element(names, ScoreMaster.UNLOAD)
 
   def handle(self, event):
-    for score, t in self.elements.itervalues():
+    for score in self.elements.itervalues():
       score.handle(event)
 
   def info(self):
     with self.lock:
-      self._clean()
       return dict((k, format_score(s)) for k, s in self.elements.iteritems())
 
   def get_score(self, name):
@@ -130,14 +138,22 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def _on_start(self):
     try:
-      self.load_scores(self.scores_to_add)
+      self.load_scores(*self.scores_to_add)
     except Exception as e:
-      LOGGER.error(str(e))
+      LOGGER.print_error(str(e))
     self.scores_to_add = ()
 
-  def _clean(self):
-    remove = [k for (k, v) in self.elements.iteritems() if not v[0].is_running]
-    self.remove_slave(*remove)
-    self.elements = dict((k, v) for (k, v) in self.elements.iteritems()
-                       if v[0].is_running)
+  def _on_stop(self):
+    try:
+      self.stop_elements('*')
+    except:
+      pass
 
+  def clean(self):
+    remove, elements = [], {}
+    for k, v in self.elements.iteritems():
+      if v.is_running:
+        elements[k] = v
+      else:
+        self.remove_slave(vi)
+    self.elements = elements

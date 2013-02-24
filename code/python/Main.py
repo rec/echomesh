@@ -71,7 +71,7 @@ def run():
 
   print()
 
-  if Config.get('diagnostics', 'dump_startup_times'):
+  if Config.get('diagnostics', 'startup_times'):
     print()
     for i in range(len(times) - 1):
       print(i, ':', int(1000 * (times[i + 1] - times[i])))
@@ -81,7 +81,7 @@ def run():
   echomesh.loop()
   echomesh.join()
 
-  if Config.get('diagnostics', 'dump_unused_configs'):
+  if Config.get('diagnostics', 'unused_configs'):
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
 

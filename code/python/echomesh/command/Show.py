@@ -27,7 +27,7 @@ Shows:
   This machine's current IP address.
   This machine's permanent MAC address.
 """
-def addresses(echomesh):
+def addresses(echomesh_instance):
   _info(Name.addresses())
 
 
@@ -39,8 +39,8 @@ When a node is in broadcast mode, the standard "echomesh:" prompt is replaced
 by "echomesh!"
 
 """
-def broadcast(echomesh):
-  LOGGER.print('Broadcast is ' + ('ON' if echomesh.broadcasting() else 'off'))
+def broadcast(echomesh_instance):
+  LOGGER.print('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
 
 
 
@@ -53,7 +53,7 @@ NAMES_HELP = """
   * The echomesh tags for this machine, which are also set in the configuration.
 """
 
-def names(echomesh):
+def names(echomesh_instance):
   _info(Name.names())
 
 INFO_HELP = """
@@ -69,7 +69,7 @@ See "help show names" and "help show addresses" for more information.
 
 """
 
-def info(echomesh):
+def info(echomesh_instance):
   _info(Name.info())
 
 DIRECTORIES_HELP = """
@@ -81,7 +81,7 @@ DIRECTORIES_HELP = """
   * The project directory, the project root containing assets and commands.
   * The echomesh directory, which is the root of the echomesh installation.
 """
-def directories(echomesh):
+def directories(echomesh_instance):
   _info(Path.info())
 
 NODES_HELP = """
@@ -92,7 +92,7 @@ Each echomesh node knows about a list of other nodes on the same network.
 See "help show info" for more information.
 """
 
-def nodes(echomesh):
+def nodes(echomesh_instance):
   for name, peer in echomesh.peers.get_peers().iteritems():
     LOGGER.print('%s: ' % name)
     _info(peer)
@@ -104,8 +104,8 @@ time they were started.
 See "help start" and "help stop" for more information.
 """
 
-def elements(echomesh):
-  info = echomesh.score_master.info()
+def elements(echomesh_instance):
+  info = echomesh_instance.score_master.info()
   if info:
     LOGGER.print('Job name  Elements Time')
     _info(info)
@@ -116,7 +116,7 @@ SOUND_HELP = """
 Show all the sound interfaces available on this machine.
 """
 
-def sound(echomesh):
+def sound(echomesh_instance):
  _info(Sound.info())
 
 UNITS_HELP = """
@@ -126,7 +126,7 @@ semitones and decibels.  "show units" lists these units and their synonyms
 
 """
 
-def units(echomesh):
+def units(echomesh_instance):
   LOGGER.print('\nUnits are: %s', Units.list_units())
 
 SHOW_REGISTRY.register_all(
@@ -146,14 +146,14 @@ SHOW_REGISTRY.register_all(
 SHOW_NAMES = SHOW_REGISTRY.join_keys()
 SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
 
-def _show(echomesh, *parts):
+def _show(echomesh_instance, *parts):
   if not parts:
     LOGGER.print('\n' + SHOW_USAGE)
   else:
     for name in parts:
       function = SHOW_REGISTRY.get(name)
       if function:
-        function(echomesh)
+        function(echomesh_instance)
       else:
         raise Exception("Didn't understand command 'show %s'. %s" %
                         (name, SHOW_USAGE))

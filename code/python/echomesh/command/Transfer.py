@@ -6,7 +6,7 @@ import os.path
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Register
-from echomesh.util import Join
+from echomesh.util import String
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -18,8 +18,7 @@ on this network, replacing whatever is there (y/N)?
 
 TRANSFER_ALL_FILES = True
 
-
-def transfer(echomesh, *path):
+def transfer(echomesh_instance, *path):
   if not path:
     LOGGER.print(TRANSFER_PROMPT)
     if not raw_input().lower().startswith('y'):

@@ -77,4 +77,4 @@ def merge(*others, **kwds):
   return reduce(merge, others + (kwds, ), None)
 
 def merge_for_config(*config):
-  return merge_strict_with_exceptions(['new', 'map'], *config)
+  return merge_strict_with_exceptions(['new', 'map', 'score'], *config)

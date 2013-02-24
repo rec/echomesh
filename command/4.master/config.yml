@@ -1,5 +1,4 @@
-score:
-  file: non-existent.yml
+startup_scores: speak.yml twitter.yml
 
 audio:
   input:
