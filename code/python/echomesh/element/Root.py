@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
+import datetime
 import time
 
 from echomesh.base import Config
@@ -33,6 +34,13 @@ class Root(Element.Element):
     for t in (types or []):
       self.handlers.setdefault(t, set()).add(handler)
 
+  def __str__(self):
+    if self.is_running:
+      t = _format_delta(time.time() - self.run_time)
+    else:
+      t = 'stopped'
+    return '%-8s  %s' % (t, self.score_file)
+
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):
       self.handlers.get(t, set()).discard(handler)
@@ -46,5 +54,13 @@ class Root(Element.Element):
       for handler in handlers:
         handler.handle(event)
 
-Element.register(Root)
 
+def _format_delta(t):
+  s = str(datetime.timedelta(seconds=t))
+  loc = s.find('.')
+  if loc > 0:
+    s = s[0:loc]
+  return s
+
+
+Element.register(Root)

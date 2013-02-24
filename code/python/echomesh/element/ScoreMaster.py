@@ -1,11 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
-import datetime
 import itertools
 import six
 import threading
-import time
 import weakref
 
 from echomesh.base import CommandFile
@@ -20,21 +18,6 @@ from echomesh.util import Split
 from echomesh.util import UniqueName
 
 LOGGER = Log.logger(__name__)
-
-def format_delta(t):
-  s = str(datetime.timedelta(seconds=t))
-  loc = s.find('.')
-  if loc > 0:
-    s = s[0:loc]
-  return s
-
-def format_score(score):
-  if score.is_running:
-    t = format_delta(time.time() - score.run_time)
-  else:
-    t = 'stopped'
-  return '%-8s  %s' % (t, score.score_file)
-
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
   STOP, START, UNLOAD = range(3)
@@ -95,7 +78,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def info(self):
     with self.lock:
-      return dict((k, format_score(s)) for k, s in self.elements.iteritems())
+      return dict(self.elements)
 
   def get_score(self, name):
     with self.lock:
