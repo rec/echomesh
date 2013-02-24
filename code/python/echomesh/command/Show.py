@@ -107,7 +107,6 @@ See "help start" and "help stop" for more information.
 def elements(echomesh_instance):
   info = echomesh_instance.score_master.info()
   if info:
-    LOGGER.print('Job name  Elements Time')
     _info(info)
   else:
     LOGGER.print('No elements in memory')

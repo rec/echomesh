@@ -5,6 +5,7 @@ import datetime
 import itertools
 import six
 import threading
+import time
 import weakref
 
 from echomesh.base import CommandFile
@@ -28,7 +29,7 @@ def format_delta(t):
   return s
 
 def format_score(score):
-  if is_running:
+  if score.is_running:
     t = format_delta(time.time() - score.run_time)
   else:
     t = 'stopped'
@@ -138,7 +139,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def _on_start(self):
     try:
-      self.load_scores(*self.scores_to_add)
+      self.run_scores(*self.scores_to_add)
     except Exception as e:
       LOGGER.print_error(str(e))
     self.scores_to_add = ()
