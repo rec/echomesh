@@ -39,6 +39,8 @@ class DeferredSprite(Loadable):
                                         shader=Shader.shader(self.shader),
                                         x=x, y=y, z=z)
 
+CREATE_TEXTURE = False
+
 class ImageSprite(Runnable):
   CACHE = None
 
@@ -69,8 +71,10 @@ class ImageSprite(Runnable):
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
+    texture = CREATE_TEXTURE or CACHE.create(self.imagename, defer=True)
     self.deferred_sprite = DeferredSprite(self.repaint, self.imagename,
-                                          self.coords(0), shader)
+                                          self.coords(0), shader,
+                                          texture)
 
   def coords(self, t):
     x, y = self._position.interpolate(t)
