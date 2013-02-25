@@ -30,15 +30,18 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def load_scores(self, scores, names=None):
     if not names:
-      items = ((s, None) for s in scores)
+      items = [(s, None) for s in scores]
+      print('1', items)
     else:
       items = list(itertools.izip_longest(scores, names))
       if len(names) > len(scores):
         LOGGER.warning('You have more names than scores.')
         items = items[:len(scores)]
+      print('2', items)
 
     full_names = []
     for score_file, name in items:
+      print('3', score_file, name)
       resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
       elements = Yaml.read(resolved_file)
       description = {'elements': elements, 'type': 'score'}
@@ -53,7 +56,10 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
       with self.lock:
         if not name:
-          name = score_file[:-4]  # Remove .yaml.
+          if score_file.endswith('.yml'):
+            name = score_file[:-4]
+          else:
+            name = score_file
         name = UniqueName.unique_name(name, self.elements)
         self.elements[name] = element
         full_names.append(name)
