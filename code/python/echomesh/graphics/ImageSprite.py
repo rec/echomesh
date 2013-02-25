@@ -25,10 +25,8 @@ class ImageSprite(Runnable):
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=(0, 0, 0),
                size=1, duration=0, z=DEFAULT_Z,
-               shader=None, **kwds):
+               shader=None, type='', **kwds):
     super(ImageSprite, self).__init__()
-    if 'type' in kwds:
-      del kwds['type']
     if kwds:
       s = '' if len(kwds) == 1 else 's'
       LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))
@@ -47,9 +45,11 @@ class ImageSprite(Runnable):
     if not ImageSprite.CACHE:
       ImageSprite.CACHE = pi3d.TextureCache()
     texture = ImageSprite.CACHE.create(self._imagename, defer=True)
+    assert not shader, "We can't create shaders except on the main thread."
     self.pi3d_sprite = pi3d.ImageSprite(texture,
                                         w=texture.ix, h=texture.iy,
-                                        shader=Shader.shader(shader),
+                                        shader=Shader.DEFAULT_SHADER,
+                                        # shader=Shader.shader(shader),
                                         x=x, y=y, z=z)
     setattr(self.pi3d_sprite, 'repaint', self.repaint)
 
@@ -78,7 +78,7 @@ class ImageSprite(Runnable):
         self._time = 0
         elapsed = 0
       else:
-        LOGGER.info('Stopping image sprite')
+        LOGGER.debug('Stopping image sprite')
         self.stop()
         return
 

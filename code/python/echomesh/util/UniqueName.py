@@ -2,17 +2,18 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import re
 
-MATCH_NAME = re.compile(r'(.*)\.(\d+)$')
+MATCH_NAME = re.compile(r'(.*)-(\d+)$')
 
 def unique_name_match(name, matcher):
   while matcher(name):
+    base, suffix = name, 2
     match = MATCH_NAME.match(name)
     if match:
-      base, suffix = match.groups()
-      suffix = 1 + int(suffix)
-    else:
-      base, suffix = name, 1
-    name = '%s.%d' % (base, suffix)
+      b, s = match.groups()
+      if s.isdigit():
+        base, suffix = b, 1 + int(s)
+
+    name = '%s-%d' % (base, suffix)
 
   return name
 

@@ -1,0 +1,18 @@
+type: image
+
+file: Raspi256x256.png
+
+z:
+  0: 300
+  10: 300
+  20: 300
+
+position:
+  0: [0, 0]
+  10: [-100, -100]
+  20: [1000, 1000]
+
+duration: 20 seconds
+
+# I've tried simply omitting this.
+size: 1.0

@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import collections
 import itertools
+import os.path
 import six
 import threading
 import weakref
@@ -26,7 +27,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()  # TODO: fill in locking
-    self.scores_to_add = Split.split_scores(Config.get('startup_scores'))
+    self.scores_to_add = Split.split_scores(Config.get('score'))
+    self.scores_to_load = Split.split_scores(Config.get('load_score'))
 
   def load_scores(self, scores, names=None):
     if not names:
@@ -52,10 +54,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         continue
 
       with self.lock:
-        name = name or score_file
-        if name.endswith('.yml'):
-          name = name[:-4]
-
+        name = os.path.splitext(name or score_file)[0]
         name = UniqueName.unique_name(name, self.elements)
         self.elements[name] = element
         full_names.append(name)
@@ -129,6 +128,12 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     except Exception as e:
       LOGGER.print_error(str(e))
     self.scores_to_add = ()
+
+    try:
+      self.load_scores(*self.scores_to_load)
+    except Exception as e:
+      LOGGER.print_error(str(e))
+    self.scores_to_load = ()
 
   def _on_stop(self):
     try:

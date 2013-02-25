@@ -4,18 +4,20 @@ from echomesh.util import ImportIf
 
 pi3d = ImportIf.imp('pi3d')
 
+DEFAULT_SHADER = None
+
 def SHADER():
-  global _SHADER
-  if not _SHADER:
-    _SHADER = pi3d.Shader(vshader_source=_VERTEX_SHADER,
-                          fshader_source=_FRAGMENT_SHADER)
-  return _SHADER
+  global DEFAULT_SHADER
+  if not DEFAULT_SHADER:
+    DEFAULT_SHADER = pi3d.Shader(vshader_source=_VERTEXDEFAULT_SHADER,
+                          fshader_source=_FRAGMENTDEFAULT_SHADER)
+  return DEFAULT_SHADER
 
 def shader(shader_file=None):
   return pi3d.Shader(shfile=shader_file) if shader_file else SHADER()
 
 
-_VERTEX_SHADER = """
+_VERTEXDEFAULT_SHADER = """
 precision highp float;
 
 attribute vec3 vertex;
@@ -35,7 +37,7 @@ void main(void) {
 }
 """
 
-_FRAGMENT_SHADER = """
+_FRAGMENTDEFAULT_SHADER = """
 
 precision mediump float;
 
@@ -57,6 +59,4 @@ void main(void) {
   gl_FragColor = (1.0 - ffact) * texc + ffact * vec4(unif[4], unif[5][1]); // ------ combine using factors
 }
 """
-
-_SHADER = None
 

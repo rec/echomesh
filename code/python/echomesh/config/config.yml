@@ -238,7 +238,7 @@ pi3d:
   tk: False
   window_title: ''
 
-# Any scores in score:file: will be run on startup.
+# Any scores in score: will be run on startup.
 # This can either be a single score, like:
 #
 #   score:  myScore.yml
@@ -258,6 +258,10 @@ pi3d:
 #   score:  myScore2.yml myScore1.yml as m1, m2
 #
 
-startup_scores: ''
+score: ''
 
+# Any scores in load_score: will be loaded on startup but not run.
+# See the comments above for score:
+
+load_score: ''
 
