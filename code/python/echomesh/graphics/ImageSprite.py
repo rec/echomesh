@@ -12,6 +12,7 @@ from echomesh.util.thread.Runnable import Runnable
 from echomesh.util import ImportIf
 
 pi3d = ImportIf.imp('pi3d')
+from pi3d.util.Loadable import Loadable
 
 LOGGER = Log.logger(__name__)
 
@@ -20,6 +21,22 @@ DEFAULT_Z = 100.0
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
 CREATE_SPRITE_IN_CONSTRUCTOR = True
+
+class DeferredSprite(Loadable):
+  def __init__(self, repaint, imagename):
+    self.repaint = repaint
+    self.imagename = imagename
+
+  def _load_opengl(self):
+    if not ImageSprite.CACHE:
+      ImageSprite.CACHE = pi3d.TextureCache()
+    texture = ImageSprite.CACHE.create(self.sprite.imagename, defer=False)
+    x, y, z = self.image_sprite.coords(0)
+    self.pi3d_sprite = pi3d.ImageSprite(texture,
+                                        w=texture.ix, h=texture.iy,
+                                        shader=Shader.DEFAULT_SHADER,
+                                        # shader=Shader.shader(shader),
+                                        x=x, y=y, z=z)
 
 class ImageSprite(Runnable):
   CACHE = None
@@ -33,8 +50,8 @@ class ImageSprite(Runnable):
       s = '' if len(kwds) == 1 else 's'
       LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))
 
-    self._imagename = IMAGE_DIRECTORY.expand(file)
-    LOGGER.debug('Opening sprite %s', self._imagename)
+    self.imagename = IMAGE_DIRECTORY.expand(file)
+    LOGGER.debug('Opening sprite %s', self.imagename)
 
     self._loops = loops
     self._loop_number = 0
@@ -57,13 +74,16 @@ class ImageSprite(Runnable):
     self.sprite_added = False
     if CREATE_SPRITE_IN_CONSTRUCTOR:
       self.sprite()
+    else:
+      self.deferred_sprite = DeferredSprite(self)
 
   def sprite(self):
     if not self._sprite:
+      print('CREATING sprite')
       x, y, z = self.coords(0)
       if not ImageSprite.CACHE:
         ImageSprite.CACHE = pi3d.TextureCache()
-      texture = ImageSprite.CACHE.create(self._imagename, defer=True)
+      texture = ImageSprite.CACHE.create(self.imagename, defer=True)
       self._sprite = pi3d.ImageSprite(texture,
                                           w=texture.ix, h=texture.iy,
                                           shader=Shader.DEFAULT_SHADER,
@@ -92,7 +112,10 @@ class ImageSprite(Runnable):
         self.stop()
         return
 
-    sprite = self.sprite()
+    if CREATE_SPRITE_IN_CONSTRUCTOR:
+      sprite = self.sprite()
+    else:
+      sprite = self.deferred_sprite.pi3d_sprite
 
     sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
@@ -107,11 +130,23 @@ class ImageSprite(Runnable):
     self._add_sprite()
 
   def _add_sprite(self):
-    if self.is_running and self._sprite and not self.sprite_added:
-      self.sprite_added = True
-      pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
+    if CREATE_SPRITE_IN_CONSTRUCTOR:
+      if self.is_running and self._sprite and not self.sprite_added:
+        self.sprite_added = True
+        pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
+        print('_add_sprite success')
+      else:
+        print('_add_sprite FAIL', self.is_running, self._sprite,
+              self.sprite_added)
+    else:
+      pi3d.Display.Display.INSTANCE.add_sprites(self.deferred_sprite)
+
 
   def _on_stop(self):
-    if self.sprite_added and self._sprite:
-      pi3d.Display.Display.INSTANCE.remove_sprites(self._sprite)
+    if CREATE_SPRITE_IN_CONSTRUCTOR:
+       if self.sprite_added and self._sprite:
+         pi3d.Display.Display.INSTANCE.remove_sprites(self._sprite)
+    else:
+      pi3d.Display.Display.INSTANCE.remove_sprites(self.deferred_sprite)
+
 
