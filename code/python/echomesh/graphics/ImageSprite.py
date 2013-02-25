@@ -41,18 +41,7 @@ class ImageSprite(Runnable):
     self._size = Envelope(size)
     self._z = Envelope(z)
 
-    x, y, z = self.coords(0)
-    if not ImageSprite.CACHE:
-      ImageSprite.CACHE = pi3d.TextureCache()
-    texture = ImageSprite.CACHE.create(self._imagename, defer=True)
     assert not shader, "We can't create shaders except on the main thread."
-    self.pi3d_sprite = pi3d.ImageSprite(texture,
-                                        w=texture.ix, h=texture.iy,
-                                        shader=Shader.DEFAULT_SHADER,
-                                        # shader=Shader.shader(shader),
-                                        x=x, y=y, z=z)
-    setattr(self.pi3d_sprite, 'repaint', self.repaint)
-
     self._time = 0
     if duration:
       self._duration = Units.convert(duration)
@@ -62,6 +51,20 @@ class ImageSprite(Runnable):
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
+    self._create_sprite()
+
+  def _create_sprite(self):
+    x, y, z = self.coords(0)
+    if not ImageSprite.CACHE:
+      ImageSprite.CACHE = pi3d.TextureCache()
+    texture = ImageSprite.CACHE.create(self._imagename, defer=True)
+    self.sprite = pi3d.ImageSprite(texture,
+                                        w=texture.ix, h=texture.iy,
+                                        shader=Shader.DEFAULT_SHADER,
+                                        # shader=Shader.shader(shader),
+                                        x=x, y=y, z=z)
+    setattr(self.sprite, 'repaint', self.repaint)
+
 
   def coords(self, t):
     x, y = self._position.interpolate(t)
@@ -82,18 +85,18 @@ class ImageSprite(Runnable):
         self.stop()
         return
 
-    self.pi3d_sprite.position(*self.coords(elapsed))
+    self.sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    self.pi3d_sprite.scale(size, size, size)
+    self.sprite.scale(size, size, size)
     xrot, yrot, zrot = self._rotation.interpolate(elapsed)
-    self.pi3d_sprite.rotateToX(xrot)
-    self.pi3d_sprite.rotateToY(yrot)
-    self.pi3d_sprite.rotateToZ(zrot)
-    self.pi3d_sprite.draw()
+    self.sprite.rotateToX(xrot)
+    self.sprite.rotateToY(yrot)
+    self.sprite.rotateToZ(zrot)
+    self.sprite.draw()
 
   def _on_start(self):
-    pi3d.Display.Display.INSTANCE.add_sprites(self.pi3d_sprite)
+    pi3d.Display.Display.INSTANCE.add_sprites(self.sprite)
 
   def _on_stop(self):
-    pi3d.Display.Display.INSTANCE.remove_sprites(self.pi3d_sprite)
+    pi3d.Display.Display.INSTANCE.remove_sprites(self.sprite)
 
