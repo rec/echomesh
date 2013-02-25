@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
+from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.thread import Runnable
 from echomesh.util import ImportIf
@@ -32,6 +33,7 @@ class Display(Runnable.Runnable):
 
     self.display = pi3d.Display.create(**keywords)
     Config.add_client(self)
+    Shader.SHADER()  # Make sure that the shader is created in the main thread!
 
   def config_update(self, get):
     if self.display:

@@ -47,7 +47,7 @@ def get_pyaudio_stream(name, index, rates, sample_bytes):
     try:
       return _make_stream(index, rate)
     except IOError as e:
-      if 'Invalid sample rate' not in e(str):
+      if 'Invalid sample rate' not in str(e):
         raise
   LOGGER.error("Couldn't open audio device named %s.", name)
 
