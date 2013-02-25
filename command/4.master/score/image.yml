@@ -5,8 +5,8 @@ file: Raspi64x64.png
 
 # I've tried 10, 100 and -1 for z, nothing.
 z:
-  0: 10
-  10: 30
+  0: 100
+  10: 100
   20: 100
 
 position:
@@ -14,7 +14,7 @@ position:
   10: [100, 100]
   20: [-1000, -1000]
 
-duration: 200 seconds
+duration: 20 seconds
 
 # I've tried simply omitting this.
 size: 1.0

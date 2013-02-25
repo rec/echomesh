@@ -228,7 +228,7 @@ new: {}
 # see http://pi3d.github.com
 pi3d:
   aspect: null
-  background: [255, 255, 255, 0.1]  # Red, green, blue, alpha.
+  background: [0, 0, 0, 0]  # Red, green, blue, alpha.
   depth: null
   dimensions: null  # Can be a 4-tuple: x, y, width, height.
   far: null
