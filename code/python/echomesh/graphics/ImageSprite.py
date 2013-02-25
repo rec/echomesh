@@ -20,6 +20,8 @@ DEFAULT_Z = 100.0
 
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
+CACHE = pi3d.TextureCache()
+
 class DeferredSprite(Loadable):
   def __init__(self, repaint, imagename, coords, shader):
     super(DeferredSprite, self).__init__()
@@ -29,9 +31,7 @@ class DeferredSprite(Loadable):
     self.shader = shader
 
   def _load_opengl(self):
-    if not ImageSprite.CACHE:
-      ImageSprite.CACHE = pi3d.TextureCache()
-    texture = ImageSprite.CACHE.create(self.imagename, defer=False)
+    texture = CACHE.create(self.imagename, defer=False)
     x, y, z = self.coords
     self.pi3d_sprite = pi3d.ImageSprite(texture,
                                         w=texture.ix, h=texture.iy,
