@@ -67,6 +67,7 @@ class ImageSprite(Runnable):
                                           # shader=Shader.shader(shader),
                                           x=x, y=y, z=z)
       setattr(self._sprite, 'repaint', self.repaint)
+      self._add_sprite()
     return self._sprite
 
   def coords(self, t):
@@ -101,7 +102,7 @@ class ImageSprite(Runnable):
     self._add_sprite()
 
   def _add_sprite(self):
-    if not self.sprite_added:
+    if self.is_running and not self.sprite_added:
       self.sprite_added = True
       pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
 
