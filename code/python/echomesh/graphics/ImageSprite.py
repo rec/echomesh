@@ -19,6 +19,8 @@ DEFAULT_Z = 100.0
 
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
+CREATE_SPRITE_IN_CONSTRUCTOR = True
+
 class ImageSprite(Runnable):
   CACHE = None
 
@@ -52,8 +54,9 @@ class ImageSprite(Runnable):
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
     self._sprite = None
-    self.sprite()
     self.sprite_added = False
+    if CREATE_SPRITE_IN_CONSTRUCTOR:
+      self.sprite()
 
   def sprite(self):
     if not self._sprite:
@@ -89,24 +92,26 @@ class ImageSprite(Runnable):
         self.stop()
         return
 
-    self._sprite.position(*self.coords(elapsed))
+    sprite = self.sprite()
+
+    sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    self._sprite.scale(size, size, size)
+    sprite.scale(size, size, size)
     xrot, yrot, zrot = self._rotation.interpolate(elapsed)
-    self._sprite.rotateToX(xrot)
-    self._sprite.rotateToY(yrot)
-    self._sprite.rotateToZ(zrot)
-    self._sprite.draw()
+    sprite.rotateToX(xrot)
+    sprite.rotateToY(yrot)
+    sprite.rotateToZ(zrot)
+    sprite.draw()
 
   def _on_start(self):
     self._add_sprite()
 
   def _add_sprite(self):
-    if self.is_running and not self.sprite_added:
+    if self.is_running and self._sprite and not self.sprite_added:
       self.sprite_added = True
       pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
 
   def _on_stop(self):
-    if self.sprite_added:
+    if self.sprite_added and self._sprite:
       pi3d.Display.Display.INSTANCE.remove_sprites(self._sprite)
 
