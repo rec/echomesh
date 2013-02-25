@@ -227,14 +227,14 @@ new: {}
 # These are the configuration settings for the pi3d Open GL library - please
 # see http://pi3d.github.com
 pi3d:
-  aspect: 60.0
-  background: [0, 0, 0, 0]  # Red, green, blue, alpha.
-  depth: 24
+  aspect: null
+  background: [255, 255, 255, 0.1]  # Red, green, blue, alpha.
+  depth: null
   dimensions: null  # Can be a 4-tuple: x, y, width, height.
-  far: 100.0
+  far: null
   frames_per_second: 30
   full_screen: true
-  near: 1.0
+  near: null
   tk: False
   window_title: ''
 
