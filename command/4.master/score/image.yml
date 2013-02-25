@@ -1,6 +1,15 @@
 type: image
+
+# I know this file exists, because I get a good error if I change the name.
 file: Raspi64x64.png
+
+# I've tried 10, 100 and -1 for z, nothing.
 z: 1
+
+# I've tried 100,100.
 position: [0, 0]
-duration: 200
+
+duration: 200 seconds
+
+# I've tried simply omitting this.
 size: 1.0
