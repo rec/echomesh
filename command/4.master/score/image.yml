@@ -1,8 +1,8 @@
 type: image
 file: Raspi64x64.png
-z: 20
-position: [0, 0]
-size: 1.0
+z: -20
+position: [100, 100]
+size: 100.0
 # z: { 0: 10, 10: 100, 20: 1000 }
 # size: { 0: 0.5, 5: 1.0, 10: 2.0 }
 #rotation:
