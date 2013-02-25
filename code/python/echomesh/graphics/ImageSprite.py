@@ -60,6 +60,9 @@ class ImageSprite(Runnable):
       envs = [self._position, self._rotation, self._size, self._z]
       self._duration = max(x.length for x in envs)
 
+    if not self._duration:
+      LOGGER.warning('An image sprite had a zero duration.')
+
   def coords(self, t):
     x, y = self._position.interpolate(t)
     z = self._z.interpolate(t)
@@ -75,7 +78,7 @@ class ImageSprite(Runnable):
         self._time = 0
         elapsed = 0
       else:
-        LOGGER.debug('Stopping image sprite')
+        LOGGER.info('Stopping image sprite')
         self.stop()
         return
 
@@ -86,7 +89,6 @@ class ImageSprite(Runnable):
     self.pi3d_sprite.rotateToX(xrot)
     self.pi3d_sprite.rotateToY(yrot)
     self.pi3d_sprite.rotateToZ(zrot)
-
     self.pi3d_sprite.draw()
 
   def _on_start(self):
