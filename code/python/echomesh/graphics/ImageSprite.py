@@ -32,7 +32,7 @@ class DeferredSprite(Loadable):
     self.texture = texture
 
   def _load_opengl(self):
-    self.texture = self.texture or CACHE.create(self.imagename, defer=False)
+    self.texture = self.texture or CACHE.create(self.imagename)
     x, y, z = self.coords
     self.pi3d_sprite = pi3d.ImageSprite(self.texture,
                                         w=self.texture.ix, h=self.texture.iy,
@@ -71,7 +71,7 @@ class ImageSprite(Runnable):
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
-    texture = CREATE_TEXTURE or CACHE.create(self.imagename, defer=True)
+    texture = CREATE_TEXTURE or CACHE.create(self.imagename)
     self.deferred_sprite = DeferredSprite(self.repaint, self.imagename,
                                           self.coords(0), shader,
                                           texture)
