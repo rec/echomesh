@@ -53,6 +53,7 @@ class ImageSprite(Runnable):
       LOGGER.warning('An image sprite had a zero duration.')
     self._sprite = None
     self.sprite()
+    self.sprite_added = False
 
   def sprite(self):
     if not self._sprite:
@@ -97,8 +98,14 @@ class ImageSprite(Runnable):
     self._sprite.draw()
 
   def _on_start(self):
-    pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
+    self._add_sprite()
+
+  def _add_sprite(self):
+    if not self.sprite_added:
+      self.sprite_added = True
+      pi3d.Display.Display.INSTANCE.add_sprites(self._sprite)
 
   def _on_stop(self):
-    pi3d.Display.Display.INSTANCE.remove_sprites(self._sprite)
+    if self.sprite_added:
+      pi3d.Display.Display.INSTANCE.remove_sprites(self._sprite)
 
