@@ -25,24 +25,24 @@ SCOPES_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
 configurations and scores live in one of five different types of "scopes".
 
-5.default:
+default:
   This is the default scope that comes with echomesh and contains only the
   default configuration, which cannot be changed by echomesh programs.
 
-4.master:
+master:
   This is the master scope which contains your master score.  Most of your
   work will be done here.
 
-3.platform:
+platform:
   The platform scope contains scores that are specific to platform of the
   machine that echomesh is running on, i.e the operating system and hardware.
 
   Right now, we have three platforms:  linux, darwin and windows.
 
-2.tag:
+tag:
   At configuration time, you can specify text tags for each machine.
 
-1.name:
+name:
   This directory contains scores that are only associated with a machine with
   the given name.
 

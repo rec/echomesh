@@ -15,7 +15,7 @@ def clean(*path):
 
 def _command_file(*path):
   path = clean(*path)
-  if path[0] == '5.default':
+  if path[0] == 'default':
     return os.path.join(Path.CODE_PATH, 'echomesh', 'config', *path[1:])
   else:
     return os.path.join(Path.PROJECT_PATH, 'command', *path)
@@ -25,12 +25,12 @@ def compute_command_path():
   global COMMAND_PATH
   config_path = os.path.join(Path.CODE_PATH, 'echomesh', 'config')
   COMMAND_PATH = ([
-    '1.name/' + Name.NAME] +
-    [('2.tag/' + t) for t in Name.TAGS] +
-    ['3.platform/' + Platform.PLATFORM,
-     '4.master',
-     _command_file('5.default/platform/%s' % Platform.PLATFORM),
-     _command_file('5.default')])
+    'name/' + Name.NAME] +
+    [('tag/' + t) for t in Name.TAGS] +
+    ['platform/' + Platform.PLATFORM,
+     'master',
+     _command_file('default/platform/%s' % Platform.PLATFORM),
+     _command_file('default')])
 
 compute_command_path()
 

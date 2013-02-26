@@ -12,15 +12,12 @@ from echomesh.util.thread.Runnable import Runnable
 from echomesh.util import ImportIf
 
 pi3d = ImportIf.imp('pi3d')
-from pi3d.util.Loadable import Loadable
 
 LOGGER = Log.logger(__name__)
 
 DEFAULT_Z = 100.0
 
 IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
-
-CACHE = pi3d.TextureCache()
 
 class ImageSprite(Runnable):
   CACHE = None
@@ -52,7 +49,10 @@ class ImageSprite(Runnable):
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
-    texture = CACHE.create(self.imagename)
+    if not ImageSprite.CACHE:
+      ImageSprite.CACHE = pi3d.TextureCache()
+
+    texture = ImageSprite.CACHE.create(self.imagename)
     x, y, z = self.coords(0)
     self.sprite = pi3d.ImageSprite(texture,
                                    w=texture.ix, h=texture.iy,

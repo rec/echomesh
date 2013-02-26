@@ -5,8 +5,10 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Runnable(object):
+  STOP, PAUSE, RUN = range(3)
+
   def __init__(self):
-    self.is_running = False
+    self.is_running = Runnable.STOP
 
   def start(self):
     if not self.is_running:
