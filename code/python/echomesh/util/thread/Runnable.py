@@ -5,14 +5,12 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Runnable(object):
-  STOP, PAUSE, RUN = range(3)
-
   def __init__(self):
-    self.is_running = Runnable.STOP
+    self.is_running = False
 
   def run(self):
     if not self.is_running:
-      self.is_running = Runnable.RUN
+      self.is_running = True
       self._on_run()
       LOGGER.debug('Started %s', self)
 

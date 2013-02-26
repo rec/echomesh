@@ -6,13 +6,13 @@ u''
 u'foo'
 
 >>> unique_name('bar', ['bar', 'baz'])
-u'bar.1'
+u'bar-2'
 
->>> unique_name('bar', ['bar', 'baz', 'bar.1',])
-u'bar.2'
+>>> unique_name('bar', ['bar', 'baz', 'bar-1',])
+u'bar-2'
 
->>> unique_name('bar.1', ['bar', 'baz', 'bar.1',])
-u'bar.2'
+>>> unique_name('bar-2', ['bar', 'baz', 'bar-2',])
+u'bar-3'
 
 """
 

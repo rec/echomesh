@@ -1,8 +1,8 @@
 """
 >>> registry = Registry.Registry('test')
->>> registry.register('foo', 'item1')
->>> registry.register('fot', 'item2')
->>> registry.register('bar', 'item3')
+>>> registry.register('item1', 'foo')
+>>> registry.register('item2', 'fot')
+>>> registry.register('item3', 'bar')
 >>> registry.get('foo')
 u'item1'
 
@@ -23,6 +23,6 @@ from echomesh.util import Registry
 
 def registry_exception(registry, name):
   try:
-    print(registry.get(name))
+    print('WRONG', registry.get(name))
   except Exception as e:
-    print(e)
+    print(str(e))

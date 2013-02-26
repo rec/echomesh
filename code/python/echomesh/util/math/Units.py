@@ -79,7 +79,7 @@ def convert(number, assume_minutes=True):
     return number
   number = number.strip()
 
-  if number in ['infinite', 'infinity']:
+  if number in ['inf', 'infinite', 'infinity']:
     return float('inf')
 
   t = convert_time(number, assume_minutes)

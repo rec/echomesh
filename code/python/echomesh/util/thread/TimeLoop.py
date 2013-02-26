@@ -30,6 +30,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
 
   def _before_thread_start(self):
     self.start_time = time.time()
+    self.stop_time = self.start_time
     self.next_loop_time = self.start_time
 
   def single_loop(self):
@@ -45,3 +46,6 @@ class TimeLoop(ThreadLoop.ThreadLoop):
 
   def next_time(self, t):
     return t + self.interval
+
+  def _after_thread_stop(self):
+    self.stop_time = time.time()

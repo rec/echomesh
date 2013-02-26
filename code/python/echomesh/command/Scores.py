@@ -46,9 +46,7 @@ name:
   This directory contains scores that are only associated with a machine with
   the given name.
 
-
 """
-
 
 def _scores(path, resolve=False, scope='all', recursive=False):
   printed = False
