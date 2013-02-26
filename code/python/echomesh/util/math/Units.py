@@ -5,10 +5,6 @@ import re
 import six
 from pyparsing import Expressions
 
-_TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
-_HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
-_ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
-
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
 
@@ -32,6 +28,12 @@ UNITS_SOURCE = {
   ('s', 'seconds', 'second', 'sec'): make_scale(1),
   ('semitone', 'semitones'): make_log(12, 2),
 }
+
+INFINITY = set(('inf', 'infinite', 'infinity'))
+
+_TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
+_HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
+_ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
 
 def list_units(separator='\n  '):
   keys = UNITS_SOURCE.iterkeys()
@@ -77,9 +79,9 @@ def convert_number(number):
 def convert(number, assume_minutes=True):
   if not (number and isinstance(number, six.string_types)):
     return number
-  number = number.strip()
+  number = number.strip().lower()
 
-  if number in ['inf', 'infinite', 'infinity']:
+  if number in INFINITY:
     return float('inf')
 
   t = convert_time(number, assume_minutes)

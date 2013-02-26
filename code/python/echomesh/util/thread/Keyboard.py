@@ -68,7 +68,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.stop()
 
 
-USE_CURSES = not True
+USE_CURSES = Config.get('control_program', 'use_curses')
 
 if USE_CURSES:
 
