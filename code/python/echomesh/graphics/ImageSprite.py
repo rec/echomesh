@@ -30,12 +30,12 @@ class DeferredSprite(Loadable):
     self.shader = shader
     self.texture = texture
 
-  def _load_opengl(self):
     x, y, z = self.coords
     self.pi3d_sprite = pi3d.ImageSprite(self.texture,
                                         w=self.texture.ix, h=self.texture.iy,
                                         shader=Shader.shader(self.shader),
                                         x=x, y=y, z=z)
+    self.pi3d_sprite.repaint = repaint
 
 CREATE_TEXTURE = True
 
