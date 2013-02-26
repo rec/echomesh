@@ -22,21 +22,6 @@ IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 
 CACHE = pi3d.TextureCache()
 
-class DeferredSprite(Loadable):
-  def __init__(self, repaint, coords, shader, texture):
-    super(DeferredSprite, self).__init__()
-    self.repaint = repaint
-    self.coords = coords
-    self.shader = shader
-    self.texture = texture
-
-    x, y, z = self.coords
-    self.pi3d_sprite = pi3d.ImageSprite(self.texture,
-                                        w=self.texture.ix, h=self.texture.iy,
-                                        shader=Shader.shader(self.shader),
-                                        x=x, y=y, z=z)
-    self.pi3d_sprite.repaint = repaint
-
 class ImageSprite(Runnable):
   CACHE = None
 
@@ -68,8 +53,12 @@ class ImageSprite(Runnable):
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')
     texture = CACHE.create(self.imagename)
-    self.deferred_sprite = DeferredSprite(self.repaint, self.coords(0), shader,
-                                          texture)
+    x, y, z = self.coords(0)
+    self.sprite = pi3d.ImageSprite(texture,
+                                   w=texture.ix, h=texture.iy,
+                                   shader=Shader.shader(shader),
+                                   x=x, y=y, z=z)
+    self.sprite.repaint = self.repaint
 
   def coords(self, t):
     x, y = self._position.interpolate(t)
@@ -90,25 +79,23 @@ class ImageSprite(Runnable):
         self.stop()
         return
 
-    sprite = self.deferred_sprite.pi3d_sprite
-
-    sprite.position(*self.coords(elapsed))
+    self.sprite.position(*self.coords(elapsed))
     size = self._size.interpolate(elapsed)
-    sprite.scale(size, size, size)
+    self.sprite.scale(size, size, size)
     xrot, yrot, zrot = self._rotation.interpolate(elapsed)
-    sprite.rotateToX(xrot)
-    sprite.rotateToY(yrot)
-    sprite.rotateToZ(zrot)
-    sprite.draw()
+    self.sprite.rotateToX(xrot)
+    self.sprite.rotateToY(yrot)
+    self.sprite.rotateToZ(zrot)
+    self.sprite.draw()
 
   def _on_start(self):
     self._add_sprite()
 
   def _add_sprite(self):
-    pi3d.Display.Display.INSTANCE.add_sprites(self.deferred_sprite.pi3d_sprite)
+    pi3d.Display.Display.INSTANCE.add_sprites(self.sprite)
 
 
   def _on_stop(self):
-    pi3d.Display.Display.INSTANCE.remove_sprites(self.deferred_sprite.pi3d_sprite)
+    pi3d.Display.Display.INSTANCE.remove_sprites(self.sprite)
 
 
