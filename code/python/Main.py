@@ -77,7 +77,7 @@ def run():
       print(i, ':', int(1000 * (times[i + 1] - times[i])))
     print()
 
-  echomesh.start()
+  echomesh.run()
   echomesh.loop()
   echomesh.join()
 

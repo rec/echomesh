@@ -21,6 +21,6 @@ class Random(Loop.Loop):
     return t + Poisson.next_poisson(self.mean)
 
   def loop_target(self, t):
-    self.element.start()
+    self.element.run()
 
 Element.register(Random)

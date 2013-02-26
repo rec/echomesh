@@ -110,7 +110,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
             if element.is_running:
               LOGGER.print_error('Element %s was already running.', full_name)
             else:
-              element.start()
+              element.run()
           else:
             if element.is_running:
               element.stop()

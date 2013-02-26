@@ -51,7 +51,7 @@ class Sequence(Loop.Loop):
     while self.next_command <= len(self.elements) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
       if self.next_command < len(self.elements):
-        self.elements[self.next_command].start()
+        self.elements[self.next_command].run()
       self.next_command += 1
 
 Element.register(Sequence)

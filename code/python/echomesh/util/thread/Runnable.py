@@ -10,9 +10,9 @@ class Runnable(object):
   def __init__(self):
     self.is_running = Runnable.STOP
 
-  def start(self):
+  def run(self):
     if not self.is_running:
-      self.is_running = True
+      self.is_running = Runnable.RUN
       self._on_start()
       LOGGER.debug('Started %s', self)
 

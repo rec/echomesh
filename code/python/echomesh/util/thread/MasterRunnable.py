@@ -32,10 +32,10 @@ class MasterRunnable(Runnable):
     for c in clients:
       c and c.stoppables.add(self)
 
-  def start(self):
+  def run(self):
     if not self.is_running:
-      super(MasterRunnable, self).start()
-      ex = self.runnables.foreach(lambda e: e.start())
+      super(MasterRunnable, self).run()
+      ex = self.runnables.foreach(lambda e: e.run())
       if ex:
         LOGGER.error('Error%s during start:\n%s', ('s' if len(ex) > 1 else ''),
                      '   \n'.join(str(e) for e in ex))

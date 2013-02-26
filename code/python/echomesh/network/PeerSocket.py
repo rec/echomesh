@@ -35,7 +35,7 @@ class PeerSocket(MasterRunnable):
   def _make_socket(self):
     self.socket = DataSocket.DataSocket(self.port, self.timeout, self.router)
     self.add_mutual_stop_slave(self.socket)
-    self.socket.start()
+    self.socket.run()
 
   def config_update(self, get):
     self.port, old_port = get('discovery', 'port'), self.port

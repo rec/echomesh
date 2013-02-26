@@ -20,8 +20,8 @@ class BroadcastSend(Broadcast):
     def send(socket, data):
       socket.sendto(data, ('<broadcast>', self.port))
 
-    def start():
-
+    def run():
+      pass
 
     super(BroadcastSend, self).__init__(
       create=create, send=send, start=start, **kwds)
