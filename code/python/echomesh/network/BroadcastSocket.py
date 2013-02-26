@@ -19,8 +19,8 @@ class Send(BroadcastSocket):
   def __init__(self, port):
     super(Send, self).__init__(port, 0)
 
-  def _on_start(self):
-    super(Send, self)._on_start()
+  def _on_run(self):
+    super(Send, self)._on_run()
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def _raw_send(self, res):
@@ -43,8 +43,8 @@ class Receive(BroadcastSocket):
   def __init__(self, port):
     super(Receive, self).__init__(port, port)
 
-  def _on_start(self):
-    super(Receive, self)._on_start()
+  def _on_run(self):
+    super(Receive, self)._on_run()
     self.socket.setblocking(0)
 
   def old_receive(self, timeout):

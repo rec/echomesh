@@ -39,7 +39,7 @@ class Display(Runnable.Runnable):
     if self.display:
       self.display.frames_per_second = get('pi3d', 'frames_per_second')
 
-  def _on_start(self):
+  def _on_run(self):
     if self.display:
       self.display.first_time = True
       self.display.is_running = True

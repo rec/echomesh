@@ -20,6 +20,6 @@ class Server(TcpIp):
     super(Server, self).__init__(port, bind_port, hostname or socket.gethostname())
     self.max_connections = max_connections
 
-  def _on_start(self):
-    super(Server, self)._on_start()
+  def _on_run(self):
+    super(Server, self)._on_run()
     self.socket.listen(self.max_connections)

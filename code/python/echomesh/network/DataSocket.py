@@ -29,7 +29,7 @@ class DataSocket(MasterRunnable):
       else:
         raise
 
-  def _on_start(self):
+  def _on_run(self):
     self.receive_socket.run()
     self.send_socket.run()
     self.select_loop = SelectLoop.SelectLoop(self.receive_socket)

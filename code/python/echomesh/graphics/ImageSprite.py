@@ -88,7 +88,7 @@ class ImageSprite(Runnable):
     self.sprite.rotateToZ(zrot)
     self.sprite.draw()
 
-  def _on_start(self):
+  def _on_run(self):
     self._add_sprite()
 
   def _add_sprite(self):

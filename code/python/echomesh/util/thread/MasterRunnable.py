@@ -47,7 +47,3 @@ class MasterRunnable(Runnable):
       if ex:
         LOGGER.error('Errors during stop:\n%s', '\n'.join(str(e) for e in ex))
       super(MasterRunnable, self).stop()
-
-  def join(self):
-    super(MasterRunnable, self).join()
-    self.runnables.foreach(lambda e: e.join())

@@ -17,7 +17,7 @@ class ThreadRunnable(MasterRunnable):
       assert self.target
     self.report_error = report_error
 
-  def _on_start(self):
+  def _on_run(self):
     self._before_thread_start()
     def target():
       try:
@@ -39,12 +39,3 @@ class ThreadRunnable(MasterRunnable):
 
   def _after_thread_stop(self):
     pass
-
-  def join(self):
-    super(ThreadRunnable, self).join()
-    LOGGER.debug('Join for "%s"', self.name)
-    try:
-      self.thread.join()
-    except:
-      pass
-    LOGGER.debug('Finished join for "%s"', self.name)

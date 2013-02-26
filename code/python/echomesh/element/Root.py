@@ -19,7 +19,7 @@ class Root(Element.Element):
     self.add_slave(*self.elements)
     self.load_time, self.run_time, self.stop_time = time.time(), 0, 0
 
-  def _on_start(self):
+  def _on_run(self):
     self.run_time = time.time()
 
   def _on_stop(self):

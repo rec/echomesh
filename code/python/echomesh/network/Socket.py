@@ -69,7 +69,7 @@ class Socket(MasterRunnable):
   def _raw_send(self, packet):
     pass
 
-  def _on_start(self):
+  def _on_run(self):
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.max_size)
     try:

@@ -42,7 +42,7 @@ class Sequence(Loop.Loop):
         self.stop()
         return 0
 
-  def _on_start(self):
+  def _on_run(self):
     self.start_time = time.time()
     self.current_loop = 0
     self.next_command = 0

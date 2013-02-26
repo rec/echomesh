@@ -33,7 +33,7 @@ class Peers(Runnable.Runnable):
   def _send(self):
     self.echomesh.send(**self.data)
 
-  def _on_start(self):
+  def _on_run(self):
     self._send()
 
   def new_peer(self, data):

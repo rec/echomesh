@@ -12,7 +12,7 @@ class Handler(Element.Element):
     self.handler_parent = None
     self.event_type = description.get('event_type')
 
-  def _on_start(self):
+  def _on_run(self):
     p = self
     while p and not hasattr(p, 'add_handler'):
       p, childp = p.parent, p

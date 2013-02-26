@@ -122,7 +122,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
     return full_names
 
-  def _on_start(self):
+  def _on_run(self):
     try:
       self.run_scores(*self.scores_to_add)
     except Exception as e:

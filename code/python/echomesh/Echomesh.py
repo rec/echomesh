@@ -52,7 +52,7 @@ class Echomesh(MasterRunnable):
     self.display.loop()
 
   def join(self):
-    self.keyboard.join()
+    self.keyboard.thread.join()
 
   def _mic_event(self, level):
     self.send(type='event', event_type='mic', key=level)

@@ -8,7 +8,7 @@ from echomesh.sound import GoogleTextToSpeech
 LOGGER = Log.logger(__name__)
 
 class TextToSpeech(Element.Element):
-  def _on_start(self):
+  def _on_run(self):
     self.handle(self.description)
 
   def handle(self, event):

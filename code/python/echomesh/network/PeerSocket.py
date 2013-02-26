@@ -28,7 +28,7 @@ class PeerSocket(MasterRunnable):
       data['source'] = Name.NAME
       self.socket.send(data)
 
-  def _on_start(self):
+  def _on_run(self):
     if not self.socket:
       self._make_socket()
 
