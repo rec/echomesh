@@ -37,8 +37,6 @@ class DeferredSprite(Loadable):
                                         x=x, y=y, z=z)
     self.pi3d_sprite.repaint = repaint
 
-CREATE_TEXTURE = True
-
 class ImageSprite(Runnable):
   CACHE = None
 
@@ -107,10 +105,10 @@ class ImageSprite(Runnable):
     self._add_sprite()
 
   def _add_sprite(self):
-    pi3d.Display.Display.INSTANCE.add_sprites(self.deferred_sprite)
+    pi3d.Display.Display.INSTANCE.add_sprites(self.deferred_sprite.pi3d_sprite)
 
 
   def _on_stop(self):
-    pi3d.Display.Display.INSTANCE.remove_sprites(self.deferred_sprite)
+    pi3d.Display.Display.INSTANCE.remove_sprites(self.deferred_sprite.pi3d_sprite)
 
 
