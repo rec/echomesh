@@ -22,15 +22,15 @@ FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 _LOG_SIGNATURE = 'util/Log.py'
 _ERROR_COUNTER = {}
 
-def _check_error_count(limit):
+def _check_error_count(limit, every):
   for line in traceback.format_stack(): # reversed(traceback.format_stack()):
     if _LOG_SIGNATURE not in line:
       errors = _ERROR_COUNTER.get(line, 0)
-      if errors < limit:
-        _ERROR_COUNTER[line] = errors + 1
-        return True
-      else:
+      if limit is not None and errors >= limit:
         return False
+      _ERROR_COUNTER[line] = errors + 1
+      return not (every and (errors % every))
+
 
 class ConfigSetter(object):
   def config_update(self, get):
@@ -66,12 +66,15 @@ def logger(name=None):
   log = logging.getLogger(name or 'logging')
   original_error_logger = log.error
 
-  def new_error_logger(message, *args, **kwds):
+  def new_error_logger(*args, **kwds):
     limit = kwds.pop('limit', None)
-    if limit is not None:
-      if not _check_error_count(limit):
+    every = kwds.pop('every', None)
+
+    if limit is not None or limit is not None:
+      if not _check_error_count(limit, every):
         return
 
+    message = args.pop(0) if args else ''
     exc_type, exc_value = sys.exc_info()[:2]
     if exc_type:
       message = '%s: %s' % (exc_value, message)

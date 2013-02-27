@@ -26,7 +26,6 @@ class Microphone(ThreadRunnable.ThreadRunnable):
     super(Microphone, self).__init__(name='Microphone')
     self.callback = callback
     self.previous_level_name = None
-    self.errors = 0
     self.stream = None
     Config.add_client(self)
 
@@ -99,12 +98,9 @@ class Microphone(ThreadRunnable.ThreadRunnable):
         yield self.level
       except GeneratorExit:
         pass
-      except IOError:
-        self.errors += 1
-        if not (self.errors % 20):
-          LOGGER.error('errors %d', self.errors, limit=20)
       except:
-        LOGGER.error('error', exc_info=1)
+        if self.is_running:
+          LOGGER.error(limit=20, every=20)
 
 
 def microphone(callback):
