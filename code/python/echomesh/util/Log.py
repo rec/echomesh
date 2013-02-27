@@ -12,49 +12,56 @@ import traceback
 
 VERBOSE_LOGGING = False
 PRINT_STACK_TRACES = False
+DEFAULT_FORMAT = '%(message)s'
+DEBUG_FORMAT = '%(name)s: %(message)s'
+FILE_FORMAT = '"%(asctime)s %(levelname)s: %(name)s: %(message)s'
+DEBUG = False
+STACK_TRACES = False
+LOG_LEVEL = 'INFO'
 
 from echomesh.util.file import MakeDirs
 
 class ConfigSetter(object):
   def config_update(self, get):
-    if get:
-      self.kwds = {'format': get('logging', 'format')}
-      f = get('logging', 'file')
-      if f:
-        self.kwds['filename'] = f
+    self.debug = DEBUG or (get and get('debug'))
+    self.stack_traces = STACK_TRACES or self.debug or (
+      get and get('diagnostics', 'stack_traces'))
+    self.log_level = (get and get('logging','level').upper()) or LOG_LEVEL
 
-      self.log_level = get('logging','level').upper()
-
+    self.kwds = {u'level': getattr(logging, self.log_level)}
+    f = get and get('logging', 'file')
+    if f:
+      self.kwds[u'filename'] = f
     else:
-      self.kwds = {'format': '%(asctime)s %(levelname)s: %(name)s: %(message)s'}
-      self.log_level = 'INFO'
+      self.kwds[u'stream'] = sys.stdout
 
-    self.kwds['level'] = getattr(logging, self.log_level)
-    if 'filename' not in self.kwds:
-      self.kwds['stream'] = sys.stdout
-    # logging.basicConfig(**self.kwds)
-    logging.basicConfig(**dict((str(k), v) for (k, v) in self.kwds.iteritems()))
+    self.kwds[u'format'] = (get and get('logging', 'format')) or (
+      FILE_FORMAT if f else
+      DEBUG_FORMAT if self.debug
+      else DEFAULT_FORMAT)
+
+    logging.basicConfig(**self.kwds)
+
 
 CONFIG = ConfigSetter()
 try:
   from echomesh.base import Config
   Config.add_client(CONFIG)
-  STACK_TRACES = Config.get('diagnostics', 'stack_traces')
 except:
   CONFIG.config_update(None)
 
-def _print(string, *args):
-  print(string % args)
-
-def _print_error(string, *args, **kwds):
-  if kwds.get('exc_info', STACK_TRACES):
-    traceback.print_exc()
-  print('ERROR: %s\n%s' % (sys.exc_info()[1], string % args))
+def _error_wrapper(error_logger):
+  def f(message, *args, **kwds):
+    exc_type, exc_value = sys.exc_info()[:2]
+    if exc_type:
+      message = '%s: %s' % (exc_value, message)
+      kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
+    error_logger(message, *args, **kwds)
+  return f
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
-  setattr(log, 'print', log.info if VERBOSE_LOGGING else _print)
-  setattr(log, 'print_error', log.error if VERBOSE_LOGGING else _print_error)
+  log.error = _error_wrapper(log.error)
   return log
 
 LOGGER = logger(__name__)

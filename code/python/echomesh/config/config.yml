@@ -131,20 +131,24 @@ delay_before_keyboard_activates: 0.5 seconds
 
 delete_backups_after_transfer: false
 
+# Turns on various debugging mechanisms and gives better diagnositics.
+# Does not turn on debug logging.
+debug: false
+
 diagnostics:
   # The diagnostics section lets echomesh developers get more information
   # about the running program.
-
-  # If true, on quit echomesh prints a list of configs that were never read.
-  unused_configs: false
 
   # If true, on quit echomesh prints a list millisecond startup timings
   # for the code in Main.py.
   startup_times: false
 
-  # If true, when there's any exception in the system, the entire stack trace
-  # is printed out.
+  # If true, or if debug is true, when there's any exception in the system, the
+  # entire stack trace is printed out.
   stack_traces: false
+
+  # If true, on quit echomesh prints a list of configs that were never read.
+  unused_configs: false
 
 
 # The discovery section controls how the echomesh unit contacts other nodes.
@@ -192,13 +196,16 @@ logging:
   # a warning.
   file: ""  # Empty means "don't log to a file".
 
-  # This is the output format for log messages - it includes
+  # This is the long output format for log messages - it includes
   #   * the time
   #   * the level of logging (debug, info, warn, error, critical)
   #   * the name of the Python file it came from
   #   * the actual message.
-  # You can certainly override this.
-  format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
+  # format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"
+
+  # An empty format means that the program decides what format to use based on
+  # your diagnostics level and error level.
+  format: ''
 
   # This filters out the levels of logging.  At the default "info" level,
   # you'll everything except debugging information.

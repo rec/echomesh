@@ -47,7 +47,7 @@ def execute(echomesh_instance, line):
   try:
     line = FindComment.remove_comment(line).strip()
     if not line:
-      LOGGER.print('')
+      LOGGER.info('')
       return
     parts = Split.split_words(line)
     name = parts.pop(0)
@@ -57,8 +57,8 @@ def execute(echomesh_instance, line):
     try:
       return function(echomesh_instance, *parts)
     except TypeError as e:
-      LOGGER.print_error((_fix_exception_message(str(e), name)))
+      LOGGER.error((_fix_exception_message(str(e), name)))
 
   except Exception as e:
-    LOGGER.print_error("%s\n%s", str(e), usage())
+    LOGGER.error("%s\n%s", str(e), usage())
 

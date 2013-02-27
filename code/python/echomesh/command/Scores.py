@@ -19,7 +19,7 @@ def _time(t):
 ELEMENT_FORMAT = '%-28s %5s %9s %9s %9s'
 
 def scopes(echomesh):
-  LOGGER.print('  ' + ('\n  '.join(CommandFile.COMMAND_PATH)))
+  LOGGER.info('  ' + ('\n  '.join(CommandFile.COMMAND_PATH)))
 
 SCOPES_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
@@ -66,17 +66,17 @@ def _scores(path, resolve=False, scope='all', recursive=False):
         if not printed_this_time:
           printed_this_time = True
           if not printed:
-            LOGGER.print(ELEMENT_FORMAT, 'File name', 'Size', 'Accessed',
+            LOGGER.info(ELEMENT_FORMAT, 'File name', 'Size', 'Accessed',
                          'Modified', 'Created')
             printed = True
           else:
-            LOGGER.print('\n')
-          LOGGER.print('  %s/%s:', scope, path)
+            LOGGER.info('\n')
+          LOGGER.info('  %s/%s:', scope, path)
         if is_dir:
-          LOGGER.print('    %s/', f)
+          LOGGER.info('    %s/', f)
         else:
           stat = os.stat(joined_f)
-          LOGGER.print(ELEMENT_FORMAT,
+          LOGGER.info(ELEMENT_FORMAT,
                        '    ' + f, SizeName.size_name(stat.st_size),
                        _time(stat.st_atime),
                        _time(stat.st_mtime),

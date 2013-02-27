@@ -20,9 +20,9 @@ TRANSFER_ALL_FILES = True
 
 def transfer(echomesh_instance, *path):
   if not path:
-    LOGGER.print(TRANSFER_PROMPT)
+    LOGGER.info(TRANSFER_PROMPT)
     if not raw_input().lower().startswith('y'):
-      LOGGER.print('Transfer cancelled.')
+      LOGGER.info('Transfer cancelled.')
       return
     path = ['*']
   if '*' in path or '.' in path:
@@ -31,7 +31,7 @@ def transfer(echomesh_instance, *path):
   files, directories = _get_files_to_transfer(path)
 
   s = '' if len(files) is 1 else 's'
-  LOGGER.print('Transferred %d file%s.' % (len(files), s))
+  LOGGER.info('Transferred %d file%s.' % (len(files), s))
   echomesh.send(type='transfer',
                 directories=sorted(directories),
                 files=files)

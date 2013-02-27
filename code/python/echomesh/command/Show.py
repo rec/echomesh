@@ -20,7 +20,7 @@ def _info(d, spaces='  '):
     items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
     length = max(len(k) for k, v in items)
     s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
-  LOGGER.print('\n%s\n' % s)
+  LOGGER.info('\n%s\n' % s)
 
 ADDRESSES_HELP = """
 Shows:
@@ -40,7 +40,7 @@ by "echomesh!"
 
 """
 def broadcast(echomesh_instance):
-  LOGGER.print('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
+  LOGGER.info('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
 
 
 
@@ -94,7 +94,7 @@ See "help show info" for more information.
 
 def nodes(echomesh_instance):
   for name, peer in echomesh.peers.get_peers().iteritems():
-    LOGGER.print('%s: ' % name)
+    LOGGER.info('%s: ' % name)
     _info(peer)
 
 ELEMENTS_HELP = """
@@ -109,7 +109,7 @@ def elements(echomesh_instance):
   if info:
     _info(info)
   else:
-    LOGGER.print('No elements in memory')
+    LOGGER.info('No elements in memory')
 
 SOUND_HELP = """
 Show all the sound interfaces available on this machine.
@@ -126,7 +126,7 @@ semitones and decibels.  "show units" lists these units and their synonyms
 """
 
 def units(echomesh_instance):
-  LOGGER.print('\nUnits are: %s', Units.list_units())
+  LOGGER.info('\nUnits are: %s', Units.list_units())
 
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
@@ -147,7 +147,7 @@ SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
 
 def _show(echomesh_instance, *parts):
   if not parts:
-    LOGGER.print('\n' + SHOW_USAGE)
+    LOGGER.info('\n' + SHOW_USAGE)
   else:
     for name in parts:
       function = SHOW_REGISTRY.get(name)

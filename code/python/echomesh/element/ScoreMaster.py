@@ -27,20 +27,12 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()  # TODO: fill in locking
-    self.scores_to_add = Split.split_scores(Config.get('score'))
-    self.scores_to_load = Split.split_scores(Config.get('load_score'))
+    self.scores_to_add = Split.split_scores2(Config.get('score'))
+    self.scores_to_load = Split.split_scores2(Config.get('load_score'))
 
-  def load_scores(self, scores, names=None):
-    if not names:
-      items = [(s, None) for s in scores]
-    else:
-      items = list(itertools.izip_longest(scores, names))
-      if len(names) > len(scores):
-        LOGGER.warning('You have more names than scores.')
-        items = items[:len(scores)]
-
+  def load_elements(self, score_names):
     full_names = []
-    for score_file, name in items:
+    for score_file, name in score_names:
       resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
       elements = Yaml.read(resolved_file)
       description = {'elements': elements, 'type': 'score'}
@@ -50,7 +42,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       try:
         element = Root.Root(None, description, final_file)
       except Exception as e:
-        LOGGER.print_error("Couldn't read score file %s", score_file)
+        LOGGER.error("Couldn't read score file %s", score_file)
         continue
 
       with self.lock:
@@ -62,8 +54,18 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       element.name = name
     return full_names
 
-  def run_scores(self, scores, names=None):
-    return self.start_elements(self.load_scores(scores, names))
+  def run_elements(self, score_names):
+    element_names = []
+    for score_file, name in score_names:
+      is_file = score_file.endswith('.yml')
+      if name:
+        is_file = True
+        score_file = Yaml.file(score_file)
+      if is_file:
+        element_names.extend(self.load_elements([[score_file, name]]))
+      else:
+        element_names.append(name)
+    return self.start_elements(element_names)
 
   def start_elements(self, names):
     return self._for_each_element(names, ScoreMaster.START)
@@ -99,41 +101,38 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       full_names = []
       for name in names:
         try:
-          full_name, element = GetPrefix.get_prefix_and_match(
-            self.elements, name, 'element')
+          self._for_one_element(name, action)
         except Exception as e:
-          LOGGER.print_error('%s', str(e))
-        else:
-          full_names.append(full_name)
-
-          if action == ScoreMaster.START:
-            if element.is_running:
-              LOGGER.print_error('Element %s was already running.', full_name)
-            else:
-              element.run()
-          else:
-            if element.is_running:
-              element.stop()
-            elif action == ScoreMaster.STOP:
-              LOGGER.print_error('Element %s was not running.', name)
-
-            if action == ScoreMaster.UNLOAD:
-              del self.elements[full_name]
-
+          LOGGER.error('%s', str(e))
     return full_names
 
-  def _on_run(self):
-    try:
-      self.run_scores(*self.scores_to_add)
-    except Exception as e:
-      LOGGER.print_error(str(e))
-    self.scores_to_add = ()
+  def _for_one_element(self, name, action):
+    full_name, element = GetPrefix.get_prefix_and_match(
+      self.elements, name, 'element')
 
-    try:
-      self.load_scores(*self.scores_to_load)
-    except Exception as e:
-      LOGGER.print_error(str(e))
-    self.scores_to_load = ()
+    full_names.append(full_name)
+
+    if action == ScoreMaster.START:
+      if element.is_running:
+        raise Exception('Element %s was already running.' % full_name)
+      element.run()
+    else:
+      if element.is_running:
+        element.stop()
+      elif action == ScoreMaster.STOP:
+        raise Exception('Element %s was not running.' % full_name)
+
+      if action == ScoreMaster.UNLOAD:
+        del self.elements[full_name]
+
+  def _on_run(self):
+    for function, scores in ((self.run_elements, self.scores_to_add),
+                             (self.load_elements, self.scores_to_load)):
+      try:
+        function(Split.pair_split(scores))
+      except Exception as e:
+        LOGGER.error(str(e))
+      scores[:] = []
 
   def _on_stop(self):
     try:

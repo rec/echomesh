@@ -20,7 +20,7 @@ def broadcast(echomesh_instance, on_or_off=None):
     else:
       echomesh_instance.set_broadcasting(b_on)
       message = 'is now'
-    LOGGER.print('broadcast mode %s %s.', message, name)
+    LOGGER.info('broadcast mode %s %s.', message, name)
 
 BROADCAST_HELP = """
 Set the broadcast mode on or off.

@@ -15,9 +15,9 @@ def split_words(s):
 def split_list(parts, splitter):
   if splitter in parts:
     loc = parts.index(splitter)
-    return parts[0:loc], parts[loc + 1:]
+    return [parts[0:loc], parts[loc + 1:]]
   else:
-    return parts, []
+    return [parts, []]
 
 def split_scores(scores):
   if not scores:
@@ -48,3 +48,10 @@ def pair_split(items, split='as'):
       parts.append(item)
   result.extend((s, None) for s in queue + parts)
   return result
+
+def split_scores2(scores):
+  if not scores:
+    return []
+  if isinstance(scores, six.string_types):
+    scores = split_words(scores)
+  return pair_split(scores)
