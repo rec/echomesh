@@ -26,9 +26,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def __init__(self):
     super(ScoreMaster, self).__init__()
     self.elements = {}
-    self.lock = threading.Lock()  # TODO: fill in locking
-    self.scores_to_add = Split.split_scores2(Config.get('score'))
-    self.scores_to_load = Split.split_scores2(Config.get('load_score'))
+    self.lock = threading.Lock()
+    self.scores_to_add = Split.split_scores(Config.get('score'))
+    self.scores_to_load = Split.split_scores(Config.get('load_score'))
 
   def load_elements(self, score_names):
     full_names = []
@@ -101,7 +101,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       full_names = []
       for name in names:
         try:
-          self._for_one_element(name, action)
+          full_names.append(self._for_one_element(name, action))
         except Exception:
           LOGGER.error('')
     return full_names
@@ -109,8 +109,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def _for_one_element(self, name, action):
     full_name, element = GetPrefix.get_prefix_and_match(
       self.elements, name, 'element')
-
-    full_names.append(full_name)
 
     if action == ScoreMaster.START:
       if element.is_running:
@@ -125,11 +123,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       if action == ScoreMaster.UNLOAD:
         del self.elements[full_name]
 
+    return full_name
+
   def _on_run(self):
     for function, scores in ((self.run_elements, self.scores_to_add),
                              (self.load_elements, self.scores_to_load)):
       try:
-        function(Split.pair_split(scores))
+        function(scores)
       except Exception as e:
         LOGGER.error('')
       scores[:] = []

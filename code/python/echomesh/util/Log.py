@@ -10,16 +10,27 @@ import logging.config
 import sys
 import traceback
 
-VERBOSE_LOGGING = False
-PRINT_STACK_TRACES = False
-DEFAULT_FORMAT = '%(levelname)s: %(message)s'
-DEBUG_FORMAT = '%(levelname)s: %(name)s: %(message)s'
-FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 DEBUG = False
 STACK_TRACES = False
+
 LOG_LEVEL = 'INFO'
 
-from echomesh.util.file import MakeDirs
+DEFAULT_FORMAT = '%(message)s'
+DEBUG_FORMAT = '%(name)s: %(message)s'
+FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
+
+_LOG_SIGNATURE = 'util/Log.py'
+_ERROR_COUNTER = {}
+
+def _check_error_count(limit):
+  for line in traceback.format_stack(): # reversed(traceback.format_stack()):
+    if _LOG_SIGNATURE not in line:
+      errors = _ERROR_COUNTER.get(line, 0)
+      if errors < limit:
+        _ERROR_COUNTER[line] = errors + 1
+        return True
+      else:
+        return False
 
 class ConfigSetter(object):
   def config_update(self, get):
@@ -29,14 +40,14 @@ class ConfigSetter(object):
     self.log_level = (get and get('logging','level').upper()) or LOG_LEVEL
 
     self.kwds = {u'level': getattr(logging, self.log_level)}
-    f = get and get('logging', 'file')
-    if f:
-      self.kwds[u'filename'] = f
+    self.filename = get and get('logging', 'file')
+    if self.filename:
+      self.kwds[u'filename'] = filename
     else:
       self.kwds[u'stream'] = sys.stdout
 
     self.kwds[u'format'] = (get and get('logging', 'format')) or (
-      FILE_FORMAT if f else
+      FILE_FORMAT if self.filename else
       DEBUG_FORMAT if self.debug
       else DEFAULT_FORMAT)
 
@@ -50,22 +61,28 @@ try:
 except:
   CONFIG.config_update(None)
 
-def _error_wrapper(error_logger):
-  return f
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
   original_error_logger = log.error
 
   def new_error_logger(message, *args, **kwds):
+    limit = kwds.pop('limit', None)
+    if limit is not None:
+      if not _check_error_count(limit):
+        return
+
     exc_type, exc_value = sys.exc_info()[:2]
     if exc_type:
       message = '%s: %s' % (exc_value, message)
       kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
+    if not CONFIG.filename:
+      message = 'ERROR: %s' % message
     original_error_logger(message, *args, **kwds)
 
   log.error = new_error_logger
   return log
+
 
 LOGGER = logger(__name__)
 LOGGER.debug('Log level is %s', CONFIG.log_level)

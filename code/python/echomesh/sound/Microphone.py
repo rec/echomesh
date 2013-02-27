@@ -102,8 +102,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
       except IOError:
         self.errors += 1
         if not (self.errors % 20):
-          LOGGER.error('errors %d', self.errors)
-
+          LOGGER.error('errors %d', self.errors, limit=20)
       except:
         LOGGER.error('error', exc_info=1)
 

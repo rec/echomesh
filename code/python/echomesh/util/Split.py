@@ -12,28 +12,6 @@ LOGGER = Log.logger(__name__)
 def split_words(s):
   return [i for i in WORD_SPLITTER.split(s) if i]
 
-def split_list(parts, splitter):
-  if splitter in parts:
-    loc = parts.index(splitter)
-    return [parts[0:loc], parts[loc + 1:]]
-  else:
-    return [parts, []]
-
-def split_scores(scores):
-  if not scores:
-    return [], None
-  if isinstance(scores, six.string_types):
-    score_list = split_words(scores)
-  else:
-    score_list = scores
-  if isinstance(score_list[0], six.string_types):
-    return split_list(score_list, 'as')
-  if len(scores) == 1:
-    return scores[0], None
-  if len(scores) == 2:
-    return scores
-  raise Exception("Didn't understand scores config: %s" % scores)
-
 def pair_split(items, split='as'):
   result = []
   queue, parts = [], []
@@ -49,7 +27,7 @@ def pair_split(items, split='as'):
   result.extend((s, None) for s in queue + parts)
   return result
 
-def split_scores2(scores):
+def split_scores(scores):
   if not scores:
     return []
   if isinstance(scores, six.string_types):
