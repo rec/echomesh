@@ -36,15 +36,15 @@ def split_scores(scores):
 
 def pair_split(items, split='as'):
   result = []
-  stack, parts = [], []
+  queue, parts = [], []
   for item in items:
     if item.lower() == split:
-      if stack or not parts:
+      if queue or not parts:
         raise Exception('Couldn\'t correctly understand %s" in %s' % (split, items))
-      stack, parts = parts, []
-    elif stack:
-      result.append((stack.pop(0), item))
+      queue, parts = parts, []
+    elif queue:
+      result.append((queue.pop(0), item))
     else:
-      part.append(item)
-  result.extend((s, None) for s in stack)
+      parts.append(item)
+  result.extend((s, None) for s in queue + parts)
   return result
