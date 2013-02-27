@@ -24,7 +24,7 @@ class ImageSprite(Runnable):
 
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=(0, 0, 0),
-               size=1, duration=0, z=DEFAULT_Z,
+               size=1, duration=None, z=DEFAULT_Z,
                shader=None, type='', **kwds):
     super(ImageSprite, self).__init__()
     if kwds:
@@ -41,11 +41,14 @@ class ImageSprite(Runnable):
     self._z = Envelope(z)
 
     self._time = 0
-    if duration:
-      self._duration = Units.convert(duration)
+    if duration is None:
+      for env in [self._position, self._rotation, self._size, self._z]:
+        if not env.is_constant:
+          duration = max(duration, env.length)
+      if duration is None:
+        duration = Units.INFINITY
     else:
-      envs = [self._position, self._rotation, self._size, self._z]
-      self._duration = max(x.length for x in envs)
+      self._duration = Units.convert(duration)
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')

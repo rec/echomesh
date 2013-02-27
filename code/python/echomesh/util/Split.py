@@ -3,20 +3,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import re
 import six
 
-WORD_SPLITTER = re.compile(r'[,\s]')  # But no "." , which is used in filenames.
+WORD_SPLITTER = re.compile(r'[,\s]+')  # But no "." , which is used in filenames.
 
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
 def split_words(s):
-  split = WORD_SPLITTER.split(s)
-
-  # Remove first or last if blank.
-  for i in [-1, 0]:
-    split[i] or split.pop(i)
-
-  return split
+  return [i for i in WORD_SPLITTER.split(s) if i]
 
 def split_list(parts, splitter):
   if splitter in parts:

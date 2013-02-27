@@ -29,7 +29,8 @@ UNITS_SOURCE = {
   ('semitone', 'semitones'): make_log(12, 2),
 }
 
-INFINITY = set(('inf', 'infinite', 'infinity'))
+INFINITY = float('inf')
+NAMES_FOR_INFINITY = set(('inf', 'infinite', 'infinity'))
 
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
@@ -81,8 +82,8 @@ def convert(number, assume_minutes=True):
     return number
   number = number.strip().lower()
 
-  if number in INFINITY:
-    return float('inf')
+  if number in NAMES_FOR_INFINITY:
+    return INFINITY
 
   t = convert_time(number, assume_minutes)
   if t is not None:
