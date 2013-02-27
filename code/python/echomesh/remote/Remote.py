@@ -16,5 +16,5 @@ def execute(echomesh, type=None, **data):
     return function(echomesh, type=type, **data)
 
   except Exception as e:
-    LOGGER.error(str(e))
+    LOGGER.error('')
     raise

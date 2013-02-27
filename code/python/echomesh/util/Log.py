@@ -12,9 +12,9 @@ import traceback
 
 VERBOSE_LOGGING = False
 PRINT_STACK_TRACES = False
-DEFAULT_FORMAT = '%(message)s'
-DEBUG_FORMAT = '%(name)s: %(message)s'
-FILE_FORMAT = '"%(asctime)s %(levelname)s: %(name)s: %(message)s'
+DEFAULT_FORMAT = '%(levelname)s: %(message)s'
+DEBUG_FORMAT = '%(levelname)s: %(name)s: %(message)s'
+FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 DEBUG = False
 STACK_TRACES = False
 LOG_LEVEL = 'INFO'
@@ -51,17 +51,20 @@ except:
   CONFIG.config_update(None)
 
 def _error_wrapper(error_logger):
-  def f(message, *args, **kwds):
-    exc_type, exc_value = sys.exc_info()[:2]
-    if exc_type:
-      message = '%s: %s' % (exc_value, message)
-      kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
-    error_logger(message, *args, **kwds)
   return f
 
 def logger(name=None):
   log = logging.getLogger(name or 'logging')
-  log.error = _error_wrapper(log.error)
+  original_error_logger = log.error
+
+  def new_error_logger(message, *args, **kwds):
+    exc_type, exc_value = sys.exc_info()[:2]
+    if exc_type:
+      message = '%s: %s' % (exc_value, message)
+      kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
+    original_error_logger(message, *args, **kwds)
+
+  log.error = new_error_logger
   return log
 
 LOGGER = logger(__name__)

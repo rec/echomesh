@@ -102,8 +102,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       for name in names:
         try:
           self._for_one_element(name, action)
-        except Exception as e:
-          LOGGER.error('%s', str(e))
+        except Exception:
+          LOGGER.error('')
     return full_names
 
   def _for_one_element(self, name, action):
@@ -131,7 +131,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       try:
         function(Split.pair_split(scores))
       except Exception as e:
-        LOGGER.error(str(e))
+        LOGGER.error('')
       scores[:] = []
 
   def _on_stop(self):

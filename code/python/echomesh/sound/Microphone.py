@@ -113,7 +113,7 @@ def microphone(callback):
     try:
       return Microphone(callback)
     except Exception as e:
-      LOGGER.error('Failed to turn on mic because %s', str(e), exc_info=1)
+      LOGGER.error('Failed to turn on mic.')
   else:
     LOGGER.info('Mic thread disabled')
 

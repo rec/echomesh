@@ -14,7 +14,7 @@ class Image(Element.Element):
       try:
         self.sprite = ImageSprite(**description)
       except Exception as e:
-        LOGGER.error("Couldn't open image because %s.", str(e))
+        LOGGER.error("Couldn't open image file")
       else:
         self.add_slave(self.sprite)
     else:
