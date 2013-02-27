@@ -12,6 +12,7 @@ class Print(Element.Element):
 
   def _on_run(self):
     LOGGER.info(self.message)
+    self.stop()
 
   def handle(self, event):
     LOGGER.info('%s: %s', self.message, event)

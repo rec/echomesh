@@ -58,8 +58,8 @@ def execute(echomesh_instance, line):
       return function(echomesh_instance, *parts)
     except TypeError as e:
       e.message = _fix_exception_message(e.messasge, name)
-      LOGGER.error('')
+      LOGGER.error()
 
   except Exception as e:
-    LOGGER.error("%s", usage())
+    LOGGER.error("%s\n", usage())
 

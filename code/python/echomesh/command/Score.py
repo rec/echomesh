@@ -56,7 +56,7 @@ Examples:
 
 def run(echomesh_instance, *parts):
   split = Split.pair_split(parts)
-  return echomesh_instance.score_master.run_elements(*split), 'Run'
+  return echomesh_instance.score_master.run_elements(split), 'Run'
 
 
 UNLOAD_HELP = """

@@ -16,7 +16,8 @@ STACK_TRACES = False
 LOG_LEVEL = 'INFO'
 
 DEFAULT_FORMAT = '%(message)s'
-DEBUG_FORMAT = '%(name)s: %(message)s'
+DEBUG_FORMAT = '%(message)s'
+# DEBUG_FORMAT = '%(levelname)s: %(message)s'
 FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 
 _LOG_SIGNATURE = 'util/Log.py'
@@ -26,7 +27,7 @@ def _check_error_count(limit, every):
   for line in traceback.format_stack(): # reversed(traceback.format_stack()):
     if _LOG_SIGNATURE not in line:
       errors = _ERROR_COUNTER.get(line, 0)
-      if limit is not None and errors >= limit:
+      if limit is not None and errors >= limit * (every or 1):
         return False
       _ERROR_COUNTER[line] = errors + 1
       return not (every and (errors % every))
@@ -74,7 +75,7 @@ def logger(name=None):
       if not _check_error_count(limit, every):
         return
 
-    message = args.pop(0) if args else ''
+    message, args = (args[0] if args else ''), args[1:]
     exc_type, exc_value = sys.exc_info()[:2]
     if exc_type:
       message = '%s: %s' % (exc_value, message)

@@ -103,7 +103,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         try:
           full_names.append(self._for_one_element(name, action))
         except Exception:
-          LOGGER.error('')
+          LOGGER.error()
     return full_names
 
   def _for_one_element(self, name, action):
@@ -131,7 +131,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       try:
         function(scores)
       except Exception as e:
-        LOGGER.error('')
+        LOGGER.error()
       scores[:] = []
 
   def _on_stop(self):
