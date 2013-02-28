@@ -5,24 +5,23 @@ import datetime
 import time
 
 from echomesh.base import Config
-from echomesh.element import Audio, Handler, Image, Mapper, Print, Random
+from echomesh.element import Audio, Handler, Image, List, Mapper, Print, Repeat
 from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
 from echomesh.element import Element
 from echomesh.element import Load
 
-class Root(Element.Element):
-  def __init__(self, parent, description, score_file):
-    super(Root, self).__init__(parent, description)
-    self.score_file = score_file
+class Root(List.List):
+  def __init__(self, description, score):
+    super(Root, self).__init__(None, description)
+    self.score = score
     self.handlers = {}
-    self.elements = Load.make(self, description['elements'])
-    self.add_slave(*self.elements)
     self.load_time, self.run_time, self.stop_time = time.time(), 0, 0
 
   def _on_run(self):
     self.run_time = time.time()
 
   def _on_stop(self):
+    super(Root, self)._on_stop()
     self.stop_time = time.time()
 
   def add_handler(self, handler, *types):
@@ -39,7 +38,7 @@ class Root(Element.Element):
       t = _format_delta(time.time() - self.run_time)
     else:
       t = 'stopped'
-    return '%-8s  %s' % (t, self.score_file)
+    return '%-8s  %s' % (t, self.score)
 
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):

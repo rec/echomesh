@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from UserDict import DictMixin
+
 class Factory(dict):
   def __init__(self, factory, *args, **kwds):
     super(Factory, self).__init__(*args, **kwds)
@@ -26,3 +28,11 @@ class Access(dict):
     res = super(Access, self).__getitem__(key)
     self._accessed.add(key)
     return res
+
+  def get(self, key, default=None):
+    res = super(Access, self).get(key, default)
+    self._accessed.add(key)
+    return res
+  # TODO: why do I need both get and __getitem__ ?
+  # probably should  use either collections.MutableMapping or UserDict but not
+  # obvious how to do it.

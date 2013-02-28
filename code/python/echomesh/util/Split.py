@@ -33,3 +33,30 @@ def split_scores(scores):
   if isinstance(scores, six.string_types):
     scores = split_words(scores)
   return pair_split(scores)
+
+def split_args(args):
+  address = []
+  value = None
+  equals_found = False
+  for arg in args:
+    if equals_found:
+      yield address, arg
+      address = []
+      equals_found = False
+      continue
+    if '=' in arg:
+      name, value = arg.split('=', 1)
+      equals_found = True
+    else:
+      name, value = arg, None
+
+    name = name.strip().strip(':')
+    if name:
+      address.append(name)
+
+    if value:
+      yield address, value
+      address = []
+
+  if address:
+    LOGGER.error('Extra arguments at the end: "%s".' % ' '.join(address))

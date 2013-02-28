@@ -4,12 +4,12 @@ event_type: mic
 mapping:
   silent:
     type: print
-    message: it's silent
+    text: it's silent
 
   quiet:
     type: print
-    message: it's QUIET!
+    text: it's QUIET!
 
   medium:
     type: print
-    message: MEDIUM!
+    text: MEDIUM!

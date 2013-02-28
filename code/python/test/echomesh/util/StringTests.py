@@ -1,14 +1,14 @@
 """
->>> String.join_words()
+>>> String.join_words([])
 u''
 
->>> String.join_words('hello')
+>>> String.join_words(['hello'])
 u'hello'
 
->>> String.join_words('hello', 'goodbye')
-u'hello and goodbye'
+>>> String.join_words(['hello', 'goodbye'])
+u'goodbye and hello'
 
->>> String.join_words('apples', 'oranges', 'pears')
+>>> String.join_words(['apples', 'oranges', 'pears'])
 u'apples, oranges, and pears'
 """
 

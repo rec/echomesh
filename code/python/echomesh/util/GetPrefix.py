@@ -16,7 +16,7 @@ def get_prefix_and_match(table, name, error_name, allow_prefixes=True):
       return results[0]
     elif len(results) > 1:
       words = sorted(x[0] for x in results)
-      cmds = String.join_words(*words)
+      cmds = String.join_words(words)
       raise Exception('"%s" matches multiple %ss: %s.' %
                       (name, error_name, cmds))
 

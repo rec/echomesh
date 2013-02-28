@@ -8,13 +8,13 @@ LOGGER = Log.logger(__name__)
 class Print(Element.Element):
   def __init__(self, parent, description):
     super(Print, self).__init__(parent, description)
-    self.message = description.get('message', '')
+    self.text = description.get('text', '')
 
   def _on_run(self):
-    LOGGER.info(self.message)
+    LOGGER.info(self.text)
     self.stop()
 
   def handle(self, event):
-    LOGGER.info('%s: %s', self.message, event)
+    LOGGER.info('%s: %s', self.text, event)
 
 Element.register(Print)

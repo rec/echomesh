@@ -14,6 +14,11 @@ class Loop(Element.Element):
 
     self.add_slave(self.time_loop)
     self.time_loop.add_stop_only_slave(self)
+    self.stop_time = 0
+
+  def _on_run(self):
+    self.stop_time = self.time_loop.stop_time
+
 
   # You can implement Loop.next_time and Loop.loop_target to override the
   # methods in TimeLoop.

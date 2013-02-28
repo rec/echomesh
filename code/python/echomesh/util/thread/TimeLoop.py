@@ -5,7 +5,9 @@ import time
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 
-DEFAULT_TIMEOUT = 0.5
+# TODO: these should be config values.
+
+DEFAULT_TIMEOUT = 1.0
 DEFAULT_INTERVAL = 1.0
 
 class TimeLoop(ThreadLoop.ThreadLoop):
@@ -24,13 +26,13 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     self.sleep = sleep
     self.timeout = timeout
     self.timer = timer
+    self.stop_time = 0
 
     assert self.loop_target
     assert self.next_time
 
   def _before_thread_start(self):
-    self.start_time = time.time()
-    self.stop_time = self.start_time
+    self.start_time = time.time() - self.stop_time
     self.next_loop_time = self.start_time
 
   def single_loop(self):
@@ -48,4 +50,4 @@ class TimeLoop(ThreadLoop.ThreadLoop):
     return t + self.interval
 
   def _after_thread_stop(self):
-    self.stop_time = time.time()
+    self.stop_time = time.time() - self.start_time

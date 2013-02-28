@@ -16,19 +16,19 @@ class Sequence(Loop.Loop):
     duration = description.get('duration')
     self.duration = duration and Units.convert(duration)
     self.loops = Units.convert(description.get('loops', 1))
-    elements = description.get('elements', [])
+    elements = description.get('element', [])
 
     items = ((Units.convert(e.get('begin', 0)),
               Load.make_one(self, e.get('element', {}))) for e in elements)
 
-    self.times, self.elements = zip(*items)
+    self.times, self.element = zip(*items)
     self.times = list(self.times) + [self.duration]
 
   def _command_time(self):
     return self.times[self.next_command] + self.start_time
 
   def next_time(self, t):
-    if self.next_command <= len(self.elements):
+    if self.next_command <= len(self.element):
       LOGGER.debug('Running command %d', self.next_command)
       return self._command_time()
     else:
@@ -48,10 +48,10 @@ class Sequence(Loop.Loop):
     self.next_command = 0
 
   def loop_target(self, t):
-    while self.next_command <= len(self.elements) and self._command_time() <= t:
+    while self.next_command <= len(self.element) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
-      if self.next_command < len(self.elements):
-        self.elements[self.next_command].run()
+      if self.next_command < len(self.element):
+        self.element[self.next_command].run()
       self.next_command += 1
 
 Element.register(Sequence)

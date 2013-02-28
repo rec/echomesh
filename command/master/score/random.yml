@@ -8,14 +8,14 @@ element:
       weight: 3
       element:
         type: print
-        message: one
+        text: one
     -
       element:
         type: print
-        message: two
+        text: two
 
     -
       weight: 1
       element:
         type: print
-        message: three
+        text: three

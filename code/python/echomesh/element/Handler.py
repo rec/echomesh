@@ -13,20 +13,15 @@ class Handler(Element.Element):
     self.event_type = description.get('event_type')
 
   def _on_run(self):
-    p = self
-    while p and not hasattr(p, 'add_handler'):
-      p, childp = p.parent, p
-      if childp == p:
-        LOGGER.error('Found a recursive handler loop')
-        p = None
-
-    if p:
-      self.handler_parent = p
-      p.add_handler(self)
+    handler = self.get_property('add_handler')
+    if handler:
+      self.handler_parent = handler
+      handler.add_handler(self)
     else:
       LOGGER.warning("Didn't find a handler parent in open for %s", self)
 
   def _on_stop(self):
+    super(Handler, self)._on_stop()
     if hasattr(self.handler_parent, 'remove_handler'):
       self.handler_parent.remove_handler(self)
     else:

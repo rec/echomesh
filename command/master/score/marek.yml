@@ -8,21 +8,21 @@ element:
       weight: 3
       element:
         type: speak
-        message: Hello, world!
+        text: Hello, world!
     -
       element:
         type: print
-        message: Hello, Marek!
+        text: Hello, Marek!
 
     -
       weight: 1
       element:
         type: print
-        message: It's all working.
+        text: It's all working.
 
     -
       weight: 3
       element:
         type: print
-        message: "echomesh: the wave of the future."
+        text: "echomesh: the wave of the future."
 

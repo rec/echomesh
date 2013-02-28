@@ -35,12 +35,12 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     for score_file, name in score_names:
       resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
       elements = Yaml.read(resolved_file)
-      description = {'elements': elements, 'type': 'score'}
+      description = {'element': elements, 'type': 'score'}
       parts = resolved_file.split('/')
       final_file = '/'.join([parts[1]] + parts[3:])
 
       try:
-        element = Root.Root(None, description, final_file)
+        element = Root.Root(description, final_file)
       except Exception as e:
         LOGGER.error("Couldn't read score file %s", score_file)
         continue
@@ -61,6 +61,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       if name:
         is_file = True
         score_file = Yaml.file(score_file)
+      else:
+        name = score_file
       if is_file:
         element_names.extend(self.load_elements([[score_file, name]]))
       else:
@@ -100,6 +102,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         names = self.elements.keys()
       full_names = []
       for name in names:
+        assert name is not None
         try:
           full_names.append(self._for_one_element(name, action))
         except Exception:

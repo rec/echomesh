@@ -3,7 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import CommandFile
 from echomesh.base import Yaml
 from echomesh.element import Element
+from echomesh.util import Dict
 from echomesh.util import Log
+from echomesh.util import String
 
 LOGGER = Log.logger(__name__)
 
@@ -40,18 +42,32 @@ def _resolve_extensions(data):
 
   return result
 
-def make_one(parent, desc):
-  desc = _resolve_extensions(desc)
-  t = desc.get('type', '').lower()
+NOT_ACCESSED_ERROR = """\
+In an element of type "%s" loaded from "%s", \
+the following properties were ignored because they were not understood:
+
+  %s"""
+
+def make_one(parent, description):
+  description = Dict.Access(_resolve_extensions(description))
+  t = description.get('type', '').lower()
   if not t:
-    raise Exception('No type field in element %s' % desc)
+    raise Exception('No type field in element %s' % description)
 
-  maker = Element.get_element_by_name(t)
-  if not maker:
+  element_class = Element.get_class_by_name(t)
+  if not element_class:
     Element._REGISTRY.dump()
-    raise Exception('No element maker for type %s' % t)
+    raise Exception('No element class for type %s' % t)
 
-  return maker(parent, desc)
+  element = element_class(parent, description)
+  not_accessed = description.not_accessed()
+  if not_accessed:
+    score = element.get_property('score') or ''
+    LOGGER.error(NOT_ACCESSED_ERROR, t, score, String.join_words(not_accessed))
+
+  return element
 
 def make(parent, descriptions):
+  if not isinstance(descriptions, (list, tuple)):
+    descriptions = [descriptions]
   return [make_one(parent, d) for d in descriptions]

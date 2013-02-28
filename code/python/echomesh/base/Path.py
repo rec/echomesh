@@ -7,11 +7,19 @@ import sys
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
 
-def yaml_args():
-  return [a for a in sys.argv if _is_yaml(a)]
 
 def _is_yaml(x):
   return x and (x[0] in '{[')
+
+def get_args():
+  line = ' '.join(sys.argv[1:]).strip()
+  if _is_yaml(line):
+    pass
+  else:
+    pass
+
+def yaml_args():
+  return [a for a in sys.argv if _is_yaml(a)]
 
 def _not_possible_project(path):
   for d in 'asset', 'command':
@@ -41,7 +49,6 @@ COMMAND_PATH = os.path.join(PROJECT_PATH, 'command')
 ASSET_PATH = os.path.join(PROJECT_PATH, 'asset')
 
 os.chdir(PROJECT_PATH)
-
 
 def info():
   return {

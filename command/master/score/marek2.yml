@@ -12,5 +12,5 @@ element:
       weight: 3
       element:
         type: print
-        message: "echomesh: the wave of the future."
+        text: "echomesh: the wave of the future."
 

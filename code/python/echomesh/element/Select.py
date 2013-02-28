@@ -9,10 +9,10 @@ class Select(Element.Element):
     super(Select, self).__init__(parent, description)
     choices = description.get('choices', [])
     self.random = WeightedRandom(c.get('weight', None) for c in choices)
-    self.elements = [Load.make_one(self, c['element']) for c in choices]
-    self.add_stop_only_slave(*self.elements)
+    self.element = [Load.make_one(self, c['element']) for c in choices]
+    self.add_stop_only_slave(*self.element)
 
   def _on_run(self):
-    self.elements[self.random.select()].run()
+    self.element[self.random.select()].run()
 
 Element.register(Select)

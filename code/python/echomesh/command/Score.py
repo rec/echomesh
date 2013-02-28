@@ -91,7 +91,7 @@ def stop(echomesh_instance, *parts):
 def _print(function, echomesh_instance, parts):
   names, action = function(echomesh_instance, *parts)
   if names:
-    LOGGER.info('%s %s.', action, String.join_words(*sorted(names)))
+    LOGGER.info('%s %s.', action, String.join_words(names))
   else:
     LOGGER.error('%s: no results.' % action)
 
