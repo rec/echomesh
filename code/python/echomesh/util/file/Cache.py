@@ -7,7 +7,6 @@ import re
 from echomesh.base import CommandFile
 from echomesh.base import Merge
 from echomesh.base import Yaml
-from echomesh.util import FactoryDict
 from echomesh.util import UniqueName
 from echomesh.util.file import MakeDirs
 
