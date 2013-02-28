@@ -246,6 +246,9 @@ pi3d:
   tk: False
   window_title: ''
 
+# The address of your project's root.
+project: ''
+
 # Any scores in score: will be run on startup.
 # This can either be a single score, like:
 #

@@ -4,15 +4,22 @@ import os
 import os.path
 import sys
 
+from echomesh.base import Yaml
+
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
 
+def set_args(args):
+  if args and _is_yaml(args[0]):
+    pass
 
 def _is_yaml(x):
   return x and (x[0] in '{[')
 
 def get_args():
-  line = ' '.join(sys.argv[1:]).strip()
+  if args and _is_yaml(ARGS[0]):
+    line = ' '.join(ARGS).strip()
+
   if _is_yaml(line):
     pass
   else:

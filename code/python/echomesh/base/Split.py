@@ -5,10 +5,6 @@ import six
 
 WORD_SPLITTER = re.compile(r'[,\s]+')  # But no "." , which is used in filenames.
 
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
-
 def split_words(s):
   return [i for i in WORD_SPLITTER.split(s) if i]
 
@@ -59,4 +55,14 @@ def split_args(args):
       address = []
 
   if address:
-    LOGGER.error('Extra arguments at the end: "%s".' % ' '.join(address))
+    print('ERROR: Extra arguments at the end: "%s".' % ' '.join(address))
+
+def split_args_to_dict(args):
+  result = {}
+  for address, value in split_args(args):
+    last = address.pop()
+    res = result
+    for a in address:
+      res = res.setdefault(a, {})
+    res[last] = value
+  return result

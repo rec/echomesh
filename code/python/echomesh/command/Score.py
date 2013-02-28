@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.base import Split
 from echomesh.command import Register as CommandRegister
 from echomesh.util import Log
-from echomesh.util import Split
 from echomesh.util import String
 from echomesh.remote import Register as RemoteRegister
 

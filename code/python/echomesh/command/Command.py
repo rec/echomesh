@@ -5,7 +5,7 @@ from echomesh.command import Transfer
 
 from echomesh.util import FindComment
 from echomesh.util import Log
-from echomesh.util import Split
+from echomesh.base import Split
 
 LOGGER = Log.logger(__name__)
 

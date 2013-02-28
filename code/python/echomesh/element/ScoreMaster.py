@@ -9,13 +9,13 @@ import weakref
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
+from echomesh.base import Split
 from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.element import Root
 from echomesh.util.thread import MasterRunnable
 from echomesh.util import GetPrefix
 from echomesh.util import Log
-from echomesh.util import Split
 from echomesh.util import UniqueName
 
 LOGGER = Log.logger(__name__)
