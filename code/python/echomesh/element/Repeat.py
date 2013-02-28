@@ -30,7 +30,6 @@ class Repeat(Loop.Loop):
     return res
 
   def loop_target(self, t):
-    print('!!!')
     self.list_element.run()
     self.repeat_count += 1
     if self.repeat_count >= self.repeat:
