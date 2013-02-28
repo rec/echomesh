@@ -8,11 +8,17 @@ from echomesh.sound import GoogleTextToSpeech
 LOGGER = Log.logger(__name__)
 
 class TextToSpeech(Element.Element):
+  def __init__(self, parent, description):
+    super(TextToSpeech, self).__init__(parent, description)
+    self.text = description.get('text', '')
+
   def _on_run(self):
-    self.handle(self.description)
+    self._speak(self.text)
 
   def handle(self, event):
-    text = event.get('text')
+    self._speak(event.get('text'))
+
+  def _speak(self, text):
     if text:
       f = '(cache failed)'
       try:
