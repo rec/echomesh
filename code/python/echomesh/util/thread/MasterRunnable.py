@@ -46,4 +46,4 @@ class MasterRunnable(Runnable):
       ex = self.stoppables.foreach(lambda e: e.stop())
       if ex:
         LOGGER.error('Errors during stop:\n%s', '\n'.join(str(e) for e in ex))
-      super(MasterRunnable, self).stop()
+      self._on_stop()

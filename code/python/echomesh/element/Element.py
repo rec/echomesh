@@ -13,7 +13,7 @@ class Element(MasterRunnable):
     self.description = description
 
   def child_stopped(self, child):
-    pass
+    self.parent and self.parent.child_stopped(child)
 
   def _on_stop(self):
     self.parent and self.parent.child_stopped(self)

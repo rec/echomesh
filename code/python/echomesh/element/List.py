@@ -2,6 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.element import Load
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 class List(Element.Element):
   def __init__(self, parent, description):
@@ -10,7 +13,7 @@ class List(Element.Element):
     if not element:
       raise Exception('In %s, a list must have an element: member.' %
                       self.get_hierarchy_names)
-    self.element = Load.make(parent, element)
+    self.element = Load.make(self, element)
     self.add_slave(*self.element)
 
   def child_stopped(self, child):

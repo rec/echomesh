@@ -11,6 +11,7 @@ class Print(Element.Element):
     self.text = description.get('text', '')
 
   def _on_run(self):
+    super(Print, self)._on_run()
     LOGGER.info(self.text)
     self.stop()
 
