@@ -18,14 +18,12 @@ class Repeat(Loop.Loop):
     self.period = Units.convert(description.get('period'), 0)
     self.repeat = Units.convert(description.get('repeat', 'infinite'))
     assert self.random_delay > 0 or self.period > 0, (
-      'You must set either a period or a random delay')
+      'You must set either a period or a random_delay')
     self.add_slave(self.list_element)
-    self.stop_time = 0
     self.repeat_count = 0
 
   def next_time(self, t):
-    res = self.period + t - self.stop_time
-    self.stop_time = 0
+    res = (self.run_time + self.period * (1 + self.repeat_count))
     if self.random_delay:
       res += Poisson.next_poisson(self.random_delay)
     return res
@@ -38,5 +36,11 @@ class Repeat(Loop.Loop):
 
   def child_stopped(self, child):
     pass
+
+  def reset(self):
+    self.list_element.reset()
+
+  def class_name(self):
+    return self.list_element.class_name(super(Repeat, self).class_name())
 
 Element.register(Repeat)

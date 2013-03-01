@@ -16,10 +16,19 @@ class List(Element.Element):
     self.element = Load.make(self, element)
     self.add_slave(*self.element)
 
+  def class_name(self, base_name=''):
+    name = base_name or super(List, self).class_name()
+    classes = ', '.join(e.class_name() for e in self.element)
+    return '%s(%s)' % (name, classes)
+
   def child_stopped(self, child):
     for e in self.element:
       if e.is_running:
         return
     self.stop()
+
+  def reset(self):
+    for e in self.element:
+      e.reset()
 
 Element.register(List)

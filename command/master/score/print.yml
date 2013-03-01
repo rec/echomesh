@@ -2,13 +2,15 @@ type: list
 element:
   -
     type: repeat
-    period: 1
+    period: 0.5
+    repeat: 10
     element:
       type: print
-      text: "!"
+      text: "{parent.parent.repeat_count} of {parent.parent.repeat}"
   -
     type: repeat
-    period: 10
+    period: 1.2
+    repeat: 7
     element:
       type: print
-      text: ?????
+      text: "{parent.parent.repeat_count} of {parent.parent.repeat}"

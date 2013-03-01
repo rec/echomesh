@@ -1,5 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import datetime
+import time
+
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.Registry import Registry
@@ -11,12 +14,23 @@ class Element(MasterRunnable):
     super(Element, self).__init__()
     self.parent = parent
     self.description = description
+    self.run_time = self.stop_time = 0
+    self.load_time = time.time()
+
+  def reset(self):
+    self.run_time = time.time() - self.stop_time
 
   def child_stopped(self, child):
     self.parent and self.parent.child_stopped(child)
 
-  def _on_stop(self):
-    self.parent and self.parent.child_stopped(self)
+  def class_name(self):
+    return self.__class__.__name__.lower()
+
+  def time(self):
+    if self.is_running:
+      return time.time() - self.run_time
+    else:
+      return self.stop_time
 
   def get_property(self, name, default=None):
     none = object()
@@ -32,6 +46,28 @@ class Element(MasterRunnable):
   def get_hierarchy_names(self):
     h = self.get_hierarchy()
     return ': '.join(n.__class__.__name__.lower() for n in h)
+
+  def _on_run(self):
+    self.run_time = time.time() - self.stop_time
+
+  def _on_stop(self):
+    self.stop_time = time.time() - self.run_time
+    self.child_stopped(self)
+
+  def info(self):
+    return {'class': self.class_name(),
+            'state': 'run' if self.is_running else 'stop',
+            'time': _format_delta(self.time())}
+
+
+def _format_delta(t):
+  s = str(datetime.timedelta(seconds=t))
+  loc = s.find('.')
+  if loc > 0:
+    s = s[0:loc]
+  return s
+
+
 
 _REGISTRY = Registry(name='element')
 

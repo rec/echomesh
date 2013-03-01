@@ -12,7 +12,11 @@ class Print(Element.Element):
 
   def _on_run(self):
     super(Print, self)._on_run()
-    LOGGER.info(self.text)
+    try:
+      text = self.text.format(**self.__dict__)
+    except:
+      text = self.text
+    LOGGER.info(text)
     self.stop()
 
   def handle(self, event):

@@ -21,7 +21,7 @@ from echomesh.util import UniqueName
 LOGGER = Log.logger(__name__)
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
-  STOP, START, UNLOAD = range(3)
+  STOP, START, UNLOAD, RESET = range(4)
 
   def __init__(self):
     super(ScoreMaster, self).__init__()
@@ -78,6 +78,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def unload_elements(self, names):
     return self._for_each_element(names, ScoreMaster.UNLOAD)
 
+  def reset_elements(self, names):
+    return self._for_each_element(names, ScoreMaster.RESET)
+
   def handle(self, event):
     for score in self.elements.itervalues():
       score.handle(event)
@@ -117,6 +120,10 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       if element.is_running:
         raise Exception('Element %s was already running.' % full_name)
       element.run()
+
+    elif action == ScoreMaster.RESET:
+      element.reset()
+
     else:
       if element.is_running:
         element.stop()

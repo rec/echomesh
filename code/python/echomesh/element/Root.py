@@ -10,19 +10,13 @@ from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
 from echomesh.element import Element
 from echomesh.element import Load
 
+PRINT_FORMAT = '{state:4} {class:10} {time:9}'
+
 class Root(List.List):
   def __init__(self, description, score):
     super(Root, self).__init__(None, description)
     self.score = score
     self.handlers = {}
-    self.load_time, self.run_time, self.stop_time = time.time(), 0, 0
-
-  def _on_run(self):
-    self.run_time = time.time()
-
-  def _on_stop(self):
-    super(Root, self)._on_stop()
-    self.stop_time = time.time()
 
   def add_handler(self, handler, *types):
     if not types:
@@ -34,11 +28,7 @@ class Root(List.List):
       self.handlers.setdefault(t, set()).add(handler)
 
   def __str__(self):
-    if self.is_running:
-      t = _format_delta(time.time() - self.run_time)
-    else:
-      t = 'stopped'
-    return '%-8s  %s' % (t, self.score)
+    return PRINT_FORMAT.format(**self.element[0].info())
 
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):

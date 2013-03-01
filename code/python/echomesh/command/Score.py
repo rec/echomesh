@@ -35,6 +35,26 @@ def load(echomesh_instance, *parts):
   return echomesh_instance.score_master.load_elements(*split), 'Loaded'
 
 
+RESET_HELP = """
+Usage:
+
+  reset ELEMENT [ELEMENT ...]
+
+Resets the named lements to their start time.
+
+If you are in broadcast mode then this command will be sent to all Echomesh
+nodes on the network.
+
+Example:
+  reset Lights   # Resets an existing element called lights.
+
+"""
+
+def reset(echomesh_instance, *parts):
+  split = Split.pair_split(parts)
+  return echomesh_instance.score_master.reset_elements(split), 'Reset'
+
+
 RUN_HELP = """
 Usage:
 
@@ -106,6 +126,7 @@ def _local(function):
 CommandRegister.register_all(
   load=(_local(load), LOAD_HELP,
         ['unload', 'stop', 'run', 'show elements']),
+  reset=(_local(reset), RESET_HELP, ['run', 'stop']),
   run=(_local(run), RUN_HELP, ['load', 'stop']),
   stop=(_local(stop), STOP_HELP, ['run', 'unload']),
   unload=(_local(unload), UNLOAD_HELP, ['load', 'stop', 'show elements']),
@@ -119,6 +140,7 @@ def _remote(function):
 
 RemoteRegister.register_all(
   load=(_remote(load)),
+  reset=(_remote(reset)),
   run=(_remote(run)),
   stop=(_remote(stop)),
   unload=(_remote(unload)),
