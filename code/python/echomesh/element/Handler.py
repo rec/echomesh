@@ -13,6 +13,7 @@ class Handler(Element.Element):
     self.event_type = description.get('event_type')
 
   def _on_run(self):
+    super(Handler, self)._on_run()
     handler = self.get_property('add_handler')
     if handler:
       self.handler_parent = handler

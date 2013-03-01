@@ -67,8 +67,6 @@ def _format_delta(t):
     s = s[0:loc]
   return s
 
-
-
 _REGISTRY = Registry(name='element')
 
 def register(element, name=None):

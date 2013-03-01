@@ -92,13 +92,14 @@ class ImageSprite(Runnable):
     self.sprite.draw()
 
   def _on_run(self):
+    super(ImageSprite, self)._on_run()
     self._add_sprite()
 
   def _add_sprite(self):
     pi3d.Display.Display.INSTANCE.add_sprites(self.sprite)
 
-
   def _on_stop(self):
+    super(ImageSprite, self)._on_stop()
     pi3d.Display.Display.INSTANCE.remove_sprites(self.sprite)
 
 

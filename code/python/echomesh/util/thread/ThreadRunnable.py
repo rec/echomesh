@@ -18,6 +18,7 @@ class ThreadRunnable(MasterRunnable):
     self.report_error = report_error
 
   def _on_run(self):
+    super(ThreadRunnable, self)._on_run()
     self._before_thread_start()
     def target():
       try:

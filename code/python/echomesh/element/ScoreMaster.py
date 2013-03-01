@@ -136,6 +136,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return full_name
 
   def _on_run(self):
+    super(ScoreMaster, self)._on_run()
     for function, scores in ((self.run_elements, self.scores_to_add),
                              (self.load_elements, self.scores_to_load)):
       try:
@@ -145,16 +146,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       scores[:] = []
 
   def _on_stop(self):
+    super(ScoreMaster, self)._on_stop()
     try:
       self.stop_elements('*')
     except:
       pass
-
-  def clean(self):
-    remove, elements = [], {}
-    for k, v in self.elements.iteritems():
-      if v.is_running:
-        elements[k] = v
-      else:
-        self.remove_slave(vi)
-    self.elements = elements

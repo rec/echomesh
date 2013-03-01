@@ -70,6 +70,8 @@ class Socket(MasterRunnable):
     pass
 
   def _on_run(self):
+    super(Socket, self)._on_run()
+
     self.socket = socket.socket(socket.AF_INET, self.socket_type)
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.max_size)
     try:
@@ -84,6 +86,7 @@ class Socket(MasterRunnable):
     self.socket.bind((self.hostname, self.bind_port))
 
   def _on_stop(self):
+    super(Socket, self)._on_stop()
     try:
       self.socket.close()
     except:

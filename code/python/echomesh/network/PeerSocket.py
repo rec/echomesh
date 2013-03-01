@@ -29,6 +29,7 @@ class PeerSocket(MasterRunnable):
       self.socket.send(data)
 
   def _on_run(self):
+    super(PeerSocket, self)._on_run()
     if not self.socket:
       self._make_socket()
 

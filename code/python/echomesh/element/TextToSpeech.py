@@ -13,6 +13,7 @@ class TextToSpeech(Element.Element):
     self.text = description.get('text', '')
 
   def _on_run(self):
+    super(TextToSpeech, self)._on_run()
     self._speak(self.text)
 
   def handle(self, event):

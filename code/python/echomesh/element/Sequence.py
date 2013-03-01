@@ -43,6 +43,7 @@ class Sequence(Loop.Loop):
         return 0
 
   def _on_run(self):
+    super(Sequence, self)._on_run()
     self.run_time = time.time()
     self.current_loop = 0
     self.next_command = 0
