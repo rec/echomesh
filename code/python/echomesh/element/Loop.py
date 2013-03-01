@@ -17,6 +17,11 @@ class Loop(Element.Element):
     self.stop_time = 0
 
   def _on_run(self):
+    super(Loop, self)._on_run()
+    self.stop_time = self.time_loop.stop_time
+
+  def _on_stop(self):
+    super(Loop, self)._on_stop()
     self.stop_time = self.time_loop.stop_time
 
 

@@ -17,7 +17,8 @@ class Repeat(Loop.Loop):
     self.random_delay = Units.convert(description.get('random_delay', 0))
     self.period = Units.convert(description.get('period'), 0)
     self.repeat = Units.convert(description.get('repeat', 'infinite'))
-    assert self.random_delay > 0 or self.period > 0
+    assert self.random_delay > 0 or self.period > 0, (
+      'You must set either a period or a random delay')
     self.add_slave(self.list_element)
     self.stop_time = 0
     self.repeat_count = 0

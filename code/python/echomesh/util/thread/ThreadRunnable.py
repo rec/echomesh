@@ -26,13 +26,10 @@ class ThreadRunnable(MasterRunnable):
         if self.is_running or self.report_error:
           LOGGER.error('Uncaught thread error', exc_info=1)
         self.stop()
+      self._after_thread_stop()
     self.thread = threading.Thread(target=target)
     self.thread.daemon = True
     self.thread.start()
-
-  def _on_stop(self):
-    self.thread.stop()
-    self._after_thread_stop()
 
   def _before_thread_start(self):
     pass
