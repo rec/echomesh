@@ -35,15 +35,20 @@ class MasterRunnable(Runnable):
   def run(self):
     if not self.is_running:
       super(MasterRunnable, self).run()
-      ex = self.runnables.foreach(lambda e: e.run())
-      if ex:
-        LOGGER.error('Error%s during start:\n%s', ('s' if len(ex) > 1 else ''),
-                     '   \n'.join(str(e) for e in ex))
+      self._errors(self.runnables.foreach(lambda e: e.run()), 'run')
 
   def stop(self):
     if self.is_running:
       self.is_running = False
-      ex = self.stoppables.foreach(lambda e: e.stop())
-      if ex:
-        LOGGER.error('Errors during stop:\n%s', '\n'.join(str(e) for e in ex))
+      self._errors(self.stoppables.foreach(lambda e: e.stop()), 'stop')
       self._on_stop()
+
+  def reset(self):
+    self._errors(self.runnables.foreach(lambda e: e.reset()), 'reset')
+
+  def _errors(self, ex, name):
+    if ex:
+      LOGGER.error('Error%s during %s:\n%s',
+                   ('s' if len(ex) > 1 else ''),
+                   name, '\n'.join(str(e) for e in ex))
+
