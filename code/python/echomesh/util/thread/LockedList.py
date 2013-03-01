@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import operator
+
 from threading import Lock
 from echomesh.util import Log
 
@@ -16,16 +18,12 @@ class LockedList(object):
     with self._lock:
       return self._entries[:]
 
-  def foreach(self, function):
-    exceptions = []
+  def foreach(self, member_name):
     for e in self.entries():
       try:
-        function(e)
-      except Exception as ex:
-        exceptions.append(ex)
-        if RAISE_EXCEPTIONS:
-          raise
-    return exceptions
+        getattr(e, member_name)()
+      except:
+        LOGGER.error('%s', member_name)
 
   def clear(self):
     with self._lock:
