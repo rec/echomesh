@@ -17,7 +17,7 @@ class Print(Element.Element):
     except:
       text = self.text
     LOGGER.info(text)
-    self.stop()
+    return True
 
   def handle(self, event):
     LOGGER.info('%s: %s', self.text, event)

@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import collections
 import itertools
+import operator
 import os.path
 import six
 import threading
@@ -27,31 +28,33 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()
-    self.scores_to_add = Split.split_scores(Config.get('score'))
+    self.scores_to_start = Split.split_scores(Config.get('score'))
     self.scores_to_load = Split.split_scores(Config.get('load_score'))
 
   def load_elements(self, score_names):
+    with self.lock:
+      elements = _make_elements(score_names, self.elements)
+      self.elements.update(elements)
+      return elements.keys()
+
+  def perform(self, method_name, score_names):
     full_names = []
-    for score_file, name in score_names:
-      resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
-      elements = Yaml.read(resolved_file)
-      description = {'element': elements, 'type': 'score'}
-      parts = resolved_file.split('/')
-      final_file = '/'.join([parts[1]] + parts[3:])
-
-      try:
-        element = Root.Root(description, final_file)
-      except Exception as e:
-        LOGGER.error("Couldn't read score file %s", score_file)
-        continue
-
-      with self.lock:
-        name = os.path.splitext(name or score_file)[0]
-        name = UniqueName.unique_name(name, self.elements)
-        self.elements[name] = element
-        full_names.append(name)
-
-      element.name = name
+    getter = operator.attrgetter(method_name)
+    is_unload = (method_name == unload)
+    with self.lock:
+      if '*' in names:
+        names = self.elements.keys()
+      for name in names:
+        try:
+          pm = GetPrefix.get_prefix_and_match(self.elements, name, 'element')
+          full_name, element = pm
+          attr = getattr(element, method_name)
+          getter(element)()
+          full_names.append(full_name)
+          if is_unload:
+            del self.elements[full_name]
+        except Exception:
+          LOGGER.error()
     return full_names
 
   def run_elements(self, score_names):
@@ -69,11 +72,11 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         element_names.append(name)
     return self.start_elements(element_names)
 
-  def start_elements(self, names):
-    return self._for_each_element(names, ScoreMaster.START)
+  def start_elements(self, elements):
+    return self._for_each_element(elements, ScoreMaster.START)
 
-  def stop_elements(self, names):
-    return self._for_each_element(names, ScoreMaster.STOP)
+  def stop_elements(self, elements):
+    return self._for_each_element(elements, ScoreMaster.STOP)
 
   def unload_elements(self, names):
     return self._for_each_element(names, ScoreMaster.UNLOAD)
@@ -137,7 +140,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def _on_run(self):
     super(ScoreMaster, self)._on_run()
-    for function, scores in ((self.run_elements, self.scores_to_add),
+    for function, scores in ((self.start_elements, self.scores_to_start),
                              (self.load_elements, self.scores_to_load)):
       try:
         function(scores)
@@ -151,3 +154,26 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       self.stop_elements('*')
     except:
       pass
+
+
+def _make_elements(score_names, table):
+  result = {}
+  for score_file, name in score_names:
+    resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
+    elements = Yaml.read(resolved_file)
+    description = {'element': elements, 'type': 'score'}
+    parts = resolved_file.split('/')
+    final_file = '/'.join([parts[1]] + parts[3:])
+
+    try:
+      element = Root.Root(description, final_file)
+    except Exception as e:
+      LOGGER.error("Couldn't read score file %s", score_file)
+      continue
+
+    name = os.path.splitext(name or score_file)[0]
+    name = UniqueName.unique_name(name, table)
+    result[name] = element
+    element.name = name
+
+  return result

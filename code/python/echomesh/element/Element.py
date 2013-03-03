@@ -11,11 +11,12 @@ LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
   def __init__(self, parent, description):
-    super(Element, self).__init__()
     self.parent = parent
     self.description = description
     self.run_time = self.stop_time = 0
     self.load_time = time.time()
+
+    super(Element, self).__init__()
 
   def reset(self):
     self.run_time = time.time() - self.stop_time
@@ -47,12 +48,15 @@ class Element(MasterRunnable):
     h = self.get_hierarchy()
     return ': '.join(n.__class__.__name__.lower() for n in h)
 
-  def _on_run(self):
-    self.run_time = time.time() - self.stop_time
-
   def _on_stop(self):
+    super(Element, self)._on_stop()
     self.stop_time = time.time() - self.run_time
     self.child_stopped(self)
+
+  def _on_reset(self):
+    super(Element, self)._on_reset()
+    self.run_time = time.time() - self.stop_time
+    self.stop_time = 0
 
   def info(self):
     return {'class': self.class_name(),
