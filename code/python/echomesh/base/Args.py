@@ -8,10 +8,11 @@ def set_arguments(argv):
   ARGUMENTS[:] = args = argv[1:]
   if args:
     a = args[0].strip()
-    if _is_yaml(a):
-      YAML_ARGS[:] = args
-    else:
-      ASSIGNMENT_ARGS[:] = split_args(args)
+    if a:
+      if a[0] in '{[':
+        YAML_ARGS[:] = args
+      else:
+        ASSIGNMENT_ARGS[:] = split_args(args)
 
 def split_args(args):
   address = []

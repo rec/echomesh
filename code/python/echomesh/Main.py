@@ -42,7 +42,7 @@ def run():
     sys.path.append(external)
   p()
 
-  from echomes.base import Args
+  from echomesh.base import Args
   Args.set_arguments(sys.argv)
 
   from echomesh.base import Config

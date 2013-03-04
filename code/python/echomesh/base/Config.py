@@ -10,6 +10,7 @@ from os.path import abspath, dirname
 from compatibility.weakref import WeakSet
 
 from echomesh.base import Args
+from echomesh.base import CommandFile
 from echomesh.base import MergeConfig
 from echomesh.base import Name
 from echomesh.base import Platform
@@ -37,7 +38,8 @@ def get(*parts):
   none = object()
   def get_part(config, part):
     if not isinstance(config, dict):
-      raise Exception("Reached leaf configuration for %s" % ':'.join(parts))
+      raise Exception("Reached leaf configuration for %s: %s" %
+                      (':'.join(parts), config))
     value = config.get(part, none)
     if value is none:
       raise Exception("Couldn't find configuration %s" % ':'.join(parts))
@@ -71,7 +73,7 @@ def get_unvisited():
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
 
-def _fix_home_directory_environment_variable()
+def _fix_home_directory_environment_variable():
   # If running as root, export user pi's home directory as $HOME.
   if getpass.getuser() == 'root':
     os.environ['HOME'] = '/home/pi'
