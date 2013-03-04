@@ -19,7 +19,7 @@ class Element(MasterRunnable):
     super(Element, self).__init__()
 
   def reset(self):
-    print('!!! reset', self)
+    # print('!!! reset', self)
     self.run_time = time.time() - self.pause_time
 
   def child_stopped(self, child):

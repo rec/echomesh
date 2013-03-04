@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
@@ -87,11 +85,3 @@ def run():
 
   reason = 'at your request' if echomesh.quitting else 'due to a fatal error'
   print('echomesh shut down %s.' % reason)
-
-
-if __name__ == '__main__':
-  try:
-    run()
-  except:
-    import traceback
-    print(traceback.format_exc())
