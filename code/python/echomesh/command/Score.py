@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util import Log
 from echomesh.util import Split
-from echomesh.util import String
+from echomesh.base import Join
 
 import echomesh.command.Register
 import echomesh.remote.Register
@@ -12,7 +12,7 @@ LOGGER = Log.logger(__name__)
 def _print(action, echomesh_instance, parts):
   names = echomesh_instance.score_master.perform(action, parts)
   if names:
-    LOGGER.info('%s %s.', action, String.join_words(names))
+    LOGGER.info('%s %s.', action, Join.join_words(names))
   else:
     LOGGER.error('%s: no results.' % action)
 

@@ -6,7 +6,7 @@ import os.path
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Register
-from echomesh.util import String
+from echomesh.base import Join
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

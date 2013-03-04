@@ -5,7 +5,7 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util import String
+from echomesh.base import Join
 
 LOGGER = Log.logger(__name__)
 
@@ -63,7 +63,7 @@ def make_one(parent, description):
   not_accessed = description.not_accessed()
   if not_accessed:
     score = element.get_property('score') or ''
-    LOGGER.error(NOT_ACCESSED_ERROR, t, score, String.join_words(not_accessed))
+    LOGGER.error(NOT_ACCESSED_ERROR, t, score, Join.join_words(not_accessed))
 
   return element
 
