@@ -1,14 +1,55 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Split
-from echomesh.command import Register as CommandRegister
 from echomesh.util import Log
 from echomesh.util import String
-from echomesh.remote import Register as RemoteRegister
+
+import echomesh.command.Register
+import echomesh.remote.Register
 
 LOGGER = Log.logger(__name__)
 
-LOAD_HELP = """
+def _print(action, echomesh_instance, parts):
+  names = echomesh_instance.score_master.perform(action, parts)
+  if names:
+    LOGGER.info('%s %s.', action, String.join_words(names))
+  else:
+    LOGGER.error('%s: no results.' % action)
+
+def _local(action):
+  def f(echomesh_instance, *parts):
+    if echomesh_instance.broadcasting():
+      echomesh_instance.send(type=action, parts=parts)
+    else:
+      _print(action, echomesh_instance, parts)
+  return f
+
+def _remote(action):
+  def f(echomesh_instance, **data):
+    _print(action, echomesh_instance, data['parts'])
+
+  return f
+
+def _register():
+  for command in _COMMANDS:
+    echomesh.command.Register.register(_local(command), command,
+                                       help_text=_HELP[command],
+                                       see_also=_SEE_ALSO[command])
+    echomesh.remote.Register.register(_remote(command), command)
+
+_COMMANDS = ['load','reset', 'run', 'start', 'stop', 'unload' ]
+
+_SEE_ALSO = {
+  'load': ['unload', 'stop', 'run', 'show elements'],
+  'reset': ['run', 'stop'],
+  'run': ['load', 'stop'],
+  'start': ['reset', 'run'],
+  'stop': ['run', 'unload'],
+  'unload': ['load', 'stop', 'show elements'],
+}
+
+_HELP = {
+  'load': """
 Usage:
 
   load SCORE [SCORE...] [as NAME NAME...]
@@ -28,19 +69,14 @@ Examples:
   load Lights.yml
   load Lights.yml as l1
   load Lights.yml Lights.yml Lights.yml as l1 l2 l3
-"""
+""",
 
-def load(echomesh_instance, *parts):
-  split = Split.pair_split(parts)
-  return echomesh_instance.score_master.load_elements(*split), 'Loaded'
-
-
-RESET_HELP = """
+  'reset': """
 Usage:
 
   reset ELEMENT [ELEMENT ...]
 
-Resets the named lements to their start time.
+Resets the named elements to their start time.
 
 If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
@@ -48,17 +84,33 @@ nodes on the network.
 Example:
   reset Lights   # Resets an existing element called lights.
 
-"""
+""",
 
-def reset(echomesh_instance, *parts):
-  split = Split.pair_split(parts)
-  return echomesh_instance.score_master.reset_elements(split), 'Reset'
-
-
-RUN_HELP = """
+  'run': """
 Usage:
 
-  run ITEM [ITEM ...] [as NAME NAME...]
+  run ELEMENT [ELEMENT ...]
+
+Starts running the given ELEMENTs which are already in memory.
+
+Examples:
+  run Lights   # Runs an existing element called lights.
+  run Lights Sound Action Adventure
+
+""",
+
+  'stop': """
+Usage: stop ELEMENT [ELEMENT...] | stop *
+
+Stops one or more Elements, but keeps them in memory.  The special name
+"*" stops all the running elements at once.
+
+If you are in broadcast mode then this command will be sent to all Echomesh
+nodes on the network.
+""",
+
+  'start': """
+Usage: start ITEM [ITEM...] | start *
 
 Starts running the given ITEMs.  If they are scores (i.e. end with .yml) then
 load them into memory before running them;  otherwise, these must be the names
@@ -68,18 +120,14 @@ If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
 
 Examples:
-  run Lights   # Runs an existing element called lights.
-  run Lights.yml  # Runs a score Lights.yml.
-  run Lights.yml as l1
 
-"""
+  start foo
+  start foo.yml
+  start foo.yml as bar
 
-def run(echomesh_instance, *parts):
-  split = Split.pair_split(parts)
-  return echomesh_instance.score_master.run_elements(split), 'Run'
+""",
 
-
-UNLOAD_HELP = """
+  'unload': """
 Usage:
 
   unload ELEMENT [ELEMENT...]
@@ -89,59 +137,7 @@ The special name * unloads all the Elements from memory.
 
 If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
-"""
+""",
+}
 
-def unload(echomesh_instance, *parts):
-  return echomesh_instance.score_master.unload_help(parts), 'Unloaded'
-
-
-STOP_HELP = """
-Usage: stop element [element...] | stop *
-
-Stops one or more Elements, but keeps them in memory.  The special name
-"*" stops all the running elements at once.
-
-If you are in broadcast mode then this command will be sent to all Echomesh
-nodes on the network.
-"""
-
-def stop(echomesh_instance, *parts):
-  return echomesh_instance.score_master.stop_elements(parts), 'Stopped'
-
-def _print(function, echomesh_instance, parts):
-  names, action = function(echomesh_instance, *parts)
-  if names:
-    LOGGER.info('%s %s.', action, String.join_words(names))
-  else:
-    LOGGER.error('%s: no results.' % action)
-
-def _local(function):
-  def f(echomesh_instance, *parts):
-    if echomesh_instance.broadcasting():
-      echomesh_instance.send(type=function.__name__, parts=parts)
-    else:
-      _print(function, echomesh_instance, parts)
-  return f
-
-CommandRegister.register_all(
-  load=(_local(load), LOAD_HELP,
-        ['unload', 'stop', 'run', 'show elements']),
-  reset=(_local(reset), RESET_HELP, ['run', 'stop']),
-  run=(_local(run), RUN_HELP, ['load', 'stop']),
-  stop=(_local(stop), STOP_HELP, ['run', 'unload']),
-  unload=(_local(unload), UNLOAD_HELP, ['load', 'stop', 'show elements']),
-)
-
-def _remote(function):
-  def f(echomesh_instance, **data):
-    _print(function, echomesh_instance, data['parts'])
-
-  return f
-
-RemoteRegister.register_all(
-  load=(_remote(load)),
-  reset=(_remote(reset)),
-  run=(_remote(run)),
-  stop=(_remote(stop)),
-  unload=(_remote(unload)),
-)
+_register()

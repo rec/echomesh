@@ -25,7 +25,7 @@ class ThreadRunnable(MasterRunnable):
         self.target()
       except Exception as e:
         if self.is_running or self.report_error:
-          LOGGER.error('Uncaught thread error', exc_info=1)
+          LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
         self.stop()
       self._after_thread_stop()
     self.thread = threading.Thread(target=target)

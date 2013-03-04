@@ -17,7 +17,7 @@ class Print(Element.Element):
     except:
       text = self.text
     LOGGER.info(text)
-    return True
+    return True  # Request to stop the Element.
 
   def handle(self, event):
     LOGGER.info('%s: %s', self.text, event)

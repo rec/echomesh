@@ -44,12 +44,4 @@ class Root(List.List):
         handler.handle(event)
 
 
-def _format_delta(t):
-  s = str(datetime.timedelta(seconds=t))
-  loc = s.find('.')
-  if loc > 0:
-    s = s[0:loc]
-  return s
-
-
 Element.register(Root)

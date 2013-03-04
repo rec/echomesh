@@ -26,9 +26,10 @@ def pair_split(items, split='as'):
 def split_scores(scores):
   if not scores:
     return []
-  if isinstance(scores, six.string_types):
-    scores = split_words(scores)
-  return pair_split(scores)
+
+  if isinstance(scores, (tuple, list)):
+    scores = ' '.join(scores)
+  return pair_split(split_words(scores))
 
 def split_args(args):
   address = []

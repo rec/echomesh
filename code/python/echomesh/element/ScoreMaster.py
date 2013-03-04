@@ -20,6 +20,7 @@ from echomesh.util import Log
 from echomesh.util import UniqueName
 
 LOGGER = Log.logger(__name__)
+_NEW_STYLE_CALLS = True
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
   STOP, START, UNLOAD, RESET = range(4)
@@ -27,20 +28,26 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def __init__(self):
     super(ScoreMaster, self).__init__()
     self.elements = {}
-    self.lock = threading.Lock()
+    self.lock = threading.Lock()  # TODO: put this in everywhere.
     self.scores_to_start = Split.split_scores(Config.get('score'))
     self.scores_to_load = Split.split_scores(Config.get('load_score'))
 
-  def load_elements(self, score_names):
-    with self.lock:
-      elements = _make_elements(score_names, self.elements)
-      self.elements.update(elements)
-      return elements.keys()
+  def perform(self, action, names):
+    if action == 'load':
+      return self.load_elements(names)
 
-  def perform(self, method_name, score_names):
+    if action == 'start':
+      return self.start_elements(names)
+
+    if isinstance(names, six.string_types):
+      names = Split.split_words(names)
+
+    return self.perform_element(action, names)
+
+  def perform_element(self, action, names):
     full_names = []
-    getter = operator.attrgetter(method_name)
-    is_unload = (method_name == unload)
+    getter = operator.attrgetter(action)
+    is_unload = (action == 'unload')
     with self.lock:
       if '*' in names:
         names = self.elements.keys()
@@ -48,7 +55,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         try:
           pm = GetPrefix.get_prefix_and_match(self.elements, name, 'element')
           full_name, element = pm
-          attr = getattr(element, method_name)
           getter(element)()
           full_names.append(full_name)
           if is_unload:
@@ -57,8 +63,16 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           LOGGER.error()
     return full_names
 
-  def run_elements(self, score_names):
+  def load_elements(self, names):
+    score_names = Split.split_scores(names)
+    with self.lock:
+      elements = _make_elements(score_names, self.elements)
+      self.elements.update(elements)
+      return elements.keys()
+
+  def start_elements(self, names):
     element_names = []
+    score_names = Split.split_scores(names)
     for score_file, name in score_names:
       is_file = score_file.endswith('.yml')
       if name:
@@ -67,22 +81,11 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       else:
         name = score_file
       if is_file:
-        element_names.extend(self.load_elements([[score_file, name]]))
+        element_names.extend(self.load_elements([score_file, 'as', name]))
       else:
         element_names.append(name)
-    return self.start_elements(element_names)
 
-  def start_elements(self, elements):
-    return self._for_each_element(elements, ScoreMaster.START)
-
-  def stop_elements(self, elements):
-    return self._for_each_element(elements, ScoreMaster.STOP)
-
-  def unload_elements(self, names):
-    return self._for_each_element(names, ScoreMaster.UNLOAD)
-
-  def reset_elements(self, names):
-    return self._for_each_element(names, ScoreMaster.RESET)
+    return self.perform_element('run', element_names)
 
   def handle(self, event):
     for score in self.elements.itervalues():
@@ -102,51 +105,16 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         if k.startswith(name):
           return v
 
-  def _for_each_element(self, names, action):
-    with self.lock:
-      if '*' in names:
-        names = self.elements.keys()
-      full_names = []
-      for name in names:
-        assert name is not None
-        try:
-          full_names.append(self._for_one_element(name, action))
-        except Exception:
-          LOGGER.error()
-    return full_names
-
-  def _for_one_element(self, name, action):
-    full_name, element = GetPrefix.get_prefix_and_match(
-      self.elements, name, 'element')
-
-    if action == ScoreMaster.START:
-      if element.is_running:
-        raise Exception('Element %s was already running.' % full_name)
-      element.run()
-
-    elif action == ScoreMaster.RESET:
-      element.reset()
-
-    else:
-      if element.is_running:
-        element.stop()
-      elif action == ScoreMaster.STOP:
-        raise Exception('Element %s was not running.' % full_name)
-
-      if action == ScoreMaster.UNLOAD:
-        del self.elements[full_name]
-
-    return full_name
-
   def _on_run(self):
     super(ScoreMaster, self)._on_run()
-    for function, scores in ((self.start_elements, self.scores_to_start),
-                             (self.load_elements, self.scores_to_load)):
-      try:
-        function(scores)
-      except Exception as e:
-        LOGGER.error()
-      scores[:] = []
+    if self.scores_to_start or self.scores_to_load:
+      for function, scores in ((self.start_elements, self.scores_to_start),
+                               (self.load_elements, self.scores_to_load)):
+        try:
+          function(scores)
+        except Exception as e:
+          LOGGER.error()
+        scores[:] = []
 
   def _on_stop(self):
     super(ScoreMaster, self)._on_stop()
