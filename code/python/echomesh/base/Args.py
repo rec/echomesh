@@ -1,9 +1,23 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+ARGUMENTS = []  # TODO: perhaps delete?
+ASSIGNMENT_ARGS = []
+YAML_ARGS = []
+
+def set_arguments(argv):
+  ARGUMENTS[:] = args = argv[1:]
+  if args:
+    a = args[0].strip()
+    if _is_yaml(a):
+      YAML_ARGS[:] = args
+    else:
+      ASSIGNMENT_ARGS[:] = split_args(args)
+
 def split_args(args):
   address = []
   value = None
   equals_found = False
+
   for arg in args:
     if equals_found:
       yield address, arg
@@ -26,13 +40,3 @@ def split_args(args):
 
   if address:
     print('ERROR: Extra arguments at the end: "%s".' % ' '.join(address))
-
-def split_args_to_dict(args):
-  result = {}
-  for address, value in split_args(args):
-    last = address.pop()
-    res = result
-    for a in address:
-      res = res.setdefault(a, {})
-    res[last] = value
-  return result

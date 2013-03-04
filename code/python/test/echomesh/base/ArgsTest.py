@@ -47,3 +47,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base.Args import *
+
+# TODO: probably delete this.
+def split_args_to_dict(args):
+  result = {}
+  for address, value in split_args(args):
+    last = address.pop()
+    res = result
+    for a in address:
+      res = res.setdefault(a, {})
+    res[last] = value
+  return result

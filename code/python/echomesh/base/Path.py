@@ -11,33 +11,6 @@ from echomesh.base import Yaml
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
 
-def merge_assignment(table, address, value, error_name='merge_assignment'):
-  t = table
-  for i, field in enumerate(address):
-    if i < len(address) - 1:
-      t = GetPrefix.get_prefix_and_match(t, field, error_name)[1]
-    else:
-      t[field] = value
-
-def set_args(args):
-  if args and _is_yaml(args[0]):
-    pass
-
-def _is_yaml(x):
-  return x and (x[0] in '{[')
-
-def get_args():
-  if args and _is_yaml(ARGS[0]):
-    line = ' '.join(ARGS).strip()
-
-  if _is_yaml(line):
-    pass
-  else:
-    pass
-
-def yaml_args():
-  return [a for a in sys.argv if _is_yaml(a)]
-
 def _possible_project(path):
   for d in 'asset', 'command':
     if not os.path.exists(os.path.join(path, d)):

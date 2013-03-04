@@ -42,10 +42,13 @@ def run():
     sys.path.append(external)
   p()
 
+  from echomes.base import Args
+  Args.set_arguments(sys.argv)
+
   from echomesh.base import Config
   p()  # 1215ms
 
-  Config.recalculate(args=sys.argv)
+  Config.recalculate()
   p() # 1329ms
 
   if not (Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart'):
