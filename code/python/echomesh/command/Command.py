@@ -17,7 +17,6 @@ QUIT_HELP = """
 "quit" or q stops all the elements running and quits the echomesh program.
 """
 
-
 COMMENT_HELP = """
 Comment lines start with a # - everything after that is ignored.
 """

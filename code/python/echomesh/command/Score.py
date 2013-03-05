@@ -9,7 +9,7 @@ import echomesh.remote.Register
 
 LOGGER = Log.logger(__name__)
 
-def _print(action, echomesh_instance, parts):
+def _perform(action, echomesh_instance, parts):
   names = echomesh_instance.score_master.perform(action, parts)
   if names:
     LOGGER.info('%s %s.', action, Join.join_words(names))
@@ -21,12 +21,12 @@ def _local(action):
     if echomesh_instance.broadcasting():
       echomesh_instance.send(type=action, parts=parts)
     else:
-      _print(action, echomesh_instance, parts)
+      _perform(action, echomesh_instance, parts)
   return f
 
 def _remote(action):
   def f(echomesh_instance, **data):
-    _print(action, echomesh_instance, data['parts'])
+    _perform(action, echomesh_instance, data['parts'])
 
   return f
 
