@@ -39,7 +39,7 @@ def get(*parts):
   def get_part(config, part):
     if not isinstance(config, dict):
       raise Exception("Reached leaf configuration for %s: %s" %
-                      (':'.join(parts), config))
+                      ('.'.join(parts), config))
     value = config.get(part, none)
     if value is none:
       raise Exception("Couldn't find configuration %s" % ':'.join(parts))

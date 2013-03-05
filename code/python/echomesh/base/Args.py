@@ -21,23 +21,23 @@ def split_args(args):
 
   for arg in args:
     if equals_found:
-      yield address, arg
-      address = []
-      equals_found = False
-      continue
-    if '=' in arg:
-      name, value = arg.split('=', 1)
-      equals_found = True
+      value = arg
     else:
-      name, value = arg, None
+      if '=' in arg:
+        name, value = arg.split('=', 1)
+        equals_found = True
+      else:
+        name, value = arg, None
 
-    name = name.strip().strip(':')
-    if name:
-      address.append(name)
+      name = name.strip().strip('.')
+      if name:
+        address.append(name)
 
     if value:
       yield address, value
       address = []
+      equals_found = False
 
   if address:
     print('ERROR: Extra arguments at the end: "%s".' % ' '.join(address))
+

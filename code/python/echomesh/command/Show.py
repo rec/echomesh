@@ -22,14 +22,50 @@ def _info(d, spaces='  '):
     s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
   LOGGER.info('\n%s\n' % s)
 
+def addresses(echomesh_instance):
+  _info(Name.addresses())
+
+def _all(echomesh_instance):
+  for name in sorted(SHOW_REGISTRY.keys()):
+    if name != 'all':
+      LOGGER.info('\n%s:', name)
+      SHOW_REGISTRY.get(name)(echomesh_instance)
+
+def broadcast(echomesh_instance):
+  LOGGER.info('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
+
+def directories(echomesh_instance):
+  _info(Path.info())
+
+def elements(echomesh_instance):
+  info = echomesh_instance.score_master.info()
+  if info:
+    _info(info)
+  else:
+    LOGGER.info('No elements in memory')
+
+def info(echomesh_instance):
+  _info(Name.info())
+
+def names(echomesh_instance):
+  _info(Name.names())
+
+def nodes(echomesh_instance):
+  for name, peer in echomesh_instance.peers.get_peers().iteritems():
+    LOGGER.info('%s: ' % name)
+    _info(peer)
+
+def sound(echomesh_instance):
+ _info(Sound.info())
+
+def units(echomesh_instance):
+  LOGGER.info('\nUnits are: %s', Units.list_units())
+
 ADDRESSES_HELP = """
 Shows:
   This machine's current IP address.
   This machine's permanent MAC address.
 """
-def addresses(echomesh_instance):
-  _info(Name.addresses())
-
 
 BROADCAST_HELP = """
 Shows if this echomesh node is in broadcast made, meaning that its run and stop
@@ -39,10 +75,6 @@ When a node is in broadcast mode, the standard "echomesh:" prompt is replaced
 by "echomesh!"
 
 """
-def broadcast(echomesh_instance):
-  LOGGER.info('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
-
-
 
 NAMES_HELP = """
 "show names" shows you the following information about this echomesh node:
@@ -52,9 +84,6 @@ NAMES_HELP = """
     in the echomesh configuration.
   * The echomesh tags for this machine, which are also set in the configuration.
 """
-
-def names(echomesh_instance):
-  _info(Name.names())
 
 INFO_HELP = """
 "show info" shows your machine's info record.
@@ -69,9 +98,6 @@ See "help show names" and "help show addresses" for more information.
 
 """
 
-def info(echomesh_instance):
-  _info(Name.info())
-
 DIRECTORIES_HELP = """
 "show path" shows directories that contain files used by echomesh:
 
@@ -81,8 +107,6 @@ DIRECTORIES_HELP = """
   * The project directory, the project root containing assets and commands.
   * The echomesh directory, which is the root of the echomesh installation.
 """
-def directories(echomesh_instance):
-  _info(Path.info())
 
 NODES_HELP = """
 Each echomesh node knows about a list of other nodes on the same network.
@@ -92,11 +116,6 @@ Each echomesh node knows about a list of other nodes on the same network.
 See "help show info" for more information.
 """
 
-def nodes(echomesh_instance):
-  for name, peer in echomesh.peers.get_peers().iteritems():
-    LOGGER.info('%s: ' % name)
-    _info(peer)
-
 ELEMENTS_HELP = """
 "show elements" shows all the elements that have been loaded, as well as the
 time they were started.
@@ -104,19 +123,9 @@ time they were started.
 See "help start" and "help stop" for more information.
 """
 
-def elements(echomesh_instance):
-  info = echomesh_instance.score_master.info()
-  if info:
-    _info(info)
-  else:
-    LOGGER.info('No elements in memory')
-
 SOUND_HELP = """
 Show all the sound interfaces available on this machine.
 """
-
-def sound(echomesh_instance):
- _info(Sound.info())
 
 UNITS_HELP = """
 echomesh understands data expressed in a variety of units like Hz, percent,
@@ -124,9 +133,6 @@ semitones and decibels.  "show units" lists these units and their synonyms
 (like seconds, sec, s or second).
 
 """
-
-def units(echomesh_instance):
-  LOGGER.info('\nUnits are: %s', Units.list_units())
 
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
@@ -144,6 +150,13 @@ SHOW_REGISTRY.register_all(
 
 SHOW_NAMES = SHOW_REGISTRY.join_keys()
 SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
+
+ALL_HELP = """
+Shows all information on all values:
+  %s
+""" % SHOW_NAMES
+
+SHOW_REGISTRY.register_all(all=(_all, ALL_HELP))
 
 def _show(echomesh_instance, *parts):
   if not parts:

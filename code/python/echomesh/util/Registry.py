@@ -41,7 +41,6 @@ class Registry(object):
         raise Exception('Conflicting registrations for %s' % function_name)
       self.registry[function_name] = function, help_text, see_also
 
-
   def _get(self, name):
     return GetPrefix.get_prefix_and_match(self.registry, name, self.name,
                                           allow_prefixes=self.allow_prefixes)
