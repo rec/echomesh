@@ -68,7 +68,7 @@ Shows:
 """
 
 BROADCAST_HELP = """
-Shows if this echomesh node is in broadcast made, meaning that its run and stop
+Shows if this echomesh node is in broadcast made, meaning that its run and pause
 commands are sent to all other nodes.
 
 When a node is in broadcast mode, the standard "echomesh:" prompt is replaced
@@ -120,7 +120,7 @@ ELEMENTS_HELP = """
 "show elements" shows all the elements that have been loaded, as well as the
 time they were started.
 
-See "help start" and "help stop" for more information.
+See "help start" and "help pause" for more information.
 """
 
 SOUND_HELP = """

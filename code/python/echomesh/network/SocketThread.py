@@ -13,7 +13,7 @@ class SocketThread(ThreadRunnable):
     self.echomesh_socket = echomesh_socket
     self.socket = echomesh_socket.socket
     self.queue = queue.Queue()
-    self.add_mutual_stop_slave(self._socket)
+    self.add_mutual_pause_slave(self._socket)
     self.name = name
     self.buffer = ''
 
@@ -35,7 +35,7 @@ class SocketQueue(object):
     self.socket = echomesh_socket.socket
     self.queue = queue.Queue()
     self.buffer = ''
-    self.stop = echomesh_socket.stop
+    self.pause = echomesh_socket.pause
     self.join = echomesh_socket.join
 
   def receive(self, packet):

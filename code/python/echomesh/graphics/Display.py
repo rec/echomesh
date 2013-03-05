@@ -45,9 +45,9 @@ class Display(Runnable.Runnable):
       self.display.first_time = True
       self.display.is_running = True
 
-  def _on_stop(self):
-    super(Display, self)._on_stop()
-    self.display and self.display.stop()
+  def _on_pause(self):
+    super(Display, self)._on_pause()
+    self.display and self.display.pause()
 
   def loop(self):
     while self.is_running and self.display and self.display.loop_running():

@@ -78,8 +78,8 @@ class ImageSprite(Runnable):
         self._time = 0
         elapsed = 0
       else:
-        LOGGER.debug('Stopping image sprite')
-        self.stop()
+        LOGGER.debug('Finishing image sprite')
+        self.pause()
         return
 
     self.sprite.position(*self.coords(elapsed))
@@ -98,8 +98,8 @@ class ImageSprite(Runnable):
   def _add_sprite(self):
     pi3d.Display.Display.INSTANCE.add_sprites(self.sprite)
 
-  def _on_stop(self):
-    super(ImageSprite, self)._on_stop()
+  def _on_pause(self):
+    super(ImageSprite, self)._on_pause()
     pi3d.Display.Display.INSTANCE.remove_sprites(self.sprite)
 
 

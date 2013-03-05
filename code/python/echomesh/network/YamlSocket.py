@@ -46,7 +46,7 @@ class YamlSocket(MasterRunnable):
     self._receive = SocketThread(receive_socket, target=receive_loop,
                                  name='receive_thread')
 
-    self.add_mutual_stop_slave(self._send, self._receive)
+    self.add_mutual_pause_slave(self._send, self._receive)
 
   def send(self, data):
     self._send.queue.put(data)

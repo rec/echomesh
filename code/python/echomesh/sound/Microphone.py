@@ -85,7 +85,7 @@ class Microphone(ThreadRunnable.ThreadRunnable):
       if not self.stream:
         LOGGER.error('Failed to open stream %s, %s', self.device_name,
                      self.index)
-        self.stop()
+        self.pause()
       else:
         LOGGER.debug('Microphone started.')
 

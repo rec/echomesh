@@ -51,7 +51,7 @@ class TapTester(object):
     self.quietcount = 0
     self.errorcount = 0
 
-  def stop(self):
+  def pause(self):
     self.stream.close()
 
   def find_input_device(self):

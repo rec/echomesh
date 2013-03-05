@@ -10,7 +10,7 @@ class Select(Element.Element):
     choices = description.get('choices', [])
     self.random = WeightedRandom(c.get('weight', None) for c in choices)
     self.element = [Load.make_one(self, c['element']) for c in choices]
-    self.add_stop_only_slave(*self.element)
+    self.add_pause_only_slave(*self.element)
 
   def _on_run(self):
     super(Select, self)._on_run()

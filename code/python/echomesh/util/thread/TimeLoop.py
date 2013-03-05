@@ -59,5 +59,5 @@ class TimeLoop(ThreadLoop.ThreadLoop):
   def next_time(self, t):
     return t + self.interval
 
-  def _after_thread_stop(self):
+  def _after_thread_pause(self):
     self.pause_time = self.timer() - self.start_time

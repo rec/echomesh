@@ -23,7 +23,7 @@ LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
-  STOP, START, UNLOAD, RESET = range(4)
+  PAUSE, START, UNLOAD, RESET = range(4)
 
   def __init__(self):
     super(ScoreMaster, self).__init__()
@@ -116,10 +116,10 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           LOGGER.error()
         scores[:] = []
 
-  def _on_stop(self):
-    super(ScoreMaster, self)._on_stop()
+  def _on_pause(self):
+    super(ScoreMaster, self)._on_pause()
     try:
-      self.stop_elements('*')
+      self.pause_elements('*')
     except:
       pass
 

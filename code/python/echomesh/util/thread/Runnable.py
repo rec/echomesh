@@ -6,8 +6,8 @@ LOGGER = Log.logger(__name__)
 
 class Runnable(object):
   """
-  A Runnable is a class that be run, stopped and reset.  A Runnable must
-  implement at least one of _on_run or _on_stop, and most likely _on_reset too.
+  A Runnable is a class that be run, paused and reset.  A Runnable must
+  implement at least one of _on_run or _on_pause, and most likely _on_reset too.
   """
   def __init__(self):
     self.is_running = False
@@ -18,21 +18,21 @@ class Runnable(object):
     if not self.is_running:
       self.is_running = True
       if self._on_run():
-        self.stop()
-        LOGGER.debug('%s stopped in startup', self)
+        self.pause()
+        LOGGER.debug('%s paused in startup', self)
       else:
         LOGGER.debug('Started %s', self)
     else:
       LOGGER.debug('Tried to run a running %s', self)
 
-  def stop(self):
-    """Stop running, if we are running."""
+  def pause(self):
+    """Pause running, if we are running."""
     if self.is_running:
       self.is_running = False
-      self._on_stop()
-      LOGGER.debug('Stopped %s', self)
+      self._on_pause()
+      LOGGER.debug('Paused %s', self)
     else:
-      LOGGER.debug('Tried to stop a stopped %s', self)
+      LOGGER.debug('Tried to pause a paused %s', self)
 
   def reset(self):
     """Reset this Runnable to the beginning, whether or not it is running."""
@@ -48,11 +48,11 @@ class Runnable(object):
   def _on_run(self):
     """This is called on a state change from not running to running.
     This function should return True if the Runnable was either unable to run
-    or must stop immediately ("one-shots" like element.Print).
+    or must pause immediately ("one-shots" like element.Print).
     """
     pass
 
-  def _on_stop(self):
+  def _on_pause(self):
     """This is called on a state change from running to not running."""
     pass
 
@@ -67,4 +67,4 @@ class Runnable(object):
     return self
 
   def __exit__(self, type, value, traceback):
-    self.stop()
+    self.pause()

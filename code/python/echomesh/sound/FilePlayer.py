@@ -42,7 +42,7 @@ class FilePlayer(ThreadLoop):
     handler = Util.FILE_READERS.get(filetype)
     if not handler:
       LOGGER.error("Can't understand the file type of file %s", filename)
-      self.stop()
+      self.pause()
       return
 
     self.file_stream = handler.open(filename, 'rb')
@@ -83,13 +83,13 @@ class FilePlayer(ThreadLoop):
     self.audio_stream = self.open_stream()
     if not self.audio_stream:
       LOGGER.error("Couldn't open sound on loop %d", self.loop_number)
-      self.stop()
+      self.pause()
     self.time = 0
     self.current_level = self.level.interpolate(0)
     self.current_pan = self.pan.interpolate(0)
 
-  def _on_stop(self):
-    super(FilePlayer, self)._on_stop()
+  def _on_pause(self):
+    super(FilePlayer, self)._on_pause()
     self._close_stream()
 
   def _close_stream(self):
@@ -111,8 +111,8 @@ class FilePlayer(ThreadLoop):
 
   def single_loop(self):
     if not self.audio_stream:
-      # TODO: why should I have to do this given that restart_sound calls stop?
-      self.stop()
+      # TODO: why should I have to do this given that restart_sound calls pause?
+      self.pause()
       return
 
     frames = self.file_stream.readframes(self.chunk_size)
@@ -123,7 +123,7 @@ class FilePlayer(ThreadLoop):
         if not self.is_running:
           return
       else:
-        self.stop()
+        self.pause()
         return
 
     self.time =+ len(frames) / float((self.samples_per_frame *

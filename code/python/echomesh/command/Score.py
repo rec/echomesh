@@ -37,15 +37,15 @@ def _register():
                                        see_also=_SEE_ALSO[command])
     echomesh.remote.Register.register(_remote(command), command)
 
-_COMMANDS = ['load','reset', 'run', 'start', 'stop', 'unload' ]
+_COMMANDS = ['load', 'pause', 'reset', 'run', 'start', 'unload' ]
 
 _SEE_ALSO = {
-  'load': ['unload', 'stop', 'run', 'show elements'],
-  'reset': ['run', 'stop'],
-  'run': ['load', 'stop'],
+  'load': ['unload', 'pause', 'run', 'show elements'],
+  'pause': ['run', 'unload'],
+  'reset': ['run', 'pause'],
+  'run': ['load', 'pause'],
   'start': ['reset', 'run'],
-  'stop': ['run', 'unload'],
-  'unload': ['load', 'stop', 'show elements'],
+  'unload': ['load', 'pause', 'show elements'],
 }
 
 _HELP = {
@@ -99,11 +99,11 @@ Examples:
 
 """,
 
-  'stop': """
-Usage: stop ELEMENT [ELEMENT...] | stop *
+  'pause': """
+Usage: pause ELEMENT [ELEMENT...] | pause *
 
-Stops one or more Elements, but keeps them in memory.  The special name
-"*" stops all the running elements at once.
+Pauses one or more Elements, but keeps them in memory.  The special name
+"*" pauses all the running elements at once.
 
 If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
@@ -132,7 +132,7 @@ Usage:
 
   unload ELEMENT [ELEMENT...]
 
-Unloads the given Elements from memory, stopping them if they're running.
+Unloads the given Elements from memory, pauseping them if they're running.
 The special name * unloads all the Elements from memory.
 
 If you are in broadcast mode then this command will be sent to all Echomesh

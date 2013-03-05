@@ -39,7 +39,7 @@ class Sequence(Loop.Loop):
         return self._command_time()
       else:
         LOGGER.info('Sequence finished')
-        self.stop()
+        self.pause()
         return 0
 
   def _on_run(self):

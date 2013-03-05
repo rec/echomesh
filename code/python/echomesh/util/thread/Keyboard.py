@@ -65,7 +65,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     elif braces < 0:
       LOGGER.error('Too many }')
     elif self.processor(buffer.strip()):
-      self.stop()
+      self.pause()
 
 
 USE_CURSES = Config.get('control_program', 'use_curses')

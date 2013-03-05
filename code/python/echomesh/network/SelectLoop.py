@@ -33,7 +33,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
     s = self.sockets.get(socket)
     if s:
       del self.sockets[socket]
-      s.stop()
+      s.pause()
     else:
       LOGGER.error("Tried to remove a socket we didn't know about.")
 

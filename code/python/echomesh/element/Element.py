@@ -22,8 +22,8 @@ class Element(MasterRunnable):
     # print('!!! reset', self)
     self.run_time = time.time() - self.pause_time
 
-  def child_stopped(self, child):
-    self.parent and self.parent.child_stopped(child)
+  def child_paused(self, child):
+    self.parent and self.parent.child_paused(child)
 
   def class_name(self):
     return self.__class__.__name__.lower()
@@ -49,10 +49,10 @@ class Element(MasterRunnable):
     h = self.get_hierarchy()
     return ': '.join(n.__class__.__name__.lower() for n in h)
 
-  def _on_stop(self):
-    super(Element, self)._on_stop()
+  def _on_pause(self):
+    super(Element, self)._on_pause()
     self.pause_time = time.time() - self.run_time
-    self.child_stopped(self)
+    self.child_paused(self)
 
   def _on_reset(self):
     super(Element, self)._on_reset()
@@ -61,7 +61,7 @@ class Element(MasterRunnable):
 
   def info(self):
     return {'class': self.class_name(),
-            'state': 'run' if self.is_running else 'stop',
+            'state': 'run' if self.is_running else 'pause',
             'time': _format_delta(self.time())}
 
 

@@ -20,7 +20,7 @@ GIT_UPDATE = ['pull', 'origin', 'master']
 def halt(echomesh):
   if _halt_allowed():
     LOGGER.info('Quitting');
-    echomesh.stop()
+    echomesh.pause()
 
 def restart(echomesh):
   _close_and_run(echomesh, 'Restarting', RESTART_CMD)

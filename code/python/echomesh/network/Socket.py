@@ -38,7 +38,7 @@ class Socket(MasterRunnable):
     if not res:
       # An empty packet means it's all over.
       # http://docs.python.org/2/howto/sockets.html
-      self.stop()
+      self.pause()
       return False
 
     self.buffer += res
@@ -80,13 +80,13 @@ class Socket(MasterRunnable):
       if 'Address already in use' in str(e):
         raise Exception('There is already an echomesh node running on port %d' %
                         self.bind_port)
-      self.stop()
+      self.pause()
 
   def _start_socket(self):
     self.socket.bind((self.hostname, self.bind_port))
 
-  def _on_stop(self):
-    super(Socket, self)._on_stop()
+  def _on_pause(self):
+    super(Socket, self)._on_pause()
     try:
       self.socket.close()
     except:

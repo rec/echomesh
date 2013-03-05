@@ -34,9 +34,9 @@ class Repeat(Loop.Loop):
     self.list_element.run()
     self.repeat_count += 1
     if self.repeat_count >= self.repeat:
-      self.stop()
+      self.pause()
 
-  def child_stopped(self, child):
+  def child_paused(self, child):
     pass
 
   def reset(self):

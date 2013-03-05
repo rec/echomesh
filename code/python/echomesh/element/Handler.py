@@ -21,8 +21,8 @@ class Handler(Element.Element):
     else:
       LOGGER.warning("Didn't find a handler parent in open for %s", self)
 
-  def _on_stop(self):
-    super(Handler, self)._on_stop()
+  def _on_pause(self):
+    super(Handler, self)._on_pause()
     if hasattr(self.handler_parent, 'remove_handler'):
       self.handler_parent.remove_handler(self)
     else:

@@ -21,11 +21,11 @@ class List(Element.Element):
     classes = ', '.join(e.class_name() for e in self.element)
     return '%s(%s)' % (name, classes)
 
-  def child_stopped(self, child):
+  def child_paused(self, child):
     for e in self.element:
       if e.is_running:
         return
-    self.stop()
+    self.pause()
 
   def reset(self):
     for e in self.element:

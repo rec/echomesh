@@ -25,7 +25,7 @@ class TextToSpeech(Element.Element):
       try:
         f = GoogleTextToSpeech.CACHE.get_file(text)
         Aplay.play(f)
-        self.stop()
+        self.pause()
       except Exception as e:
         LOGGER.error("Couldn't speak text '%s' from file %s" % (text, f),
                      exc_info=1)
