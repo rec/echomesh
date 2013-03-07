@@ -102,5 +102,9 @@ See "help show scopes" for more information.
 def scores(echomesh, *args):
   flags, paths = Flag.split_args(args)
   paths = paths or ['']
+  printed = False
   for p in paths:
-    _scores(p, **flags)
+    _scores(p, **flags) or printed
+
+  if not printed:
+    LOGGER.info('  No matching scores found.\n')
