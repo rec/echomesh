@@ -11,15 +11,15 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class Echomesh(MasterRunnable):
+class Instance(MasterRunnable):
   INSTANCE = None
 
   def __init__(self):
-    super(Echomesh, self).__init__()
-    if Echomesh.INSTANCE:
-      LOGGER.error('There is more than one instance of Echomesh')
+    super(Instance, self).__init__()
+    if Instance.INSTANCE:
+      LOGGER.error('There is more than one instance of Instance')
     else:
-      Echomesh.INSTANCE = self
+      Instance.INSTANCE = self
 
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)

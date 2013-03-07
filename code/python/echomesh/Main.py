@@ -7,7 +7,7 @@ ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 USE_DIGITS_FOR_PROGRESS_BAR = not False
 PRINT_STARTUP_TIMES = not False
 
-def run():
+def main():
   import sys
 
   times = []
@@ -64,10 +64,10 @@ def run():
   SetOutput.set_output(Config.get('audio', 'output', 'route'))
   p()  # 425ms
 
-  from echomesh import Echomesh
+  from echomesh import Instance
   p()  # This is the big one, taking 3709ms on my RP.
 
-  echomesh = Echomesh.Echomesh()
+  echomesh = Instance.Instance()
   p()  # 599ms
 
   print()
