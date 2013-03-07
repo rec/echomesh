@@ -1,11 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-ARGUMENTS = []  # TODO: perhaps delete?
 ASSIGNMENT_ARGS = []
 YAML_ARGS = []
 
 def set_arguments(argv):
-  ARGUMENTS[:] = args = argv[1:]
+  args = argv[1:]
   if args:
     a = args[0].strip()
     if a:
@@ -29,12 +28,13 @@ def split_args(args):
       else:
         name, value = arg, None
 
-      name = name.strip().strip('.')
-      if name:
+      address_part = name.strip().strip('.')
+      if address_part:
         address.append(name)
 
     if value:
-      yield address, value
+      clean_address = filter(None, '.'.join(address).split('.'))
+      yield clean_address, value
       address = []
       equals_found = False
 
