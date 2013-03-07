@@ -36,9 +36,9 @@ _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
 _ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
 
-def list_units(separator='\n  '):
+def list_units(separator='  '):
   keys = UNITS_SOURCE.iterkeys()
-  return separator.join((', '.join(k) for k in keys))
+  return separator + ('\n' + separator).join((', '.join(k) for k in keys))
 
 UNITS = {}
 

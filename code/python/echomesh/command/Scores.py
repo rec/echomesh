@@ -16,7 +16,7 @@ LOGGER = Log.logger(__name__)
 def _time(t):
   return time.strftime('%H:%M', time.localtime(t))
 
-ELEMENT_FORMAT = '%-28s %5s %9s %9s %9s'
+ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
 
 def scopes(_):
   LOGGER.info('  %s\n' % ('\n  '.join(CommandFile.COMMAND_PATH)))
@@ -66,14 +66,14 @@ def _scores(path, resolve=False, scope='all', recursive=False):
         if not printed_this_time:
           printed_this_time = True
           if not printed:
-            LOGGER.info(ELEMENT_FORMAT, 'File name', 'Size', 'Accessed',
+            LOGGER.info(ELEMENT_FORMAT, 'File name', ' Bytes', 'Accessed',
                          'Modified', 'Created')
             printed = True
           else:
             LOGGER.info('\n')
-          LOGGER.info('  %s/%s:', scope, path)
+          LOGGER.info('    %s/%s:', scope, path)
         if is_dir:
-          LOGGER.info('    %s/', f)
+          LOGGER.info('      %s/', f)
         else:
           stat = os.stat(joined_f)
           LOGGER.info(ELEMENT_FORMAT,
@@ -104,7 +104,9 @@ def scores(echomesh, *args):
   paths = paths or ['']
   printed = False
   for p in paths:
-    _scores(p, **flags) or printed
+    printed = _scores(p, **flags) or printed
 
-  if not printed:
+  if printed:
+    LOGGER.info('')
+  else:
     LOGGER.info('  No matching scores found.\n')
