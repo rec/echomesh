@@ -26,9 +26,10 @@ def addresses(echomesh_instance):
   _info(Name.addresses())
 
 def _all(echomesh_instance):
+  LOGGER.info('')
   for name in sorted(SHOW_REGISTRY.keys()):
     if name != 'all':
-      LOGGER.info('\n%s:', name)
+      LOGGER.info('%s:', name)
       SHOW_REGISTRY.get(name)(echomesh_instance)
 
 def broadcast(echomesh_instance):
