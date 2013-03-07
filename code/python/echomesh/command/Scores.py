@@ -61,7 +61,7 @@ def _scores(path, resolve=False, scope='all', recursive=False):
       for f in sorted(os.listdir(pathdir)):
         joined_f = os.path.join(pathdir, f)
         is_dir = os.path.isdir(joined_f)
-        if not (is_dir or f.endswitho('yml')):
+        if not (is_dir or f.endswith('yml')):
           continue
         if not printed_this_time:
           printed_this_time = True

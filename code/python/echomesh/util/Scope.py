@@ -3,23 +3,15 @@ import re
 from echomesh.base import Name
 from echomesh.base import Platform
 
-# TODO: don't need the line numbers here.
-_SCOPE_RE = re.compile(r'( (?: [01234]\. )? ) (\w+) ( (?: / \w+ )? ) $', re.X)
-
 SCOPES = ['tag', 'name', 'platform', 'master', 'default']
 
 def resolve(scope):
-  match = _SCOPE_RE.match(scope)
-  if not scope:
-    raise Exception("Didn't match: '%s'" % scope)
+  parts = scope.split('/')
+  body = parts[0]
+  suffix = parts[1] if len(parts) >= 2 else ''
 
-  prefix, body, suffix = match.groups()
   if body not in SCOPES:
-    raise Exception("Didn't understand body %s" % body)
-
-  new_prefix = '%d.' % (SCOPES.index(body) + 1)
-  if prefix and prefix != new_prefix:
-    raise Exception("Wrong prefix %s" % body)
+    raise Exception("Didn't understand body %s in scope %s." % (body, scope))
 
   if body == 'name':
     suffix = suffix or ('/' + Name.NAME)
@@ -30,5 +22,5 @@ def resolve(scope):
   elif suffix:
     raise Exception("Name not needed for %s" % body)
 
-  return '%s%s%s' % (new_prefix, body, suffix)
+  return '%s%s' % (body, suffix)
 
