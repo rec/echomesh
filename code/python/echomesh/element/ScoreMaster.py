@@ -55,10 +55,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         try:
           pm = GetPrefix.get_prefix_and_match(self.elements, name, 'element')
           full_name, element = pm
-          getter(element)()
-          full_names.append(full_name)
           if is_unload:
+            if element.is_running:
+              element.pause()
             del self.elements[full_name]
+          else:
+            getter(element)()
+          full_names.append(full_name)
         except Exception:
           LOGGER.error()
     return full_names
