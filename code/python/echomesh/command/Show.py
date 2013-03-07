@@ -51,9 +51,20 @@ def names(echomesh_instance):
   _info(Name.names())
 
 def nodes(echomesh_instance):
-  for name, peer in echomesh_instance.peers.get_peers().iteritems():
-    LOGGER.info('%s: ' % name)
-    _info(peer)
+  peers = echomesh_instance.peers.get_peers()
+  if peers:
+    for name, peer in peers.iteritems():
+      LOGGER.info('  %s: ' % name)
+      _info(peer, '    ')
+  else:
+    LOGGER.error("""\
+  There are no nodes in your system.
+
+  Since there should always be at least the computer running echomesh, this
+  indicates a serious problem with your networking or your configuration.
+  Consult the trouble-shooting guide for more information.
+  """)
+
 
 def sound(echomesh_instance):
  _info(Sound.info())
