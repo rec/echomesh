@@ -32,7 +32,8 @@ def _all(echomesh_instance):
       SHOW_REGISTRY.get(name)(echomesh_instance)
 
 def broadcast(echomesh_instance):
-  LOGGER.info('Broadcast is ' + ('ON' if echomesh_instance.broadcasting() else 'off'))
+  message = 'ON' if echomesh_instance.broadcasting() else 'off'
+  LOGGER.info('  Broadcast is %s\n' % message)
 
 def directories(echomesh_instance):
   _info(Path.info())
@@ -70,7 +71,7 @@ def sound(echomesh_instance):
  _info(Sound.info())
 
 def units(echomesh_instance):
-  LOGGER.info('\nUnits are: %s', Units.list_units())
+  LOGGER.info('\nUnits are: %s\n', Units.list_units())
 
 ADDRESSES_HELP = """
 Shows:
