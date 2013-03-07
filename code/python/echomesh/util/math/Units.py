@@ -38,7 +38,7 @@ _ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
 
 def list_units(separator='\n  '):
   keys = UNITS_SOURCE.iterkeys()
-  return separator + separator.join((', '.join(k) for k in keys))
+  return separator.join((', '.join(k) for k in keys))
 
 UNITS = {}
 

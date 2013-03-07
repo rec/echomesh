@@ -18,8 +18,8 @@ def _time(t):
 
 ELEMENT_FORMAT = '%-28s %5s %9s %9s %9s'
 
-def scopes(echomesh):
-  LOGGER.info('  ' + ('\n  '.join(CommandFile.COMMAND_PATH)))
+def scopes(_):
+  LOGGER.info('  %s\n' % ('\n  '.join(CommandFile.COMMAND_PATH)))
 
 SCOPES_HELP = """
 In order to control multiple machines and configurations effectively, echomesh

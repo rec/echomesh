@@ -20,7 +20,7 @@ def _info(d, spaces='  '):
     items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
     length = max(len(k) for k, v in items)
     s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
-  LOGGER.info('\n%s\n' % s)
+  LOGGER.info('%s\n' % s)
 
 def addresses(echomesh_instance):
   _info(Name.addresses())
@@ -44,7 +44,7 @@ def elements(echomesh_instance):
   if info:
     _info(info)
   else:
-    LOGGER.info('No elements in memory')
+    LOGGER.info('  No elements have been loaded into memory.\n')
 
 def info(echomesh_instance):
   _info(Name.info())
@@ -72,7 +72,7 @@ def sound(echomesh_instance):
  _info(Sound.info())
 
 def units(echomesh_instance):
-  LOGGER.info('\nUnits are: %s\n', Units.list_units())
+  LOGGER.info('%s\n', Units.list_units())
 
 ADDRESSES_HELP = """
 Shows:
