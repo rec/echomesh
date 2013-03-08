@@ -10,6 +10,19 @@ class Registry(object):
     self.case_insensitive = case_insensitive
     self.allow_prefixes = allow_prefixes
 
+  def register(self, function, function_name=None,
+               help_text=None, see_also=None):
+    function_name = function_name or function.__name__
+    if self.case_insensitive:
+      function_name = function_name.lower()
+
+    none = object()
+    old_function = self.registry.get(function_name, (none, none))[0]
+    if old_function is not function:
+      if old_function is not none:
+        raise Exception('Conflicting registrations for %s' % function_name)
+      self.registry[function_name] = function, help_text, see_also
+
   def register_all(self, **kwds):
     for item_name, item in kwds.iteritems():
       help_text, see_also = None, None
@@ -27,19 +40,6 @@ class Registry(object):
     help_text = getattr(module, 'HELP', None)
     see_also = getattr(module, 'SEE_ALSO', None)
     self.register(function, function_name, help_text, see_also)
-
-  def register(self, function, function_name=None,
-               help_text=None, see_also=None):
-    function_name = function_name or function.__name__
-    if self.case_insensitive:
-      function_name = function_name.lower()
-
-    none = object()
-    old_function = self.registry.get(function_name, (none, none))[0]
-    if old_function is not function:
-      if old_function is not none:
-        raise Exception('Conflicting registrations for %s' % function_name)
-      self.registry[function_name] = function, help_text, see_also
 
   def _get(self, name):
     return GetPrefix.get_prefix_and_match(self.registry, name, self.name,

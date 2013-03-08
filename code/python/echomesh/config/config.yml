@@ -232,6 +232,13 @@ map:
 #  written by third parties.
 new: {}
 
+permissions:
+  boot: true
+  halt: true
+  initialize: true
+  quit: true
+  update: true
+
 # These are the configuration settings for the pi3d Open GL library - please
 # see http://pi3d.github.com
 pi3d:

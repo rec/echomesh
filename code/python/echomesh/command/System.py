@@ -18,13 +18,13 @@ HALT_CMD = [SUDO, SHUTDOWN, '-h', 'now']
 RESTART_CMD = [SUDO, SHUTDOWN, '-r', 'now']
 GIT_UPDATE = ['pull', 'origin', 'master']
 
-def boot(echomesh_instance):
+def _boot(echomesh_instance):
   _close_and_run(echomesh_instance, 'Rebooting', RESTART_CMD)
 
-def halt(echomesh_instance):
+def _halt(echomesh_instance):
   _close_and_run(echomesh_instance, 'Halting this machine', HALT_CMD)
 
-def initialize(echomesh_instance):
+def _initialize(echomesh_instance):
   if _halt_allowed():
     echomesh_instance.pause()
     os.execl(*sys.argv)
@@ -33,29 +33,27 @@ def _quit(echomesh_instance):
   LOGGER.info('Quitting');
   echomesh_instance.pause()
 
-def update(echomesh_instance):
+def _update(echomesh_instance):
   LOGGER.info('Pulling latest codebase from github')
   Git.run_git_commands(GIT_UPDATE)
   restart(echomesh_instance)
 
-Register.register_all(
-  boot=boot,
-  halt=halt,
-  initialize=initialize,
-  update=update,
-  quit=_quit)
+def _register(function):
+  name = function.__name__.strip('_')
+  def f(instance):
+    if Config.get('permission', name):
+      function(instance)
+    else:
+      LOGGER.error("You don't have permission to run '%s'.", name)
+  Register.register(f, name)
+
+for f in [_boot, _halt, _initialize, _update, _quit]:
+  _register(f)
 
 def _close_and_run(echomesh_instance, msg, cmd):
   LOGGER.info(msg)
-  if _shutdown_allowed():
-    Subprocess.run(cmd)
-  if _halt_allowed():
-    halt(cmd)
+  Subprocess.run(cmd)
+  halt(cmd)
 
-# TODO: https://github.com/rec/echomesh/issues/238
-def _shutdown_allowed():
-  return Config.get('allow_shutdown')
-
-def _halt_allowed():
-  return not Config.get('control_program', 'enable')
-
+def _allowed(operation):
+  return Config.get('permission', operation)
