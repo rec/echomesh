@@ -1,6 +1,3 @@
 control_program: true
-
-score:
-  file: marek.yml
-
+start: marek.yml
 autostart: false
