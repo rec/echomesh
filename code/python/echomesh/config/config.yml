@@ -211,27 +211,8 @@ logging:
   # you'll everything except debugging information.
   level: info
 
-# echomesh lets you assign names and tags to echomesh nodes by filling in this
-# :map area in your global score.  This is particularly handy when you have a
-# lot of machines with completely identical disk images that you need to keep
-# track of neatly.
-
-map:
-  # The name section assigns names to echomesh nodes.
-  #
-  # When echomesh starts up, it goes to the table in :map:name.
-  #
-  # First it looks in the table for its MAC address - the unique hardware
-  # signature of the machine.
-  # If it doesn't find the MAC address, it then looks for the IP address,
-  # the internet routing address of the machine.
-  name: {}
-  tag: {}
-
-# The new section is reserved for configuration values for elements and commands
-#  written by third parties.
-new: {}
-
+# The permissions area controls whether this machine is allowed to perform
+# the system activities boot, halt, initialize, quit or update.
 permissions:
   boot: true
   halt: true
@@ -253,17 +234,21 @@ pi3d:
   tk: False
   window_title: ''
 
-# The address of your project's root.
+# The path to your project's root directory.
 project: ''
 
-# Any scores in score: will be run on startup.
-# This can either be a single score, like:
+# RUNNING OR LOADING SCORES ON STARTUP
+#
+# Any scores listed in score: will be loaded and started when echomesh starts
+# up; and any scores listed in load: will be loaded but not started.
+#
+# You can either request a single score, like:
 #
 #   score:  myScore.yml
 #
 # or a list of scores, like:
 #
-#   score:
+#   load:
 #     - myScore1.yml
 #     - myScore2.yml
 #
@@ -271,14 +256,36 @@ project: ''
 #
 #   score: [myScore1.yml, myScore2.yml]
 #
-# or even a free-form list of scores and names
+# or even a free-form list of scores and names using the word "as".
 #
-#   score:  myScore2.yml myScore1.yml as m1, m2
-#
+#   score:  myScore1.yml as m1, myScore2.yml as m2
+#   score:  myScore2.yml myScore1.yml as m2, m1
 
-score: ''
+start: ''
 
-# Any scores in load_score: will be loaded on startup but not run.
+# Any scores in load: will be loaded on startup but not run.
 # See the comments above for score:
 
-load_score: ''
+load: ''
+
+# echomesh lets you assign names and tags to echomesh nodes by filling in this
+# :map area in your global score.  This is particularly handy when you have a
+# lot of machines with completely identical disk images that you need to keep
+# track of neatly.
+
+map:
+  # The name section assigns names to echomesh nodes.
+  #
+  # When echomesh starts up, it goes to the table in :map:name.
+  #
+  # First it looks in the table for its MAC address - the unique hardware
+  # signature of the machine.
+  # If it doesn't find the MAC address, it then looks for the IP address,
+  # the internet routing address of the machine.
+  name: {}
+  tag: {}
+
+# The new section is reserved for configuration values for elements and commands
+# written by third parties.
+new: {}
+

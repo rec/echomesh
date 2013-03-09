@@ -2,8 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
+CONFIG_EXCEPTIONS = set(['load', 'map', 'new', 'start'])
+
 def _merge_or_diff(old, new, is_merge, require_old_key, path='',
-                   require_old_key_exceptions=[]):
+                   require_old_key_exceptions=set()):
   """Merges two dictionaries, mutating the dictionary "old"."""
   nothing = ()
 
@@ -77,4 +79,4 @@ def merge(*others, **kwds):
   return reduce(merge, others + (kwds, ), None)
 
 def merge_for_config(*config):
-  return merge_strict_with_exceptions(['new', 'map', 'score'], *config)
+  return merge_strict_with_exceptions(CONFIG_EXCEPTIONS, *config)

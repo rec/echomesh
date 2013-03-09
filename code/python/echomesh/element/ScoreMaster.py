@@ -29,8 +29,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()  # TODO: put this in everywhere.
-    self.scores_to_start = Split.split_scores(Config.get('score'))
-    self.scores_to_load = Split.split_scores(Config.get('load_score'))
+    self.scores_to_start = Split.split_scores(Config.get('start'))
+    self.scores_to_load = Split.split_scores(Config.get('load'))
 
   def perform(self, action, names):
     if action == 'load':
