@@ -1,7 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import math
+
 from echomesh.util import ImportIf
-numpy = ImportIf.imp('numpy')
 
 GAMMA = 2.5
 GAMMA_TABLE_STEPS = 512
@@ -14,7 +15,7 @@ class GammaTable(object):
     self.steps = steps
     step_iterator = (i / (steps - 1) for i in range(steps))
 
-    corrected = (numpy.power(x, gamma) for x in step_iterator)
+    corrected = (math.pow(x, gamma) for x in step_iterator)
     self.table = [int(0.5 + (out_range - 1) * c) for c in corrected]
 
   def correct(self, x):
