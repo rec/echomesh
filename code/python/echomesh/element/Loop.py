@@ -14,61 +14,20 @@ LOGGER = Log.logger(__name__)
 DEFAULT_TIMEOUT = 1.0
 DEFAULT_INTERVAL = INFINITY
 
-class ThreadRunnable(MasterRunnable):
-  def __init__(self, target=None, name=None, report_error=False):
-    super(ThreadRunnable, self).__init__()
-    self.name = name or repr(self)
-    if target:
-      self.target = target
-    else:
-      assert self.target
-    self.report_error = report_error
-
-  def _on_run(self):
-    def target():
-      try:
-        self.target()
-      except Exception as e:
-        if self.is_running or self.report_error:
-          LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
-        self.pause()
-      self._after_thread_pause()
-
-    super(ThreadRunnable, self)._on_run()
-    self._before_thread_start()
-    self.thread = threading.Thread(target=target)
-    self.thread.daemon = True
-    self.thread.start()
-
-  def _before_thread_start(self):
-    pass
-
-  def _after_thread_pause(self):
-    pass
-
-
-
-class ThreadLoop(ThreadRunnable):
-  def __init__(self, single_loop=None, name=None, report_error=False):
-    super(ThreadLoop, self).__init__(report_error=report_error)
-    self.name = name or repr(self)
-    self.single_loop = single_loop or self.single_loop
-    assert self.single_loop
-
-  def target(self):
-    while self.is_running:
-      self.single_loop()
-
-class TimeLoop(ThreadLoop):
+class TimeLoop(MasterRunnable):
   def __init__(self,
                interval=DEFAULT_INTERVAL,
                loop_target=None,
                name='TimeLoop',
                next_time=None,
+               report_error=False,
                sleep=time.sleep,
                timeout=DEFAULT_TIMEOUT,
                timer=time.time):
-    super(TimeLoop, self).__init__(name=name)
+    super(TimeLoop, self).__init__()
+    self.name = name or repr(self)
+    self.report_error = report_error
+    self.name = name or repr(self)
     self.interval = interval
 
     if loop_target:
@@ -85,6 +44,32 @@ class TimeLoop(ThreadLoop):
     assert self.loop_target
     assert self.next_time
     self.load_time = timer()
+
+  def target(self):
+    while self.is_running:
+      self.single_loop()
+
+  def _on_run(self):
+    def target():
+      try:
+        self.target()
+      except Exception as e:
+        if self.is_running or self.report_error:
+          LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
+        self.pause()
+      self._after_thread_pause()
+
+    super(TimeLoop, self)._on_run()
+    self._before_thread_start()
+    self.thread = threading.Thread(target=target)
+    self.thread.daemon = True
+    self.thread.start()
+
+  def _before_thread_start(self):
+    pass
+
+  def _after_thread_pause(self):
+    pass
 
   def _before_thread_start(self):
     t = self.timer()
