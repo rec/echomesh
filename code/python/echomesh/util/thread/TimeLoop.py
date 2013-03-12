@@ -8,6 +8,8 @@ from echomesh.util.math.Units import INFINITY
 
 # TODO: these should be config values.
 
+LOGGER = Log.logger(__name__)
+
 DEFAULT_TIMEOUT = 1.0
 DEFAULT_INTERVAL = INFINITY
 
@@ -54,7 +56,7 @@ class TimeLoop(ThreadLoop.ThreadLoop):
       if sleep_time > 0:
         self.sleep(sleep_time)
       else:
-        LOG.error('Sleeping for negative time %s', sleep_time, limit=10)
+        LOGGER.error('Sleeping for negative time %s', sleep_time, limit=10)
 
   def next_time(self, t):
     return t + self.interval
