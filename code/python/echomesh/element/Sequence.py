@@ -25,7 +25,7 @@ class Sequence(Loop.Loop):
     self.times = list(self.times) + [self.duration]
 
   def _command_time(self):
-    return self.times[self.next_command] + self.run_time
+    return self.times[self.next_command] + self.start_time
 
   def next_time(self, t):
     if self.next_command <= len(self.element):
@@ -34,7 +34,7 @@ class Sequence(Loop.Loop):
     else:
       self.current_loop += 1
       if self.current_loop < self.loops:
-        self.run_time = time.time()
+        self.start_time = time.time()
         self.next_command = 0
         return self._command_time()
       else:
@@ -44,7 +44,7 @@ class Sequence(Loop.Loop):
 
   def _on_run(self):
     super(Sequence, self)._on_run()
-    self.run_time = time.time()
+    self.start_time = time.time()
     self.current_loop = 0
     self.next_command = 0
 

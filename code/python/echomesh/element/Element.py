@@ -13,14 +13,14 @@ class Element(MasterRunnable):
   def __init__(self, parent, description):
     self.parent = parent
     self.description = description
-    self.run_time = self.pause_time = 0
+    self.start_time = self.pause_time = 0
     self.load_time = time.time()
 
     super(Element, self).__init__()
 
   def reset(self):
     # print('!!! reset', self)
-    self.run_time = time.time() - self.pause_time
+    self.start_time = time.time() - self.pause_time
 
   def child_paused(self, child):
     self.parent and self.parent.child_paused(child)
@@ -30,7 +30,7 @@ class Element(MasterRunnable):
 
   def time(self):
     if self.is_running:
-      return time.time() - self.run_time
+      return time.time() - self.start_time
     else:
       return self.pause_time
 
@@ -51,12 +51,12 @@ class Element(MasterRunnable):
 
   def _on_pause(self):
     super(Element, self)._on_pause()
-    self.pause_time = time.time() - self.run_time
+    self.pause_time = time.time() - self.start_time
     self.child_paused(self)
 
   def _on_reset(self):
     super(Element, self)._on_reset()
-    self.run_time = time.time() - self.pause_time
+    self.start_time = time.time() - self.pause_time
     self.pause_time = 0
 
   def info(self):
