@@ -11,24 +11,24 @@ LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
   def __init__(self, parent, description):
+    self.start_time = self.pause_time = 0
     self.parent = parent
     self.description = description
-    self.start_time = self.pause_time = 0
     self.load_time = time.time()
 
     super(Element, self).__init__()
 
   def reset(self):
-    # print('!!! reset', self)
     self.start_time = time.time() - self.pause_time
 
   def child_paused(self, child):
-    self.parent and self.parent.child_paused(child)
+    if self.parent and self.parent is not self:
+      self.parent.child_paused(child)
 
   def class_name(self):
     return self.__class__.__name__.lower()
 
-  def time(self):
+  def elapsed_time(self):
     if self.is_running:
       return time.time() - self.start_time
     else:
@@ -62,7 +62,7 @@ class Element(MasterRunnable):
   def info(self):
     return {'class': self.class_name(),
             'state': 'run' if self.is_running else 'pause',
-            'time': _format_delta(self.time())}
+            'time': _format_delta(self.elapsed_time())}
 
 
 def _format_delta(t):

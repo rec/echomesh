@@ -24,6 +24,7 @@ class Repeat(Loop.Loop):
 
   def next_time(self, t):
     # print('!!! next_time', self)
+    # TODO: FIXME!
     start = self.start_time # - self.pause_time
     res = start + self.period * (1 + self.repeat_count)
     if self.random_delay:

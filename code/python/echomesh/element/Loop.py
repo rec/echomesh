@@ -22,8 +22,6 @@ class Loop(Element.Element):
     self.report_error_on_close = report_error_on_close
     self.interval = interval
     self.timeout = timeout
-    self.pause_time = 0
-    self.load_time = time.time()
 
   def next_time(self, t):
     return t + self.time_loop.interval
