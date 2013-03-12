@@ -20,66 +20,45 @@ class TimeLoop(MasterRunnable):
                loop_target=None,
                name='TimeLoop',
                next_time=None,
-               report_error=False,
-               sleep=time.sleep,
-               timeout=DEFAULT_TIMEOUT,
-               timer=time.time):
+               report_error_on_close=False,
+               timeout=DEFAULT_TIMEOUT):
     super(TimeLoop, self).__init__()
     self.name = name or repr(self)
-    self.report_error = report_error
-    self.name = name or repr(self)
+    self.report_error_on_close = report_error_on_close
     self.interval = interval
+    self.next_time = next_time
+    self.loop_target = loop_target
 
-    if loop_target:
-      self.loop_target = loop_target
-
-    if next_time:
-      self.next_time = next_time
-
-    self.sleep = sleep
     self.timeout = timeout
-    self.timer = timer
     self.pause_time = 0
-
-    assert self.loop_target
-    assert self.next_time
-    self.load_time = timer()
+    self.load_time = time.time()
 
   def target(self):
     while self.is_running:
-      self.single_loop()
-
-  def _on_run(self):
-    def target():
       try:
-        self.target()
+        self.single_loop()
       except Exception as e:
-        if self.is_running or self.report_error:
+        if self.is_running or self.report_error_on_close:
           LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
         self.pause()
-      self._after_thread_pause()
 
+  def _on_pause(self):
+    super(TimeLoop, self)._on_pause()
+    self.pause_time = time.time() - self.start_time
+
+  def _on_run(self):
     super(TimeLoop, self)._on_run()
-    self._before_thread_start()
-    self.thread = threading.Thread(target=target)
-    self.thread.daemon = True
-    self.thread.start()
-
-  def _before_thread_start(self):
-    pass
-
-  def _after_thread_pause(self):
-    pass
-
-  def _before_thread_start(self):
-    t = self.timer()
+    t = time.time()
     self.start_time = t - self.pause_time
     self.next_loop_time = self.next_time(t)
     print('!!!! 1', self.start_time - self.load_time,
           self.next_loop_time - self.load_time)
+    self.thread = threading.Thread(target=self.target)
+    self.thread.daemon = True
+    self.thread.start()
 
   def single_loop(self):
-    t = self.timer()
+    t = time.time()
     if t >= self.next_loop_time:
       self.loop_target(t)
       self.next_loop_time = self.next_time(self.next_loop_time)
@@ -89,14 +68,9 @@ class TimeLoop(MasterRunnable):
     if self.is_running:
       sleep_time = min(DEFAULT_TIMEOUT, self.next_loop_time - t)
       if sleep_time > 0:
-        self.sleep(sleep_time)
+        time.sleep(sleep_time)
       else:
         LOGGER.error('Sleeping for negative time %s', sleep_time, limit=10)
-
-  def _after_thread_pause(self):
-    self.pause_time = self.timer() - self.start_time
-    print('!!!! 2', self.pause_time)
-
 
 class Loop(Element.Element):
   def __init__(self, parent, description, interval=1, name='Element.Loop'):
