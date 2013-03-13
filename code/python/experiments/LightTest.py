@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-LIGHT_COUNT = 5 * 48
+LIGHT_COUNT = 12  # 5 * 48
 LATCH_BYTE_COUNT = 0  # 2
 PERIOD = 0.5
 LATCH_BYTES = bytearray(b'\x00\x00\x00')
@@ -13,6 +13,9 @@ OFF = bytearray(3 * LIGHT_COUNT + LATCH_BYTE_COUNT)
 for i in range(3 * LIGHT_COUNT):
   OFF[i] = 0x80
   ON[i] = 0xFF
+
+print(ON)
+print(OFF)
 
 with open('/dev/spidev0.0', 'wb') as device:
   def write(data, name):
