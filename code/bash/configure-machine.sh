@@ -10,6 +10,9 @@ sudo apt-get install mpg123
 # some missing...
 
 
+# Install rpi-update!
+sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
+
 
 # python-scipy
 

@@ -17,9 +17,11 @@ with open('/dev/spidev0.0', 'wb') as device:
   while True:
     print('ON!')
     device.write(ON)
+    device.flush()
     time.sleep(PERIOD)
 
     print('off')
+    device.flush()
     device.write(OFF)
     time.sleep(PERIOD)
 
