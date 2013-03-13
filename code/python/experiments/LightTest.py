@@ -21,7 +21,7 @@ with open('/dev/spidev0.0', 'wb') as device:
     time.sleep(PERIOD)
 
     print('off')
-    device.flush()
     device.write(OFF)
+    device.flush()
     time.sleep(PERIOD)
 
