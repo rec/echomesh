@@ -3,25 +3,28 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 LIGHT_COUNT = 5 * 48
-LATCH_BYTES = 2
+LATCH_BYTE_COUNT = 0  # 2
 PERIOD = 0.5
+LATCH_BYTES = bytearray(b'\x00\x00\x00')
 
-ON = bytearray(3 * LIGHT_COUNT + LATCH_BYTES)
-OFF = bytearray(3 * LIGHT_COUNT + LATCH_BYTES)
+ON = bytearray(3 * LIGHT_COUNT + LATCH_BYTE_COUNT)
+OFF = bytearray(3 * LIGHT_COUNT + LATCH_BYTE_COUNT)
 
 for i in range(3 * LIGHT_COUNT):
   OFF[i] = 0x80
   ON[i] = 0xFF
 
 with open('/dev/spidev0.0', 'wb') as device:
-  while True:
-    print('ON!')
-    device.write(ON)
+  def write(data, name):
+    device.write(data)
     device.flush()
+    device.write(LATCH_BYTES)
+    device.flush()
+    print(name)
     time.sleep(PERIOD)
 
-    print('off')
-    device.write(OFF)
-    device.flush()
-    time.sleep(PERIOD)
+  while True:
+    write(ON, 'ON!')
+    write(OFF, 'off')
+
 
