@@ -15,19 +15,10 @@ from echomesh.util import Split
 
 LOGGER = Log.logger(__name__)
 
-def _quit(echomesh_instance):
-  echomesh_instance.quitting = True
-  return True
-
-QUIT_HELP = """
-"quit" or q stops all the elements running and quits the echomesh program.
-"""
-
 COMMENT_HELP = """
 Comment lines start with a # - everything after that is ignored.
 """
 
-Register.register(_quit, 'quit', QUIT_HELP)
 Register.register(lambda e: None, '#', COMMENT_HELP)
 Register.register(None, 'sample', 'This is a sample with just help')
 

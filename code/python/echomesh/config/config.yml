@@ -213,7 +213,7 @@ logging:
 
 # The permissions area controls whether this machine is allowed to perform
 # the system activities boot, halt, initialize, quit or update.
-permissions:
+permission:
   boot: true
   halt: true
   initialize: true
