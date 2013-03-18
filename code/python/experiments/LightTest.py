@@ -2,7 +2,20 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
+import sys
 import time
+
+PERM_ERROR = """
+This script needs to be run as superuser (because it writes to the SPI driver).
+Please rerun it as follows:
+
+  %s
+"""
+
+if os.geteuid():
+  print(PERM_ERROR % ' '.join(['su'] + sys.argv))
+  exit(-1)
 
 LIGHT_COUNT = 12  # 5 * 48
 LATCH_BYTE_COUNT = 0  # 2
@@ -31,5 +44,3 @@ with open('/dev/spidev0.0', 'wb') as device:
   while True:
     write(ON, 'ON!')
     write(OFF, 'off')
-
-

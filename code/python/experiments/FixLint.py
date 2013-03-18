@@ -13,7 +13,8 @@ for line in sys.stdin:
   if line.startswith('*************'):
     parts = line.split()
     if len(parts) == 3:
-      error_file = '%s.py' % parts[2].replace('.', '/')
+      error_file = '%s.py' % parts[2].replace('.', '/').replace(
+        'pi3d/pi3d', 'pi3d')
   else:
     match = MATCH_ERROR.match(line)
     if match:
