@@ -1,9 +1,6 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
-import os.path
 import sndhdr
-import struct
 
 from echomesh.base import Config
 from echomesh.sound import Aplay
@@ -12,7 +9,6 @@ from echomesh.sound import Util
 from echomesh.util.math import Envelope
 from echomesh.util import ImportIf
 from echomesh.util import Log
-from echomesh.util import Subprocess
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 numpy = ImportIf.imp('numpy')
@@ -27,9 +23,11 @@ BITS_PER_BYTE = 8
 MAX_DEVICE_NUMBERS = 8
 
 class FilePlayer(ThreadLoop):
-  def __init__(self, file, level=1, pan=0, loops=1):
+  def __init__(self, level=1, pan=0, loops=1, **kwds):
     super(FilePlayer, self).__init__(name='FilePlayer')
-    self.file = file
+    self.file = kwds.pop('file')
+    if kwds:
+      LOGGER.error('Unused keywords %s', kwds)
     self.debug = True
     self.passthrough = (level == 1 and pan == 0)
 

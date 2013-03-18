@@ -19,18 +19,17 @@ IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 class ImageSprite(Runnable):
   CACHE = None
 
-  def __init__(self, file=None, loops=1,
+  def __init__(self, loops=1,
                position=(0, 0), rotation=(0, 0, 0),
                size=1, duration=None, z=DEFAULT_Z,
                shader=None, **kwds):
     super(ImageSprite, self).__init__()
 
+    self.imagename = IMAGE_DIRECTORY.expand(kwds.pop('file', None))
     del kwds['type']
     if kwds:
       s = '' if len(kwds) == 1 else 's'
       LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))
-
-    self.imagename = IMAGE_DIRECTORY.expand(file)
 
     self._loops = loops
     self._loop_number = 0

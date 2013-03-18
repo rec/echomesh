@@ -1,5 +1,3 @@
-import re
-
 from echomesh.base import Name
 from echomesh.base import Platform
 

@@ -1,6 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# pylint: disable=W0611
 from echomesh.remote import Register, Routing, Transfer
+# pylint: disable=W0611
+
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -14,5 +17,5 @@ def execute(instance, **data):
 
     return function(instance, data_type=type, **data)
 
-  except Exception as e:
+  except Exception:
     LOGGER.error()

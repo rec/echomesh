@@ -1,9 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# pylint: disable=W0611
 from echomesh.element import Audio, Handler, Image, List, Mapper, Print, Repeat
 from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
+# pylint: enable=W0611
+
 from echomesh.element import Element
-from echomesh.element import Load
 
 PRINT_FORMAT = '{state:4} {class:10} {time:9}'
 

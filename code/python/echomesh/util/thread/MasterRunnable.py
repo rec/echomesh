@@ -30,7 +30,8 @@ class MasterRunnable(Runnable):
   def add_mutual_pause_slave(self, *clients):
     self.add_slave(*clients)
     for c in clients:
-      c and c.pausables.add(self)
+      if c:
+        c.pausables.add(self)
 
   def run(self):
     if not self.is_running:

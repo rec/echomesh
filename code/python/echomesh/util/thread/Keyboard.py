@@ -1,13 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import sys
-import threading
 import time
 
 from echomesh.base import Config
 from echomesh.command import Command
+from echomesh.util import Log
 from echomesh.util.math import Units
 from echomesh.util.thread import ThreadRunnable
+
+LOGGER = Log.logger(__name__)
 
 MESSAGE = """Type help for a list of commands.
 """
@@ -39,7 +41,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.message = ''
 
   def _input_loop(self):
-    buffer = ''
+    buff = ''
     first_time = True
     brackets, braces = 0, 0
     while first_time or brackets > 0 or braces > 0:
@@ -55,7 +57,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.output.flush()
 
       data = raw_input()
-      buffer += data
+      buff += data
 
       brackets += (data.count('[') - data.count(']'))
       braces += (data.count('{') - data.count('}'))
@@ -64,7 +66,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       LOGGER.error('Too many ]')
     elif braces < 0:
       LOGGER.error('Too many }')
-    elif self.processor(buffer.strip()):
+    elif self.processor(buff.strip()):
       self.pause()
 
 
@@ -72,7 +74,8 @@ USE_CURSES = Config.get('control_program', 'use_curses')
 
 if USE_CURSES:
 
-  import curses
+  # pylint: disable=E0202,E1101,C0322,W0232,W0612,
+
   import npyscreen
 
   class RunnableApp(ThreadRunnable.ThreadRunnable):
@@ -102,7 +105,7 @@ if USE_CURSES:
       # This lets the user play with the Form.
       F.edit()
 
-  def keyboard(echomesh):
+  def keyboard(_):
     return RunnableApp()
 
 else:

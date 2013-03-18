@@ -1,13 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import collections
 import os.path
 import re
 
 from echomesh.base import CommandFile
 from echomesh.base import Merge
 from echomesh.base import Yaml
-from echomesh.util import UniqueName
 from echomesh.util.file import MakeDirs
 
 MANIFEST_NAME = 'manifest.yml'
@@ -38,7 +36,7 @@ class Cache(object):
     with open(filename, 'rb') as f:
       return f.read()
 
-  def _get_file_contents(self, filename):
+  def _get_file_contents(self, _):
     raise Exception('You must override _get_file_contents in your Cache clcass')
 
   def _get_file_and_new_contents(self, key):

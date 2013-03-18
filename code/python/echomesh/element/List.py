@@ -16,6 +16,7 @@ class List(Element.Element):
     self.element = Load.make(self, element)
     self.add_slave(*self.element)
 
+  # pylint: disable=W0221
   def class_name(self, base_name=''):
     name = base_name or super(List, self).class_name()
     classes = ', '.join(e.class_name() for e in self.element)

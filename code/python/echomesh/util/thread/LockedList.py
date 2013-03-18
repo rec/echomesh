@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import operator
-
 from threading import Lock
 from echomesh.util import Log
 

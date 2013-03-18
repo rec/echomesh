@@ -5,9 +5,6 @@ import bisect
 from echomesh.util.math import Units
 from echomesh.util.math import SplitNumbers
 
-from echomesh.base import Yaml
-from echomesh.base import MergeConfig
-
 class Envelope(object):
   def __init__(self, data):
     self.is_constant = not isinstance(data, dict)

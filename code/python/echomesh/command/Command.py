@@ -1,7 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# pylint: disable=W0611
 from echomesh.command import Broadcast, Config, Register, Remote, Score, Show
 from echomesh.command import Transfer
+
+# Must be the last one to load.
+from echomesh.command import Help
+
+# pylint: enable=W0611
 
 from echomesh.util import FindComment
 from echomesh.util import Log
@@ -24,9 +30,6 @@ Comment lines start with a # - everything after that is ignored.
 Register.register(_quit, 'quit', QUIT_HELP)
 Register.register(lambda e: None, '#', COMMENT_HELP)
 Register.register(None, 'sample', 'This is a sample with just help')
-
-# Must be the last one to load.
-from echomesh.command import Help
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
