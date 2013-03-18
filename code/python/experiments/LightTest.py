@@ -24,8 +24,7 @@ for the changes to take effect.
 """
 
 DEFAULT_LIGHT_COUNT = 128
-DEFAULT_REPEAT_COUNT = 4
-
+DEFAULT_REPEAT_COUNT = 2
 
 PERIOD = 0.5
 
@@ -117,14 +116,33 @@ def _stream_lights(reverse=False):
     device.write(lights)
     device.flush()
 
+def _stream_lights2(reverse=False):
+  on = bytearray(0xff for i in range(3))
+  off = bytearray(0x80 for i in range(3))
+  latch = bytearray(0 for i in range(LATCH_BYTE_COUNT))
+  with open('/dev/spidev0.0', 'wb') as device:
+    for i in range(LIGHT_COUNT):
+      for j in range(LIGHT_COUNT):
+        index = LIGHT_COUNT - j -1 if reverse else j
+        device.write(on if i == index else off)
+      device.write(latch)
+      device.flush()
+
+    for j in range(LIGHT_COUNT):
+      device.write(off)
+    device.write(latch)
+    device.flush()
+
 def test_lights():
   try:
     _test_su()
     if not _blacklist():
       _flash_lights()
-      for i in range(3):
-        _stream_lights()
-        _stream_lights(reverse=True)
+      for i in range(REPEAT_COUNT):
+        stream = _stream_lights if i % 2 else _stream_lights2
+        stream()
+        stream(reverse=True)
+
   except Exception as e:
     print('ERROR:', e)
     raise
