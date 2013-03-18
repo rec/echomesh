@@ -7,13 +7,13 @@ import sys
 import time
 
 BLACKLIST_FILE = '/etc/modprobe.d/raspi-blacklist.conf'
-BLACKLIST_TEMP = BLACKLIST_TEMP + '.tmp'
+BLACKLIST_TEMP = BLACKLIST_FILE + '.tmp'
 
 PERM_ERROR = """
 This script needs to be run as superuser (because it writes to the SPI driver).
 Please rerun it as follows:
 
-  %s
+  sudo %s
 """
 
 FIX_BLACKLIST_PROMPT = """
@@ -24,17 +24,21 @@ for the changes to take effect.
 """
 
 DEFAULT_LIGHT_COUNT = 128
-DEFAULT_REPEAT_COUNT = 10
+DEFAULT_REPEAT_COUNT = 4
+
+
+PERIOD = 0.5
+
+LATCH_BYTE_COUNT = 2
 
 LIGHT_COUNT = DEFAULT_LIGHT_COUNT if len(sys.argv) == 1 else int(sys.argv[1])
 REPEAT_COUNT = DEFAULT_REPEAT_COUNT if len(sys.argv) < 3 else int(sys.argv[2])
+BYTE_COUNT = 3 * LIGHT_COUNT + LATCH_BYTE_COUNT
 
-LATCH_BYTE_COUNT = 2
-PERIOD = 0.5
 
-def _test_su()
+def _test_su():
   if os.geteuid():
-    raise Exception(PERM_ERROR % ' '.join(['su'] + sys.argv))
+    raise Exception(PERM_ERROR % ' '.join(sys.argv))
 
 def _blacklist_line(line):
   return line.strip().startswith('blacklist spi')
@@ -64,7 +68,6 @@ def _fix_blacklist():
 
 def _blacklist():
   if _is_blacklisted():
-    print(FIX_BLACKLIST_PROMPT)
     result = raw_input('Fix now? (y/N)')
     if result.lower().startswith('y'):
       _fix_blacklist()
@@ -73,15 +76,17 @@ def _blacklist():
       return True
     else:
       raise Exception("SPI is blacklisted, can't run lights on your machine.")
+  else:
+    print('SPI is not blacklisted.')
+
+def _light_array(x=0x80):
+  b = bytearray(x for i in xrange(BYTE_COUNT))
+  for i in range(LATCH_BYTE_COUNT):
+    b[-1 - i] = 0
+  return b
 
 def _get_off_on():
-  off = bytearray(3 * LIGHT_COUNT + LATCH_BYTE_COUNT)
-  on = bytearray(3 * LIGHT_COUNT + LATCH_BYTE_COUNT)
-
-  for i in range(3 * LIGHT_COUNT):
-    off[i] = 0x80
-    on[i] = 0xFF
-  return off, on
+  return _light_array(), _light_array(0xff)
 
 def _flash_lights():
   off, on = _get_off_on()
@@ -96,13 +101,33 @@ def _flash_lights():
       write(on, 'ON!')
       write(off, 'off')
 
+def _stream_lights(reverse=False):
+  with open('/dev/spidev0.0', 'wb') as device:
+    lights = _light_array()
+    old = 0
+    for i in range(LIGHT_COUNT):
+      index = LIGHT_COUNT - i -1 if reverse else i
+      lights[3 * index: 3 * (index + 1)] = [0xFF, 0xFF, 0xFF]
+      if i:
+        lights[3 * old: 3 * (old + 1)] = [0x80, 0x80, 0x80]
+      old = index
+      device.write(lights)
+      device.flush()
+    lights[3 * old: 3 * (old + 1)] = [0x80, 0x80, 0x80]
+    device.write(lights)
+    device.flush()
+
 def test_lights():
   try:
     _test_su()
     if not _blacklist():
       _flash_lights()
+      for i in range(3):
+        _stream_lights()
+        _stream_lights(reverse=True)
   except Exception as e:
     print('ERROR:', e)
+    raise
     exit(-1)
 
 
