@@ -1,11 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
 import os
 import os.path
 import sys
 
-from echomesh.base import Yaml
 
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))

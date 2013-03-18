@@ -1,15 +1,15 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+# from __future__ import absolute_import, division, print_function, unicode_literals
 
-import functools
-import os
+# import functools
+# import os
 
-from Tkinter import Tk
+# from Tkinter import Tk
 
-class Panel(Tk):
-  @functools.wraps(Tk.__init__)
-  def __init__(self, **kwds):
-    display = os.environ.get('DISPLAY')
-    if not display:
-      os.environ['DISPLAY'] = ':0'
-    Tk.__init__(self, **kwds)
+# class Panel(Tk):
+#   @functools.wraps(Tk.__init__)
+#   def __init__(self, **kwds):
+#     display = os.environ.get('DISPLAY')
+#     if not display:
+#       os.environ['DISPLAY'] = ':0'
+#     Tk.__init__(self, **kwds)
 

@@ -56,7 +56,7 @@ def make_one(parent, description):
 
   element_class = Element.get_class_by_name(t)
   if not element_class:
-    Element._REGISTRY.dump()
+    Element.REGISTRY.dump()
     raise Exception('No element class for type %s' % t)
 
   element = element_class(parent, description)

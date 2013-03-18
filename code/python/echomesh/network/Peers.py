@@ -1,8 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import os
-import threading
 import time
 
 from echomesh.base import Name

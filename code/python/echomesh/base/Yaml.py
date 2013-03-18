@@ -18,7 +18,6 @@ def decode_one(s):
   return yaml.safe_load(s)
 
 def read(fname, allow_empty=True):
-  opened = False
   try:
     f = _open_userfile(fname, 'r')
   except:

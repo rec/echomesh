@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Merge
 from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.command import Register
@@ -20,9 +19,9 @@ def _info(d, spaces='  '):
     items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
     length = max(len(k) for k, v in items)
     s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
-  LOGGER.info('%s\n' % s)
+  LOGGER.info('%s\n', s)
 
-def addresses(echomesh_instance):
+def addresses(_):
   _info(Name.addresses())
 
 def _all(echomesh_instance):
@@ -34,29 +33,29 @@ def _all(echomesh_instance):
 
 def broadcast(echomesh_instance):
   message = 'ON' if echomesh_instance.broadcasting() else 'off'
-  LOGGER.info('  Broadcast is %s\n' % message)
+  LOGGER.info('  Broadcast is %s\n', message)
 
-def directories(echomesh_instance):
+def directories(_):
   _info(Path.info())
 
 def elements(echomesh_instance):
-  info = echomesh_instance.score_master.info()
-  if info:
-    _info(info)
+  inf = echomesh_instance.score_master.info()
+  if inf:
+    _info(inf)
   else:
     LOGGER.info('  No elements have been loaded into memory.\n')
 
-def info(echomesh_instance):
+def info(_):
   _info(Name.info())
 
-def names(echomesh_instance):
+def names(_):
   _info(Name.names())
 
 def nodes(echomesh_instance):
   peers = echomesh_instance.peers.get_peers()
   if peers:
     for name, peer in peers.iteritems():
-      LOGGER.info('  %s: ' % name)
+      LOGGER.info('  %s: ', name)
       _info(peer, '    ')
   else:
     LOGGER.error("""\
@@ -68,10 +67,10 @@ def nodes(echomesh_instance):
   """)
 
 
-def sound(echomesh_instance):
- _info(Sound.info())
+def sound(_):
+  _info(Sound.info())
 
-def units(echomesh_instance):
+def units(_):
   LOGGER.info('%s\n', Units.list_units())
 
 ADDRESSES_HELP = """

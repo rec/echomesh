@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from UserDict import DictMixin
-
 class Factory(dict):
   def __init__(self, factory, *args, **kwds):
     super(Factory, self).__init__(*args, **kwds)

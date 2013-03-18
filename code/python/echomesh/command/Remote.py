@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 import os.path
+import sys
 
 from echomesh.base import Config
 from echomesh.util import Log
@@ -27,7 +28,7 @@ def _local(function, name):
   return f
 
 def _remote(function):
-  def f(echomesh_instance, **data):
+  def f(echomesh_instance, **_):
     function(echomesh_instance)
   return f
 
@@ -43,7 +44,7 @@ def _initialize(echomesh_instance):
     os.execl(*sys.argv)
 
 def _exit(echomesh_instance):
-  LOGGER.info('Exiting echomesh');
+  LOGGER.info('Exiting echomesh')
   echomesh_instance.pause()
   echomesh_instance.quitting = True
   return True
@@ -51,7 +52,7 @@ def _exit(echomesh_instance):
 def _update(echomesh_instance):
   LOGGER.info('Pulling latest codebase from github')
   Git.run_git_commands(GIT_UPDATE)
-  restart(echomesh_instance)
+  _boot(echomesh_instance)
 
 def _register():
   for cmd, help_text, see_also in COMMANDS:
@@ -71,12 +72,12 @@ COMMANDS = [
 
 _register()
 
-def _close_and_run(echomesh_instance, msg, cmd):
+def _close_and_run(_, msg, cmd):
   LOGGER.info(msg)
   if _shutdown_allowed():
     Subprocess.run(cmd)
   if _halt_allowed():
-    halt(cmd)
+    _halt(cmd)
 
 # TODO: https://github.com/rec/echomesh/issues/238
 def _shutdown_allowed():

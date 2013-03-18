@@ -15,9 +15,9 @@ echomesh has the following help topics:
 Type "help TOPIC" for more information - for example, "help quit" or "help run".
 """
 
-def _help(echomesh_instance, *parts):
+def _help(_, *parts):
   if not parts:
-    LOGGER.info(HELP_TEXT % Register.join_keys(command_only=False))
+    LOGGER.info(HELP_TEXT, Register.join_keys(command_only=False))
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
@@ -26,7 +26,7 @@ def _help(echomesh_instance, *parts):
     elif cmd == 'show':
       sub = parts[0]
       help_text = Show.SHOW_REGISTRY.get_help(sub)
-      LOGGER.info('\nshow %s:' % sub)
+      LOGGER.info('\nshow %s:', sub)
       LOGGER.info(help_text or ('No help text available for "show %s"' % sub))
     else:
       raise Exception("Command '%s' doesn't take any arguments.")

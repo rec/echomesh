@@ -5,8 +5,8 @@ from six.moves import queue
 FILE = open('/tmp/queue.txt', 'w')
 
 class QueueReader(object):
-  def __init__(self, queue, runnable, timeout):
-    self.queue = queue
+  def __init__(self, _queue, runnable, timeout):
+    self.queue = _queue
     self.runnable = runnable
     self.timeout = timeout
     self.buffer = ''

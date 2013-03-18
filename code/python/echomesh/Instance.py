@@ -1,3 +1,5 @@
+"""An instance of echomesh, representing one node."""
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element import ScoreMaster
@@ -28,12 +30,12 @@ class Instance(MasterRunnable):
     self.display = Display.Display()
     self.mic = Microphone.microphone(self._mic_event)
     self.keyboard = Keyboard.keyboard(self)
+    self.quitting = False
 
     self.add_mutual_pause_slave(self.socket, self.keyboard, self.mic)
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
-    self.quitting = False
 
   def broadcasting(self):
     return self._broadcasting

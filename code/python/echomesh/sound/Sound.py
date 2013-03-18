@@ -53,8 +53,8 @@ def get_input_index(get):
 def get_output_index(get):
   return get_index(False, get)
 
-def get_device_info():
-  return PYAUDIO().get_device_info_by_index()
+def get_device_info(index):
+  return PYAUDIO().get_device_info_by_index(index)
 
 LIST_FORMAT = ('{name:24}: {maxInputChannels} in, ' +
                '{maxOutputChannels} out at {defaultSampleRate}Hz')

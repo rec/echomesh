@@ -4,16 +4,14 @@ import threading
 
 from echomesh.base import Config
 from echomesh.base import Platform
+from echomesh.sound import Util
 from echomesh.util import Log
 from echomesh.util import Subprocess
-from echomesh.util.file import DefaultFile
 
 LOGGER = Log.logger(__name__)
 
-DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
-
-def play(file, run_in_thread=True):
-  file = DEFAULT_AUDIO_DIRECTORY.expand(file)
+def play(filename, run_in_thread=True):
+  filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(filename)
   binary = Config.get('audio', 'output', 'aplay_binary')
   if not binary:
     if Platform.IS_LINUX:
@@ -25,13 +23,13 @@ def play(file, run_in_thread=True):
     LOGGER.error("Couldn't locate binary for platform %s", Platform.PLATFORM)
     return
 
-  def play():
-    result, returncode = Subprocess.run([binary, file])
+  def _play():
+    _, returncode = Subprocess.run([binary, filename])
     if returncode:
-      LOGGER.error('Unable to play file %s using aplay', file)
+      LOGGER.error('Unable to play file %s using aplay', filename)
 
   if run_in_thread:
-    threading.Thread(target=play).start()
+    threading.Thread(target=_play).start()
 
   else:
-    player
+    pass  # TODO: Log or something?

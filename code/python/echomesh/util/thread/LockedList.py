@@ -27,7 +27,7 @@ class LockedList(object):
 
   def clear(self):
     with self._lock:
-      self._entries.clear()
+      self._entries[:] = []
 
   def add(self, *entries):
     with self._lock:
@@ -37,7 +37,8 @@ class LockedList(object):
 
   def add_to(self, *entries):
     for e in entries:
-      e and e.add(self)
+      if e:
+        e.add(self)
 
   def remove(self, *entries):
     with self._lock:

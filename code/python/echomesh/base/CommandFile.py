@@ -2,10 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-import six
-
 from echomesh.base import Name
-from echomesh.base import Merge
 from echomesh.base import Path
 from echomesh.base import Platform
 from echomesh.base import Yaml
@@ -20,10 +17,9 @@ def _command_file(*path):
   else:
     return os.path.join(Path.PROJECT_PATH, 'command', *path)
 
-
+COMMAND_PATH = None
 def compute_command_path():
   global COMMAND_PATH
-  config_path = os.path.join(Path.CODE_PATH, 'echomesh', 'config')
   COMMAND_PATH = ([
     'name/' + Name.NAME] +
     [('tag/' + t) for t in Name.TAGS] +

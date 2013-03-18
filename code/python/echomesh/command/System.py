@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 import os.path
+import sys
 
 from echomesh.remote import Register
 
@@ -25,35 +26,35 @@ def _halt(echomesh_instance):
   _close_and_run(echomesh_instance, 'Halting this machine', HALT_CMD)
 
 def _initialize(echomesh_instance):
-  if _halt_allowed():
+  if _allowed('halt'):
     echomesh_instance.pause()
     os.execl(*sys.argv)
 
 def _quit(echomesh_instance):
-  LOGGER.info('Quitting');
+  LOGGER.info('Quitting')
   echomesh_instance.pause()
 
 def _update(echomesh_instance):
   LOGGER.info('Pulling latest codebase from github')
   Git.run_git_commands(GIT_UPDATE)
-  restart(echomesh_instance)
+  _boot(echomesh_instance)
 
 def _register(function):
   name = function.__name__.strip('_')
-  def f(instance):
+  def func(instance):
     if Config.get('permission', name):
       function(instance)
     else:
       LOGGER.error("You don't have permission to run '%s'.", name)
-  Register.register(f, name)
+  Register.register(func, name)
 
 for f in [_boot, _halt, _initialize, _update, _quit]:
   _register(f)
 
-def _close_and_run(echomesh_instance, msg, cmd):
+def _close_and_run(_, msg, cmd):
   LOGGER.info(msg)
   Subprocess.run(cmd)
-  halt(cmd)
+  _halt(cmd)
 
 def _allowed(operation):
   return Config.get('permission', operation)

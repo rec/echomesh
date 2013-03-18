@@ -13,7 +13,7 @@ class Audio(Element.Element):
       try:
         from echomesh.sound import FilePlayer
         self.add_mutual_pause_slave(FilePlayer.play(**description))
-      except Exception as e:
+      except:
         LOGGER.error("Couldn't play audio with %s", description)
     else:
       LOGGER.debug('Audio disabled for %s', description.get('file', None))

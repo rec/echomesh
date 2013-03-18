@@ -1,7 +1,5 @@
 # from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os.path
-import os
 import platform
 import socket
 
@@ -21,15 +19,15 @@ def ip_address():
     return '(none)'
 
 if Platform.IS_LINUX:
-  import fcntl, socket, struct
+  import fcntl, struct
 
   # From here: http://stackoverflow.com/questions/159137/getting-mac-address
   def get_hw_addr(ifname):
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     # b = b'256s'
     b = '256s'
-    info = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack(b, ifname[:15]))
-    return ''.join(['%02x:' % ord(char) for char in info[18:24]])[:-1]
+    finfo = fcntl.ioctl(s.fileno(), 0x8927,  struct.pack(b, ifname[:15]))
+    return ''.join(['%02x:' % ord(char) for char in finfo[18:24]])[:-1]
 
   def mac_address():
     return get_hw_addr('eth0')
@@ -38,7 +36,8 @@ else:
   import uuid
   def mac_address():
     myMAC = uuid.getnode()
-    return ':'.join('%02X' % ((myMAC >> 8*i) & 0xff) for i in reversed(xrange(6)))
+    return ':'.join('%02X' % ((myMAC >> 8*i) & 0xff)
+                    for i in reversed(xrange(6)))
 
 MAC_ADDRESS = mac_address()
 IP_ADDRESS = ip_address()

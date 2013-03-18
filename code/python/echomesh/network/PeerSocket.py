@@ -42,10 +42,9 @@ class PeerSocket(MasterRunnable):
     self.port, old_port = get('discovery', 'port'), self.port
     self.timeout = Units.convert(get('discovery', 'timeout'))
     if self.is_running and self.socket:
-      if port == old_port:
-        self.socket.timeout = timeout
+      if self.port == old_port:
+        self.socket.timeout = self.timeout
       else:
-        self.port = port
         self.remove_slave(self.socket)
         self.socket.pause()
         self._make_socket()

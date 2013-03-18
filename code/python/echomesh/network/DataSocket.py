@@ -1,11 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import errno
 import socket
-import time
 
 from six.moves import queue
 
-from echomesh.base import Yaml
 from echomesh.network import BroadcastSocket
 from echomesh.network import SelectLoop
 from echomesh.util import Log

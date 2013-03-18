@@ -6,7 +6,6 @@ import time
 from echomesh.element import Element
 from echomesh.util import Log
 from echomesh.util.math.Units import INFINITY
-from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
@@ -24,7 +23,8 @@ class Loop(Element.Element):
     self.timeout = timeout
 
   def next_time(self, t):
-    return t + self.time_loop.interval
+    # TODO: is this right?
+    return t
 
   def loop_target(self, t):
     pass
@@ -33,7 +33,7 @@ class Loop(Element.Element):
     while self.is_running:
       try:
         self.single_loop()
-      except Exception as e:
+      except Exception:
         if self.is_running or self.report_error_on_close:
           LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
         self.pause()

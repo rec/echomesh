@@ -19,7 +19,7 @@ def _time(t):
 ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
 
 def scopes(_):
-  LOGGER.info('  %s\n' % ('\n  '.join(CommandFile.COMMAND_PATH)))
+  LOGGER.info('  %s\n', '\n  '.join(CommandFile.COMMAND_PATH))
 
 SCOPES_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
@@ -99,7 +99,7 @@ The full form of the command is
 See "help show scopes" for more information.
 """
 
-def scores(echomesh, *args):
+def scores(_, *args):
   flags, paths = Flag.split_args(args)
   paths = paths or ['']
   printed = False

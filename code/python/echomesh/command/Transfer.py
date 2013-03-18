@@ -4,9 +4,7 @@ import os
 import os.path
 
 from echomesh.base import Path
-from echomesh.base import Yaml
 from echomesh.command import Register
-from echomesh.base import Join
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -31,10 +29,10 @@ def transfer(echomesh_instance, *path):
   files, directories = _get_files_to_transfer(path)
 
   s = '' if len(files) is 1 else 's'
-  LOGGER.info('Transferred %d file%s.' % (len(files), s))
-  echomesh.send(type='transfer',
-                directories=sorted(directories),
-                files=files)
+  LOGGER.info('Transferred %d file%s.', len(files), s)
+  echomesh_instance.send(type='transfer',
+                         directories=sorted(directories),
+                         files=files)
 
 def _get_files_to_transfer(path):
   files = set()
@@ -47,7 +45,7 @@ def _get_files_to_transfer(path):
     walk = os.walk(f)
     if walk:
       directories.add(p)
-      for root, dirs, fs in walk:
+      for root, _, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
             if TRANSFER_ALL_FILES or ffs.endswith('.yml'):

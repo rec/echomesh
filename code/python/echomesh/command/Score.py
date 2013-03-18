@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util import Log
-from echomesh.util import Split
 from echomesh.base import Join
 
 import echomesh.command.Register
@@ -14,7 +13,7 @@ def _perform(action, echomesh_instance, parts):
   if names:
     LOGGER.info('%s %s.', action, Join.join_words(names))
   else:
-    LOGGER.error('%s: no results.' % action)
+    LOGGER.error('%s: no results.', action)
 
 def _local(action):
   def f(echomesh_instance, *parts):

@@ -41,8 +41,8 @@ class Element(MasterRunnable):
             else self.parent.get_property(name, default) if self.parent
             else default)
 
-  def get_hierarchy(self, so_far=[]):
-    res = so_far + [self]
+  def get_hierarchy(self, so_far=None):
+    res = (so_far or []) + [self]
     return self.parent.get_hierarchy(res) if self.parent else res
 
   def get_hierarchy_names(self):
@@ -72,9 +72,9 @@ def _format_delta(t):
     s = s[0:loc]
   return s
 
-_REGISTRY = Registry(name='element')
+REGISTRY = Registry(name='element')
 
 def register(element, name=None):
-  _REGISTRY.register(element, name or element.__name__)
+  REGISTRY.register(element, name or element.__name__)
 
-get_class_by_name = _REGISTRY.get
+get_class_by_name = REGISTRY.get

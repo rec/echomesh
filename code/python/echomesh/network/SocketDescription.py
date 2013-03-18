@@ -1,28 +1,32 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
+# from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Log
+# import collections
 
-LOGGER = Log.logger(__name__)
+# from echomesh.util import Log
 
-Description = collections.namedtuple(
-  'SocketDescription',
-  ['bind_port', 'create', 'hostname', 'port', 'socket_type', 'send', 'start'])
+# LOGGER = Log.logger(__name__)
 
-class Broadcast(Description):
-  def __init__(**kwds):
-    super(Broadcast, self).__init__(
-      hostname='', socket_type=socket.SOCK_DGRAM, **kwds)
+# Description = collections.namedtuple(
+#   'SocketDescription',
+#   ['bind_port', 'create', 'hostname', 'port', 'socket_type', 'send', 'start'])
 
-class BroadcastSend(Broadcast):
-  def __init__(**kwds):
-    def create():
+# class Broadcast(Description):
+#   def __init__(**kwds):
+#     super(Broadcast, self).__init__(
+#       hostname='', socket_type=socket.SOCK_DGRAM, **kwds)
 
-    def send(socket, data):
-      socket.sendto(data, ('<broadcast>', self.port))
+# class BroadcastSend(Broadcast):
+#   def __init__(**kwds):
+#     def create():
+#       pass
 
-    def run():
-      pass
+#     super(BroadcastSend, self).__init__(
+#       create=create, send=send, start=start, **kwds)
 
-    super(BroadcastSend, self).__init__(
-      create=create, send=send, start=start, **kwds)
+#   def send(socket, data):
+#     socket.sendto(data, ('<broadcast>', self.port))
+
+#   def run():
+#     pass
+
 

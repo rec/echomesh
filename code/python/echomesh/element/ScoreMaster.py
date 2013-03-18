@@ -1,17 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import collections
-import itertools
 import operator
 import os.path
 import six
 import threading
-import weakref
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.base import Yaml
-from echomesh.element import Element
 from echomesh.element import Root
 from echomesh.util.thread import MasterRunnable
 from echomesh.base import GetPrefix
@@ -80,7 +76,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       is_file = score_file.endswith('.yml')
       if name:
         is_file = True
-        score_file = Yaml.file(score_file)
+        score_file = Yaml.filename(score_file)
       else:
         name = score_file
       if is_file:
@@ -115,14 +111,14 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
                                (self.load_elements, self.scores_to_load)):
         try:
           function(scores)
-        except Exception as e:
+        except Exception:
           LOGGER.error()
         scores[:] = []
 
   def _on_pause(self):
     super(ScoreMaster, self)._on_pause()
     try:
-      self.pause_elements('*')
+      self.perform_element(ScoreMaster.PAUSE, ['*'])
     except:
       pass
 
@@ -138,7 +134,7 @@ def _make_elements(score_names, table):
 
     try:
       element = Root.Root(description, final_file)
-    except Exception as e:
+    except Exception:
       LOGGER.error("Couldn't read score file %s", score_file)
       continue
 

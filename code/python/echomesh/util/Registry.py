@@ -64,9 +64,10 @@ class Registry(object):
     return self.registry.keys()
 
   def join_keys(self, command_only=True):
-    w = (k for (k, v) in self.registry.iteritems() if (not command_only) or v[0])
+    w = (k for (k, v) in self.registry.iteritems()
+         if (not command_only) or v[0])
     return Join.join_words(w)
 
-  def dump(self, print=print):
+  def dump(self, printer=print):
     for k, v in self.registry.iteritems():
-      print(k, v)
+      printer(k, v)

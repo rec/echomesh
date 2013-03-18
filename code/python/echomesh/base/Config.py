@@ -5,15 +5,11 @@ import getpass
 import os
 import six
 
-from os.path import abspath, dirname
-
 from compatibility.weakref import WeakSet
 
-from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import MergeConfig
 from echomesh.base import Name
-from echomesh.base import Platform
 
 CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
@@ -31,7 +27,7 @@ def add_client(client):
 
 def update_clients():
   for c in CLIENTS:
-    cl.config_update(get)
+    c.config_update(get)
 
 def get(*parts):
   config, unvisited = CONFIG, CONFIGS_UNVISITED

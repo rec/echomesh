@@ -1,5 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import bisect
+import random
+
 class WeightedRandom(object):
   def __init__(self, weights):
     assert weights
@@ -21,9 +24,7 @@ class WeightedRandom(object):
       self.totals[i] = total_weight
 
   def select(self, random_value=None):
-    import bisect, random
     if random_value is None:
-      import random
       random_value = random.random()
     rnd = random_value * self.totals[-1]
     return bisect.bisect_right(self.totals, rnd)

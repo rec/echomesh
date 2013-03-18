@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-from echomesh.util import ImportIf
-
 GAMMA = 2.5
 GAMMA_TABLE_STEPS = 512
 

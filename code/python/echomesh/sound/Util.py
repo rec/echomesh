@@ -6,9 +6,13 @@ import sunau
 import wave
 
 from echomesh.util import ImportIf
+from echomesh.util.file import DefaultFile
+
 numpy = ImportIf.imp('numpy')
 
 FILE_READERS = {'au': sunau, 'aifc': aifc, 'aiff': aifc, 'wav': wave}
+
+DEFAULT_AUDIO_DIRECTORY = DefaultFile.DefaultFile('asset/audio')
 
 def numpy_types():
   return {1: numpy.uint8, 2: numpy.int16, 4: numpy.int32}

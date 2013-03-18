@@ -1,9 +1,9 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 """Typical usage:  at the top of your file:
 
 LOGGER = Log.logger(__name__)
 """
+
+from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
 import logging.config
@@ -43,7 +43,7 @@ class ConfigSetter(object):
     self.kwds = {u'level': getattr(logging, self.log_level)}
     self.filename = get and get('logging', 'file')
     if self.filename:
-      self.kwds[u'filename'] = filename
+      self.kwds[u'filename'] = self.filename
     else:
       self.kwds[u'stream'] = sys.stdout
 

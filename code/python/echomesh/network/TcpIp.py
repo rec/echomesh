@@ -17,7 +17,8 @@ class Client(TcpIp):
 class Server(TcpIp):
   def __init__(self, port, bind_port, hostname=None,
                max_connections=MAX_SERVER_CONNECTIONS):
-    super(Server, self).__init__(port, bind_port, hostname or socket.gethostname())
+    super(Server, self).__init__(port, bind_port,
+                                 hostname or socket.gethostname())
     self.max_connections = max_connections
 
   def _on_run(self):

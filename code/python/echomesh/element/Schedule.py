@@ -4,7 +4,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import parsedatetime
 
-from echomesh.base import Config
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.util import Log
@@ -13,7 +12,7 @@ LOGGER = Log.logger(__name__)
 
 CALENDAR = parsedatetime.Calendar()
 
-"""
+BAD_DOCUMENTATION = """
 type: schedule
 
 entry:

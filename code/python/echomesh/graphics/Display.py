@@ -47,16 +47,9 @@ class Display(Runnable.Runnable):
 
   def _on_pause(self):
     super(Display, self)._on_pause()
-    self.display and self.display.pause()
+    if self.display:
+      self.display.pause()
 
   def loop(self):
     while self.is_running and self.display and self.display.loop_running():
       pass
-
-  # TODO: This is old code!
-  def load_texture(self, imagefile):
-    if imagefile == '$random':
-      imagefile = random.choice(os.listdir(DEFAULT_IMAGE_DIRECTORY.directory))
-
-    imagefile = DEFAULT_IMAGE_DIRECTORY.expand(imagefile)
-    return self.texture_cache.create(imagefile)

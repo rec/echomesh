@@ -1,8 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import os.path
-import time
-
 from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
@@ -25,8 +22,10 @@ class ImageSprite(Runnable):
   def __init__(self, file=None, loops=1,
                position=(0, 0), rotation=(0, 0, 0),
                size=1, duration=None, z=DEFAULT_Z,
-               shader=None, type='', **kwds):
+               shader=None, **kwds):
     super(ImageSprite, self).__init__()
+
+    del kwds['type']
     if kwds:
       s = '' if len(kwds) == 1 else 's'
       LOGGER.error('Unknown keyword%s: %s', s, ', '.join(kwds))

@@ -6,18 +6,20 @@ ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 
 USE_DIGITS_FOR_PROGRESS_BAR = not False
 PRINT_STARTUP_TIMES = not False
+COUNT = 0
 
 def main():
   import sys
 
   times = []
 
-  def p(msg='', count=[0]):
+  def p(msg=''):
     """Print progress messages while echomesh loads."""
     print(msg, end='')
-    dot = str(count[0]) if USE_DIGITS_FOR_PROGRESS_BAR else '.'
+    global COUNT
+    dot = str(COUNT % 10) if USE_DIGITS_FOR_PROGRESS_BAR else '.'
     print(dot, end='')
-    count[0] = (count[0] + 1) % 10
+    COUNT += 1
 
     sys.stdout.flush()
 
@@ -51,7 +53,9 @@ def main():
   Config.recalculate()
   p() # 1329ms
 
-  if not (Config.get('autostart') or len(sys.argv) < 2 or sys.argv[1] != 'autostart'):
+  if not (Config.get('autostart') or
+          len(sys.argv) < 2 or
+          sys.argv[1] != 'autostart'):
     from echomesh.util import Log
     print()
     Log.logger(__name__).info("Not autostarting because autostart=False")

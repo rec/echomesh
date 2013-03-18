@@ -1,13 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
-
 CONFIG_EXCEPTIONS = set(['load', 'map', 'new', 'start'])
 
 def _merge_or_diff(old, new, is_merge, require_old_key, path='',
-                   require_old_key_exceptions=set()):
+                   require_old_key_exceptions=None):
   """Merges two dictionaries, mutating the dictionary "old"."""
   nothing = ()
+  require_old_key_exceptions = require_old_key_exceptions or set()
 
   if old is None:
     old = {}
@@ -60,23 +59,23 @@ def difference(old, new):
   return _merge_or_diff(old, new, False, False)
 
 def merge_strict(*others, **kwds):
-  def merge(old, new):
+  def _merge(old, new):
     return _merge_or_diff(old, new, True, True)
 
-  return reduce(merge, others + (kwds, ), None)
+  return reduce(_merge, others + (kwds, ), None)
 
 def merge_strict_with_exceptions(exceptions, *others):
-  def merge(old, new):
+  def _merge(old, new):
     return _merge_or_diff(old, new, True, True,
                           require_old_key_exceptions=exceptions)
 
-  return reduce(merge, others, None)
+  return reduce(_merge, others, None)
 
 def merge(*others, **kwds):
-  def merge(old, new):
+  def _merge(old, new):
     return _merge_or_diff(old, new, True, False)
 
-  return reduce(merge, others + (kwds, ), None)
+  return reduce(_merge, others + (kwds, ), None)
 
 def merge_for_config(*config):
   return merge_strict_with_exceptions(CONFIG_EXCEPTIONS, *config)

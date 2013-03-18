@@ -49,7 +49,7 @@ class FilePlayer(ThreadLoop):
     self.sample_width = self.file_stream.getsampwidth()
 
     (self.channels, self.sample_width, self.sampling_rate,
-     nsamples, c1, c2) = self.file_stream.getparams()
+     _, _, _) = self.file_stream.getparams()
     self.dtype = Util.numpy_types()[self.sample_width]
     self.request_channels = 2 if self.pan else self.channels
     self.format = Sound.PYAUDIO().get_format_from_width(self.sample_width)
@@ -126,7 +126,8 @@ class FilePlayer(ThreadLoop):
         self.pause()
         return
 
-    self.time =+ len(frames) / float((self.samples_per_frame *
+    # TODO: below I had written =+ instead of +=!  Does anything change?
+    self.time += len(frames) / float((self.samples_per_frame *
                                       self.sampling_rate))
 
     frames = self._pan_and_fade(frames)
@@ -156,8 +157,8 @@ class FilePlayer(ThreadLoop):
       right *= rpan
     else:
       next_pan = self.pan.interpolate(self.time)
-      angles = numpy.linspace(pan_to_angle(self.current_pan),
-                              pan_to_angle(next_pan), len(left))
+      angles = numpy.linspace(Util.pan_to_angle(self.current_pan),
+                              Util.pan_to_angle(next_pan), len(left))
 
       left *= numpy.cos(angles)
       right *= numpy.sin(angles)

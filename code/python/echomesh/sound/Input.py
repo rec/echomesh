@@ -20,13 +20,13 @@ def get_pyaudio_stream(name, index, rates, sample_bytes):
   pyaud = Sound.PYAUDIO()
   FORMAT_NAMES = {1: pyaudio.paInt8, 2: pyaudio.paInt16, 3:
                   pyaudio.paInt24, 4: pyaudio.paInt32}
-  format = FORMAT_NAMES.get(sample_bytes, 0)
-  if not format:
+  fmt = FORMAT_NAMES.get(sample_bytes, 0)
+  if not fmt:
     LOGGER.error("Didn't understand sample_bytes = %s.", sample_bytes)
-    format = FORMAT_NAMES[1]
+    fmt = FORMAT_NAMES[1]
 
   def _make_stream(i, rate):
-    stream = pyaud.open(format=format, channels=1, rate=rate,
+    stream = pyaud.open(format=fmt, channels=1, rate=rate,
                         input_device_index=i, input=True)
     LOGGER.debug('Opened pyaudio stream %s.',
                  pyaud.get_device_info_by_index(i)['name'])
@@ -57,13 +57,3 @@ def get_mic_level(data, length=-1, dtype=None):
 
   samps = numpy.fromstring(data, dtype=dtype, count=length)
   return analyse.loudness(samps)
-
-def try_all_devices():
-  # consider removing this.
-  for i in range(MAX_INPUT_DEVICES):
-    try:
-      stream = _make_stream(i)
-      return stream
-    except:
-      pass
-

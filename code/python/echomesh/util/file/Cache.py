@@ -61,5 +61,3 @@ class Cache(object):
   def _key_to_file(self, key):
     return _SPACES.sub('-', _BAD_CHARS.sub('', key.lower())) + self.suffix
 
-  def _get_file_contents(self, key):
-    raise Exception('Must override _get_file_contents')

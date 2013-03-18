@@ -13,7 +13,7 @@ class Image(Element.Element):
     if Config.get('load_module', 'pi3d'):
       try:
         self.sprite = ImageSprite(**description)
-      except Exception as e:
+      except:
         LOGGER.error("Couldn't open image file")
       else:
         self.add_slave(self.sprite)

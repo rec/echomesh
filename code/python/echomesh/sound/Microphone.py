@@ -1,9 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import time
-
 from echomesh.base import Config
-from echomesh.base import Platform
 from echomesh.sound import Input
 from echomesh.sound import Levels
 from echomesh.sound import Sound
@@ -107,7 +104,7 @@ def microphone(callback):
   if Config.get('audio', 'input', 'enable'):
     try:
       return Microphone(callback)
-    except Exception as e:
+    except Exception:
       LOGGER.error('Failed to turn on mic.')
   else:
     LOGGER.info('Mic thread disabled')

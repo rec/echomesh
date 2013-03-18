@@ -8,13 +8,12 @@ from echomesh.remote import Register
 
 from echomesh.base import Config
 from echomesh.base import Path
-from echomesh.base import Yaml
 from echomesh.util import Log
 from echomesh.util.file import MakeDirs
 
 LOGGER = Log.logger(__name__)
 
-def transfer(echomesh, **data):
+def transfer(_, **data):
   backup_directory = os.path.join(Path.COMMAND_PATH, '.echomesh-xfer')
 
   try:

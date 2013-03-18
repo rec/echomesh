@@ -42,7 +42,7 @@ class Runnable(object):
   def start(self):
     """Start is equivalent to reset() followed by run()."""
     self.reset()
-    if not self.running:
+    if not self.is_running:
       self.run()
 
   def _on_run(self):

@@ -21,7 +21,7 @@ class ThreadRunnable(MasterRunnable):
     def target():
       try:
         self.target()
-      except Exception as e:
+      except Exception:
         if self.is_running or self.report_error:
           LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
         self.pause()

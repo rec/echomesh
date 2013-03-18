@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import select
 
-from echomesh.network.SocketThread import SocketThread
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 
@@ -19,7 +18,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
   def single_loop(self):
     try:
       result = select.select(self.sockets.keys(), [], [], TIMEOUT)
-    except Exception as e:
+    except Exception:
       self._remove_bad()
     else:
       for socket in result[0]:
@@ -38,6 +37,9 @@ class SelectLoop(ThreadLoop.ThreadLoop):
       LOGGER.error("Tried to remove a socket we didn't know about.")
 
   def _remove_bad(self):
+    if not self.is_running:
+      return
+    bad = []
     for socket in self.sockets:
       try:
         select.select([socket], [], [], timeout=0)
@@ -46,7 +48,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
 
     if bad:
       for socket in bad:
-        LOGGER.error('A socket %s went bad.', str(st))
-        self._remove_socket(socket)
+        LOGGER.error('A socket %s went bad.', str(socket))
+        self.remove_socket(socket)
     else:
       LOGGER.error('Tried to remove_bad, but found none.')
