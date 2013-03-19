@@ -45,8 +45,5 @@ class MasterRunnable(Runnable):
       self._on_pause()
 
   def reset(self):
+    super(MasterRunnable, self).reset()
     self.runnables.foreach('reset')
-
-  def start(self):
-    self.runnables.foreach('start')
-

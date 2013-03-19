@@ -24,8 +24,11 @@ class Repeat(Loop.Loop):
 
   def loop_target(self, t):
     for e in self.elements:
-      e.reset()
+      print('!! starting')
       e.start()
+
+    print('!!!', self.repeat_count)
+
 
     self.repeat_count += 1
     if self.repeat_count >= self.repeat:

@@ -1,6 +1,7 @@
 type: repeat
 period: 0.5
 repeat: 4
+
 element:
   type: print
   text: "{parent.repeat_count} of {parent.repeat}"
