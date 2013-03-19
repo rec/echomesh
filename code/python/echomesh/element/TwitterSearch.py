@@ -29,5 +29,6 @@ class TwitterSearch(Element.Element):
   def _on_run(self):
     for s in self.searches:
       s.refresh()
+    return True
 
 Element.register(TwitterSearch, 'twitter')
