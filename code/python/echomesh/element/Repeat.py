@@ -16,6 +16,7 @@ class Repeat(Loop.Loop):
     self.repeat_count = 0
 
   def next_time(self, t):
+    print('!!! next_time')
     start = self.start_time
     res = start + self.period * (1 + self.repeat_count)
     if self.random_delay:
@@ -23,6 +24,7 @@ class Repeat(Loop.Loop):
     return res
 
   def loop_target(self, t):
+    print('!!! loop_target')
     for e in self.elements:
       e.start()
 
@@ -38,5 +40,9 @@ class Repeat(Loop.Loop):
     self.repeat_count = 0
     for e in self.elements:
       e.reset()
+
+  def run(self):
+    super(Repeat, self).run()
+    print('Repeat.run')
 
 Element.register(Repeat)

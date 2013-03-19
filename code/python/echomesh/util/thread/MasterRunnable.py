@@ -42,7 +42,8 @@ class MasterRunnable(Runnable):
     if self.is_running:
       self.is_running = False
       self.pausables.foreach('pause')
-      self._on_pause()
+      self.is_running = True
+      super(MasterRunnable, self).pause()
 
   def reset(self):
     super(MasterRunnable, self).reset()
