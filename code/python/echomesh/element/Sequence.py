@@ -10,6 +10,7 @@ from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
 
+# TODO
 class Sequence(Loop.Loop):
   def __init__(self, parent, description):
     super(Sequence, self).__init__(parent, description, name='Sequence')
@@ -21,7 +22,7 @@ class Sequence(Loop.Loop):
     items = ((Units.convert(e.get('begin', 0)),
               Load.make_one(self, e.get('element', {}))) for e in elements)
 
-    self.times, self.element = zip(*items)
+    self.times, self.elements = zip(*items)
     self.times = list(self.times) + [self.duration]
 
   def _command_time(self):
@@ -49,10 +50,10 @@ class Sequence(Loop.Loop):
     self.next_command = 0
 
   def loop_target(self, t):
-    while self.next_command <= len(self.element) and self._command_time() <= t:
+    while self.next_command <= len(self.elements) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
-      if self.next_command < len(self.element):
-        self.element[self.next_command].run()
+      if self.next_command < len(self.elements):
+        self.elements[self.next_command].run()
       self.next_command += 1
 
 Element.register(Sequence)

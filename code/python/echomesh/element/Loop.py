@@ -47,8 +47,6 @@ class Loop(Element.Element):
     t = time.time()
     self.start_time = t - self.pause_time
     self.next_loop_time = self.next_time(t)
-    print('!!!! 1', self.start_time - self.load_time,
-          self.next_loop_time - self.load_time)
     self.thread = threading.Thread(target=self.target)
     self.thread.daemon = True
     self.thread.start()

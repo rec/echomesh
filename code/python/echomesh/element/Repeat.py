@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element import Element
-from echomesh.element import List
 from echomesh.element import Loop
 from echomesh.util.math import Poisson
 from echomesh.util.math import Units
@@ -9,26 +8,25 @@ from echomesh.util.math import Units
 class Repeat(Loop.Loop):
   def __init__(self, parent, description):
     super(Repeat, self).__init__(parent, description, name='Repeat')
-    self.list_element = List.List(self, description)
     self.random_delay = Units.convert(description.get('random_delay', 0))
     self.period = Units.convert(description.get('period'), 0)
     self.repeat = Units.convert(description.get('repeat', 'infinite'))
     assert self.random_delay > 0 or self.period > 0, (
       'You must set either a period or a random_delay')
-    self.add_slave(self.list_element)
     self.repeat_count = 0
 
   def next_time(self, t):
-    # print('!!! next_time', self)
-    # TODO: FIXME!
-    start = self.start_time # - self.pause_time
+    start = self.start_time
     res = start + self.period * (1 + self.repeat_count)
     if self.random_delay:
       res += Poisson.next_poisson(self.random_delay)
     return res
 
   def loop_target(self, t):
-    self.list_element.run()
+    for e in self.elements:
+      e.reset()
+      e.start()
+
     self.repeat_count += 1
     if self.repeat_count >= self.repeat:
       self.pause()
@@ -37,9 +35,8 @@ class Repeat(Loop.Loop):
     pass
 
   def reset(self):
-    self.list_element.reset()
-
-  def class_name(self):
-    return self.list_element.class_name(super(Repeat, self).class_name())
+    self.repeat_count = 0
+    for e in self.elements:
+      e.reset()
 
 Element.register(Repeat)

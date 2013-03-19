@@ -1,8 +1,6 @@
-type: list
+type: repeat
+period: 0.5
+repeat: 4
 element:
-  type: repeat
-  period: 0.5
-  repeat: 10
-  element:
-    type: print
-    text: "{parent.parent.repeat_count} of {parent.parent.repeat}"
+  type: print
+  text: "{parent.repeat_count} of {parent.repeat}"

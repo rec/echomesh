@@ -15,18 +15,32 @@ class Element(MasterRunnable):
     self.parent = parent
     self.description = description
     self.load_time = time.time()
-
     super(Element, self).__init__()
 
-  def reset(self):
-    self.start_time = time.time() - self.pause_time
+    elements = description.get('element', None)
+    if elements:
+      # This has to be local to avoid an infinite loop...
+      from echomesh.element import Load
+
+      self.elements = Load.make(self, elements)
+      self.add_slave(*self.elements)
+    else:
+      self.elements = []
 
   def child_paused(self, child):
-    if self.parent and self.parent is not self:
-      self.parent.child_paused(child)
+    for e in self.elements:
+      if e.is_running:
+        return
+
+    self.pause()
 
   def class_name(self):
-    return self.__class__.__name__.lower()
+    name = self.__class__.__name__.lower()
+    if self.elements:
+      classes = ', '.join(e.class_name() for e in self.elements)
+      return '%s(%s)' % (name, classes)
+    else:
+      return name
 
   def elapsed_time(self):
     if self.is_running:
@@ -58,6 +72,8 @@ class Element(MasterRunnable):
     super(Element, self)._on_reset()
     self.start_time = time.time() - self.pause_time
     self.pause_time = 0
+    for e in self.elements:
+      e.reset()
 
   def info(self):
     return {'class': self.class_name(),

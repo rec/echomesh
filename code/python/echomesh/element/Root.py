@@ -1,7 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.element import Element
+
 # pylint: disable=W0611
-from echomesh.element import Audio, Handler, Image, List, Mapper, Print, Repeat
+from echomesh.element import Audio, Handler, Image, Mapper, Print, Repeat
 from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
 # pylint: enable=W0611
 
@@ -9,7 +11,7 @@ from echomesh.element import Element
 
 PRINT_FORMAT = '{state:4} {class:10} {time:9}'
 
-class Root(List.List):
+class Root(Element.Element):
   def __init__(self, description, score):
     super(Root, self).__init__(None, description)
     self.score = score
@@ -25,7 +27,7 @@ class Root(List.List):
       self.handlers.setdefault(t, set()).add(handler)
 
   def __str__(self):
-    return PRINT_FORMAT.format(**self.element[0].info())
+    return PRINT_FORMAT.format(**self.elements[0].info())
 
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):

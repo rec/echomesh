@@ -11,12 +11,15 @@ class Runnable(object):
   """
   def __init__(self):
     self.is_running = False
-    self._on_reset()
+    self.reset_called = False
 
   def run(self):
     """Continue running from where we were before, if we aren't running now."""
     if not self.is_running:
       self.is_running = True
+      if not self.reset_called:
+        self.reset()
+
       if self._on_run():
         self.pause()
         LOGGER.debug('%s paused in startup', self)
@@ -37,13 +40,13 @@ class Runnable(object):
   def reset(self):
     """Reset this Runnable to the beginning, whether or not it is running."""
     LOGGER.debug('Resetting %s', self)
+    self.reset_called = True
     self._on_reset()
 
   def start(self):
     """Start is equivalent to reset() followed by run()."""
     self.reset()
-    if not self.is_running:
-      self.run()
+    self.run()
 
   def _on_run(self):
     """This is called on a state change from not running to running.

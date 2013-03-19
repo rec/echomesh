@@ -42,6 +42,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def perform_element(self, action, names):
     full_names = []
+    assert isinstance(action, six.string_types), action
     getter = operator.attrgetter(action)
     is_unload = (action == 'unload')
     with self.lock:

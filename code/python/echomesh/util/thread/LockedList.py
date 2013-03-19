@@ -21,7 +21,9 @@ class LockedList(object):
       try:
         getattr(e, member_name)()
       except:
-        LOGGER.error('%s', member_name)
+        LOGGER.error('%s:%s', member_name, e)
+        if RAISE_EXCEPTIONS:
+          raise
 
   def clear(self):
     with self._lock:

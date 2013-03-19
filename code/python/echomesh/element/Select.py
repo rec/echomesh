@@ -4,16 +4,17 @@ from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.util.math.WeightedRandom import WeightedRandom
 
+# TODO
 class Select(Element.Element):
   def __init__(self, parent, description):
     super(Select, self).__init__(parent, description)
     choices = description.get('choices', [])
     self.random = WeightedRandom(c.get('weight', None) for c in choices)
-    self.element = [Load.make_one(self, c['element']) for c in choices]
-    self.add_pause_only_slave(*self.element)
+    # self.elements = [Load.make_one(self, c['element']) for c in choices]
+    self.add_pause_only_slave(*self.elements)
 
   def _on_run(self):
     super(Select, self)._on_run()
-    self.element[self.random.select()].run()
+    self.elements[self.random.select()].run()
 
 Element.register(Select)

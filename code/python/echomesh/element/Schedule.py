@@ -34,7 +34,6 @@ class Entry(object):
     self.length = length
     self.repeat = repeat
     self.priority = priority
-    self.element = Load.make_one(schedule, element)
 
 
 class Schedule(Element.Element):
