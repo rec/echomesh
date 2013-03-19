@@ -20,10 +20,12 @@ void write(FILE* file) {
 }
 
 int main() {
-  memset(LIGHT_BYTES, BYTE_COUNT, 0x80);
-  bzero(LIGHT_BYTES + LIGHT_BYTE_COUNT, LATCH_BYTE_COUNT);
   FILE* file = fopen(DEVICE_NAME, "w");
+  bzero(LIGHT_BYTES, BYTE_COUNT);
   write(file);
+  memset(LIGHT_BYTES, LIGHT_BYTE_COUNT, 0x80);
+  write(file);
+  // return 0;
 
   for (int i = 0; i < REPEAT_COUNT; ++i) {
     bool reverse = (i % 2);
