@@ -43,7 +43,6 @@ class Loop(Element.Element):
     self.pause_time = time.time() - self.start_time
 
   def _on_run(self):
-    print('Loop._on_run')
     super(Loop, self)._on_run()
     t = time.time()
     self.start_time = t - self.pause_time

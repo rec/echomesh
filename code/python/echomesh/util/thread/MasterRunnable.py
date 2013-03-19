@@ -34,8 +34,9 @@ class MasterRunnable(Runnable):
         c.pausables.add(self)
 
   def run(self):
-    if not self.is_running:
-      super(MasterRunnable, self).run()
+    was_running = self.is_running
+    super(MasterRunnable, self).run()
+    if not was_running:
       self.runnables.foreach('run')
 
   def pause(self):
@@ -43,7 +44,8 @@ class MasterRunnable(Runnable):
       self.is_running = False
       self.pausables.foreach('pause')
       self.is_running = True
-      super(MasterRunnable, self).pause()
+    super(MasterRunnable, self).pause()
+
 
   def reset(self):
     super(MasterRunnable, self).reset()

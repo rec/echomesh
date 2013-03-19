@@ -11,7 +11,7 @@ LOGGER = Log.logger(__name__)
 def _perform(action, echomesh_instance, parts):
   names = echomesh_instance.score_master.perform(action, parts)
   if names:
-    LOGGER.info('%s %s.', action, Join.join_words(names))
+    LOGGER.info('%s %s.', action.capitalize(), Join.join_words(names))
   else:
     LOGGER.error('%s: no results.', action)
 

@@ -66,14 +66,13 @@ class Element(MasterRunnable):
   def _on_pause(self):
     super(Element, self)._on_pause()
     self.pause_time = time.time() - self.start_time
-    self.child_paused(self)
+    if self.parent:
+      self.parent.child_paused(self)
 
   def _on_reset(self):
     super(Element, self)._on_reset()
     self.start_time = time.time() - self.pause_time
     self.pause_time = 0
-    for e in self.elements:
-      e.reset()
 
   def info(self):
     return {'class': self.class_name(),

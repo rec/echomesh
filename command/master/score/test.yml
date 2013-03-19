@@ -1,6 +1,6 @@
 type: repeat
 period: 0.5
-repeat: 4
+repeat: 12
 
 element:
   type: print

@@ -42,5 +42,4 @@ class Root(Element.Element):
       for handler in handlers:
         handler.handle(event)
 
-
 Element.register(Root)
