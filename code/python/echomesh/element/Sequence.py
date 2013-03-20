@@ -17,7 +17,7 @@ class Sequence(Loop.Loop):
     duration = description.get('duration')
     self.duration = duration and Units.convert(duration)
     self.loops = Units.convert(description.get('loops', 1))
-    elements = description.get('element', [])
+    elements = description.get('elements', [])
 
     items = ((Units.convert(e.get('begin', 0)),
               Load.make_one(self, e.get('element', {}))) for e in elements)

@@ -22,7 +22,7 @@ entry:
     length: 0:23
     repeat: daily, none, weekly, absolute
     priority: 5
-    element: something
+    elements: something
 """
 
 class Entry(object):

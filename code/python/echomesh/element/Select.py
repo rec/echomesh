@@ -10,7 +10,6 @@ LOGGER = Log.logger(__name__)
 class Select(Element.Element):
   def __init__(self, parent, description):
     super(Select, self).__init__(parent, description, full_slave=False)
-    print('!!!!!!!!!!!!!!!!')
     assert self.elements
     weights = description.get('weights', [])
     wlen, elen = len(weights), len(self.elements)

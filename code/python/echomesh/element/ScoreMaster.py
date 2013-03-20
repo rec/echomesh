@@ -129,7 +129,7 @@ def _make_elements(score_names, table):
   for score_file, name in score_names:
     resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
     elements = Yaml.read(resolved_file)
-    description = {'element': elements, 'type': 'score'}
+    description = {'elements': elements, 'type': 'score'}
     parts = resolved_file.split('/')
     final_file = '/'.join([parts[1]] + parts[3:])
 
