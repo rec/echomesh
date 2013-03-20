@@ -7,18 +7,18 @@ loops: 3
 elements:
   -
     begin: 0
-    element:
+    elements:
       type: speak
       text: Hello, world!
   -
     begin: 4
-    element:
+    elements:
       type: speak
       text: Hello, Tom!
 
   -
     begin: 8
-    element:
+    elements:
       type: speak
       text: Hello, it worked!
 

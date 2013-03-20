@@ -29,7 +29,7 @@ class ThreadRunnable(MasterRunnable):
 
     super(ThreadRunnable, self)._on_run()
     self._before_thread_start()
-    self.thread = threading.Thread(target=target)
+    self.thread = threading.Thread(target=target, name=self.name)
     self.thread.daemon = True
     self.thread.start()
 

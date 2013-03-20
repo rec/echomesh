@@ -1,28 +1,28 @@
-type: Random
+type: random
 mean: 3.0
 
-element:
-  type: Select
+elements:
+  type: select
   choices:
     -
       weight: 3
-      element:
+      elements:
         type: speak
         text: Hello, world!
     -
-      element:
+      elements:
         type: print
         text: Hello, Marek!
 
     -
       weight: 1
-      element:
+      elements:
         type: print
         text: It's all working.
 
     -
       weight: 3
-      element:
+      elements:
         type: print
         text: "echomesh: the wave of the future."
 

@@ -1,16 +1,16 @@
 type: Random
 mean: 3000.0 ms
 
-element:
+elements:
   type: Select
   choices:
     -
       weight: 2
-      element:
+      elements:
         extends: speak.yml
     -
       weight: 3
-      element:
+      elements:
         type: print
         text: "echomesh: the wave of the future."
 

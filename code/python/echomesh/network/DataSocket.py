@@ -33,7 +33,8 @@ class DataSocket(MasterRunnable):
     self.send_socket.run()
     self.select_loop = SelectLoop.SelectLoop(self.receive_socket)
     self.select_loop.run()
-    self.send_thread = ThreadLoop.ThreadLoop(single_loop=self.send_socket.send)
+    self.send_thread = ThreadLoop.ThreadLoop(single_loop=self.send_socket.send,
+                                             name='DataSocket.send')
     self.send_thread.run()
 
     def receive():
@@ -43,7 +44,8 @@ class DataSocket(MasterRunnable):
         return
       self.callback(item)
 
-    self.receive_thread = ThreadLoop.ThreadLoop(single_loop=receive)
+    self.receive_thread = ThreadLoop.ThreadLoop(single_loop=receive,
+                                                name='DataSocket.receive')
     self.receive_thread.run()
     self.send = self.send_socket.queue.put
 

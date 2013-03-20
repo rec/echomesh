@@ -6,7 +6,7 @@
 type: repeat
 period: 1 second     # Search once a second.
 
-element:
+elements:
   type: twitter
   search:
     - xyzzy              # Search for any Twitter containing the string xyzzy.

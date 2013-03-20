@@ -12,7 +12,7 @@ TIMEOUT = 0.100
 
 class SelectLoop(ThreadLoop.ThreadLoop):
   def __init__(self, *sockets):
-    super(SelectLoop, self).__init__()
+    super(SelectLoop, self).__init__(name='SelectLoop')
     self.sockets = dict((s.socket, s) for s in sockets)
 
   def single_loop(self):

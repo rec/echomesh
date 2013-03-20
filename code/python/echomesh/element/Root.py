@@ -27,6 +27,8 @@ class Root(Element.Element):
       self.handlers.setdefault(t, set()).add(handler)
 
   def __str__(self):
+    if not self.elements:
+      return '(empty)'
     return PRINT_FORMAT.format(**self.elements[0].info())
 
   def remove_handler(self, handler, *types):

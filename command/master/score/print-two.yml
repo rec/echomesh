@@ -3,4 +3,4 @@ elements:
   -
     type: repeat
     period: 2
-      element:
+      elements:

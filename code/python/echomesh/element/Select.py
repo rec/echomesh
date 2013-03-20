@@ -2,19 +2,35 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.element import Load
+from echomesh.util import Log
 from echomesh.util.math.WeightedRandom import WeightedRandom
 
-# TODO
+LOGGER = Log.logger(__name__)
+
 class Select(Element.Element):
   def __init__(self, parent, description):
-    super(Select, self).__init__(parent, description)
-    choices = description.get('choices', [])
-    self.random = WeightedRandom(c.get('weight', None) for c in choices)
-    # self.elements = [Load.make_one(self, c['element']) for c in choices]
-    self.add_pause_only_slave(*self.elements)
+    super(Select, self).__init__(parent, description, full_slave=False)
+    print('!!!!!!!!!!!!!!!!')
+    assert self.elements
+    weights = description.get('weights', [])
+    wlen, elen = len(weights), len(self.elements)
+    if wlen > elen:
+      LOGGER.error('More weights than elements: %d > %d',
+                   wlen, elen)
+      weights = weights[0:elen]
+
+    elif wlen < elen:
+      if wlen:
+        mean = sum(*weights) / wlen
+      else:
+        mean = 1
+      weights.extend([mean] * (elen - wlen))
+
+    self.random = WeightedRandom(weights)
 
   def _on_run(self):
     super(Select, self)._on_run()
-    self.elements[self.random.select()].run()
+    if self.elements:
+      self.elements[self.random.select()].run()
 
 Element.register(Select)

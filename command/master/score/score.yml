@@ -144,12 +144,12 @@ subtype: poisson
 
 mean: 3.0                  # Trigger on average every 3 seconds.
 
-element:
+elements:
   type: select
   choices:                   # Select one of these elements at random.
     -
       weight: 2
-      element:
+      elements:
         type: image
         file: $random
         position: [200, 200]
@@ -158,7 +158,7 @@ element:
 
     -
       weight: 3
-      element:
+      elements:
         type: image
         file: $random
         position: [[0, [100, 100]], [20, [1000, 1000]]]
@@ -176,7 +176,7 @@ loops: 3
 elements:
   -
     time: 0
-    element:
+    elements:
       type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
@@ -184,7 +184,7 @@ elements:
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 3.0
-    element:
+    elements:
       type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
@@ -192,7 +192,7 @@ elements:
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 10.0
-    element:
+    elements:
       type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
@@ -200,7 +200,7 @@ elements:
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 11.0
-    element:
+    elements:
       type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]
@@ -208,7 +208,7 @@ elements:
       rotation: [[0, 0], [5, 360], [10, -360], [18, 360], [20, 0]]
   -
     time: 12.0
-    element:
+    elements:
       type: image
       file: $random
       position: [[0, [100, 100]], [20, [1000, 1000]]]

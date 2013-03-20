@@ -10,20 +10,23 @@ from echomesh.util.Registry import Registry
 LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
-  def __init__(self, parent, description):
+  def __init__(self, parent, description, full_slave=True):
     self.start_time = self.pause_time = 0
     self.parent = parent
     self.description = description
     self.load_time = time.time()
     super(Element, self).__init__()
 
-    elements = description.get('element', None)
+    elements = description.get('elements', None)
     if elements:
       # This has to be local to avoid an infinite loop...
       from echomesh.element import Load
 
       self.elements = Load.make(self, elements)
-      self.add_slave(*self.elements)
+      if full_slave:
+        self.add_slave(*self.elements)
+      else:
+        self.add_pause_only_slave(*self.elements)
     else:
       self.elements = []
 
