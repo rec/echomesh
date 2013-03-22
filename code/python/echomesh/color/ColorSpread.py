@@ -5,7 +5,12 @@ from echomesh.util import Importer
 
 numpy = Importer.imp('numpy')
 
-def color_spread(start, finish, points):
+def color_spread(start, finish, points, transform=None):
   hsv = ColorConv.rgb_to_hsv([start, finish])
-  cvt = numpy.array([numpy.linspace(s, f, points) for s, f in hsv.T]).T
+  if transform:
+    fn, fi = transform
+    points = [fi(numpy.linspace(fn(s), fn(f), points)) for s, f in hsv.T]
+  else:
+    points = [numpy.linspace(s, f, points) for s, f in hsv.T]
+    cvt = numpy.array(points).T
   return ColorConv.hsv_to_rgb(cvt)

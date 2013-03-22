@@ -22,3 +22,4 @@ SINE = (lambda x: (1 + numpy.sin(numpy.pi * (x - 0.5))) / 2,
 
 EXP = (lambda x: (numpy.exp(x) - 1) / (numpy.e - 1),
        lambda x: numpy.log((numpy.e - 1) * x + 1))
+
