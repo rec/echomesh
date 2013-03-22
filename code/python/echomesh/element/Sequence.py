@@ -10,23 +10,40 @@ from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
 
-# TODO
+# TODO: how does a sequence autostop?
 class Sequence(Loop.Loop):
+  ATTRIBUTES = 'begin', 'end', 'duration'
+  BEGIN, END, END_OF_SEQUENCE = range(3)
+
   def __init__(self, parent, description):
+    times = []
+    for e in description.elements:
+      times.append([Units.convert(e.pop(a)) for a in Sequence.ATTRIBUTES])
+
     super(Sequence, self).__init__(parent, description, name='Sequence')
-    duration = description.get('duration')
-    self.duration = duration and Units.convert(duration)
     self.loops = Units.convert(description.get('loops', 1))
-    elements = description.get('elements', [])
+    self.duration = Units.convert(description.get('duration'), Units.INFINITY)
 
-    items = ((Units.convert(e.get('begin', 0)),
-              Load.make_one(self, e.get('element', {}))) for e in elements)
+    self.sequence = []
+    for element, t in zip(self.elements, times):
+      begin, end, duration = t
+      if duration is not None:
+        if end is not None:
+          begin = end - duration
+        elif begin is not None:
+          end = begin + duration
 
-    self.times, self.elements = zip(*items)
-    self.times = list(self.times) + [self.duration]
+      if begin is not None:
+        self.sequence.append([begin, element, Sequence.BEGIN])
+
+      if end is not None:
+        self.sequence.append([end, element, Sequence.END])
+
+    self.sequence.append([duration, None, Sequence.END_OF_SEQUENCE])
+    self.sequence.sort(key=0)
 
   def _command_time(self):
-    return self.times[self.next_command] + self.start_time
+    return self.sequence[self.next_command][0] + self.start_time
 
   def next_time(self, t):
     if self.next_command <= len(self.element):
@@ -43,17 +60,16 @@ class Sequence(Loop.Loop):
         self.pause()
         return 0
 
-  def _on_run(self):
-    super(Sequence, self)._on_run()
-    self.start_time = time.time()
+  def _on_reset(self):
     self.current_loop = 0
     self.next_command = 0
 
   def loop_target(self, t):
-    while self.next_command <= len(self.elements) and self._command_time() <= t:
+    while self.next_command < len(self.sequence) and self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
       if self.next_command < len(self.elements):
-        self.elements[self.next_command].run()
+        t, element, cmd = self.sequence[self.next_command]
+
       self.next_command += 1
 
 Element.register(Sequence)

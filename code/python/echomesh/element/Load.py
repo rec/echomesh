@@ -14,7 +14,7 @@ def _resolve_extensions(data):
   datas = [data]
 
   while True:
-    extension = data.get('extends')
+    extension = data.get('inherit')
     if not extension:
       break
     extension = Yaml.filename(extension)
@@ -38,7 +38,7 @@ def _resolve_extensions(data):
   for data in reversed(datas):
     result.update(data)
   if extensions:
-    del result['extends']
+    del result['inherit']
 
   return result
 

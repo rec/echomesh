@@ -1,0 +1,15 @@
+type: repeat
+period: 3.0
+
+elements:
+  type: select
+  elements:
+  -
+    type: print
+    text: Hello, Marek!
+  -
+    type: print
+    text: It's all working.
+  -
+    type: print
+    text: "echomesh: the wave of the future."

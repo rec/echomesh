@@ -9,3 +9,5 @@ map:
 
   tags:
     control: [foo, bar]
+
+wombat:  True
