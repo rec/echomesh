@@ -12,5 +12,4 @@ def color_spread(start, finish, points, transform=None):
     points = [fi(numpy.linspace(fn(s), fn(f), points)) for s, f in hsv.T]
   else:
     points = [numpy.linspace(s, f, points) for s, f in hsv.T]
-    cvt = numpy.array(points).T
-  return ColorConv.hsv_to_rgb(cvt)
+  return ColorConv.hsv_to_rgb(numpy.array(points).T)
