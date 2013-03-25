@@ -26,7 +26,7 @@ def _possible_project(path):
       return False
   return True
 
-def set_project_path(project_path=None, show_error=False, prompt=False):
+def set_project_path(project_path=None, show_error=False, prompt=True):
   original_path = os.path.abspath(os.path.expanduser(project_path or os.curdir))
   path = original_path
 
@@ -38,8 +38,8 @@ def set_project_path(project_path=None, show_error=False, prompt=False):
     if prompt:
       yn = '?'
       while yn and yn[0] not in 'yn':
-        yn = raw_input(_CREATE_MISSING_DIRECTORY_PROJECT %
-                       original_path).strip().lower()
+        print(_CREATE_MISSING_DIRECTORY_PROJECT % original_path, end='')
+        yn = raw_input().strip().lower()
       if not (yn and yn[0] == 'n'):
         MakeEmptyProject.make_empty_project(original_path)
         path = original_path

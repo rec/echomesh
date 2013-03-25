@@ -1,0 +1,7 @@
+# Random notes to transfer between machines.
+
+cd
+git clone https://github.com/rec/echomesh.git
+mkdir score
+cd score
+echomesh

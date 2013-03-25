@@ -21,7 +21,6 @@ def recalculate():
   _reset_configs()
   _get_name_and_tags()
 
-
 def add_client(client):
   CLIENTS.add(client)
   client.config_update(get)
@@ -87,7 +86,7 @@ def _get_name_and_tags():
   if name:
     Name.set_name(name)
 
-  tags = Name.lookup(get('map', 'tags'))
+  tags = Name.lookup(get('map', 'tag'))
   if tags:
     if isinstance(tags, six.string_types):
       tags = [tags]
