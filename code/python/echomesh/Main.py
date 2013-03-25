@@ -53,9 +53,7 @@ def main():
   Config.recalculate()
   p() # 1329ms
 
-  if not (Config.get('autostart') or
-          len(sys.argv) < 2 or
-          sys.argv[1] != 'autostart'):
+  if Config.get('autostart') and not Config.get('permission', 'autostart'):
     from echomesh.util import Log
     print()
     Log.logger(__name__).info("Not autostarting because autostart=False")

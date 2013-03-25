@@ -17,7 +17,7 @@ allow_shutdown: true
 # this flag has any effect.  It's mostly used for temporarily turning off the
 # program actually starting while you're debugging it.
 
-autostart: true
+autostart: false
 
 audio:
    # This audio section is the longest section in the whole config file.
@@ -214,6 +214,7 @@ logging:
 # The permissions area controls whether this machine is allowed to perform
 # the system activities boot, halt, initialize, quit or update.
 permission:
+  autostart: true
   boot: true
   halt: true
   initialize: true
