@@ -21,6 +21,7 @@ def recalculate():
   _reset_configs()
   _get_name_and_tags()
 
+
 def add_client(client):
   CLIENTS.add(client)
   client.config_update(get)

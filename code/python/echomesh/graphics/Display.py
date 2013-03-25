@@ -48,7 +48,7 @@ class Display(Runnable.Runnable):
   def _on_pause(self):
     super(Display, self)._on_pause()
     if self.display:
-      self.display.pause()
+      self.display.stop()
 
   def loop(self):
     while self.is_running and self.display and self.display.loop_running():
