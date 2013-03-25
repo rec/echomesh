@@ -1,12 +1,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
+
 from echomesh.base import CommandFile
+from echomesh.base import Path
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
 def contexts(_):
-  LOGGER.info('  %s\n', '\n  '.join(CommandFile.COMMAND_PATH))
+  LOGGER.info('  %s\n', '\n  '.join(os.path.abspath(p)
+                                    for p in CommandFile.COMMAND_PATH))
 
 CONTEXTS_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
