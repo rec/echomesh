@@ -14,7 +14,7 @@ PATH=/bin:/usr/bin:/sbin:/usr/sbin
 DESC="echomesh daemon"
 NAME=echomesh
 DAEMONUSER=pi
-DAEMON=/home/pi/echomesh/scripts/echomesh.sh
+DAEMON=/home/pi/echomesh/scripts/echomesh.sh autostart=true
 DAEMON_ARGS="--pid-file=/var/run/$NAME.pid --log-file=/var/log/$NAME.log --daemon"
 
 set -e
