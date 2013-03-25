@@ -136,7 +136,7 @@ def _make_elements(score_names, table):
     try:
       element = Root.Root(description, final_file)
     except Exception:
-      LOGGER.error("Couldn't read score file %s", score_file)
+      LOGGER.error("\nFailed to read score file %s", score_file)
       continue
 
     name = os.path.splitext(name or score_file)[0]

@@ -78,10 +78,10 @@ def logger(name=None):
     message, args = (args[0] if args else ''), args[1:]
     exc_type, exc_value = sys.exc_info()[:2]
     if exc_type:
-      message = '%s: %s' % (exc_value, message)
+      message = '%s %s' % (exc_value, message)
       kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
     if not CONFIG.filename:
-      message = 'ERROR: %s' % message
+      message = 'ERROR: %s\n' % message
     original_error_logger(message, *args, **kwds)
 
   log.error = new_error_logger
