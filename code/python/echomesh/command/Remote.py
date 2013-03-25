@@ -40,6 +40,13 @@ def _local(function, name):
 def _boot(echomesh_instance):
   _close_and_run(echomesh_instance, 'Rebooting', RESTART_CMD)
 
+def _exec(echomesh_instance):
+  result, code = Subprocess.run(cmd)
+  if code:
+    LOGGER.error('%s (%d)', result, code)
+  else:
+    LOGGER.info('%s', result)
+
 def _halt(echomesh_instance):
   _close_and_run(echomesh_instance, 'Halting this machine', HALT_CMD)
 
@@ -66,6 +73,7 @@ def _register():
 
 COMMANDS = [
   (_boot, 'Reboot this machine or all machines.', ['initialize', 'halt']),
+  (_exec, 'Execute a shell command on this machine.', []),
   (_quit, 'Quit echomesh instances.', ['halt', 'initialize']),
   (_halt, 'Halt this machine or all machines.', ['boot', 'initialize', 'quit']),
   (_initialize, 'Run the echomesh program from the start here or ' +

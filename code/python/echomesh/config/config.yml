@@ -216,6 +216,7 @@ logging:
 permission:
   autostart: true
   boot: true
+  exec: false
   halt: true
   initialize: true
   quit: true
