@@ -51,11 +51,18 @@ def _get_assignments():
     else:
       assignments += table_to_parts(arg_config)
 
+  # First, find out if we're autostarting.
+  autostart = False
+  for address, value in assignments:
+    if len(address) == 1 and 'autostart'.startswith(address[0]):
+      autostart = True
+      break
+
   # Get the project field out of the command line if it exists,
   # before we get any file past the default configuration.
   for address, value in assignments:
     if len(address) == 1 and 'project'.startswith(address[0]):
-      Path.set_project_path(value, show_error=True)
+      Path.set_project_path(value, show_error=True, prompt=not autostart)
       CommandFile.compute_command_path()
       break
   else:

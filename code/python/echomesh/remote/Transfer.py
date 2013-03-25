@@ -7,9 +7,9 @@ import shutil
 from echomesh.remote import Register
 
 from echomesh.base import Config
+from echomesh.base import MakeDirs
 from echomesh.base import Path
 from echomesh.util import Log
-from echomesh.util.file import MakeDirs
 
 LOGGER = Log.logger(__name__)
 

@@ -4,9 +4,9 @@ import os.path
 import re
 
 from echomesh.base import CommandFile
+from echomesh.base import MakeDirs
 from echomesh.base import Merge
 from echomesh.base import Yaml
-from echomesh.util.file import MakeDirs
 
 MANIFEST_NAME = 'manifest.yml'
 
