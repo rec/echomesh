@@ -43,11 +43,11 @@ def set_project_path(project_path=None, show_error=False, prompt=True):
       if not (yn and yn[0] == 'n'):
         MakeEmptyProject.make_empty_project(original_path)
         path = original_path
-    else:
-      if show_error:
-        print("\nYour path %s isn't in an echomesh project." % original_path)
-        print("Defaulting to the echomesh path %s." % ECHOMESH_PATH)
-      path = ECHOMESH_PATH
+        break
+    if show_error:
+      print("\nYour path %s isn't in an echomesh project." % original_path)
+      print("Defaulting to the echomesh path %s." % ECHOMESH_PATH)
+    path = ECHOMESH_PATH
     break
 
   global PROJECT_PATH, COMMAND_PATH, ASSET_PATH

@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import GetPrefix
 from echomesh.base import Args
 from echomesh.base import CommandFile
+from echomesh.base import GetPrefix
 from echomesh.base import Merge
 from echomesh.base import Path
 from echomesh.base import Yaml
@@ -18,18 +18,17 @@ def _merge_assignments(config, assignments):
     try:
       cfg = config
       for i, field in enumerate(address):
+        k, v = GetPrefix.get_prefix_and_match(cfg, field, 'merge_config')
         if i < len(address) - 1:
-          cfg = GetPrefix.get_prefix_and_match(cfg, field, 'merge_config')[1]
+          cfg = v
         else:
-          cfg[field] = value
-          print('%s=%s' % ('.'.join(address), value))
+          cfg[k] = value
 
     except Exception as e:
       _add_exception_suffix(e, 'while merging', '.'.join(address),
                             '=', str(value))
       raise
   return config
-
 
 def _get_assignments():
   assignments = []
