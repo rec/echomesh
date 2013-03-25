@@ -8,7 +8,7 @@ from echomesh.base import CommandFile
 from echomesh.base import Path
 from echomesh.util import Flag
 from echomesh.util import Log
-from echomesh.util import Scope
+from echomesh.util import Context
 from echomesh.util import SizeName
 
 LOGGER = Log.logger(__name__)
@@ -18,23 +18,23 @@ def _time(t):
 
 ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
 
-def scopes(_):
+def contexts(_):
   LOGGER.info('  %s\n', '\n  '.join(CommandFile.COMMAND_PATH))
 
-SCOPES_HELP = """
+CONTEXTS_HELP = """
 In order to control multiple machines and configurations effectively, echomesh
-configurations and scores live in one of five different types of "scopes".
+configurations and scores live in one of five different types of "contexts".
 
 default:
-  This is the default scope that comes with echomesh and contains only the
+  This is the default context that comes with echomesh and contains only the
   default configuration, which cannot be changed by echomesh programs.
 
 master:
-  This is the master scope which contains your master score.  Most of your
+  This is the master context which contains your master score.  Most of your
   work will be done here.
 
 platform:
-  The platform scope contains scores that are specific to platform of the
+  The platform context contains scores that are specific to platform of the
   machine that echomesh is running on, i.e the operating system and hardware.
 
   Right now, we have three platforms:  linux, darwin and windows.
@@ -48,14 +48,14 @@ name:
 
 """
 
-def _scores(path, resolve=False, scope='all', recursive=False):
+def _scores(path, resolve=False, context='all', recursive=False):
   printed = False
-  if scope == 'all':
-    for s in Scope.SCOPES:
+  if context == 'all':
+    for s in Context.CONTEXTS:
       printed = _scores(path, resolve, s, recursive) or printed
   else:
-    scope = Scope.resolve(scope)
-    pathdir = os.path.join(Path.COMMAND_PATH, scope, 'score', path)
+    context = Context.resolve(context)
+    pathdir = os.path.join(Path.COMMAND_PATH, context, 'score', path)
     if os.path.isdir(pathdir):
       printed_this_time = False
       for f in sorted(os.listdir(pathdir)):
@@ -71,7 +71,7 @@ def _scores(path, resolve=False, scope='all', recursive=False):
             printed = True
           else:
             LOGGER.info('\n')
-          LOGGER.info('    %s/%s:', scope, path)
+          LOGGER.info('    %s/%s:', context, path)
         if is_dir:
           LOGGER.info('      %s/', f)
         else:
@@ -87,7 +87,7 @@ SCORES_HELP = """
 "show scores" shows some or all of the scores in the echomesh project.
 
 Because of the resolution of score names, there are multiple areas where scores
-might be found, called "scopes".
+might be found, called "contexts".
 
 If you just type "show scores" you'll see all in the top directory.
 If you want to see items in a subdirecto
@@ -96,7 +96,7 @@ The full form of the command is
 
   show scores
 
-See "help show scopes" for more information.
+See "help show contexts" for more information.
 """
 
 def scores(_, *args):

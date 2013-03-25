@@ -1,15 +1,15 @@
 from echomesh.base import Name
 from echomesh.base import Platform
 
-SCOPES = ['tag', 'name', 'platform', 'master', 'default']
+CONTEXTS = ['tag', 'name', 'platform', 'master', 'default']
 
-def resolve(scope):
-  parts = scope.split('/')
+def resolve(context):
+  parts = context.split('/')
   body = parts[0]
   suffix = parts[1] if len(parts) >= 2 else ''
 
-  if body not in SCOPES:
-    raise Exception("Didn't understand body %s in scope %s." % (body, scope))
+  if body not in CONTEXTS:
+    raise Exception('Didn\'t understand "%s" in context %s.' % (body, context))
 
   if body == 'name':
     suffix = suffix or ('/' + Name.NAME)

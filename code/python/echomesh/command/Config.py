@@ -4,24 +4,23 @@ from echomesh.command import Register
 from echomesh.base import CommandFile
 from echomesh.base import Merge
 from echomesh.base import Yaml
+from echomesh.util import Context
 from echomesh.util import Log
-from echomesh.util import Scope
 
 LOGGER = Log.logger(__name__)
 
-# TODO: this doesn't work!
 def config(_, *parts):
   if len(parts) < 2:
-    return LOGGER.error('Usage: config scope command [... command] ')
+    return LOGGER.error('Usage: config context command [... command] ')
 
   try:
-    scope = Scope.resolve(parts[1])
+    context = Context.resolve(parts[1])
   except Exception as e:
     return LOGGER.error(e.message)
 
   if len(parts) == 2:
     try:
-      cfg = open(CommandFile.config_file(scope), 'r').read()
+      cfg = open(CommandFile.config_file(context), 'r').read()
       LOGGER.info('\n' + cfg)
     except IOError:
       LOGGER.info('(none)')
@@ -34,10 +33,10 @@ def config(_, *parts):
     return LOGGER.error("Can't parse yaml argument '%s'", parts)
 
   cfg = Merge.merge_for_config(*configs)
-  if 'default' in scope:
-    LOGGER.error("Can't make changes to default scope")
+  if 'default' in context:
+    LOGGER.error("Can't make changes to default context")
   else:
-    # self._remote(scope=scope, config=cfg)
+    # self._remote(context=context, config=cfg)
     pass
 
 CONFIG_HELP = """
@@ -50,4 +49,5 @@ More documentation to come.
 
 SEE_ALSO = ['transfer', 'show scores']
 
-Register.register(config, 'config', CONFIG_HELP)
+# TODO: this probably doesn't work!
+# Register.register(config, 'config', CONFIG_HELP)
