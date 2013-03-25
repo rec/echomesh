@@ -1,7 +1,5 @@
 import yaml
 
-from collections import OrderedDict
-
 def hex_to_rgb(number):
   number = min(0xFFFFFF, max(number, 0))
   b = number % 0x100

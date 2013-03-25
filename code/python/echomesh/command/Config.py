@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Register
 from echomesh.base import CommandFile
 from echomesh.base import Merge
 from echomesh.base import Yaml

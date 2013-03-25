@@ -4,7 +4,6 @@ import os
 import os.path
 import time
 
-from echomesh.base import CommandFile
 from echomesh.base import Path
 from echomesh.util import Flag
 from echomesh.util import Log
@@ -17,36 +16,6 @@ def _time(t):
   return time.strftime('%H:%M', time.localtime(t))
 
 ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
-
-def contexts(_):
-  LOGGER.info('  %s\n', '\n  '.join(CommandFile.COMMAND_PATH))
-
-CONTEXTS_HELP = """
-In order to control multiple machines and configurations effectively, echomesh
-configurations and scores live in one of five different types of "contexts".
-
-default:
-  This is the default context that comes with echomesh and contains only the
-  default configuration, which cannot be changed by echomesh programs.
-
-master:
-  This is the master context which contains your master score.  Most of your
-  work will be done here.
-
-platform:
-  The platform context contains scores that are specific to platform of the
-  machine that echomesh is running on, i.e the operating system and hardware.
-
-  Right now, we have three platforms:  linux, darwin and windows.
-
-tag:
-  At configuration time, you can specify text tags for each machine.
-
-name:
-  This directory contains scores that are only associated with a machine with
-  the given name.
-
-"""
 
 def _scores(path, resolve=False, context='all', recursive=False):
   printed = False

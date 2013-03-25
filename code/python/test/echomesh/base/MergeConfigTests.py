@@ -17,4 +17,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Yaml
+from echomesh.base import GetPrefix
 from echomesh.base.MergeConfig import table_to_parts

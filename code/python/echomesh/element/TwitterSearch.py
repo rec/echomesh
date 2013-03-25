@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.element import Load
-from echomesh.element import Loop
-from echomesh.util.math import Units
 from gittwit.twitter.Search import Search
 
 DEFAULT_PRELOAD = 1

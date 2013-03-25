@@ -46,7 +46,7 @@ class Sequence(Loop.Loop):
     return self.sequence[self.next_command][0] + self.start_time
 
   def next_time(self, t):
-    if self.next_command <= len(self.element):
+    if self.next_command <= len(self.elements):
       LOGGER.debug('Running command %d', self.next_command)
       return self._command_time()
     else:

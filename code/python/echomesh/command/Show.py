@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.command import Context
 from echomesh.command import Register
 from echomesh.command import Scores
 from echomesh.sound import Sound
@@ -149,7 +150,7 @@ semitones and decibels.  "show units" lists these units and their synonyms
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
-  contexts=(Scores.contexts, Scores.CONTEXTS_HELP),
+  contexts=(Context.contexts, Context.CONTEXTS_HELP),
   directories=(directories, DIRECTORIES_HELP),
   elements=(elements, ELEMENTS_HELP),
   info=(info, INFO_HELP),

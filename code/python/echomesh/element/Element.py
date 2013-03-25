@@ -20,7 +20,9 @@ class Element(MasterRunnable):
     elements = description.get('elements', None)
     if elements:
       # This has to be local to avoid an infinite loop...
+      # pylint: disable=R0401
       from echomesh.element import Load
+      # pylint: enable=R0401
 
       self.elements = Load.make(self, elements)
       if full_slave:
@@ -30,7 +32,7 @@ class Element(MasterRunnable):
     else:
       self.elements = []
 
-  def child_paused(self, child):
+  def child_paused(self, _child):
     for e in self.elements:
       if e.is_running:
         return

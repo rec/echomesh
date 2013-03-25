@@ -7,8 +7,6 @@ from echomesh.element import Audio, Handler, Image, Mapper, Print, Repeat
 from echomesh.element import Select, Sequence, TextToSpeech, TwitterSearch
 # pylint: enable=W0611
 
-from echomesh.element import Element
-
 PRINT_FORMAT = '{state:4} {class:10} {time:9}'
 
 class Root(Element.Element):
