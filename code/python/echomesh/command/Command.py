@@ -37,22 +37,22 @@ def usage():
   return 'Valid commands are: ' + Register.join_keys()
 
 def execute(echomesh_instance, line):
+  line = FindComment.remove_comment(line).strip()
+  if not line:
+    LOGGER.info('')
+    return
+  parts = Split.split_words(line)
+  name = parts.pop(0)
   try:
-    line = FindComment.remove_comment(line).strip()
-    if not line:
-      LOGGER.info('')
-      return
-    parts = Split.split_words(line)
-    name = parts.pop(0)
     function = Register.get(name)
-    if not function:
-      raise Exception("Didn't understand function %s" % name)
-    try:
-      return function(echomesh_instance, *parts)
-    except TypeError as e:
-      e.message = _fix_exception_message(e.message, name)
-      LOGGER.error()
+  except:
+    LOGGER.error("Didn't understand command %s\n%s" % (name, usage()),
+                 exc_info=False)
 
-  except Exception as e:
-    LOGGER.error("\n%s", usage())
-
+  try:
+    return function(echomesh_instance, *parts)
+  except TypeError as e:
+    e.message = _fix_exception_message(e.message, name)
+    LOGGER.error()
+  except:
+    LOGGER.error()
