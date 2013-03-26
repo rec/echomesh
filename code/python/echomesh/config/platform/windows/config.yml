@@ -1,9 +1,0 @@
-# This is the default configuration for Darwin (Mac OS/X) systems.
-
-type: config
-
-control_program:
-  enable: true
-
-load_module:
-  pi3d: false

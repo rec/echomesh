@@ -2,8 +2,8 @@
 
 type: config
 
-control_program:
-  enable: true
-
 load_module:
-  pi3d: false
+  pi3d: true
+
+light:
+  enable: true

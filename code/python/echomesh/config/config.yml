@@ -168,7 +168,7 @@ git:
 # Enable lighting control.  Note that your program has to be running as sudo
 # for the lighting to work.
 light:
-  enable: true
+  enable: false
   count: 240
 
 # The load modules are third-party Python modules that are optional to the core
@@ -183,7 +183,7 @@ load_module:
   #
   # pi3d will only work for Raspberry Pi users and is disabled automatically
   # for everyone else.
-  pi3d: true
+  pi3d: false
 
   # This is the pyaudio port audio bindings:
   # http://people.csail.mit.edu/hubert/pyaudio/
