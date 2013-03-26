@@ -165,6 +165,12 @@ git:
   project: echomesh
   server: github.com
 
+# Enable lighting control.  Note that your program has to be running as sudo
+# for the lighting to work.
+light:
+  enable: true
+  count: 240
+
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.
 load_module:
@@ -181,11 +187,12 @@ load_module:
 
   # This is the pyaudio port audio bindings:
   # http://people.csail.mit.edu/hubert/pyaudio/
-  # It's available for most operating systems
+  # It's available for most operating systems.
   pyaudio: true
 
   # This is probably installed on every target system and it's not entirely
-  # clear if the program would work without it since we have no test systems.
+  # clear if the program would work without it since we have no test systems
+  # without numpy.
   numpy: true
 
 # The logging section controls the destination of informational and warning

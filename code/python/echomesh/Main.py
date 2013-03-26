@@ -53,7 +53,10 @@ def main():
   Config.recalculate()
   p() # 1329ms
 
-  if Config.get('autostart') and not Config.get('permission', 'autostart'):
+  autostart = Config.get('autostart')
+  p()
+
+  if autostart and not Config.get('permission', 'autostart'):
     from echomesh.util import Log
     print()
     Log.logger(__name__).info("Not autostarting because autostart=False")
@@ -65,6 +68,10 @@ def main():
 
   SetOutput.set_output(Config.get('audio', 'output', 'route'))
   p()  # 425ms
+
+  from echomesh.color import LightsEnabled
+  LightsEnabled.lights_enabled(not autostart)
+  p()
 
   from echomesh import Instance
   p()  # This is the big one, taking 3709ms on my RP.
