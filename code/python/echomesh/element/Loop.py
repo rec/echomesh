@@ -15,8 +15,9 @@ DEFAULT_INTERVAL = INFINITY
 
 class Loop(Element.Element):
   def __init__(self, parent, description, interval=1, name='Element.Loop',
-               report_error_on_close=False, timeout=DEFAULT_TIMEOUT):
-    super(Loop, self).__init__(parent, description)
+               report_error_on_close=False, timeout=DEFAULT_TIMEOUT,
+               full_slave=True):
+    super(Loop, self).__init__(parent, description, full_slave=full_slave)
     self.name = name or repr(self)
     self.report_error_on_close = report_error_on_close
     self.interval = interval

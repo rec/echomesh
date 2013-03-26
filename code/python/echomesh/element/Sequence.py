@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import operator
 import time
 
 from echomesh.element import Element
@@ -15,13 +16,15 @@ class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
   def __init__(self, parent, description):
     times = []
-    for e in description.elements:
-      times.append([Units.convert(e.pop(a)) for a in Sequence.ATTRIBUTES])
+    for e in description.get('elements', []):
+      times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
-    super(Sequence, self).__init__(parent, description, name='Sequence')
+    super(Sequence, self).__init__(parent, description, name='Sequence',
+                                   full_slave=False)
     self.loops = Units.get_table(description, 'loops', 1)
     self.duration = Units.get_table(description, 'duration', Units.INFINITY)
     self.sequence = []
+    self.paused_children = set()
 
     for element, t in zip(self.elements, times):
       begin, end, duration = t
@@ -37,15 +40,18 @@ class Sequence(Loop.Loop):
       if end is not None:
         self.sequence.append([end, element.pause])
 
-    self.sequence.append([duration, self.pause])
-    self.sequence.sort(key=0)
+    self.sequence.append([self.duration, self.pause])
+    self.sequence.sort(key=operator.itemgetter(0))
 
   def _command_time(self):
     return self.sequence[self.next_command][0] + self.start_time
 
   def next_time(self, t):
+    nt = self._next_time(t)
+    return nt
+
+  def _next_time(self, t):
     if self.next_command <= len(self.elements):
-      LOGGER.debug('Running command %d', self.next_command)
       return self._command_time()
     else:
       self.current_loop += 1
@@ -63,11 +69,17 @@ class Sequence(Loop.Loop):
     self.next_command = 0
 
   def loop_target(self, t):
-    while self.next_command < len(self.sequence) and self._command_time() <= t:
+    while self._command_time() <= t:
       LOGGER.debug('%d', self.next_command)
-      if self.next_command < len(self.elements):
-        t, element, cmd = self.sequence[self.next_command]
-
+      if self.next_command >= len(self.sequence):
+        self.pause()
+        break
+      self.sequence[self.next_command][1]()
       self.next_command += 1
+
+  def child_paused(self, child):
+    self.paused_children.add(child)
+    if self.paused_children == set(self.elements):
+      self.pause()
 
 Element.register(Sequence)

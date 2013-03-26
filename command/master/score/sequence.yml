@@ -2,20 +2,19 @@
 
 type: sequence
 duration: 12 seconds
-loops: 3
+# loops: 3  # loops isn't yet implemented
 
 elements:
   -
     begin: 0
     type: print
-    text: Hello, world!
+    text: First part.
   -
     begin: 4
     type: print
-    text: Hello, Tom!
+    text: Second part.
 
   -
     begin: 8
     type: print
-    text: Hello, it worked!
-
+    text: Third part.
