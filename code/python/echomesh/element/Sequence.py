@@ -13,18 +13,16 @@ LOGGER = Log.logger(__name__)
 # TODO: how does a sequence autostop?
 class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
-  BEGIN, END, END_OF_SEQUENCE = range(3)
-
   def __init__(self, parent, description):
     times = []
     for e in description.elements:
       times.append([Units.convert(e.pop(a)) for a in Sequence.ATTRIBUTES])
 
     super(Sequence, self).__init__(parent, description, name='Sequence')
-    self.loops = Units.convert(description.get('loops', 1))
-    self.duration = Units.convert(description.get('duration'), Units.INFINITY)
-
+    self.loops = Units.get_table(description, 'loops', 1)
+    self.duration = Units.get_table(description, 'duration', Units.INFINITY)
     self.sequence = []
+
     for element, t in zip(self.elements, times):
       begin, end, duration = t
       if duration is not None:
@@ -34,12 +32,12 @@ class Sequence(Loop.Loop):
           end = begin + duration
 
       if begin is not None:
-        self.sequence.append([begin, element, Sequence.BEGIN])
+        self.sequence.append([begin, element.start])
 
       if end is not None:
-        self.sequence.append([end, element, Sequence.END])
+        self.sequence.append([end, element.pause])
 
-    self.sequence.append([duration, None, Sequence.END_OF_SEQUENCE])
+    self.sequence.append([duration, self.pause])
     self.sequence.sort(key=0)
 
   def _command_time(self):

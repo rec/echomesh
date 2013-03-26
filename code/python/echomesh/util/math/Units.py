@@ -103,3 +103,6 @@ def convert(number, assume_minutes=True):
 def get_config(*parts):
   from echomesh.base import Config
   return convert(Config.get(*parts))
+
+def get_table(table, key, default=None):
+  return convert(table.get(key, default))
