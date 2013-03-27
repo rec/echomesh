@@ -1,5 +1,5 @@
 from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
-    ZeroOrMore, Forward, nums, alphas, Regex, ParseException
+  ZeroOrMore, Forward, nums, alphas, Regex, ParseException
 
 import math
 import operator
@@ -66,42 +66,47 @@ def bnf(exprStack):
 
 
 # map operator symbols to corresponding arithmetic operations
-epsilon = 1e-12
-opn = { '+' : operator.add,
-        '-' : operator.sub,
-        '*' : operator.mul,
-        '/' : operator.truediv,
-        '^' : operator.pow }
-fn  = { 'sin' : math.sin,
-        'cos' : math.cos,
-        'tan' : math.tan,
-        'abs' : abs,
-        'trunc' : lambda a: int(a),
-        'round' : round,
-        'sgn' : lambda a: abs(a)>epsilon and cmp(a,0) or 0}
+EPSILON = 1e-12
+OPERATORS = {
+  '+': operator.add,
+  '-': operator.sub,
+  '*': operator.mul,
+  '/': operator.truediv,
+  '^': operator.pow,
+  }
+
+FUNCTIONS = {
+  'sin': math.sin,
+  'cos': math.cos,
+  'tan': math.tan,
+  'abs': abs,
+  'trunc': lambda a: int(a),
+  'round': round,
+  'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0,
+  }
 
 def evaluateStack(s):
   op = s.pop()
   if op == 'unary -':
-      return -evaluateStack(s)
-  if op in '+-*/^':
-      op2 = evaluateStack(s)
-      op1 = evaluateStack(s)
-      return opn[op](op1, op2)
+    return -evaluateStack(s)
+  if op in OPERATORS:
+    op2 = evaluateStack(s)
+    op1 = evaluateStack(s)
+    return OPERATORS[op](op1, op2)
   elif op == 'PI':
-      return math.pi # 3.1415926535
+    return math.pi # 3.1415926535
   elif op == 'E':
-      return math.e  # 2.718281828
-  elif op in fn:
-      return fn[op](evaluateStack(s))
+    return math.e  # 2.718281828
+  elif op in FUNCTIONS:
+    return FUNCTIONS[op](evaluateStack(s))
   elif op[0].isalpha():
-      raise Exception('invalid identifier "%s"' % op)
+    raise Exception('invalid identifier "%s"' % op)
   elif op.startswith('0x') or op.startswith('0X'):
-      return int(op, 16)
+    return int(op, 16)
   elif '.' in op or 'e' in op or 'E' in op:
-      return float(op)
+    return float(op)
   else:
-      return int(op)
+    return int(op)
 
 def evaluate(expression, exprStack=None):
   exprStack = exprStack or []
