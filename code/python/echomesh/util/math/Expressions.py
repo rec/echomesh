@@ -85,42 +85,8 @@ FUNCTIONS = {
   'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0,
   }
 
-def evaluateStack(stack, variables):
-  op = stack.pop()
-
-  if op.startswith('$'):
-    return variables(op[1:])
-
-  if op == 'unary -':
-    return -evaluateStack(stack, variables)
-
-  if op in OPERATORS:
-    op2 = evaluateStack(stack, variables)
-    op1 = evaluateStack(stack, variables)
-    return OPERATORS[op](op1, op2)
-
-  if op == 'PI':
-    return math.pi # 3.1415926535
-
-  if op == 'E':
-    return math.e  # 2.718281828
-
-  if op in FUNCTIONS:
-    return FUNCTIONS[op](evaluateStack(stack, variables))
-
-  if op[0].isalpha():
-    raise Exception('invalid identifier "%s"' % op)
-
-  if op.startswith('0x') or op.startswith('0X'):
-    return int(op, 16)
-
-  if '.' in op or 'e' in op or 'E' in op:
-    return float(op)
-
-  return int(op)
-
 class Evaluator(object):
-  def __init__(stack, variables):
+  def __init__(self, stack, variables):
     self.stack = stack[:]
     self.variables = variables
 
@@ -169,7 +135,7 @@ class Expression(object):
 
   def evaluate(self):
     if self.is_variable or self.value is None:
-      self.value = evaluateStack(self.stack[:], self.variables)
+      self.value = Evaluator(self.stack[:], self.variables).evaluate()
     return self.value
 
 def evaluate(expression):
