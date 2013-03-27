@@ -42,8 +42,8 @@ class Registry(object):
     self.register(function, function_name, help_text, see_also)
 
   def _get(self, name):
-    return GetPrefix.get_prefix_and_match(self.registry, name, self.name,
-                                          allow_prefixes=self.allow_prefixes)
+    return GetPrefix.get_prefix(self.registry, name, self.name,
+                                allow_prefixes=self.allow_prefixes)
 
   def get(self, name):
     return self._get(name)[1][0]

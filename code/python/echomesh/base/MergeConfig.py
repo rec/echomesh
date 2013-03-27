@@ -18,7 +18,7 @@ def _merge_assignments(config, assignments):
     try:
       cfg = config
       for i, field in enumerate(address):
-        k, v = GetPrefix.get_prefix_and_match(cfg, field, 'merge_config')
+        k, v = GetPrefix.get_prefix(cfg, field, 'merge_config')
         if i < len(address) - 1:
           cfg = v
         else:

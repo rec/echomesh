@@ -4,7 +4,7 @@ import re
 
 import six
 
-from echomesh.util.math import Expressions
+from echomesh.expression import Expressions
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)

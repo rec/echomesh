@@ -50,7 +50,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         names = self.elements.keys()
       for name in names:
         try:
-          pm = GetPrefix.get_prefix_and_match(self.elements, name, 'element')
+          pm = GetPrefix.get_prefix(self.elements, name, 'element')
           full_name, element = pm
           if is_unload:
             if element.is_running:

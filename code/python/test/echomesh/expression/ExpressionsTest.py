@@ -39,7 +39,7 @@ EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.math.Expressions import evaluate
+from echomesh.expression.Expressions import evaluate
 
 def evaluate_fail(expr):
   try:
