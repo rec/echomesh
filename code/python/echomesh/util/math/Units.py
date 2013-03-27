@@ -3,7 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import re
 
 import six
-from pyparsing import Expressions
+
+from echomesh.util.math import Expressions
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)

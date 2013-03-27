@@ -1,14 +1,3 @@
-# fourFn.py
-#
-# Demonstration of the pyparsing module, implementing a simple 4-function expression parser,
-# with support for scientific notation, and symbols for e and pi.
-# Extended to add exponentiation and simple built-in functions.
-# Extended test cases, simplified pushFirst method.
-# Removed unnecessary expr.suppress() call (thanks Nathaniel Peterson!), and added Group
-# Changed fnumber to use a Regex, which is now the preferred method
-#
-# Copyright 2003-2009 by Paul McGuire
-#
 from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
     ZeroOrMore, Forward, nums, alphas, Regex, ParseException
 

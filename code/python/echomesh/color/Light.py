@@ -20,8 +20,12 @@ def applier(function):
 # The Python built-in works perfectly.
 reverse = reversed
 
-def insert(light_set, length, target=None, offset=0, interleave=1):
+# Must set one of length or target.
+def insert(light_set, length=None, target=None, offset=0, interleave=1):
+  assert not (length is None and target is None)
   result = target or ([None] * length)
+  if length is None:
+    length = len(result)
 
   index = offset
   for light in light_set:
