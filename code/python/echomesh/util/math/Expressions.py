@@ -58,6 +58,7 @@ def bnf(exprStack):
 
   term = factor + ZeroOrMore((multop + factor).setParseAction(pushFirst))
   expr << term + ZeroOrMore((addop + term).setParseAction(pushFirst))
+
   return expr
 
 
@@ -78,7 +79,7 @@ FUNCTIONS = {
   'abs': abs,
   'trunc': lambda a: int(a),
   'round': round,
-  'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0,
+  'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0
   }
 
 class Evaluator(object):
@@ -90,6 +91,8 @@ class Evaluator(object):
     op = self.stack.pop()
 
     if op.startswith('$'):
+      if not self.variables:
+        raise Exception('No variables have been defined.', op)
       v = op[1:]
       result = self.variables(v)
       if result is None:

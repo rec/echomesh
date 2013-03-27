@@ -17,6 +17,12 @@ EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 >>> evaluate('3 + $x', variable_evaluator)
 4
 
+>>> evaluate('2 ^ 3 ^ 2')
+512
+
+>>> evaluate('(2 ^ 3) ^ 2')
+64
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
