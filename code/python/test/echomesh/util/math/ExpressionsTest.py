@@ -14,6 +14,9 @@
 >>> evaluate_fail('2 +')
 EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 
+>>> evaluate('3 + $x', variable_evaluator)
+4
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
@@ -27,3 +30,12 @@ def evaluate_fail(expr):
   except Exception as e:
     print('EXCEPTION:', e)
 
+def variable_evaluator(x):
+  if x == 'x':
+    return 1
+
+  if x == 'y':
+    return 2
+
+  if x == 'dotted.pair':
+    return 7

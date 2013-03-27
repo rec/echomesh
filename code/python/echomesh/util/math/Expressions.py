@@ -23,16 +23,12 @@ def bnf(exprStack):
     for t in toks:
       if t == '-':
         exprStack.append('unary -')
-        #~ exprStack.append('-1')
-        #~ exprStack.append('*')
       else:
         break
 
   point = Literal('.')
-  e     = CaselessLiteral('E')
-  #~ fnumber = Combine(Word('+-'+nums, nums) +
-                     #~ Optional(point + Optional(Word(nums))) +
-                     #~ Optional(e + Word('+-'+nums, nums)))
+  e = CaselessLiteral('E')
+  variable = Regex(r'\$\w+')
   fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
   xnumber = Regex(r'0 [xX] [0-9 a-f A-F]+', re.X)
   ident = Word(alphas, alphas+nums+'_$')
@@ -49,7 +45,7 @@ def bnf(exprStack):
   pi    = CaselessLiteral('PI')
 
   expr = Forward()
-  atom_parts = pi | e | fnumber | xnumber | ident + lpar + expr + rpar | ident
+  atom_parts = pi | e | variable | fnumber | xnumber | ident + lpar + expr + rpar | ident
   atom_action = atom_parts.setParseAction(pushFirst)
   group = Group(lpar + expr + rpar)
   atom = ((0, None) * minus + atom_action | group).setParseAction(pushUMinus)
@@ -94,7 +90,11 @@ class Evaluator(object):
     op = self.stack.pop()
 
     if op.startswith('$'):
-      return self.variables(op[1:])
+      v = op[1:]
+      result = self.variables(v)
+      if result is None:
+        raise Exception("Didn't understand variable named '%s'" % v)
+      return result
 
     if op == 'unary -':
       return -self.evaluate()
@@ -138,8 +138,8 @@ class Expression(object):
       self.value = Evaluator(self.stack[:], self.variables).evaluate()
     return self.value
 
-def evaluate(expression):
-  return Expression(expression).evaluate()
+def evaluate(expression, variables=None):
+  return Expression(expression, variables).evaluate()
 
 from pyparsing import ParserElement
 
