@@ -85,20 +85,20 @@ FUNCTIONS = {
   'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0,
   }
 
-def evaluateStack(s):
-  op = s.pop()
+def evaluateStack(stack):
+  op = stack.pop()
   if op == 'unary -':
-    return -evaluateStack(s)
+    return -evaluateStack(stack)
   if op in OPERATORS:
-    op2 = evaluateStack(s)
-    op1 = evaluateStack(s)
+    op2 = evaluateStack(stack)
+    op1 = evaluateStack(stack)
     return OPERATORS[op](op1, op2)
   elif op == 'PI':
     return math.pi # 3.1415926535
   elif op == 'E':
     return math.e  # 2.718281828
   elif op in FUNCTIONS:
-    return FUNCTIONS[op](evaluateStack(s))
+    return FUNCTIONS[op](evaluateStack(stack))
   elif op[0].isalpha():
     raise Exception('invalid identifier "%s"' % op)
   elif op.startswith('0x') or op.startswith('0X'):
@@ -112,6 +112,21 @@ def evaluate(expression, exprStack=None):
   exprStack = exprStack or []
   bnf(exprStack).parseString(expression, parseAll=True)
   return evaluateStack(exprStack[:])
+
+
+class Expression(object):
+  def __init__(expression, variable_evaluator):
+    self.expression = expression
+    self.variable_evaluator = variable_evaluator
+    self.is_variable = ('$' in expression)
+    bnf(self.stack).parseString(expression, parseAll=True)
+    self.value = None
+
+  def evaluate(self):
+    if self.is_variable or self.value is None:
+      self.value = evaluateStack(self.stack, self.variable_evaluator)
+    return self.value
+
 
 from pyparsing import ParserElement
 
