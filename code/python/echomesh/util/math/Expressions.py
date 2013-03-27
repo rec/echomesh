@@ -85,48 +85,58 @@ FUNCTIONS = {
   'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0,
   }
 
-def evaluateStack(stack):
+def evaluateStack(stack, variable_evaluator):
   op = stack.pop()
+
+  if op.startswith('$'):
+    return variable_evaluator(op[1:])
+
   if op == 'unary -':
-    return -evaluateStack(stack)
+    return -evaluateStack(stack, variable_evaluator)
+
   if op in OPERATORS:
-    op2 = evaluateStack(stack)
-    op1 = evaluateStack(stack)
+    op2 = evaluateStack(stack, variable_evaluator)
+    op1 = evaluateStack(stack, variable_evaluator)
     return OPERATORS[op](op1, op2)
-  elif op == 'PI':
+
+  if op == 'PI':
     return math.pi # 3.1415926535
-  elif op == 'E':
+
+  if op == 'E':
     return math.e  # 2.718281828
-  elif op in FUNCTIONS:
-    return FUNCTIONS[op](evaluateStack(stack))
-  elif op[0].isalpha():
+
+  if op in FUNCTIONS:
+    return FUNCTIONS[op](evaluateStack(stack, variable_evaluator))
+
+  if op[0].isalpha():
     raise Exception('invalid identifier "%s"' % op)
-  elif op.startswith('0x') or op.startswith('0X'):
+
+  if op.startswith('0x') or op.startswith('0X'):
     return int(op, 16)
-  elif '.' in op or 'e' in op or 'E' in op:
+
+  if '.' in op or 'e' in op or 'E' in op:
     return float(op)
-  else:
-    return int(op)
 
-def evaluate(expression, exprStack=None):
-  exprStack = exprStack or []
-  bnf(exprStack).parseString(expression, parseAll=True)
-  return evaluateStack(exprStack[:])
+  return int(op)
 
+# class Evaluator(ob
 
 class Expression(object):
-  def __init__(expression, variable_evaluator):
+  def __init__(self, expression, variable_evaluator=None):
     self.expression = expression
     self.variable_evaluator = variable_evaluator
     self.is_variable = ('$' in expression)
+    self.stack = []
     bnf(self.stack).parseString(expression, parseAll=True)
     self.value = None
 
   def evaluate(self):
     if self.is_variable or self.value is None:
-      self.value = evaluateStack(self.stack, self.variable_evaluator)
+      self.value = evaluateStack(self.stack[:], self.variable_evaluator)
     return self.value
 
+def evaluate(expression):
+  return Expression(expression).evaluate()
 
 from pyparsing import ParserElement
 
