@@ -2,6 +2,15 @@
 >>> evaluate('2+2')
 4
 
+>>> evaluate('2*2+2')
+6
+
+>>> evaluate('2*(2+2)')
+8
+
+>>> evaluate('(2*((((2)+2))))')
+8
+
 >>> evaluate('2+sin(0)')
 2.0
 
@@ -14,14 +23,17 @@
 >>> evaluate_fail('2 +')
 EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 
->>> evaluate('3 + $x', variable_evaluator)
+>>> evaluate('3 + x', variable_evaluator)
 4
 
->>> evaluate('2 ^ 3 ^ 2')
+>>> evaluate('2 ** 3 ** 2')
 512
 
->>> evaluate('(2 ^ 3) ^ 2')
+>>> evaluate('(2 ** 3) ** 2')
 64
+
+>>> evaluate('dotted.pair * 3', variable_evaluator)
+21
 
 """
 

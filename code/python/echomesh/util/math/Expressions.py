@@ -31,17 +31,18 @@ def bnf(exprStack):
   variable = Regex(r'\$\w+')
   fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
   xnumber = Regex(r'0 [xX] [0-9 a-f A-F]+', re.X)
-  ident = Word(alphas, alphas+nums+'_$')
+  ident = Word(alphas, alphas+nums+'_$.')
 
   plus  = Literal('+')
   minus = Literal('-')
   mult  = Literal('*')
   div   = Literal('/')
+
   lpar  = Literal('(').suppress()
   rpar  = Literal(')').suppress()
   addop  = plus | minus
   multop = mult | div
-  expop = Literal('^')
+  expop = Literal('**')
   pi    = CaselessLiteral('PI')
 
   expr = Forward()
@@ -61,7 +62,6 @@ def bnf(exprStack):
 
   return expr
 
-
 # map operator symbols to corresponding arithmetic operations
 EPSILON = 1e-12
 OPERATORS = {
@@ -69,7 +69,7 @@ OPERATORS = {
   '-': operator.sub,
   '*': operator.mul,
   '/': operator.truediv,
-  '^': operator.pow,
+  '**': operator.pow,
   }
 
 FUNCTIONS = {
@@ -113,14 +113,14 @@ class Evaluator(object):
     if op == 'E':
       return math.e  # 2.718281828
 
+    if op.startswith('0x') or op.startswith('0X'):
+      return int(op, 16)
+
     if op in FUNCTIONS:
       return FUNCTIONS[op](self.evaluate())
 
     if op[0].isalpha():
-      raise Exception('invalid identifier "%s"' % op)
-
-    if op.startswith('0x') or op.startswith('0X'):
-      return int(op, 16)
+      return self.variables(op)
 
     if '.' in op or 'e' in op or 'E' in op:
       return float(op)
