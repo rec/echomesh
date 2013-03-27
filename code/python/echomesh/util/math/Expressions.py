@@ -83,9 +83,10 @@ FUNCTIONS = {
   }
 
 class Evaluator(object):
-  def __init__(self, stack, variables):
+  def __init__(self, stack, variables, functions):
     self.stack = stack[:]
     self.variables = variables
+    self.function = functions
 
   def evaluate(self):
     op = self.stack.pop()
@@ -128,9 +129,10 @@ class Evaluator(object):
     return int(op)
 
 class Expression(object):
-  def __init__(self, expression, variables=None):
+  def __init__(self, expression, variables=None, functions=FUNCTIONS):
     self.expression = expression
     self.variables = variables
+    self.functions = functions
     self.is_variable = ('$' in expression)
     self.stack = []
     bnf(self.stack).parseString(expression, parseAll=True)
@@ -138,7 +140,8 @@ class Expression(object):
 
   def evaluate(self):
     if self.is_variable or self.value is None:
-      self.value = Evaluator(self.stack[:], self.variables).evaluate()
+      self.value = Evaluator(self.stack[:], self.variables,
+                             self.functions).evaluate()
     return self.value
 
 def evaluate(expression, variables=None):
