@@ -48,6 +48,12 @@ the following properties were ignored because they were not understood:
 
   %s"""
 
+NOT_ACCESSED_ERROR_SINGLE = """\
+In an element of type "%s" loaded from "%s", \
+the following property was ignored because it was not understood:
+
+  %s"""
+
 def make_one(parent, description):
   description = Dict.Access(_resolve_extensions(description))
   t = description.get('type', '').lower()
@@ -62,8 +68,12 @@ def make_one(parent, description):
   element = element_class(parent, description)
   not_accessed = description.not_accessed()
   if not_accessed:
-    score = element.get_property('score') or ''
-    LOGGER.error(NOT_ACCESSED_ERROR, t, score, Join.join_words(not_accessed))
+    score = element.get_root().get_property('score') or ''
+    if len(not_accessed) == 1:
+      error = NOT_ACCESSED_ERROR_SINGLE
+    else:
+      error = NOT_ACCESSED_ERROR
+    LOGGER.error(error, t, score, Join.join_words(not_accessed))
 
   return element
 

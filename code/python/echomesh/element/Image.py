@@ -12,12 +12,13 @@ class Image(Element.Element):
     super(Image, self).__init__(parent, description)
     if Config.get('load_module', 'pi3d'):
       try:
-        self.sprite = ImageSprite(**description)
+        self.sprite = ImageSprite(self, **description)
       except:
         LOGGER.error("Couldn't open image file")
       else:
         self.add_slave(self.sprite)
     else:
       LOGGER.info('Playing image %s', description.get('file', '(none)'))
+    description.clear_accessed()
 
 Element.register(Image)

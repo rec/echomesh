@@ -7,8 +7,7 @@ def get_variable(element, category, parts):
     from echomesh.element import ScoreMaster
     element = ScoreMaster.INSTANCE.get_prefix(parts.pop(0))[1]
   elif category == 'element':
-    while element.parent:
-      element = element.parent
+    element = element.get_root()
   else:
     assert category == 'local'
 

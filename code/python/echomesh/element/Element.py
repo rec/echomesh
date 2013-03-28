@@ -47,6 +47,12 @@ class Element(MasterRunnable):
 
     self.pause()
 
+  def get_root(self):
+    e = self
+    while e.parent:
+      e = e.parent
+    return e
+
   def get_child(self, i):
     return (self.elements if isinstance(i, int) else self.element_table)[i]
 

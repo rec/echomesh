@@ -19,7 +19,7 @@ BITS_PER_BYTE = 8
 MAX_DEVICE_NUMBERS = 8
 
 class FilePlayer(ThreadLoop):
-  def __init__(self, level=1, pan=0, loops=1, **kwds):
+  def __init__(self, element, level=1, pan=0, loops=1, **kwds):
     super(FilePlayer, self).__init__(name='FilePlayer')
     self.file = kwds.pop('file')
     if kwds:
@@ -27,11 +27,11 @@ class FilePlayer(ThreadLoop):
     self.debug = True
     self.passthrough = (level == 1 and pan == 0)
 
-    self.level = Expression(level)
-    self.pan = Expression(pan)
+    self.level = Expression(level, element)
+    self.pan = Expression(pan, element)
     self.loops = loops
 
-    filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(file)
+    filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(self.file)
     filetype = sndhdr.what(filename)[0]
     handler = Util.FILE_READERS.get(filetype)
     if not handler:
@@ -160,7 +160,7 @@ class FilePlayer(ThreadLoop):
 
     return Util.interleave(left, right).tostring()
 
-def play(**keywords):
+def play(element, **keywords):
   if 'type' in keywords:
     del keywords['type']
   if 'use_aplay' in keywords:
@@ -169,4 +169,7 @@ def play(**keywords):
   else:
     use_aplay = Config.get('audio', 'output', 'use_aplay')
 
-  return (Aplay.play if use_aplay else FilePlayer)(**keywords)
+  if use_aplay:
+    Aplay.play(**keywords)
+  else:
+    FilePlayer(element, **keywords)

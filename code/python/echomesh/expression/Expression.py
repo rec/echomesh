@@ -4,7 +4,8 @@ from echomesh.expression import Envelope
 from echomesh.expression import Units
 
 class Expression(object):
-  def __init__(self, expression):
+  def __init__(self, expression, element=None):
+    self.element = element
     if isinstance(expression, dict):
       self.envelope = Envelope.Envelope(expression)
       self.unit_expression = None
@@ -13,6 +14,7 @@ class Expression(object):
       self.unit_expression = Units.UnitExpression(expression)
 
   def __call__(self, element=None):
+    element = element or self.element
     if self.envelope:
       return self.envelope.interpolate(element.time)
     else:

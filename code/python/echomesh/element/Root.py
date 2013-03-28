@@ -11,9 +11,9 @@ PRINT_FORMAT = '{state:4} {class:10} {time:9}'
 
 class Root(Element.Element):
   def __init__(self, description, score):
-    super(Root, self).__init__(None, description)
     self.score = score
     self.handlers = {}
+    super(Root, self).__init__(None, description)
 
   def add_handler(self, handler, *types):
     if not types:

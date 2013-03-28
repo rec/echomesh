@@ -48,6 +48,7 @@ def execute(echomesh_instance, line):
   except:
     LOGGER.error("Didn't understand command %s\n%s" % (name, usage()),
                  exc_info=False)
+    return
 
   try:
     return function(echomesh_instance, *parts)

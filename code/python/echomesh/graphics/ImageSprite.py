@@ -19,7 +19,7 @@ IMAGE_DIRECTORY = DefaultFile.DefaultFile('asset/image')
 class ImageSprite(Runnable):
   CACHE = None
 
-  def __init__(self, loops=1,
+  def __init__(self, element, loops=1,
                position=(0, 0), rotation=(0, 0, 0),
                size=1, duration=None, z=DEFAULT_Z,
                shader=None, **kwds):
@@ -33,8 +33,8 @@ class ImageSprite(Runnable):
 
     self._loops = loops
     self._loop_number = 0
-    self._position = Expression(position)
-    self._rotation = Expression(rotation)
+    self._position = Expression(position, element)
+    self._rotation = Expression(rotation, element)
     self._size = Expression(size)
     self._z = Expression(z)
     self.time = 0   # elapsed time.

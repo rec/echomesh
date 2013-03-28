@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-#from echomesh.base import Config
 from echomesh.base import GetPrefix
 
 from echomesh.expression import Functions
@@ -35,6 +34,7 @@ class _Values(object):
     name, function = GetPrefix.get_prefix(self.table, cmd, 'values')
     if name == 'configuration':
       from echomesh.base import Config
+      # TODO: Why can't this import be at the top?  Does it even work?!
       return is_evaluating and Config.get(*parts)
 
     if name == 'function':
