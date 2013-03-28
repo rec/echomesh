@@ -1,10 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+#from echomesh.base import Config
 from echomesh.base import GetPrefix
+
 from echomesh.expression import Functions
 from echomesh.expression import System
 from echomesh.expression import Locator
+
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -32,10 +34,12 @@ class _Values(object):
 
     name, function = GetPrefix.get_prefix(self.table, cmd, 'values')
     if name == 'configuration':
+      from echomesh.base import Config
       return is_evaluating and Config.get(*parts)
 
     if name == 'function':
-      return is_evaluating and self.functions.get('.'.join(parts))(evaluator())
+      return (is_evaluating and
+              self.functions.get('.'.join(parts))(evaluator.evaluate()))
 
     if name == 'system':
       func, is_variable = self.system.get('.'.join(parts))
@@ -51,17 +55,20 @@ class _Values(object):
     else:
       return is_variable
 
-_VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
+_VALUES = None
 
+def _get_values():
+  global _VALUES
+  if not _VALUES:
+    _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
+  return _VALUES
 
 class Values(object):
   def __init__(self, element=None):
     self.element = element
 
   def evaluate(self, op, evaluator=None):
-    return _VALUES.evaluate(op, evaluator, self.element)
+    return _get_values().evaluate(op, evaluator, self.element)
 
   def is_variable(self, op):
-    return _VALUES.is_variable(op, self.element)
-
-
+    return _get_values().is_variable(op, self.element)

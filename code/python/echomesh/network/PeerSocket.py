@@ -10,9 +10,9 @@ from echomesh.util.math import Units
 USE_YAML_SOCKET = True
 
 class PeerSocket(MasterRunnable):
-  def __init__(self, echomesh, peers):
+  def __init__(self, instance, peers):
     super(PeerSocket, self).__init__()
-    self.echomesh = echomesh
+    self.instance = instance
     self.peers = peers
     self.add_slave(self.peers)
     self.port = -1
@@ -21,7 +21,7 @@ class PeerSocket(MasterRunnable):
     Config.add_client(self)
 
   def router(self, data):
-    Remote.execute(self.echomesh, **data)
+    Remote.execute(self.instance, **data)
 
   def send(self, data):
     if self.is_running:

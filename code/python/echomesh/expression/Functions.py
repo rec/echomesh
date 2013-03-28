@@ -2,10 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-from echomesh.util import Log
 from echomesh.util import Registry
 
-LOGGER = Log.logger(__name__)
 
 MATH_FUNCTIONS = ['acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil',
                   'cos', 'cosh', 'degrees', 'erf', 'erfc', 'exp', 'expm1',
@@ -19,7 +17,6 @@ def _function_register():
   for f in MATH_FUNCTIONS:
     register.register(getattr(math, f))
   register.register(int)
+  return register
 
 FUNCTIONS = _function_register()
-
-

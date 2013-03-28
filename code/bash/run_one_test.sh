@@ -1,4 +1,4 @@
-PYTHONPATH="./external:." python -m doctest "$1"
+PYTHONPATH=".:./external" python -m doctest "$1"
 
 if [ $? -ne 0 ]
 then

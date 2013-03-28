@@ -4,7 +4,10 @@ import re
 
 import six
 
-from echomesh.expression import Expressions
+if True:
+  from pyparsing import Expressions
+else:
+  from echomesh.expression import Expression
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)

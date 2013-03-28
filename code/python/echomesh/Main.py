@@ -76,7 +76,7 @@ def main():
   from echomesh import Instance
   p()  # This is the big one, taking 3709ms on my RP.
 
-  echomesh = Instance.Instance()
+  instance = Instance.Instance()
   p()  # 599ms
 
   print()
@@ -87,13 +87,13 @@ def main():
       print(i, ':', int(1000 * (times[i + 1] - times[i])))
     print()
 
-  echomesh.run()
-  echomesh.loop()
-  echomesh.join()
+  instance.run()
+  instance.loop()
+  instance.join()
 
   if Config.get('diagnostics', 'unused_configs'):
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
 
-  reason = 'at your request' if echomesh.quitting else 'due to a fatal error'
+  reason = 'at your request' if instance.quitting else 'due to a fatal error'
   print('echomesh shut down %s.' % reason)

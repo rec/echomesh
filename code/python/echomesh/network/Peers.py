@@ -14,10 +14,10 @@ LOGGER = Log.logger(__name__)
 class Peers(Runnable.Runnable):
   TYPE = 'peer'
 
-  def __init__(self, echomesh):
+  def __init__(self, instance):
     super(Peers, self).__init__()
     self.lock = Lock()
-    self.echomesh = echomesh
+    self.instance = instance
     self.type = Peers.TYPE
     source = Name.NAME
     self.data = dict(Name.info(),
@@ -29,7 +29,7 @@ class Peers(Runnable.Runnable):
     self._peers = {source: self.data}
 
   def _send(self):
-    self.echomesh.send(**self.data)
+    self.instance.send(**self.data)
 
   def _on_run(self):
     super(Peers, self)._on_run()

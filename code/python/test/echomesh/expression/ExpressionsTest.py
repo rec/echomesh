@@ -23,8 +23,8 @@
 >>> evaluate_fail('2 +')
 EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 
->>> evaluate('3 + x', variable_evaluator)
-4
+>>> evaluate('3 + sys.pi')
+6.141592653589793
 
 >>> evaluate('2 ** 3 ** 2')
 512
@@ -32,14 +32,11 @@ EXCEPTION: Expected end of text (at char 2), (line:1, col:3)
 >>> evaluate('(2 ** 3) ** 2')
 64
 
->>> evaluate('dotted.pair * 3', variable_evaluator)
-21
-
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.expression.Expressions import evaluate
+from echomesh.expression.Expression import evaluate
 
 def evaluate_fail(expr):
   try:
