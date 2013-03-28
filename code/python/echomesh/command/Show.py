@@ -5,10 +5,10 @@ from echomesh.base import Path
 from echomesh.command import Context
 from echomesh.command import Register
 from echomesh.command import Scores
+from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
-from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
 

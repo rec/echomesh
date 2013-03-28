@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.util.math import Units
+from echomesh.expression import Units
 
 def split(items):
   kwds = {}

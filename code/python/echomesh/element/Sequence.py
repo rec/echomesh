@@ -6,8 +6,8 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
+from echomesh.expression.Units import INFINITY
 from echomesh.util import Log
-from echomesh.util.math import Units
 
 LOGGER = Log.logger(__name__)
 

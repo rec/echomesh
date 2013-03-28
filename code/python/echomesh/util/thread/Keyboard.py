@@ -5,8 +5,8 @@ import time
 
 from echomesh.base import Config
 from echomesh.command import Command
+from echomesh.expression import Units
 from echomesh.util import Log
-from echomesh.util.math import Units
 from echomesh.util.thread import ThreadRunnable
 
 LOGGER = Log.logger(__name__)

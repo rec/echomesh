@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.element import Loop
+from echomesh.expression import Units
 from echomesh.util.math import Poisson
-from echomesh.util.math import Units
 
 class Repeat(Loop.Loop):
   def __init__(self, parent, description):

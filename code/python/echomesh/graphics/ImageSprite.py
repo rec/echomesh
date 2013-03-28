@@ -1,10 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.expression.Units import INFINITY
 from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
 from echomesh.util.math.Envelope import Envelope
-from echomesh.util.math import Units
 from echomesh.util.thread.Runnable import Runnable
 from echomesh.util import ImportIf
 

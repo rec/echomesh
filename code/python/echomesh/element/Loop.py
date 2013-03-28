@@ -4,8 +4,8 @@ import threading
 import time
 
 from echomesh.element import Element
+from echomesh.expression.Units import INFINITY
 from echomesh.util import Log
-from echomesh.util.math.Units import INFINITY
 
 LOGGER = Log.logger(__name__)
 
