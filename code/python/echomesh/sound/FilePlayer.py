@@ -3,10 +3,10 @@
 import sndhdr
 
 from echomesh.base import Config
+from echomesh.expression import Envelope
 from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
-from echomesh.util.math import Envelope
 from echomesh.util import ImportIf
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
