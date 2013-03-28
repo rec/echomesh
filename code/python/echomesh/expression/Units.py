@@ -4,7 +4,7 @@ import re
 
 import six
 
-from echomesh.expression import Expression
+from echomesh.expression import RawExpression
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
@@ -68,29 +68,47 @@ def convert_time(t, assume_minutes=True):
 
     return 3600 * hours + 60 * minutes + seconds
 
+def convert_number(expression, assume_minutes):
+  if expression and isinstance(expression, six.string_types):
+    expression = expression.strip().lower()
+    if expression in NAMES_FOR_INFINITY:
+      return INFINITY
+    else:
+      return convert_time(expression, assume_minutes)
+  else:
+    return expression
+
+class UnitExpression(object):
+  def __init__(self, expression, assume_minutes=True):
+    self.expression = None
+    self.value = convert_number(expression, assume_minutes)
+    if self.value is None:
+      expression = expression.lower()
+      unit_match = _ANY_UNIT.match(expression)
+
+      if unit_match:
+        expression, unit = unit_match.groups()
+        self.unit_converter = UNITS.get(unit)
+      else:
+        self.unit_converter = None
+
+      self.expression = RawExpression.RawExpression(expression)
+
+  def evaluate(self, element=None):
+    if not self.expression:
+      return self.value
+
+    val = self.expression.evaluate(element)
+    if self.unit_converter:
+      return self.unit_converter(val)
+    else:
+      return val
+
+  def is_variable(self, element=None):
+    return self.expression and self.expression.is_variable(element)
 
 def convert(number, assume_minutes=True):
-  if not (number and isinstance(number, six.string_types)):
-    return number
-  number = number.strip().lower()
-
-  if number in NAMES_FOR_INFINITY:
-    return INFINITY
-
-  t = convert_time(number, assume_minutes)
-  if t is not None:
-    return t
-
-  number = number.lower()
-  unit_match = _ANY_UNIT.match(number)
-
-  if unit_match:
-    prefix, unit = unit_match.groups()
-    unit_converter = UNITS.get(unit)
-    if unit_converter:
-      return unit_converter(Expression.evaluate(prefix))
-
-  return Expression.evaluate(number)
+  return UnitExpression(number, assume_minutes).evaluate()
 
 def get_config(*parts):
   from echomesh.base import Config
@@ -98,4 +116,3 @@ def get_config(*parts):
 
 def get_table(table, key, default=None):
   return convert(table.get(key, default))
-
