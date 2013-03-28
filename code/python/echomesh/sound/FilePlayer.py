@@ -3,7 +3,7 @@
 import sndhdr
 
 from echomesh.base import Config
-from echomesh.expression import Envelope
+from echomesh.expression.Expression import Expression
 from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
@@ -16,10 +16,6 @@ numpy = ImportIf.imp('numpy')
 LOGGER = Log.logger(__name__)
 
 BITS_PER_BYTE = 8
-
-# https://github.com/rec/echomesh/issues/115
-
-# TODO: config client
 MAX_DEVICE_NUMBERS = 8
 
 class FilePlayer(ThreadLoop):
@@ -31,8 +27,8 @@ class FilePlayer(ThreadLoop):
     self.debug = True
     self.passthrough = (level == 1 and pan == 0)
 
-    self.level = Envelope.make_envelope(level)
-    self.pan = Envelope.make_envelope(pan)
+    self.level = Expression(level)
+    self.pan = Expression(pan)
     self.loops = loops
 
     filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(file)
@@ -83,8 +79,8 @@ class FilePlayer(ThreadLoop):
       LOGGER.error("Couldn't open sound on loop %d", self.loop_number)
       self.pause()
     self.time = 0
-    self.current_level = self.level.interpolate(0)
-    self.current_pan = self.pan.interpolate(0)
+    self.current_level = self.level()
+    self.current_pan = self.pan()
 
   def _on_pause(self):
     super(FilePlayer, self)._on_pause()

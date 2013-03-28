@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.expression import Envelope
+from echomesh.expression.Expression import Expression
 from echomesh.expression.Units import INFINITY
 from echomesh.graphics import Shader
 from echomesh.util import Log
@@ -33,12 +33,12 @@ class ImageSprite(Runnable):
 
     self._loops = loops
     self._loop_number = 0
-    self._position = Envelope.make_envelope(position)
-    self._rotation = Envelope.make_envelope(rotation)
-    self._size = Envelope.make_envelope(size)
-    self._z = Envelope.make_envelope(z)
-
-    self._time = 0
+    self._position = Expression(position)
+    self._rotation = Expression(rotation)
+    self._size = Expression(size)
+    self._z = Expression(z)
+    self.time = 0   # elapsed time.
+    self._time = 0  # start time.
     if duration is None:
       for env in [self._position, self._rotation, self._size, self._z]:
         if not env.is_constant:
@@ -54,16 +54,16 @@ class ImageSprite(Runnable):
       ImageSprite.CACHE = pi3d.TextureCache()
 
     texture = ImageSprite.CACHE.create(self.imagename)
-    x, y, z = self.coords(0)
+    x, y, z = self.coords()
     self.sprite = pi3d.ImageSprite(texture,
                                    w=texture.ix, h=texture.iy,
                                    shader=Shader.shader(shader),
                                    x=x, y=y, z=z)
     self.sprite.repaint = self.repaint
 
-  def coords(self, t):
-    x, y = self._position.interpolate(t)
-    z = self._z.interpolate(t)
+  def coords(self):
+    x, y = self._position()
+    z = self._z()
     return x, y, z
 
   def repaint(self, t):
@@ -80,10 +80,11 @@ class ImageSprite(Runnable):
         self.pause()
         return
 
-    self.sprite.position(*self.coords(elapsed))
-    size = self._size.interpolate(elapsed)
+    self.time = elapsed
+    self.sprite.position(*self.coords())
+    size = self._size()
     self.sprite.scale(size, size, size)
-    xrot, yrot, zrot = self._rotation.interpolate(elapsed)
+    xrot, yrot, zrot = self._rotation()
     self.sprite.rotateToX(xrot)
     self.sprite.rotateToY(yrot)
     self.sprite.rotateToZ(zrot)
