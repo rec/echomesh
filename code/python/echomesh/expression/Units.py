@@ -4,10 +4,7 @@ import re
 
 import six
 
-if True:
-  from pyparsing import Expressions
-else:
-  from echomesh.expression import Expression
+from echomesh.expression import Expression
 
 def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
@@ -71,16 +68,6 @@ def convert_time(t, assume_minutes=True):
 
     return 3600 * hours + 60 * minutes + seconds
 
-def convert_number(number):
-  if not number.startswith('0x'):
-    return Expressions.evaluate(number)
-
-  # A hex number, must be integer.
-  hex_match = _HEX.match(number)
-  if not hex_match:
-    raise Exception("Can't understand hex number %s" % number)
-  return int(hex_match.groups()[0], 16)
-
 def convert(number, assume_minutes=True):
   if not (number and isinstance(number, six.string_types)):
     return number
@@ -100,9 +87,9 @@ def convert(number, assume_minutes=True):
     prefix, unit = unit_match.groups()
     unit_converter = UNITS.get(unit)
     if unit_converter:
-      return unit_converter(convert_number(prefix))
+      return unit_converter(Expression.evaluate(prefix))
 
-  return convert_number(number)
+  return Expression.evaluate(number)
 
 def get_config(*parts):
   from echomesh.base import Config
