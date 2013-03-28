@@ -21,6 +21,7 @@ MAX_DEVICE_NUMBERS = 8
 class FilePlayer(ThreadLoop):
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
     super(FilePlayer, self).__init__(name='FilePlayer')
+    self.element = element
     self.file = kwds.pop('file')
     if kwds:
       LOGGER.error('Unused keywords %s', kwds)
@@ -52,6 +53,9 @@ class FilePlayer(ThreadLoop):
     Config.add_client(self)
     self.restart_sound()
 
+  def run(self):
+    super(FilePlayer, self).run()
+
   def config_update(self, get):
     self.frames_per_buffer = get('audio', 'output', 'frames_per_buffer')
     self.chunk_size = get('audio', 'output', 'chunk_size')
@@ -78,7 +82,7 @@ class FilePlayer(ThreadLoop):
     if not self.audio_stream:
       LOGGER.error("Couldn't open sound on loop %d", self.loop_number)
       self.pause()
-    self.time = 0
+    self.element.time = 0
     self.current_level = self.level()
     self.current_pan = self.pan()
 
@@ -105,6 +109,7 @@ class FilePlayer(ThreadLoop):
 
   def single_loop(self):
     if not self.audio_stream:
+      LOGGER.error('FilePlayer.single_loop terminates')
       # TODO: why should I have to do this given that restart_sound calls pause?
       self.pause()
       return
@@ -121,8 +126,8 @@ class FilePlayer(ThreadLoop):
         return
 
     # TODO: below I had written =+ instead of +=!  Does anything change?
-    self.time += len(frames) / float((self.samples_per_frame *
-                                      self.sampling_rate))
+    self.element.time += len(frames) / float((self.samples_per_frame *
+                                              self.sampling_rate))
 
     frames = self._pan_and_fade(frames)
     try:
@@ -135,22 +140,22 @@ class FilePlayer(ThreadLoop):
     if self.passthrough:
       return frames
     left, right = self._convert(frames)
-    if self.level.is_constant:
+    if not self.level.is_variable():
       left *= self.current_level
       right *= self.current_level
     else:
-      next_level = self.level.interpolate(self.time)
+      next_level = self.level()
       levels = numpy.linspace(self.current_level, next_level, len(left))
       left *= levels
       right *= levels
       self.current_level = next_level
 
-    if self.pan.is_constant:
+    if not self.pan.is_variable():
       lpan, rpan = Util.calculate_pan(self.current_pan)
       left *= lpan
       right *= rpan
     else:
-      next_pan = self.pan.interpolate(self.time)
+      next_pan = self.pan()
       angles = numpy.linspace(Util.pan_to_angle(self.current_pan),
                               Util.pan_to_angle(next_pan), len(left))
 
@@ -160,16 +165,13 @@ class FilePlayer(ThreadLoop):
 
     return Util.interleave(left, right).tostring()
 
-def play(element, **keywords):
-  if 'type' in keywords:
-    del keywords['type']
-  if 'use_aplay' in keywords:
-    use_aplay = keywords['use_aplay']
-    del keywords['use_aplay']
+def play(element, **kwds):
+  if 'type' in kwds:
+    del kwds['type']
+  if 'use_aplay' in kwds:
+    use_aplay = kwds['use_aplay']
+    del kwds['use_aplay']
   else:
     use_aplay = Config.get('audio', 'output', 'use_aplay')
 
-  if use_aplay:
-    Aplay.play(**keywords)
-  else:
-    FilePlayer(element, **keywords)
+  return Aplay.play(**kwds) if use_aplay else FilePlayer(element, **kwds)

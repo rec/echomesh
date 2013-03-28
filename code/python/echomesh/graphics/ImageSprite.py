@@ -24,7 +24,7 @@ class ImageSprite(Runnable):
                size=1, duration=None, z=DEFAULT_Z,
                shader=None, **kwds):
     super(ImageSprite, self).__init__()
-
+    self.element = element
     self.imagename = IMAGE_DIRECTORY.expand(kwds.pop('file', None))
     del kwds['type']
     if kwds:
@@ -35,13 +35,13 @@ class ImageSprite(Runnable):
     self._loop_number = 0
     self._position = Expression(position, element)
     self._rotation = Expression(rotation, element)
-    self._size = Expression(size)
-    self._z = Expression(z)
-    self.time = 0   # elapsed time.
+    self._size = Expression(size, element)
+    self._z = Expression(z, element)
+    self.element.time = 0   # elapsed time.
     self._time = 0  # start time.
     if duration is None:
       for env in [self._position, self._rotation, self._size, self._z]:
-        if not env.is_constant:
+        if not env.is_variable():
           duration = max(duration, env.length)
       if duration is None:
         duration = Units.INFINITY
@@ -80,7 +80,7 @@ class ImageSprite(Runnable):
         self.pause()
         return
 
-    self.time = elapsed
+    self.element.time = elapsed
     self.sprite.position(*self.coords())
     size = self._size()
     self.sprite.scale(size, size, size)

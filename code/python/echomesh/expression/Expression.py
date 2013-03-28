@@ -19,3 +19,10 @@ class Expression(object):
       return self.envelope.interpolate(element.time)
     else:
       return self.unit_expression.evaluate(element)
+
+  def is_variable(self, element=None):
+    if self.envelope:
+      return self.envelope.is_variable
+    else:
+      return self.unit_expression.is_variable(element)
+

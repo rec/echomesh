@@ -1,12 +1,12 @@
 type:   audio
-file:   stereo-2450.wav
-loops:  3
+file:   long-saw.wav
+loops:  3  # Doesn't work?
 
 # Level doesn't have to be a single number - it can be an *envelope*, which is a
 # list of times and levels.
 
 level:
   0:00:   0db
-  0:20:   -2db
-  1:00:   -5 db
-  1:34:   -10dB
+  0:01:   -2db
+  0:02:   -5 db
+  0:03:   -40dB

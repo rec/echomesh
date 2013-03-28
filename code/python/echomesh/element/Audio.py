@@ -19,6 +19,4 @@ class Audio(Element.Element):
       LOGGER.debug('Audio disabled for %s', description.get('file', None))
     description.clear_accessed()
 
-# TODO: config client.
-
 Element.register(Audio)
