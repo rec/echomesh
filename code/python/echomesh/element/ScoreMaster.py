@@ -20,6 +20,7 @@ _NEW_STYLE_CALLS = True
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
   PAUSE, START, UNLOAD, RESET = range(4)
+  INSTANCE = None
 
   def __init__(self):
     super(ScoreMaster, self).__init__()
@@ -27,6 +28,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     self.lock = threading.Lock()  # TODO: put this in everywhere.
     self.scores_to_start = Split.split_scores(Config.get('start'))
     self.scores_to_load = Split.split_scores(Config.get('load'))
+    assert not ScoreMaster.INSTANCE
+    ScoreMaster.INSTANCE = self
 
   def perform(self, action, names):
     if action == 'load':
@@ -40,6 +43,9 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
     return self.perform_element(action, names)
 
+  def get_prefix(self, name):
+    return GetPrefix.get_prefix(self.elements, name, 'element')
+
   def perform_element(self, action, names):
     full_names = []
     assert isinstance(action, six.string_types), action
@@ -50,8 +56,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         names = self.elements.keys()
       for name in names:
         try:
-          pm = GetPrefix.get_prefix(self.elements, name, 'element')
-          full_name, element = pm
+          full_name, element = self.get_prefix(name)
           if is_unload:
             if element.is_running:
               element.pause()

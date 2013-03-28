@@ -4,17 +4,20 @@ import datetime
 import time
 
 from echomesh.util import Log
+from echomesh.util import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.Registry import Registry
 
 LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
-  def __init__(self, parent, description, full_slave=True):
+  def __init__(self, parent, description, full_slave=True, name=None):
     self.start_time = self.pause_time = 0
     self.parent = parent
     self.description = description
     self.load_time = time.time()
+    self.name = name or description['type']
+
     super(Element, self).__init__()
 
     elements = description.get('elements', None)
@@ -32,12 +35,20 @@ class Element(MasterRunnable):
     else:
       self.elements = []
 
+    self.element_table = dict((e.name, e) for e in reversed(self.elements))
+
+    # TODO: read variables here.
+    self.variables = description.get('variables', {})
+
   def child_paused(self, _child):
     for e in self.elements:
       if e.is_running:
         return
 
     self.pause()
+
+  def get_child(self, i):
+    return (self.elements if isinstance(i, int) else self.element_table)[i]
 
   def class_name(self):
     name = self.__class__.__name__.lower()

@@ -2,25 +2,28 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import GetPrefix
+from echomesh.expression import Functions
+from echomesh.expression import System
+from echomesh.expression import Locator
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Values(object):
-  def __init__(self, elements):
-    self.functions = {}
-    self.elements = elements
-    not_variable = lambda x: False
-    self.table = dict((v, getattr(self, v)) for v in VALUES)
-    self.system = {}
+_NAMES = 'configuration', 'element', 'function', 'global', 'local', 'system'
 
-  def evaluate(self, op, evaluator):
-    return self._interpret(op, evaluator, True)
+class _Values(object):
+  def __init__(self, functions, system):
+    self.functions = functions
+    self.system = system
+    self.table = dict((v, True) for v in _NAMES)
 
-  def is_variable(self, op):
-    return self._interpret(op, None, False)
+  def evaluate(self, op, evaluator, element=None):
+    return self._interpret(op, evaluator, element, True)
 
-  def _interpret(self, op, evaluator, is_evaluating):
+  def is_variable(self, op, element=None):
+    return self._interpret(op, None, element, False)
+
+  def _interpret(self, op, evaluator, element, is_evaluating):
     parts = op.split('.')
     if len(parts) == 1:
       cmd = 'function'
@@ -32,12 +35,12 @@ class Values(object):
       return is_evaluating and Config.get(*parts)
 
     if name == 'function':
-      return is_evaluating and self.functions['.'.join(parts)](evaluator())
+      return is_evaluating and self.functions.get('.'.join(parts))(evaluator())
 
     if name == 'system':
-      func, is_variable = self.system['.'.join(parts)]
+      func, is_variable = self.system.get('.'.join(parts))
     elif name in ['element', 'global', 'local']:
-      func, is_variable = self.elements(name, parts)
+      func, is_variable = Locator.get_variable(element, name, parts)
     else:
       raise Exception("Shouldn't get here.")
 
@@ -47,4 +50,18 @@ class Values(object):
       return func
     else:
       return is_variable
+
+_VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
+
+
+class Values(object):
+  def __init__(self, element=None):
+    self.element = element
+
+  def evaluate(self, op, evaluator=None):
+    return _VALUES.evaluate(op, evaluator, self.element)
+
+  def is_variable(self, op):
+    return _VALUES.is_variable(op, self.element)
+
 

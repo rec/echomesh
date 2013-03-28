@@ -5,6 +5,8 @@ import math
 import operator
 import re
 
+from echomesh.expression import Values
+
 def bnf(exprStack):
   """
   expop   :: '^'
@@ -72,10 +74,9 @@ OPERATORS = {
   }
 
 class Evaluator(object):
-  def __init__(self, stack, variables, functions):
+  def __init__(self, stack, variables):
     self.stack = stack[:]
     self.variables = variables
-    self.function = functions
 
   def evaluate(self):
     op = self.stack.pop()
@@ -91,41 +92,25 @@ class Evaluator(object):
     if op.startswith('0x') or op.startswith('0X'):
       return int(op, 16)
 
-    if op.startswith('$'):
-      return self.functions[op[1:]](self.evaluate())
-
     if op[0].isalpha():
-      return self.variables.evaluate(op)
+      return self.variables.evaluate(op, self)
 
     if '.' in op or 'e' in op or 'E' in op:
       return float(op)
 
     return int(op)
 
-FUNCTIONS = {
-  'sin': math.sin,
-  'cos': math.cos,
-  'tan': math.tan,
-  'abs': abs,
-  'trunc': lambda a: int(a),
-  'round': round,
-  'sgn': lambda a: abs(a) > EPSILON and cmp(a,0) or 0
-  }
-
 class Expression(object):
-  def __init__(self, expression, variables=None, functions=FUNCTIONS):
+  def __init__(self, expression):
     self.expression = expression
-    self.variables = variables
-    self.functions = functions
     self.is_variable = True
     self.stack = []
     bnf(self.stack).parseString(expression, parseAll=True)
     self.value = None
 
-  def evaluate(self):
+  def evaluate(self, element=None):
     if self.is_variable or self.value is None:
-      evaluator = Evaluator(self.stack, self.variables,
-                            self.functions)
+      evaluator = Evaluator(self.stack, Values(element))
       self.value = evaluator.evaluate()
       assert not evaluator.stack
 
