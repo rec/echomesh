@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.expression.Envelope import Envelope
+from echomesh.expression import Envelope
 from echomesh.expression.Units import INFINITY
 from echomesh.graphics import Shader
 from echomesh.util import Log
@@ -33,10 +33,10 @@ class ImageSprite(Runnable):
 
     self._loops = loops
     self._loop_number = 0
-    self._position = Envelope(position)
-    self._rotation = Envelope(rotation)
-    self._size = Envelope(size)
-    self._z = Envelope(z)
+    self._position = Envelope.make_envelope(position)
+    self._rotation = Envelope.make_envelope(rotation)
+    self._size = Envelope.make_envelope(size)
+    self._z = Envelope.make_envelope(z)
 
     self._time = 0
     if duration is None:

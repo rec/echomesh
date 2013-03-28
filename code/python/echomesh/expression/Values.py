@@ -55,20 +55,8 @@ class _Values(object):
     else:
       return is_variable
 
-_VALUES = None
+_VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
 
-def _get_values():
-  global _VALUES
-  if not _VALUES:
-    _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
-  return _VALUES
+evaluate = _VALUES.evaluate
+is_variable = _VALUES.is_variable
 
-class Values(object):
-  def __init__(self, element=None):
-    self.element = element
-
-  def evaluate(self, op, evaluator=None):
-    return _get_values().evaluate(op, evaluator, self.element)
-
-  def is_variable(self, op):
-    return _get_values().is_variable(op, self.element)

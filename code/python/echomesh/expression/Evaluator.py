@@ -1,5 +1,7 @@
 import operator
 
+from echomesh.expression import Values
+
 OPERATORS = {
   '+': operator.add,
   '-': operator.sub,
@@ -9,9 +11,9 @@ OPERATORS = {
   }
 
 class Evaluator(object):
-  def __init__(self, stack, variables):
+  def __init__(self, stack, element=None):
     self.stack = stack[:]
-    self.variables = variables
+    self.element = element
 
   def evaluate(self):
     op = self.stack.pop()
@@ -28,20 +30,9 @@ class Evaluator(object):
       return int(op, 16)
 
     if op[0].isalpha():
-      return self.variables.evaluate(op, self)
+      return Values.evaluate(op, self, self.element)
 
     if '.' in op or 'e' in op or 'E' in op:
       return float(op)
 
     return int(op)
-
-
-"""
-Three different types of things, three delimiters:
-
-* functions of 1 variable (sin, cos, etc) - nothing or function
-* config - config.
-* system values (pi, e, time, date) - sys.
-* element values: element.
-
-"""

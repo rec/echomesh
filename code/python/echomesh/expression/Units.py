@@ -68,6 +68,7 @@ def convert_time(t, assume_minutes=True):
 
     return 3600 * hours + 60 * minutes + seconds
 
+
 def convert(number, assume_minutes=True):
   if not (number and isinstance(number, six.string_types)):
     return number
@@ -97,3 +98,4 @@ def get_config(*parts):
 
 def get_table(table, key, default=None):
   return convert(table.get(key, default))
+

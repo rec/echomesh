@@ -27,7 +27,6 @@ def bnf(exprStack):
         break
 
   point = Literal('.')
-  e = CaselessLiteral('E')
   fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
   xnumber = Regex(r'0 [xX] [0-9 a-f A-F]+', re.X)
   ident = Word(alphas, alphas + nums + '_$.')
@@ -42,10 +41,9 @@ def bnf(exprStack):
   addop  = plus | minus
   multop = mult | div
   expop = Literal('**')
-  pi    = CaselessLiteral('PI')
 
   expr = Forward()
-  atom_parts = pi | e | fnumber | xnumber | ident + lpar + expr + rpar | ident
+  atom_parts = fnumber | xnumber | ident + lpar + expr + rpar | ident
   atom_action = atom_parts.setParseAction(pushFirst)
   group = Group(lpar + expr + rpar)
   atom = ((0, None) * minus + atom_action | group).setParseAction(pushUMinus)
