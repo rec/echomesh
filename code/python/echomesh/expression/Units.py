@@ -80,19 +80,20 @@ def convert_number(expression, assume_minutes):
 
 class UnitExpression(object):
   def __init__(self, expression, assume_minutes=True):
-    self.expression = None
-    self.value = convert_number(expression, assume_minutes)
-    if self.value is None:
-      expression = expression.lower()
-      unit_match = _ANY_UNIT.match(expression)
+    self.expression = self.value = None
+    if expression is not None:
+      self.value = convert_number(expression, assume_minutes)
+      if self.value is None:
+        expression = expression.lower()
+        unit_match = _ANY_UNIT.match(expression)
 
-      if unit_match:
-        expression, unit = unit_match.groups()
-        self.unit_converter = UNITS.get(unit)
-      else:
-        self.unit_converter = None
+        if unit_match:
+          expression, unit = unit_match.groups()
+          self.unit_converter = UNITS.get(unit)
+        else:
+          self.unit_converter = None
 
-      self.expression = RawExpression.RawExpression(expression)
+        self.expression = RawExpression.RawExpression(expression)
 
   def evaluate(self, element=None):
     if not self.expression:

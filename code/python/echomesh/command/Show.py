@@ -9,10 +9,14 @@ from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
+from echomesh.expression import Transform
 
 LOGGER = Log.logger(__name__)
 
 SHOW_REGISTRY = Registry.Registry('show command')
+
+def _indent(s, spaces='  '):
+  return '\n'.join(spaces + i.strip() for i in s.split('\n'))
 
 def _info(d, spaces='  '):
   s = 'none'
@@ -63,6 +67,11 @@ def nodes(echomesh_instance):
 
 def sound(_):
   _info(Sound.info())
+
+def transforms(_):
+  for k in Transform.REGISTRY.keys():
+    LOGGER.info('  %s\n%s\n', k,
+                _indent(Transform.REGISTRY.get_help(k), '    '))
 
 def units(_):
   LOGGER.info('%s\n', Units.list_units())
@@ -161,6 +170,20 @@ SOUND_HELP = """
 Show all the sound interfaces available on this machine.
 """
 
+TRANSFORMS_HELP = """
+Transforms are used to reshape curves.  Mathematically, they are invertible
+mappings from [0, 1] onto [0, 1].
+
+Whenever a transform is called for, you can name a single transform like
+
+  sine
+
+or you can compile a list of them, like
+
+  sine.power.inverse.
+
+"""
+
 UNITS_HELP = """
 echomesh understands data expressed in a variety of units like Hz, percent,
 semitones and decibels.  "show units" lists these units and their synonyms
@@ -184,6 +207,7 @@ SHOW_REGISTRY.register_all(
   nodes=(nodes, NODES_HELP),
   scores=(Scores.scores, Scores.SCORES_HELP),
   sound=(sound, SOUND_HELP),
+  transforms=(transforms, TRANSFORMS_HELP),
   units=(units, UNITS_HELP),
   variables=(variables, VARIABLES_HELP),
 )
