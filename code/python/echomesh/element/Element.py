@@ -12,7 +12,6 @@ LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
   def __init__(self, parent, description, full_slave=True, name=None):
-    self.start_time = self.pause_time = 0
     self.parent = parent
     self.description = description
     self.load_time = time.time()
@@ -39,6 +38,21 @@ class Element(MasterRunnable):
 
     # TODO: read variables here.
     self.variables = description.get('variables', {})
+
+  def _on_reset(self):
+    super(Element, self)._on_reset()
+    self.pause_time = 0
+    self.start_time = time.time()
+
+  def _on_run(self):
+    super(Element, self)._on_run()
+    self.start_time = time.time() - self.pause_time
+
+  def _on_pause(self):
+    super(Element, self)._on_pause()
+    self.pause_time = time.time() - self.start_time
+    if self.parent:
+      self.parent.child_paused(self)
 
   def child_paused(self, _child):
     for e in self.elements:
@@ -84,17 +98,6 @@ class Element(MasterRunnable):
   def get_hierarchy_names(self):
     h = self.get_hierarchy()
     return ': '.join(n.__class__.__name__.lower() for n in h)
-
-  def _on_pause(self):
-    super(Element, self)._on_pause()
-    self.pause_time = time.time() - self.start_time
-    if self.parent:
-      self.parent.child_paused(self)
-
-  def _on_reset(self):
-    super(Element, self)._on_reset()
-    self.start_time = time.time() - self.pause_time
-    self.pause_time = 0
 
   def info(self):
     return {'class': self.class_name(),

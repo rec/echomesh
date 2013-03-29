@@ -36,8 +36,7 @@ class MasterRunnable(Runnable):
   def run(self):
     was_running = self.is_running
     super(MasterRunnable, self).run()
-    if not was_running:
-      self.runnables.foreach('run')
+    self.runnables.foreach('run')
 
   def pause(self):
     if self.is_running:
@@ -45,7 +44,6 @@ class MasterRunnable(Runnable):
       self.pausables.foreach('pause')
       self.is_running = True
     super(MasterRunnable, self).pause()
-
 
   def reset(self):
     super(MasterRunnable, self).reset()

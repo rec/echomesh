@@ -42,15 +42,9 @@ class Loop(Element.Element):
           except:
             pass
 
-  def _on_pause(self):
-    super(Loop, self)._on_pause()
-    self.pause_time = time.time() - self.start_time
-
   def _on_run(self):
     super(Loop, self)._on_run()
-    t = time.time()
-    self.start_time = t - self.pause_time
-    self.next_loop_time = self.next_time(t)
+    self.next_loop_time = self.next_time(time.time())
     self.thread = threading.Thread(target=self.target)
     self.thread.daemon = True
     self.thread.start()

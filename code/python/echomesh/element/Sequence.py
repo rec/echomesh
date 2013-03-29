@@ -6,7 +6,7 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.expression.Units import INFINITY
+from echomesh.expression import Units
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -44,19 +44,15 @@ class Sequence(Loop.Loop):
     self.sequence.sort(key=operator.itemgetter(0))
 
   def _command_time(self):
-    return self.sequence[self.next_command][0] + self.start_time
+    return self.sequence[self.next_command][0] + self.cycle_time
 
   def next_time(self, t):
-    nt = self._next_time(t)
-    return nt
-
-  def _next_time(self, t):
     if self.next_command <= len(self.elements):
       return self._command_time()
     else:
       self.current_loop += 1
       if self.current_loop < self.loops:
-        self.start_time = time.time()
+        self.cycle_time = time.time()
         self.next_command = 0
         return self._command_time()
       else:
@@ -65,8 +61,14 @@ class Sequence(Loop.Loop):
         return 0
 
   def _on_reset(self):
+    super(Sequence, self)._on_reset()
+    self.cycle_time = self.start_time
     self.current_loop = 0
     self.next_command = 0
+
+  def _on_run(self):
+    super(Sequence, self)._on_run()
+    self.cycle_time = self.start_time
 
   def loop_target(self, t):
     while self._command_time() <= t:

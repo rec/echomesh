@@ -108,6 +108,8 @@ class UnitExpression(object):
     return self.expression and self.expression.is_variable(element)
 
 def convert(number, assume_minutes=True):
+  if number is None:
+    return number
   return UnitExpression(number, assume_minutes).evaluate()
 
 def get_config(*parts):

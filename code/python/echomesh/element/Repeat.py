@@ -16,8 +16,7 @@ class Repeat(Loop.Loop):
     self.repeat_count = 0
 
   def next_time(self, t):
-    start = self.start_time
-    res = start + self.period * (1 + self.repeat_count)
+    res = self.start_time + self.period * (1 + self.repeat_count)
     if self.random_delay:
       res += Poisson.next_poisson(self.random_delay)
     return res
