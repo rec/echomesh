@@ -59,20 +59,41 @@ def nodes(echomesh_instance):
       LOGGER.info('  %s: ', name)
       _info(peer, '    ')
   else:
-    LOGGER.error("""\
-  There are no nodes in your system.
-
-  Since there should always be at least the computer running echomesh, this
-  indicates a serious problem with your networking or your configuration.
-  Consult the trouble-shooting guide for more information.
-  """)
-
+    LOGGER.error(NO_NODES_ERROR)
 
 def sound(_):
   _info(Sound.info())
 
 def units(_):
   LOGGER.info('%s\n', Units.list_units())
+
+def _variables(path, element, results):
+  variables = getattr(element, 'variables', {})
+  for k, v in variables.iteritems():
+    results.append([path + [k], v.evaluate()])
+  for e in element.elements:
+    _variables(path + [e.name], e, results)
+
+def variables(instance):
+  results = []
+  for name, v in instance.score_master.elements.iteritems():
+    _variables([name], v, results)
+
+  if results:
+    for path, value in sorted(results):
+      LOGGER.info('  %s = %s', '.'.join(path), value)
+  else:
+    LOGGER.info('  No variables were found.')
+
+
+NO_NODES_ERROR = """\
+There are no echomesh nodes in your network.
+
+Since there should always be at least the computer running echomesh, this
+indicates a serious problem with your networking or your configuration.
+
+Consult the trouble-shooting guide for more information.
+"""
 
 ADDRESSES_HELP = """
 Shows:
@@ -147,6 +168,11 @@ semitones and decibels.  "show units" lists these units and their synonyms
 
 """
 
+VARIABLES_HELP = """
+Show all variables for each element currently running.
+
+"""
+
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
@@ -159,6 +185,7 @@ SHOW_REGISTRY.register_all(
   scores=(Scores.scores, Scores.SCORES_HELP),
   sound=(sound, SOUND_HELP),
   units=(units, UNITS_HELP),
+  variables=(variables, VARIABLES_HELP),
 )
 
 SHOW_NAMES = SHOW_REGISTRY.join_keys()
