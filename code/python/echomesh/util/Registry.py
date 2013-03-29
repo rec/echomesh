@@ -54,6 +54,8 @@ class Registry(object):
     if full_name == 'commands':  # HACK.
       help_text += self.join_keys()
 
+    help_text = help_text or full_name
+
     if see_also:
       also = Join.join_words('"help %s"' % h for h in see_also)
       return '%s\n\nSee also: %s\n' % (help_text, also)

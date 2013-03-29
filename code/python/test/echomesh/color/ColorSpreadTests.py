@@ -95,4 +95,4 @@ array([[[ 1.        ,  1.        ,  0.        ],
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.color import ColorSpread
-from echomesh.util.math import Transform
+from echomesh.expression import Transform

@@ -42,20 +42,19 @@ def insert(light_set, length=None, target=None, offset=0, skip=1,
 
   return result
 
-def inject(light_set, reverse_mapping, length):
+def inject(light_set, mapping, length):
   """
-    reverse_mapping:
+    mapping:
       Maps a light index in the result to the light index in the original
       light_set.  We need a reverse mapping because we need a way to map one
       light in the input to many lights in the output.
 
   """
   def _map(i):
-    x = reverse_mapping.get(i)
+    x = mapping.get(i)
     return x is not None and light_set[x]
 
   return [_map(i) for i in range(length)]
-
 
 def combine(combiner, *lighters):
   return [combiner(z) for z in zip(*lighters)]
