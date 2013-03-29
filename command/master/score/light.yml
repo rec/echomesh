@@ -4,12 +4,6 @@ duration: infinite
 
 period: 500ms
 
-variables:
-  index:
-    loop:
-      count:  config.light.count
-      period: 500ms
-
 scenes:
   one:
    type: insert

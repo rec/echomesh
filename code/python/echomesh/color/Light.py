@@ -21,7 +21,7 @@ def applier(function):
 reverse = reversed
 
 # Must set one of length or target.
-def insert(light_set, length=None, target=None, offset=0, interleave=1,
+def insert(light_set, length=None, target=None, offset=0, skip=1,
            rollover=False):
   assert not (length is None and target is None)
   result = target or ([None] * length)
@@ -33,7 +33,7 @@ def insert(light_set, length=None, target=None, offset=0, interleave=1,
   index = offset
   for light in light_set:
     result[index] = light
-    index += interleave
+    index += skip
     while index >= length:
       if rollover:
         index -= length

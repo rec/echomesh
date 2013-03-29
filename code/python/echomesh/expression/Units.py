@@ -35,7 +35,7 @@ NAMES_FOR_INFINITY = set(('inf', 'infinite', 'infinity'))
 
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
-_ANY_UNIT = re.compile(r'( .*? ) \s* ( [a-z%]* ) \s* $', re.X)
+_ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s ) ) ( [a-z%]* ) \s* $', re.X)
 
 def list_units(separator='  '):
   keys = UNITS_SOURCE.iterkeys()
@@ -107,10 +107,10 @@ class UnitExpression(object):
   def is_variable(self, element=None):
     return self.expression and self.expression.is_variable(element)
 
-def convert(number, assume_minutes=True):
+def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
-  return UnitExpression(number, assume_minutes).evaluate()
+  return UnitExpression(number, assume_minutes).evaluate(element)
 
 def get_config(*parts):
   from echomesh.base import Config

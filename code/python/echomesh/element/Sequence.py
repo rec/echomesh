@@ -11,7 +11,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-# TODO: how does a sequence autostop?
 class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
   def __init__(self, parent, description):

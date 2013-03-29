@@ -38,7 +38,7 @@ def get(*parts):
                       ('.'.join(parts), config))
     value = config.get(part, none)
     if value is none:
-      raise Exception("Couldn't find configuration %s" % ':'.join(parts))
+      raise Exception('Couldn\'t find configuration "%s"' % '.'.join(parts))
     return value
 
   for part in parts[:-1]:

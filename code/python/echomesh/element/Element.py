@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import datetime
 import time
 
+from echomesh.expression import Variable
 from echomesh.util import Log
 from echomesh.util import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -36,8 +37,11 @@ class Element(MasterRunnable):
 
     self.element_table = dict((e.name, e) for e in reversed(self.elements))
 
-    # TODO: read variables here.
-    self.variables = description.get('variables', {})
+    for key in description.keys():
+      if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
+        items = list(description[key].iteritems())
+        self.variables = dict((k, Variable.variable(self, v)) for k, v in items)
+        break
 
   def _on_reset(self):
     super(Element, self)._on_reset()
