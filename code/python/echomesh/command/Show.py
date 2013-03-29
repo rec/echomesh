@@ -9,11 +9,14 @@ from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
-from echomesh.util.math import Transform
+from echomesh.expression import Transform
 
 LOGGER = Log.logger(__name__)
 
 SHOW_REGISTRY = Registry.Registry('show command')
+
+def _indent(s, spaces='  '):
+  return '\n'.join(spaces + i.strip() for i in s.split('\n'))
 
 def _info(d, spaces='  '):
   s = 'none'
@@ -67,7 +70,8 @@ def sound(_):
 
 def transforms(_):
   for k in Transform.REGISTRY.keys():
-    LOGGER.info('  %s', Transform.REGISTRY.get_help(k))
+    LOGGER.info('  %s\n%s\n', k,
+                _indent(Transform.REGISTRY.get_help(k), '    '))
 
 def units(_):
   LOGGER.info('%s\n', Units.list_units())
@@ -172,6 +176,11 @@ mappings from [0, 1] onto [0, 1].
 
 Whenever a transform is called for, you can name a single transform like
 
+  sine
+
+or you can compile a list of them, like
+
+  sine.power.inverse.
 
 """
 
@@ -198,6 +207,7 @@ SHOW_REGISTRY.register_all(
   nodes=(nodes, NODES_HELP),
   scores=(Scores.scores, Scores.SCORES_HELP),
   sound=(sound, SOUND_HELP),
+  transforms=(transforms, TRANSFORMS_HELP),
   units=(units, UNITS_HELP),
   variables=(variables, VARIABLES_HELP),
 )
