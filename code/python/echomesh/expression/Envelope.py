@@ -9,6 +9,7 @@ class Envelope(object):
   def __init__(self, data):
     self.is_variable = isinstance(data, dict)
     if not self.is_variable:
+      # TODO: this case is probably now redundant.
       self.data = Units.convert(data)
       self.length = 0
 
