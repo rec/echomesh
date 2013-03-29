@@ -102,4 +102,3 @@ def transform(name):
         result = compose(result, transform) if result else transform
 
   return IDENTITY
-

@@ -33,6 +33,16 @@ def _fix_blacklist():
   except Exception:
     LOGGER.error("Couldn't fix blacklist.")
 
+def _speedup():
+  try:
+    import spidev
+    spi = spidev.SpiDev()
+  except:
+    LOGGER.error("Couldn't speed up SPI, please install py-spidev.")
+  else:
+    spi.open(0, 0)
+    spi.max_speed_hz = 20000000
+
 BLACKLISTED_MESSAGE = """\
 SPI has been blacklisted on your machine, which means you won't be able to
 control any lights until that is changed.
@@ -65,6 +75,7 @@ def _test_spi(prompt_to_fix):
     LOGGER.info('')
     LOGGER.error()
   else:
+    _speedup()
     return _fix_spi(prompt_to_fix)
 
 _LIGHTS_ENABLED = None

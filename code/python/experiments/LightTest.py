@@ -34,7 +34,6 @@ LIGHT_COUNT = DEFAULT_LIGHT_COUNT if len(sys.argv) == 1 else int(sys.argv[1])
 REPEAT_COUNT = DEFAULT_REPEAT_COUNT if len(sys.argv) < 3 else int(sys.argv[2])
 BYTE_COUNT = 3 * LIGHT_COUNT + LATCH_BYTE_COUNT
 
-
 def _test_su():
   if os.geteuid():
     raise Exception(PERM_ERROR % ' '.join(sys.argv))
@@ -65,7 +64,6 @@ def _fix_blacklist():
   except Exception as e:
     print("Couldn't fix blacklist because error:", e)
 
-
 def _speedup():
   try:
     import spidev
@@ -77,7 +75,6 @@ def _speedup():
   else:
     spi.open(0, 0)
     spi.max_speed_hz = 20000000
-
 
 def _blacklist():
   if _is_blacklisted():

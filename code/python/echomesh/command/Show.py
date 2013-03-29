@@ -69,7 +69,7 @@ def sound(_):
   _info(Sound.info())
 
 def transforms(_):
-  for k in Transform.REGISTRY.keys():
+  for k in sorted(Transform.REGISTRY.keys()):
     LOGGER.info('  %s\n%s\n', k,
                 _indent(Transform.REGISTRY.get_help(k), '    '))
 
