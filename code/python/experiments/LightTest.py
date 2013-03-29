@@ -65,6 +65,18 @@ def _fix_blacklist():
   except Exception as e:
     print("Couldn't fix blacklist because error:", e)
 
+
+def _speedup():
+  try:
+    import spidev
+    spi = spidev.SpiDev()
+  except:
+    print("Couldn't speed up SPI, please install py-spidev")
+  else:
+    spi.open(0, 0)
+    spi.max_speed_hz = 20000000
+
+
 def _blacklist():
   if _is_blacklisted():
     result = raw_input('Fix now? (y/N)')
@@ -137,6 +149,7 @@ def test_lights():
   try:
     _test_su()
     if not _blacklist():
+      _speedup()
       _flash_lights()
       for i in range(REPEAT_COUNT):
         stream = _stream_lights if i % 2 else _stream_lights2
