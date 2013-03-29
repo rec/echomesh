@@ -71,7 +71,9 @@ def _speedup():
     import spidev
     spi = spidev.SpiDev()
   except:
-    print("Couldn't speed up SPI, please install py-spidev")
+    print("Couldn't speed up SPI, please install py-spidev.")
+    print("See more information here:")
+    print("http://jeremyblythe.blogspot.com/2012/09/raspberry-pi-hardware-spi-analog-inputs.html")
   else:
     spi.open(0, 0)
     spi.max_speed_hz = 20000000
