@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.color import ColorConv
 from echomesh.color import ColorTable
 from echomesh.util import Importer
+from echomesh.expression import Transform
 
 numpy = Importer.imp('numpy')
 
@@ -16,4 +17,8 @@ def color_spread(begin, end, points, transform=None):
   return ColorConv.hsv_to_rgb(numpy.array(points).T)
 
 def color_name_spread(begin, end, points, transform=None):
-  pass
+  if transform:
+    transform = Transform.transform(transform)
+
+  return color_spread(ColorTable.to_color(begin), ColorTable.to_color(end),
+                      points, transform=transform)
