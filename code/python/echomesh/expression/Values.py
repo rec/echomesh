@@ -6,6 +6,7 @@ from echomesh.expression import Functions
 from echomesh.expression import System
 from echomesh.expression import Locator
 
+from echomesh.util import Call
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -19,6 +20,9 @@ class _Values(object):
     self.table = dict((v, True) for v in _NAMES)
 
   def evaluate(self, op, evaluator, element=None):
+    return self(op, evaluator, element)
+
+  def __call__(self, op, evaluator, element=None):
     return self._interpret(op, evaluator, element, True)
 
   def is_variable(self, op, element=None):
@@ -39,7 +43,7 @@ class _Values(object):
 
     if name == 'function':
       return (is_evaluating and
-              self.functions.get('.'.join(parts))(evaluator.evaluate()))
+              self.functions.get('.'.join(parts))(evaluator()))
 
     if name == 'system':
       func, is_variable = self.system.get('.'.join(parts))
@@ -48,12 +52,7 @@ class _Values(object):
     else:
       raise Exception("Shouldn't get here.")
 
-    if is_evaluating:
-      while callable(func):
-        func = func()
-      return func
-    else:
-      return is_variable
+    return Call.call(func) if is_evaluating else is_variable
 
 _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
 

@@ -18,7 +18,7 @@ class Expression(object):
     if self.envelope:
       return self.envelope.interpolate(element.time)
     else:
-      return self.unit_expression.evaluate(element)
+      return self.unit_expression(element)
 
   def evaluate(self, element=None):
     # TODO: get rid of __call__

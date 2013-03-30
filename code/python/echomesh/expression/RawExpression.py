@@ -20,9 +20,12 @@ class RawExpression(object):
     return self._is_variable
 
   def evaluate(self, element=None):
+    return self(element)
+
+  def __call__(self, element=None):
     if self.is_variable() or self.value is None:
       evaluator = Evaluator.Evaluator(self.stack, element)
-      self.value = evaluator.evaluate()
+      self.value = evaluator()
       assert not evaluator.stack
 
     return self.value

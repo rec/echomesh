@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.color import ColorSpread
 from echomesh.color import Light
 from echomesh.expression.Expression import Expression
+from echomesh.util import Call
 from echomesh.util import Log
 from echomesh.util import Registry
 
@@ -16,15 +17,27 @@ def scene(element, description):
 
 class Functional(object):
   def __init__(self, element, desc, function, *names):
-    self.table = dict((k, Expression(desc.get(k), element)) for k in names)
+    self.table = {}
+    for k, v in desc.iteritems():
+      if k in names:
+        v = Expression(v, element)
+      self.table[k] = v
     self.function = function
     scene_desc = desc.get('scene')
     self.scene = scene_desc and scene(element, scene_desc)
 
   def evaluate(self):
-    table = dict((k, v.evaluate()) for k, v in self.table.iteritems())
+    return self()
+
+  def __call__(self):
+    table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
+    try:
+      del table['scene']
+    except:
+      pass
+
     if self.scene:
-      return self.function(self.scene.evaluate(), **table)
+      return self.function(self.scene(), **table)
     else:
       return self.function(**table)
 

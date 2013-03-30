@@ -44,6 +44,9 @@ class _Counter(object):
     return self.count > 1
 
   def evaluate(self):
+    return self()
+
+  def __call__(self):
     if not self.is_variable():
       return self.begin
 
@@ -63,6 +66,9 @@ class _Envelope(Envelope):
     super(_Envelope, self).__init__(kwds)
 
   def evaluate(self):
+    return self()
+
+  def __call__(self):
     return self.interpolate(self.element.elapsed_time())
 
 REGISTRY.register_all(

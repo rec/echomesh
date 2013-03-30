@@ -83,5 +83,5 @@ def hsv_to_rgb(hsv, dtype=numpy.float64):
                           numpy.dstack((t, p, v)),
                           numpy.dstack((v, p, q))])
 
-  return out
+  return out[0]
 

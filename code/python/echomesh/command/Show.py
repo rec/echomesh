@@ -79,7 +79,7 @@ def units(_):
 def _variables(path, element, results):
   variables = getattr(element, 'variables', {})
   for k, v in variables.iteritems():
-    results.append([path + [k], v.evaluate()])
+    results.append([path + [k], v()])
   for e in element.elements:
     _variables(path + [e.name], e, results)
 

@@ -96,10 +96,13 @@ class UnitExpression(object):
         self.expression = RawExpression.RawExpression(expression)
 
   def evaluate(self, element=None):
+    return self(element)
+
+  def __call__(self, element=None):
     if not self.expression:
       return self.value
 
-    val = self.expression.evaluate(element)
+    val = self.expression(element)
     if self.unit_converter:
       return self.unit_converter(val)
     else:
@@ -111,7 +114,7 @@ class UnitExpression(object):
 def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
-  return UnitExpression(number, assume_minutes).evaluate(element)
+  return UnitExpression(number, assume_minutes)(element)
 
 def get_config(*parts):
   from echomesh.base import Config
