@@ -23,7 +23,11 @@ if __name__ == '__main__':
   doctest.testmod()
 
 """
-Here's the traceback I'm getting...
+$ PYTHONPATH=".:./external" python2.7 /development/echomesh/code/python/test/echomesh/element/SceneTest.py
+
+$ # worked fine!
+
+$ PYTHONPATH=".:./external" python2.7 -m doctest /development/echomesh/code/python/test/echomesh/element/SceneTest.py
 
   File "/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/runpy.py", line 162, in _run_module_as_main
     "__main__", fname, loader, pkg_name)
