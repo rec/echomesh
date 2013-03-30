@@ -22,7 +22,7 @@ class Functional(object):
     self.scene = scene_desc and scene(element, scene_desc)
 
   def evaluate(self):
-    table = dict((k, v.evaluate()) for k, v in self.table())
+    table = dict((k, v.evaluate()) for k, v in self.table.iteritems())
     if self.scene:
       return self.function(self.scene.evaluate(), **table)
     else:

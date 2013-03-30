@@ -20,6 +20,10 @@ class Expression(object):
     else:
       return self.unit_expression.evaluate(element)
 
+  def evaluate(self, element=None):
+    # TODO: get rid of __call__
+    return self(element)
+
   def is_variable(self, element=None):
     if self.envelope:
       return self.envelope.is_variable
