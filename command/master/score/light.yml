@@ -6,13 +6,13 @@ period: 500ms
 
 scenes:
   one:
-   type: insert
-   offset: local.loop
-   scene:
-     type: spread
-     begin: red
-     end: white
-     steps: 10
+    type: insert
+    offset: local.loop
+    scene:
+      type: spread
+      begin: red
+      end: white
+      steps: 10
 
 elements:
   -
@@ -20,4 +20,3 @@ elements:
   duration: 10
   type: scene
   scene: one
-

@@ -210,7 +210,7 @@ SHOW_REGISTRY.register_all(
   transforms=(transforms, TRANSFORMS_HELP),
   units=(units, UNITS_HELP),
   variables=(variables, VARIABLES_HELP),
-)
+  )
 
 SHOW_NAMES = SHOW_REGISTRY.join_keys()
 SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
