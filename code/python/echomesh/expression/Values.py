@@ -48,13 +48,13 @@ class _Values(object):
               self.functions.get('.'.join(parts))(evaluator()))
 
     if name == 'system':
-      func, is_variable = self.system.get('.'.join(parts))
+      functor = self.system.get('.'.join(parts))
     elif name in ['element', 'global', 'local', 'parent']:
-      func, is_variable = Locator.get_variable(element, name, parts)
+      functor = Locator.get_variable(element, name, parts)
     else:
       raise Exception("Shouldn't get here.")
 
-    return Call.call(func) if is_evaluating else is_variable
+    return Call.call(functor) if is_evaluating else functor.is_variable()
 
 _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
 

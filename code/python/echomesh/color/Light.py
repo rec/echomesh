@@ -65,10 +65,4 @@ def combine(combiner, *lighters):
 def first(items):
   return items[0]
 
-def sup(items):
-  return [max(*i) for i in zip(*items)]
-
-def inf(items):
-  return [min(*i) for i in zip(*items)]
-
 # We could put HSV combiners in here.
