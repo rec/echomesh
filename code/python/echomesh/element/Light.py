@@ -65,7 +65,7 @@ class Light(Sequence.Sequence):
       if light is None:
         light = [0x80, 0x80, 0x80]
       else:
-        light = [max(0xFF, int(0x80 * (x + 1))) for x in light]
+        light = [min(0xFF, int(0x80 + 0x7F * x)) for x in light]
       self.pattern[3 * i:3 * (i + 1)] = light
     self._write(self.pattern)
 
