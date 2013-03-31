@@ -2,27 +2,28 @@ type: light
 
 duration: infinite
 
-period: 1000ms
+period: 5ms
 
 variables:
   loop:
     type: counter
     count:  config.light.count
-    period: 1000ms
+    period: 5ms
 
 scenes:
   one:
     type: insert
     offset: local.loop
+    length: 240
     scene:
       type: spread
       begin: red
       end: white
       steps: 16
 
-# elements:
-#   -
-#     begin: 0
-#     duration: 10
-#     type: scene
-#     scene: one
+elements:
+  -
+    begin: 0
+    duration: 5
+    type: scene
+    scene: one

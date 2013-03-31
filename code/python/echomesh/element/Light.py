@@ -12,9 +12,10 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 LATCH_BYTE_COUNT = 3
+LATCH = bytearray(0 for i in xrange(LATCH_BYTE_COUNT))
 
 def _light_array(count, x=0x80):
-  b = bytearray(x for i in xrange(count))
+  b = bytearray(x for i in xrange(count + LATCH_BYTE_COUNT))
   for i in range(LATCH_BYTE_COUNT):
     b[-1 - i] = 0
   return b
@@ -33,6 +34,9 @@ class Light(Sequence.Sequence):
 
   def _write(self, lights):
     self.device.write(lights)
+    self.device.flush()
+    self.device.write(LATCH)
+    self.device.flush()
 
   def _clear(self):
     self._write(self.clear)
@@ -59,8 +63,10 @@ class Light(Sequence.Sequence):
     lights = echomesh.color.Light.combine(max, *scenes)
     for i, light in enumerate(lights):
       if light is None:
-        light = (0, 0, 0)
-      self.pattern[3 * i:3 * i + 3] = light
+        light = [0x80, 0x80, 0x80]
+      else:
+        light = [int((0x80 + x) // 2) for x in light]
+      self.pattern[3 * i:3 * (i + 1)] = light
     self._write(self.pattern)
 
 Element.register(Light)

@@ -13,6 +13,7 @@ LOGGER = Log.logger(__name__)
 
 class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
+
   def __init__(self, parent, description):
     times = []
     for e in description.get('elements', []):

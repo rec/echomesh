@@ -15,7 +15,7 @@ def main():
 
   def p(msg=''):
     """Print progress messages while echomesh loads."""
-    print(msg, end='')
+    print(msg, end='\n' if msg else '')
     global COUNT
     dot = str(COUNT % 10) if USE_DIGITS_FOR_PROGRESS_BAR else '.'
     print(dot, end='')
@@ -71,7 +71,7 @@ def main():
 
   from echomesh.color import LightsEnabled
   LightsEnabled.lights_enabled(not autostart)
-  p()
+  p('')
 
   from echomesh import Instance
   p()  # This is the big one, taking 3709ms on my RP.

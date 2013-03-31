@@ -35,13 +35,13 @@ def insert(light_set, length=None, target=None, offset=None, skip=None,
 
   index = offset
   for light in light_set:
+    while index >= length:
+      index -= length
     result[index] = light
     index += skip
-    while index >= length:
-      if rollover:
-        index -= length
-      else:
-        break
+
+    if not rollover and index >= length:
+      break
 
   return result
 

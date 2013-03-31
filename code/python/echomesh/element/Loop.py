@@ -58,7 +58,7 @@ class Loop(Element.Element):
         self.next_loop_time = self.next_time(t)
 
     if self.is_running:
-      sleep_time = min(DEFAULT_TIMEOUT, self.next_loop_time - t)
+      sleep_time = min(self.timeout, self.next_loop_time - t)
       if sleep_time > 0:
         time.sleep(sleep_time)
       else:

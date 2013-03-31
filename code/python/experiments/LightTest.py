@@ -9,8 +9,10 @@ import time
 # Set these values to configure the program.
 FLASH_LIGHTS = False
 SPIN_LIGHTS = True
+RANDOM_LIGHTS = False
 LIGHT_STRATEGY_1 = True
 LIGHT_STRATEGY_2 = False
+RANDOM_COUNT = 32
 # end of config
 
 BLACKLIST_FILE = '/etc/modprobe.d/raspi-blacklist.conf'
@@ -35,7 +37,7 @@ DEFAULT_REPEAT_COUNT = 2
 
 PERIOD = 0.5
 
-LATCH_BYTE_COUNT = 2
+LATCH_BYTE_COUNT = 3
 
 LIGHT_COUNT = DEFAULT_LIGHT_COUNT if len(sys.argv) == 1 else int(sys.argv[1])
 REPEAT_COUNT = DEFAULT_REPEAT_COUNT if len(sys.argv) < 3 else int(sys.argv[2])
@@ -151,6 +153,22 @@ def _stream_lights2(reverse=False):
     device.write(latch)
     device.flush()
 
+import random
+
+def _random(count):
+  with open('/dev/spidev0.0', 'wb') as device:
+    lights = _light_array()
+    old = 0
+    for i in xrange(count):
+      for j in xrange(LIGHT_COUNT):
+        light = 0xFF if random.randint(0, 1) else 0x80
+        lights[3 * j: 3 * (j + 1)] = (light, light, light)
+      device.write(lights)
+      device.flush()
+    device.write(_light_array())
+    device.flush()
+
+
 def test_lights():
   try:
     _test_su()
@@ -158,6 +176,8 @@ def test_lights():
       _speedup()
       if FLASH_LIGHTS:
         _flash_lights()
+      if RANDOM_LIGHTS:
+        _random(RANDOM_COUNT)
       if SPIN_LIGHTS:
         for i in range(REPEAT_COUNT):
           if LIGHT_STRATEGY_1:
