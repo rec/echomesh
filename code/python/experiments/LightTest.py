@@ -6,6 +6,13 @@ import os
 import sys
 import time
 
+# Set these values to configure the program.
+FLASH_LIGHTS = False
+SPIN_LIGHTS = True
+LIGHT_STRATEGY_1 = True
+LIGHT_STRATEGY_2 = False
+# end of config
+
 BLACKLIST_FILE = '/etc/modprobe.d/raspi-blacklist.conf'
 BLACKLIST_TEMP = BLACKLIST_FILE + '.tmp'
 
@@ -23,7 +30,7 @@ Would you like to fix it now?  You'll need to restart your Raspberry Pi
 for the changes to take effect.
 """
 
-DEFAULT_LIGHT_COUNT = 128
+DEFAULT_LIGHT_COUNT = 240
 DEFAULT_REPEAT_COUNT = 2
 
 PERIOD = 0.5
@@ -134,7 +141,7 @@ def _stream_lights2(reverse=False):
   with open('/dev/spidev0.0', 'wb') as device:
     for i in range(LIGHT_COUNT):
       for j in range(LIGHT_COUNT):
-        index = LIGHT_COUNT - j -1 if reverse else j
+        index = LIGHT_COUNT - j - 1 if reverse else j
         device.write(on if i == index else off)
       device.write(latch)
       device.flush()
@@ -149,11 +156,19 @@ def test_lights():
     _test_su()
     if not _blacklist():
       _speedup()
-      _flash_lights()
-      for i in range(REPEAT_COUNT):
-        stream = _stream_lights if i % 2 else _stream_lights2
-        stream()
-        stream(reverse=True)
+      if FLASH_LIGHTS:
+        _flash_lights()
+      if SPIN_LIGHTS:
+        for i in range(REPEAT_COUNT):
+          if LIGHT_STRATEGY_1:
+            lights1 = True
+          elif LIGHT_STRATEGY_2:
+            lights1 = False
+          else:
+            lights1 = True or not i % 2
+          stream = _stream_lights if lights1 else _stream_lights2
+          stream()
+          stream(reverse=True)
 
   except Exception as e:
     print('ERROR:', e)

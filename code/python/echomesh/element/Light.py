@@ -31,8 +31,11 @@ class Light(Sequence.Sequence):
     self.clear = _light_array(self.light_count)
     self.pattern = _light_array(self.light_count)
 
+  def _write(self, lights):
+    self.device.write(lights)
+
   def _clear(self):
-    self.device.out(self.clear)
+    self._write(self.clear)
 
   def _on_run(self):
     super(Light, self)._on_run()
@@ -55,7 +58,9 @@ class Light(Sequence.Sequence):
     scenes = [s() for s in self.active_scenes]
     lights = echomesh.color.Light.combine(max, *scenes)
     for i, light in enumerate(lights):
-      self.pattern[3 * i:3 * i + 3] = light or (0, 0, 0)
-    self.device.out(self.pattern)
+      if light is None:
+        light = (0, 0, 0)
+      self.pattern[3 * i:3 * i + 3] = light
+    self._write(self.pattern)
 
 Element.register(Light)

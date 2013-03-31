@@ -20,9 +20,9 @@ scenes:
       end: white
       steps: 16
 
-elements:
-  -
-    begin: 0
-    duration: 10
-    type: scene
-    scene: one
+# elements:
+#   -
+#     begin: 0
+#     duration: 10
+#     type: scene
+#     scene: one
