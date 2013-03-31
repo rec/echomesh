@@ -8,7 +8,7 @@ def hex_to_rgb(number):
   g = number % 0x100
   r = (number - g) / 0x100
 
-  return r, g, b
+  return r / 255.0, g / 255.0, b / 255.0
 
 def to_color(color):
   if isinstance(color, (tuple, list)):

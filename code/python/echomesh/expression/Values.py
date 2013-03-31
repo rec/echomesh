@@ -24,7 +24,6 @@ class _Values(object):
     return self(op, evaluator, element)
 
   def __call__(self, op, evaluator, element=None):
-    assert element
     return self._interpret(op, evaluator, element, True)
 
   def is_variable(self, op, element=None):
@@ -48,7 +47,9 @@ class _Values(object):
               self.functions.get('.'.join(parts))(evaluator()))
 
     if name == 'system':
-      functor = self.system.get('.'.join(parts))
+      functor, is_variable = self.system.get('.'.join(parts))
+      if not is_evaluating:
+        return is_variable
     elif name in ['element', 'global', 'local', 'parent']:
       functor = Locator.get_variable(element, name, parts)
     else:

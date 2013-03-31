@@ -98,6 +98,14 @@ array([[ 1.        ,  1.        ,  0.        ],
        [ 0.        ,  1.        ,  0.56371608],
        [ 0.        ,  1.        ,  1.        ]])
 
+>>> ColorSpread.color_name_spread('red', 'white', 6)
+array([[ 1. ,  0. ,  0. ],
+       [ 1. ,  0.2,  0.2],
+       [ 1. ,  0.4,  0.4],
+       [ 1. ,  0.6,  0.6],
+       [ 1. ,  0.8,  0.8],
+       [ 1. ,  1. ,  1. ]])
+
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals
