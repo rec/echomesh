@@ -18,10 +18,10 @@ class Light(Sequence.Sequence):
     self.active_scenes = set()
 
   def run_scene(self, scene):
-    self.active_scenes.add(self.scenes.get(scene))
+    self.active_scenes.add(self.scenes[scene.scene])
 
   def pause_scene(self, scene):
-    self.active_scenes.remove(self.scenes.get(scene))
+    self.active_scenes.remove(self.scenes[scene.scene])
 
   def single_loop(self):
     super(Light, self).single_loop()

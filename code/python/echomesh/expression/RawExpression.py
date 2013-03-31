@@ -23,7 +23,7 @@ class RawExpression(object):
     return self(element)
 
   def __call__(self, element=None):
-    if self.is_variable() or self.value is None:
+    if self.is_variable(element) or self.value is None:
       evaluator = Evaluator.Evaluator(self.stack, element)
       self.value = evaluator()
       assert not evaluator.stack

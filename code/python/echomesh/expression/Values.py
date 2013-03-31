@@ -24,6 +24,7 @@ class _Values(object):
     return self(op, evaluator, element)
 
   def __call__(self, op, evaluator, element=None):
+    assert element
     return self._interpret(op, evaluator, element, True)
 
   def is_variable(self, op, element=None):

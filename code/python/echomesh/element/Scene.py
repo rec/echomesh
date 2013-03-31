@@ -72,10 +72,10 @@ class Scene(Element.Element):
 
   def _on_run(self):
     super(Scene, self)._on_run()
-    parent.run_scene(self)
+    self.parent.run_scene(self)
 
   def _on_pause(self):
     super(Scene, self)._on_pause()
-    parent.pause_scene(self)
+    self.parent.pause_scene(self)
 
 Element.register(Scene)
