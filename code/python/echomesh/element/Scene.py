@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.color import ColorSpread
 from echomesh.color import Light
+from echomesh.element import Element
 from echomesh.expression.Expression import Expression
 from echomesh.util import Call
 from echomesh.util import Log
@@ -61,3 +62,20 @@ _REGISTRY.register(inject)
 _REGISTRY.register(insert)
 _REGISTRY.register(reverse)
 _REGISTRY.register(spread)
+
+
+class Scene(Element.Element):
+  def __init__(self, parent, description):
+    super(Scene, self).__init__(parent, description)
+    assert self.parent.__class__.__name__ == 'Light'
+    self.scene = description['scene']
+
+  def _on_run(self):
+    super(Scene, self)._on_run()
+    parent.run_scene(self)
+
+  def _on_pause(self):
+    super(Scene, self)._on_pause()
+    parent.pause_scene(self)
+
+Element.register(Scene)

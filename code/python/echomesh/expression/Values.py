@@ -11,7 +11,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-_NAMES = 'configuration', 'element', 'function', 'global', 'local', 'system'
+_NAMES = ('configuration', 'element', 'function', 'global', 'local', 'parent',
+          'system')
 
 class _Values(object):
   def __init__(self, functions, system):
@@ -47,7 +48,7 @@ class _Values(object):
 
     if name == 'system':
       func, is_variable = self.system.get('.'.join(parts))
-    elif name in ['element', 'global', 'local']:
+    elif name in ['element', 'global', 'local', 'parent']:
       func, is_variable = Locator.get_variable(element, name, parts)
     else:
       raise Exception("Shouldn't get here.")

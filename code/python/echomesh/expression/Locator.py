@@ -8,6 +8,8 @@ def get_variable(element, category, parts):
     element = ScoreMaster.INSTANCE.get_prefix(parts.pop(0))[1]
   elif category == 'element':
     element = element.get_root()
+  elif category == 'parent':
+    element = element.parent
   else:
     assert category == 'local'
 
