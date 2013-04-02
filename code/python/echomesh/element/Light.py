@@ -16,9 +16,11 @@ LOGGER = Log.logger(__name__)
 LATCH_BYTE_COUNT = 3
 LATCH = bytearray(0 for i in xrange(LATCH_BYTE_COUNT))
 
+INTERNAL_LATCH_BYTE_COUNT = 0
+
 def _light_array(count, x=0x80):
-  b = bytearray(x for i in xrange(count))
-  for i in range(LATCH_BYTE_COUNT):
+  b = bytearray(x for i in xrange(count + INTERNAL_LATCH_BYTE_COUNT))
+  for i in xrange(INTERNAL_LATCH_BYTE_COUNT):
     b[-1 - i] = 0
   return b
 

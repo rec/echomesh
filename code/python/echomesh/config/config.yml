@@ -170,6 +170,9 @@ git:
 light:
   enable: false
   count: 240
+  order: rgb
+  period: 10ms
+  type: spi
 
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.
