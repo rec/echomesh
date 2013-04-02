@@ -4,6 +4,7 @@ import threading
 import time
 
 from echomesh.base import Config
+from echomesh.color import LightsEnabled
 from echomesh.color.LightBank import LightBank
 from echomesh.util import Log
 
@@ -18,6 +19,8 @@ class SPILightBank(LightBank):
   BRG = lambda r, g, b: (b, r, g)
 
   def __init__(self, count=None):
+    assert LightsEnabled.lights_enabled(), "Lighting is not enabled."
+
     super(SPILightBank, self).__init__(count=count)
     order = Config.get('light', 'order')
     self.order = getattr(LightBank, order.upper(), None)

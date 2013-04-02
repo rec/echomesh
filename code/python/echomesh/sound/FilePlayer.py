@@ -21,6 +21,10 @@ MAX_DEVICE_NUMBERS = 8
 class FilePlayer(ThreadLoop):
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
     super(FilePlayer, self).__init__(name='FilePlayer')
+    from echomesh.sound import SetOutput
+    if not SetOutput.OUTPUT_SET:
+      SetOutput.set_output()
+
     self.element = element
     self.file = kwds.pop('file')
     if kwds:

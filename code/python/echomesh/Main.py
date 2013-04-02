@@ -63,16 +63,6 @@ def main():
     exit(0)
   p()
 
-  from echomesh.sound import SetOutput
-  p()  # 274ms
-
-  SetOutput.set_output(Config.get('audio', 'output', 'route'))
-  p()  # 425ms
-
-  from echomesh.color import LightsEnabled
-  LightsEnabled.lights_enabled(not autostart)
-  p('')
-
   from echomesh import Instance
   p()  # This is the big one, taking 3709ms on my RP.
 
