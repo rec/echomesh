@@ -4,6 +4,7 @@ import threading
 
 from echomesh.base import Config
 from echomesh.color import Combiner
+from echomesh.color import LightSingleton
 from echomesh.element import Element
 from echomesh.element import Scene
 from echomesh.element import Sequence

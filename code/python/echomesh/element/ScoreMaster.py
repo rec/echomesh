@@ -19,7 +19,6 @@ LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
 
 class ScoreMaster(MasterRunnable.MasterRunnable):
-  PAUSE, START, UNLOAD, RESET = range(4)
   INSTANCE = None
 
   def __init__(self):
@@ -58,8 +57,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         try:
           full_name, element = self.get_prefix(name)
           if is_unload:
-            if element.is_running:
-              element.pause()
+            self.element.unload()
             del self.elements[full_name]
           else:
             getter(element)()
@@ -124,7 +122,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def _on_pause(self):
     super(ScoreMaster, self)._on_pause()
     try:
-      self.perform_element(ScoreMaster.PAUSE, ['*'])
+      self.perform_element('pause', ['*'])
     except:
       pass
 

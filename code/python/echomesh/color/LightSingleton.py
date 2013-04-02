@@ -26,4 +26,6 @@ class LightSingleton(object):
       if not self.light_bank.add_client(client):
         self.light_bank = None
 
-SINGLETON = LightSingleton()
+_SINGLETON = LightSingleton()
+add_client = _SINGLETON.add_client
+remove_client = _SINGLETON.remove_client
