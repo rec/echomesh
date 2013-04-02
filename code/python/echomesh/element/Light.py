@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import threading
+
 import echomesh.color.Light
 
 from echomesh.base import Config
@@ -15,7 +17,7 @@ LATCH_BYTE_COUNT = 3
 LATCH = bytearray(0 for i in xrange(LATCH_BYTE_COUNT))
 
 def _light_array(count, x=0x80):
-  b = bytearray(x for i in xrange(count + LATCH_BYTE_COUNT))
+  b = bytearray(x for i in xrange(count))
   for i in range(LATCH_BYTE_COUNT):
     b[-1 - i] = 0
   return b
@@ -31,12 +33,14 @@ class Light(Sequence.Sequence):
     self.light_count = Config.get('light', 'count')
     self.clear = _light_array(self.light_count)
     self.pattern = _light_array(self.light_count)
+    self.lock = threading.Lock()
 
   def _write(self, lights):
-    self.device.write(lights)
-    self.device.flush()
-    self.device.write(LATCH)
-    self.device.flush()
+    with self.lock:
+      self.device.write(lights)
+      self.device.flush()
+      self.device.write(LATCH)
+      self.device.flush()
 
   def _clear(self):
     self._write(self.clear)
@@ -48,24 +52,29 @@ class Light(Sequence.Sequence):
 
   def _on_pause(self):
     self._clear()
-    self.device.close()
-    self.device = None
+    with self.lock:
+      self.device.close()
+      self.device = None
 
   def run_scene(self, scene):
     self.active_scenes.add(self.scenes[scene.scene])
 
   def pause_scene(self, scene):
     self.active_scenes.remove(self.scenes[scene.scene])
+    if not len(self.active_scenes):
+      self._clear()
 
   def single_loop(self):
     super(Light, self).single_loop()
     scenes = [s() for s in self.active_scenes]
-    lights = echomesh.color.Light.combine(max, *scenes)
+    lights = echomesh.color.Light.combine(echomesh.color.Light.sup, *scenes)
     for i, light in enumerate(lights):
       if light is None:
         light = [0x80, 0x80, 0x80]
       else:
-        light = [max(0xFF, int(0x80 * (x + 1))) for x in light]
+        light = [min(0xFF, int(0x80 + 0x7F * x)) for x in light]
+        r, g, b = light
+        light = [b, r, g]
       self.pattern[3 * i:3 * (i + 1)] = light
     self._write(self.pattern)
 

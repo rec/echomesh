@@ -23,8 +23,8 @@ reverse = reversed
 # Must set one of length or target.
 def insert(light_set, length=None, target=None, offset=None, skip=None,
            rollover=False):
-  skip = skip or 1
-  offset = offset or 0
+  skip = int(skip or 1)
+  offset = int(offset or 0)
   if length is None and target is None:
     length = offset + len(light_set) * skip
   result = target or ([None] * length)
@@ -60,9 +60,18 @@ def inject(light_set, mapping, length):
   return [_map(i) for i in range(length)]
 
 def combine(combiner, *lighters):
-  return [combiner(z) for z in zip(*lighters)]
+  linverse = zip(*lighters)
+  return [combiner(z) for z in linverse]
 
 def first(items):
   return items[0]
+
+def sup(items):
+  light = [0, 0, 0]
+  for item in items:
+    if item is not None:
+      for j in xrange(3):
+        light[j] = max(light[j], item[j])
+  return light
 
 # We could put HSV combiners in here.
