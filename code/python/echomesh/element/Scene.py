@@ -77,5 +77,3 @@ class Scene(Element.Element):
   def _on_pause(self):
     super(Scene, self)._on_pause()
     self.parent.pause_scene(self)
-
-Element.register(Scene)

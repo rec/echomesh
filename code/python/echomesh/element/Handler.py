@@ -27,4 +27,3 @@ class Handler(Element.Element):
     else:
       LOGGER.warning("Didn't find a handler parent in close for %s", self)
 
-Element.register(Handler)

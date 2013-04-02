@@ -29,4 +29,3 @@ class TwitterSearch(Element.Element):
       s.refresh()
     return True
 
-Element.register(TwitterSearch, 'twitter')

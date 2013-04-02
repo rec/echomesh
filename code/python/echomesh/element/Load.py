@@ -1,13 +1,33 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import CommandFile
+from echomesh.base import Join
 from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.base import Join
+from echomesh.util import ClassRegistry
 
 LOGGER = Log.logger(__name__)
+
+_REGISTRY = ClassRegistry.ClassRegistry(name='element',
+                                        classpath='echomesh.element')
+
+def register(classname, name=None):
+  _REGISTRY.register(classname, (name or classname).lower())
+
+register('Audio')
+register('Handler')
+register('Image')
+register('Loop')
+register('Print')
+register('Repeat')
+register('Root')
+register('Scene')
+register('Schedule')
+register('Select')
+register('TextToSpeech', 'speak')
+register('TwitterSearch', 'twitter')
 
 def _resolve_extensions(data):
   extensions = set()
@@ -60,9 +80,9 @@ def make_one(parent, description):
   if not t:
     raise Exception('No type field in element %s' % description)
 
-  element_class = Element.get_class_by_name(t)
+  element_class = _REGISTRY.get(t)
   if not element_class:
-    Element.REGISTRY.dump()
+    _REGISTRY.dump()
     raise Exception('No element class for type %s' % t)
 
   element = element_class(parent, description)

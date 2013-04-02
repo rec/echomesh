@@ -20,5 +20,3 @@ class Image(Element.Element):
     else:
       LOGGER.info('Playing image %s', description.get('file', '(none)'))
     description.clear_accessed()
-
-Element.register(Image)

@@ -21,7 +21,7 @@ class Registry(object):
     if old_function is not function:
       if old_function is not none:
         raise Exception('Conflicting registrations for %s' % function_name)
-      self.registry[function_name] = function, help_text, see_also
+      self.registry[function_name] = [function, help_text, see_also]
 
   def register_all(self, **kwds):
     for item_name, item in kwds.iteritems():

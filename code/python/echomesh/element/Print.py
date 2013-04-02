@@ -21,5 +21,3 @@ class Print(Element.Element):
 
   def handle(self, event):
     LOGGER.info('%s: %s', self.text, event)
-
-Element.register(Print)

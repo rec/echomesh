@@ -30,5 +30,3 @@ class Select(Element.Element):
     super(Select, self)._on_run()
     if self.elements:
       self.elements[self.random.select()].run()
-
-Element.register(Select)

@@ -10,8 +10,17 @@ class Failure(object):
   def __getattr__(self, key):
     raise EXCEPTION_TYPE(self.message)
 
-def imp(module, name=None):
+def imp(module, name=None, defer_failure=True):
   try:
-    return __import__(module)
-  except ImportError:
-    return Failure(ERROR_MESSAGE % (name or module))
+    mod = __import__(module)
+  except ImportError as e:
+    if defer_failure:
+      return Failure(ERROR_MESSAGE % (name or module))
+    else:
+      raise
+  else:
+    components = module.split('.')
+    for comp in components[1:]:
+      mod = getattr(mod, comp)
+    return mod
+

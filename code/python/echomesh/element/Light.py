@@ -69,4 +69,3 @@ class Light(Sequence.Sequence):
       self.pattern[3 * i:3 * (i + 1)] = light
     self._write(self.pattern)
 
-Element.register(Light)

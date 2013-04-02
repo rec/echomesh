@@ -35,5 +35,3 @@ class Mapper(Handler.Handler):
           break
         event = handler.handle(event)
       return event
-
-Element.register(Mapper)

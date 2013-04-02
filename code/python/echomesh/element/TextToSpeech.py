@@ -29,5 +29,3 @@ class TextToSpeech(Element.Element):
       except Exception:
         LOGGER.error("Couldn't speak text '%s' from file %s", text, f,
                      exc_info=1)
-
-Element.register(TextToSpeech, 'speak')

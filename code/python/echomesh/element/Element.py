@@ -7,7 +7,6 @@ from echomesh.expression import Variable
 from echomesh.util import Log
 from echomesh.util import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
-from echomesh.util.Registry import Registry
 
 LOGGER = Log.logger(__name__)
 
@@ -115,10 +114,3 @@ def _format_delta(t):
   if loc > 0:
     s = s[0:loc]
   return s
-
-REGISTRY = Registry(name='element')
-
-def register(element, name=None):
-  REGISTRY.register(element, name or element.__name__)
-
-get_class_by_name = REGISTRY.get

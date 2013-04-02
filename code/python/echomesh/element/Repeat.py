@@ -35,6 +35,3 @@ class Repeat(Loop.Loop):
   def _on_reset(self):
     super(Repeat, self)._on_reset()
     self.repeat_count = 0
-
-
-Element.register(Repeat)

@@ -42,5 +42,3 @@ class Schedule(Element.Element):
     entries = description.get('entries', [])
     self.entries = [Entry(self, *e) for e in entries]
     self.current_priority = 0
-
-Element.register(Schedule)

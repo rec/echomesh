@@ -83,5 +83,3 @@ class Sequence(Loop.Loop):
     self.paused_children.add(child)
     if self.paused_children == set(self.elements):
       self.pause()
-
-Element.register(Sequence)
