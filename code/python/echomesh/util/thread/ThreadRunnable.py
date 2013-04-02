@@ -27,11 +27,14 @@ class ThreadRunnable(MasterRunnable):
         self.pause()
       self._after_thread_pause()
 
-    super(ThreadRunnable, self)._on_run()
     self._before_thread_start()
     self.thread = threading.Thread(target=target, name=self.name)
     self.thread.daemon = True
     self.thread.start()
+
+  def _on_pause(self):
+    self.thread = None
+    self._after_thread_pause()
 
   def _before_thread_start(self):
     pass

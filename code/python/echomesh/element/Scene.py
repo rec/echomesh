@@ -1,7 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.color import ColorSpread
-from echomesh.color import Light
+from echomesh.color import Combiner
+from echomesh.color import LightSingleton
 from echomesh.element import Element
 from echomesh.expression.Expression import Expression
 from echomesh.util import Call
@@ -46,10 +47,10 @@ class Functional(object):
     return any(v.is_variable() for v in self.table.itervalues())
 
 def inject(element, desc):
-  return Functional(element, desc, Light.inject)
+  return Functional(element, desc, Combiner.inject)
 
 def insert(element, desc):
-  return Functional(element, desc, Light.insert,
+  return Functional(element, desc, Combiner.insert,
                     'length', 'offset', 'rollover', 'skip')
 
 def reverse(element, desc):
@@ -63,17 +64,16 @@ _REGISTRY.register(insert)
 _REGISTRY.register(reverse)
 _REGISTRY.register(spread)
 
-
 class Scene(Element.Element):
   def __init__(self, parent, description):
     super(Scene, self).__init__(parent, description)
-    assert self.parent.__class__.__name__ == 'Light'
-    self.scene = description['scene']
+    assert parent.__class__.__name__ == 'Light'
+    self.scene = parent.scenes[description['scene']]
 
   def _on_run(self):
     super(Scene, self)._on_run()
-    self.parent.run_scene(self)
+    LightSingleton.add_client(self.scene)
 
   def _on_pause(self):
     super(Scene, self)._on_pause()
-    self.parent.pause_scene(self)
+    LightSingleton.remove_client(self.scene)
