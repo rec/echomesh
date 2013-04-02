@@ -110,7 +110,6 @@ if USE_CURSES:
 
 else:
   def keyboard(echomesh):
-    if Config.get('control_program', 'enable'):
-      processor = lambda line: Command.execute(echomesh, line)
-      sleep = Units.get_config('delay_before_keyboard_activates')
-      return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+    processor = lambda line: Command.execute(echomesh, line)
+    sleep = Units.get_config('delay_before_keyboard_activates')
+    return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)

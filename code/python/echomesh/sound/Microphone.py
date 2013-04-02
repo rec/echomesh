@@ -99,7 +99,6 @@ class Microphone(ThreadRunnable.ThreadRunnable):
         if self.is_running:
           LOGGER.error(limit=20, every=20)
 
-
 def microphone(callback):
   if Config.get('audio', 'input', 'enable'):
     try:
@@ -108,4 +107,3 @@ def microphone(callback):
       LOGGER.error('Failed to turn on mic.')
   else:
     LOGGER.info('Mic thread disabled')
-
