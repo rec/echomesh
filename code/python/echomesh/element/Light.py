@@ -2,9 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import threading
 
-import echomesh.color.Light
-
 from echomesh.base import Config
+from echomesh.color import Combiner
 from echomesh.element import Element
 from echomesh.element import Scene
 from echomesh.element import Sequence
@@ -69,7 +68,7 @@ class Light(Sequence.Sequence):
   def single_loop(self):
     super(Light, self).single_loop()
     scenes = [s() for s in self.active_scenes]
-    lights = echomesh.color.Light.combine(echomesh.color.Light.sup, *scenes)
+    lights = Combiner.combine(Combiner.sup, *scenes)
     for i, light in enumerate(lights):
       if light is None:
         light = [0x80, 0x80, 0x80]
