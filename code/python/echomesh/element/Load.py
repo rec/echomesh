@@ -6,12 +6,12 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util import ClassRegistry
+from echomesh.util import LazyRegistry
 
 LOGGER = Log.logger(__name__)
 
-_REGISTRY = ClassRegistry.ClassRegistry(name='element',
-                                        classpath='echomesh.element')
+_REGISTRY = LazyRegistry.LazyRegistry(name='element',
+                                      classpath='echomesh.element')
 
 def register(classname, name=None):
   _REGISTRY.register(classname, (name or classname).lower())

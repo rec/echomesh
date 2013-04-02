@@ -10,7 +10,17 @@ class Failure(object):
   def __getattr__(self, key):
     raise EXCEPTION_TYPE(self.message)
 
-def imp(module, name=None, defer_failure=True):
+def imp(path, name=None, defer_failure=True):
+  parts = path.split('.')
+  if len(parts) == 1:
+    module_path = parts
+  elif parts[-2].islower() and not parts[-1].islower():
+    module_path = parts[:]
+    parts += [parts[-1]]
+  else:
+    module_path = path[:-1]
+  module = '.'.join(module_path)
+
   try:
     mod = __import__(module)
   except ImportError as e:
@@ -19,8 +29,7 @@ def imp(module, name=None, defer_failure=True):
     else:
       raise
   else:
-    components = module.split('.')
-    for comp in components[1:]:
+    for comp in parts[1:]:
       mod = getattr(mod, comp)
     return mod
 
