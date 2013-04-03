@@ -19,6 +19,7 @@ def register(classname, name=None):
 register('Audio')
 register('Handler')
 register('Image')
+register('Light')
 register('Loop')
 register('Print')
 register('Repeat')

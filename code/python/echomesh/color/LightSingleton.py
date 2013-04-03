@@ -8,7 +8,9 @@ from echomesh.util import Importer
 
 LOGGER = Log.logger(__name__)
 
-_TYPE_MAP = {'spi': 'echomesh.light.SPILightBank'}
+_TYPE_MAP = {
+  'tk': 'echomesh.color.TkLightBank',
+  'spi': 'echomesh.color.SpiLightBank'}
 
 class LightSingleton(object):
   def __init__(self):
@@ -18,7 +20,9 @@ class LightSingleton(object):
   def add_client(self, client):
     with self.lock:
       if not self.light_bank:
-        self.light_bank = Importer.imp(_TYPE_MAP[Config.get('light', 'type')])()
+        ltype = Config.get('light', 'type')
+        classpath = _TYPE_MAP[ltype]
+        self.light_bank = Importer.imp(classpath, defer_failure=False)()
       self.light_bank.add_client(client)
 
   def remove_client(self, client):

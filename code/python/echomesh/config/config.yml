@@ -172,15 +172,19 @@ light:
   count: 240
   order: rgb
   period: 10ms
-  type: spi
+  type: tk
 
-  layout:
-    border: 2
-    border_color: black
-    border_width: 1
-    dimensions: 0, 0
-    shape: circle
-    size: 10
+  display:
+    background: 0x808080
+    layout: [0, 0]
+    padding: 2
+    light:
+      background: 0x606060
+      border:
+        color: black
+        width: 1
+      shape: circle
+      size: [10, 10]
 
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.

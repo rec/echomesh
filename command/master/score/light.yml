@@ -2,8 +2,6 @@ type: light
 
 duration: infinite
 
-period: 2ms
-
 variables:
   loop:
     type: counter

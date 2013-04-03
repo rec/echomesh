@@ -48,3 +48,6 @@ class LightBank(ThreadLoop):
       self._display_lights(lights)
     self.next_time += self.period
     time.sleep(max(0, self.next_time - time.time()))
+
+  def _display_lights(self, lights):
+    pass

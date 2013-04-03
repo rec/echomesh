@@ -36,7 +36,7 @@ class Loop(Element.Element):
         self.single_loop()
       except Exception:
         if self.is_running or self.report_error_on_close:
-          LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
+          LOGGER.error('Thread %s reports an error:', self.name)
           try:
             self.pause()
           except:

@@ -53,11 +53,10 @@ class Instance(MasterRunnable):
   def handle(self, event):
     return self.score_master.handle(event)
 
-  def loop(self):
+  def main(self):
+    self.run()
     self.display.loop()
-
-  def join(self):
-    self.keyboard.thread.join()
+    self.keyboard.thread and self.keyboard.thread.join()
 
   def start_mic(self):
     if not self.mic:

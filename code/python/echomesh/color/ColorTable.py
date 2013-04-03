@@ -10,6 +10,14 @@ def hex_to_rgb(number):
 
   return r / 255.0, g / 255.0, b / 255.0
 
+
+def denormalize(color):
+  return min(0xFF, int(0x100 * color))
+
+def to_tk(color):
+  r, g, b = (denormalize(c) for c in color)
+  return '#%s' % hex((((r * 0x100) + g) * 0x100 + b))[2:]
+
 def to_color(color):
   if isinstance(color, (tuple, list)):
     return color

@@ -87,7 +87,6 @@ def logger(name=None):
   log.error = new_error_logger
   return log
 
-
 LOGGER = logger(__name__)
 LOGGER.debug('Log level is %s', CONFIG.log_level)
 

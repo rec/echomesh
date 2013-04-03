@@ -77,9 +77,7 @@ def main():
       print(i, ':', int(1000 * (times[i + 1] - times[i])))
     print()
 
-  instance.run()
-  instance.loop()
-  instance.join()
+  instance.main()
 
   if Config.get('diagnostics', 'unused_configs'):
     import yaml

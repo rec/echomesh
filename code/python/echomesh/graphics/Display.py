@@ -2,17 +2,21 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.graphics import Shader
-from echomesh.util import Log
-from echomesh.util.thread import Runnable
 from echomesh.util import ImportIf
+from echomesh.util import Log
+from echomesh.util.thread import MainThreadRunner
+from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 
+DEFAULT_TIMEOUT = 0.2
+
 class Display(Runnable.Runnable):
   def __init__(self):
     super(Display, self).__init__()
+    self.timeout = DEFAULT_TIMEOUT
     if not Config.get('load_module', 'pi3d'):
       self.display = None
       return
@@ -51,5 +55,11 @@ class Display(Runnable.Runnable):
       self.display.stop()
 
   def loop(self):
-    while self.is_running and self.display and self.display.loop_running():
-      pass
+    while self.is_running:
+      if self.display:
+        if self.display.loop_running():
+          MainThreadRunner.run_one()
+        else:
+          self.pause()
+      else:
+        MainThreadRunner.run_one(self.timeout)
