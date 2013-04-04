@@ -16,6 +16,7 @@ class Element(MasterRunnable):
     self.description = description
     self.load_time = time.time()
     self.name = name or description['type']
+    self.pause_time = 0
 
     super(Element, self).__init__()
 

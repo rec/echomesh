@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import Tkinter
-
 import copy
 import threading
 import time
@@ -9,24 +7,37 @@ import time
 from echomesh.base import Config
 from echomesh.color.LightBank import LightBank
 from echomesh.color import ColorTable
+from echomesh.util.thread import MainThreadRunner
+
+DISABLE_EVERYTHING = True
 
 def _get_dimension(count, columns, rows):
   if not (columns or rows):
     columns = 32
   elif not columns:
-    columns = 1 + (count - 1) / columns
+    columns = 1 + (count - 1) // columns
   if not rows:
-    rows = 1 + (count - 1) / columns
+    rows = 1 + (count - 1) // columns
   return columns, rows
 
 class TkLightBank(LightBank):
   def _before_thread_start(self):
     super(TkLightBank, self)._before_thread_start()
     Config.add_client(self)
+    MainThreadRunner.run_on_main_thread(self.initialize_tk)
+
+  def initialize_tk(self):
+    import Tkinter
     self.tkwin = Tkinter.Tk()
-    self.tkwin.geometry('%dx%d' % (self.width, self.height))
-    self.tkwin.configure(background = self.background)
-    self.lights = [self._make_light(i) for i in range(self.count)]
+    if not DISABLE_EVERYTHING:
+      self.tkwin.geometry('%dx%d' % (self.width, self.height))
+      self.tkwin.configure(background=self.background)
+      self.canvas = Tkinter.Canvas(self.tkwin,
+                                   width=self.width, height=self.height)
+      self.canvas.pack()
+      self.lights = [self._make_light(i) for i in range(self.count)]
+    MainThreadRunner.run_every_time(self.tkwin.update)
+    self.tkwin.update()
 
   def config_update(self, get):
     def _get(*items):
@@ -43,32 +54,40 @@ class TkLightBank(LightBank):
     self.size = _get('light', 'size')
     self.padding = _get('padding')
     self.columns, self.rows = _get_dimension(self.count, *_get('layout'))
-    self.width = 2 * self.padding + self.columns * (self.size[0] + self.padding)
-    self.height = 2 * self.padding + self.rows * (self.size[1] + self.padding)
+    self.width = (self.padding['left'] +
+                  self.columns * (self.size[0] + self.padding['light']['x']) +
+                  self.padding['right'])
+    self.height = (self.padding['top'] +
+                   self.rows * (self.size[1] + self.padding['light']['y']) +
+                   self.padding['bottom'])
 
   def _make_light(self, index):
     column = index % self.columns
     row = index // self.columns
-    x = self.padding + (self.size[0] + self.padding) * column
-    y = self.padding + (self.size[1] + self.padding) * row
-    if self.shape == 'square':
-      method = self.tkwin.create_rectangle
-    else:
-      method = self.tkwin.create_oval
-    return method(x, y, x + self.size[0], y + self.size[1],
-                  outline=ColorTable.to_tk(*self.border_color),
-                  width=self.width, background=self.button_background)
+    x = (self.padding['left'] +
+         column * (self.size[0] + self.padding['light']['x']))
 
-  def _after_thread_pause(self):
-    Config.remove_client(self)
-    super(TkLightBank, self)._after_thread_pause()
-    self._device.close()
-    self._device = None
+    y = (self.padding['top'] +
+         row * (self.size[1] + self.padding['light']['y']))
+    if self.shape == 'square':
+      method = self.canvas.create_rectangle
+    else:
+      method = self.canvas.create_oval
+    return method(x, y, x + self.size[0], y + self.size[1],
+                  outline=self.border_color)
 
   def clear(self):
-    for light in self.lights:
-      light.configure(fill='black')
+    if not DISABLE_EVERYTHING:
+      def _clear():
+        for light in self.lights:
+          self.canvas.itemconfig(light, fill='black')
+        self.canvas.pack()
+      MainThreadRunner.run_on_main_thread(_clear)
 
   def _display_lights(self, lights):
-    for i, color in enumerate(lights):
-      self.lights[i].configure(fill=ColorTable.to_tk(color))
+    if not DISABLE_EVERYTHING:
+      def display():
+        for i, color in enumerate(lights):
+          self.canvas.itemconfig(self.lights[i], fill=ColorTable.to_tk(color))
+        self.canvas.pack()
+      MainThreadRunner.run_on_main_thread(display)

@@ -7,13 +7,14 @@ import threading
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
+from echomesh.base import GetPrefix
 from echomesh.base import Yaml
 from echomesh.element import Root
-from echomesh.util.thread import MasterRunnable
-from echomesh.base import GetPrefix
 from echomesh.util import Log
 from echomesh.util import Split
 from echomesh.util import UniqueName
+from echomesh.util.thread import MasterRunnable
+from echomesh.util.thread import MainThreadRunner
 
 LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
@@ -46,10 +47,10 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return GetPrefix.get_prefix(self.elements, name, 'element')
 
   def perform_element(self, action, names):
+    is_unload = (action == 'unload')
     full_names = []
     assert isinstance(action, six.string_types), action
     getter = operator.attrgetter(action)
-    is_unload = (action == 'unload')
     with self.lock:
       if '*' in names:
         names = self.elements.keys()
@@ -57,7 +58,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         try:
           full_name, element = self.get_prefix(name)
           if is_unload:
-            self.element.unload()
+            element.unload()
             del self.elements[full_name]
           else:
             getter(element)()

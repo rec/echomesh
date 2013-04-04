@@ -5,6 +5,7 @@ import threading
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util import Importer
+from echomesh.util.thread import MainThreadRunner
 
 LOGGER = Log.logger(__name__)
 
@@ -27,8 +28,10 @@ class LightSingleton(object):
 
   def remove_client(self, client):
     with self.lock:
-      if not self.light_bank.add_client(client):
-        self.light_bank = None
+      if not self.light_bank.remove_client(client):
+        # self.light_bank = None
+        pass
+
 
 _SINGLETON = LightSingleton()
 add_client = _SINGLETON.add_client

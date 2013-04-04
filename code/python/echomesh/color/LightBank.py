@@ -39,15 +39,13 @@ class LightBank(ThreadLoop):
       if self.clients:
         return True
 
-    self.pause()
-
   def single_loop(self):
     with self.lock:
       client_lights = (client() for client in self.clients)
       lights = Light.combine(Light.sup, *client_lights)
       self._display_lights(lights)
-    self.next_time += self.period
-    time.sleep(max(0, self.next_time - time.time()))
+    self._next_time += self.period
+    time.sleep(max(0, self._next_time - time.time()))
 
   def _display_lights(self, lights):
     pass

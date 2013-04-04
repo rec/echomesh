@@ -14,6 +14,9 @@ LOGGER = Log.logger(__name__)
 MESSAGE = """Type help for a list of commands.
 """
 
+FAKE_KEYBOARD_COMMANDS = ['start light.yml', 'unload *', 'quit']
+FAKE_KEYBOARD_DELAY = 4
+
 class Keyboard(ThreadRunnable.ThreadRunnable):
   def __init__(self, sleep, message, processor,
                prompt='echomesh', output=sys.stdout):
@@ -44,19 +47,26 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     buff = ''
     first_time = True
     brackets, braces = 0, 0
+    if FAKE_KEYBOARD_COMMANDS:
+      commands = FAKE_KEYBOARD_COMMANDS
+
     while first_time or brackets > 0 or braces > 0:
       # Keep accepting new lines as long as we have a surplus of open
       # brackets or braces.
       if first_time:
         first_time = False
         self.output.write(self.prompt)
-      else:
         self.output.write(' ' * len(self.prompt))
       self.output.write('!' if self.alert_mode else ':')
       self.output.write(' ')
       self.output.flush()
 
-      data = raw_input()
+      if FAKE_KEYBOARD_COMMANDS:
+        import time
+        time.sleep(FAKE_KEYBOARD_DELAY)
+        data = commands.pop(0)
+      else:
+        data = raw_input()
       buff += data
 
       brackets += (data.count('[') - data.count(']'))

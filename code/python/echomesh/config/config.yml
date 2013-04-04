@@ -177,14 +177,21 @@ light:
   display:
     background: 0x808080
     layout: [0, 0]
-    padding: 2
+    padding:
+      top: 10
+      bottom: 5
+      left: 5
+      right: 5
+      light:
+        x: 3
+        y: 3
     light:
       background: 0x606060
       border:
         color: black
-        width: 1
+        width: 2
       shape: circle
-      size: [10, 10]
+      size: [24, 24]
 
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.
