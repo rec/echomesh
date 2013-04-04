@@ -9,7 +9,7 @@ from echomesh.color.LightBank import LightBank
 from echomesh.color import ColorTable
 from echomesh.util.thread import MainThreadRunner
 
-DISABLE_EVERYTHING = True
+DISABLE_EVERYTHING = not True
 
 def _get_dimension(count, columns, rows):
   if not (columns or rows):
@@ -25,6 +25,11 @@ class TkLightBank(LightBank):
     super(TkLightBank, self)._before_thread_start()
     Config.add_client(self)
     MainThreadRunner.run_on_main_thread(self.initialize_tk)
+
+  def _after_thread_pause(self):
+    super(TkLightBank, self)._after_thread_pause()
+    Config.remove_client(self)
+    MainThreadRunner.run_on_main_thread(self.tkwin.destroy)
 
   def initialize_tk(self):
     import Tkinter

@@ -14,8 +14,7 @@ LOGGER = Log.logger(__name__)
 MESSAGE = """Type help for a list of commands.
 """
 
-FAKE_KEYBOARD_COMMANDS = ['start light.yml', 'unload *', 'quit']
-FAKE_KEYBOARD_DELAY = 4
+USE_STDIO = True
 
 class Keyboard(ThreadRunnable.ThreadRunnable):
   def __init__(self, sleep, message, processor,
@@ -47,9 +46,6 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     buff = ''
     first_time = True
     brackets, braces = 0, 0
-    if FAKE_KEYBOARD_COMMANDS:
-      commands = FAKE_KEYBOARD_COMMANDS
-
     while first_time or brackets > 0 or braces > 0:
       # Keep accepting new lines as long as we have a surplus of open
       # brackets or braces.
@@ -61,10 +57,8 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.output.write(' ')
       self.output.flush()
 
-      if FAKE_KEYBOARD_COMMANDS:
-        import time
-        time.sleep(FAKE_KEYBOARD_DELAY)
-        data = commands.pop(0)
+      if USE_STDIO:
+        data = sys.stdin.readline()
       else:
         data = raw_input()
       buff += data
