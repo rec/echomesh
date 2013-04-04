@@ -2,6 +2,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
 import threading
 import time
 
@@ -11,6 +12,7 @@ import Tkinter
 QUEUE = Queue.Queue()
 TIMEOUT = 2
 BLOCKING = (TIMEOUT is not None)
+USE_STDIO = False
 
 RUNNING = True
 
@@ -19,8 +21,12 @@ def read_keyboard():
   global RUNNING
   while RUNNING:
     print('reading keyboard...')
-    item = raw_input().strip().lower()
-    print(item)
+    if USE_STDIO:
+      item = sys.stdin.readline()
+    else:
+      item = raw_input()
+    item = item.strip().lower()
+    print('read_keyboard:', item)
     if item == 'quit':
       RUNNING = False
     else:
@@ -32,7 +38,7 @@ THREAD.start()
 
 print('starting loop')
 INDEX = 1
-while True:
+while RUNNING:
   try:
     print(INDEX)
     INDEX += 1
