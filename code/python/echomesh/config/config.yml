@@ -189,9 +189,9 @@ light:
       background: 0x606060
       border:
         color: black
-        width: 2
+        width: 0
       shape: circle
-      size: [24, 24]
+      size: [16, 16]
 
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.

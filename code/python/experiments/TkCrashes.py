@@ -24,14 +24,13 @@ def read_keyboard():
     if USE_STDIO:
       item = sys.stdin.readline()
     else:
-      item = raw_input()
+      item = raw_input()  # The program crashes almost immediately after this returns.
     item = item.strip().lower()
     print('read_keyboard:', item)
     if item == 'quit':
       RUNNING = False
     else:
       QUEUE.put(item)
-
 
 THREAD = threading.Thread(target=read_keyboard)
 THREAD.start()

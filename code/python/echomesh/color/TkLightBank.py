@@ -4,12 +4,14 @@ import copy
 import threading
 import time
 
+from six.moves import xrange
+
 from echomesh.base import Config
 from echomesh.color.LightBank import LightBank
 from echomesh.color import ColorTable
 from echomesh.util.thread import MainThreadRunner
 
-DISABLE_EVERYTHING = not True
+BLACK = '#000000'
 
 def _get_dimension(count, columns, rows):
   if not (columns or rows):
@@ -34,14 +36,12 @@ class TkLightBank(LightBank):
   def initialize_tk(self):
     import Tkinter
     self.tkwin = Tkinter.Tk()
-    if not DISABLE_EVERYTHING:
-      self.tkwin.geometry('%dx%d' % (self.width, self.height))
-      self.tkwin.configure(background=self.background)
-      self.canvas = Tkinter.Canvas(self.tkwin,
-                                   width=self.width, height=self.height)
-      self.canvas.pack()
-      self.lights = [self._make_light(i) for i in range(self.count)]
-    MainThreadRunner.run_every_time(self.tkwin.update)
+    self.tkwin.geometry('%dx%d' % (self.width, self.height))
+    self.tkwin.configure(background=self.background)
+    self.canvas = Tkinter.Canvas(self.tkwin,
+                                 width=self.width, height=self.height)
+    self.canvas.pack()
+    self.lights = [self._make_light(i) for i in xrange(self.count)]
     self.tkwin.update()
 
   def config_update(self, get):
@@ -82,17 +82,16 @@ class TkLightBank(LightBank):
                   outline=self.border_color)
 
   def clear(self):
-    if not DISABLE_EVERYTHING:
-      def _clear():
-        for light in self.lights:
-          self.canvas.itemconfig(light, fill='black')
-        self.canvas.pack()
-      MainThreadRunner.run_on_main_thread(_clear)
+    def _clear():
+      for i in xrange(self.count):
+        self.canvas.itemconfig(self.lights[i], fill=BLACK)
+      self.tkwin.update()
+    MainThreadRunner.run_on_main_thread(_clear)
 
   def _display_lights(self, lights):
-    if not DISABLE_EVERYTHING:
-      def display():
-        for i, color in enumerate(lights):
-          self.canvas.itemconfig(self.lights[i], fill=ColorTable.to_tk(color))
-        self.canvas.pack()
-      MainThreadRunner.run_on_main_thread(display)
+    def display():
+      for i in xrange(self.count):
+        color = ColorTable.to_tk(lights[i]) if i < len(lights) else BLACK
+        self.canvas.itemconfig(self.lights[i], fill=color)
+      self.tkwin.update()
+    MainThreadRunner.run_on_main_thread(display)

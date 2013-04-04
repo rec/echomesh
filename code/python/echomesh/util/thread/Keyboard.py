@@ -14,8 +14,6 @@ LOGGER = Log.logger(__name__)
 MESSAGE = """Type help for a list of commands.
 """
 
-USE_STDIO = True
-
 class Keyboard(ThreadRunnable.ThreadRunnable):
   def __init__(self, sleep, message, processor,
                prompt='echomesh', output=sys.stdout):
@@ -52,15 +50,13 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       if first_time:
         first_time = False
         self.output.write(self.prompt)
+      else:
         self.output.write(' ' * len(self.prompt))
       self.output.write('!' if self.alert_mode else ':')
       self.output.write(' ')
       self.output.flush()
 
-      if USE_STDIO:
-        data = sys.stdin.readline()
-      else:
-        data = raw_input()
+      data = sys.stdin.readline()
       buff += data
 
       brackets += (data.count('[') - data.count(']'))

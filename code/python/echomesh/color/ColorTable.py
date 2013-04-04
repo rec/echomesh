@@ -13,6 +13,7 @@ def hex_to_rgb(number):
 def denormalize(color):
   return min(0xFF, int(0x100 * color))
 
+
 def to_tk(color):
   r, g, b = (denormalize(c) for c in color)
   return '#%02x%02x%02x' % (r, g, b)
