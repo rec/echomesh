@@ -44,8 +44,8 @@ class LightBank(ThreadLoop):
     with self.lock:
       client_lights = (client() for client in self.clients)
       lights = Light.combine(Light.sup, *client_lights)
-      self._display_lights(lights)
-    self._next_time += self.period / Speed.speed()
+    self._display_lights(lights)
+    self._next_time += self.period
     time.sleep(max(0, self._next_time - time.time()))
 
   def _display_lights(self, lights):

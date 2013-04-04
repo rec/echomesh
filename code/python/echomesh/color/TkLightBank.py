@@ -24,6 +24,8 @@ def _get_dimension(count, columns, rows):
 
 class TkLightBank(LightBank):
   def _before_thread_start(self):
+    self.tk_count = 0
+    self.light_count = 0
     super(TkLightBank, self)._before_thread_start()
     Config.add_client(self)
     MainThreadRunner.run_on_main_thread(self.initialize_tk)
@@ -94,4 +96,7 @@ class TkLightBank(LightBank):
         color = ColorTable.to_tk(lights[i]) if i < len(lights) else BLACK
         self.canvas.itemconfig(self.lights[i], fill=color)
       self.tkwin.update()
+      self.tk_count += 1
+
     MainThreadRunner.run_on_main_thread(display)
+    self.light_count += 1

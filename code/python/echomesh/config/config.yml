@@ -171,7 +171,10 @@ light:
   enable: false
   count: 240
   order: rgb
-  period: 10ms
+
+  # period needs to be 40ms or up if you are using tk but can be as short as 2ms
+  # if you're using hardware lighting.
+  period: 40ms
   type: tk
 
   display:

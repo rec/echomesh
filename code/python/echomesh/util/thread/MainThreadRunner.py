@@ -15,7 +15,7 @@ def run_one(timeout=None):
     _RUN_EVERY_TIME()
   while True:
     try:
-      _QUEUE.get(timeout is not None, timeout)()
+      _QUEUE.get(False, timeout)()
       if timeout is not None:
         return
     except Queue.Empty:

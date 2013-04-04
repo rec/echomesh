@@ -5,11 +5,11 @@ elements:
   type: print
   text: "{parent.repeat_count} of {parent.repeat}"
 
----
+# ---
 
-type: repeat
-period: 1.2
-repeat: 7
-elements:
-  type: print
-  text: "{parent.repeat_count} of {parent.repeat}"
+# type: repeat
+# period: 1.2
+# repeat: 7
+# elements:
+#   type: print
+#   text: "{parent.repeat_count} of {parent.repeat}"
