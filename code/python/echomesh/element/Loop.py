@@ -50,15 +50,15 @@ class Loop(Element.Element):
     self.thread.start()
 
   def single_loop(self):
-    t = time.time()
-    if t >= self.next_loop_time:
-      self.loop_target(t)
+    now = time.time()
+    if now >= self.next_loop_time:
+      self.loop_target(now)
       self.next_loop_time = self.next_time(self.next_loop_time)
-      if self.next_loop_time <= t:
-        self.next_loop_time = self.next_time(t)
+      if self.next_loop_time <= now:
+        self.next_loop_time = self.next_time(now)
 
     if self.is_running:
-      sleep_time = min(self.timeout, self.next_loop_time - t)
+      sleep_time = min(self.timeout, self.next_loop_time - now)
       if sleep_time > 0:
         time.sleep(sleep_time)
       else:

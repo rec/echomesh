@@ -1,25 +1,30 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element import Element
-from echomesh.element import Loop
+from echomesh.element.Loop import Loop
+from echomesh.expression import Speed
 from echomesh.expression import Units
 from echomesh.util.math import Poisson
 
-class Repeat(Loop.Loop):
+class Repeat(Loop):
   def __init__(self, parent, description):
     super(Repeat, self).__init__(parent, description, name='Repeat')
     self.random_delay = Units.convert(description.get('random_delay', 0))
-    self.period = Units.convert(description.get('period'), 0)
+    self.period = Units.convert(description.get('period', 0))
     self.repeat = Units.convert(description.get('repeat', 'infinite'))
     assert self.random_delay > 0 or self.period > 0, (
       'You must set either a period or a random_delay')
+
+  def _on_reset(self):
+    super(Repeat, self)._on_reset()
     self.repeat_count = 0
 
   def next_time(self, t):
-    res = self.start_time + self.period * (1 + self.repeat_count)
+    speed = Speed.speed()
+    t += self.period / speed
     if self.random_delay:
-      res += Poisson.next_poisson(self.random_delay)
-    return res
+      t += Poisson.next_poisson(self.random_delay) / speed
+    return t
 
   def loop_target(self, t):
     for e in self.elements:

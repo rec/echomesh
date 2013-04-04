@@ -5,6 +5,7 @@ import time
 
 from echomesh.base import Config
 from echomesh.color import Light
+from echomesh.expression import Speed
 from echomesh.expression import Units
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
@@ -44,7 +45,7 @@ class LightBank(ThreadLoop):
       client_lights = (client() for client in self.clients)
       lights = Light.combine(Light.sup, *client_lights)
       self._display_lights(lights)
-    self._next_time += self.period
+    self._next_time += self.period / Speed.speed()
     time.sleep(max(0, self._next_time - time.time()))
 
   def _display_lights(self, lights):
