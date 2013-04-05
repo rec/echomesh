@@ -24,9 +24,9 @@ class Expression(object):
     # TODO: get rid of __call__
     return self(element)
 
-  def is_variable(self, element=None):
+  def is_constant(self, element=None):
     if self.envelope:
-      return self.envelope.is_variable
+      return self.envelope.is_constant
     else:
-      return self.unit_expression.is_variable(element)
+      return self.unit_expression.is_constant(element)
 

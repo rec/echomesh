@@ -25,7 +25,7 @@ def interleave(left, right):
 
 def uninterleave(src):
   """Convert one stereo source into two mono sources."""
-  return src.reshape(2, len(src)/2, order='FORTRAN')
+  return src.reshape(2, len(src) / 2, order='FORTRAN')
 
 def pan_to_angle(pan):
   return (pan + 1.0) * math.pi / 4.0
@@ -39,3 +39,15 @@ def calculate_pan(pan):
 
   angle = pan_to_angle(pan)
   return math.cos(angle), math.sin(angle)
+
+def to_numpy(frames, dtype, sample_width, channels):
+  frames = numpy.fromstring(frames, dtype=dtype)
+  if sample_width == 1:
+    frames *= 256.0
+  elif self.sample_width == 4:
+    frames /= 65536.0
+
+  if channels == 1:
+    return numpy.vstack((frames, numpy.array(frames)))
+  else:
+    return Util.uninterleave(frames)

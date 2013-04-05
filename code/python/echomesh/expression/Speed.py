@@ -1,16 +1,22 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import sys
+
 from echomesh.base import Config
 from echomesh.expression import Units
 
-SPEED_NAME = None
 SPEED = None
 MIN_SPEED = 1E-6
 
+class SpeedClient(object):
+  def config_update(self, get):
+    global SPEED
+    SPEED = max(MIN_SPEED, Units.convert(get('speed')))
+
+_CLIENT = SpeedClient()
+
 def speed():
-  global SPEED, SPEED_NAME
-  s = Config.get('speed')
-  if SPEED_NAME != s:
-    SPEED = max(MIN_SPEED, Units.convert(s))
-    SPEED_NAME = s
+  if SPEED is None:
+    Config.add_client(_CLIENT)
   return SPEED
+

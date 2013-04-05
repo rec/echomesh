@@ -7,8 +7,8 @@ from echomesh.expression import Units
 
 class Envelope(object):
   def __init__(self, data):
-    self.is_variable = isinstance(data, dict)
-    if not self.is_variable:
+    self.is_constant = not isinstance(data, dict)
+    if self.is_constant:
       # TODO: this case is probably now redundant.
       self.data = Units.convert(data)
       self.length = 0
@@ -29,7 +29,7 @@ class Envelope(object):
       self.slot = 0
 
   def interpolate(self, time):
-    if not self.is_variable:
+    if self.is_constant:
       return self.data
     elif time <= 0.0:
       return self.data[0]

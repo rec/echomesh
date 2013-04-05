@@ -6,7 +6,7 @@ from echomesh.expression.Expression import Expression
 from echomesh.util import Call
 from echomesh.util import Registry
 
-_REGISTRY = Registry.Registry('scene types')
+_REGISTRY = Registry.Registry('pattern types')
 
 def make_renderer(element, description):
   return _REGISTRY.get(description.pop('type'))(element, description)
@@ -25,8 +25,8 @@ class Renderer(object):
         v = Expression(v, element)
       self.table[k] = v
     self.function = function
-    scene_desc = desc.get('scene')
-    self.scene = scene_desc and make_renderer(element, scene_desc)
+    pattern_desc = desc.get('pattern')
+    self.pattern = pattern_desc and make_renderer(element, pattern_desc)
 
   def evaluate(self):
     return self()
@@ -34,17 +34,17 @@ class Renderer(object):
   def __call__(self):
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
     try:
-      del table['scene']
+      del table['pattern']
     except:
       pass
 
-    if self.scene:
-      return self.function(self.scene(), **table)
+    if self.pattern:
+      return self.function(self.pattern(), **table)
     else:
       return self.function(**table)
 
-  def is_variable(self):
-    return any(v.is_variable() for v in self.table.itervalues())
+  def is_constant(self):
+    return all(v.is_constant() for v in self.table.itervalues())
 
 def inject(element, desc):
   return Renderer(element, desc, Combiner.inject)

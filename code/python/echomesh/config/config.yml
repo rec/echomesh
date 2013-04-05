@@ -25,10 +25,11 @@ audio:
   input:
     # This long section configures the audio input, usually a microphone.
 
+    chunk_size: 1024   # The number of samples in one chunk.
+
     # These numbers control the moving averages of the microphone levels that
     # are used to trigger mic level changes.
     average:
-      chunk_size: 1024   # The number of samples in one chunk.
       group_size: 1      # The number of chunks in a group.  All the samples in
                          # group are averaged into one number.
                          # A group_size of 1 (or empty) disables grouping.

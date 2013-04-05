@@ -41,14 +41,14 @@ class _Counter(object):
     if kwds:
       LOGGER.error('Unused keywords %s', kwds)
 
-  def is_variable(self):
-    return self.count > 1
+  def is_constant(self):
+    return self.count <= 1
 
   def evaluate(self):
     return self()
 
   def __call__(self):
-    if not self.is_variable():
+    if self.is_constant():
       return self.begin
 
     count = int(Speed.speed() * self.element.elapsed_time() // self.period)

@@ -41,7 +41,7 @@ class ImageSprite(Runnable):
     self._time = 0  # start time.
     if duration is None:
       for env in [self._position, self._rotation, self._size, self._z]:
-        if not env.is_variable():
+        if env.is_constant():
           duration = max(duration, env.length)
       if duration is None:
         duration = Units.INFINITY

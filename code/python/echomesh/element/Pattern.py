@@ -3,16 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.color import LightSingleton
 from echomesh.element import Element
 
-class Scene(Element.Element):
+class Pattern(Element.Element):
   def __init__(self, parent, description):
-    super(Scene, self).__init__(parent, description)
+    super(Pattern, self).__init__(parent, description)
     assert parent.__class__.__name__ == 'Light'
-    self.renderer = parent.renderers[description['scene']]
+    self.renderer = parent.renderers[description['pattern']]
 
   def _on_run(self):
-    super(Scene, self)._on_run()
+    super(Pattern, self)._on_run()
     LightSingleton.add_client(self.renderer)
 
   def _on_pause(self):
-    super(Scene, self)._on_pause()
+    super(Pattern, self)._on_pause()
     LightSingleton.remove_client(self.renderer)

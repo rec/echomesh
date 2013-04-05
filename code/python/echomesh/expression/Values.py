@@ -26,7 +26,7 @@ class _Values(object):
   def __call__(self, op, evaluator, element=None):
     return self._interpret(op, evaluator, element, True)
 
-  def is_variable(self, op, element=None):
+  def is_constant(self, op, element=None):
     return self._interpret(op, None, element, False)
 
   def _interpret(self, op, evaluator, element, is_evaluating):
@@ -47,18 +47,18 @@ class _Values(object):
               self.functions.get('.'.join(parts))(evaluator()))
 
     if name == 'system':
-      functor, is_variable = self.system.get('.'.join(parts))
+      functor, is_constant = self.system.get('.'.join(parts))
       if not is_evaluating:
-        return is_variable
+        return is_constant
     elif name in ['element', 'global', 'local', 'parent']:
       functor = Locator.get_variable(element, name, parts)
     else:
       raise Exception("Shouldn't get here.")
 
-    return Call.call(functor) if is_evaluating else functor.is_variable()
+    return Call.call(functor) if is_evaluating else functor.is_constant()
 
 _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
 
 evaluate = _VALUES.evaluate
-is_variable = _VALUES.is_variable
+is_constant = _VALUES.is_constant
 

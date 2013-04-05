@@ -8,12 +8,12 @@ variables:
     count:  config.light.count
     period: 2ms
 
-scenes:
+patterns:
   one:
     type: insert
     offset: local.loop
     length: 240
-    scene:
+    pattern:
       type: spread
       begin: red
       end: white
@@ -24,7 +24,7 @@ scenes:
     offset: local.loop / 2
     length: 240
     skip: 2
-    scene:
+    pattern:
       type: spread
       begin: red
       end: blue
@@ -35,5 +35,5 @@ elements:
   -
     begin: 0
     duration: 3
-    type: scene
-    scene: one
+    type: pattern
+    pattern: one

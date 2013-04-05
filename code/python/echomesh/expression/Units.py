@@ -108,8 +108,8 @@ class UnitExpression(object):
     else:
       return val
 
-  def is_variable(self, element=None):
-    return self.expression and self.expression.is_variable(element)
+  def is_constant(self, element=None):
+    return not self.expression or self.expression.is_constant(element)
 
 def convert(number, element=None, assume_minutes=True):
   if number is None:

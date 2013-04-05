@@ -36,7 +36,7 @@ TEST_DATA = Yaml.decode_one("""
 TEST_DATA2 = Yaml.decode_one("""
   type: insert
   offset: 5
-  scene:
+  pattern:
     type: spread
     begin: red
     end: white

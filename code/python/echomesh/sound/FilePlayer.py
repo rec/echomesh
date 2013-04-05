@@ -1,4 +1,4 @@
-# from __future__ import absolute_import, division, print_function, unicode_literals
+from __future__ import absolute_import, division, print_function #, unicode_literals
 
 import sndhdr
 
@@ -63,7 +63,7 @@ class FilePlayer(ThreadLoop):
   def config_update(self, get):
     self.frames_per_buffer = get('audio', 'output', 'frames_per_buffer')
     self.chunk_size = get('audio', 'output', 'chunk_size')
-    self.index = Sound.get_output_index(get)
+    self.index = Sound.get_index_from_config(Sound.OUTPUT, get)
 
   def open_stream(self):
     try:
@@ -143,8 +143,10 @@ class FilePlayer(ThreadLoop):
   def _pan_and_fade(self, frames):
     if self.passthrough:
       return frames
-    left, right = self._convert(frames)
-    if not self.level.is_variable():
+
+    left, right = Util.to_numpy(frames, self.dtype,
+                                self.sample_width, self.channels)
+    if self.level.is_constant():
       left *= self.current_level
       right *= self.current_level
     else:
@@ -154,7 +156,7 @@ class FilePlayer(ThreadLoop):
       right *= levels
       self.current_level = next_level
 
-    if not self.pan.is_variable():
+    if self.pan.is_constant():
       lpan, rpan = Util.calculate_pan(self.current_pan)
       left *= lpan
       right *= rpan

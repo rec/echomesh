@@ -12,7 +12,7 @@ LOGGER = Log.logger(__name__)
 
 class Light(Sequence.Sequence):
   def __init__(self, parent, description):
-    self.renderers = Renderer.make_renderers(self, description.get('scenes', {}))
+    self.renderers = Renderer.make_renderers(self, description.get('patterns', {}))
     self.device = None
     self.light_count = Config.get('light', 'count')
     self.lock = threading.Lock()
