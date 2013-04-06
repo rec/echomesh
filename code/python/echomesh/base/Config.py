@@ -25,9 +25,6 @@ def add_client(client):
   CLIENTS.add(client)
   client.config_update(get)
 
-def remove_client(client):
-  CLIENTS.remove(client)
-
 def update_clients():
   for c in CLIENTS:
     c.config_update(get)

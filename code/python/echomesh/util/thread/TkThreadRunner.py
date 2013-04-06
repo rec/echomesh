@@ -5,14 +5,19 @@ import Queue
 
 _QUEUE = None
 _LOCK = threading.Lock()
+MAIN_THREAD = threading.current_thread()
 
-def run(item=None):
+def defer(item):
+  with _LOCK:
+    global _QUEUE
+    if _QUEUE:
+      _QUEUE.put(item)
+
+def run():
   with _LOCK:
     global _QUEUE
     if not _QUEUE:
       _QUEUE = Queue.Queue()
-    if item:
-      _QUEUE.put(item)
 
 def stop():
   with _LOCK:
@@ -20,10 +25,8 @@ def stop():
     if _QUEUE:
       _QUEUE = None
 
-_THREAD = threading.current_thread()
-
 def execute_queue(timeout=None):
-  assert threading.current_thread() is _THREAD
+  assert threading.current_thread() is MAIN_THREAD
   while _QUEUE:
     try:
       _QUEUE.get(False, timeout)()
@@ -31,4 +34,3 @@ def execute_queue(timeout=None):
         return
     except Queue.Empty:
       return
-
