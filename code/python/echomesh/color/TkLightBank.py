@@ -28,12 +28,12 @@ class TkLightBank(LightBank):
     self.light_count = 0
     super(TkLightBank, self)._before_thread_start()
     Config.add_client(self)
-    TkThreadRunner.run_on_main_thread(self.initialize_tk)
+    TkThreadRunner.run(self.initialize_tk)
 
   def _after_thread_pause(self):
     super(TkLightBank, self)._after_thread_pause()
     Config.remove_client(self)
-    TkThreadRunner.run_on_main_thread(self.tkwin.destroy)
+    TkThreadRunner.run(self.tkwin.destroy)
 
   def initialize_tk(self):
     import Tkinter
@@ -88,7 +88,7 @@ class TkLightBank(LightBank):
       for i in xrange(self.count):
         self.canvas.itemconfig(self.lights[i], fill=BLACK)
       self.tkwin.update()
-    TkThreadRunner.run_on_main_thread(_clear)
+    TkThreadRunner.run(_clear)
 
   def _display_lights(self, lights):
     def display():
@@ -98,5 +98,5 @@ class TkLightBank(LightBank):
       self.tkwin.update()
       self.tk_count += 1
 
-    TkThreadRunner.run_on_main_thread(display)
+    TkThreadRunner.run(display)
     self.light_count += 1

@@ -58,8 +58,8 @@ class Display(Runnable.Runnable):
     while self.is_running:
       if self.display:
         if self.display.loop_running():
-          TkThreadRunner.run_one()
+          TkThreadRunner.execute_queue()
         else:
           self.pause()
       else:
-        TkThreadRunner.run_one(self.timeout)
+        TkThreadRunner.execute_queue(self.timeout)
