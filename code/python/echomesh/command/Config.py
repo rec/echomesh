@@ -13,63 +13,31 @@ from echomesh.base import Yaml
 from echomesh.command import Register
 from echomesh.util import Context
 from echomesh.util import Log
-from echomesh.util.Registry import Registry
 
 LOGGER = Log.logger(__name__)
 
-USAGE = 'Usage: config command [context] [value [... value]]'
 
-_REGISTRY = Registry('Config commands')
-
-NEEDS_NO_VALUES = set(('compact', 'changes', 'save'))
-NEEDS_VALUES = set(('set', 'get'))
-
-def config(_, *parts):
-  if len(parts) < 2:
-    return LOGGER.error(USAGE)
-
-  contexts = []
-  command = ''
-  values = []
-  for p in parts:
-    try:
-      contexts.append(Context.resolve(p))
-    except:
-      if command:
-        values.append(p)
-      else:
-        command = p
-
-  if not command:
-    return LOGGER.error(USAGE)
-
-  try:
-    key, cmd = _REGISTRY.get_key_and_value(command)
-  except:
-    return LOGGER.error('Didn\'t understand command "config %s"', command)
-
-  if values:
-    if key in NEEDS_NO_VALUES:
-      return LOGGER.error('"config %s" doesn\'t take any values.', key)
-  else:
-    if key in NEEDS_VALUES:
-      return LOGGER.error('"config %s" needs to be given values.', key)
-
-  return cmd(values, contexts)
+Register.register_all(
+  changes=(_changes, CHANGES_HELP),
+  clean=(_clean, CLEAN_HELP),
+  get=(_get, GET_HELP),
+  save=(_save, SAVE_HELP),
+  set=(_set, SET_HELP),
+)
 
 def _get_file(context='master'):
   config_file = CommandFile.config_file(context)
   return config_file, Yaml.read(config_file)
 
-def _compact(values, contexts):
+def _clean(_):
   config_file, results = _get_file()
   if results and len(results) > 1:
     Yaml.write(config_file, Merge.merge(*results))
 
-def _get(values, contexts):
+def _get(_, value, *more):
   errors = []
   successes = []
-  for v in values:
+  for v in (value,) + more:
     try:
       successes.append([v, echomesh.base.Config.get(*v.split('.'))])
     except:
@@ -82,7 +50,6 @@ def _get(values, contexts):
                  Join.join_words(errors))
 
 _LOCAL_CHANGES = {}
-_REDO_STACK = []
 
 def _get_raw_file(context='master'):
   config_file = CommandFile.config_file(context)
@@ -92,17 +59,19 @@ def _get_raw_file(context='master'):
 
 def _raw_write(config_file, data):
   first = True
+  # TODO: open a temp file and write at the end.
   with open(config_file, 'wb') as f:
     for d in data:
       if first:
         first = False
       else:
         f.write(Yaml.SEPARATOR)
-      f.write(data[i])
+      f.write(data[d])
   # Bug: we'll never be able to override command line arguments this way.  :-D
   echomesh.base.Config.recalculate()
 
-def _set(values, contexts):
+def _set(_, value, *more):
+  values = (value, ) + more
   for address, value in MergeConfig.merge_assignments(CONFIG, values):
     LOGGER.info('Set %s=%s', '.'.join(address), value)
     cfg = _LOCAL_CHANGES
@@ -110,38 +79,10 @@ def _set(values, contexts):
       cfg = cfg.setdefault(a, {})
     cfg[address[-1]] = value
 
-def _redo(values, contexts):
-  if not _REDO_STACK:
-    return LOGGER.error('There\'s nothing to redo.')
-  if len(values) > 1:
-    return LOGGER.error('"config undo" takes at most one argument.')
-  if values:
-    if values[0] == 'all':
-      is_all = True
-    else:
-      return LOGGER.error('"config redo" doesn\'t understand %s.', values[0])
-  else:
-    is_all = False
-
-  config_file, data = _get_raw_file()
-
-  while _REDO_STACK:
-    is_local, value = _REDO_STACK.pop()
-    if is_local:
-      global _LOCAL_CHANGES
-      _LOCAL_CHANGES = value
-      LOGGER.info('Redid local changes.')
-    else:
-      data.append(value)
-    if not is_all:
-      break
-
-  _raw_write(config_file, data)
-
 def _save(values, contexts):
   global _LOCAL_CHANGES
   if _LOCAL_CHANGES:
-    config_file, data = _raw_read()
+    config_file, data = _get_raw_file()
     data.append(_LOCAL_CHANGES)
     _LOCAL_CHANGES = {}
     _raw_write(config_file, data)
@@ -152,42 +93,7 @@ def _save(values, contexts):
 def _changes(values, contexts):
   LOGGER.info(Yaml.encode_one(_LOCAL_CHANGES))
 
-def _undo(values, contexts):
-  if len(values) > 1:
-    return LOGGER.error('"config undo" takes at most one argument.')
 
-  config_file, data = _get_raw_file()
-  if values:
-    v = values[0]
-    if v == 'all':
-      length = 0
-    elif v == 'top':
-      length = 1
-    else:
-      return LOGGER.error('Don\'t understand "config undo %s"', v)
-  else:
-    length = max(len(data) - 1, 0)
-
-  if _LOCAL_CHANGES:
-    _REDO_STACK.push([True, Yaml.encode_one(_LOCAL_CHANGES)])
-    _LOCAL_CHANGES.clear()
-    if not values:
-      LOGGER.info('Cleared local changes.')
-      return
-
-  for d in parts[length:]:
-    _REDO_STACK.push([False, d])
-  _raw_write(config_file, data[0:length])
-
-_REGISTRY.register_all(
-  changes=_changes,
-  compact=_compact,
-  get=_get,
-  redo=_redo,
-  save=_save,
-  set=_set,
-  undo=_undo,
-)
 
 CONFIG_HELP = """
 The "config" commands allows you to manipulate configuration values in files
@@ -240,9 +146,9 @@ Examples:
   Reverses the effects of "config undo".
 
 
-"config compact":
+"config clean":
   Because each change is saved separately in your configuration file, the
-  files can become long and redundant.  Compacting them removes this redundancy,
+  files can become long and redundant.  Cleaning them removes this redundancy,
   but you lose all your comments and your ability to undo.
 
 
@@ -275,4 +181,101 @@ Examples:
 
 SEE_ALSO = ['show context']
 
-Register.register(config, 'config', CONFIG_HELP, SEE_ALSO)
+Register.registe(config, 'config', CONFIG_HELP, SEE_ALSO)
+
+
+
+def config(_, *parts):
+  if len(parts) < 1:
+    return LOGGER.error(USAGE)
+
+  contexts = []
+  command = ''
+  values = []
+  for p in parts:
+    try:
+      contexts.append(Context.resolve(p))
+    except:
+      if command:
+        values.append(p)
+      else:
+        command = p
+
+  if not command:
+    return LOGGER.error(USAGE)
+
+  try:
+    key, cmd = _REGISTRY.get_key_and_value(command)
+  except:
+    return LOGGER.error('Didn\'t understand command "config %s"', command)
+
+  if values:
+    if key in NEEDS_NO_VALUES:
+      return LOGGER.error('"config %s" doesn\'t take any values.', key)
+  else:
+    if key in NEEDS_VALUES:
+      return LOGGER.error('"config %s" needs to be given values.', key)
+
+  return cmd(values, contexts)
+
+_REGISTRY = Registry('Config commands')
+
+NEEDS_NO_VALUES = set(('clean', 'changes', 'save'))
+NEEDS_VALUES = set(('set', 'get'))
+
+from echomesh.util.Registry import Registry
+
+def _redo(values, contexts):
+  if not _REDO_STACK:
+    return LOGGER.error('There\'s nothing to redo.')
+  if len(values) > 1:
+    return LOGGER.error('"config undo" takes at most one argument.')
+  if values:
+    if values[0] == 'all':
+      is_all = True
+    else:
+      return LOGGER.error('"config redo" doesn\'t understand %s.', values[0])
+  else:
+    is_all = False
+
+  config_file, data = _get_raw_file()
+
+  while _REDO_STACK:
+    is_local, value = _REDO_STACK.pop()
+    if is_local:
+      global _LOCAL_CHANGES
+      _LOCAL_CHANGES = value
+      LOGGER.info('Redid local changes.')
+    else:
+      data.append(value)
+    if not is_all:
+      break
+
+  _raw_write(config_file, data)
+
+def _undo(values, contexts):
+  if len(values) > 1:
+    return LOGGER.error('"config undo" takes at most one argument.')
+
+  config_file, data = _get_raw_file()
+  if values:
+    v = values[0]
+    if v == 'all':
+      length = 0
+    elif v == 'top':
+      length = 1
+    else:
+      return LOGGER.error('Don\'t understand "config undo %s"', v)
+  else:
+    length = max(len(data) - 1, 0)
+
+  if _LOCAL_CHANGES:
+    _REDO_STACK.push([True, Yaml.encode_one(_LOCAL_CHANGES)])
+    _LOCAL_CHANGES.clear()
+    if not values:
+      LOGGER.info('Cleared local changes.')
+      return
+
+  for d in parts[length:]:
+    _REDO_STACK.push([False, d])
+  _raw_write(config_file, data[0:length])
