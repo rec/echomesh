@@ -5,7 +5,7 @@ import threading
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util import Importer
-from echomesh.util.thread import MainThreadRunner
+from echomesh.util.thread import TkThreadRunner
 
 LOGGER = Log.logger(__name__)
 

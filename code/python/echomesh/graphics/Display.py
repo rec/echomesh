@@ -4,7 +4,7 @@ from echomesh.base import Config
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
 from echomesh.util import Log
-from echomesh.util.thread import MainThreadRunner
+from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
@@ -58,8 +58,8 @@ class Display(Runnable.Runnable):
     while self.is_running:
       if self.display:
         if self.display.loop_running():
-          MainThreadRunner.run_one()
+          TkThreadRunner.run_one()
         else:
           self.pause()
       else:
-        MainThreadRunner.run_one(self.timeout)
+        TkThreadRunner.run_one(self.timeout)

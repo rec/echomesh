@@ -34,6 +34,6 @@ patterns:
 elements:
   -
     begin: 0
-    duration: 3
+    duration: 6
     type: pattern
     pattern: one

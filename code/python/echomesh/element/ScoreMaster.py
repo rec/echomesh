@@ -14,7 +14,7 @@ from echomesh.util import Log
 from echomesh.util import Split
 from echomesh.util import UniqueName
 from echomesh.util.thread import MasterRunnable
-from echomesh.util.thread import MainThreadRunner
+from echomesh.util.thread import TkThreadRunner
 
 LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
