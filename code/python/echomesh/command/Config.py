@@ -93,7 +93,7 @@ def _raw_write(config_file, data):
         first = False
       else:
         f.write(Yaml.SEPARATOR)
-      f.write(data[d])
+      f.write(Yaml.encode_one(d))
   # Bug: we'll never be able to override command line arguments this way.  :-D
   echomesh.base.Config.recalculate()
 
