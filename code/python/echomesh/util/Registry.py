@@ -48,6 +48,10 @@ class Registry(object):
   def get(self, name):
     return self._get(name)[1][0]
 
+  def get_key_and_value(self, name):
+    key, values = self._get(name)
+    return key, values[0]
+
   def get_help(self, name):
     full_name, (_, help_text, see_also) = self._get(name)
 

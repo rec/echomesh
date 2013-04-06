@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import GetPrefix
@@ -11,26 +13,45 @@ def merge_config():
   config = Yaml.read(CommandFile.config_file('default'))[0]
   assert config, 'Unable to read default config file'
 
-  return _merge_assignments(_merge_file_config(config), _get_assignments())
+  _merge_file_config(config)
+  _set_project_path()
+  merge_assignments(config, Args.ASSIGNMENT_ARGS)
+  return config
 
-def _merge_assignments(config, assignments):
-  for address, value in assignments:
+def merge_assignments(config, assignments):
+  results = []
+  for assignment in assignments:
+    try:
+      address, value = assignment.split('=', 1)
+    except AttributeError:
+      address, value = assignment
+    try:
+      address = address.split('.')
+    except AttributeError:
+      pass
+    try:
+      value = Yaml.decode_one(value)
+    except Exception as e:
+      print('ERROR: while decoding value %s' % value)
+      continue
     try:
       cfg = config
+      path = []
       for i, field in enumerate(address):
         k, v = GetPrefix.get_prefix(cfg, field, 'merge_config')
+        path.append(k)
         if i < len(address) - 1:
           cfg = v
         else:
           cfg[k] = value
+          results.append([path, value])
 
     except Exception as e:
       _add_exception_suffix(e, 'while merging', '.'.join(address),
                             '=', str(value))
       raise
-  return config
+  return results
 
-def _get_assignments():
   assignments = []
   for address, value in Args.ASSIGNMENT_ARGS:
     try:
@@ -41,25 +62,17 @@ def _get_assignments():
     else:
       assignments.append([address, value])
 
-  if Args.YAML_ARGS:
-    arg = ' '.join(Args.YAML_ARGS)
-    try:
-      arg_config = Yaml.decode_one(arg)
-    except Exception as e:
-      print('%s while decoding command line arguments', e)
-    else:
-      assignments += table_to_parts(arg_config)
-
+def _set_project_path():
   # First, find out if we're autostarting.
   autostart = False
-  for address, value in assignments:
+  for address, value in Args.ASSIGNMENT_ARGS:
     if len(address) == 1 and 'autostart'.startswith(address[0]):
       autostart = True
       break
 
   # Get the project field out of the command line if it exists,
   # before we get any file past the default configuration.
-  for address, value in assignments:
+  for address, value in Args.ASSIGNMENT_ARGS:
     if len(address) == 1 and 'project'.startswith(address[0]):
       Path.set_project_path(value, show_error=True, prompt=not autostart)
       CommandFile.compute_command_path()
@@ -67,7 +80,6 @@ def _get_assignments():
   else:
     Path.set_project_path(show_error=True)
 
-  return assignments
 
 def _merge_file_config(config):
   for f in list(reversed(CommandFile.expand('config.yml')))[1:]:
@@ -83,18 +95,6 @@ def _merge_file_config(config):
       except Exception as e:
         _add_exception_suffix(e, ' while merging config file', f)
         raise
-  return config
-
-def table_to_parts(table):
-  parts = []
-  def to_parts(t, prefix):
-    for k, v in t.iteritems():
-      if isinstance(v, dict):
-        to_parts(v, prefix + [k])
-      else:
-        parts.append([prefix + [k], v])
-  to_parts(table, [])
-  return parts
 
 def _add_exception_suffix(e, *suffixes):
   # TODO: use traceback!!

@@ -29,10 +29,15 @@ def read(fname, allow_empty=True):
   with closing(f):
     return decode(f)
 
+SEPARATOR = '\n---\n'
+
 def write(fname, *items):
   try:
+    written = False
     with closing(_open_userfile(fname, 'w')) as f:
-      yaml.safe_dump_all(items, f)
+      if written:
+        f.write(SEPARATOR)
+      yaml.safe_dump_all(item, f)
   except Exception as e:
     print("Can't write filename", fname, e.message)
 

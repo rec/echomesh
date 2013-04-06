@@ -1,17 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 ASSIGNMENT_ARGS = []
-YAML_ARGS = []
 
 def set_arguments(argv):
   args = argv[1:]
   if args:
     a = args[0].strip()
     if a:
-      if a[0] in '{[':
-        YAML_ARGS[:] = args
-      else:
-        ASSIGNMENT_ARGS[:] = split_args(args)
+      ASSIGNMENT_ARGS[:] = split_args(args)
 
 def split_args(args):
   address = []
