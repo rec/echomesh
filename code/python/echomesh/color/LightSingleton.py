@@ -29,7 +29,7 @@ class LightSingleton(object):
   def remove_client(self, client):
     with self.lock:
       if not self.light_bank.remove_client(client):
-        self.light_bank = None
+        self.light_bank.pause()
         pass
 
 
