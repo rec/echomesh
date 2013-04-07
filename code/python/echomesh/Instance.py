@@ -45,7 +45,8 @@ class Instance(MasterRunnable):
 
   def set_broadcasting(self, b):
     self._broadcasting = b
-    self.keyboard.alert_mode = b
+    if self.keyboard:
+      self.keyboard.alert_mode = b
 
   def send(self, **data):
     self.socket.send(data)

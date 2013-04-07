@@ -31,6 +31,8 @@ class TkLightBank(LightBank):
     self.light_count = 0
     self.count_difference = 1
     self.lock = threading.Lock()
+    self.last_get = {}
+    self.tkwin = None
 
     super(TkLightBank, self)._before_thread_start()
     Config.add_client(self)
@@ -53,12 +55,13 @@ class TkLightBank(LightBank):
 
   def initialize_tk(self):
     with self.lock:
-      import Tkinter
-      self.tkwin = Tkinter.Tk()
+      if not self.tkwin:
+        import Tkinter
+        self.tkwin = Tkinter.Tk()
+        self.canvas = Tkinter.Canvas(self.tkwin,
+                                     width=self.width, height=self.height)
       self.tkwin.geometry('%dx%d' % (self.width, self.height))
       self.tkwin.configure(background=self.background)
-      self.canvas = Tkinter.Canvas(self.tkwin,
-                                   width=self.width, height=self.height)
       self.canvas.pack()
       self.lights = [self._make_light(i) for i in xrange(self.count)]
       self.tkwin.update()
@@ -66,6 +69,11 @@ class TkLightBank(LightBank):
   def config_update(self, get):
     def _get(*items):
       return get(*(('light', 'display') + items))
+
+    last_get = _get()
+    if self.last_get == last_get:
+      return
+    self.last_get = copy.deepcopy(last_get)
 
     def _color(*items):
       return ColorTable.to_tk(ColorTable.to_color(_get(*items)))
@@ -84,6 +92,7 @@ class TkLightBank(LightBank):
     self.height = (self.padding['top'] +
                    self.rows * (self.size[1] + self.padding['light']['y']) +
                    self.padding['bottom'])
+    TkThreadRunner.defer(self.initialize_tk)
 
   def _make_light(self, index):
     column = index % self.columns

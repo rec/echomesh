@@ -12,7 +12,6 @@ patterns:
   one:
     type: insert
     offset: local.loop
-    length: 240
     pattern:
       type: spread
       begin: red
@@ -22,7 +21,6 @@ patterns:
   two:
     type: insert
     offset: local.loop / 2
-    length: 240
     skip: 2
     pattern:
       type: spread
