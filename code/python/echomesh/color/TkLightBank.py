@@ -33,11 +33,12 @@ class TkLightBank(LightBank):
     self.lock = threading.Lock()
     self.last_get = {}
     self.tkwin = None
+    self.count = 0
+    self.lights = []
 
     super(TkLightBank, self)._before_thread_start()
-    Config.add_client(self)
     TkThreadRunner.run()
-    TkThreadRunner.defer(self.initialize_tk)
+    Config.add_client(self)
 
   def destroy(self):
     TkThreadRunner.stop()
@@ -55,11 +56,18 @@ class TkLightBank(LightBank):
 
   def initialize_tk(self):
     with self.lock:
-      if not self.tkwin:
+      if self.tkwin:
+        import Tkinter
+        self.canvas.delete(Tkinter.ALL)
+      else:
         import Tkinter
         self.tkwin = Tkinter.Tk()
         self.canvas = Tkinter.Canvas(self.tkwin,
                                      width=self.width, height=self.height)
+      if 'rectangle'.startswith(self.shape):
+        self.method = self.canvas.create_rectangle
+      else:
+        self.method = self.canvas.create_oval
       self.tkwin.geometry('%dx%d' % (self.width, self.height))
       self.tkwin.configure(background=self.background)
       self.canvas.pack()
@@ -67,14 +75,15 @@ class TkLightBank(LightBank):
       self.tkwin.update()
 
   def config_update(self, get):
-    self.count = Config.get('light', 'count')
+    count = Config.get('light', 'count')
     def _get(*items):
       return get(*(('light', 'display') + items))
 
     last_get = _get()
-    if self.last_get == last_get:
+    if self.last_get == last_get and self.count == countn:
       return
     self.last_get = copy.deepcopy(last_get)
+    self.count = count
 
     def _color(*items):
       return ColorTable.to_tk(ColorTable.to_color(_get(*items)))
@@ -103,12 +112,8 @@ class TkLightBank(LightBank):
 
     y = (self.padding['top'] +
          row * (self.size[1] + self.padding['light']['y']))
-    if self.shape == 'square':
-      method = self.canvas.create_rectangle
-    else:
-      method = self.canvas.create_oval
-    return method(x, y, x + self.size[0], y + self.size[1],
-                  outline=self.border_color)
+    return self.method(x, y, x + self.size[0], y + self.size[1],
+                       outline=self.border_color)
 
   def clear(self):
     def _clear():
