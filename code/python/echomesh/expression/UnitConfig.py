@@ -11,7 +11,7 @@ class _Client(object):
   def __init__(self):
     self.clients = {}
     self.lock = threading.Lock()
-    Config.add_client(self.config_update)
+    Config.add_client(self)
 
   def get(self, *path):
     with self.lock:
@@ -24,7 +24,7 @@ class _Client(object):
   def config_update(self, get):
     with self.lock:
       for path in self.clients.iterkeys():
-        self.clients[path] = get(*path)
+        self.clients[path] = Units.convert(Config.get(*path))
 
 _CLIENT = _Client()
 

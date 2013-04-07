@@ -58,7 +58,7 @@ class ConfigSetter(object):
 CONFIG = ConfigSetter()
 try:
   from echomesh.base import Config
-  Config.add_client(CONFIG.config_update)
+  Config.add_client(CONFIG)
 except:
   CONFIG.config_update(None)
 

@@ -18,7 +18,7 @@ class PeerSocket(MasterRunnable):
     self.port = -1
     self.socket = None
 
-    Config.add_client(self.config_update)
+    Config.add_client(self)
 
   def router(self, data):
     Remote.execute(self.instance, **data)

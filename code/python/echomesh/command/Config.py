@@ -61,13 +61,15 @@ def save(_, *values):
 
 def _set(_, value, *more):
   values = (value, ) + more
-  for address, value in MergeConfig.merge_assignments(CONFIG, values):
+  assignments = MergeConfig.merge_assignments(CONFIG, values)
+  for address, value in assignments:
     LOGGER.info('Set %s=%s', '.'.join(address), value)
     cfg = _LOCAL_CHANGES
     for a in address[:-1]:
       cfg = cfg.setdefault(a, {})
     cfg[address[-1]] = value
-
+  if assignments:
+    echomesh.base.Config.update_clients()
 
 def _get_file(context='master'):
   config_file = CommandFile.config_file(context)

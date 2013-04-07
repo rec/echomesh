@@ -16,6 +16,8 @@ CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
 CLIENTS = WeakSet()
 
+THROW_EXCEPTIONS = True
+
 def recalculate():
   _fix_home_directory_environment_variable()
   _reset_configs()
@@ -23,11 +25,15 @@ def recalculate():
 
 def add_client(client):
   CLIENTS.add(client)
-  client(get)
+  client.config_update(get)
 
 def update_clients():
   for c in CLIENTS:
-    c(get)
+    try:
+      c.config_update(get)
+    except:
+      if THROW_EXCEPTIONS:
+        raise
 
 def get(*parts):
   config, unvisited = CONFIG, CONFIGS_UNVISITED

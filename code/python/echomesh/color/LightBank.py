@@ -6,6 +6,7 @@ import time
 from echomesh.base import Config
 from echomesh.color import Combiner
 from echomesh.expression import Units
+from echomesh.expression import UnitConfig
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
@@ -41,7 +42,7 @@ class LightBank(ThreadLoop):
 
   def single_loop(self):
     with self.lock:
-      client_lights = (client() for client in self.clients)
+      client_lights = [client() for client in self.clients]
       lights = Combiner.combine(Combiner.sup, *client_lights)
     self._display_lights(lights)
     self._next_time += self.period

@@ -169,8 +169,9 @@ git:
 # Enable lighting control.  Note that your program has to be running as sudo
 # for the lighting to work.
 light:
-  enable: false
+  brightness: 50%
   count: 240
+  enable: false
   order: rgb
 
   # period needs to be 40ms or up if you are using tk but can be as short as 2ms
