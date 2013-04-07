@@ -36,7 +36,7 @@ class Display(Runnable.Runnable):
       keywords[k] = Config.get('pi3d', k)
 
     self.display = pi3d.Display.create(**keywords)
-    Config.add_client(self)
+    Config.add_client(self.config_update)
     Shader.SHADER()  # Make sure that the shader is created in the main thread!
 
   def config_update(self, get):

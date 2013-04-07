@@ -23,11 +23,11 @@ def recalculate():
 
 def add_client(client):
   CLIENTS.add(client)
-  client.config_update(get)
+  client(get)
 
 def update_clients():
   for c in CLIENTS:
-    c.config_update(get)
+    c(get)
 
 def get(*parts):
   config, unvisited = CONFIG, CONFIGS_UNVISITED

@@ -6,7 +6,7 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.expression import Speed
+from echomesh.expression import UnitConfig
 from echomesh.expression import Units
 from echomesh.util import Log
 
@@ -45,7 +45,8 @@ class Sequence(Loop.Loop):
     self.sequence.sort(key=operator.itemgetter(0))
 
   def _command_time(self):
-    return self.sequence[self.next_command][0] / Speed.speed() + self.cycle_time
+    return (self.sequence[self.next_command][0] / UnitConfig.get('speed') +
+            self.cycle_time)
 
   def next_time(self, t):
     if self.next_command <= len(self.elements):

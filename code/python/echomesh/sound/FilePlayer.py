@@ -54,7 +54,7 @@ class FilePlayer(ThreadLoop):
     self.format = Sound.PYAUDIO().get_format_from_width(self.sample_width)
     self.samples_per_frame = self.sample_width * self.channels
     self.loop_number = 0
-    Config.add_client(self)
+    Config.add_client(self.config_update)
     self.restart_sound()
 
   def run(self):

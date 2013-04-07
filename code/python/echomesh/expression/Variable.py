@@ -10,7 +10,7 @@ import time
 
 from echomesh.expression.Envelope import Envelope
 from echomesh.expression import Units
-from echomesh.expression import Speed
+from echomesh.expression import UnitConfig
 from echomesh.util.math import Interval
 from echomesh.util import Registry
 from echomesh.util import Log
@@ -51,7 +51,8 @@ class _Counter(object):
     if self.is_constant():
       return self.begin
 
-    count = int(Speed.speed() * self.element.elapsed_time() // self.period)
+    count = int(UnitConfig.get('speed') * self.element.elapsed_time() //
+                self.period)
     repeat = count // self.count
     if repeat >= self.repeat:
       return self.end

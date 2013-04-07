@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Join
 
-def get_prefix(table, name, error_name, allow_prefixes=True):
+def get_prefix(table, name, error_name='table', allow_prefixes=True):
   """
   Looks up an entry in a table where unique prefixes are allowed.
   """

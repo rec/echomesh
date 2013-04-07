@@ -5,7 +5,6 @@ import time
 
 from echomesh.base import Config
 from echomesh.color import Combiner
-from echomesh.expression import Speed
 from echomesh.expression import Units
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop

@@ -32,7 +32,7 @@ class TkLightBank(LightBank):
     self.lock = threading.Lock()
 
     super(TkLightBank, self)._before_thread_start()
-    Config.add_client(self)
+    Config.add_client(self.config_update)
     TkThreadRunner.run()
     TkThreadRunner.defer(self.initialize_tk)
 
