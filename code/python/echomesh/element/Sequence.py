@@ -62,8 +62,8 @@ class Sequence(Loop.Loop):
         self.pause()
         return 0
 
-  def _on_reset(self):
-    super(Sequence, self)._on_reset()
+  def _on_begin(self):
+    super(Sequence, self)._on_begin()
     self.cycle_time = self.start_time
     self.current_loop = 0
     self.next_command = 0

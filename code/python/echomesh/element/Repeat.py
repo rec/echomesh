@@ -15,8 +15,8 @@ class Repeat(Loop):
     assert self.random_delay > 0 or self.period > 0, (
       'You must set either a period or a random_delay')
 
-  def _on_reset(self):
-    super(Repeat, self)._on_reset()
+  def _on_begin(self):
+    super(Repeat, self)._on_begin()
     self.repeat_count = 0
 
   def next_time(self, t):
@@ -37,6 +37,6 @@ class Repeat(Loop):
   def child_paused(self, child):
     pass
 
-  def _on_reset(self):
-    super(Repeat, self)._on_reset()
+  def _on_begin(self):
+    super(Repeat, self)._on_begin()
     self.repeat_count = 0

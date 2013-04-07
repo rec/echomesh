@@ -36,14 +36,14 @@ def _register():
                                        see_also=_SEE_ALSO[command])
     echomesh.remote.Register.register(_remote(command), command)
 
-_COMMANDS = ['load', 'pause', 'reset', 'run', 'start', 'unload' ]
+_COMMANDS = ['begin', 'load', 'pause', 'run', 'start', 'unload' ]
 
 _SEE_ALSO = {
   'load': ['unload', 'pause', 'run', 'show elements'],
   'pause': ['run', 'unload'],
-  'reset': ['run', 'pause'],
+  'begin': ['run', 'pause'],
   'run': ['load', 'pause'],
-  'start': ['reset', 'run'],
+  'start': ['begin', 'run'],
   'unload': ['load', 'pause', 'show elements'],
 }
 
@@ -70,18 +70,18 @@ Examples:
   load Lights.yml Lights.yml Lights.yml as l1 l2 l3
 """,
 
-  'reset': """
+  'begin': """
 Usage:
 
-  reset ELEMENT [ELEMENT ...]
+  begin ELEMENT [ELEMENT ...]
 
-Resets the named elements to their start time.
+Resets the named elements to their beginning time.
 
 If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
 
 Example:
-  reset Lights   # Resets an existing element called lights.
+  begin Lights   # Resets an existing element called lights.
 
 """,
 

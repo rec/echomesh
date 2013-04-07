@@ -43,8 +43,8 @@ class Element(MasterRunnable):
         self.variables = dict((k, Variable.variable(self, v)) for k, v in items)
         break
 
-  def _on_reset(self):
-    super(Element, self)._on_reset()
+  def _on_begin(self):
+    super(Element, self)._on_begin()
     self.pause_time = 0
     self.start_time = time.time()
 

@@ -6,19 +6,19 @@ LOGGER = Log.logger(__name__)
 
 class Runnable(object):
   """
-  A Runnable is a class that be run, paused and reset.  A Runnable must
-  implement at least one of _on_run or _on_pause, and most likely _on_reset too.
+  A Runnable is a class that be run, paused and begin.  A Runnable must
+  implement at least one of _on_run or _on_pause, and most likely _on_begin too.
   """
   def __init__(self):
     self.is_running = False
-    self.reset_called = False
+    self.begin_called = False
 
   def run(self):
     """Continue running from where we were before, if we aren't running now."""
     if not self.is_running:
       self.is_running = True
-      if not self.reset_called:
-        self.reset()
+      if not self.begin_called:
+        self.begin()
 
       if self._on_run():
         self.pause()
@@ -37,15 +37,15 @@ class Runnable(object):
     else:
       LOGGER.debug('Tried to pause a paused %s', self)
 
-  def reset(self):
+  def begin(self):
     """Reset this Runnable to the beginning, whether or not it is running."""
     LOGGER.debug('Resetting %s', self)
-    self.reset_called = True
-    self._on_reset()
+    self.begin_called = True
+    self._on_begin()
 
   def start(self):
-    """Start is equivalent to reset() followed by run()."""
-    self.reset()
+    """Start is equivalent to begin() followed by run()."""
+    self.begin()
     self.run()
 
   def _on_run(self):
@@ -59,8 +59,8 @@ class Runnable(object):
     """This is called on a state change from running to not running."""
     pass
 
-  def _on_reset(self):
-    """This is called by reset and by the constructor of Runnable.
+  def _on_begin(self):
+    """This is called by begin and by the constructor of Runnable.
     self.is_running might or might not be true.
     """
     pass

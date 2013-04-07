@@ -45,6 +45,6 @@ class MasterRunnable(Runnable):
       self.is_running = True
     super(MasterRunnable, self).pause()
 
-  def reset(self):
-    super(MasterRunnable, self).reset()
-    self.runnables.foreach('reset')
+  def begin(self):
+    super(MasterRunnable, self).begin()
+    self.runnables.foreach('begin')
