@@ -67,6 +67,7 @@ class TkLightBank(LightBank):
       self.tkwin.update()
 
   def config_update(self, get):
+    self.count = Config.get('light', 'count')
     def _get(*items):
       return get(*(('light', 'display') + items))
 

@@ -30,7 +30,8 @@ class SpiLightBank(LightBank):
     self._clear, self._bank = self._light_array(), self._light_array()
 
   def _light_array(self):
-    b = bytearray(x for i in xrange(self.count + _INTERNAL_LATCH_BYTE_COUNT))
+    count = Config.get('light', 'count')
+    b = bytearray(x for i in xrange(count + _INTERNAL_LATCH_BYTE_COUNT))
     for i in xrange(_INTERNAL_LATCH_BYTE_COUNT):
       b[-1 - i] = 0
     return b
