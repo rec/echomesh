@@ -7,7 +7,11 @@ class Pattern(Element.Element):
   def __init__(self, parent, description):
     super(Pattern, self).__init__(parent, description)
     assert parent.__class__.__name__ == 'Light'
-    self.renderer = parent.renderers[description['pattern']]
+    self.pattern_name = description['pattern']
+    self.renderer = parent.renderers[self.pattern_name]
+
+  def class_name(self):
+    return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
     super(Pattern, self)._on_run()
