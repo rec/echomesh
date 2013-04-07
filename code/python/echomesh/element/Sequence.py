@@ -35,8 +35,8 @@ class Sequence(Loop.Loop):
         elif begin is not None:
           end = begin + duration
 
-      if begin is not None:
-        self.sequence.append([begin, element.start])
+
+      self.sequence.append([begin or 0, element.start])
 
       if end is not None:
         self.sequence.append([end, element.pause])

@@ -33,7 +33,6 @@ patterns:
 
 elements:
   -
-    begin: 0
     end: infinite
     type: pattern
     pattern: one
