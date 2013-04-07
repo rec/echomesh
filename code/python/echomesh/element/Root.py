@@ -9,7 +9,7 @@ from echomesh.element import Audio, Handler, Image, Light, Mapper, Print, Repeat
 from echomesh.element import Pattern, Select, Sequence, TextToSpeech, TwitterSearch
 # pylint: enable=W0611
 
-PRINT_FORMAT = '{state:4} {class:10} {time:9}'
+PRINT_FORMAT = '{state:5} {time:9} {classes:12}'
 
 class Root(Element.Element):
   def __init__(self, description, score):
@@ -33,7 +33,8 @@ class Root(Element.Element):
   def __str__(self):
     if not self.elements:
       return '(empty)'
-    return PRINT_FORMAT.format(**self.elements[0].info())
+    classes = ', '.join(e.class_name() for e in self.elements)
+    return PRINT_FORMAT.format(classes=classes, **self.info())
 
   def remove_handler(self, handler, *types):
     for t in (types or [handler['event_type']]):
