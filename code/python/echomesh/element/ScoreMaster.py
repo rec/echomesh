@@ -34,9 +34,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     if action == 'load':
       return self.load_elements(names)
 
-    if action == 'reload':
-      return self.reload_elements(names)
-
     if action == 'start':
       return self.start_elements(names)
 
@@ -50,6 +47,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def perform_element(self, action, names):
     is_unload = (action == 'unload')
+    is_reload = (action == 'reload')
     full_names = []
     assert isinstance(action, six.string_types), action
     getter = operator.attrgetter(action)
@@ -62,25 +60,15 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           if is_unload:
             element.unload()
             del self.elements[full_name]
+          elif is_reload:
+            self.elements[full_name] = element.clone()
+            element.unload()
           else:
             getter(element)()
           full_names.append(full_name)
         except Exception:
           LOGGER.error()
     return full_names
-
-  def reload_elements(self, names):
-    good_names = []
-    for name in names:
-      try:
-        full_name, element = self.get_prefix(name)
-      except:
-        LOGGER.error('Didn\'t understand name %s', name)
-        continue
-      self.elements[full_name] = element.clone()
-      element.unload()
-      good_names.append(full_name)
-    return good_names
 
   def load_elements(self, names):
     return self.load_raw_elements(Split.split_scores(names))
