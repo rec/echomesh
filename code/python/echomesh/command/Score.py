@@ -36,12 +36,13 @@ def _register():
                                        see_also=_SEE_ALSO[command])
     echomesh.remote.Register.register(_remote(command), command)
 
-_COMMANDS = ['begin', 'load', 'pause', 'run', 'start', 'unload' ]
+_COMMANDS = ['begin', 'load', 'pause', 'reload', 'run', 'start', 'unload' ]
 
 _SEE_ALSO = {
-  'load': ['unload', 'pause', 'run', 'show elements'],
+  'load': ['reload', 'unload', 'pause', 'run', 'show elements'],
   'pause': ['run', 'unload'],
   'begin': ['run', 'pause'],
+  'reload': ['unload', 'load'],
   'run': ['load', 'pause'],
   'start': ['begin', 'run'],
   'unload': ['load', 'pause', 'show elements'],
@@ -65,9 +66,21 @@ If you are in broadcast mode then this command will be sent to all Echomesh
 nodes on the network.
 
 Examples:
-  load Lights.yml
-  load Lights.yml as l1
-  load Lights.yml Lights.yml Lights.yml as l1 l2 l3
+  load lights.yml
+  load lights.yml as l1
+  load lights.yml lights.yml lights.yml as l1 l2 l3
+""",
+
+  'reload': """
+Usage:
+
+  reload ELEMENT [ELEMENT...]
+
+Reloads the given elements from their original files.
+
+
+Examples:
+  reload lights
 """,
 
   'begin': """

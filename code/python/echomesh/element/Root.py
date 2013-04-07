@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
+
 from echomesh.element import Element
 
 # pylint: disable=W0611
@@ -13,7 +15,11 @@ class Root(Element.Element):
   def __init__(self, description, score):
     self.score = score
     self.handlers = {}
+    self.original_description = copy.deepcopy(description)
     super(Root, self).__init__(None, description)
+
+  def clone(self):
+    return Root(self.original_description, self.score)
 
   def add_handler(self, handler, *types):
     if not types:
