@@ -26,8 +26,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     super(ScoreMaster, self).__init__()
     self.elements = {}
     self.lock = threading.Lock()  # TODO: put this in everywhere.
-    self.scores_to_start = Split.split_scores(Config.get('start'))
-    self.scores_to_load = Split.split_scores(Config.get('load'))
+    self.startup = True
     assert not ScoreMaster.INSTANCE
     ScoreMaster.INSTANCE = self
 
@@ -68,15 +67,17 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return full_names
 
   def load_elements(self, names):
-    score_names = Split.split_scores(names)
+    return self.load_raw_elements(Split.split_scores(names))
+
+  def load_raw_elements(self, score_names):
     with self.lock:
       elements = _make_elements(score_names, self.elements)
       self.elements.update(elements)
       return elements.keys()
 
   def start_elements(self, names):
-    element_names = []
     score_names = Split.split_scores(names)
+    element_names = []
     for score_file, name in score_names:
       is_file = score_file.endswith('.yml')
       if name:
@@ -84,8 +85,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         score_file = Yaml.filename(score_file)
       else:
         name = score_file
+        if is_file:
+          name = name[:-4]
+        elif name not in self.elements:
+          is_file = True
+          score_file += '.yml'
       if is_file:
-        element_names.extend(self.load_elements([score_file, 'as', name]))
+        element_names.extend(self.load_raw_elements([[score_file, name]]))
       else:
         element_names.append(name)
 
@@ -111,14 +117,16 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def _on_run(self):
     super(ScoreMaster, self)._on_run()
-    if self.scores_to_start or self.scores_to_load:
-      for function, scores in ((self.start_elements, self.scores_to_start),
-                               (self.load_elements, self.scores_to_load)):
-        try:
-          function(scores)
-        except Exception:
-          LOGGER.error()
-        scores[:] = []
+    if self.startup:
+      self.startup = False
+      try:
+        self.load_elements(Config.get('load'))
+      except:
+        LOGGER.error()
+      try:
+        self.start_elements(Config.get('start'))
+      except:
+        LOGGER.error()
 
   def _on_pause(self):
     super(ScoreMaster, self)._on_pause()

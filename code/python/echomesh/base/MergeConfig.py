@@ -97,6 +97,6 @@ def _merge_file_config(config):
         raise
 
 def _add_exception_suffix(e, *suffixes):
-  # TODO: use traceback!!
+  # TODO: use traceback.
   suffix = ' '.join(suffixes)
   e.args = tuple(a + suffix for a in e.args)

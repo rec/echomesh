@@ -28,5 +28,5 @@ def split_scores(scores):
 
   if isinstance(scores, (tuple, list)):
     scores = ' '.join(scores)
-  return pair_split(split_words(scores))
+  return  pair_split(split_words(scores))
 
