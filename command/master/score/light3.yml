@@ -1,0 +1,30 @@
+type: light
+
+patterns:
+  one:
+    type: insert
+    pattern:
+      type: spread
+      begin: blue
+      end: white
+      steps: 32
+
+  two:
+    type: insert
+    offset: 32
+    pattern:
+      type: spread
+      begin: white
+      end: red
+      steps: 32
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: one
+  -
+    end: infinite
+    type: pattern
+    pattern: two
+
