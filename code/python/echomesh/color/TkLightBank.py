@@ -15,6 +15,7 @@ from echomesh.util.thread import TkThreadRunner
 
 LOGGER = Log.logger(__name__)
 BLACK = '#000000'
+WINDOW_TITLE = 'Lighting visualization window.'
 
 def _get_dimension(count, columns, rows):
   if not (columns or rows):
@@ -62,6 +63,7 @@ class TkLightBank(LightBank):
       else:
         import Tkinter
         self.tkwin = Tkinter.Tk()
+        self.tkwin.title(WINDOW_TITLE)
         self.canvas = Tkinter.Canvas(self.tkwin,
                                      width=self.width, height=self.height)
       if 'rectangle'.startswith(self.shape):
