@@ -6,6 +6,7 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
+from echomesh.element import Renderer
 from echomesh.expression import UnitConfig
 from echomesh.expression import Units
 from echomesh.util import Log
@@ -19,6 +20,8 @@ class Sequence(Loop.Loop):
     times = []
     for e in description.get('elements', []):
       times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
+
+    self.renderers = Renderer.make_renderers(self, description.get('patterns', {}))
 
     super(Sequence, self).__init__(parent, description, name='Sequence',
                                    full_slave=False)

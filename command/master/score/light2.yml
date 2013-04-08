@@ -1,4 +1,4 @@
-type: light
+type: sequence
 
 patterns:
   one:
@@ -9,24 +9,15 @@ patterns:
       end: white
       steps: 32
 
-  two:
-    type: insert
-    offset: 32
-    pattern:
-      type: spread
-      begin: white
-      end: red
-      steps: 32
-
 elements:
   -
     end: infinite
     type: pattern
-    pattern: two
+    pattern: one
 
 ---
 
-type: light
+type: sequence
 
 patterns:
   two:

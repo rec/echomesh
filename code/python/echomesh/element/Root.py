@@ -4,11 +4,6 @@ import copy
 
 from echomesh.element import Element
 
-# pylint: disable=W0611
-from echomesh.element import Audio, Handler, Image, Light, Mapper, Print, Repeat
-from echomesh.element import Pattern, Select, Sequence, TextToSpeech, TwitterSearch
-# pylint: enable=W0611
-
 PRINT_FORMAT = '{state:5} {time:9} {classes:12}'
 
 class Root(Element.Element):

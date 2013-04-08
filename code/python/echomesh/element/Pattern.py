@@ -6,7 +6,7 @@ from echomesh.element import Element
 class Pattern(Element.Element):
   def __init__(self, parent, description):
     super(Pattern, self).__init__(parent, description)
-    assert parent.__class__.__name__ == 'Light'
+    assert parent.__class__.__name__ == 'Sequence'
     self.pattern_name = description['pattern']
     self.renderer = parent.renderers[self.pattern_name]
     self.output = description.get('output', 'light')
