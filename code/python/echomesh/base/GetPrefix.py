@@ -5,12 +5,14 @@ from echomesh.base import Join
 class PrefixException(Exception):
   pass
 
+_NONE = object()
+
 def get_prefix(table, name, allow_prefixes=True):
   """
   Looks up an entry in a table where unique prefixes are allowed.
   """
-  result = table.get(name)
-  if result:
+  result = table.get(name, _NONE)
+  if result is not _NONE:
     return name, result
 
   if allow_prefixes:
