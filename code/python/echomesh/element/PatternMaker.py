@@ -21,25 +21,27 @@ class Maker(object):
   def __init__(self, element, desc, function, *names):
     self.table = {}
     for k, v in desc.iteritems():
+      if k.startswith('pattern'):
+        continue
       if k in names:
         v = Expression(v, element)
       self.table[k] = v
     self.function = function
-    pattern_desc = desc.get('pattern')
-    self.pattern = make_pattern(element, pattern_desc)
+    patterns = desc.get('patterns') or desc.get('pattern')
+    if type(patterns) is not list:
+      patterns = [patterns]
+    self.patterns = filter(None, (make_pattern(element, p) for p in patterns))
 
   def evaluate(self):
     return self()
 
   def __call__(self):
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
-    try:
-      del table['pattern']
-    except:
-      pass
-
-    if self.pattern:
-      return self.function(self.pattern(), **table)
+    if self.patterns:
+      pat = [p() for p in self.patterns]
+      if len(pat) == 1:
+        pat = pat[0]
+      return self.function(pat, **table)
     else:
       return self.function(**table)
 
@@ -60,7 +62,7 @@ def spread(element, desc):
   return Maker(element, desc, ColorSpread.color_name_spread)
 
 def choose(element, desc):
-  pass
+  return Maker(element, desc, Combiner.choose, 'choice')
 
 _REGISTRY.register(choose)
 _REGISTRY.register(inject)
