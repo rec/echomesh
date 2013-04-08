@@ -32,7 +32,10 @@ class LightBank(ThreadLoop):
 
   def remove_client(self, client):
     with self.lock:
-      self.clients.remove(client)
+      try:
+        self.clients.remove(client)
+      except KeyError:
+        pass
 
   def has_clients(self):
     return not not self.clients

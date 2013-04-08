@@ -9,14 +9,22 @@ class Pattern(Element.Element):
     assert parent.__class__.__name__ == 'Light'
     self.pattern_name = description['pattern']
     self.renderer = parent.renderers[self.pattern_name]
+    self.output = description.get('output', 'light')
+    if self.output == 'light':
+      LightSingleton.add_owner()
+
+  def _on_unload(self):
+    if self.output == 'light':
+      LightSingleton.remove_owner()
+      LightSingleton.remove_client(self.renderer)
 
   def class_name(self):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
     super(Pattern, self)._on_run()
-    LightSingleton.add_client(self.renderer)
+    if self.output == 'light':
+      LightSingleton.add_client(self.renderer)
 
   def _on_pause(self):
     super(Pattern, self)._on_pause()
-    LightSingleton.remove_client(self.renderer)
