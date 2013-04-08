@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import itertools
+
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -60,7 +62,7 @@ def inject(light_set, mapping, length):
   return [_map(i) for i in range(length)]
 
 def combine(combiner, *lighters):
-  linverse = zip(*lighters)
+  linverse = itertools.izip_longest(*lighters, fillvalue=None)
   return [combiner(z) for z in linverse]
 
 def first(items):

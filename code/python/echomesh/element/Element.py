@@ -47,6 +47,8 @@ class Element(MasterRunnable):
     super(Element, self)._on_begin()
     self.pause_time = 0
     self.start_time = time.time()
+    for e in self.elements:
+      e.begin()
 
   def _on_run(self):
     super(Element, self)._on_run()

@@ -14,6 +14,7 @@ class Pattern(Element.Element):
       LightSingleton.add_owner()
 
   def _on_unload(self):
+    super(Pattern, self)._on_unload()
     if self.output == 'light':
       LightSingleton.remove_owner()
       LightSingleton.remove_client(self.renderer)
@@ -22,8 +23,14 @@ class Pattern(Element.Element):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
+    super(Pattern, self)._on_run()
     if self.output == 'light':
       LightSingleton.add_client(self.renderer)
+
+  def _on_begin(self):
+    super(Pattern, self)._on_begin()
+    if not self.is_running and self.output == 'light':
+      LightSingleton.remove_client(self.renderer)
 
   def _on_pause(self):
     super(Pattern, self)._on_pause()

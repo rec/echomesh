@@ -169,7 +169,7 @@ git:
 # Enable lighting control.  Note that your program has to be running as sudo
 # for the lighting to work.
 light:
-  brightness: 50%
+  brightness: 100%
   count: 240
   enable: false
   order: rgb
@@ -326,4 +326,3 @@ map:
 # The new section is reserved for configuration values for elements and commands
 # written by third parties.
 new: {}
-

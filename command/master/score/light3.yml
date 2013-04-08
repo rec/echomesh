@@ -1,7 +1,7 @@
 type: light
 
 patterns:
-  one:
+  two:
     type: insert
     pattern:
       type: spread
@@ -9,7 +9,7 @@ patterns:
       end: white
       steps: 32
 
-  two:
+  one:
     type: insert
     offset: 32
     pattern:
@@ -22,10 +22,10 @@ elements:
   -
     end: infinite
     type: pattern
-    pattern: one
+    pattern: two
   -
     begin: 2
     end: infinite
     type: pattern
-    pattern: two
+    pattern: one
 
