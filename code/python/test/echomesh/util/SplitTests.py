@@ -1,6 +1,6 @@
 """
->>> split_words(', hello, there!')
-[u'hello', u'there!']
+>>> split_words('hello, there!')
+[u'hello,', u'there!']
 
 >>> split_words('')
 []
@@ -29,10 +29,10 @@
 >>> pair_split(split_words('hello as hell'))
 [(u'hello', u'hell')]
 
->>> pair_split(split_words('hello as hell, dogs as cats'))
+>>> pair_split(split_words('hello as hell dogs as cats'))
 [(u'hello', u'hell'), (u'dogs', u'cats')]
 
->>> pair_split(split_words('hello,  hell as dogs, cats'))
+>>> pair_split(split_words('hello  hell as dogs cats'))
 [(u'hello', u'dogs'), (u'hell', u'cats')]
 
 """

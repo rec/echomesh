@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
-WORD_SPLITTER = re.compile(r'[,\s]+')
+WORD_SPLITTER = re.compile(r'[\s]+')
 
 def split_words(s):
   return [i for i in WORD_SPLITTER.split(s) if i]
