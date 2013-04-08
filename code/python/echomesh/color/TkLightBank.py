@@ -82,7 +82,7 @@ class TkLightBank(LightBank):
       return get(*(('light', 'display') + items))
 
     last_get = _get()
-    if self.last_get == last_get and self.count == countn:
+    if self.last_get == last_get and self.count == count:
       return
     self.last_get = copy.deepcopy(last_get)
     self.count = count

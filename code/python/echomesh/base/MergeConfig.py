@@ -34,12 +34,13 @@ def merge_assignments(config, assignments):
           changes = changes.setdefault(k, {})
         else:
           cfg[k] = changes[k] = Yaml.decode_one(value)
+          results.append([path, value])
 
     except:
       raise Exception('Configuration variable "%s" doesn\'t exist' %
                       '.'.join(address))
 
-  return assignments
+  return results
 
 def _set_project_path():
   # First, find out if we're autostarting.

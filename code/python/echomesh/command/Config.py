@@ -51,8 +51,8 @@ def save(_, *values):
 
 def _set(_, *values):
   if values:
-    assignments = Args.split_args(values)
-    MergeConfig.merge_assignments(echomesh.base.Config.CONFIG, assignments)
+    assignments = MergeConfig.merge_assignments(
+      echomesh.base.Config.CONFIG, Args.split_args(values))
 
     for address, value in assignments:
       LOGGER.info('Set %s=%s', '.'.join(address), value)
