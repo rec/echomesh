@@ -62,7 +62,7 @@ def spread(element, desc):
   return Maker(element, desc, ColorSpread.color_name_spread)
 
 def choose(element, desc):
-  return Maker(element, desc, Combiner.choose, 'choice')
+  return Maker(element, desc, Combiner.choose, 'choose')
 
 _REGISTRY.register(choose)
 _REGISTRY.register(inject)

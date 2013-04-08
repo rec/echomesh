@@ -9,7 +9,7 @@ variables:
 patterns:
   one:
     type: choose
-    choose: local.counter
+    choose: local.switch
     pattern:
       -
         type: insert
@@ -27,3 +27,9 @@ patterns:
           end: white
           steps: 32
 
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: one
+    output: light

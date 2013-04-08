@@ -61,18 +61,15 @@ def inject(light_set, mapping, length):
 
   return [_map(i) for i in range(length)]
 
-def choose(*light_sets, **kwds):
-  choose = kwds.pop('choose', None)
-  assert choose, 'No choose in choose pattern.'
-  assert not kwds, "Didn't understand keywords %s." % kwds
-
+def choose(light_sets, choose=None):
+  length = len(light_sets)
   def restrict(size):
-    return max(0, min(len(light_set) - 1, size))
+    return int(max(0, min(length - 1, size)))
 
   if callable(choose):
     # TODO: there's no way to specify callables to choose.
     zipped = itertools.izip_longest(*light_sets)
-    return [vec[restrict(choose(i))] for i, vec in zipped]
+    return [vec[restrict(choose(i))] for i, vec in enumerate(zipped)]
   else:
     return light_sets[restrict(choose)]
 
