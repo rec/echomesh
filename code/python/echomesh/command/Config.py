@@ -4,7 +4,7 @@ import copy
 
 import echomesh.base.Config
 
-from echomesh.base.Config import CONFIG
+from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import Join
 from echomesh.base import Merge
@@ -16,21 +16,12 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-_LOCAL_CHANGES = {}
-
 def register():
   Register.register_all(
-    changes=(changes, CHANGES_HELP),
     get=(get, GET_HELP),
     save=(save, SAVE_HELP),
     set=(_set, SET_HELP),
   )
-
-def changes(_):
-  if _LOCAL_CHANGES:
-    LOGGER.info(Yaml.encode_one(_LOCAL_CHANGES))
-  else:
-    LOGGER.info('You have made no changes.')
 
 def get(_, value, *more):
   errors = []
@@ -49,27 +40,28 @@ def get(_, value, *more):
 def save(_, *values):
   if values:
     _set(_, *values)
-  global _LOCAL_CHANGES
-  if _LOCAL_CHANGES:
+  if MergeConfig.LOCAL_CHANGES:
     config_file, data = _get_raw_file()
-    data.append(_LOCAL_CHANGES)
-    _LOCAL_CHANGES = {}
+    data.append(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
+    MergeConfig.LOCAL_CHANGES = {}
     _raw_write(config_file, data)
     LOGGER.info('Saved to file %s.', config_file)
   else:
     LOGGER.error('There are no changes to save.')
 
-def _set(_, value, *more):
-  values = (value, ) + more
-  assignments = MergeConfig.merge_assignments(CONFIG, values)
-  for address, value in assignments:
-    LOGGER.info('Set %s=%s', '.'.join(address), value)
-    cfg = _LOCAL_CHANGES
-    for a in address[:-1]:
-      cfg = cfg.setdefault(a, {})
-    cfg[address[-1]] = value
-  if assignments:
-    echomesh.base.Config.update_clients()
+def _set(_, *values):
+  if values:
+    assignments = Args.split_args(values)
+    MergeConfig.merge_assignments(echomesh.base.Config.CONFIG, assignments)
+
+    for address, value in assignments:
+      LOGGER.info('Set %s=%s', '.'.join(address), value)
+    if assignments:
+      echomesh.base.Config.update_clients()
+  elif MergeConfig.LOCAL_CHANGES:
+    LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
+  else:
+    LOGGER.info('You have made no changes.')
 
 def _get_file(context='master'):
   config_file = CommandFile.config_file(context)
@@ -84,21 +76,21 @@ def _get_raw_file(context='master'):
   config_file = CommandFile.config_file(context)
   with open(config_file) as f:
     data = f.read()
-  return config_file, data.split(Yaml.SEPARATOR)
+  return config_file, filter(None, data.split(Yaml.SEPARATOR))
 
 def _raw_write(config_file, data):
   first = True
   # TODO: open a temp file and write at the end.
   with open(config_file, 'wb') as f:
     for d in data:
-      if first:
-        first = False
-      else:
-        f.write(Yaml.SEPARATOR)
-      f.write(Yaml.encode_one(d))
+      if d:
+        if first:
+          first = False
+        else:
+          f.write(Yaml.SEPARATOR)
+        f.write(d)
   # Bug: we'll never be able to override command line arguments this way.  :-D
   echomesh.base.Config.recalculate()
-
 
 SET_HELP = """
   Sets one or more configuration variables.  These changes are only present in

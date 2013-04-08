@@ -10,11 +10,11 @@ u'item1'
 u'item3'
 
 >>> registry_exception(registry, 'fo')
-"fo" matches multiple tests: foo and fot.
+"fo" matches more than one: foo and fot.
 
 >>> registry.allow_prefixes = False
 >>> registry_exception(registry, 'fo')
-"fo" is not a valid test.
+"fo" is not valid.
 """
 
 from __future__ import absolute_import, division, print_function, unicode_literals

@@ -42,7 +42,7 @@ class Registry(object):
     self.register(function, function_name, help_text, see_also)
 
   def _get(self, name):
-    return GetPrefix.get_prefix(self.registry, name, self.name,
+    return GetPrefix.get_prefix(self.registry, name,
                                 allow_prefixes=self.allow_prefixes)
 
   def get(self, name):

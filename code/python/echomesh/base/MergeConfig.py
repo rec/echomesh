@@ -9,70 +9,49 @@ from echomesh.base import Merge
 from echomesh.base import Path
 from echomesh.base import Yaml
 
+LOCAL_CHANGES = {}
+
 def merge_config():
   config = Yaml.read(CommandFile.config_file('default'))[0]
   assert config, 'Unable to read default config file'
 
   _merge_file_config(config)
   _set_project_path()
-  merge_assignments(config, Args.ASSIGNMENT_ARGS)
+  merge_assignments(config, Args.ARGS)
   return config
 
 def merge_assignments(config, assignments):
   results = []
-  for assignment in assignments:
+  for address, value in assignments:
     try:
-      address, value = assignment.split('=', 1)
-    except AttributeError:
-      address, value = assignment
-    try:
-      address = address.split('.')
-    except AttributeError:
-      pass
-    try:
-      value = Yaml.decode_one(value)
-    except Exception as e:
-      print('ERROR: while decoding value %s' % value)
-      continue
-    try:
-      cfg = config
+      cfg, changes = config, LOCAL_CHANGES
       path = []
       for i, field in enumerate(address):
-        k, v = GetPrefix.get_prefix(cfg, field, 'merge_config')
+        k, v = GetPrefix.get_prefix(cfg, field)
         path.append(k)
         if i < len(address) - 1:
           cfg = v
+          changes = changes.setdefault(k, {})
         else:
-          cfg[k] = value
-          results.append([path, value])
+          cfg[k] = changes[k] = Yaml.decode_one(value)
 
-    except Exception as e:
-      _add_exception_suffix(e, 'while merging', '.'.join(address),
-                            '=', str(value))
-      raise
-  return results
+    except:
+      raise Exception('Configuration variable "%s" doesn\'t exist' %
+                      '.'.join(address))
 
-  assignments = []
-  for address, value in Args.ASSIGNMENT_ARGS:
-    try:
-      value = Yaml.decode_one(value)
-    except Exception as e:
-      print('ERROR: %s while decoding command line arguments:' % str(e),
-            address, value)
-    else:
-      assignments.append([address, value])
+  return assignments
 
 def _set_project_path():
   # First, find out if we're autostarting.
   autostart = False
-  for address, value in Args.ASSIGNMENT_ARGS:
+  for address, value in Args.ARGS:
     if len(address) == 1 and 'autostart'.startswith(address[0]):
       autostart = True
       break
 
   # Get the project field out of the command line if it exists,
   # before we get any file past the default configuration.
-  for address, value in Args.ASSIGNMENT_ARGS:
+  for address, value in Args.ARGS:
     if len(address) == 1 and 'project'.startswith(address[0]):
       Path.set_project_path(value, show_error=True, prompt=not autostart)
       CommandFile.compute_command_path()

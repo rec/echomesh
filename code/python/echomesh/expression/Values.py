@@ -36,7 +36,7 @@ class _Values(object):
     else:
       cmd = parts.pop(0)
 
-    name, function = GetPrefix.get_prefix(self.table, cmd, 'values')
+    name, function = GetPrefix.get_prefix(self.table, cmd)
     if name == 'configuration':
       from echomesh.base import Config
       # TODO: Why can't this import be at the top?  Does it even work?!

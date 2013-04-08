@@ -43,7 +43,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return self.perform_element(action, names)
 
   def get_prefix(self, name):
-    return GetPrefix.get_prefix(self.elements, name, 'element')
+    return GetPrefix.get_prefix(self.elements, name)
 
   def perform_element(self, action, names):
     is_unload = (action == 'unload')
