@@ -44,7 +44,7 @@ def split_args(args):
 # Assignment looks like this:
 #  some.name.here = "123"  other.name.here = [1, 2]
 
-States = Enum.enum(
+State = Enum.enum(
   'BEFORE_ADDRESS',
   'IN_ADDRESS',
   'BEFORE_EQUALS',
@@ -53,18 +53,20 @@ States = Enum.enum(
   )
 
 # Handles quotation marks, brackets, etc.
-def split_args2(s):
+def split_args2(s, debug=False):
   results = []
   in_quotes = False
   backslashed = False
-  state = States.BEFORE_ADDRESS
+  state = State.BEFORE_ADDRESS
   bracket_stack = []
   address = []
   value = []
 
   for col, ch in enumerate(s):
+    if debug:
+      print('!! ch=', ch)
     def error(s):
-      raise Exception('On column %d, %s.' %s (col, s))
+      raise Exception('On column %d, %s.' % (col, s))
     perhaps_done = False
 
     if state is State.BEFORE_ADDRESS:
@@ -73,6 +75,7 @@ def split_args2(s):
         state = State.IN_ADDRESS
       elif not ch.isspace():
         error('Expected a letter, not "%s"' % ch)
+      continue
 
     if state is State.IN_ADDRESS:
       if ch.isalpha() or ch == '.':
@@ -81,6 +84,7 @@ def split_args2(s):
         state = State.BEFORE_EQUALS
       elif ch == '=':
         state = State.BEFORE_VALUE
+      continue
 
     if state is State.BEFORE_EQUALS:
       if ch == '=':
@@ -93,6 +97,9 @@ def split_args2(s):
       if ch.isspace():
         continue
       state = State.IN_VALUE
+
+    if debug:
+      print('!! IN_VALUE', address, value)
 
     if backslashed:
       backslashed = False
@@ -133,8 +140,16 @@ def split_args2(s):
       if bracket_stack:
         if last_time:
           error('Missing closing brackets for %s' % ''.join(bracket_stack))
-      else:
-        address = []
-        value = []
-        results.append([''.join(address), ''.join(value)])
+      elif address:
+        if value:
+          results.append([''.join(address).strip().split('.'),
+                          ''.join(value).strip()])
+          address = []
+          value = []
+          state = State.BEFORE_ADDRESS
+        else:
+          error('empty value for address %s' % address)
+      elif value:
+        if False:
+          error('empty address for value %s' % value)
   return results
