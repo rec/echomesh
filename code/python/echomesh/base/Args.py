@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import six
 
 from echomesh.base import Enum
+from echomesh.base import Yaml
 
 ARGS = []
 
@@ -104,15 +105,21 @@ def split_args(s):
       perhaps_done = True
 
     value.append(ch)
+    # print('!! a.', ch, value)
     last_time = col == (len(s) - 1)
-    if perhaps_done or last_time:
+    if last_time:
       if bracket_stack:
-        if last_time:
-          error('Missing closing brackets for %s' % ''.join(bracket_stack))
-      elif address:
+        error('Missing closing brackets for %s' % ''.join(bracket_stack))
+      elif in_quotes:
+        error('unterminated quotation mark')
+    if perhaps_done or last_time:
+      if bracket_stack or in_quotes:
+        continue
+      if address:
         if value:
+          val = ''.join(value).strip()
           results.append([''.join(address).strip().split('.'),
-                          ''.join(value).strip()])
+                          Yaml.decode_one(val)])
           address = []
           value = []
           state = State.BEFORE_ADDRESS
@@ -125,8 +132,5 @@ def split_args(s):
     error('value was incomplete')
   elif address:
     error('expected to see a value')
-  elif in_quotes:
-    error('unterminated quotation mark')
-
 
   return results

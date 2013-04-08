@@ -1,1 +1,4 @@
-{debug: true, speed: 10%}
+debug: true
+light:
+  display:
+    layout: [64 0]

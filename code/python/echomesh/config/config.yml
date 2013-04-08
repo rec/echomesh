@@ -134,7 +134,7 @@ delete_backups_after_transfer: false
 
 # Turns on various debugging mechanisms and gives better diagnositics.
 # Does not turn on debug logging.
-debug: false
+debug: true
 
 diagnostics:
   # The diagnostics section lets echomesh developers get more information

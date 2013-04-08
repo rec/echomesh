@@ -33,10 +33,10 @@ def merge_assignments(config, assignments):
           cfg = v
           changes = changes.setdefault(k, {})
         else:
-          cfg[k] = changes[k] = Yaml.decode_one(value)
+          cfg[k] = changes[k] = value
           results.append([path, value])
 
-    except:
+    except GetPrefix.PrefixException:
       raise Exception('Configuration variable "%s" doesn\'t exist' %
                       '.'.join(address))
 
