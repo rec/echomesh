@@ -35,7 +35,6 @@ class Sequence(Loop.Loop):
         elif begin is not None:
           end = begin + duration
 
-
       self.sequence.append([begin or 0, element.start])
 
       if end is not None:
@@ -74,7 +73,6 @@ class Sequence(Loop.Loop):
 
   def loop_target(self, t):
     while self._command_time() <= t:
-      LOGGER.debug('%d', self.next_command)
       if self.next_command >= len(self.sequence):
         self.pause()
         break

@@ -24,6 +24,7 @@ elements:
     type: pattern
     pattern: one
   -
+    begin: 2
     end: infinite
     type: pattern
     pattern: two

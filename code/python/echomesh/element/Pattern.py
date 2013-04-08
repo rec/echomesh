@@ -22,7 +22,6 @@ class Pattern(Element.Element):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
-    super(Pattern, self)._on_run()
     if self.output == 'light':
       LightSingleton.add_client(self.renderer)
 

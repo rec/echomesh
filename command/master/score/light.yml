@@ -35,3 +35,9 @@ elements:
     type: pattern
     pattern: one
     output: light
+
+  -
+    end: infinite
+    type: pattern
+    pattern: two
+    output: light
