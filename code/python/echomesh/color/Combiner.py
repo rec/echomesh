@@ -61,8 +61,23 @@ def inject(light_set, mapping, length):
 
   return [_map(i) for i in range(length)]
 
+def choose(*light_sets, **kwds):
+  choose = kwds.pop('choose', None)
+  assert choose, 'No choose in choose pattern.'
+  assert not kwds, "Didn't understand keywords %s." % kwds
+
+  def restrict(size):
+    return max(0, min(len(light_set) - 1, size))
+
+  if callable(choose):
+    # TODO: there's no way to specify callables to choose.
+    zipped = itertools.izip_longest(*light_sets)
+    return [vec[restrict(choose(i))] for i, vec in zipped]
+  else:
+    return light_sets[restrict(choose)]
+
 def combine(combiner, *lighters):
-  linverse = itertools.izip_longest(*lighters, fillvalue=None)
+  linverse = itertools.izip_longest(*lighters)
   return [combiner(z) for z in linverse]
 
 def first(items):
