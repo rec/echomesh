@@ -15,24 +15,42 @@ _TYPE_MAP = {
 
 class LightSingleton(object):
   def __init__(self):
-    self.light_bank = None
+    self.lights = None
     self.lock = threading.Lock()
+    self.owner_count = 0
+
+  def add_owner(self):
+    self.owner_count += 1
+    self._make_lights()
+
+  def remove_owner(self):
+    self.owner_count -= 1
+    self._stop_lights()
 
   def add_client(self, client):
     with self.lock:
-      if not self.light_bank:
-        ltype = Config.get('light', 'type')
-        classpath = _TYPE_MAP[ltype]
-        self.light_bank = Importer.imp(classpath, defer_failure=False)()
-      self.light_bank.add_client(client)
+      self._make_lights()
+      self.lights.add_client(client)
 
   def remove_client(self, client):
     with self.lock:
-      if not self.light_bank.remove_client(client):
-        self.light_bank.pause()
-        pass
+      self.lights.remove_client(client)
+      self._stop_lights()
+
+  def _make_lights(self):
+    if not self.lights:
+      classpath = _TYPE_MAP[Config.get('light', 'type')]
+      self.lights = Importer.imp(classpath, defer_failure=False)()
+      self.lights.start()
+
+  def _stop_lights(self):
+    if self.lights and not (self.lights.has_clients() or self.owner_count > 0):
+      self.lights.pause()
+      self.lights = None
 
 
 _SINGLETON = LightSingleton()
 add_client = _SINGLETON.add_client
 remove_client = _SINGLETON.remove_client
+add_owner = _SINGLETON.add_owner
+remove_owner = _SINGLETON.remove_owner

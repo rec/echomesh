@@ -29,14 +29,13 @@ class LightBank(ThreadLoop):
   def add_client(self, client):
     with self.lock:
       self.clients.add(client)
-    if not self.is_running:
-      self.start()
 
   def remove_client(self, client):
     with self.lock:
       self.clients.remove(client)
-      if self.clients:
-        return True
+
+  def has_clients(self):
+    return not not self.clients
 
   def single_loop(self):
     with self.lock:

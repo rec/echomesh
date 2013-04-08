@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 
 from echomesh.base import Config
+from echomesh.color import LightSingleton
 from echomesh.element import Renderer
 from echomesh.element import Sequence
 from echomesh.expression import Units
@@ -16,4 +17,9 @@ class Light(Sequence.Sequence):
     self.device = None
     self.light_count = Config.get('light', 'count')
     self.lock = threading.Lock()
+    LightSingleton.add_owner()
     super(Light, self).__init__(parent, description)
+
+  def _on_unload(self):
+    super(Light, self)._on_unload()
+    LightSingleton.remove_owner()
