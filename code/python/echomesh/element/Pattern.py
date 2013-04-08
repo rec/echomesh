@@ -8,7 +8,7 @@ class Pattern(Element.Element):
     super(Pattern, self).__init__(parent, description)
     assert parent.__class__.__name__ == 'Sequence'
     self.pattern_name = description['pattern']
-    self.renderer = parent.renderers[self.pattern_name]
+    self.maker = parent.pattern_makers[self.pattern_name]
     self.output = description.get('output', 'light')
     if self.output == 'light':
       LightSingleton.add_owner()
@@ -17,7 +17,7 @@ class Pattern(Element.Element):
     super(Pattern, self)._on_unload()
     if self.output == 'light':
       LightSingleton.remove_owner()
-      LightSingleton.remove_client(self.renderer)
+      LightSingleton.remove_client(self.maker)
 
   def class_name(self):
     return 'pattern(%s)' % self.pattern_name
@@ -25,12 +25,12 @@ class Pattern(Element.Element):
   def _on_run(self):
     super(Pattern, self)._on_run()
     if self.output == 'light':
-      LightSingleton.add_client(self.renderer)
+      LightSingleton.add_client(self.maker)
 
   def _on_begin(self):
     super(Pattern, self)._on_begin()
     if not self.is_running and self.output == 'light':
-      LightSingleton.remove_client(self.renderer)
+      LightSingleton.remove_client(self.maker)
 
   def _on_pause(self):
     super(Pattern, self)._on_pause()
