@@ -10,11 +10,11 @@ elements:
     type: print
     text: First part.
   -
-    begin: 4
+    begin: 3
     type: print
     text: Second part.
 
   -
-    begin: 8
+    begin: 6
     type: print
     text: Third part.

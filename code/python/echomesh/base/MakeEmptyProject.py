@@ -75,7 +75,7 @@ EMPTY_PROJECT = {
     'master': {
       'config.yml':  _CONFIG,
       'score': {
-        'score.yml': _SCORE,
+        'sample-score.yml': _SCORE,
       },
     },
 

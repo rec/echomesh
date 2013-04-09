@@ -66,8 +66,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           else:
             getter(element)()
           full_names.append(full_name)
-        except Exception:
-          LOGGER.error()
+        except Exception as e:
+          LOGGER.error('%s', str(e), exc_info=0)
     return full_names
 
   def load_elements(self, names):
