@@ -4,7 +4,7 @@ import numpy
 
 from echomesh.sound import Loudness
 
-class Levels(object):
+class LevelNameMap(object):
   def __init__(self, **kwds):
     self.levels, self.names = zip(*sorted((v, k) for k, v in kwds.iteritems()))
 

@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+import threading
 
 class InputManager(object):
   def __init__(self):
@@ -10,6 +10,8 @@ class InputManager(object):
 
   def add_client(self, client, device_name=None, device_index=None,
                  sample_bytes=None, rates=None):
+    from echomesh.base import Config
+    from echomesh.sound import Sound
     if device_index is None:
       if device_name is None:
         device_index = Sound.get_index_from_config(Sound.INPUT)
@@ -23,11 +25,11 @@ class InputManager(object):
       if input:
         input.clients.add(client)
       else:
-        from echomesh.audio.InputThread import InputThread
-        input = InputThread(device_index, sample_bytes, rates)
-        input.add_client(client)
-        self.inputs[key] = input
-        input.run()
+        from echomesh.sound.InputThread import InputThread
+        input_thread = InputThread(device_index, sample_bytes, rates)
+        input_thread.add_client(client)
+        self.inputs[key] = input_thread
+        input_thread.run()
 
   def remove_client(self, client, key):
     with self.lock:
@@ -36,3 +38,11 @@ class InputManager(object):
       if not thread.clients():
         input.pause()
         del self.input[key]
+
+  def clear(self):
+    with self.lock:
+      for client in self.inputs.itervalues():
+        client.pause()
+      self.inputs.clear()
+
+INPUT_MANAGER = InputManager()

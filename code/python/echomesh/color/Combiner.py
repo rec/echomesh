@@ -36,6 +36,8 @@ def insert(light_set, length=None, target=None, offset=None, skip=None,
     assert length >= 0
 
   index = offset
+  while index < 0:
+    index += length
   for light in light_set:
     while index >= length:
       index -= length
@@ -59,7 +61,7 @@ def inject(light_set, mapping, length):
     x = mapping.get(i)
     return x is not None and light_set[x]
 
-  return [_map(i) for i in range(length)]
+  return [_map(i) for i in range(max(int(length), 0))]
 
 def choose(light_sets, choose=None):
   length = len(light_sets)

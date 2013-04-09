@@ -59,7 +59,7 @@ def reverse(element, desc):
   return Maker(element, desc, reversed)
 
 def spread(element, desc):
-  return Maker(element, desc, ColorSpread.color_name_spread)
+  return Maker(element, desc, ColorSpread.color_name_spread, 'steps')
 
 def choose(element, desc):
   return Maker(element, desc, Combiner.choose, 'choose')

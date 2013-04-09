@@ -1,7 +1,5 @@
 type: sequence
 
-duration: infinite
-
 variables:
   loop:
     type: counter
@@ -39,3 +37,4 @@ elements:
     type: pattern
     pattern: two
     output: light
+

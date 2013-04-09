@@ -7,7 +7,7 @@ class Enum(object):
     self._sequential = sequential
     self._named = named
     self._values = range(len(sequential))
-    self._values.extend(named.values())
+    self._values.extend(named)
 
     self._keys = list(sequential)
     self._keys.extend(named.keys())
@@ -20,15 +20,8 @@ class Enum(object):
       setattr(self, k, v)
       self._reverse[v] = k
 
-  def values(self):
-    return iter(_values)
-
   def reverse(self, key):
     return self._reverse[key]
 
   def __iter__(self):
     return iter(self._keys)
-
-  def __contains__(self, x):
-    return x in self._values
-

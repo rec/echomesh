@@ -12,7 +12,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-
 Names = Enum.Enum('CONFIGURATION', 'ELEMENT', 'FUNCTION', 'GLOBAL', 'LOCAL',
                   'PARENT', 'SYSTEM')
 
@@ -40,7 +39,7 @@ class _Values(object):
     else:
       cmd = parts.pop(0)
 
-    name, function = GetPrefix.get_prefix(self.table, cmd)
+    name, _ = GetPrefix.get_prefix(self.table, cmd)
     name = getattr(Names, name.upper())
     if name == Names.CONFIGURATION:
       from echomesh.base import Config

@@ -4,7 +4,9 @@ import pyaudio
 
 from echomesh.base import Config
 from echomesh.sound import GetFormatName
+from echomesh.sound import Sound
 from echomesh.sound.Input import Input
+from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
@@ -27,6 +29,7 @@ class InputThread(ThreadLoop):
       rates = [rates]
 
     self.clients = set()
+    pyaud = Sound.PYAUDIO()
     for rate in rates:
       try:
         self.stream = pyaud.open(format=fmt, channels=1, rate=rate,

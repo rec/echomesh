@@ -12,16 +12,17 @@ def color_spread(begin, end, steps, transform=None, use_hsv=True):
     colors = ColorConv.rgb_to_hsv([begin, end]).T
   else:
     colors = numpy.array([begin, end]).T
+  steps = int(steps)
   if transform:
     fn, fi = transform
-    steps = [fi(numpy.linspace(fn(s), fn(f), steps)) for s, f in colors]
+    step_array = [fi(numpy.linspace(fn(s), fn(f), steps)) for s, f in colors]
   else:
-    steps = [numpy.linspace(s, f, steps) for s, f in colors]
+    step_array = [numpy.linspace(s, f, steps) for s, f in colors]
   if use_hsv:
-    steps = ColorConv.hsv_to_rgb(numpy.array(steps).T)
+    step_array = ColorConv.hsv_to_rgb(numpy.array(step_array).T)
   else:
-    steps = numpy.array(steps).T
-  return steps
+    step_array = numpy.array(step_array).T
+  return step_array
 
 def color_name_spread(begin=None, end=None, steps=None, transform=None):
   if transform:
