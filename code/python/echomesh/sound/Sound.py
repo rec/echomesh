@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.base import Config
 from echomesh.util import ImportIf
 pyaudio = ImportIf.imp('pyaudio')
 
@@ -46,7 +47,8 @@ def _resolve_index(is_input, name, index, inout, field):
     index = get_default_device(is_input)['index']
   return index
 
-def get_index_from_config(is_input, get):
+def get_index_from_config(is_input, get=None):
+  get = get or Config.get
   inout, field = get_field_names(is_input)
   name = get('audio', inout, 'device_name')
   index = get('audio', inout, 'device_index')

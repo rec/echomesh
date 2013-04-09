@@ -60,15 +60,14 @@ class Element(MasterRunnable):
     if self.parent:
       self.parent.child_paused(self)
 
-  def _on_unload(self):
-    pass
-
   def unload(self):
     if self.is_running:
       self.pause()
     self._on_unload()
     for e in self.elements:
       e.unload()
+    for v in self.variables:
+      getattr(v, 'unload', lambda: None)()
 
   def child_paused(self, _):
     for e in self.elements:

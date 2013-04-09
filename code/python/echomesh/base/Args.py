@@ -17,7 +17,7 @@ def set_arguments(argv):
 # Assignment looks like this:
 #  some.name.here = "123"  other.name.here = [1, 2]
 
-State = Enum.enum(
+State = Enum.Enum(
   'BEFORE_ADDRESS',
   'IN_ADDRESS',
   'BEFORE_EQUALS',

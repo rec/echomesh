@@ -1,8 +1,34 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-# From here:
-# http://stackoverflow.com/questions/36932/how-can-i-represent-an-enum-in-python
+import copy
 
-def enum(*sequential, **named):
-    enums = dict(zip(sequential, range(len(sequential))), **named)
-    return type(str('Enum'), (), enums)
+class Enum(object):
+  def __init__(self, *sequential, **named):
+    self._sequential = sequential
+    self._named = named
+    self._values = range(len(sequential))
+    self._values.extend(named.values())
+
+    self._keys = list(sequential)
+    self._keys.extend(named.keys())
+
+    self._reverse = {}
+    for i, s in enumerate(sequential):
+      setattr(self, s, i)
+      self._reverse[i] = s
+    for k, v in named.iteritems():
+      setattr(self, k, v)
+      self._reverse[v] = k
+
+  def values(self):
+    return iter(_values)
+
+  def reverse(self, key):
+    return self._reverse[key]
+
+  def __iter__(self):
+    return iter(self._keys)
+
+  def __contains__(self, x):
+    return x in self._values
+

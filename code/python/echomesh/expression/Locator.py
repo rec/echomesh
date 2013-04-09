@@ -11,7 +11,7 @@ def get_variable(element, category, parts):
   elif category == 'parent':
     element = element.parent
   else:
-    assert category == 'local'
+    assert category == 'local', 'Bad category %s' % category
 
   variable = parts.pop()
   for p in parts:
