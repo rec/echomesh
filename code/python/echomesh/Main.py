@@ -4,8 +4,7 @@ ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 # If this is True, you want Echomesh to use its own external packages in
 # preference to any you might have installed in your system path.
 
-USE_DIGITS_FOR_PROGRESS_BAR = not False
-PRINT_STARTUP_TIMES = not False
+USE_DIGITS_FOR_PROGRESS_BAR = False
 COUNT = 0
 
 def main():
