@@ -36,6 +36,7 @@ class Element(MasterRunnable):
       self.elements = []
 
     self.element_table = dict((e.name, e) for e in reversed(self.elements))
+    self.variables = {}
 
     for key in description.keys():
       if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
@@ -68,6 +69,9 @@ class Element(MasterRunnable):
       e.unload()
     for v in self.variables:
       getattr(v, 'unload', lambda: None)()
+
+  def _on_unload(self):
+    pass
 
   def child_paused(self, _):
     for e in self.elements:

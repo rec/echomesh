@@ -3,6 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import Queue
 
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
+
 _QUEUE = None
 _LOCK = threading.Lock()
 MAIN_THREAD = threading.current_thread()
@@ -29,8 +33,15 @@ def execute_queue(timeout=None):
   assert threading.current_thread() is MAIN_THREAD
   while _QUEUE:
     try:
-      _QUEUE.get(False, timeout)()
-      if timeout is not None:
-        return
+      func = _QUEUE.get(False, timeout)
     except Queue.Empty:
       return
+    else:
+      try:
+        func()
+      except:
+        LOGGER.error()
+      else:
+        if timeout is None:
+          continue
+    return
