@@ -4,8 +4,9 @@ import analyse
 import numpy
 
 class Input(object):
-  def __init__(self):
+  def __init__(self, dtype=None):
     self.frames = self.numpy_frames = self.level = None
+    self.dtype = numpy.int16 if dtype is None else dtype
 
   def receive(self, frames):
     self.frames = frames

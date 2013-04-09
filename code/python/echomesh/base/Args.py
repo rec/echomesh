@@ -51,7 +51,7 @@ def split_args(s):
       continue
 
     if state is State.IN_ADDRESS:
-      if ch.isalpha() or ch == '.':
+      if ch.isalpha() or ch in '._':
         address.append(ch)
       elif ch.isspace():
         state = State.BEFORE_EQUALS

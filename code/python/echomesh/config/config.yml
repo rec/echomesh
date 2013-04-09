@@ -65,7 +65,7 @@ audio:
     # tries each of these rates in order, selecting the first one which works.
     # All interfaces we have tested seem to support one of the sample rates
     # in this default file.
-    sample_rates: [4000, 8000, 16000]
+    sample_rates: [8000, 4000, 16000]
 
     # If verbose is true, then every incoming level from the microphone is
     # printed on the console - very spammy.

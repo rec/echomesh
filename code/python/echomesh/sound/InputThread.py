@@ -42,9 +42,13 @@ class InputThread(ThreadLoop):
       raise Exception("Couldn't open audio device named %s." % name)
 
   def single_loop(self):
-    self.input.receive(self.stream.read(self.chunk_size))
-    for client in self.clients:
-      client(self.input)
+    try:
+      self.input.receive(self.stream.read(self.chunk_size))
+    except:
+      LOGGER.error()
+    else:
+      for client in self.clients:
+        client(self.input)
 
   def add_client(self, client):
     self.clients.add(client)
