@@ -1,0 +1,14 @@
+type: sequence
+
+patterns:
+  one:
+    type: spread
+    begin: red
+    end: white
+    steps: 60 + s.level
+
+elements:
+  -
+    type: pattern
+    pattern: one
+    output: light
