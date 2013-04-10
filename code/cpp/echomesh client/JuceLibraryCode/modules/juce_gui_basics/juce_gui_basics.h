@@ -43,7 +43,7 @@
     Unless you specifically want to disable this, it's best to leave this option turned on.
 */
 #ifndef JUCE_USE_XINERAMA
- #define JUCE_USE_XINERAMA 1
+#define JUCE_USE_XINERAMA 0
 #endif
 
 /** Config: JUCE_USE_XSHM
