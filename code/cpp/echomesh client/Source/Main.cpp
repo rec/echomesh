@@ -9,7 +9,7 @@
 */
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "MainComponent.h"
+#include "LightComponent.h"
 #include "ReadThread.h"
 
 //==============================================================================
@@ -29,16 +29,11 @@ public:
         // This method is where you should put your application's initialisation code..
 
         mainWindow = new MainWindow();
-        readThread_ = new echomesh::ReadThread();
-        readThread_->startThread();
-
+        (new echomesh::ReadThread(mainWindow->comp_))->startThread();
     }
 
     void shutdown()
     {
-        readThread_->stopThread(200);
-        // Add your application's shutdown code here..
-
         mainWindow = nullptr; // (deletes our window)
     }
 
@@ -60,7 +55,7 @@ public:
     //==============================================================================
     /*
         This class implements the desktop window that contains an instance of
-        our MainContentComponent class.
+        our LightComponent class.
     */
     class MainWindow    : public DocumentWindow
     {
@@ -69,7 +64,8 @@ public:
                                         Colours::lightgrey,
                                         DocumentWindow::allButtons)
         {
-            setContentOwned (new MainContentComponent(), true);
+            comp_ = new LightComponent;
+            setContentOwned (comp_, true);
 
             centreWithSize (getWidth(), getHeight());
             setVisible (true);
@@ -89,6 +85,7 @@ public:
            you really have to override any DocumentWindow methods, make sure your
            subclass also calls the superclass's method.
         */
+      LightComponent* comp_;
 
     private:
         JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainWindow)
