@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="XEYpdN" name="echomesh client" projectType="guiapp" version="1.0.0"
-              bundleIdentifier="com.yourcompany.echomeshclient" jucerVersion="3.1.0">
+              bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh client">
     <GROUP id="{006B21FC-D3F2-B667-B348-12C89EC74589}" name="Source">
-      <FILE id="ZqFTpK" name="MainComponent.cpp" compile="1" resource="0"
-            file="Source/MainComponent.cpp"/>
-      <FILE id="XIC6kT" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="N2jfl4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
     </GROUP>
   </MAINGROUP>
@@ -35,6 +32,22 @@
                        isDebug="0" optimisation="2" targetName="echomesh client"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
+    <VS2010 targetFolder="Builds/VisualStudio2010" juceFolder="../../../../juce/modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="echomesh client"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="2" targetName="echomesh client"/>
+      </CONFIGURATIONS>
+    </VS2010>
+    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="../../../../juce/modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="echomesh client"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
+                       targetName="echomesh client"/>
+      </CONFIGURATIONS>
+    </LINUX_MAKE>
   </EXPORTFORMATS>
   <JUCEOPTIONS/>
 </JUCERPROJECT>
