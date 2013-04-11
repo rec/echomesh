@@ -185,8 +185,8 @@ light:
     layout: [8, 8]
     padding:
       top: 10
+      left: 10
       bottom: 5
-      left: 5
       right: 5
       light:
         x: 3

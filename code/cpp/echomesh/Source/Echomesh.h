@@ -10,4 +10,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "disallow.h"
 
+using std::string;
+using std::vector;
+
 #endif  // __ECHOMESH__
