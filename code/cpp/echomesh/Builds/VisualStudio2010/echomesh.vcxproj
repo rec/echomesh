@@ -127,6 +127,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LightComponent.cpp"/>
+    <ClCompile Include="..\..\Source\ReadThread.cpp"/>
     <ClCompile Include="..\..\Source\yaml-cpp-src\aliascontent.cpp"/>
     <ClCompile Include="..\..\Source\yaml-cpp-src\aliasmanager.cpp"/>
     <ClCompile Include="..\..\Source\yaml-cpp-src\content.cpp"/>

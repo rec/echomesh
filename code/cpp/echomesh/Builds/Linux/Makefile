@@ -43,6 +43,8 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/LightComponent_f5f4d090.o \
+  $(OBJDIR)/ReadThread_a8da40c9.o \
   $(OBJDIR)/aliascontent_8112a045.o \
   $(OBJDIR)/aliasmanager_9a9bc179.o \
   $(OBJDIR)/content_c501d867.o \
@@ -101,6 +103,16 @@ clean:
 strip:
 	@echo Stripping echomesh
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/LightComponent_f5f4d090.o: ../../Source/LightComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LightComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ReadThread_a8da40c9.o: ../../Source/ReadThread.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ReadThread.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/aliascontent_8112a045.o: ../../Source/yaml-cpp-src/aliascontent.cpp
 	-@mkdir -p $(OBJDIR)

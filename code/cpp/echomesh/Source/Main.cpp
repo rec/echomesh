@@ -12,6 +12,9 @@ class Echomesh  : public JUCEApplication {
 
   void initialise (const String& commandLine) {
     mainWindow = new MainWindow();
+
+    // TODO: we don't store this because it causes an error when it gets
+    // deleted at shutdown - so rather have a memory leak!
     (new echomesh::ReadThread(mainWindow->comp_))->startThread();
   }
 
@@ -27,7 +30,7 @@ class Echomesh  : public JUCEApplication {
     MainWindow()  : DocumentWindow("MainWindow",
                                    Colours::lightgrey,
                                    DocumentWindow::allButtons) {
-      comp_ = new LightComponent;
+      comp_ = new echomesh::LightComponent;
       setContentOwned(comp_, true);
 
       centreWithSize(getWidth(), getHeight());
@@ -38,7 +41,7 @@ class Echomesh  : public JUCEApplication {
       JUCEApplication::getInstance()->systemRequestedQuit();
     }
 
-    LightComponent* comp_;
+    echomesh::LightComponent* comp_;
 
    private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
@@ -49,5 +52,5 @@ class Echomesh  : public JUCEApplication {
   ScopedPointer<echomesh::ReadThread> readThread_;
 };
 
-// This macro generates the main() routine that launches the app.
-START_JUCE_APPLICATION (Echomesh)
+
+START_JUCE_APPLICATION(Echomesh)

@@ -238,6 +238,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Source\LightComponent.cpp">
+      <Filter>echomesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ReadThread.cpp">
+      <Filter>echomesh\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\yaml-cpp-src\aliascontent.cpp">
       <Filter>echomesh\Source\yaml-cpp-src</Filter>
     </ClCompile>

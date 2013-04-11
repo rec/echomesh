@@ -1,53 +1,37 @@
 #ifndef __ECHOMESH_READ_THREAD__
 #define __ECHOMESH_READ_THREAD__
 
-#include <iostream>
-#include <string>
 #include <stdio.h>
+
+#include <vector>
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "disallow.h"
-#include "LightComponent.h"
+#include "yaml-cpp/yaml.h"
 
 namespace echomesh {
 
+class LightComponent;
+
 class ReadThread : public Thread {
  public:
-  ReadThread(LightComponent* light) : Thread("ReadThread"), light_(light) {}
+  ReadThread(LightComponent* light);
+  virtual ~ReadThread();
 
-  virtual void run() {
-    using namespace std;
-    string s;
-    String st;
-    while (!feof(stdin)) {
-      s.clear();
-      getline(cin, s);
-      if (s.empty())
-        continue;
-      st = s.c_str();
-
-      int index = st.indexOfChar(':');
-      cout << st;
-      if (index > 0) {
-        String cmd = st.substring(0, index);
-        if (cmd == "q") {
-          signalThreadShouldExit();
-          JUCEApplication::quit();
-          return;
-        }
-        String body = st.substring(index + 1).trim();
-        StringArray parts;
-        parts.addTokens(body, " ", "");
-        if (cmd == "c")
-          light_->setLights(parts);
-        else if (cmd == "l")
-          light_->setLayout(parts);
-      }
-    }
-  }
+  virtual void run();
 
  private:
+  void handleMessage();
+  void parseNode();
+  void parseColor(const YAML::Node&);
+  void parseSettings(const YAML::Node&);
+
   LightComponent* const light_;
+  StringArray accum_;
+  YAML::Node node_;
+  std::vector<uint8> lights_;
+  FILE* file_;
+  std::vector<Colour> colors_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };

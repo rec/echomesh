@@ -4,6 +4,9 @@
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh">
     <GROUP id="{006B21FC-D3F2-B667-B348-12C89EC74589}" name="Source">
+      <FILE id="znQZg9" name="LightComponent.cpp" compile="1" resource="0"
+            file="Source/LightComponent.cpp"/>
+      <FILE id="jj0nHR" name="ReadThread.cpp" compile="1" resource="0" file="Source/ReadThread.cpp"/>
       <GROUP id="{59871332-7DBC-C713-C3E0-9C01EE5FA478}" name="yaml-cpp-src">
         <FILE id="ysrtMH" name="aliascontent.cpp" compile="1" resource="0"
               file="Source/yaml-cpp-src/aliascontent.cpp"/>
