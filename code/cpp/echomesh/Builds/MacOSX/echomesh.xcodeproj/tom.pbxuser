@@ -1,0 +1,162 @@
+// !$*UTF8*$!
+{
+	13C456425D65729EB203AE19 /* echomesh */ = {
+		activeExec = 0;
+		executables = (
+			E245C76E1716192300026530 /* echomesh */,
+		);
+	};
+	2F680B28BDD1B4817937796B /* Project object */ = {
+		activeBuildConfigurationName = Debug;
+		activeExecutable = E245C76E1716192300026530 /* echomesh */;
+		activeTarget = 13C456425D65729EB203AE19 /* echomesh */;
+		codeSenseManager = E245C7881716194500026530 /* Code sense */;
+		executables = (
+			E245C76E1716192300026530 /* echomesh */,
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					341,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 387331358;
+			PBXWorkspaceStateSaveDate = 387331358;
+		};
+		perUserProjectItems = {
+			E245C7A217161C7100026530 = E245C7A217161C7100026530 /* PBXTextBookmark */;
+			E245C7A317161C7100026530 = E245C7A317161C7100026530 /* PBXTextBookmark */;
+			E245C7B5171632A800026530 = E245C7B5171632A800026530 /* PBXTextBookmark */;
+			E245C7B6171632A800026530 = E245C7B6171632A800026530 /* PBXTextBookmark */;
+			E245C7DB1716330F00026530 = E245C7DB1716330F00026530 /* PBXTextBookmark */;
+			E245C7DC1716330F00026530 = E245C7DC1716330F00026530 /* PBXTextBookmark */;
+			E245C7F4171634B400026530 = E245C7F4171634B400026530 /* PBXTextBookmark */;
+			E245C7F5171634B400026530 = E245C7F5171634B400026530 /* PBXTextBookmark */;
+		};
+		sourceControlManager = E245C7871716194500026530 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	E245C76E1716192300026530 /* echomesh */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		dataTipCustomDataFormattersEnabled = 1;
+		dataTipShowTypeColumn = 1;
+		dataTipSortType = 0;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = echomesh;
+		showTypeColumn = 0;
+		sourceDirectories = (
+		);
+	};
+	E245C7871716194500026530 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+			repositoryNamesForRoots = {
+				"" = "";
+			};
+		};
+	};
+	E245C7881716194500026530 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	E245C7A217161C7100026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Yaml-cpp/binary.h: No such file or directory";
+		rLen = 1;
+		rLoc = 0;
+		rType = 1;
+	};
+	E245C7A317161C7100026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		name = "binary.cpp: 1";
+		rLen = 29;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 771;
+		vrLoc = 0;
+	};
+	E245C7B5171632A800026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Yaml-cpp/binary.h: No such file or directory";
+		rLen = 1;
+		rLoc = 0;
+		rType = 1;
+	};
+	E245C7B6171632A800026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		name = "binary.cpp: 1";
+		rLen = 29;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 410;
+		vrLoc = 0;
+	};
+	E245C7DB1716330F00026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Yaml-cpp/binary.h: No such file or directory";
+		rLen = 1;
+		rLoc = 0;
+		rType = 1;
+	};
+	E245C7DC1716330F00026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		name = "binary.cpp: 1";
+		rLen = 29;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 362;
+		vrLoc = 0;
+	};
+	E245C7F4171634B400026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		comments = "Yaml-cpp/anchor.h: No such file or directory";
+		rLen = 1;
+		rLoc = 6;
+		rType = 1;
+	};
+	E245C7F5171634B400026530 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		name = "content.h: 7";
+		rLen = 29;
+		rLoc = 126;
+		rType = 0;
+		vrLen = 277;
+		vrLoc = 0;
+	};
+}

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="XEYpdN" name="echomesh" projectType="guiapp" version="1.0.0"
+              bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
+  <MAINGROUP id="TUlrr5" name="echomesh">
+    <GROUP id="{006B21FC-D3F2-B667-B348-12C89EC74589}" name="Source">
+      <GROUP id="{59871332-7DBC-C713-C3E0-9C01EE5FA478}" name="yaml-cpp-src">
+        <FILE id="ysrtMH" name="aliascontent.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/aliascontent.cpp"/>
+        <FILE id="eT7e7p" name="aliascontent.h" compile="0" resource="0" file="Source/yaml-cpp-src/aliascontent.h"/>
+        <FILE id="xCWC8v" name="aliasmanager.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/aliasmanager.cpp"/>
+        <FILE id="L4lw1c" name="collectionstack.h" compile="0" resource="0"
+              file="Source/yaml-cpp-src/collectionstack.h"/>
+        <FILE id="NAvIQf" name="content.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/content.cpp"/>
+        <FILE id="SbWWi7" name="content.h" compile="0" resource="0" file="Source/yaml-cpp-src/content.h"/>
+        <FILE id="a0mOA8" name="conversion.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/conversion.cpp"/>
+        <FILE id="beZNhl" name="directives.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/directives.cpp"/>
+        <FILE id="QZufzZ" name="directives.h" compile="0" resource="0" file="Source/yaml-cpp-src/directives.h"/>
+        <FILE id="Nji2pc" name="emitfromevents.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/emitfromevents.cpp"/>
+        <FILE id="hREqgw" name="emitter.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/emitter.cpp"/>
+        <FILE id="MeYLQh" name="emitterstate.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/emitterstate.cpp"/>
+        <FILE id="LTGr0h" name="emitterstate.h" compile="0" resource="0" file="Source/yaml-cpp-src/emitterstate.h"/>
+        <FILE id="Rp1ngm" name="emitterutils.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/emitterutils.cpp"/>
+        <FILE id="VjGhQc" name="emitterutils.h" compile="0" resource="0" file="Source/yaml-cpp-src/emitterutils.h"/>
+        <FILE id="KrFPNl" name="exp.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/exp.cpp"/>
+        <FILE id="P2c29z" name="exp.h" compile="0" resource="0" file="Source/yaml-cpp-src/exp.h"/>
+        <FILE id="VUXT4J" name="indentation.h" compile="0" resource="0" file="Source/yaml-cpp-src/indentation.h"/>
+        <FILE id="KLc4OR" name="iterator.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/iterator.cpp"/>
+        <FILE id="LSnTRj" name="iterpriv.h" compile="0" resource="0" file="Source/yaml-cpp-src/iterpriv.h"/>
+        <FILE id="EtMgod" name="ltnode.h" compile="0" resource="0" file="Source/yaml-cpp-src/ltnode.h"/>
+        <FILE id="XBk3nn" name="map.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/map.cpp"/>
+        <FILE id="roI2Fy" name="map.h" compile="0" resource="0" file="Source/yaml-cpp-src/map.h"/>
+        <FILE id="PdxfYD" name="node.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/node.cpp"/>
+        <FILE id="HE3XfN" name="nodebuilder.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/nodebuilder.cpp"/>
+        <FILE id="OX3Q25" name="nodebuilder.h" compile="0" resource="0" file="Source/yaml-cpp-src/nodebuilder.h"/>
+        <FILE id="h1fV9U" name="null.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/null.cpp"/>
+        <FILE id="SJ4kQJ" name="ostream.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/ostream.cpp"/>
+        <FILE id="Cr5ugR" name="parser.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/parser.cpp"/>
+        <FILE id="RFHAfx" name="parserstate.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/parserstate.cpp"/>
+        <FILE id="TxOgle" name="parserstate.h" compile="0" resource="0" file="Source/yaml-cpp-src/parserstate.h"/>
+        <FILE id="A1Mbar" name="ptr_stack.h" compile="0" resource="0" file="Source/yaml-cpp-src/ptr_stack.h"/>
+        <FILE id="PyWVv8" name="regex.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/regex.cpp"/>
+        <FILE id="Tedhxp" name="regex.h" compile="0" resource="0" file="Source/yaml-cpp-src/regex.h"/>
+        <FILE id="BfiTGV" name="regeximpl.h" compile="0" resource="0" file="Source/yaml-cpp-src/regeximpl.h"/>
+        <FILE id="v1KmCp" name="scalar.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/scalar.cpp"/>
+        <FILE id="hLUx8S" name="scalar.h" compile="0" resource="0" file="Source/yaml-cpp-src/scalar.h"/>
+        <FILE id="JjQAGP" name="scanner.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/scanner.cpp"/>
+        <FILE id="s4pf7a" name="scanner.h" compile="0" resource="0" file="Source/yaml-cpp-src/scanner.h"/>
+        <FILE id="Uzle92" name="scanscalar.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/scanscalar.cpp"/>
+        <FILE id="Rat4zR" name="scanscalar.h" compile="0" resource="0" file="Source/yaml-cpp-src/scanscalar.h"/>
+        <FILE id="AqO0bz" name="scantag.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/scantag.cpp"/>
+        <FILE id="x60E1H" name="scantag.h" compile="0" resource="0" file="Source/yaml-cpp-src/scantag.h"/>
+        <FILE id="o6DKlO" name="scantoken.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/scantoken.cpp"/>
+        <FILE id="RyRj6h" name="sequence.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/sequence.cpp"/>
+        <FILE id="THwfvE" name="sequence.h" compile="0" resource="0" file="Source/yaml-cpp-src/sequence.h"/>
+        <FILE id="CRaoCy" name="setting.h" compile="0" resource="0" file="Source/yaml-cpp-src/setting.h"/>
+        <FILE id="buh3n8" name="simplekey.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/simplekey.cpp"/>
+        <FILE id="NGoO58" name="singledocparser.cpp" compile="1" resource="0"
+              file="Source/yaml-cpp-src/singledocparser.cpp"/>
+        <FILE id="W28HYa" name="singledocparser.h" compile="0" resource="0"
+              file="Source/yaml-cpp-src/singledocparser.h"/>
+        <FILE id="QeC6ta" name="stream.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/stream.cpp"/>
+        <FILE id="I7Qhe4" name="stream.h" compile="0" resource="0" file="Source/yaml-cpp-src/stream.h"/>
+        <FILE id="Zehstx" name="streamcharsource.h" compile="0" resource="0"
+              file="Source/yaml-cpp-src/streamcharsource.h"/>
+        <FILE id="pqozwV" name="stringsource.h" compile="0" resource="0" file="Source/yaml-cpp-src/stringsource.h"/>
+        <FILE id="cUk5Zs" name="tag.cpp" compile="1" resource="0" file="Source/yaml-cpp-src/tag.cpp"/>
+        <FILE id="rZ57j6" name="tag.h" compile="0" resource="0" file="Source/yaml-cpp-src/tag.h"/>
+        <FILE id="kE4nvI" name="token.h" compile="0" resource="0" file="Source/yaml-cpp-src/token.h"/>
+      </GROUP>
+      <FILE id="N2jfl4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <MODULES>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_gui_audio" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
+  </MODULES>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX" juceFolder="../../../../juce/modules"
+               extraCompilerFlags="-I../../Source" extraDefs="">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="1" optimisation="1" targetName="echomesh"/>
+        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
+                       isDebug="0" optimisation="2" targetName="echomesh"/>
+      </CONFIGURATIONS>
+    </XCODE_MAC>
+    <VS2010 targetFolder="Builds/VisualStudio2010" juceFolder="../../../../juce/modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="1" optimisation="1" targetName="echomesh"/>
+        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
+                       isDebug="0" optimisation="2" targetName="echomesh"/>
+      </CONFIGURATIONS>
+    </VS2010>
+    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="../../../../juce/modules">
+      <CONFIGURATIONS>
+        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
+                       targetName="echomesh"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
+                       targetName="echomesh"/>
+      </CONFIGURATIONS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>
