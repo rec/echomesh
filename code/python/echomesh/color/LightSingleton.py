@@ -10,8 +10,10 @@ from echomesh.util.thread import TkThreadRunner
 LOGGER = Log.logger(__name__)
 
 _TYPE_MAP = {
+  'external': 'echomesh.color.ExternalLightBank',
   'tk': 'echomesh.color.TkLightBank',
-  'spi': 'echomesh.color.SpiLightBank'}
+  'spi': 'echomesh.color.SpiLightBank'
+  }
 
 class LightSingleton(object):
   def __init__(self):

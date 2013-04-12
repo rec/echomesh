@@ -6,6 +6,13 @@ from echomesh.base import Name
 import copy
 import os.path
 
+_CREATE_MISSING_DIRECTORY_PROJECT = """
+
+There doesn't seem to be an echomesh project in your directory "%s".
+
+Would you like an empty project created for you? (Y/n) """
+
+
 _CLOSING_MESSAGE = """
 Empty echomesh project created.
 
@@ -37,6 +44,15 @@ def _make(path, value):
     with open(path, 'w') as f:
       f.write(value)
     print(path)
+
+def ask_to_make_empty_project(path):
+  yn = '?'
+  while yn and yn[0] not in 'yn':
+    print(_CREATE_MISSING_DIRECTORY_PROJECT % path, end='')
+    yn = raw_input().strip().lower()
+  if not (yn and yn[0] == 'n'):
+    make_empty_project(path)
+    return True
 
 _CONFIG = """\
 # This is your master config file.

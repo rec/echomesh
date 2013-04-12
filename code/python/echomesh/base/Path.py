@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import MakeEmptyProject
+from echomesh.base import Platform
 
 import os
 import os.path
@@ -8,6 +9,7 @@ import sys
 
 CODE_PATH = os.path.abspath(sys.path[0])
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
+BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
 PROJECT_PATH = None
 COMMAND_PATH = None
 ASSET_PATH = None
@@ -36,12 +38,7 @@ def set_project_path(project_path=None, show_error=False, prompt=True):
       path = p
       continue
     if prompt:
-      yn = '?'
-      while yn and yn[0] not in 'yn':
-        print(_CREATE_MISSING_DIRECTORY_PROJECT % original_path, end='')
-        yn = raw_input().strip().lower()
-      if not (yn and yn[0] == 'n'):
-        MakeEmptyProject.make_empty_project(original_path)
+      if MakeEmptyProject.ask_to_make_empty_project(original_path):
         path = original_path
         break
     if show_error:
