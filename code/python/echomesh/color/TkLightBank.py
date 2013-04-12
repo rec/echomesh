@@ -96,7 +96,7 @@ class TkLightBank(LightBank):
     self.border_width = _get('light', 'border', 'width')
     self.shape = _get('light', 'shape')
     self.size = _get('light', 'size')
-    self.light_padding = get('light', 'padding')
+    self.light_padding = _get('light', 'padding')
     self.padding = _get('padding')
     self.columns, self.rows = _get_dimension(self.count, *_get('layout'))
     self.width = (self.padding['top'] +
