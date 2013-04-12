@@ -172,7 +172,7 @@ light:
   brightness: 100%
   count: 64
   enable: false
-  order: rgb
+  rgb_order: rgb
 
   # period needs to be 40ms or up if you are using tk but can be as short as 2ms
   # if you're using hardware lighting.
@@ -188,14 +188,14 @@ light:
       left: 10
       bottom: 5
       right: 5
-      light:
-        x: 3
-        y: 3
     light:
       background: 0x606060
       border:
         color: black
         width: 1
+      padding:
+        x: 3
+        y: 3
       shape: circle
       size: [16, 16]
 

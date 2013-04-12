@@ -334,6 +334,9 @@
     <ClCompile Include="..\..\Source\Main.cpp">
       <Filter>echomesh\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\LightConfig.cpp">
+      <Filter>echomesh\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\text\juce_CharacterFunctions.cpp">
       <Filter>Juce Modules\juce_core\text</Filter>
     </ClCompile>

@@ -6,39 +6,27 @@
 
 namespace echomesh {
 
-typedef unsigned char byte;
-
-struct Light {
-  byte rgb_[3];
-};
-
-typedef std::vector<Light> LightList;
-
 class LightComponent : public Component {
  public:
-  LightComponent();
+  LightComponent(DocumentWindow*);
   ~LightComponent() {}
 
   void paint(Graphics& g);
 
-  void setColors(const std::vector<Colour>&);
-
-  void setLights(const StringArray&);
-
-  void setLayout(const StringArray&);
+  void setLights(const ColorList&);
+  void setConfig(const LightConfig&);
 
  private:
-  int count_;
-  int width_;
-  int height_;
-  int leftPadding_;
-  int topPadding_;
-  int lightPaddingX_;
-  int lightPaddingY_;
-  int buttonWidth_;
-  int buttonHeight_;
+  ColorList colors_;
+  LightConfig config_;
+  bool configEmpty_;
+  DocumentWindow* window_;
+  Point boxSize_;
 
-  std::vector<Colour> colors_;
+  const Display& display() const { return config_.display; }
+  const LightDisplay& light() const { return display().light; }
+  const Padding& padding() const { return display().padding; }
+  const Point& layout() const { return display().layout; }
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LightComponent)
 };

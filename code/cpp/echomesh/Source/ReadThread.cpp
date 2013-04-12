@@ -8,7 +8,7 @@
 
 namespace echomesh {
 
-// #define JUCE_LINUX 1
+#define JUCE_LINUX 1
 // Only to make sure it compiles
 
 static const char DEVICE_NAME[] = "/dev/spidev0.0";
@@ -16,7 +16,7 @@ const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 
 ReadThread::ReadThread(LightComponent* light)
-    : Thread("ReadThread"), light_(light)
+    : Thread("ReadThread"), lightComponent_(light)
 #if JUCE_LINUX
 , file_(fopen(DEVICE_NAME, "w"))
 #endif
@@ -43,6 +43,7 @@ void ReadThread::run() {
   }
 }
 
+
 void ReadThread::handleMessage() {
   String result = accum_.joinIntoString("\n");
   accum_.clear();
@@ -68,41 +69,64 @@ void ReadThread::parseNode() {
   }
 
   const YAML::Node& data = node_["data"];
-  if (type == "color")
-    parseColor(data);
-  else if (type == "settings")
-    parseSettings(data);
+  if (type == "light")
+    parseLight(data);
+  else if (type == "config")
+    parseConfig(data);
 }
 
-void ReadThread::parseColor(const YAML::Node& data) {
-  int input_size = data.size();
-  int count = lights_.size() / 3;
-  uint8* light = &lights_.front();
-  for (int i = 0; i < count; ++i) {
-    uint8 components[3];
-    if (i < input_size) {
-      const YAML::Node& color_node = data[i];
-      for (int j = 0; j < 3; ++j)
-        color_node[j] >> components[i];
-    } else {
-      memset(components, 3, '\0');
-    }
+void ReadThread::enforceSizes() {
+  if (colors_.size() != config_.count)
+    colors_.resize(config_.count, Colours::black);
 
-    for (int j = 0; j < 3; ++j)
-      *(light++) = 0x80 + (components[j] / 2);
-
-    colors_[i] = Colour(components[0], components[1], components[2]);
+  if (colorBytes_.size() != 3 * config_.count)
+    colorBytes_.resize(3 * config_.count, 0x80);
+#if 0
+    static ColorBytes BLACK = {0x80, 0x80, 0x80};
+    // TODO: why won't this compile?
+    // bytes_.resize(config_.count, &BLACK);
+    int i = bytes_.size();
+    bytes_.resize(config_.count);
+    for (; i < config_.count; ++i)
+      bytes_[i] = BLACK;
   }
+#endif
+}
+
+#define WHICH_RGB true
+
+void ReadThread::parseConfig(const YAML::Node& data) {
+  data >> config_;
+  enforceSizes();
+
+  for (int i = 0; i < 3; ++i) {
+#if WHICH_RGB
+    rgb_order_[i] = config_.rgb_order.find("rgb"[i]);
+#else
+    rgb_order_[i] = string("rgb").find(config_.rgb_order[i]);
+#endif
+  }
+  lightComponent_->setConfig(config_);
+}
+
+void ReadThread::parseLight(const YAML::Node& data) {
+  data >> colors_;
+  enforceSizes();
+  for (int i = 0; i < config_.count; ++i) {
+    const Colour& color = colors_[i];
+    uint8* light = &colorBytes_[3 * i];
+    light[rgb_order_[0]] = color.getRed();
+    light[rgb_order_[1]] = color.getGreen();
+    light[rgb_order_[2]] = color.getBlue();
+  }
+
 #if JUCE_LINUX
-  fwrite(&lights_.front(), 3, count, file_);
+  fwrite(&colorBytes_.front(), 1, colorBytes_.size(), file_);
   fflush(file_);
-  fwrite(LATCH, 3, 1, file_);
+  fwrite(LATCH, 1, 3, file_);
   fflush(file_);
 #endif
-  light_->setColors(colors_);
-}
-
-void ReadThread::parseSettings(const YAML::Node& data) {
+  lightComponent_->setLights(colors_);
 }
 
 }  // namespace echomesh

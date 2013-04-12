@@ -30,7 +30,7 @@ class Echomesh  : public JUCEApplication {
     MainWindow()  : DocumentWindow("MainWindow",
                                    Colours::lightgrey,
                                    DocumentWindow::allButtons) {
-      comp_ = new echomesh::LightComponent;
+      comp_ = new echomesh::LightComponent(this);
       setContentOwned(comp_, true);
 
       centreWithSize(getWidth(), getHeight());

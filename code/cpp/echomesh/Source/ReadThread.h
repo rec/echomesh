@@ -8,6 +8,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "disallow.h"
 #include "yaml-cpp/yaml.h"
+#include "LightConfig.h"
 
 namespace echomesh {
 
@@ -23,15 +24,19 @@ class ReadThread : public Thread {
  private:
   void handleMessage();
   void parseNode();
-  void parseColor(const YAML::Node&);
-  void parseSettings(const YAML::Node&);
+  void parseLight(const YAML::Node&);
+  void parseConfig(const YAML::Node&);
+  void enforceSizes();
 
-  LightComponent* const light_;
-  StringArray accum_;
+  LightComponent* const lightComponent_;
   YAML::Node node_;
-  std::vector<uint8> lights_;
+  StringArray accum_;
   FILE* file_;
-  std::vector<Colour> colors_;
+  ColorList colors_;
+  ColorByteBank bytes_;
+  ByteList colorBytes_;
+  LightConfig config_;
+  ColorBytes rgb_order_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };

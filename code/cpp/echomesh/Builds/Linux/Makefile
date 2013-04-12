@@ -75,6 +75,7 @@ OBJECTS := \
   $(OBJDIR)/stream_22ebc15c.o \
   $(OBJDIR)/tag_8cfdaf88.o \
   $(OBJDIR)/Main_90ebc5c2.o \
+  $(OBJDIR)/LightConfig_e0c1da59.o \
   $(OBJDIR)/juce_core_aff681cc.o \
   $(OBJDIR)/juce_cryptography_25c7e826.o \
   $(OBJDIR)/juce_data_structures_bdd6d488.o \
@@ -262,6 +263,11 @@ $(OBJDIR)/tag_8cfdaf88.o: ../../Source/yaml-cpp-src/tag.cpp
 $(OBJDIR)/Main_90ebc5c2.o: ../../Source/Main.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Main.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LightConfig_e0c1da59.o: ../../Source/LightConfig.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LightConfig.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_core_aff681cc.o: ../../JuceLibraryCode/modules/juce_core/juce_core.cpp
