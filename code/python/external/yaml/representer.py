@@ -53,20 +53,21 @@ class BaseRepresenter(object):
         data_types = type(data).__mro__
         if type(data) is types.InstanceType:
             data_types = self.get_classobj_bases(data.__class__)+list(data_types)
-        if data_types[0] in self.yaml_representers:
-            node = self.yaml_representers[data_types[0]](self, data)
+        for dt in data_types:
+            rep = self.yaml_representers.get(dt)
+            if rep:
+                return rep(self, data)
+        for data_type in data_types:
+            if data_type in self.yaml_multi_representers:
+                node = self.yaml_multi_representers[data_type](self, data)
+                break
         else:
-            for data_type in data_types:
-                if data_type in self.yaml_multi_representers:
-                    node = self.yaml_multi_representers[data_type](self, data)
-                    break
+            if None in self.yaml_multi_representers:
+                node = self.yaml_multi_representers[None](self, data)
+            elif None in self.yaml_representers:
+                node = self.yaml_representers[None](self, data)
             else:
-                if None in self.yaml_multi_representers:
-                    node = self.yaml_multi_representers[None](self, data)
-                elif None in self.yaml_representers:
-                    node = self.yaml_representers[None](self, data)
-                else:
-                    node = ScalarNode(None, unicode(data))
+                node = ScalarNode(None, unicode(data))
         #if alias_key is not None:
         #    self.represented_objects[alias_key] = node
         return node
