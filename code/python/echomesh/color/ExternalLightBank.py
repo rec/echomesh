@@ -27,6 +27,9 @@ class ExternalLightBank(LightBank):
       if self.process:
         result = {'type': data_type, 'data': data}
         output = Yaml.encode_one(result)
+        self.display_count = getattr(self, 'display_count', 0) + 1
+        if self.display_count < 4:
+          print('!!!!!!!!\n', output)
         self.process.stdin.write(output)
         self.process.stdin.write(Yaml.SEPARATOR)
         self.process.stdin.flush()
@@ -65,9 +68,5 @@ class ExternalLightBank(LightBank):
     self.shutdown()
 
   def _display_lights(self, lights, brightness):
-    first_time = getattr(self, 'first_time', True)
-    if first_time:
-      print('!!!', lights)
-      self.first_time = False
     self._send('light', colors=lights, brightness=brightness)
 

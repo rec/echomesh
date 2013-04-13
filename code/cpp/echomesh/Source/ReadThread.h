@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 
+#include <istream>
 #include <vector>
 
 #include "../JuceLibraryCode/JuceHeader.h"
@@ -42,6 +43,7 @@ class ReadThread : public Thread {
   LightConfig config_;
   ColorBytes rgb_order_;
   double brightness_;
+  std::istream* stream_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };

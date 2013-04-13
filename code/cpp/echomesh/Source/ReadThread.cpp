@@ -8,12 +8,15 @@
 
 namespace echomesh {
 
+using namespace std;
+
 static const char DEVICE_NAME[] = "/dev/spidev0.0";
 const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
+const char READ_FILE[] = "/development/echomesh/incoming.data";
 
 ReadThread::ReadThread(LightComponent* light)
-    : Thread("ReadThread"), lightComponent_(light)
+    : Thread("ReadThread"), lightComponent_(light), stream_(&std::cin)
 #if JUCE_LINUX
 , file_(fopen(DEVICE_NAME, "w"))
 #endif
@@ -27,12 +30,11 @@ ReadThread::~ReadThread() {
 }
 
 void ReadThread::run() {
-  using namespace std;
   string s;
   String st;
-  while (!feof(stdin)) {
+  while (!stream_->eof()) {
     s.clear();
-    getline(cin, s);
+    getline(*stream_, s);
     if (s.find("---"))
       accum_.add(s.c_str());
     else
