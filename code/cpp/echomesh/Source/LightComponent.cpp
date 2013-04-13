@@ -8,7 +8,7 @@ LightComponent::LightComponent(DocumentWindow* window)
 }
 
 void LightComponent::paint(Graphics& g) {
-  g.fillAll(config_.display.background);  // TODO
+  g.fillAll(config_.display.background);
   if (configEmpty_)
     return;
 
@@ -17,6 +17,7 @@ void LightComponent::paint(Graphics& g) {
 
   int i = 0;
   bool isRect = light().shape.find("rect");
+  std::cout << "!!!!!! " << layout().x << ", " << layout().y;
 
   for (int x = 0; x < layout().x; ++x) {
     for (int y = 0; y < layout().y; ++y) {
@@ -43,6 +44,7 @@ void LightComponent::setConfig(const LightConfig& config) {
   MessageManagerLock l;
   config_ = config;
   configEmpty_ = false;
+  std::cout << "setConfig!\n";
   boxSize_.x = light().size.x + light().padding.x;
   boxSize_.y = light().size.y + light().padding.y;
 
@@ -53,6 +55,7 @@ void LightComponent::setConfig(const LightConfig& config) {
 
   setSize(screenSize.x, screenSize.y);
   window_->setSize(screenSize.x, screenSize.y);
+  repaint();
 }
 
 }  // namespace echomesh

@@ -37,11 +37,11 @@
 					PBXFileDataSource_Target_ColumnID,
 				);
 			};
-			PBXPerProjectTemplateStateSaveDate = 387421933;
-			PBXWorkspaceStateSaveDate = 387421933;
+			PBXPerProjectTemplateStateSaveDate = 387513700;
+			PBXWorkspaceStateSaveDate = 387513700;
 		};
 		perUserProjectItems = {
-			E245C7DB1716330F00026530 /* PBXTextBookmark */ = E245C7DB1716330F00026530 /* PBXTextBookmark */;
+			E245C7DB1716330F00026530 = E245C7DB1716330F00026530 /* PBXTextBookmark */;
 		};
 		sourceControlManager = E245C7871716194500026530 /* Source Control */;
 		userBuildSettings = {

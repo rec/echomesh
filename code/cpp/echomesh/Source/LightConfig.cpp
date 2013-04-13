@@ -18,8 +18,13 @@ void operator>>(const YAML::Node& node, Colour& p) {
 }
 
 void operator>>(const YAML::Node& node, Point& p) {
-  node[0] >> p.x;
-  node[1] >> p.y;
+  if (const YAML::Node *pName = node.FindValue("x")) {
+    *pName >> p.x;
+    node["y"] >> p.y;
+  } else {
+    node[0] >> p.x;
+    node[1] >> p.y;
+  }
 }
 
 void operator>>(const YAML::Node& node, Border& p) {

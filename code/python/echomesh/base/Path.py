@@ -16,12 +16,6 @@ ASSET_PATH = None
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'command', 'log'
 
-_CREATE_MISSING_DIRECTORY_PROJECT = """
-
-There doesn't seem to be an echomesh project in your directory "%s".
-
-Would you like an empty project created for you? (Y/n) """
-
 def _possible_project(path):
   for d in _REQUIRED_DIRECTORIES:
     if not os.path.exists(os.path.join(path, d)):

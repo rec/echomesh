@@ -5,7 +5,7 @@ import threading
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util import Importer
-from echomesh.util.thread import TkThreadRunner
+from echomesh.util.thread.Runnable import Runnable
 
 LOGGER = Log.logger(__name__)
 
@@ -15,11 +15,18 @@ _TYPE_MAP = {
   'spi': 'echomesh.color.SpiLightBank'
   }
 
-class LightSingleton(object):
+class LightSingleton(Runnable):
   def __init__(self):
+    super(LightSingleton, self).__init__()
     self.lights = None
     self.lock = threading.Lock()
     self.owner_count = 0
+    self.start()
+
+  def _on_pause(self):
+    if self.lights:
+      self.lights.pause()
+      self.lights = None
 
   def add_owner(self):
     self.owner_count += 1
@@ -56,3 +63,4 @@ add_client = _SINGLETON.add_client
 remove_client = _SINGLETON.remove_client
 add_owner = _SINGLETON.add_owner
 remove_owner = _SINGLETON.remove_owner
+stop = _SINGLETON.pause

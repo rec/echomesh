@@ -3,6 +3,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
+from echomesh.color import LightSingleton
 from echomesh.element import ScoreMaster
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
@@ -39,6 +40,13 @@ class Instance(MasterRunnable):
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.mic = None
+
+  def _on_pause(self):
+    super(Instance, self)._on_pause()
+    try:
+      LightSingleton.stop()
+    except Exception as e:
+      print('!!!!!!', e)
 
   def broadcasting(self):
     return self._broadcasting

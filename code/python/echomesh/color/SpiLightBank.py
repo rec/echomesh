@@ -6,7 +6,6 @@ import time
 from echomesh.base import Config
 from echomesh.color import LightsEnabled
 from echomesh.color.LightBank import LightBank
-from echomesh.expression import UnitConfig
 from echomesh.util import Log
 
 _LATCH_BYTE_COUNT = 3
@@ -56,14 +55,12 @@ class SpiLightBank(LightBank):
     self._device.close()
     self._device = None
 
-  def _display_lights(self, lights):
-    brightness = UnitConfig.get('light', 'brightness')
-
+  def _display_lights(self, lights, brightness):
     for i, light in enumerate(lights):
       if light is None:
         light = [0x80, 0x80, 0x80]
       else:
         light =  self.order(*int(min(0x80 + 0x7F * x * brightness, 0xFF)
-                                 for x in light)
+                                 for x in light))
       self._bank[3 * i:3 * (i + 1)] = light
-    self._write(self.pattern)
+      self._write(self.pattern)

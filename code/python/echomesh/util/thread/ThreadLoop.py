@@ -6,8 +6,10 @@ from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 LOGGER = Log.logger(__name__)
 
 class ThreadLoop(ThreadRunnable):
-  def __init__(self, single_loop=None, name=None, report_error=False):
-    super(ThreadLoop, self).__init__(report_error=report_error)
+  def __init__(self, single_loop=None, name=None, report_error=False,
+               is_daemon=True):
+    super(ThreadLoop, self).__init__(report_error=report_error,
+                                     is_daemon=is_daemon)
     self.name = name or repr(self)
     self._single_loop = single_loop or self.single_loop
     assert self._single_loop

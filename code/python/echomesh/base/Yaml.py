@@ -5,6 +5,8 @@ import yaml
 
 from contextlib import closing
 
+SEPARATOR = '\n---\n'
+
 def filename(name):
   return name if name.endswith('.yml') else (name + '.yml')
 
@@ -28,8 +30,6 @@ def read(fname, allow_empty=True):
 
   with closing(f):
     return decode(f)
-
-SEPARATOR = '\n---\n'
 
 def write(fname, *items):
   try:

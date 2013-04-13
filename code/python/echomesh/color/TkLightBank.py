@@ -9,7 +9,6 @@ from six.moves import xrange
 from echomesh.base import Config
 from echomesh.color.LightBank import LightBank
 from echomesh.color import ColorTable
-from echomesh.expression import UnitConfig
 from echomesh.util import Log
 from echomesh.util.thread import TkThreadRunner
 
@@ -127,8 +126,7 @@ class TkLightBank(LightBank):
           self.tkwin.update()
     TkThreadRunner.defer(_clear)
 
-  def _display_lights(self, lights):
-    brightness = UnitConfig.get('light', 'brightness')
+  def _display_lights(self, lights, brightness):
     light_colors = [ColorTable.to_tk(light, brightness) for light in lights]
     diff = self.count - len(lights)
     if diff > 0:

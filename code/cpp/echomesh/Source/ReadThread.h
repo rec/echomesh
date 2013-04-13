@@ -24,8 +24,12 @@ class ReadThread : public Thread {
  private:
   void handleMessage();
   void parseNode();
+
+  void quit();
+  void clear();
   void parseLight(const YAML::Node&);
   void parseConfig(const YAML::Node&);
+  void displayLights();
   void enforceSizes();
 
   LightComponent* const lightComponent_;
@@ -37,6 +41,7 @@ class ReadThread : public Thread {
   ByteList colorBytes_;
   LightConfig config_;
   ColorBytes rgb_order_;
+  double brightness_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };

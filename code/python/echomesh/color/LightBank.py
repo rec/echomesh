@@ -11,8 +11,8 @@ from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 class LightBank(ThreadLoop):
-  def __init__(self):
-    super(LightBank, self).__init__()
+  def __init__(self, is_daemon=True):
+    super(LightBank, self).__init__(is_daemon=is_daemon)
     self.clients = set()
     self.lock = threading.Lock()
     self.loops = 0
@@ -44,7 +44,9 @@ class LightBank(ThreadLoop):
     with self.lock:
       client_lights = [client() for client in self.clients]
       lights = Combiner.combine(Combiner.sup, *client_lights)
-    self._display_lights(lights)
+    if not lights:
+      return  # TODO: this always happens the first time:  why?
+    self._display_lights(lights, UnitConfig.get('light', 'brightness'))
     self._next_time += UnitConfig.get('light', 'period')
     time.sleep(max(0, self._next_time - time.time()))
 

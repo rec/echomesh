@@ -8,9 +8,6 @@
 
 namespace echomesh {
 
-#define JUCE_LINUX 1
-// Only to make sure it compiles
-
 static const char DEVICE_NAME[] = "/dev/spidev0.0";
 const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
@@ -43,11 +40,9 @@ void ReadThread::run() {
   }
 }
 
-
 void ReadThread::handleMessage() {
   String result = accum_.joinIntoString("\n");
   accum_.clear();
-
   std::string str(result.toUTF8());
   std::istringstream s(str);
   try {
@@ -56,23 +51,34 @@ void ReadThread::handleMessage() {
       parseNode();
   } catch (YAML::Exception& e) {
     std::cout << e.what() << "\n";
+    std::cout << result << "\n";
   }
 }
 
 void ReadThread::parseNode() {
   std::string type;
   node_["type"] >> type;
-  if (type == "quit") {
-    signalThreadShouldExit();
-    JUCEApplication::quit();
-    return;
-  }
-
-  const YAML::Node& data = node_["data"];
-  if (type == "light")
-    parseLight(data);
+  if (type == "clear")
+    clear();
   else if (type == "config")
-    parseConfig(data);
+    parseConfig(node_["data"]);
+  else if (type == "light")
+    parseLight(node_["data"]);
+  else if (type == "quit")
+    quit();
+}
+
+void ReadThread::quit() {
+  signalThreadShouldExit();
+  JUCEApplication::quit();
+  exit(0);
+}
+
+void ReadThread::clear() {
+  for (int i = 0; i < colors_.size(); ++i)
+    colors_[i] = Colours::black;
+
+  displayLights();
 }
 
 void ReadThread::enforceSizes() {
@@ -81,21 +87,12 @@ void ReadThread::enforceSizes() {
 
   if (colorBytes_.size() != 3 * config_.count)
     colorBytes_.resize(3 * config_.count, 0x80);
-#if 0
-    static ColorBytes BLACK = {0x80, 0x80, 0x80};
-    // TODO: why won't this compile?
-    // bytes_.resize(config_.count, &BLACK);
-    int i = bytes_.size();
-    bytes_.resize(config_.count);
-    for (; i < config_.count; ++i)
-      bytes_[i] = BLACK;
-  }
-#endif
 }
 
 #define WHICH_RGB true
 
 void ReadThread::parseConfig(const YAML::Node& data) {
+  return;
   data >> config_;
   enforceSizes();
 
@@ -109,15 +106,25 @@ void ReadThread::parseConfig(const YAML::Node& data) {
   lightComponent_->setConfig(config_);
 }
 
+static uint8 process(uint8 color, double brightness) {
+  int c = static_cast<int>(color * brightness / 2 + 0x80);
+  return static_cast<uint8>(jmin(c, 0xFF));
+}
+
 void ReadThread::parseLight(const YAML::Node& data) {
-  data >> colors_;
+  data["colors"] >> colors_;
+  data["brightness"] >> brightness_;
   enforceSizes();
+  displayLights();
+}
+
+void ReadThread::displayLights() {
   for (int i = 0; i < config_.count; ++i) {
     const Colour& color = colors_[i];
     uint8* light = &colorBytes_[3 * i];
-    light[rgb_order_[0]] = color.getRed();
-    light[rgb_order_[1]] = color.getGreen();
-    light[rgb_order_[2]] = color.getBlue();
+    light[rgb_order_[0]] = process(color.getRed(), brightness_);
+    light[rgb_order_[1]] = process(color.getGreen(), brightness_);
+    light[rgb_order_[2]] = process(color.getBlue(), brightness_);
   }
 
 #if JUCE_LINUX
