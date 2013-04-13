@@ -27,7 +27,7 @@ class Echomesh  : public JUCEApplication {
 
   class MainWindow : public DocumentWindow {
    public:
-    MainWindow()  : DocumentWindow("MainWindow",
+    MainWindow()  : DocumentWindow("echomesh lighting simulator",
                                    Colours::lightgrey,
                                    DocumentWindow::allButtons) {
       comp_ = new echomesh::LightComponent(this);
@@ -35,6 +35,7 @@ class Echomesh  : public JUCEApplication {
 
       centreWithSize(getWidth(), getHeight());
       setVisible(true);
+      setUsingNativeTitleBar(true);
     }
 
     void closeButtonPressed() {

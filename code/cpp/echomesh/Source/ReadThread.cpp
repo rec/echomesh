@@ -113,8 +113,8 @@ void ReadThread::parseConfig(const YAML::Node& data) {
   lightComponent_->setConfig(config_);
 }
 
-static uint8 process(uint8 color, double brightness) {
-  int c = static_cast<int>((color * brightness + 1) * 0x80);
+uint8 ReadThread::getLedColor(float color) const {
+  int c = static_cast<int>((color * brightness_ + 1) * 0x80);
   return static_cast<uint8>(jmin(c, 0xFF));
 }
 
@@ -129,9 +129,9 @@ void ReadThread::displayLights() {
   for (int i = 0; i < config_.count; ++i) {
     const Colour& color = colors_[i];
     uint8* light = &colorBytes_[3 * i];
-    light[rgb_order_[0]] = process(color.getRed(), brightness_);
-    light[rgb_order_[1]] = process(color.getGreen(), brightness_);
-    light[rgb_order_[2]] = process(color.getBlue(), brightness_);
+    light[rgb_order_[0]] = getLedColor(color.getFloatRed());
+    light[rgb_order_[1]] = getLedColor(color.getFloatGreen());
+    light[rgb_order_[2]] = getLedColor(color.getFloatBlue());
   }
 
 #if JUCE_LINUX

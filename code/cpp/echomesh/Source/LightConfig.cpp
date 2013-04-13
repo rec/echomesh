@@ -2,14 +2,18 @@
 
 namespace echomesh {
 
+using namespace std;
+
+static bool debug = false;
+
 void operator>>(const YAML::Node& node, Colour& p) {
   if (node.size()) {
-    uint8 r, g, b;
+    float r, g, b;
     node[0] >> r;
-    node[1] >> b;
+    node[1] >> g;
     node[2] >> b;
-    p = Colour(r, g, b);
 
+    p = Colour::fromFloatRGBA(r, g, b, 1.0f);
   } else {
     uint32 c;
     node >> c;
@@ -48,7 +52,9 @@ void operator>>(const YAML::Node& node, Padding& p) {
 }
 
 void operator>>(const YAML::Node& node, Display& p) {
+  debug = true;
   node["background"] >> p.background;
+  debug = false;
   node["layout"] >> p.layout;
   node["padding"] >> p.padding;
   node["light"] >> p.light;

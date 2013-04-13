@@ -33,6 +33,8 @@ class ReadThread : public Thread {
   void displayLights();
   void enforceSizes();
 
+  uint8 getLedColor(float color) const;
+
   LightComponent* const lightComponent_;
   YAML::Node node_;
   StringArray accum_;
@@ -42,7 +44,7 @@ class ReadThread : public Thread {
   ByteList colorBytes_;
   LightConfig config_;
   ColorBytes rgb_order_;
-  double brightness_;
+  float brightness_;
   std::istream* stream_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);

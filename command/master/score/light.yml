@@ -4,27 +4,27 @@ variables:
   loop:
     type: counter
     count:  config.light.count
-    period: 2ms
+    period: 20ms
 
 patterns:
   one:
     type: insert
-    offset: local.loop
+    offset: local.loop + 32
     pattern:
       type: spread
       begin: red
       end: white
-      steps: 32
+      steps: 8
 
   two:
     type: insert
-    offset: local.loop + 32
+    offset: 2 * local.loop
     skip: 2
     pattern:
       type: spread
       begin: red
       end: blue
-      steps: 32
+      steps: 8
 
 
 elements:

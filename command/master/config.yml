@@ -1,2 +1,3 @@
 light:
-  type: external
+  type: tk
+  period: 20ms

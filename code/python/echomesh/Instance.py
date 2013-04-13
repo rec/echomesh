@@ -43,10 +43,7 @@ class Instance(MasterRunnable):
 
   def _on_pause(self):
     super(Instance, self)._on_pause()
-    try:
-      LightSingleton.stop()
-    except Exception as e:
-      print('!!!!!!', e)
+    LightSingleton.stop()
 
   def broadcasting(self):
     return self._broadcasting

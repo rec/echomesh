@@ -170,7 +170,7 @@ git:
 # for the lighting to work.
 light:
   brightness: 100%
-  count: 64
+  count: 128
   enable: false
   rgb_order: rgb
 
@@ -181,8 +181,8 @@ light:
   type: tk
 
   display:
-    background: 0x808080
-    layout: [8, 8]
+    background: white
+    layout: [16, 8]
     padding:
       top: 10
       left: 10

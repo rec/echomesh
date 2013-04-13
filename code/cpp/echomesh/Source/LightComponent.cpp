@@ -11,7 +11,6 @@ LightComponent::LightComponent(DocumentWindow* window)
 
 void LightComponent::paint(Graphics& g) {
   g.fillAll(config_.display.background);
-  cout << "background " << config_.display.background.toDisplayString(false);
   if (configEmpty_ || lightsEmpty_)
     return;
 
@@ -40,7 +39,6 @@ void LightComponent::setLights(const ColorList& colors) {
   MessageManagerLock l;
   colors_ = colors;
   lightsEmpty_ = false;
-  cout << "setLights!\n";
   repaint();
 }
 
@@ -48,18 +46,15 @@ void LightComponent::setConfig(const LightConfig& config) {
   MessageManagerLock l;
   config_ = config;
   configEmpty_ = false;
-  cout << "setConfig!\n";
   boxSize_.x = light().size.x + light().padding.x;
   boxSize_.y = light().size.y + light().padding.y;
 
   Point screenSize = {
     padding().left + padding().right + boxSize_.x * layout().x,
-    padding().top + padding().bottom + boxSize_.y * layout().y
+    padding().top + padding().bottom + boxSize_.y * layout().y,
   };
 
-  cout << "size " << screenSize.x << ", " << screenSize.y;
-  setSize(screenSize.x, screenSize.y);
-  window_->setSize(screenSize.x, screenSize.y);
+  window_->setContentComponentSize(screenSize.x, screenSize.y);
   repaint();
 }
 
