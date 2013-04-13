@@ -6,10 +6,26 @@
 			E245C76E1716192300026530 /* echomesh */,
 		);
 	};
+	169DC7D973024555D3886D9D /* juce_LeakedObjectDetector.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {717, 1898}}";
+			sepNavSelRange = "{4347, 0}";
+			sepNavVisRange = "{3762, 1111}";
+		};
+	};
+	19282A42B44F426378AFB118 /* juce_GraphicsContext.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {286, 10413}}";
+			sepNavSelRange = "{5100, 0}";
+			sepNavVisRange = "{4651, 540}";
+		};
+	};
 	2F680B28BDD1B4817937796B /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = E245C76E1716192300026530 /* echomesh */;
 		activeTarget = 13C456425D65729EB203AE19 /* echomesh */;
+		breakpoints = (
+		);
 		codeSenseManager = E245C7881716194500026530 /* Code sense */;
 		executables = (
 			E245C76E1716192300026530 /* echomesh */,
@@ -20,7 +36,7 @@
 				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
 				PBXFileTableDataSourceColumnWidthsKey = (
 					20,
-					341,
+					315,
 					20,
 					48,
 					43,
@@ -47,6 +63,27 @@
 		userBuildSettings = {
 		};
 	};
+	30C6A7B7233CBB57F292897F /* Main.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {717, 689}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 1162}";
+		};
+	};
+	937552F71736BE85E367FBFE /* juce_Colour.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {286, 7358}}";
+			sepNavSelRange = "{5784, 0}";
+			sepNavVisRange = "{5560, 482}";
+		};
+	};
+	A20026E5506FEA4C24F8D4CB /* ReadThread.cpp */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {286, 2197}}";
+			sepNavSelRange = "{3259, 0}";
+			sepNavVisRange = "{691, 474}";
+		};
+	};
 	E245C76E1716192300026530 /* echomesh */ = {
 		isa = PBXExecutable;
 		activeArgIndices = (
@@ -54,7 +91,7 @@
 		argumentStrings = (
 		);
 		autoAttachOnCrash = 1;
-		breakpointsEnabled = 0;
+		breakpointsEnabled = 1;
 		configStateDict = {
 		};
 		customDataFormattersEnabled = 1;
@@ -63,6 +100,7 @@
 		dataTipSortType = 0;
 		debuggerPlugin = GDBDebugging;
 		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
 		enableDebugStr = 1;
 		environmentEntries = (
 		);
@@ -70,9 +108,13 @@
 		executableUserSymbolLevel = 0;
 		libgmallocEnabled = 0;
 		name = echomesh;
+		savedGlobals = {
+		};
 		showTypeColumn = 0;
 		sourceDirectories = (
 		);
+		variableFormatDictionary = {
+		};
 	};
 	E245C7871716194500026530 /* Source Control */ = {
 		isa = PBXSourceControlManager;

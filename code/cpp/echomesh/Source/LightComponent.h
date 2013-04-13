@@ -20,6 +20,7 @@ class LightComponent : public Component {
   ColorList colors_;
   LightConfig config_;
   bool configEmpty_;
+  bool lightsEmpty_;
   DocumentWindow* window_;
   Point boxSize_;
 

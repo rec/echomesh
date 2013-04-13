@@ -1,10 +1,11 @@
+#include <stdio.h>
+#include <fstream>
+#include <iostream>
+#include <string>
+
 #include "/development/echomesh/code/cpp/echomesh/Source/ReadThread.h"
 
 #include "LightComponent.h"
-
-#include <iostream>
-#include <string>
-#include <stdio.h>
 
 namespace echomesh {
 
@@ -16,7 +17,9 @@ uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 const char READ_FILE[] = "/development/echomesh/incoming.data";
 
 ReadThread::ReadThread(LightComponent* light)
-    : Thread("ReadThread"), lightComponent_(light), stream_(&std::cin)
+    : Thread("ReadThread"),
+      lightComponent_(light),
+      stream_(*READ_FILE ? new ifstream(READ_FILE, ifstream::in) : &cin)
 #if JUCE_LINUX
 , file_(fopen(DEVICE_NAME, "w"))
 #endif
@@ -24,6 +27,9 @@ ReadThread::ReadThread(LightComponent* light)
 }
 
 ReadThread::~ReadThread() {
+  if (*READ_FILE)
+    delete stream_;
+
 #if JUCE_LINUX
   fclose(file_);
 #endif
@@ -94,7 +100,6 @@ void ReadThread::enforceSizes() {
 #define WHICH_RGB true
 
 void ReadThread::parseConfig(const YAML::Node& data) {
-  return;
   data >> config_;
   enforceSizes();
 
@@ -109,7 +114,7 @@ void ReadThread::parseConfig(const YAML::Node& data) {
 }
 
 static uint8 process(uint8 color, double brightness) {
-  int c = static_cast<int>(color * brightness / 2 + 0x80);
+  int c = static_cast<int>((color * brightness + 1) * 0x80);
   return static_cast<uint8>(jmin(c, 0xFF));
 }
 
