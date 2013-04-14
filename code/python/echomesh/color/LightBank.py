@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import threading
 import time
 
 from echomesh.base import Config
@@ -9,12 +8,13 @@ from echomesh.expression import Units
 from echomesh.expression import UnitConfig
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
+from echomesh.util.thread import Lock
 
 class LightBank(ThreadLoop):
   def __init__(self, is_daemon=True):
     super(LightBank, self).__init__(is_daemon=is_daemon)
     self.clients = set()
-    self.lock = threading.Lock()
+    self.lock = Lock.Lock()
     self.loops = 0
 
   def clear(self):

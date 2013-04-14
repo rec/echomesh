@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import operator
 import os.path
 import six
-import threading
 
 from echomesh.base import CommandFile
 from echomesh.base import Config
@@ -15,6 +14,7 @@ from echomesh.util import Split
 from echomesh.util import UniqueName
 from echomesh.util.thread import MasterRunnable
 from echomesh.util.thread import TkThreadRunner
+from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
@@ -25,7 +25,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def __init__(self):
     super(ScoreMaster, self).__init__()
     self.elements = {}
-    self.lock = threading.Lock()  # TODO: put this in everywhere.
+    self.lock = Lock.Lock()  # TODO: put this in everywhere.
     self.startup = True
     assert not ScoreMaster.INSTANCE
     ScoreMaster.INSTANCE = self

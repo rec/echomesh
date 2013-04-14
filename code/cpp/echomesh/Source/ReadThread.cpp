@@ -51,20 +51,20 @@ void ReadThread::run() {
 void ReadThread::handleMessage() {
   String result = accum_.joinIntoString("\n");
   accum_.clear();
-  std::string str(result.toUTF8());
-  std::istringstream s(str);
+  string str(result.toUTF8());
+  istringstream s(str);
   try {
     YAML::Parser parser(s);
     if (parser.GetNextDocument(node_))
       parseNode();
   } catch (YAML::Exception& e) {
-    std::cout << e.what() << "\n";
-    std::cout << result << "\n";
+    cout << e.what() << "\n";
+    cout << result << "\n";
   }
 }
 
 void ReadThread::parseNode() {
-  std::string type;
+  string type;
   node_["type"] >> type;
   if (type == "clear")
     clear();
@@ -74,9 +74,14 @@ void ReadThread::parseNode() {
     parseLight(node_["data"]);
   else if (type == "quit")
     quit();
+  else {
+    cerr << "Didn't understand type " << type << "\n";
+    cout << "Didn't understand " << type << "\n";
+  }
 }
 
 void ReadThread::quit() {
+  cout << "Program quitting";
   signalThreadShouldExit();
   JUCEApplication::quit();
   exit(0);

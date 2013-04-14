@@ -6,8 +6,11 @@ from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util import Importer
 from echomesh.util.thread.Runnable import Runnable
+from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
+
+MAIN_THREAD = threading.current_thread()
 
 _TYPE_MAP = {
   'external': 'echomesh.color.ExternalLightBank',
@@ -19,7 +22,7 @@ class LightSingleton(Runnable):
   def __init__(self):
     super(LightSingleton, self).__init__()
     self.lights = None
-    self.lock = threading.Lock()
+    self.lock = Lock.Lock()
     self.owner_count = 0
     self.start()
 

@@ -2,6 +2,8 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import atexit
+
 from echomesh.base import Config
 from echomesh.color import LightSingleton
 from echomesh.element import ScoreMaster
@@ -40,6 +42,11 @@ class Instance(MasterRunnable):
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.mic = None
+    atexit.register(self.atexit)
+
+  def atexit(self):
+    reason = 'at your request' if self.quitting else 'due to a fatal error'
+    LOGGER.info('echomesh shut down %s.' % reason)
 
   def _on_pause(self):
     super(Instance, self)._on_pause()

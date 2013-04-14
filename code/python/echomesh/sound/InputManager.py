@@ -1,11 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import threading
+from echomesh.util.thread import Lock
 
 class InputManager(object):
   def __init__(self):
     self.thread = None
-    self.lock = threading.Lock()
+    self.lock = Lock.Lock()
     self.inputs = {}
 
   def add_client(self, client, device_name=None, device_index=None,

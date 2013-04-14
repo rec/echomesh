@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
-import threading
 
+from echomesh.util.thread import Lock
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -18,7 +18,7 @@ class Reserver(object):
   def __init__(self, lock=None):
     self._reserved = collections.defaultdict(lambda: 0)
     self._reserved_uniquely = set()
-    self.lock = lock or threading.Lock()
+    self.lock = lock or Lock.Lock()
 
   def reserved(self):
     with self.lock:

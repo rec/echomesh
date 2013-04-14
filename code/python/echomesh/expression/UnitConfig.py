@@ -1,16 +1,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import threading
 import sys
 
 from echomesh.base import Config
 from echomesh.base import GetPrefix
 from echomesh.expression import Units
+from echomesh.util.thread import Lock
 
 class _Client(object):
   def __init__(self):
     self.clients = {}
-    self.lock = threading.Lock()
+    self.lock = Lock.Lock()
     Config.add_client(self)
 
   def get(self, *path):

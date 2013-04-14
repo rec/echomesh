@@ -30,7 +30,6 @@ class TkLightBank(LightBank):
     self.tk_count = 0
     self.light_count = 0
     self.count_difference = 1
-    self.lock = threading.Lock()
     self.last_get = {}
     self.tkwin = None
     self.count = 0

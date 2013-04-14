@@ -1,14 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import threading
-import Queue
+from six.moves import queue
 
 from echomesh.util import Log
+from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
 
 _QUEUE = None
-_LOCK = threading.Lock()
+_LOCK = Lock.Lock()
 MAIN_THREAD = threading.current_thread()
 
 def defer(item):
@@ -21,7 +22,7 @@ def run():
   with _LOCK:
     global _QUEUE
     if not _QUEUE:
-      _QUEUE = Queue.Queue()
+      _QUEUE = queue.Queue()
 
 def stop():
   with _LOCK:
@@ -34,7 +35,7 @@ def execute_queue(timeout=None):
   while _QUEUE:
     try:
       func = _QUEUE.get(False, timeout)
-    except Queue.Empty:
+    except queue.Empty:
       return
     else:
       try:

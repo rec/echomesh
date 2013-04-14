@@ -81,6 +81,3 @@ def main():
   if Config.get('diagnostics', 'unused_configs'):
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
-
-  reason = 'at your request' if instance.quitting else 'due to a fatal error'
-  print('echomesh shut down %s.' % reason)

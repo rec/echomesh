@@ -55,8 +55,8 @@ def _initialize(echomesh_instance):
   os.execl(*sys.argv)
 
 def _quit(echomesh_instance):
-  echomesh_instance.pause()
   echomesh_instance.quitting = True
+  echomesh_instance.pause()
   return True
 
 def _update(echomesh_instance):

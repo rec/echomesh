@@ -1,9 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import threading
-
 from echomesh.color import GammaTable
-
+from echomesh.util.thread import Lock
 
 # See http://dev.moorescloud.com/2012/10/18/about-lpd8806-based-rgb-led-strips/
 #
@@ -36,7 +34,7 @@ class LEDBank(object):
     self.led = numpy.array([[0.0] * 3] * count)
 
     self.led_dirty = True
-    self.lock = threading.Lock()
+    self.lock = Lock.Lock()
     self.reserved = set()
     self.reserved_uniquely = set()
 

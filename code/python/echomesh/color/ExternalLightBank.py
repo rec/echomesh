@@ -23,13 +23,16 @@ class ExternalLightBank(LightBank):
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _send(self, data_type, **data):
-    with self.lock:
-      if self.process:
-        result = {'type': data_type, 'data': data}
-        output = Yaml.encode_one(result)
-        self.process.stdin.write(output)
-        self.process.stdin.write(Yaml.SEPARATOR)
-        self.process.stdin.flush()
+    if self.process:
+      result = {'type': data_type, 'data': data}
+      output = Yaml.encode_one(result)
+      debug = data_type == 'light'
+      if debug: print('!!!! 1')
+      self.process.stdin.write(output)
+      self.process.stdin.flush()
+      if debug: print('!!!! 2')
+      self.process.stdin.write(Yaml.SEPARATOR)
+      self.process.stdin.flush()
 
   def __del__(self):
     self.shutdown()
@@ -38,15 +41,19 @@ class ExternalLightBank(LightBank):
     with self.lock:
       if self.process:
         self.process.communicate(_QUIT)
-      self.process = None
+        self.process = None
 
   def clear(self):
-    self._send('clear')
+    with self.lock:
+      self._send('clear')
 
   def _before_thread_start(self):
     super(ExternalLightBank, self)._before_thread_start()
     cmd = (['sudo'] + COMMAND) if Platform.IS_LINUX else COMMAND
-    self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    self.process = subprocess.Popen(cmd,
+                                    stdin=subprocess.PIPE)
+      #                                    stdout=subprocess.PIPE,
+      #                                   stderr=subprocess.PIPE)
     Config.add_client(self)
 
   def config_update(self, get):
@@ -58,13 +65,14 @@ class ExternalLightBank(LightBank):
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
 
-    self._send('config', **light)
+    with self.lock:
+      self._send('config', **light)
 
   def _after_thread_pause(self):
     super(ExternalLightBank, self)._after_thread_pause()
     self.shutdown()
 
   def _display_lights(self, lights, brightness):
-    print('!!! _display_lights')
-    self._send('light', colors=lights, brightness=brightness)
+    with self.lock:
+      self._send('light', colors=lights, brightness=brightness)
 
