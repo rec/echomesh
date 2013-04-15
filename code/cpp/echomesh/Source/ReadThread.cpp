@@ -11,31 +11,20 @@ namespace echomesh {
 
 using namespace std;
 
-static const char DEVICE_NAME[] = "/dev/spidev0.0";
-const int LATCH_BYTE_COUNT = 3;
-uint8 LATCH[LATCH_BYTE_COUNT] = {0};
-const char READ_FILE[] = "/development/echomesh/incoming.data";
+static const char READ_FILE[] = "/development/echomesh/incoming.data";
 
-ReadThread::ReadThread(LightComponent* light, const String& commandLine)
+ReadThreadBase::ReadThreadBase(const String& commandLine)
     : Thread("ReadThread"),
-      lightComponent_(light),
-      stream_(*READ_FILE ? new ifstream(READ_FILE, ifstream::in) : &cin)
-#if JUCE_LINUX
-, file_(fopen(DEVICE_NAME, "w"))
-#endif
-{
+      stream_(*READ_FILE ? new ifstream(READ_FILE, ifstream::in) : &cin),
+      commandLine_(commandLine) {
 }
 
-ReadThread::~ReadThread() {
+ReadThreadBase::~ReadThreadBase() {
   if (*READ_FILE)
     delete stream_;
-
-#if JUCE_LINUX
-  fclose(file_);
-#endif
 }
 
-void ReadThread::run() {
+void ReadThreadBase::run() {
   string s;
   String st;
   while (!stream_->eof()) {
@@ -44,19 +33,38 @@ void ReadThread::run() {
     getline(*stream_, s);
     // cout << ".\n";
     log("in: '" + s + "'");
-    if (s.find("---"))
+    if (s.find("---")) {
       accum_.add(s.c_str());
-    else if (s.size())
-      handleMessage();
+    } else {
+      String result = accum_.joinIntoString("\n");
+      accum_.clear();
+      handleMessage(string(result.toUTF8()));
+    }
   }
   log("eof!");
   quit();
 }
 
-void ReadThread::handleMessage() {
-  String result = accum_.joinIntoString("\n");
-  accum_.clear();
-  string str(result.toUTF8());
+static const char DEVICE_NAME[] = "/dev/spidev0.0";
+const int LATCH_BYTE_COUNT = 3;
+uint8 LATCH[LATCH_BYTE_COUNT] = {0};
+
+ReadThread::ReadThread(LightComponent* light, const String& commandLine)
+    : ReadThreadBase(commandLine),
+      lightComponent_(light)
+#if JUCE_LINUX
+, file_(fopen(DEVICE_NAME, "w"))
+#endif
+{
+}
+
+ReadThread::~ReadThread() {
+#if JUCE_LINUX
+  fclose(file_);
+#endif
+}
+
+void ReadThread::handleMessage(const string& str) {
   istringstream s(str);
   try {
     cout << ".";
@@ -66,7 +74,7 @@ void ReadThread::handleMessage() {
       parseNode();
   } catch (YAML::Exception& e) {
     cout << e.what() << "\n";
-    cout << result << "\n";
+    cout << str << "\n";
   }
 }
 

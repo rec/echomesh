@@ -15,18 +15,32 @@ namespace echomesh {
 
 class LightComponent;
 
-class ReadThread : public Thread {
+class ReadThreadBase : public Thread {
+ public:
+  ReadThreadBase(const String& commandLine);
+  virtual ~ReadThreadBase();
+  virtual void run();
+  virtual void handleMessage(const string&) = 0;
+  virtual void quit() = 0;
+
+ protected:
+  std::istream* stream_;
+  const String commandLine_;
+  StringArray accum_;
+
+  DISALLOW_COPY_AND_ASSIGN(ReadThreadBase);
+};
+
+class ReadThread : public ReadThreadBase {
  public:
   ReadThread(LightComponent* light, const String& commandLine);
   virtual ~ReadThread();
 
-  virtual void run();
-
  private:
-  void handleMessage();
+  virtual void handleMessage(const string&);
   void parseNode();
 
-  void quit();
+  virtual void quit();
   void clear();
   void parseLight(const YAML::Node&);
   void parseConfig(const YAML::Node&);
@@ -37,7 +51,6 @@ class ReadThread : public Thread {
 
   LightComponent* const lightComponent_;
   YAML::Node node_;
-  StringArray accum_;
   FILE* file_;
   ColorList colors_;
   ColorByteBank bytes_;
@@ -45,7 +58,6 @@ class ReadThread : public Thread {
   LightConfig config_;
   ColorBytes rgb_order_;
   float brightness_;
-  std::istream* stream_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };
