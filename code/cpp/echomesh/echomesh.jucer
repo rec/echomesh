@@ -76,6 +76,7 @@
         <FILE id="kE4nvI" name="token.h" compile="0" resource="0" file="Source/yaml-cpp-src/token.h"/>
       </GROUP>
       <FILE id="N2jfl4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+      <FILE id="sXsxAF" name="LightReader.cpp" compile="1" resource="0" file="Source/LightReader.cpp"/>
       <FILE id="wJHRhX" name="LightConfig.cpp" compile="1" resource="0" file="Source/LightConfig.cpp"/>
     </GROUP>
   </MAINGROUP>

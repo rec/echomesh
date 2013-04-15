@@ -1,6 +1,6 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "LightComponent.h"
-#include "ReadThread.h"
+#include "LightReader.h"
 
 class Echomesh  : public JUCEApplication {
  public:
@@ -15,7 +15,7 @@ class Echomesh  : public JUCEApplication {
 
     // TODO: we don't store this because it causes an error when it gets
     // deleted at shutdown - so rather have a memory leak!
-    (new echomesh::ReadThread(mainWindow_->comp_, commandLine))->startThread();
+    (new echomesh::LightReader(mainWindow_->comp_, commandLine))->startThread();
   }
 
   void shutdown() {
@@ -50,7 +50,7 @@ class Echomesh  : public JUCEApplication {
 
  private:
   ScopedPointer<MainWindow> mainWindow_;
-  ScopedPointer<echomesh::ReadThread> readThread_;
+  ScopedPointer<echomesh::LightReader> readThread_;
 };
 
 

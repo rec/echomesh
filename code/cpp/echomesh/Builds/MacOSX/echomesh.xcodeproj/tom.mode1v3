@@ -229,6 +229,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -308,8 +310,6 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -324,10 +324,6 @@
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
 										<string>LightConfig.cpp</string>
-										<key>_historyCapacity</key>
-										<integer>0</integer>
-										<key>bookmark</key>
-										<string>E29C81E6171A009B0059C8BB</string>
 										<key>history</key>
 										<array>
 											<string>E245C7DB1716330F00026530</string>
@@ -348,14 +344,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {821, 632}}</string>
+								<string>{{0, 0}, {821, 625}}</string>
 								<key>RubberWindowFrame</key>
 								<string>758 190 1029 987 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>632pt</string>
+							<string>625pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -368,14 +364,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 637}, {821, 309}}</string>
+								<string>{{0, 630}, {821, 316}}</string>
 								<key>RubberWindowFrame</key>
 								<string>758 190 1029 987 0 0 1920 1178 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>309pt</string>
+							<string>316pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -394,9 +390,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>E29C814C1718FD710059C8BB</string>
+				<string>E29C81F0171CB2780059C8BB</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>E29C814D1718FD710059C8BB</string>
+				<string>E29C81F1171CB2780059C8BB</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -534,14 +530,9 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
-		<string>E29C81971719F8DD0059C8BB</string>
-		<string>E29C81871719F79A0059C8BB</string>
-		<string>E29C81881719F79A0059C8BB</string>
 		<string>E245C78C17161BE500026530</string>
-		<string>/development/echomesh/code/cpp/echomesh/Builds/MacOSX/echomesh.xcodeproj</string>
-		<string>E29C81791719F7630059C8BB</string>
 		<string>1CD10A99069EF8BA00B06720</string>
-		<string>1C78EAAD065D492600B07095</string>
+		<string>/development/echomesh/code/cpp/echomesh/Builds/MacOSX/echomesh.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>758 190 1029 987 0 0 1920 1178 </string>
@@ -582,8 +573,6 @@
 							<string>0pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
@@ -623,7 +612,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>E245C78C17161BE500026530</string>
-				<string>E29C814E1718FD710059C8BB</string>
+				<string>E29C81F2171CB2780059C8BB</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -745,13 +734,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>E29C81721719F7630059C8BB</string>
+				<string>E29C81F3171CB2780059C8BB</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>E29C81731719F7630059C8BB</string>
-				<string>E29C81741719F7630059C8BB</string>
-				<string>E29C81751719F7630059C8BB</string>
-				<string>E29C81761719F7630059C8BB</string>
-				<string>E29C81771719F7630059C8BB</string>
+				<string>E29C81F4171CB2780059C8BB</string>
+				<string>E29C81F5171CB2780059C8BB</string>
+				<string>E29C81F6171CB2780059C8BB</string>
+				<string>E29C81F7171CB2780059C8BB</string>
+				<string>E29C81F8171CB2780059C8BB</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
