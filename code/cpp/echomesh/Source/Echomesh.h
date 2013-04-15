@@ -13,4 +13,11 @@
 using std::string;
 using std::vector;
 
+namespace echomesh {
+
+void log(const string&);
+void close_log();
+
+}
+
 #endif  // __ECHOMESH__

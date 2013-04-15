@@ -9,19 +9,29 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 USE_YAML_SOCKET = True
 
-class PeerSocket(MasterRunnable):
-  def __init__(self, instance, peers):
+class PeerSocketBase(MasterRunnable):
+  def __init__(self, instance, peers, config_name):
     super(PeerSocket, self).__init__()
     self.instance = instance
     self.peers = peers
+    self.config_name = config_name
     self.add_slave(self.peers)
     self.port = -1
     self.socket = None
-
     Config.add_client(self)
 
-  def router(self, data):
-    Remote.execute(self.instance, **data)
+  def config_update(self, get):
+    new_port = get('network', self.config_name, 'port')
+    timeout = get('network', self.config_name, 'timeout'))
+    self.port, old_port = new_port, self.port
+    self.timeout = Units.convert(timeout)
+    if self.is_running and self.socket:
+      if self.port == old_port:
+        self.socket.timeout = self.timeout
+      else:
+        self.remove_slave(self.socket)
+        self.socket.pause()
+        self._make_socket()
 
   def send(self, data):
     if self.is_running:
@@ -38,13 +48,10 @@ class PeerSocket(MasterRunnable):
     self.add_mutual_pause_slave(self.socket)
     self.socket.run()
 
-  def config_update(self, get):
-    self.port, old_port = get('discovery', 'port'), self.port
-    self.timeout = Units.convert(get('discovery', 'timeout'))
-    if self.is_running and self.socket:
-      if self.port == old_port:
-        self.socket.timeout = self.timeout
-      else:
-        self.remove_slave(self.socket)
-        self.socket.pause()
-        self._make_socket()
+class PeerSocket(PeerSocketBase):
+  def __init__(self, instance, peers):
+    super(PeerSocket, self).__init__(instance, peers, 'discovery')
+
+  def router(self, data):
+    Remote.execute(self.instance, **data)
+

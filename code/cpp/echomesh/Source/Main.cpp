@@ -11,18 +11,18 @@ class Echomesh  : public JUCEApplication {
   bool moreThanOneInstanceAllowed()       { return true; }
 
   void initialise (const String& commandLine) {
-    mainWindow = new MainWindow();
+    mainWindow_ = new MainWindow();
 
     // TODO: we don't store this because it causes an error when it gets
     // deleted at shutdown - so rather have a memory leak!
-    (new echomesh::ReadThread(mainWindow->comp_))->startThread();
+    (new echomesh::ReadThread(mainWindow_->comp_, commandLine))->startThread();
   }
 
   void shutdown() {
-    mainWindow = nullptr;
+    mainWindow_ = nullptr;
   }
 
-  void systemRequestedQuit() {}
+  // void systemRequestedQuit() {}
   void anotherInstanceStarted (const String& commandLine) {}
 
   class MainWindow : public DocumentWindow {
@@ -49,7 +49,7 @@ class Echomesh  : public JUCEApplication {
   };
 
  private:
-  ScopedPointer<MainWindow> mainWindow;
+  ScopedPointer<MainWindow> mainWindow_;
   ScopedPointer<echomesh::ReadThread> readThread_;
 };
 

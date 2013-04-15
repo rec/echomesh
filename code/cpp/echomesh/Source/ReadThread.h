@@ -17,7 +17,7 @@ class LightComponent;
 
 class ReadThread : public Thread {
  public:
-  ReadThread(LightComponent* light);
+  ReadThread(LightComponent* light, const String& commandLine);
   virtual ~ReadThread();
 
   virtual void run();

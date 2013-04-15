@@ -4,6 +4,10 @@ import copy
 import os.path
 import subprocess
 
+import PopenFixed
+
+Popen = PopenFixed.Popen
+
 from echomesh.base import Config
 from echomesh.base import Path
 from echomesh.base import Platform
@@ -25,14 +29,7 @@ class ExternalLightBank(LightBank):
   def _send(self, data_type, **data):
     if self.process:
       result = {'type': data_type, 'data': data}
-      output = Yaml.encode_one(result)
-      debug = data_type == 'light'
-      if debug: print('!!!! 1')
-      self.process.stdin.write(output)
-      self.process.stdin.flush()
-      if debug: print('!!!! 2')
-      self.process.stdin.write(Yaml.SEPARATOR)
-      self.process.stdin.flush()
+      self.process.send_recv(Yaml.encode_one(result) + Yaml.SEPARATOR)
 
   def __del__(self):
     self.shutdown()
@@ -50,10 +47,7 @@ class ExternalLightBank(LightBank):
   def _before_thread_start(self):
     super(ExternalLightBank, self)._before_thread_start()
     cmd = (['sudo'] + COMMAND) if Platform.IS_LINUX else COMMAND
-    self.process = subprocess.Popen(cmd,
-                                    stdin=subprocess.PIPE)
-      #                                    stdout=subprocess.PIPE,
-      #                                   stderr=subprocess.PIPE)
+    self.process = Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     Config.add_client(self)
 
   def config_update(self, get):

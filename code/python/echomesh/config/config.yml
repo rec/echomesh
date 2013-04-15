@@ -151,11 +151,15 @@ diagnostics:
   # If true, on quit echomesh prints a list of configs that were never read.
   unused_configs: false
 
-
 # The discovery section controls how the echomesh unit contacts other nodes.
-discovery:
-  port: 1238
-  timeout: 100 ms
+network:
+  client:
+    port: 1239
+    timeout: 100ms
+
+  discovery:
+    port: 1238
+    timeout: 100ms
 
 # The git section sets the user, project name and server for a git repository
 # connected to the echomesh project.  Please note that you'll still have to
