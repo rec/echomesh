@@ -154,8 +154,12 @@ diagnostics:
 # The discovery section controls how the echomesh unit contacts other nodes.
 network:
   client:
+    buffer_size: 4096
+    host_name: 127.0.0.1
+    input_file: ''
     port: 1239
     timeout: 100ms
+    type: socket
 
   discovery:
     port: 1238
@@ -182,7 +186,7 @@ light:
   # if you're using hardware lighting.
   # Update:  period needs to be 200ms on RP!
   period: 200ms
-  type: tk
+  type: client
 
   display:
     background: white

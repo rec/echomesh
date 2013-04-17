@@ -6,8 +6,8 @@
 namespace echomesh {
 
 void connect(StreamingSocket* sock, const String& name, int port, int timeout);
-void writeStreamingSocket(StreamingSocket* sock, const String& request);
-string readStreamingSocket(StreamingSocket* sock, int timeout);
+void writeSocket(StreamingSocket* sock, const String& request);
+string readSocket(StreamingSocket* sock, int timeout);
 
 }  // namespace echomesh
 

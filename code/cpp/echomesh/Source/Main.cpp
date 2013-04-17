@@ -53,5 +53,4 @@ class Echomesh  : public JUCEApplication {
   ScopedPointer<echomesh::LightReader> readThread_;
 };
 
-
 START_JUCE_APPLICATION(Echomesh)

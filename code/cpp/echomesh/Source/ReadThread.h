@@ -13,6 +13,8 @@
 
 namespace echomesh {
 
+class LineGetter;
+
 class ReadThread : public Thread {
  public:
   ReadThread(const String& commandLine);
@@ -22,9 +24,8 @@ class ReadThread : public Thread {
   virtual void quit() = 0;
 
  protected:
-  std::istream* stream_;
-  const String commandLine_;
   StringArray accum_;
+  ScopedPointer<LineGetter> lineGetter_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };

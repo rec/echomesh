@@ -77,7 +77,9 @@
       </GROUP>
       <FILE id="N2jfl4" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
       <FILE id="sXsxAF" name="LightReader.cpp" compile="1" resource="0" file="Source/LightReader.cpp"/>
+      <FILE id="vhiuik" name="Socket.cpp" compile="1" resource="0" file="Source/Socket.cpp"/>
       <FILE id="wJHRhX" name="LightConfig.cpp" compile="1" resource="0" file="Source/LightConfig.cpp"/>
+      <FILE id="C4Sdq7" name="LineGetter.cpp" compile="1" resource="0" file="Source/LineGetter.cpp"/>
     </GROUP>
   </MAINGROUP>
   <MODULES>

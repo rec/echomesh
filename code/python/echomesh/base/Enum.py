@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
+from echomesh.base import GetPrefix
+
 class Enum(object):
   def __init__(self, *sequential, **named):
     self._sequential = sequential
@@ -19,6 +21,10 @@ class Enum(object):
     for k, v in named.iteritems():
       setattr(self, k, v)
       self._reverse[v] = k
+
+  def get(self, name, allow_prefixes=True):
+    return GetPrefix.get_prefix(self.__dict__, name.upper(),
+                                allow_prefixes=allow_prefixes)
 
   def reverse(self, key):
     return self._reverse[key]

@@ -337,7 +337,13 @@
     <ClCompile Include="..\..\Source\LightReader.cpp">
       <Filter>echomesh\Source</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\Socket.cpp">
+      <Filter>echomesh\Source</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\LightConfig.cpp">
+      <Filter>echomesh\Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LineGetter.cpp">
       <Filter>echomesh\Source</Filter>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\text\juce_CharacterFunctions.cpp">

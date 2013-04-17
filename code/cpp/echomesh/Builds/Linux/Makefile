@@ -76,7 +76,9 @@ OBJECTS := \
   $(OBJDIR)/tag_8cfdaf88.o \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/LightReader_afef075a.o \
+  $(OBJDIR)/Socket_2b3a4d7c.o \
   $(OBJDIR)/LightConfig_e0c1da59.o \
+  $(OBJDIR)/LineGetter_dcee2c28.o \
   $(OBJDIR)/juce_core_aff681cc.o \
   $(OBJDIR)/juce_cryptography_25c7e826.o \
   $(OBJDIR)/juce_data_structures_bdd6d488.o \
@@ -271,9 +273,19 @@ $(OBJDIR)/LightReader_afef075a.o: ../../Source/LightReader.cpp
 	@echo "Compiling LightReader.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/Socket_2b3a4d7c.o: ../../Source/Socket.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Socket.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/LightConfig_e0c1da59.o: ../../Source/LightConfig.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightConfig.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LineGetter_dcee2c28.o: ../../Source/LineGetter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LineGetter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_core_aff681cc.o: ../../JuceLibraryCode/modules/juce_core/juce_core.cpp

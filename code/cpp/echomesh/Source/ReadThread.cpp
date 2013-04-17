@@ -5,6 +5,7 @@
 
 #include "ReadThread.h"
 #include "LightComponent.h"
+#include "LineGetter.h"
 
 namespace echomesh {
 
@@ -14,22 +15,16 @@ static const char READ_FILE[] = "/development/echomesh/incoming.data";
 
 ReadThread::ReadThread(const String& commandLine)
     : Thread("ReadThread"),
-      stream_(*READ_FILE ? new ifstream(READ_FILE, ifstream::in) : &cin),
-      commandLine_(commandLine) {
+      lineGetter_(makeLineGetter(commandLine)) {
 }
 
-ReadThread::~ReadThread() {
-  if (*READ_FILE)
-    delete stream_;
-}
+ReadThread::~ReadThread() {}
 
 void ReadThread::run() {
   string s;
-  String st;
-  while (!stream_->eof()) {
-    s.clear();
+  while (!lineGetter_->eof()) {
     log("in...");
-    getline(*stream_, s);
+    s = lineGetter_->getLine();
     // cout << ".\n";
     log("in: '" + s + "'");
     if (s.find("---")) {

@@ -13,7 +13,7 @@ LOGGER = Log.logger(__name__)
 MAIN_THREAD = threading.current_thread()
 
 _TYPE_MAP = {
-  'external': 'echomesh.color.ExternalLightBank',
+  'client': 'echomesh.color.ExternalLightBank',
   'tk': 'echomesh.color.TkLightBank',
   'spi': 'echomesh.color.SpiLightBank'
   }
@@ -59,7 +59,6 @@ class LightSingleton(Runnable):
     if self.lights and not (self.lights.has_clients() or self.owner_count > 0):
       self.lights.pause()
       self.lights = None
-
 
 _SINGLETON = LightSingleton()
 add_client = _SINGLETON.add_client
