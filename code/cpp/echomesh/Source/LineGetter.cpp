@@ -58,6 +58,7 @@ SocketLineGetter::SocketLineGetter(const String& server, int port, int timeout,
 }
 
 string SocketLineGetter::getLine() {
+  log("SocketLineGetter::getLine");
   while (lines_.empty()) {
     string read = readSocket();
     if (read.size()) {
@@ -89,6 +90,7 @@ string SocketLineGetter::readSocket() {
   int error = socket_.waitUntilReady(true, timeout_);
   if (error <= 0) {
     // throw Exception("StreamingSocket wait error " + error);
+    log("socket waiting error");
     error_ = true;
   } else {
     int read = socket_.read(&buffer_.front(), buffer_.size(), false);
@@ -96,6 +98,11 @@ string SocketLineGetter::readSocket() {
       result = string(&buffer_.front(), read);
     else
       error_ = true;
+    if (error_)
+      log("SocketLineGetter:readSocket: " + result);
+    else
+      log("SocketLineGetter:readSocket ERROR");
+
     // throw Exception("StreamingSocket read error " + read);
   }
 

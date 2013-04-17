@@ -24,13 +24,16 @@ class ExternalLightBank(LightBank):
   def _before_thread_start(self):
     super(ExternalLightBank, self)._before_thread_start()
     self.client_type, cmd = Client.make_command()
-    self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
     if self.client_type == Client.ControlType.SOCKET:
       config = Config.get('network', 'client')
       self.server = Server(config['host_name'], config['port'],
                            Units.convert(config['timeout']))
       self.server.start()
+
+    # TODO: possible race condition here if Popen is really fast to
+    # start up and the Server thread starts up really slowly.
+    self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE)
     Config.add_client(self)
 
   def _send_one(self, s):

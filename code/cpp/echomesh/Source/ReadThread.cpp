@@ -48,6 +48,8 @@ const char FILENAME[] = "/tmp/echomesh.log";
 }  // namespace
 
 void log(const string& msg) {
+  if (!*FILENAME)
+    return;
   ScopedLock l(lock_);
   if (!STREAM) {
     File f(FILENAME);
@@ -61,6 +63,7 @@ void log(const string& msg) {
 
 void close_log() {
   delete STREAM;
+  STREAM = NULL;
 }
 
 }  // namespace echomesh

@@ -25,6 +25,7 @@ class Server(ThreadRunnable):
       return s
 
     self.server = SocketServer.TCPServer((self.host, self.port), Handler)
+    LOGGER.info('Server created for %s:%d', self.host, self.port)
 
   def send(self, data):
     for h in self.handlers:
@@ -35,4 +36,5 @@ class Server(ThreadRunnable):
     self.server = None
 
   def target(self):
+    LOGGER.info('Starting to serve on %s:%d', self.host, self.port)
     self.server.serve_forever(self.timeout)

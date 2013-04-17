@@ -160,7 +160,6 @@
     <ClCompile Include="..\..\Source\yaml-cpp-src\tag.cpp"/>
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\Source\LightReader.cpp"/>
-    <ClCompile Include="..\..\Source\Socket.cpp"/>
     <ClCompile Include="..\..\Source\LightConfig.cpp"/>
     <ClCompile Include="..\..\Source\LineGetter.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\text\juce_CharacterFunctions.cpp">

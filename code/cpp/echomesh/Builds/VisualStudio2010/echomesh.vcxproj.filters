@@ -337,9 +337,6 @@
     <ClCompile Include="..\..\Source\LightReader.cpp">
       <Filter>echomesh\Source</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\Socket.cpp">
-      <Filter>echomesh\Source</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\LightConfig.cpp">
       <Filter>echomesh\Source</Filter>
     </ClCompile>
