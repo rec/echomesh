@@ -159,7 +159,7 @@ network:
     input_file: ''
     port: 1239
     timeout: 100ms
-    type: tk
+    type: socket
 
   discovery:
     port: 1238

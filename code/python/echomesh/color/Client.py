@@ -1,14 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
+
 from echomesh.base import Config
 from echomesh.base import Enum
+from echomesh.base import Path
 from echomesh.base import Platform
 from echomesh.util import Log
 from echomesh.expression import Units
 
 LOGGER = Log.logger(__name__)
 
-ControlType = Enum.enum('FILE', 'SOCKET', 'TERMINAL')
+COMMAND = os.path.join(Path.BINARY_PATH, 'echomesh')
+
+ControlType = Enum.Enum('FILE', 'SOCKET', 'TERMINAL')
 
 def make_command():
   parts = []

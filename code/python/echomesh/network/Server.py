@@ -11,6 +11,7 @@ LOGGER = Log.logger(__name__)
 
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout):
+    super(Server, self).__init__()
     self.server = None
     self.host = host
     self.port = port

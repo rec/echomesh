@@ -1,15 +1,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import os.path
 import subprocess
 
 from echomesh.base import Config
-from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.color import ColorTable
 from echomesh.color import Client
 from echomesh.color.LightBank import LightBank
+from echomesh.expression import Units
 from echomesh.network.Server import Server
 from echomesh.util import Log
 
@@ -19,18 +18,20 @@ _QUIT = Yaml.encode_one({'type': 'quit'}) + Yaml.SEPARATOR
 
 class ExternalLightBank(LightBank):
   def __init__(self):
+    self.client_type, cmd = Client.make_command()
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _before_thread_start(self):
     super(ExternalLightBank, self)._before_thread_start()
-    Config.add_client(self)
-
     self.client_type, cmd = Client.make_command()
     self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
                                     stdout=subprocess.PIPE)
     if self.client_type == Client.ControlType.SOCKET:
-      self.server = Server(host, port, timeout)
+      config = Config.get('network', 'client')
+      self.server = Server(config['host_name'], config['port'],
+                           Units.convert(config['timeout']))
       self.server.start()
+    Config.add_client(self)
 
   def _send_one(self, s):
     if self.client_type == Client.ControlType.SOCKET:
@@ -75,5 +76,3 @@ class ExternalLightBank(LightBank):
   def _display_lights(self, lights, brightness):
     with self.lock:
       self._send('light', colors=lights, brightness=brightness)
-
-
