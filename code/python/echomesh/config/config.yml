@@ -159,7 +159,7 @@ network:
     input_file: ''
     port: 1239
     timeout: 100ms
-    type: socket
+    type: tk
 
   discovery:
     port: 1238
@@ -186,7 +186,7 @@ light:
   # if you're using hardware lighting.
   # Update:  period needs to be 200ms on RP!
   period: 200ms
-  type: client
+  type: tk
 
   display:
     background: white

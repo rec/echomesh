@@ -11,7 +11,7 @@ USE_YAML_SOCKET = True
 
 class PeerSocketBase(MasterRunnable):
   def __init__(self, instance, peers, config_name):
-    super(PeerSocket, self).__init__()
+    super(PeerSocketBase, self).__init__()
     self.instance = instance
     self.peers = peers
     self.config_name = config_name
@@ -22,7 +22,7 @@ class PeerSocketBase(MasterRunnable):
 
   def config_update(self, get):
     new_port = get('network', self.config_name, 'port')
-    timeout = get('network', self.config_name, 'timeout'))
+    timeout = get('network', self.config_name, 'timeout')
     self.port, old_port = new_port, self.port
     self.timeout = Units.convert(timeout)
     if self.is_running and self.socket:
@@ -39,7 +39,7 @@ class PeerSocketBase(MasterRunnable):
       self.socket.send(data)
 
   def _on_run(self):
-    super(PeerSocket, self)._on_run()
+    super(PeerSocketBase, self)._on_run()
     if not self.socket:
       self._make_socket()
 
