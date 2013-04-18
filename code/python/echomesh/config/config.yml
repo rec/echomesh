@@ -155,7 +155,7 @@ diagnostics:
 network:
   client:
     buffer_size: 4096
-    host_name: 127.0.0.1
+    host_name: localhost
     input_file: ''
     port: 1239
     timeout: 100ms

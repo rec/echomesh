@@ -9,7 +9,6 @@
 #include <string>
 #include <queue>
 
-#include "Echomesh.h"
 #include "yaml-cpp/yaml.h"
 #include "LightConfig.h"
 

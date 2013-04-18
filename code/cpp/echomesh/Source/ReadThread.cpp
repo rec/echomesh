@@ -24,7 +24,12 @@ void ReadThread::run() {
   string s;
   while (!lineGetter_->eof()) {
     log("in...");
-    s = lineGetter_->getLine();
+    try {
+      s = lineGetter_->getLine();
+    } catch (Exception e) {
+      log("ERROR: " + e.what_str());
+      break;
+    }
     // cout << ".\n";
     log("in: '" + s + "'");
     if (s.find("---")) {

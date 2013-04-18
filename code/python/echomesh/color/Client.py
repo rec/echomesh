@@ -22,7 +22,8 @@ def make_command():
   parts.append(COMMAND)
 
   config = Config.get('network', 'client')
-  client_type = ControlType.get(config['type'])[1]
+  type_name, client_type = ControlType.get(config['type'])
+  parts.append(type_name.lower())
 
   if client_type == ControlType.FILE:
     parts.append(config['input_file'])

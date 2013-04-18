@@ -161,6 +161,7 @@
     <ClCompile Include="..\..\Source\Main.cpp"/>
     <ClCompile Include="..\..\Source\LightReader.cpp"/>
     <ClCompile Include="..\..\Source\LightConfig.cpp"/>
+    <ClCompile Include="..\..\Source\SocketLineGetter.cpp"/>
     <ClCompile Include="..\..\Source\LineGetter.cpp"/>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\text\juce_CharacterFunctions.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>

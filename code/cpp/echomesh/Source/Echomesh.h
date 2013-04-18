@@ -35,6 +35,19 @@ inline String str(const string& s) {
 
 inline String str(const char* s) { return str(string(s)); }
 
+class Exception : public std::exception {
+ public:
+  Exception(const string& m) : message_(m) {}
+  Exception(const String& m) : message_(str(m)) {}
+  Exception(const char* m) : message_(m) {}
+  virtual ~Exception() throw() {}
+  virtual const char* what() const throw() { return message_.c_str(); }
+  virtual const string& what_str() const throw() { return message_; }
+
+ private:
+  const string message_;
+};
+
 }
 
 #endif  // __ECHOMESH__

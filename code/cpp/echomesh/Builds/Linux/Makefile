@@ -77,6 +77,7 @@ OBJECTS := \
   $(OBJDIR)/Main_90ebc5c2.o \
   $(OBJDIR)/LightReader_afef075a.o \
   $(OBJDIR)/LightConfig_e0c1da59.o \
+  $(OBJDIR)/SocketLineGetter_698d237b.o \
   $(OBJDIR)/LineGetter_dcee2c28.o \
   $(OBJDIR)/juce_core_aff681cc.o \
   $(OBJDIR)/juce_cryptography_25c7e826.o \
@@ -275,6 +276,11 @@ $(OBJDIR)/LightReader_afef075a.o: ../../Source/LightReader.cpp
 $(OBJDIR)/LightConfig_e0c1da59.o: ../../Source/LightConfig.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightConfig.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SocketLineGetter_698d237b.o: ../../Source/SocketLineGetter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SocketLineGetter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LineGetter_dcee2c28.o: ../../Source/LineGetter.cpp
