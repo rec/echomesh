@@ -15,9 +15,6 @@ using std::vector;
 
 namespace echomesh {
 
-void log(const string&);
-void close_log();
-
 inline string str(const String& s) {
   return string(s.toUTF8());
 }
@@ -34,6 +31,15 @@ inline String str(const string& s) {
 }
 
 inline String str(const char* s) { return str(string(s)); }
+
+void log(const string&);
+inline void log(const String& s) { log(str(s)); }
+inline void log(const char* s) { log(string(s)); }
+void close_log();
+
+void log2(const string&);
+inline void log2(const String& s) { log2(str(s)); }
+inline void log2(const char* s) { log2(string(s)); }
 
 class Exception : public std::exception {
  public:

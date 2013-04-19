@@ -23,7 +23,6 @@ ReadThread::~ReadThread() {}
 void ReadThread::run() {
   string s;
   while (!lineGetter_->eof()) {
-    log("in...");
     try {
       s = lineGetter_->getLine();
     } catch (Exception e) {
@@ -31,7 +30,6 @@ void ReadThread::run() {
       break;
     }
     // cout << ".\n";
-    log("in: '" + s + "'");
     if (s.find("---")) {
       accum_.add(s.c_str());
     } else {
@@ -46,9 +44,13 @@ void ReadThread::run() {
 
 namespace {
 
-OutputStream* STREAM = NULL;
 CriticalSection lock_;
+
 const char FILENAME[] = "/tmp/echomesh.log";
+OutputStream* STREAM = NULL;
+
+const char FILENAME2[] = "/tmp/echomesh.2.log";
+OutputStream* STREAM2 = NULL;
 
 }  // namespace
 
@@ -66,9 +68,27 @@ void log(const string& msg) {
   STREAM->flush();
 }
 
+void log2(const string& msg) {
+  if (!*FILENAME2)
+    return;
+  ScopedLock l(lock_);
+  if (!STREAM2) {
+    File f(FILENAME2);
+    f.deleteFile();
+    STREAM2 = new FileOutputStream(f);
+  }
+  STREAM2->write(msg.data(), msg.size());
+  // STREAM2->write("\n", 1);
+  STREAM2->flush();
+}
+
+
 void close_log() {
   delete STREAM;
   STREAM = NULL;
+
+  delete STREAM2;
+  STREAM2 = NULL;
 }
 
 }  // namespace echomesh

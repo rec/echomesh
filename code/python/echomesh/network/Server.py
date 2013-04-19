@@ -60,11 +60,13 @@ class Server(ThreadLoop):
     LOGGER.debug('Successfully registered a handler %s', handler)
 
   def send(self, data):
-    if self.is_running:
-      if self.handlers:
+    if True:
+      self.queue.put(data)
+    else:
+      if self.is_running and self.handlers:
         self._send_one(data)
       else:
-        LOGGER.debug('!!! queing data')
+        LOGGER.info('!!! queing data')
         self.queue.put(data)
 
   def _send_one(self, data):
@@ -77,10 +79,14 @@ class Server(ThreadLoop):
 
   def single_loop(self):
     self.server.handle_request()
-    if not self.queue.empty() and self.handlers:
+    if self.handlers:
       while not self.queue.empty():
         try:
           data = self.queue.get(False)
         except queue.Empty:
           return
-        self._send_one(data)
+        try:
+          self._send_one(data)
+        except:
+          LOGGER.error('Socket hung up on other end.', raw=True)
+          self.pause()

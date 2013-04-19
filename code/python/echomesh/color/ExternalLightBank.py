@@ -32,8 +32,9 @@ class ExternalLightBank(LightBank):
 
     # TODO: possible race condition here if Popen is really fast to
     # start up and the Server thread starts up really slowly.
-    self.process = subprocess.Popen(cmd, stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE)
+    self.process = subprocess.Popen(cmd)
+    #                                    stdin=subprocess.PIPE,
+    #                                    stdout=subprocess.PIPE)
     Config.add_client(self)
 
   def _send_one(self, s):
@@ -70,6 +71,7 @@ class ExternalLightBank(LightBank):
     dl['background'] = ColorTable.to_color(dl['background'])
 
     with self.lock:
+      print('!!! sending config')
       self._send('config', **light)
 
   def _after_thread_pause(self):

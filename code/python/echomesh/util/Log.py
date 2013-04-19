@@ -70,6 +70,7 @@ def logger(name=None):
   def new_error_logger(*args, **kwds):
     limit = kwds.pop('limit', None)
     every = kwds.pop('every', None)
+    raw = kwds.pop('raw', None)
 
     if limit is not None or limit is not None:
       if not _check_error_count(limit, every):
@@ -77,7 +78,7 @@ def logger(name=None):
 
     message, args = (args[0] if args else ''), args[1:]
     exc_type, exc_value = sys.exc_info()[:2]
-    if exc_type:
+    if exc_type and not raw:
       message = '%s %s' % (exc_value, message)
       kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
     if not CONFIG.filename:

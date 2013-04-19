@@ -33,14 +33,14 @@ LightReader::~LightReader() {
 void LightReader::handleMessage(const string& str) {
   istringstream s(str);
   try {
-    cout << ".";
-    cout.flush();
+    log("LightReader::handleMessage");
     YAML::Parser parser(s);
     if (parser.GetNextDocument(node_))
       parseNode();
+    else
+      log("Didn't find a document in this input!");
   } catch (YAML::Exception& e) {
-    cout << e.what() << "\n";
-    cout << str << "\n";
+    log(string("ERROR: ") + e.what() + ("in:\n" + str));
   }
 }
 
@@ -57,7 +57,7 @@ void LightReader::parseNode() {
   else if (type == "quit")
     quit();
   else {
-    cout << "Didn't understand " << type << "\n";
+    log("Didn't understand type " + type);
   }
 }
 
