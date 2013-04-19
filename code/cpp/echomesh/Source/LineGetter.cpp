@@ -10,6 +10,7 @@ class CinLineGetter : public LineGetter {
     std::getline(std::cin, s);
     return s;
   }
+
   virtual bool eof() const { return std::cin.eof(); }
 };
 
@@ -18,11 +19,13 @@ class FileLineGetter : public LineGetter {
   explicit FileLineGetter(const string& f)
       : stream_(new std::ifstream(f.c_str(), std::ifstream::in)) {
   }
+
   virtual string getLine() {
     string s;
     std::getline(*stream_, s);
     return s;
   }
+
   virtual bool eof() const { return stream_->eof(); }
 
  private:

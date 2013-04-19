@@ -24,12 +24,14 @@ void ReadThread::run() {
   string s;
   while (!lineGetter_->eof()) {
     try {
+      log("starting to getline");
       s = lineGetter_->getLine();
+      log("gotline " + s);
     } catch (Exception e) {
       log("ERROR: " + e.what_str());
       break;
     }
-    // cout << ".\n";
+    log2("!!!" + s);
     if (s.find("---")) {
       accum_.add(s.c_str());
     } else {
