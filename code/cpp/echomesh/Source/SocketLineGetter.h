@@ -7,20 +7,30 @@ namespace echomesh {
 
 class LineQueue;
 
+struct SocketDescription {
+  String server;
+  int port;
+  int timeout;
+  int bufferSize;
+  int retries;
+  int retryTimeout;
+};
+
 class SocketLineGetter : public LineGetter {
  public:
-  SocketLineGetter(const String& server, int port, int timeout, int bufferSize);
+  SocketLineGetter(const SocketDescription&);
   virtual ~SocketLineGetter();
 
   virtual string getLine();
-  virtual bool eof() const { return !socket_.isConnected(); }
+  virtual bool eof() const { return not (connected_ and socket_.isConnected()); }
 
  private:
   string readSocket();
 
   StreamingSocket socket_;
-  const int timeout_;
   vector<char> buffer_;
+  const SocketDescription desc_;
+  bool connected_;
 
   ScopedPointer<LineQueue> lineQueue_;
 

@@ -54,11 +54,14 @@ LineGetter* makeLineGetter(const String& command) {
 
   if (command.startsWith("socket")) {
     log("SocketLineGetter");
-    const String& hostName = parts[1];
-    int port = parts[2].getIntValue();
-    int timeout = 1000 * parts[3].getFloatValue();
-    int bufferSize = parts[4].getIntValue();
-    return new SocketLineGetter(hostName, port, timeout, bufferSize);
+    SocketDescription desc;
+    desc.server = parts[1];
+    desc.port = parts[2].getIntValue();
+    desc.timeout = 1000 * parts[3].getFloatValue();
+    desc.bufferSize = parts[4].getIntValue();
+    desc.retries = 20;
+    desc.retryTimeout = 100;
+    return new SocketLineGetter(desc);
   }
 
   return new CinLineGetter;

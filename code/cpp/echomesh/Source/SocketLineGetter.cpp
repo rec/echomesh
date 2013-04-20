@@ -3,40 +3,42 @@
 
 namespace echomesh {
 
-SocketLineGetter::SocketLineGetter(const String& server, int port, int timeout,
-                                   int bufferSize)
-    : timeout_(timeout),
-      buffer_(bufferSize),
-      lineQueue_(new LineQueue) {
-  if (int error = !socket_.connect(server, port, timeout)) {
-    throw Exception("Error " + String(error) + " connecting to " +
-                    server + ":" + String(port));
-  }
+SocketLineGetter::SocketLineGetter(const SocketDescription& desc)
+    : desc_(desc), connected_(false) {
 }
 
 SocketLineGetter::~SocketLineGetter() {}
 
 string SocketLineGetter::getLine() {
-  while (!lineQueue_->empty())
+  while (lineQueue_->empty())
     lineQueue_->push(readSocket());
   return lineQueue_->pop();
 }
 
 string SocketLineGetter::readSocket() {
-  if (!socket_.isConnected())
-    throw Exception("StreamingSocket: Not connected.");
+  for (int connectionAttempts = 0; !connected_; ++connectionAttempts) {
+    if (connectionAttempts and connectionAttempts > desc_.retries)
+      throw Exception("Failed to connect to socket.");
+    connected_ = socket_.connect(desc_.server, desc_.port, desc_.retryTimeout);
+  }
 
-  int isReady = socket_.waitUntilReady(true, timeout_);
-  if (isReady < 0)
-    throw Exception("StreamingSocket wait error");
+  while (true) {
+    if (!socket_.isConnected())
+      throw Exception("StreamingSocket: Socket disconnected.");
 
-  int read = 0;
-  if (isReady > 0) {
-    read = socket_.read(&buffer_.front(), buffer_.size(), false);
+    int isReady = socket_.waitUntilReady(true, desc_.timeout);
+    if (!isReady)
+      continue;
+
+    if (isReady < 0)
+      throw Exception("StreamingSocket wait error");
+
+    int read = socket_.read(&buffer_.front(), buffer_.size(), false);
     if (read < 0)
       throw Exception("StreamingSocket read error " + String(read));
+    if (read)
+      return string(&buffer_.front(), read);
   }
-  return string(&buffer_.front(), read);
 }
 
 }  // namespace echomesh
