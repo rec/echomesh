@@ -1,3 +1,8 @@
 light:
   type: client
   period: 50ms
+
+network:
+  client:
+    start: false
+

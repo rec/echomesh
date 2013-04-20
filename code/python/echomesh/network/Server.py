@@ -45,7 +45,7 @@ class Server(ThreadLoop):
     server = self
     class Handler(SocketServer.StreamRequestHandler):
       def handle(self):
-        LOGGER.debug('Successfully registered a handler %s', handler)
+        LOGGER.debug('Successfully registered a handler %s', self)
         server.handler = self
         try:
           self.wfile.write('\n')

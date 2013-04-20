@@ -24,14 +24,12 @@ void ReadThread::run() {
   string s;
   while (!lineGetter_->eof()) {
     try {
-      log("starting to getline");
       s = lineGetter_->getLine();
-      log("gotline " + s);
     } catch (Exception e) {
       log("ERROR: " + e.what_str());
       break;
     }
-    log2("!!!" + s);
+    log("received: " + s);
     if (s.find("---")) {
       accum_.add(s.c_str());
     } else {
@@ -48,6 +46,8 @@ namespace {
 
 CriticalSection lock_;
 
+static const bool LOG_TO_STDOUT = true;
+
 const char FILENAME[] = "/tmp/echomesh.log";
 OutputStream* STREAM = NULL;
 
@@ -57,6 +57,11 @@ OutputStream* STREAM2 = NULL;
 }  // namespace
 
 void log(const string& msg) {
+  if (LOG_TO_STDOUT) {
+    std::cout << msg << "\n";
+    std::cout.flush();
+    return;
+  }
   if (!*FILENAME)
     return;
   ScopedLock l(lock_);
@@ -83,7 +88,6 @@ void log2(const string& msg) {
   // STREAM2->write("\n", 1);
   STREAM2->flush();
 }
-
 
 void close_log() {
   delete STREAM;

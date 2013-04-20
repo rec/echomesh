@@ -12,7 +12,7 @@ struct SocketDescription {
   int port;
   int timeout;
   int bufferSize;
-  int retries;
+  int tries;
   int retryTimeout;
 };
 
@@ -22,7 +22,7 @@ class SocketLineGetter : public LineGetter {
   virtual ~SocketLineGetter();
 
   virtual string getLine();
-  virtual bool eof() const { return not (connected_ and socket_.isConnected()); }
+  virtual bool eof() const { return eof_; }
 
  private:
   string readSocket();
@@ -31,6 +31,7 @@ class SocketLineGetter : public LineGetter {
   vector<char> buffer_;
   const SocketDescription desc_;
   bool connected_;
+  bool eof_;
 
   ScopedPointer<LineQueue> lineQueue_;
 

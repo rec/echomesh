@@ -3,6 +3,10 @@
 
 namespace echomesh {
 
+namespace {
+
+String DEFAULT_GETTER("socket");
+
 class CinLineGetter : public LineGetter {
  public:
   virtual string getLine() {
@@ -34,33 +38,37 @@ class FileLineGetter : public LineGetter {
   DISALLOW_COPY_AND_ASSIGN(FileLineGetter);
 };
 
+}  // namespace
 
-//
-// Command line:
-//
-// 1.  file <filename>
-// 2.  stdin
-// 3.  socket host_name port timeout buffer_size
+// Three possible command lines:
+//   file <filename>
+//   socket host_name port timeout buffer_size
+//   terminal
 
 LineGetter* makeLineGetter(const String& command) {
   StringArray parts;
   parts.addTokens(command, false);
+  String cmd = parts.size() ? parts[0] : DEFAULT_GETTER;
 
-  if (command.startsWith("file"))
+  if (cmd == "file")
     return new FileLineGetter(str(parts[1].trim()));
 
-  if (command.startsWith("socket")) {
+  if (cmd == "socket") {
     SocketDescription desc;
-    desc.server = parts[1];
-    desc.port = parts[2].getIntValue();
-    desc.timeout = 1000 * parts[3].getFloatValue();
-    desc.bufferSize = parts[4].getIntValue();
-    desc.retries = 20;
-    desc.retryTimeout = 100;
+    desc.server = (parts.size() > 1) ? parts[1] : String("localhost");
+    desc.port = (parts.size() > 2) ? parts[2].getIntValue() : 1239;
+    desc.timeout = 1000 * ((parts.size() > 3) ? parts[3].getFloatValue() : 1.0);
+    desc.bufferSize = (parts.size() > 4) ? parts[4].getIntValue() : 4096;
+    desc.tries = 0;
+    desc.retryTimeout = 1000;
+    log("created a SocketLineGetter");
     return new SocketLineGetter(desc);
   }
 
-  return new CinLineGetter;
+  if (cmd == "terminal")
+    return new CinLineGetter;
+
+  throw Exception("Didn't understand command line \"" + command + "\", " + cmd);
 }
 
 }  // namespace echomesh

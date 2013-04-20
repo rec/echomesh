@@ -19,6 +19,7 @@ _QUIT = Yaml.encode_one({'type': 'quit'}) + Yaml.SEPARATOR
 class ExternalLightBank(LightBank):
   def __init__(self):
     self.client_type, cmd = Client.make_command()
+    self.process = None
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _before_thread_start(self):
@@ -30,11 +31,13 @@ class ExternalLightBank(LightBank):
                            Units.convert(config['timeout']))
       self.server.start()
 
-    # TODO: possible race condition here if Popen is really fast to
-    # start up and the Server thread starts up really slowly.
-    self.process = subprocess.Popen(cmd)
-    #                                    stdin=subprocess.PIPE,
-    #                                    stdout=subprocess.PIPE)
+    if Config.get('network', 'client', 'start'):
+      self.process = subprocess.Popen(cmd)
+      #                                    stdin=subprocess.PIPE,
+      #                                    stdout=subprocess.PIPE)
+    else:
+      assert self.client_type != Client.ControlType.TERMINAL
+
     Config.add_client(self)
 
   def _send_one(self, s):
@@ -54,7 +57,7 @@ class ExternalLightBank(LightBank):
   def shutdown(self):
     with self.lock:
       if self.process:
-        self._send_one(QUIT)
+        self._send_one(_QUIT)
         self.process.terminate()
 
   def clear(self):

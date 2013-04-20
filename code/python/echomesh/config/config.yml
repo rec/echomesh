@@ -160,6 +160,7 @@ network:
     port: 1239
     timeout: 100ms
     type: socket
+    start: true
 
   discovery:
     port: 1238
