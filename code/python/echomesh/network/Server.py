@@ -9,7 +9,7 @@ from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-class TCPServer(SocketServer.TCPServer):
+class LoggingServer(SocketServer.TCPServer):
   def close_request(self, request):
     LOGGER.info('Closing request %s', request)
     return SocketServer.TCPServer.close_request(self, request)
@@ -31,47 +31,38 @@ class TCPServer(SocketServer.TCPServer):
     return SocketServer.TCPServer.verify_request(self, req, address)
 
 class Server(ThreadLoop):
-  def __init__(self, host, port, timeout):
+  def __init__(self, host, port, timeout, logging=False):
     super(Server, self).__init__()
     self.server = None
     self.host = host
     self.port = port
     self.timeout = timeout
-    self.handlers = set()
+    self.handler = None
     self.queue = queue.Queue()
+    self.logging = logging
 
   def _before_thread_start(self):
     server = self
     class Handler(SocketServer.StreamRequestHandler):
       def handle(self):
-        server.register(self)
+        LOGGER.debug('Successfully registered a handler %s', handler)
+        server.handler = self
         try:
           self.wfile.write('\n')
           self.rfile.read()
         except:
           LOGGER.error('')
           raise
-    self.server = SocketServer.TCPServer((self.host, self.port), Handler)
+    server_maker = LoggingServer if self.logging else SocketServer.TCPServer
+    self.server = server_maker((self.host, self.port), Handler)
     self.server.timeout = self.timeout
     LOGGER.debug('Server created for %s:%d', self.host, self.port)
 
-  def register(self, handler):
-    self.handlers.add(handler)
-    LOGGER.debug('Successfully registered a handler %s', handler)
+  def write(self, data):
+    self.queue.put(data)
 
-  def send(self, data):
-    if True:
-      self.queue.put(data)
-    else:
-      if self.is_running and self.handlers:
-        self._send_one(data)
-      else:
-        LOGGER.info('!!! queing data')
-        self.queue.put(data)
-
-  def _send_one(self, data):
-    for h in self.handlers:
-      h.wfile.write(data)
+  def reade(self):
+    return self.handler.rfile.read()
 
   def _after_thread_pause(self):
     self.server.shutdown()
@@ -79,14 +70,14 @@ class Server(ThreadLoop):
 
   def single_loop(self):
     self.server.handle_request()
-    if self.handlers:
+    if self.handler:
+      data = []
       while not self.queue.empty():
-        try:
-          data = self.queue.get(False)
-        except queue.Empty:
-          return
-        try:
-          self._send_one(data)
-        except:
-          LOGGER.error('Socket hung up on other end.', raw=True)
-          self.pause()
+        data.append(self.queue.get(False))
+      data = ''.join(data)
+      try:
+        self.handler.wfile.write(data)
+      except:
+        LOGGER.error('Socket hung up on other end.', raw=True)
+        self.pause()
+

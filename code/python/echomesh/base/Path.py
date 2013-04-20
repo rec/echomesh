@@ -7,7 +7,13 @@ import os
 import os.path
 import sys
 
+ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
+# If this is True, you want Echomesh to use its own external packages in
+# preference to any you might have installed in your system path.
+
+
 CODE_PATH = os.path.abspath(sys.path[0])
+EXTERNAL_CODE_PATH = os.path.join(CODE_PATH, 'external')
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
 BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
 PROJECT_PATH = None
@@ -54,6 +60,14 @@ def info():
     'Asset path': ASSET_PATH,
     'Code path': CODE_PATH,
     'Command path': COMMAND_PATH,
+    'External code path': EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,
     'echomesh path': ECHOMESH_PATH,
     }
+
+def fix_sys_path():
+  if EXTERNAL_CODE_PATH not in sys.path:
+    if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
+      sys.path.insert(1, EXTERNAL_CODE_PATH)
+    else:
+      sys.path.append(EXTERNAL_CODE_PATH)

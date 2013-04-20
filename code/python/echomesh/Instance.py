@@ -16,14 +16,8 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 LOGGER = Log.logger(__name__)
 
 class Instance(MasterRunnable):
-  INSTANCE = None
-
   def __init__(self):
     super(Instance, self).__init__()
-    if Instance.INSTANCE:
-      LOGGER.error('There is more than one instance of Instance')
-    else:
-      Instance.INSTANCE = self
 
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)
@@ -87,3 +81,5 @@ class Instance(MasterRunnable):
       self.remove_slave(self.mic)
       self.mic = None
 
+INSTANCE = Instance()
+main = INSTANCE.main

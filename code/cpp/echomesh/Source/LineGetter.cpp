@@ -43,17 +43,13 @@ class FileLineGetter : public LineGetter {
 // 3.  socket host_name port timeout buffer_size
 
 LineGetter* makeLineGetter(const String& command) {
-  log("makeLineGetter " + str(command));
   StringArray parts;
   parts.addTokens(command, false);
 
-  if (command.startsWith("file")) {
-    log("FileLineGetter");
+  if (command.startsWith("file"))
     return new FileLineGetter(str(parts[1].trim()));
-  }
 
   if (command.startsWith("socket")) {
-    log("SocketLineGetter");
     SocketDescription desc;
     desc.server = parts[1];
     desc.port = parts[2].getIntValue();

@@ -39,7 +39,7 @@ class ExternalLightBank(LightBank):
 
   def _send_one(self, s):
     if self.client_type == Client.ControlType.SOCKET:
-      self.server.send(s)
+      self.server.write(s)
     elif self.client_type == Client.ControlType.TERMINAL:
       if self.process:
         self.process.send_recv(s)
@@ -54,8 +54,8 @@ class ExternalLightBank(LightBank):
   def shutdown(self):
     with self.lock:
       if self.process:
-        self.process.communicate(_QUIT)
-        self.process = None
+        self._send_one(QUIT)
+        self.process.terminate()
 
   def clear(self):
     with self.lock:
@@ -71,7 +71,6 @@ class ExternalLightBank(LightBank):
     dl['background'] = ColorTable.to_color(dl['background'])
 
     with self.lock:
-      print('!!! sending config')
       self._send('config', **light)
 
   def _after_thread_pause(self):
