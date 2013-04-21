@@ -29,7 +29,6 @@ void ReadThread::run() {
       log("ERROR: " + e.what_str());
       break;
     }
-    log("received: " + s);
     if (s.find("---")) {
       accum_.add(s.c_str());
     } else {

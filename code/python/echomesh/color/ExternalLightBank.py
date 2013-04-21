@@ -30,7 +30,7 @@ class ExternalLightBank(LightBank):
 
       self.server = Server(config['host_name'], config['port'],
                            timeout=Units.convert(config['timeout']),
-                           reuse_socket=config['reuse_socket'])
+                           allow_reuse_address=config['allow_reuse_address'])
       self.server.start()
 
     if Config.get('network', 'client', 'start'):

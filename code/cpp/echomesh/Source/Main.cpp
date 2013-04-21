@@ -15,14 +15,18 @@ class Echomesh  : public JUCEApplication {
 
     // TODO: we don't store this because it causes an error when it gets
     // deleted at shutdown - so rather have a memory leak!
-    (new echomesh::LightReader(mainWindow_->comp_, commandLine))->startThread();
+    readThread_ = new echomesh::LightReader(mainWindow_->comp_, commandLine);
+    readThread_->startThread();
   }
 
   void shutdown() {
+    echomesh::log("shutting down");
+    readThread_->signalThreadShouldExit();
+    readThread_->waitForThreadToExit(1000);
+    readThread_->stopThread(1000);
     mainWindow_ = nullptr;
   }
 
-  // void systemRequestedQuit() {}
   void anotherInstanceStarted (const String& commandLine) {}
 
   class MainWindow : public DocumentWindow {

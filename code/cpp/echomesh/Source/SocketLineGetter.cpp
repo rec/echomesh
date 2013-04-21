@@ -13,8 +13,6 @@ SocketLineGetter::~SocketLineGetter() {}
 string SocketLineGetter::getLine() {
   if (lineQueue_->empty())
     lineQueue_->push(readSocket());
-  if (lineQueue_->empty())
-    log("OOOOOOOPS");
   return lineQueue_->pop();
 }
 
@@ -37,7 +35,7 @@ string SocketLineGetter::readSocket() {
     }
 
     int isReady = socket_.waitUntilReady(true, desc_.timeout);
-    if (!isReady)
+    if (not isReady)
       continue;
 
     if (isReady < 0)

@@ -161,7 +161,7 @@ network:
     timeout: 100ms
     type: socket
     start: true
-    reuse_socket: false
+    allow_reuse_address: false
 
   discovery:
     port: 1238

@@ -64,6 +64,7 @@ void LightReader::parseNode() {
 void LightReader::quit() {
   log("Program quitting");
   signalThreadShouldExit();
+  // JUCEApplication::getInstance()->systemRequestedQuit();
   JUCEApplication::quit();
   log("quit done.");
   close_log();

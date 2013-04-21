@@ -7,7 +7,7 @@ import SocketServer
 from six.moves import queue
 
 from echomesh.util import Log
-from echomesh.util.thread.ThreadLoop import ThreadLoop
+from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 
 LOGGER = Log.logger(__name__)
 
@@ -37,64 +37,52 @@ class LoggingServer(SocketServer.TCPServer):
     return SocketServer.TCPServer.finish_request(self, req, address)
 
 
-class Server(ThreadLoop):
-  def __init__(self, host, port, timeout, logging=not False, reuse_socket=True):
+class Server(ThreadRunnable):
+  def __init__(self, host, port, timeout, logging=False,
+               allow_reuse_address=True):
     super(Server, self).__init__()
-    self.server = None
-    self.host = host
-    self.port = port
     self.timeout = timeout
-    self.handler = None
     self.queue = queue.Queue()
-    self.logging = logging
-    self.reuse_socket = reuse_socket
-    self.has_data = False
 
-  def _before_thread_start(self):
-    server = self
+    me = self
     class Handler(SocketServer.StreamRequestHandler):
       def handle(self):
-        LOGGER.info('Successfully registered a handler %s, %s', self, server)
-        server.handler = self
-        if False:
-          try:
-            self.wfile.write('\n')
-            # self.rfile.read()
-          except:
-            LOGGER.error('')
-            raise
-    server_maker = LoggingServer if self.logging else SocketServer.TCPServer
-    self.server = server_maker((self.host, self.port), Handler, bind_and_activate=True)
-    self.server.allow_reuse_address = self.reuse_socket
+        me.handle(self)
+
+    server_maker = LoggingServer if logging else SocketServer.TCPServer
+    self.server = server_maker((host, port), Handler, bind_and_activate=False)
+    self.server.allow_reuse_address = allow_reuse_address
     self.server.timeout = self.timeout
 
+  def target(self):
+    self.server.server_bind()
+    self.server.server_activate()
+    self.server.serve_forever(poll_interval=self.timeout)
+
     LOGGER.debug('Server created for %s:%d', self.host, self.port)
+
+  def handle(self, handler):
+    while self.is_running:
+      data = []
+      try:
+        data.append(self.queue.get(True, self.timeout))
+      except queue.Empty:
+        continue
+
+      while not self.queue.empty():
+        data.append(self.queue.get(False))
+      data = ''.join(data)
+      try:
+        handler.wfile.write(data)
+        handler.wfile.flush()
+      except:
+        self.pause()
+        LOGGER.error('Socket hung up on other end.', raw=True)
 
   def write(self, data):
     self.queue.put(data)
     self.has_data = True
 
-  def read(self):
-    return self.handler.rfile.read()
-
   def _after_thread_pause(self):
     self.server.shutdown()
     self.server = None
-
-  def single_loop(self):
-    self.server.handle_request()
-
-    if self.handler:
-      data = []
-      while not self.queue.empty():
-        data.append(self.queue.get(False))
-      self.has_data = False
-      data = ''.join(data)
-      try:
-        assert data
-        self.handler.wfile.write(data)
-        self.handler.wfile.flush()
-      except:
-        LOGGER.error('Socket hung up on other end.', raw=True)
-        self.handler = None
-
