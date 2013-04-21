@@ -10,7 +10,7 @@
     <key>CFBundleIdentifier</key>
     <string>org.echomesh</string>
     <key>CFBundleName</key>
-    <string>echomesh</string>
+    <string>echomesh-client</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleSignature</key>

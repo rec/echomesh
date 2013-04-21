@@ -4,6 +4,6 @@ light:
 
 network:
   client:
-    start: false
+    start: true
     allow_reuse_address: true
 

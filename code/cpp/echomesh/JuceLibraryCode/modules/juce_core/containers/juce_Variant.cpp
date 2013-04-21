@@ -318,7 +318,7 @@ public:
 
     void writeToStream (const ValueUnion& data, OutputStream& output) const
     {
-        output.writeCompressedInt (1 + data.binaryValue->getSize());
+        output.writeCompressedInt (1 + (int) data.binaryValue->getSize());
         output.writeByte (varMarker_Binary);
         output << *data.binaryValue;
     }
@@ -676,8 +676,13 @@ var var::readFromStream (InputStream& input)
             case varMarker_Binary:
             {
                 MemoryBlock mb (numBytes - 1);
-                const int numRead = input.read (mb.getData(), numBytes - 1);
-                mb.setSize (numRead);
+
+                if (numBytes > 1)
+                {
+                    const int numRead = input.read (mb.getData(), numBytes - 1);
+                    mb.setSize (numRead);
+                }
+
                 return var (mb);
             }
 

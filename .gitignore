@@ -7,6 +7,6 @@
 *#*
 
 log/
-# cache/
+cache/
 code/TAGS
 command/.echomesh-xfer/

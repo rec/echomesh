@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="XEYpdN" name="echomesh" projectType="guiapp" version="1.0.0"
+<JUCERPROJECT id="XEYpdN" name="echomesh-client" projectType="guiapp" version="1.0.0"
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
-  <MAINGROUP id="TUlrr5" name="echomesh">
+  <MAINGROUP id="TUlrr5" name="echomesh-client">
     <GROUP id="{006B21FC-D3F2-B667-B348-12C89EC74589}" name="Source">
       <FILE id="Z3hSwn" name="Log.cpp" compile="1" resource="0" file="Source/Log.cpp"/>
       <FILE id="znQZg9" name="LightComponent.cpp" compile="1" resource="0"
@@ -101,25 +101,26 @@
                extraCompilerFlags="-I../../Source" extraDefs="">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="1" optimisation="1" targetName="echomesh"/>
+                       isDebug="1" optimisation="1" targetName="echomesh-client"/>
         <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="0" optimisation="2" targetName="echomesh"/>
+                       isDebug="0" optimisation="3" targetName="echomesh-client"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
     <VS2010 targetFolder="Builds/VisualStudio2010" juceFolder="../../../../juce/modules">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="echomesh"/>
+                       isDebug="1" optimisation="1" targetName="echomesh-client"/>
         <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="echomesh"/>
+                       isDebug="0" optimisation="3" targetName="echomesh-client"/>
       </CONFIGURATIONS>
     </VS2010>
-    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="../../../../juce/modules">
+    <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="../../../../juce/modules"
+                extraDefs="JUCE_USE_XSHM=0 JUCE_USE_XINERAMA=0&#10;">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="echomesh"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="echomesh"/>
+                       targetName="echomesh-client" linuxArchitecture="-march=armv6"/>
+        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="3"
+                       targetName="echomesh-client" linuxArchitecture="-march=armv6"/>
       </CONFIGURATIONS>
     </LINUX_MAKE>
   </EXPORTFORMATS>

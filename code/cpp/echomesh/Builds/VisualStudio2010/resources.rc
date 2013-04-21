@@ -13,9 +13,9 @@ BEGIN
   BEGIN
     BLOCK "040904E4"
     BEGIN
-      VALUE "FileDescription",  "echomesh\0"
+      VALUE "FileDescription",  "echomesh-client\0"
       VALUE "FileVersion",  "1.0.0\0"
-      VALUE "ProductName",  "echomesh\0"
+      VALUE "ProductName",  "echomesh-client\0"
       VALUE "ProductVersion",  "1.0.0\0"
     END
   END
