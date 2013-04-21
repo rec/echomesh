@@ -11,8 +11,6 @@ namespace echomesh {
 
 using namespace std;
 
-static const char READ_FILE[] = "/development/echomesh/incoming.data";
-
 ReadThread::ReadThread(const String& commandLine)
     : Thread("ReadThread"),
       lineGetter_(makeLineGetter(commandLine)) {

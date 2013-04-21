@@ -1,4 +1,4 @@
-#include "/development/echomesh/code/cpp/echomesh/Source/LightConfig.h"
+#include "LightConfig.h"
 
 namespace echomesh {
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "/development/echomesh/code/cpp/echomesh/Source/LightReader.h"
+#include "LightReader.h"
 
 #include "LightComponent.h"
 
