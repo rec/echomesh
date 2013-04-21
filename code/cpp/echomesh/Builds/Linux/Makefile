@@ -43,6 +43,7 @@ ifeq ($(CONFIG),Release)
 endif
 
 OBJECTS := \
+  $(OBJDIR)/Log_298267a5.o \
   $(OBJDIR)/LightComponent_f5f4d090.o \
   $(OBJDIR)/ReadThread_a8da40c9.o \
   $(OBJDIR)/aliascontent_8112a045.o \
@@ -107,6 +108,11 @@ clean:
 strip:
 	@echo Stripping echomesh
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/Log_298267a5.o: ../../Source/Log.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Log.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LightComponent_f5f4d090.o: ../../Source/LightComponent.cpp
 	-@mkdir -p $(OBJDIR)

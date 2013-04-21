@@ -27,8 +27,10 @@ class ExternalLightBank(LightBank):
     self.client_type, cmd = Client.make_command()
     if self.client_type == Client.ControlType.SOCKET:
       config = Config.get('network', 'client')
+
       self.server = Server(config['host_name'], config['port'],
-                           Units.convert(config['timeout']))
+                           timeout=Units.convert(config['timeout']),
+                           reuse_socket=config['reuse_socket'])
       self.server.start()
 
     if Config.get('network', 'client', 'start'):

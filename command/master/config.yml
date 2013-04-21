@@ -5,4 +5,5 @@ light:
 network:
   client:
     start: false
+    reuse_socket: true
 

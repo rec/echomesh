@@ -11,8 +11,10 @@ SocketLineGetter::SocketLineGetter(const SocketDescription& desc)
 SocketLineGetter::~SocketLineGetter() {}
 
 string SocketLineGetter::getLine() {
-  while (lineQueue_->empty())
+  if (lineQueue_->empty())
     lineQueue_->push(readSocket());
+  if (lineQueue_->empty())
+    log("OOOOOOOPS");
   return lineQueue_->pop();
 }
 
@@ -45,7 +47,7 @@ string SocketLineGetter::readSocket() {
     if (read < 0)
       throw Exception("StreamingSocket read error " + String(read));
     if (read) {
-      log("got data");
+      log("got data \"" + string(&buffer_.front(), read) + "\"");
       return string(&buffer_.front(), read);
     } else {
       log("read 0");
