@@ -46,4 +46,4 @@ class LineQueue {
 
 }  // namespace echomesh
 
-#endif __ECHOMESH_LINE_QUEUE__
+#endif  // __ECHOMESH_LINE_QUEUE__

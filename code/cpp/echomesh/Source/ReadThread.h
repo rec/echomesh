@@ -32,4 +32,4 @@ class ReadThread : public Thread {
 
 }  // namespace echomesh
 
-#endif __ECHOMESH_READ_THREAD__
+#endif // __ECHOMESH_READ_THREAD__

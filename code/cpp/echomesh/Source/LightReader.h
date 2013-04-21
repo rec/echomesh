@@ -50,4 +50,4 @@ class LightReader : public ReadThread {
 
 }  // namespace echomesh
 
-#endif __ECHOMESH_LIGHT_READER__
+#endif  // __ECHOMESH_LIGHT_READER__

@@ -40,4 +40,4 @@ class SocketLineGetter : public LineGetter {
 
 }  // namespace echomesh
 
-#endif __ECHOMESH_SOCKET_LINE_GETTER__
+#endif  // __ECHOMESH_SOCKET_LINE_GETTER__
