@@ -30,7 +30,7 @@ string SocketLineGetter::readSocket() {
   }
 
   while (true) {
-    if (!socket_.isConnected()) {
+    if (not socket_.isConnected()) {
       eof_ = true;
       log("disconnected");
       throw Exception("StreamingSocket: Socket disconnected.");
@@ -42,6 +42,9 @@ string SocketLineGetter::readSocket() {
 
     if (isReady < 0)
       throw Exception("StreamingSocket wait error");
+
+    if (not socket_.isConnected())
+      throw Exception("WTF?");
 
     int read = socket_.read(&buffer_.front(), buffer_.size(), false);
     if (read < 0)

@@ -48,6 +48,7 @@ class Server(ThreadLoop):
     self.queue = queue.Queue()
     self.logging = logging
     self.reuse_socket = reuse_socket
+    self.has_data = False
 
   def _before_thread_start(self):
     server = self
@@ -55,12 +56,13 @@ class Server(ThreadLoop):
       def handle(self):
         LOGGER.info('Successfully registered a handler %s, %s', self, server)
         server.handler = self
-        try:
-          self.wfile.write('\n')
-          # self.rfile.read()
-        except:
-          LOGGER.error('')
-          raise
+        if False:
+          try:
+            self.wfile.write('\n')
+            # self.rfile.read()
+          except:
+            LOGGER.error('')
+            raise
     server_maker = LoggingServer if self.logging else SocketServer.TCPServer
     self.server = server_maker((self.host, self.port), Handler, bind_and_activate=True)
     self.server.allow_reuse_address = self.reuse_socket
@@ -70,6 +72,7 @@ class Server(ThreadLoop):
 
   def write(self, data):
     self.queue.put(data)
+    self.has_data = True
 
   def read(self):
     return self.handler.rfile.read()
@@ -85,6 +88,7 @@ class Server(ThreadLoop):
       data = []
       while not self.queue.empty():
         data.append(self.queue.get(False))
+      self.has_data = False
       data = ''.join(data)
       try:
         assert data
@@ -92,5 +96,5 @@ class Server(ThreadLoop):
         self.handler.wfile.flush()
       except:
         LOGGER.error('Socket hung up on other end.', raw=True)
-        self.pause()
+        self.handler = None
 
