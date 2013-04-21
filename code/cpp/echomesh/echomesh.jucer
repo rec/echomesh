@@ -106,7 +106,8 @@
                        isDebug="0" optimisation="3" targetName="echomesh-client"/>
       </CONFIGURATIONS>
     </XCODE_MAC>
-    <VS2010 targetFolder="Builds/VisualStudio2010" juceFolder="../../../../juce/modules">
+    <VS2010 targetFolder="Builds/VisualStudio2010" juceFolder="../../../../juce/modules"
+            extraCompilerFlags="-I../../Source">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
                        isDebug="1" optimisation="1" targetName="echomesh-client"/>
@@ -115,7 +116,7 @@
       </CONFIGURATIONS>
     </VS2010>
     <LINUX_MAKE targetFolder="Builds/Linux" juceFolder="../../../../juce/modules"
-                extraDefs="JUCE_USE_XSHM=0 JUCE_USE_XINERAMA=0&#10;">
+                extraDefs="JUCE_USE_XSHM=0 JUCE_USE_XINERAMA=0&#10;" extraCompilerFlags="-I../../Source">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
                        targetName="echomesh-client" linuxArchitecture="-march=armv6"/>
