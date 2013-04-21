@@ -1,4 +1,4 @@
-#include "echomesh/LightComponent.h"
+#include "echomesh/LightingWindow.h"
 #include "echomesh/LightReader.h"
 
 class Echomesh  : public JUCEApplication {
@@ -10,11 +10,11 @@ class Echomesh  : public JUCEApplication {
   bool moreThanOneInstanceAllowed()       { return true; }
 
   void initialise (const String& commandLine) {
-    mainWindow_ = new MainWindow();
+    lightingWindow_ = new echomesh::LightingWindow;
 
     // TODO: we don't store this because it causes an error when it gets
     // deleted at shutdown - so rather have a memory leak!
-    readThread_ = new echomesh::LightReader(mainWindow_->comp_, commandLine);
+    readThread_ = new echomesh::LightReader(lightingWindow_->comp_, commandLine);
     readThread_->startThread();
   }
 
@@ -23,37 +23,17 @@ class Echomesh  : public JUCEApplication {
     readThread_->signalThreadShouldExit();
     readThread_->waitForThreadToExit(1000);
     readThread_->stopThread(1000);
-    mainWindow_ = nullptr;
+    lightingWindow_ = nullptr;
   }
 
   void anotherInstanceStarted (const String& commandLine) {}
 
-  class MainWindow : public DocumentWindow {
-   public:
-    MainWindow()  : DocumentWindow("echomesh lighting simulator",
-                                   Colours::lightgrey,
-                                   DocumentWindow::allButtons) {
-      comp_ = new echomesh::LightComponent(this);
-      setContentOwned(comp_, true);
-
-      centreWithSize(getWidth(), getHeight());
-      setVisible(true);
-      setUsingNativeTitleBar(true);
-    }
-
-    void closeButtonPressed() {
-      JUCEApplication::getInstance()->systemRequestedQuit();
-    }
-
-    echomesh::LightComponent* comp_;
-
-   private:
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainWindow)
-  };
+ private:
+  ScopedPointer<echomesh::LightingWindow> lightingWindow_;
+  ScopedPointer<echomesh::LightReader> readThread_;
 
  private:
-  ScopedPointer<MainWindow> mainWindow_;
-  ScopedPointer<echomesh::LightReader> readThread_;
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Echomesh)
 };
 
 START_JUCE_APPLICATION(Echomesh)
