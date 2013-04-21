@@ -34,9 +34,9 @@ class ExternalLightBank(LightBank):
       self.server.start()
 
     if Config.get('network', 'client', 'start'):
-      self.process = subprocess.Popen(cmd)
-      #                                    stdin=subprocess.PIPE,
-      #                                    stdout=subprocess.PIPE)
+      self.process = subprocess.Popen(cmd,
+                                      stdin=subprocess.PIPE,
+                                      stdout=subprocess.PIPE)
     else:
       assert self.client_type != Client.ControlType.TERMINAL
 

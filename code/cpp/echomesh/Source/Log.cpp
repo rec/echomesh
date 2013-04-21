@@ -23,7 +23,7 @@ OutputStream* STREAM2 = NULL;
 
 }  // namespace
 
-void log(const string& msg) {
+void log(const String& msg) {
   if (LOG_TO_STDOUT) {
     std::cout << msg << "\n";
     std::cout.flush();
@@ -37,12 +37,12 @@ void log(const string& msg) {
     f.deleteFile();
     STREAM = new FileOutputStream(f);
   }
-  STREAM->write(msg.data(), msg.size());
+  STREAM->writeString(msg);
   STREAM->write("\n", 1);
   STREAM->flush();
 }
 
-void log2(const string& msg) {
+void log2(const String& msg) {
   if (!*FILENAME2)
     return;
   ScopedLock l(lock_);
@@ -51,7 +51,7 @@ void log2(const string& msg) {
     f.deleteFile();
     STREAM2 = new FileOutputStream(f);
   }
-  STREAM2->write(msg.data(), msg.size());
+  STREAM2->writeString(msg);
   // STREAM2->write("\n", 1);
   STREAM2->flush();
 }

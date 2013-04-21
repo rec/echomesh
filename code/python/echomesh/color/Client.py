@@ -11,7 +11,8 @@ from echomesh.expression import Units
 
 LOGGER = Log.logger(__name__)
 
-COMMAND = os.path.join(Path.BINARY_PATH, 'echomesh')
+CLIENT_NAME = 'echomesh-client'
+COMMAND = os.path.join(Path.BINARY_PATH, CLIENT_NAME)
 
 ControlType = Enum.Enum('FILE', 'SOCKET', 'TERMINAL')
 

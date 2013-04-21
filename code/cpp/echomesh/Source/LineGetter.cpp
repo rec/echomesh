@@ -20,8 +20,8 @@ class CinLineGetter : public LineGetter {
 
 class FileLineGetter : public LineGetter {
  public:
-  explicit FileLineGetter(const string& f)
-      : stream_(new std::ifstream(f.c_str(), std::ifstream::in)) {
+  explicit FileLineGetter(const String& f)
+      : stream_(new std::ifstream(f.toUTF8(), std::ifstream::in)) {
   }
 
   virtual string getLine() {
@@ -51,7 +51,7 @@ LineGetter* makeLineGetter(const String& command) {
   String cmd = parts.size() ? parts[0] : DEFAULT_GETTER;
 
   if (cmd == "file")
-    return new FileLineGetter(str(parts[1].trim()));
+    return new FileLineGetter(parts[1].trim());
 
   if (cmd == "socket") {
     SocketDescription desc;
