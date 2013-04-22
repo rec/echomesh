@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include <istream>
+#include <map>
 #include <vector>
 
 #include "yaml-cpp/yaml.h"
@@ -12,6 +13,10 @@
 namespace echomesh {
 
 class LineGetter;
+
+class ReadThread;
+
+typedef void (ReadThread::*ReadThreadMethod)();
 
 class ReadThread : public Thread {
  public:
@@ -25,9 +30,13 @@ class ReadThread : public Thread {
  protected:
   virtual void parseNode() = 0;
 
+  typedef std::map<string, ReadThreadMethod> MessageMap;
+
   YAML::Node node_;
   string type_;
   StringArray accum_;
+  MessageMap messageMap_;
+
   ScopedPointer<LineGetter> lineGetter_;
 
   DISALLOW_COPY_AND_ASSIGN(ReadThread);

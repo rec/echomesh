@@ -51,7 +51,14 @@ void ReadThread::handleMessage(const string& str) {
     YAML::Parser parser(s);
     if (parser.GetNextDocument(node_)) {
       node_["type"] >> type_;
-      parseNode();
+      MessageMap::iterator i = messageMap_.find(type_);
+      if (i == messageMap_.end()) {
+        log("Didn't find message type " + type_);
+        parseNode();
+      } else {
+        CALL_MEMBER_FN(*this, i->second)();
+      }
+
     } else {
       log("Didn't find a document in this input!");
     }

@@ -13,6 +13,9 @@
 using std::string;
 using std::vector;
 
+// http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
+#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
+
 namespace echomesh {
 
 void log(const String&);
