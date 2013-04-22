@@ -129,6 +129,8 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\rec\base\RealTime.cpp"/>
+    <ClCompile Include="..\..\rec\util\thread\Trash.cpp"/>
     <ClCompile Include="..\..\echomesh\LightComponent.cpp"/>
     <ClCompile Include="..\..\echomesh\LightConfig.cpp"/>
     <ClCompile Include="..\..\echomesh\LightReader.cpp"/>
@@ -1011,6 +1013,39 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\rec\base\ArraySize.h"/>
+    <ClInclude Include="..\..\rec\base\base.h"/>
+    <ClInclude Include="..\..\rec\base\BaseNoJuce.h"/>
+    <ClInclude Include="..\..\rec\base\basictypes.h"/>
+    <ClInclude Include="..\..\rec\base\build_config.h"/>
+    <ClInclude Include="..\..\rec\base\Cast.h"/>
+    <ClInclude Include="..\..\rec\base\CompileAssert.h"/>
+    <ClInclude Include="..\..\rec\base\disallow.h"/>
+    <ClInclude Include="..\..\rec\base\Juce.h"/>
+    <ClInclude Include="..\..\rec\base\port.h"/>
+    <ClInclude Include="..\..\rec\base\ptr.h"/>
+    <ClInclude Include="..\..\rec\base\RealTime.h"/>
+    <ClInclude Include="..\..\rec\base\SampleRate.h"/>
+    <ClInclude Include="..\..\rec\base\SampleTime.h"/>
+    <ClInclude Include="..\..\rec\base\scoped_array.h"/>
+    <ClInclude Include="..\..\rec\base\string_piece.h"/>
+    <ClInclude Include="..\..\rec\base\types.h"/>
+    <ClInclude Include="..\..\rec\util\Deletable.h"/>
+    <ClInclude Include="..\..\rec\util\HasLock.h"/>
+    <ClInclude Include="..\..\rec\util\STL.h"/>
+    <ClInclude Include="..\..\rec\util\thread\CallAsync.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback0.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback1.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback2.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback3.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Callback4.h"/>
+    <ClInclude Include="..\..\rec\util\thread\FunctionCallback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\MakeCallback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\MakeThread.h"/>
+    <ClInclude Include="..\..\rec\util\thread\ModalCallback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Result.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Trash.h"/>
     <ClInclude Include="..\..\echomesh\disallow.h"/>
     <ClInclude Include="..\..\echomesh\Echomesh.h"/>
     <ClInclude Include="..\..\echomesh\LightComponent.h"/>

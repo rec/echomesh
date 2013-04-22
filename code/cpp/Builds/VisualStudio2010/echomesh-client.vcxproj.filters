@@ -5,8 +5,17 @@
     <Filter Include="echomesh-client">
       <UniqueIdentifier>{5A28992E-2A75-947E-A5C4-A2A2537C5E17}</UniqueIdentifier>
     </Filter>
-    <Filter Include="echomesh-client\Source">
-      <UniqueIdentifier>{AAF552EE-134A-61EA-04F2-2D32EF8B1F9B}</UniqueIdentifier>
+    <Filter Include="echomesh-client\rec">
+      <UniqueIdentifier>{51D23AE7-FBB3-8AA4-CF58-BAA70047AFF1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\rec\base">
+      <UniqueIdentifier>{F5B6ED92-D52C-408E-9ECE-3F452C0B9D97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\rec\util">
+      <UniqueIdentifier>{EEB29AEC-8DFC-D31E-965B-3CCEBAA69E89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\rec\util\thread">
+      <UniqueIdentifier>{71829ECD-877B-0F38-28F7-FF0BFF9FFE6E}</UniqueIdentifier>
     </Filter>
     <Filter Include="echomesh-client\echomesh">
       <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
@@ -241,6 +250,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\rec\base\RealTime.cpp">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rec\util\thread\Trash.cpp">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\LightComponent.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
@@ -1281,6 +1296,105 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\rec\base\ArraySize.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\base.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\BaseNoJuce.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\basictypes.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\build_config.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\Cast.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\CompileAssert.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\disallow.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\Juce.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\port.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\ptr.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\RealTime.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\SampleRate.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\SampleTime.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\scoped_array.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\string_piece.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\base\types.h">
+      <Filter>echomesh-client\rec\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\Deletable.h">
+      <Filter>echomesh-client\rec\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\HasLock.h">
+      <Filter>echomesh-client\rec\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\STL.h">
+      <Filter>echomesh-client\rec\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\CallAsync.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback0.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback1.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback2.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback3.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Callback4.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\FunctionCallback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\MakeCallback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\MakeThread.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\ModalCallback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Result.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Trash.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\echomesh\disallow.h">
       <Filter>echomesh-client\echomesh</Filter>
     </ClInclude>

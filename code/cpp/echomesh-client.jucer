@@ -3,7 +3,50 @@
 <JUCERPROJECT id="XEYpdN" name="echomesh-client" projectType="guiapp" version="1.0.0"
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh-client">
-    <GROUP id="{006B21FC-D3F2-B667-B348-12C89EC74589}" name="Source"/>
+    <GROUP id="{28FAA7EC-8E42-A784-3F2C-F5E2520F9D23}" name="rec">
+      <GROUP id="{0DF59FCB-164C-9455-C845-18717FCB4D00}" name="base">
+        <FILE id="a7gJWf" name="ArraySize.h" compile="0" resource="0" file="rec/base/ArraySize.h"/>
+        <FILE id="idYNfN" name="base.h" compile="0" resource="0" file="rec/base/base.h"/>
+        <FILE id="JCspO9" name="BaseNoJuce.h" compile="0" resource="0" file="rec/base/BaseNoJuce.h"/>
+        <FILE id="EwrFxn" name="basictypes.h" compile="0" resource="0" file="rec/base/basictypes.h"/>
+        <FILE id="Rl9ChI" name="build_config.h" compile="0" resource="0" file="rec/base/build_config.h"/>
+        <FILE id="KSVVBG" name="Cast.h" compile="0" resource="0" file="rec/base/Cast.h"/>
+        <FILE id="asBr56" name="CompileAssert.h" compile="0" resource="0" file="rec/base/CompileAssert.h"/>
+        <FILE id="ZVeIpK" name="disallow.h" compile="0" resource="0" file="rec/base/disallow.h"/>
+        <FILE id="eNRsiD" name="Juce.h" compile="0" resource="0" file="rec/base/Juce.h"/>
+        <FILE id="NOk2h8" name="port.h" compile="0" resource="0" file="rec/base/port.h"/>
+        <FILE id="tD2gju" name="ptr.h" compile="0" resource="0" file="rec/base/ptr.h"/>
+        <FILE id="BHLUpz" name="RealTime.cpp" compile="1" resource="0" file="rec/base/RealTime.cpp"/>
+        <FILE id="stIJbj" name="RealTime.h" compile="0" resource="0" file="rec/base/RealTime.h"/>
+        <FILE id="rpJgdo" name="SampleRate.h" compile="0" resource="0" file="rec/base/SampleRate.h"/>
+        <FILE id="mUDyFx" name="SampleTime.h" compile="0" resource="0" file="rec/base/SampleTime.h"/>
+        <FILE id="lo8diu" name="scoped_array.h" compile="0" resource="0" file="rec/base/scoped_array.h"/>
+        <FILE id="Ia3yrN" name="string_piece.h" compile="0" resource="0" file="rec/base/string_piece.h"/>
+        <FILE id="MqcZEV" name="types.h" compile="0" resource="0" file="rec/base/types.h"/>
+      </GROUP>
+      <GROUP id="{96252E04-3A8C-CCE4-57C5-CE39E2391111}" name="util">
+        <FILE id="peTbsV" name="Deletable.h" compile="0" resource="0" file="rec/util/Deletable.h"/>
+        <FILE id="mGfpeB" name="HasLock.h" compile="0" resource="0" file="rec/util/HasLock.h"/>
+        <FILE id="qQpVge" name="STL.h" compile="0" resource="0" file="rec/util/STL.h"/>
+        <GROUP id="{1BE3DC6B-CDBE-BD2D-E64A-27C226880AF2}" name="thread">
+          <FILE id="cp4DbY" name="CallAsync.h" compile="0" resource="0" file="rec/util/thread/CallAsync.h"/>
+          <FILE id="MsdKda" name="Callback.h" compile="0" resource="0" file="rec/util/thread/Callback.h"/>
+          <FILE id="yOzNqP" name="Callback0.h" compile="0" resource="0" file="rec/util/thread/Callback0.h"/>
+          <FILE id="cdQrSe" name="Callback1.h" compile="0" resource="0" file="rec/util/thread/Callback1.h"/>
+          <FILE id="x8Edbu" name="Callback2.h" compile="0" resource="0" file="rec/util/thread/Callback2.h"/>
+          <FILE id="lFc5dU" name="Callback3.h" compile="0" resource="0" file="rec/util/thread/Callback3.h"/>
+          <FILE id="Mj1KIW" name="Callback4.h" compile="0" resource="0" file="rec/util/thread/Callback4.h"/>
+          <FILE id="Szo5NR" name="FunctionCallback.h" compile="0" resource="0"
+                file="rec/util/thread/FunctionCallback.h"/>
+          <FILE id="SVBHoZ" name="MakeCallback.h" compile="0" resource="0" file="rec/util/thread/MakeCallback.h"/>
+          <FILE id="XZujps" name="MakeThread.h" compile="0" resource="0" file="rec/util/thread/MakeThread.h"/>
+          <FILE id="ZgkieM" name="ModalCallback.h" compile="0" resource="0" file="rec/util/thread/ModalCallback.h"/>
+          <FILE id="nnmDXV" name="Result.h" compile="0" resource="0" file="rec/util/thread/Result.h"/>
+          <FILE id="PTK5yF" name="Trash.cpp" compile="1" resource="0" file="rec/util/thread/Trash.cpp"/>
+          <FILE id="AgGLAg" name="Trash.h" compile="0" resource="0" file="rec/util/thread/Trash.h"/>
+        </GROUP>
+      </GROUP>
+    </GROUP>
     <GROUP id="{8CECE8BA-9D3D-5A29-F7BD-160F65225432}" name="echomesh">
       <FILE id="rxpXbx" name="disallow.h" compile="0" resource="0" file="echomesh/disallow.h"/>
       <FILE id="nNi4JZ" name="Echomesh.h" compile="0" resource="0" file="echomesh/Echomesh.h"/>
