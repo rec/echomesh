@@ -26,4 +26,4 @@ LineGetter* makeLineGetter(const String& commandLine);
 
 }  // namespace echomesh
 
-#endif __ECHOMESH_LINE_GETTER__
+#endif  // __ECHOMESH_LINE_GETTER__

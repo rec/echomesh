@@ -19,7 +19,7 @@ class LightingWindow : public DocumentWindow {
   }
 
   void closeButtonPressed() {
-    JUCEApplication::getInstance()->systemRequestedQuit();
+    // TODO: Send a quit back to the original program.
   }
 
   echomesh::LightComponent* comp_;

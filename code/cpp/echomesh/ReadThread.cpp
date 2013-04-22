@@ -21,7 +21,7 @@ ReadThread::~ReadThread() {}
 
 void ReadThread::run() {
   string s;
-  while (!lineGetter_->eof()) {
+  while (not (threadShouldExit() or lineGetter_->eof())) {
     try {
       s = lineGetter_->getLine();
     } catch (Exception e) {
@@ -37,6 +37,12 @@ void ReadThread::run() {
     }
   }
   quit();
+}
+
+void ReadThread::kill() {
+  signalThreadShouldExit();
+  waitForThreadToExit(1000);
+  stopThread(1000);
 }
 
 }  // namespace echomesh

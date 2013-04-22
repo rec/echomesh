@@ -20,6 +20,7 @@ class ReadThread : public Thread {
   virtual void run();
   virtual void handleMessage(const string&) = 0;
   virtual void quit() = 0;
+  void kill();
 
  protected:
   StringArray accum_;

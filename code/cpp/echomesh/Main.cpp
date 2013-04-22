@@ -7,26 +7,22 @@ class Echomesh  : public JUCEApplication {
 
   const String getApplicationName()       { return ProjectInfo::projectName; }
   const String getApplicationVersion()    { return ProjectInfo::versionString; }
-  bool moreThanOneInstanceAllowed()       { return true; }
+  bool moreThanOneInstanceAllowed()       { return false; }
 
-  void initialise (const String& commandLine) {
+  void initialise(const String& commandLine) {
     lightingWindow_ = new echomesh::LightingWindow;
 
-    // TODO: we don't store this because it causes an error when it gets
-    // deleted at shutdown - so rather have a memory leak!
     readThread_ = new echomesh::LightReader(lightingWindow_->comp_, commandLine);
     readThread_->startThread();
   }
 
   void shutdown() {
     echomesh::log("shutting down");
-    readThread_->signalThreadShouldExit();
-    readThread_->waitForThreadToExit(1000);
-    readThread_->stopThread(1000);
+    readThread_->kill();
     lightingWindow_ = nullptr;
   }
 
-  void anotherInstanceStarted (const String& commandLine) {}
+  void anotherInstanceStarted(const String& commandLine) {}
 
  private:
   ScopedPointer<echomesh::LightingWindow> lightingWindow_;
