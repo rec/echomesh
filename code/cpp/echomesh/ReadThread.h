@@ -18,11 +18,15 @@ class ReadThread : public Thread {
   ReadThread(const String& commandLine);
   virtual ~ReadThread();
   virtual void run();
-  virtual void handleMessage(const string&) = 0;
+  void handleMessage(const string&);
   virtual void quit() = 0;
   void kill();
 
  protected:
+  virtual void parseNode() = 0;
+
+  YAML::Node node_;
+  string type_;
   StringArray accum_;
   ScopedPointer<LineGetter> lineGetter_;
 

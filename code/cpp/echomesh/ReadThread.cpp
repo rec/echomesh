@@ -45,4 +45,19 @@ void ReadThread::kill() {
   stopThread(1000);
 }
 
+void ReadThread::handleMessage(const string& str) {
+  istringstream s(str);
+  try {
+    YAML::Parser parser(s);
+    if (parser.GetNextDocument(node_)) {
+      node_["type"] >> type_;
+      parseNode();
+    } else {
+      log("Didn't find a document in this input!");
+    }
+  } catch (YAML::Exception& e) {
+    log(string("ERROR: ") + e.what() + ("in:\n" + str));
+  }
+}
+
 }  // namespace echomesh

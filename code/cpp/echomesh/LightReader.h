@@ -6,7 +6,6 @@
 #include <istream>
 #include <vector>
 
-#include "yaml-cpp/yaml.h"
 #include "echomesh/LightConfig.h"
 #include "echomesh/ReadThread.h"
 
@@ -20,7 +19,6 @@ class LightReader : public ReadThread {
   virtual ~LightReader();
 
  private:
-  virtual void handleMessage(const string&);
   void parseNode();
 
   virtual void quit();
@@ -33,7 +31,6 @@ class LightReader : public ReadThread {
   uint8 getLedColor(float color) const;
 
   LightComponent* const lightComponent_;
-  YAML::Node node_;
   FILE* file_;
   ColorList colors_;
   ColorByteBank bytes_;

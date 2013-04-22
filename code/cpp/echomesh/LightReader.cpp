@@ -29,35 +29,18 @@ LightReader::~LightReader() {
 #endif
 }
 
-void LightReader::handleMessage(const string& str) {
-  istringstream s(str);
-  try {
-    log("LightReader::handleMessage");
-    YAML::Parser parser(s);
-    if (parser.GetNextDocument(node_))
-      parseNode();
-    else
-      log("Didn't find a document in this input!");
-  } catch (YAML::Exception& e) {
-    log(string("ERROR: ") + e.what() + ("in:\n" + str));
-  }
-}
-
 void LightReader::parseNode() {
-  string type;
-  node_["type"] >> type;
-  log("parseNode " + type);
-  if (type == "clear")
+  log("parseNode " + type_);
+  if (type_ == "clear")
     clear();
-  else if (type == "config")
+  else if (type_ == "config")
     parseConfig(node_["data"]);
-  else if (type == "light")
+  else if (type_ == "light")
     parseLight(node_["data"]);
-  else if (type == "quit")
+  else if (type_ == "quit")
     quit();
-  else {
-    log("Didn't understand type " + type);
-  }
+  else
+    log("Didn't understand type " + type_);
 }
 
 void LightReader::quit() {
