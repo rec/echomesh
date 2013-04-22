@@ -26,7 +26,7 @@ class SocketLineGetter : public LineGetter {
 
  private:
   string readSocket();
-  void fail(const String&);
+  void check(bool, const String&);
 
   StreamingSocket socket_;
   vector<char> buffer_;
