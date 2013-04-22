@@ -14,9 +14,9 @@ It turns out that Juce supports the Raspberry Pi "out of the box" as long as you
 2. Why would I want to do this?
 -------------------------------
 
-It's always great to have cross-platform apps!  
+It's always great to have cross-platform apps! Python and other interpreted languages work well for this - but they are slow, mostly too slow for audio and definitely too slow for animation.
 
-Juce is extremely powerful and simply does a lot of your work for you.
+Juce is extremely powerful and simply does a lot of your work for you - and the result is a fast, compiled C++ application.
 
 Moreover, the Raspberry Pi is a great machine, but it's terribly slow to compile and build programs.  Using Juce you can develop your program on a fast Mac, PC or Linux desktop, transfer the code to the RP, build it once and expect it to work the first time.
 
@@ -58,6 +58,8 @@ And that's it.  Assuming there are no compilation errors in your code, a new exe
 6. Let me know how it works out!
 --------------------------------
 
-You can contact me at tom (at) swirly (dot) com.
 
+You can contact me at tom (at) swirly (dot) com.  
+
+Disclaimer:  I have no financial relationship with Raw Material Software (the makers of Juce) aside from being a happy customer and licencee of Juce.
 
