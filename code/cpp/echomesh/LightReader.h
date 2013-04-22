@@ -23,8 +23,8 @@ class LightReader : public ReadThread {
 
   virtual void quit();
   void clear();
-  void parseLight(const YAML::Node&);
-  void parseConfig(const YAML::Node&);
+  void parseLight();
+  void parseConfig();
   void displayLights();
   void enforceSizes();
 

@@ -34,9 +34,9 @@ void LightReader::parseNode() {
   if (type_ == "clear")
     clear();
   else if (type_ == "config")
-    parseConfig(node_["data"]);
+    parseConfig();
   else if (type_ == "light")
-    parseLight(node_["data"]);
+    parseLight();
   else if (type_ == "quit")
     quit();
   else
@@ -70,7 +70,8 @@ void LightReader::enforceSizes() {
 
 #define WHICH_RGB true
 
-void LightReader::parseConfig(const YAML::Node& data) {
+void LightReader::parseConfig() {
+  const YAML::Node& data = node_["data"];
   log("parseConfig.");
   data >> config_;
   enforceSizes();
@@ -92,7 +93,8 @@ uint8 LightReader::getLedColor(float color) const {
   return static_cast<uint8>(jmin(c, 0xFF));
 }
 
-void LightReader::parseLight(const YAML::Node& data) {
+void LightReader::parseLight() {
+  const YAML::Node& data = node_["data"];
   log("parseLight...");
   data["colors"] >> colors_;
   data["brightness"] >> brightness_;

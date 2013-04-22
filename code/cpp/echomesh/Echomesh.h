@@ -16,7 +16,21 @@ using std::vector;
 // http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
+namespace rec {
+namespace util {
+namespace thread {
+namespace callback {
+
+class Callback;
+
+}  // namespace callback
+}  // namespace thread
+}  // namespace util
+}  // namespace rec
+
 namespace echomesh {
+
+typedef rec::util::thread::callback::Callback Callback;
 
 void log(const String&);
 void log2(const String&);

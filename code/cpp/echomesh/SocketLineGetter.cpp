@@ -17,6 +17,11 @@ string SocketLineGetter::getLine() {
   return lineQueue_->pop();
 }
 
+void SocketLineGetter::fail(const String& msg) {
+  eof_ = true;
+  throw Exception(msg);
+}
+
 string SocketLineGetter::readSocket() {
   for (int connectionAttempts = 0; !connected_; ++connectionAttempts) {
     if (desc_.tries > 0 and connectionAttempts > desc_.tries) {
@@ -29,31 +34,27 @@ string SocketLineGetter::readSocket() {
   }
 
   while (true) {
-    if (not socket_.isConnected()) {
-      eof_ = true;
-      log("disconnected");
-      throw Exception("StreamingSocket: Socket disconnected.");
-    }
+    if (not socket_.isConnected())
+      fail("StreamingSocket: Socket disconnected.");
 
     int isReady = socket_.waitUntilReady(true, desc_.timeout);
     if (not isReady)
       continue;
 
     if (isReady < 0)
-      throw Exception("StreamingSocket wait error");
+      fail("StreamingSocket wait error");
 
     if (not socket_.isConnected())
-      throw Exception("WTF?");
+      fail("Socket was ready, then disconnected.");
 
     int read = socket_.read(&buffer_.front(), buffer_.size(), false);
     if (read < 0)
-      throw Exception("StreamingSocket read error " + String(read));
-    if (read) {
-      log("got data \"" + string(&buffer_.front(), read) + "\"");
-      return string(&buffer_.front(), read);
-    } else {
-      log("read 0");
-    }
+      fail("StreamingSocket read error " + String(read));
+
+    if (not read)
+      fail("Socket was ready, but got zero data.");
+
+    return string(&buffer_.front(), read);
   }
 }
 

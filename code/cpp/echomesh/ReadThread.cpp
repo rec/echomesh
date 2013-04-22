@@ -8,6 +8,8 @@
 #include "echomesh/LineGetter.h"
 #include "echomesh/ReadThread.h"
 
+#include "rec/util/thread/Callback.h"
+
 namespace echomesh {
 
 using namespace std;
@@ -53,10 +55,9 @@ void ReadThread::handleMessage(const string& str) {
       node_["type"] >> type_;
       MessageMap::iterator i = messageMap_.find(type_);
       if (i == messageMap_.end()) {
-        log("Didn't find message type " + type_);
-        parseNode();
+        log("Didn't find message type " + type_);        parseNode();
       } else {
-        CALL_MEMBER_FN(*this, i->second)();
+        (*i->second)();
       }
 
     } else {

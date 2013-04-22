@@ -16,8 +16,6 @@ class LineGetter;
 
 class ReadThread;
 
-typedef void (ReadThread::*ReadThreadMethod)();
-
 class ReadThread : public Thread {
  public:
   ReadThread(const String& commandLine);
@@ -30,7 +28,7 @@ class ReadThread : public Thread {
  protected:
   virtual void parseNode() = 0;
 
-  typedef std::map<string, ReadThreadMethod> MessageMap;
+  typedef std::map<string, Callback*> MessageMap;
 
   YAML::Node node_;
   string type_;
