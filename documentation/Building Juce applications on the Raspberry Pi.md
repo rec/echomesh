@@ -50,7 +50,7 @@ and you're all done.
 
 Transfer your project to the Raspberry Pi, go to the subdirectory within it named `Builds/Linux` and type the following command:
 
-    TARGET_ARCH=-march=armv6 make
+    make
 
 And that's it.  Assuming there are no compilation errors in your code, a new executable should be created in the subdirectory `Builds/Linux/build`.
 
