@@ -5,6 +5,7 @@ __all__ = ['BaseRepresenter', 'SafeRepresenter', 'Representer',
 from error import *
 from nodes import *
 
+import base64
 import datetime
 
 import sys, copy_reg, types
@@ -165,6 +166,10 @@ class SafeRepresenter(BaseRepresenter):
                 style = '|'
         return self.represent_scalar(tag, data, style=style)
 
+    def represent_bytearray(self, data):
+        return self.represent_scalar(
+            u'tag:yaml.org,2002:binary', base64.encodestring(data), style='|')
+
     def represent_unicode(self, data):
         return self.represent_scalar(u'tag:yaml.org,2002:str', data)
 
@@ -252,6 +257,9 @@ SafeRepresenter.add_representer(type(None),
 
 SafeRepresenter.add_representer(str,
         SafeRepresenter.represent_str)
+
+SafeRepresenter.add_representer(bytearray,
+        SafeRepresenter.represent_bytearray)
 
 SafeRepresenter.add_representer(unicode,
         SafeRepresenter.represent_unicode)
