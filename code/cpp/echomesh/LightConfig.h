@@ -41,7 +41,7 @@ struct Display {
 
 struct LightConfig {
   int count;
-  string rgb_order;
+  string rgbOrder;
 
   Display display;
 };

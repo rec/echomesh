@@ -1,6 +1,6 @@
 light:
   type: client
-  period: 50ms
+  period: 5ms
 
 network:
   client:

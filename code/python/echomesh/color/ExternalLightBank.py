@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import base64
 import copy
 import subprocess
 
@@ -14,8 +15,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-_QUIT = Yaml.encode_one({'type': 'quit'}) + Yaml.SEPARATOR
-
 class ExternalLightBank(LightBank):
   def __init__(self):
     self.client_type, cmd = Client.make_command()
@@ -23,7 +22,6 @@ class ExternalLightBank(LightBank):
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _before_thread_start(self):
-    super(ExternalLightBank, self)._before_thread_start()
     self.client_type, cmd = Client.make_command()
     if self.client_type == Client.ControlType.SOCKET:
       config = Config.get('network', 'client')
@@ -39,19 +37,24 @@ class ExternalLightBank(LightBank):
                                       stdout=subprocess.PIPE)
     else:
       assert self.client_type != Client.ControlType.TERMINAL
+    super(ExternalLightBank, self)._before_thread_start()
 
-    Config.add_client(self)
+  def _send(self, **data):
+    yaml = Yaml.encode_one(data)
+    debug_count = getattr(self, 'debug_count', 0)
+    if debug_count < 4:
+      self.debug_count = debug_count + 1
 
-  def _send_one(self, s):
     if self.client_type == Client.ControlType.SOCKET:
-      self.server.write(s)
+      self.server.write(yaml)
+      self.server.write(Yaml.SEPARATOR)
+      self.server.flush()
+
     elif self.client_type == Client.ControlType.TERMINAL:
       if self.process:
         self.process.send_recv(s)
-
-  def _send(self, data_type, **data):
-    result = {'type': data_type, 'data': data}
-    self._send_one(Yaml.encode_one(result) + Yaml.SEPARATOR)
+        self.process.send_recv(Yaml.SEPARATOR)
+        self.process.flush()
 
   def __del__(self):
     self.shutdown()
@@ -59,14 +62,15 @@ class ExternalLightBank(LightBank):
   def shutdown(self):
     with self.lock:
       if self.process:
-        self._send_one(_QUIT)
+        self._send(type='quit')
         self.process.terminate()
 
   def clear(self):
     with self.lock:
-      self._send('clear')
+      self._send(type='clear')
 
   def config_update(self, get):
+    super(ExternalLightBank, self).config_update(get)
     light = copy.deepcopy(get('light'))
     display = light['display']
     display['background'] = ColorTable.to_color(display['background'])
@@ -74,14 +78,35 @@ class ExternalLightBank(LightBank):
     dl = display['light']
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
+    self.compress_lights = light['compress']
 
     with self.lock:
-      self._send('config', **light)
+      self._send(type='config', data=light)
 
   def _after_thread_pause(self):
     super(ExternalLightBank, self)._after_thread_pause()
     self.shutdown()
 
+  def _send_compressed(self, lights, brightness):
+    index = 0
+    for i in xrange(self.count):
+      light = i < len(lights) and lights[i]
+      for j in xrange(3):
+        if light:
+          self.bytes[index] = ColorTable.denormalize(light[j], brightness)
+        else:
+          self.bytes[index] = 0
+
+        index += 1
+    self._send(type='clight', data=str(self.bytes))
+
   def _display_lights(self, lights, brightness):
     with self.lock:
-      self._send('light', colors=lights, brightness=brightness)
+      if self.compress_lights:
+        self._send_compressed(lights, brightness)
+      else:
+        self._send('light', colors=lights, brightness=brightness)
+
+  def _display_bytes(self):
+    with self.lock:
+      self._send(type='clight', data=base64.b64encode(self.bytes))

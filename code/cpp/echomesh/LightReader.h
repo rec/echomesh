@@ -19,24 +19,24 @@ class LightReader : public ReadThread {
   virtual ~LightReader();
 
  private:
-  void parseNode();
-
   virtual void quit();
   void clear();
-  void parseLight();
-  void parseConfig();
+  void clight();
+  void light();
+  void config();
   void displayLights();
   void enforceSizes();
 
   uint8 getLedColor(float color) const;
 
   LightComponent* const lightComponent_;
+  bool compressed_;
   FILE* file_;
   ColorList colors_;
   ColorByteBank bytes_;
   ByteList colorBytes_;
   LightConfig config_;
-  ColorBytes rgb_order_;
+  ColorBytes rgbOrder_;
   float brightness_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);

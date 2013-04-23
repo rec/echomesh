@@ -62,7 +62,7 @@ void operator>>(const YAML::Node& node, Display& p) {
 
 void operator>>(const YAML::Node& node, LightConfig& p) {
   node["count"] >> p.count;
-  node["rgb_order"] >> p.rgb_order;
+  node["rgb_order"] >> p.rgbOrder;
   node["display"] >> p.display;
 }
 

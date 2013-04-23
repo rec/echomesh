@@ -20,8 +20,8 @@ void LightComponent::paint(Graphics& g) {
   int i = 0;
   bool isRect = !light().shape.find("rect");
 
-  for (int x = 0; x < layout().x; ++x) {
-    for (int y = 0; y < layout().y; ++y) {
+  for (int y = 0; y < layout().y; ++y) {
+    for (int x = 0; x < layout().x; ++x) {
       g.setColour(colors_[i]);
       Point p = {padding().left + x * boxSize_.x,
                  padding().top + y * boxSize_.y};

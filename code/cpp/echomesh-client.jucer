@@ -3,6 +3,10 @@
 <JUCERPROJECT id="XEYpdN" name="echomesh-client" projectType="guiapp" version="1.0.0"
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh-client">
+    <GROUP id="{402AE164-4ADD-B41C-BCA4-92AA2F1EAEE0}" name="base64">
+      <FILE id="n9iHyB" name="base64.cpp" compile="1" resource="0" file="base64/base64.cpp"/>
+      <FILE id="ErLUPv" name="base64.h" compile="0" resource="0" file="base64/base64.h"/>
+    </GROUP>
     <GROUP id="{28FAA7EC-8E42-A784-3F2C-F5E2520F9D23}" name="rec">
       <GROUP id="{0DF59FCB-164C-9455-C845-18717FCB4D00}" name="base">
         <FILE id="a7gJWf" name="ArraySize.h" compile="0" resource="0" file="rec/base/ArraySize.h"/>

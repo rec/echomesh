@@ -1,13 +1,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import socket
-
+import time
 import SocketServer
 
 from six.moves import queue
 
 from echomesh.util import Log
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
+from echomesh.util.thread import Lock
+
+QUEUED_WRITES = False
 
 LOGGER = Log.logger(__name__)
 
@@ -37,12 +40,19 @@ class LoggingServer(SocketServer.TCPServer):
     return SocketServer.TCPServer.finish_request(self, req, address)
 
 
+REPORT_EVERY = 100000
+
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, logging=False,
                allow_reuse_address=True):
     super(Server, self).__init__()
     self.timeout = timeout
-    self.queue = queue.Queue()
+    self.queue = None
+    self.bytes_written = 0
+    self.next_target = 0
+    self.packets = 0
+    self.lock = Lock.Lock()
+    self.writer = None
 
     me = self
     class Handler(SocketServer.StreamRequestHandler):
@@ -62,26 +72,29 @@ class Server(ThreadRunnable):
     LOGGER.debug('Server created for %s:%d', self.host, self.port)
 
   def handle(self, handler):
-    while self.is_running:
-      data = []
-      try:
-        data.append(self.queue.get(True, self.timeout))
-      except queue.Empty:
-        continue
+    self.writer = handler.wfile
+    with self.lock:
+      if self.queue:
+        data = []
+        while not self.queue.empty():
+          data.append(self.queue.get(False))
+        self.writer.write(''.join(data))
+        self.queue = None
 
-      while not self.queue.empty():
-        data.append(self.queue.get(False))
-      data = ''.join(data)
-      try:
-        handler.wfile.write(data)
-        handler.wfile.flush()
-      except:
-        self.pause()
-        LOGGER.error('Socket hung up on other end.', raw=True)
+    while self.is_running:
+      time.sleep(self.timeout)
 
   def write(self, data):
-    self.queue.put(data)
-    self.has_data = True
+    with self.lock:
+      if not self.writer:
+        if not self.queue:
+          self.queue = queue.Queue()
+        self.queue.put(data)
+      else:
+        self.writer.write(data)
+
+  def flush(self):
+    self.writer and self.writer.flush()
 
   def _after_thread_pause(self):
     self.server.shutdown()

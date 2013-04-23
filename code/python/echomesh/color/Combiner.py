@@ -4,7 +4,10 @@ import itertools
 
 from echomesh.util import Log
 
+from echomesh.color import ColorTable
+
 LOGGER = Log.logger(__name__)
+USE_NUMPY = False
 
 def apply_processor(function, lighter):
   if callable(lighter):
@@ -77,7 +80,11 @@ def choose(light_sets, choose=None):
 
 def combine(combiner, *lighters):
   linverse = itertools.izip_longest(*lighters)
-  return [combiner(z) for z in linverse]
+  if USE_NUMPY:
+    import numpy
+    return numpy.array([combiner(z) for z in linverse])
+  else:
+    return [combiner(z) for z in linverse]
 
 def first(items):
   return items[0]
@@ -90,4 +97,15 @@ def sup(items):
         light[j] = max(light[j], item[j])
   return light
 
+def combine_to_bytearray(bytes, lighters, brightness):
+  for i in xrange(int(len(bytes) / 3)):
+    for j in xrange(3):
+      b = 0
+      for light in lighters:
+        if i < len(light) and light[i] is not None:
+          b = max(b, light[i][j])
+      bytes[3 * i + j] = min(0xFF, int(0x100 * b * brightness))
+
+
 # We could put HSV combiners in here.
+

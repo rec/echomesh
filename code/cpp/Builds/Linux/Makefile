@@ -49,6 +49,7 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
+  $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/RealTime_4c146fff.o \
   $(OBJDIR)/Trash_ed189496.o \
   $(OBJDIR)/LightComponent_ca7161d9.o \
@@ -116,6 +117,11 @@ clean:
 strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling base64.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/RealTime_4c146fff.o: ../../rec/base/RealTime.cpp
 	-@mkdir -p $(OBJDIR)

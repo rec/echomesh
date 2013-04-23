@@ -9,6 +9,7 @@
 #include "echomesh/ReadThread.h"
 
 #include "rec/util/thread/Callback.h"
+#include "rec/util/STL.h"
 
 namespace echomesh {
 
@@ -19,7 +20,9 @@ ReadThread::ReadThread(const String& commandLine)
       lineGetter_(makeLineGetter(commandLine)) {
 }
 
-ReadThread::~ReadThread() {}
+ReadThread::~ReadThread() {
+  rec::stl::deleteMapPointers(&messageMap_);
+}
 
 void ReadThread::run() {
   string s;
@@ -55,7 +58,8 @@ void ReadThread::handleMessage(const string& str) {
       node_["type"] >> type_;
       MessageMap::iterator i = messageMap_.find(type_);
       if (i == messageMap_.end()) {
-        log("Didn't find message type " + type_);        parseNode();
+        log("Didn't find message type " + type_);
+        parseNode();
       } else {
         (*i->second)();
       }

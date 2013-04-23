@@ -5,6 +5,9 @@
     <Filter Include="echomesh-client">
       <UniqueIdentifier>{5A28992E-2A75-947E-A5C4-A2A2537C5E17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\base64">
+      <UniqueIdentifier>{689DE205-0857-704A-7424-63A761807F54}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\rec">
       <UniqueIdentifier>{51D23AE7-FBB3-8AA4-CF58-BAA70047AFF1}</UniqueIdentifier>
     </Filter>
@@ -250,6 +253,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\base64\base64.cpp">
+      <Filter>echomesh-client\base64</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\rec\base\RealTime.cpp">
       <Filter>echomesh-client\rec\base</Filter>
     </ClCompile>
@@ -1296,6 +1302,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\base64\base64.h">
+      <Filter>echomesh-client\base64</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\rec\base\ArraySize.h">
       <Filter>echomesh-client\rec\base</Filter>
     </ClInclude>
