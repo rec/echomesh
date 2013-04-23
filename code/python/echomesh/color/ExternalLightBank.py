@@ -41,9 +41,6 @@ class ExternalLightBank(LightBank):
 
   def _send(self, **data):
     yaml = Yaml.encode_one(data)
-    debug_count = getattr(self, 'debug_count', 0)
-    if debug_count < 4:
-      self.debug_count = debug_count + 1
 
     if self.client_type == Client.ControlType.SOCKET:
       self.server.write(yaml)
@@ -98,6 +95,7 @@ class ExternalLightBank(LightBank):
           self.bytes[index] = 0
 
         index += 1
+    debug_count = getattr(self, 'debug_count', 0)
     self._send(type='clight', data=str(self.bytes))
 
   def _display_lights(self, lights, brightness):

@@ -83,7 +83,7 @@ void LightReader::config() {
   log("config done.");
 }
 
-inline uint8 getLedColor(uint8 color) {
+inline uint8 getSpiColor(uint8 color) {
   return color / 2 + 0x80;
 }
 
@@ -93,13 +93,12 @@ uint8 LightReader::getLedColor(float color) const {
 }
 
 void LightReader::light() {
+  compressed_ = false;
   const YAML::Node& data = node_["data"];
-  log("light...");
   data["colors"] >> colors_;
   data["brightness"] >> brightness_;
   enforceSizes();
   displayLights();
-  log("light done...");
 }
 
 void LightReader::displayLights() {
@@ -107,9 +106,9 @@ void LightReader::displayLights() {
     for (int i = 0; i < config_.count; ++i) {
       const Colour& color = colors_[i];
       uint8* light = &colorBytes_[3 * i];
-      light[rgbOrder_[0]] = getLedColor(color.getRed());
-      light[rgbOrder_[1]] = getLedColor(color.getGreen());
-      light[rgbOrder_[2]] = getLedColor(color.getBlue());
+      light[rgbOrder_[0]] = getSpiColor(color.getRed());
+      light[rgbOrder_[1]] = getSpiColor(color.getGreen());
+      light[rgbOrder_[2]] = getSpiColor(color.getBlue());
     }
   } else {
     for (int i = 0; i < config_.count; ++i) {
@@ -127,24 +126,28 @@ void LightReader::displayLights() {
   fwrite(LATCH, 1, 3, file_);
   fflush(file_);
 #endif
-  log("about to setlights...");
   lightComponent_->setLights(colors_);
-  log("displayLights done.");
 }
 
 void LightReader::clight() {
+  compressed_ = true;
   string lights;
   node_["data"] >> lights;
 
   string lights2 = base64::decode(lights);
-  log("clight..." + String(int(lights.size())) + ", " + String(int(lights2.size())));
 
   if (lights2.size() != 3 * config_.count) {
     throw Exception("Size " + String(int(lights.size()) +
                                      ", count " + config_.count));
   }
 
-  const char* data = lights.data();
+  static int callCount = 0;
+
+  if (++callCount < 4) {
+
+  }
+
+  const char* data = lights2.data();
   const uint8* bytes = reinterpret_cast<const uint8*>(data);
 
   for (int i = 0; i < config_.count; ++i)

@@ -6,6 +6,7 @@ import SocketServer
 
 from six.moves import queue
 
+from echomesh.network import ServerMaker
 from echomesh.util import Log
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 from echomesh.util.thread import Lock
@@ -13,34 +14,6 @@ from echomesh.util.thread import Lock
 QUEUED_WRITES = False
 
 LOGGER = Log.logger(__name__)
-
-class LoggingServer(SocketServer.TCPServer):
-  def close_request(self, request):
-    LOGGER.info('Closing request %s', request)
-    return SocketServer.TCPServer.close_request(self, request)
-
-  def shutdown_request(self, request):
-    LOGGER.info('shutdown request %s', request)
-    return SocketServer.TCPServer.shutdown_request(self, request)
-
-  def get_request(self):
-    LOGGER.info('get_request')
-    return SocketServer.TCPServer.get_request(self)
-
-  def process_request(self, req, address):
-    LOGGER.info('process_request %s %s', req, address)
-    return SocketServer.TCPServer.process_request(self, req, address)
-
-  def verify_request(self, req, address):
-    LOGGER.info('verify_request %s %s', req, address)
-    return SocketServer.TCPServer.verify_request(self, req, address)
-
-  def finish_request(self, req, address):
-    LOGGER.info('finish_request %s %s', req, address)
-    return SocketServer.TCPServer.finish_request(self, req, address)
-
-
-REPORT_EVERY = 100000
 
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, logging=False,
@@ -53,23 +26,11 @@ class Server(ThreadRunnable):
     self.packets = 0
     self.lock = Lock.Lock()
     self.writer = None
-
-    me = self
-    class Handler(SocketServer.StreamRequestHandler):
-      def handle(self):
-        me.handle(self)
-
-    server_maker = LoggingServer if logging else SocketServer.TCPServer
-    self.server = server_maker((host, port), Handler, bind_and_activate=False)
-    self.server.allow_reuse_address = allow_reuse_address
-    self.server.timeout = self.timeout
+    self.server = ServerMaker.make_server(
+      self.handle, host, port, timeout, logging, allow_reuse_address)
 
   def target(self):
-    self.server.server_bind()
-    self.server.server_activate()
     self.server.serve_forever(poll_interval=self.timeout)
-
-    LOGGER.debug('Server created for %s:%d', self.host, self.port)
 
   def handle(self, handler):
     self.writer = handler.wfile
