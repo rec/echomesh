@@ -19,23 +19,8 @@ LOGGER = Log.logger(__name__)
 
 def register():
   Register.register_all(
-    get=(get, GET_HELP),
     save=(save, SAVE_HELP),
   )
-
-def get(_, value, *more):
-  errors = []
-  successes = []
-  for v in (value,) + more:
-    try:
-      successes.append([v, echomesh.base.Config.get(*v.split('.'))])
-    except:
-      errors.append(v)
-
-  for value, result in successes:
-    LOGGER.info('%s=%s', value, result)
-  if errors:
-    LOGGER.error('Didn\'t understand %s', Join.join_words(errors))
 
 def save(_, *values):
   if values:
@@ -91,14 +76,6 @@ SAVE_HELP = """
 Examples:
   save
   save speed=50% light.period=40ms
-"""
-
-GET_HELP = """
-  Prints one or more configuration variables.
-
-Examples:
-  config.get speed
-  config.get audio.input.enabled audio.output.enabled
 """
 
 register()
