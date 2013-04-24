@@ -11,6 +11,7 @@ from echomesh.base import Merge
 from echomesh.base import MergeConfig
 from echomesh.base import Yaml
 from echomesh.command import Register
+from echomesh.command import SetConfig
 from echomesh.util import Context
 from echomesh.util import Log
 
@@ -20,7 +21,6 @@ def register():
   Register.register_all(
     get=(get, GET_HELP),
     save=(save, SAVE_HELP),
-    set=(_set, SET_HELP),
   )
 
 def get(_, value, *more):
@@ -39,7 +39,7 @@ def get(_, value, *more):
 
 def save(_, *values):
   if values:
-    _set(_, *values)
+    SetConfig.set_config(_, *values)
   if MergeConfig.LOCAL_CHANGES:
     config_file, data = _get_raw_file()
     data.append(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
@@ -48,20 +48,6 @@ def save(_, *values):
     LOGGER.info('Saved to file %s.', config_file)
   else:
     LOGGER.error('There are no changes to save.')
-
-def _set(_, *values):
-  if values:
-    assignments = MergeConfig.merge_assignments(
-      echomesh.base.Config.CONFIG, Args.split_args(values))
-
-    for address, value in assignments:
-      LOGGER.info('Set %s=%s', '.'.join(address), value)
-    if assignments:
-      echomesh.base.Config.update_clients()
-  elif MergeConfig.LOCAL_CHANGES:
-    LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
-  else:
-    LOGGER.info('You have made no changes.')
 
 def _get_file(context='master'):
   config_file = CommandFile.config_file(context)
@@ -91,16 +77,6 @@ def _raw_write(config_file, data):
         f.write(d)
   # Bug: we'll never be able to override command line arguments this way.  :-D
   echomesh.base.Config.recalculate()
-
-SET_HELP = """
-  Sets one or more configuration variables.  These changes are only present in
-  memory and will be lost when the program ends - you need to use config save
-  to make them permanent.
-
-Examples:
-  set speed=50%
-  set speed=10% light.period=40ms
-"""
 
 CHANGES_HELP = """
   Shows what configuration values have been changed since the last save.

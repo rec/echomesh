@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 # pylint: disable=W0611
 from echomesh.command import Broadcast, Config, Context, Register, Remote, Score
-from echomesh.command import Show, Transfer
+from echomesh.command import SetConfig, Show, Transfer
 
 # Must be the last one to load.
 from echomesh.command import Help
