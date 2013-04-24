@@ -6,6 +6,7 @@ import yaml
 from contextlib import closing
 
 SEPARATOR = '\n---\n'
+PROPAGATE_EXCEPTIONS = False
 
 def filename(name):
   return name if name.endswith('.yml') else (name + '.yml')
@@ -37,9 +38,11 @@ def write(fname, *items):
     with closing(_open_userfile(fname, 'w')) as f:
       if written:
         f.write(SEPARATOR)
-      yaml.safe_dump_all(item, f)
+      yaml.safe_dump_all(items, f)
   except Exception as e:
     print("Can't write filename", fname, e.message)
+    if PROPAGATE_EXCEPTIONS:
+      raise
 
 def _open_userfile(fname, perms='r'):
   return open(os.path.expanduser(filename(fname)), perms)
