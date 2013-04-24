@@ -7,13 +7,13 @@ from echomesh.sound import GoogleTextToSpeech
 
 LOGGER = Log.logger(__name__)
 
-class TextToSpeech(Element.Element):
+class Speak(Element.Element):
   def __init__(self, parent, description):
-    super(TextToSpeech, self).__init__(parent, description)
+    super(Speak, self).__init__(parent, description)
     self.text = description.get('text', '')
 
   def _on_run(self):
-    super(TextToSpeech, self)._on_run()
+    super(Speak, self)._on_run()
     self._speak(self.text)
 
   def handle(self, event):

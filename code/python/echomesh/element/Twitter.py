@@ -6,9 +6,9 @@ from gittwit.twitter.Search import Search
 
 DEFAULT_PRELOAD = 1
 
-class TwitterSearch(Element.Element):
+class Twitter(Element.Element):
   def __init__(self, parent, description):
-    super(TwitterSearch, self).__init__(parent, description)
+    super(Twitter, self).__init__(parent, description)
     preload = description.get('preload', DEFAULT_PRELOAD)
     search = description['search']
     if not isinstance(search, list):
@@ -25,6 +25,7 @@ class TwitterSearch(Element.Element):
     self.broadcast = description.get('broadcast', not self.handler)
 
   def _on_run(self):
+    super(Twitter, self)._on_run()
     for s in self.searches:
       s.refresh()
     return True

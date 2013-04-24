@@ -27,8 +27,8 @@ register('Pattern')
 register('Schedule')
 register('Sequence')
 register('Select')
-register('TextToSpeech', 'speak')
-register('TwitterSearch', 'twitter')
+register('Speak')
+register('Twitter')
 
 def _resolve_extensions(data):
   extensions = set()
