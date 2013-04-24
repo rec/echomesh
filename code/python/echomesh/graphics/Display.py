@@ -3,13 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
-from echomesh.util import Log
 from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
-
-LOGGER = Log.logger(__name__)
 
 DEFAULT_TIMEOUT = 0.2
 

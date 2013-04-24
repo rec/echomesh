@@ -2,15 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import GetPrefix
 from echomesh.base import Enum
-
 from echomesh.expression import Functions
 from echomesh.expression import System
 from echomesh.expression import Locator
-
 from echomesh.util import Call
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
 
 Names = Enum.Enum('CONFIGURATION', 'ELEMENT', 'FUNCTION', 'GLOBAL', 'LOCAL',
                   'PARENT', 'SYSTEM')

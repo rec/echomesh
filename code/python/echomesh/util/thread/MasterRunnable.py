@@ -1,10 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Log
 from echomesh.util.thread.LockedList import LockedList
 from echomesh.util.thread.Runnable import Runnable
-
-LOGGER = Log.logger(__name__)
 
 class MasterRunnable(Runnable):
   def __init__(self):

@@ -24,7 +24,7 @@ _LOG_SIGNATURE = 'util/Log.py'
 _ERROR_COUNTER = {}
 
 def _check_error_count(limit, every):
-  for line in traceback.format_stack(): # reversed(traceback.format_stack()):
+  for line in traceback.format_stack():
     if _LOG_SIGNATURE not in line:
       errors = _ERROR_COUNTER.get(line, 0)
       if limit is not None and errors >= limit * (every or 1):

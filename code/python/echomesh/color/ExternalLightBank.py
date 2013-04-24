@@ -11,9 +11,6 @@ from echomesh.color import Client
 from echomesh.color.LightBank import LightBank
 from echomesh.expression import Units
 from echomesh.network.Server import Server
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
 
 class ExternalLightBank(LightBank):
   def __init__(self):

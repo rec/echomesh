@@ -1,9 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
-
 def split_flag(flag):
   parts = flag.lstrip('-').split('=', 1)
   flag = parts.pop(0)

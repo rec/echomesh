@@ -1,12 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Name
-from echomesh.util import Log
 from echomesh.element import Element
 from echomesh.element import Handler
 from echomesh.element import Load
-
-LOGGER = Log.logger(__name__)
 
 class Mapper(Handler.Handler):
   def __init__(self, parent, description):

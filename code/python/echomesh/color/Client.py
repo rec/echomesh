@@ -6,10 +6,7 @@ from echomesh.base import Config
 from echomesh.base import Enum
 from echomesh.base import Path
 from echomesh.base import Platform
-from echomesh.util import Log
 from echomesh.expression import Units
-
-LOGGER = Log.logger(__name__)
 
 CLIENT_NAME = 'echomesh-client'
 COMMAND = os.path.join(Path.BINARY_PATH, CLIENT_NAME)

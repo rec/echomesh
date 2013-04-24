@@ -7,11 +7,8 @@ from six.moves import queue
 
 from echomesh.network import BroadcastSocket
 from echomesh.network import SelectLoop
-from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 from echomesh.util.thread.MasterRunnable import MasterRunnable
-
-LOGGER = Log.logger(__name__)
 
 class DataSocket(MasterRunnable):
   def __init__(self, port, timeout, callback):

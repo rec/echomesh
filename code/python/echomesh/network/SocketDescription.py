@@ -2,10 +2,6 @@
 
 # import collections
 
-# from echomesh.util import Log
-
-# LOGGER = Log.logger(__name__)
-
 # Description = collections.namedtuple(
 #   'SocketDescription',
 #   ['bind_port', 'create', 'hostname', 'port', 'socket_type', 'send', 'start'])

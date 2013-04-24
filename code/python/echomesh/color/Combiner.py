@@ -2,11 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import itertools
 
-from echomesh.util import Log
-
 from echomesh.color import ColorTable
 
-LOGGER = Log.logger(__name__)
 USE_NUMPY = False
 
 def apply_processor(function, lighter):

@@ -6,9 +6,6 @@ import parsedatetime
 
 from echomesh.element import Element
 from echomesh.element import Load
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
 
 CALENDAR = parsedatetime.Calendar()
 

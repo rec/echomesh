@@ -2,27 +2,18 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-import echomesh.base.Config
-
-from echomesh.base import Args
 from echomesh.base import CommandFile
-from echomesh.base import Join
+from echomesh.base import Config
 from echomesh.base import Merge
 from echomesh.base import MergeConfig
 from echomesh.base import Yaml
 from echomesh.command import Register
 from echomesh.command import SetConfig
-from echomesh.util import Context
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def register():
-  Register.register_all(
-    save=(save, SAVE_HELP),
-  )
-
-def save(_, *values):
+def save_config(_, *values):
   if values:
     SetConfig.set_config(_, *values)
   if MergeConfig.LOCAL_CHANGES:
@@ -33,15 +24,6 @@ def save(_, *values):
     LOGGER.info('Saved to file %s.', config_file)
   else:
     LOGGER.error('There are no changes to save.')
-
-def _get_file(context='master'):
-  config_file = CommandFile.config_file(context)
-  return config_file, Yaml.read(config_file)
-
-def _clean(_):
-  config_file, results = _get_file()
-  if results and len(results) > 1:
-    Yaml.write(config_file, Merge.merge(*results))
 
 def _get_raw_file(context='master'):
   config_file = CommandFile.config_file(context)
@@ -60,8 +42,7 @@ def _raw_write(config_file, data):
         else:
           f.write(Yaml.SEPARATOR)
         f.write(d)
-  # Bug: we'll never be able to override command line arguments this way.  :-D
-  echomesh.base.Config.recalculate()
+  Config.recalculate()
 
 CHANGES_HELP = """
   Shows what configuration values have been changed since the last save.
@@ -78,4 +59,4 @@ Examples:
   save speed=50% light.period=40ms
 """
 
-register()
+Register.register(save_config, 'save', SAVE_HELP)

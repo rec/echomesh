@@ -4,11 +4,8 @@ import datetime
 import time
 
 from echomesh.expression import Variable
-from echomesh.util import Log
 from echomesh.util import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
-
-LOGGER = Log.logger(__name__)
 
 class Element(MasterRunnable):
   def __init__(self, parent, description, full_slave=True, name=None):

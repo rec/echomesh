@@ -8,6 +8,8 @@ from echomesh.color import LightsEnabled
 from echomesh.color.LightBank import LightBank
 from echomesh.util import Log
 
+LOGGER = Log.logger(__name__)
+
 _LATCH_BYTE_COUNT = 3
 _LATCH = bytearray(0 for i in xrange(LATCH_BYTE_COUNT))
 
