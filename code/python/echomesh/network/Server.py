@@ -16,8 +16,8 @@ QUEUED_WRITES = False
 LOGGER = Log.logger(__name__)
 
 class Server(ThreadRunnable):
-  def __init__(self, host, port, timeout, logging=False,
-               allow_reuse_address=True):
+  def __init__(self, host, port, timeout, max_queue_size=20,
+               logging=False, allow_reuse_address=True):
     super(Server, self).__init__()
     self.timeout = timeout
     self.queue = None
@@ -34,6 +34,7 @@ class Server(ThreadRunnable):
 
   def handle(self, handler):
     self.writer = handler.wfile
+    self._on_new_handler()
     with self.lock:
       if self.queue:
         data = []
@@ -42,17 +43,22 @@ class Server(ThreadRunnable):
         self.writer.write(''.join(data))
         self.queue = None
 
-    while self.is_running:
+    while self.is_running and self.writer:
       time.sleep(self.timeout)
 
   def write(self, data):
     with self.lock:
-      if not self.writer:
-        if not self.queue:
-          self.queue = queue.Queue()
-        self.queue.put(data)
-      else:
-        self.writer.write(data)
+      if self.writer:
+        try:
+          self.writer.write(data)
+          return
+        except:
+          self.writer = None
+          self.lost_connection = True
+
+      if not self.queue:
+        self.queue = queue.Queue()
+      self.queue.put(data)
 
   def flush(self):
     self.writer and self.writer.flush()
@@ -60,3 +66,6 @@ class Server(ThreadRunnable):
   def _after_thread_pause(self):
     self.server.shutdown()
     self.server = None
+
+  def _on_new_handler(self):
+    pass

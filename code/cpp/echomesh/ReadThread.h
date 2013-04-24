@@ -23,7 +23,6 @@ class ReadThread : public Thread {
   virtual void run();
   void handleMessage(const string&);
   virtual void quit() = 0;
-  void kill();
   void registerCallback(const string& name, Callback* cb) {
     messageMap_[name] = cb;
   }

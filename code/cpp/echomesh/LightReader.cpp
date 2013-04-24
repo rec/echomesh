@@ -39,12 +39,9 @@ LightReader::~LightReader() {
 }
 
 void LightReader::quit() {
-  log("Program quitting");
-  signalThreadShouldExit();
-  // JUCEApplication::getInstance()->systemRequestedQuit();
+  log("quitting");
   JUCEApplication::quit();
-  log("quit done.");
-  close_log();
+  log("done");
 }
 
 void LightReader::clear() {
@@ -52,7 +49,6 @@ void LightReader::clear() {
     colors_[i] = Colours::black;
 
   displayLights();
-  log("clear done ");
 }
 
 void LightReader::enforceSizes() {
@@ -63,7 +59,6 @@ void LightReader::enforceSizes() {
     colorBytes_.resize(3 * config_.count, 0x80);
 }
 
-#define WHICH_RGB true
 
 void LightReader::config() {
   const YAML::Node& data = node_["data"];
@@ -71,13 +66,8 @@ void LightReader::config() {
   data >> config_;
   enforceSizes();
 
-  for (int i = 0; i < 3; ++i) {
-#if WHICH_RGB
+  for (int i = 0; i < 3; ++i)
     rgbOrder_[i] = config_.rgbOrder.find("rgb"[i]);
-#else
-    rgbOrder_[i] = string("rgb").find(config_.rgbOrder[i]);
-#endif
-  }
   log("set config set light.");
   lightComponent_->setConfig(config_);
   log("config done.");
@@ -139,12 +129,6 @@ void LightReader::clight() {
   if (lights2.size() != 3 * config_.count) {
     throw Exception("Size " + String(int(lights.size()) +
                                      ", count " + config_.count));
-  }
-
-  static int callCount = 0;
-
-  if (++callCount < 4) {
-
   }
 
   const char* data = lights2.data();

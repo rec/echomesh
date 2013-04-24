@@ -44,12 +44,6 @@ void ReadThread::run() {
   quit();
 }
 
-void ReadThread::kill() {
-  signalThreadShouldExit();
-  waitForThreadToExit(1000);
-  stopThread(1000);
-}
-
 void ReadThread::handleMessage(const string& str) {
   istringstream s(str);
   try {

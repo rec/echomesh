@@ -17,9 +17,12 @@ class Echomesh  : public JUCEApplication {
   }
 
   void shutdown() {
+    std::cerr << "Shutting down\n";
+    std::cerr.flush();
     echomesh::log("shutting down");
     readThread_->kill();
     lightingWindow_ = nullptr;
+    echomesh::close_log();
   }
 
   void anotherInstanceStarted(const String& commandLine) {}
