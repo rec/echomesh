@@ -1,4 +1,5 @@
 #include "echomesh/LightComponent.h"
+#include "echomesh/Instrument.h"
 
 namespace echomesh {
 
@@ -18,14 +19,13 @@ void LightComponent::paint(Graphics& g) {
   boxSize_.y = light().size.y + light().padding.y;
 
   int i = 0;
-  bool isRect = !light().shape.find("rect");
 
   for (int y = 0; y < layout().y; ++y) {
     for (int x = 0; x < layout().x; ++x) {
       g.setColour(colors_[i]);
       Point p = {padding().left + x * boxSize_.x,
                  padding().top + y * boxSize_.y};
-      if (isRect)
+      if (light().isRect)
         g.fillRect(p.x, p.y, light().size.x, light().size.y);
       else
         g.fillEllipse(p.x, p.y, light().size.x, light().size.y);

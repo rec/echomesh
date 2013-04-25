@@ -180,7 +180,7 @@ git:
 # for the lighting to work.
 light:
   brightness: 100%
-  count: 128
+  count: 256
   enable: false
   rgb_order: rgb
 
@@ -193,7 +193,7 @@ light:
 
   display:
     background: white
-    layout: [16, 8]
+    layout: [16, 16]
     padding:
       top: 10
       left: 10
@@ -205,10 +205,14 @@ light:
         color: black
         width: 1
       padding:
-        x: 3
-        y: 3
+        x: 4
+        y: 4
       shape: circle
-      size: [16, 16]
+      label: false
+      label_padding:
+        x: 2
+        y: 2
+      size: [32, 32]
 
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.

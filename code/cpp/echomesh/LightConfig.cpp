@@ -4,8 +4,6 @@ namespace echomesh {
 
 using namespace std;
 
-static bool debug = false;
-
 void operator>>(const YAML::Node& node, Colour& p) {
   if (node.size()) {
     float r, g, b;
@@ -39,9 +37,12 @@ void operator>>(const YAML::Node& node, Border& p) {
 void operator>>(const YAML::Node& node, LightDisplay& p) {
   node["background"] >> p.background;
   node["border"] >> p.border;
+  node["label"] >> p.label;
+  node["label_padding"] >> p.labelPadding;
   node["padding"] >> p.padding;
   node["shape"] >> p.shape;
   node["size"] >> p.size;
+  p.isRect = not p.shape.find("rectangle");
 }
 
 void operator>>(const YAML::Node& node, Padding& p) {
@@ -52,9 +53,7 @@ void operator>>(const YAML::Node& node, Padding& p) {
 }
 
 void operator>>(const YAML::Node& node, Display& p) {
-  debug = true;
   node["background"] >> p.background;
-  debug = false;
   node["layout"] >> p.layout;
   node["padding"] >> p.padding;
   node["light"] >> p.light;

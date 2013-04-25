@@ -20,9 +20,12 @@ struct Border {
 struct LightDisplay {
   Colour background;
   Border border;
-  string shape;
-  Point size;
+  bool isRect;
+  bool label;
+  Point labelPadding;
   Point padding;
+  Point size;
+  string shape;
 };
 
 struct Padding {
