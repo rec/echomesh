@@ -8,8 +8,6 @@
 >>> Merge.merge({1: 2, 3: 5})
 {1: 2, 3: 5}
 
-# >>> Merge.merge()
-# {}
 """
 
 from echomesh.base import Merge

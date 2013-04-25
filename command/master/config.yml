@@ -1,9 +1,15 @@
 light:
   type: client
-  period: 5ms
+  period: 2ms
 
 network:
   client:
     start: true
     allow_reuse_address: true
 
+---
+
+speed: 500%
+debug: false
+new:
+  foo: 12

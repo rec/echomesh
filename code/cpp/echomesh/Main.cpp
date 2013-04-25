@@ -20,7 +20,6 @@ class Echomesh  : public JUCEApplication {
     std::cerr << "Shutting down\n";
     std::cerr.flush();
     echomesh::log("shutting down");
-    readThread_->kill();
     lightingWindow_ = nullptr;
     echomesh::close_log();
   }

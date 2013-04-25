@@ -24,8 +24,9 @@ def recalculate():
   _get_name_and_tags()
 
 def add_client(client):
-  CLIENTS.add(client)
-  client.config_update(get)
+  if not client in CLIENTS:
+    CLIENTS.add(client)
+    client.config_update(get)
 
 def update_clients():
   for c in CLIENTS:

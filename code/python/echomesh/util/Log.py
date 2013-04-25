@@ -64,7 +64,8 @@ except:
 
 
 def logger(name=None):
-  log = logging.getLogger(name or 'logging')
+  assert name
+  log = logging.getLogger(name or 'echomesh')
   original_error_logger = log.error
 
   def new_error_logger(*args, **kwds):

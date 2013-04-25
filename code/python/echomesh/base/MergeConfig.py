@@ -12,11 +12,11 @@ from echomesh.base import Yaml
 LOCAL_CHANGES = {}
 
 def merge_config():
-  config = Yaml.read(CommandFile.config_file('default'))[0]
+  config = Merge.merge(*Yaml.read(CommandFile.config_file('default')))
   assert config, 'Unable to read default config file'
 
-  _merge_file_config(config)
   _set_project_path()
+  config = _merge_file_config(config)
   merge_assignments(config, Args.ARGS)
   return config
 
@@ -60,7 +60,6 @@ def _set_project_path():
   else:
     Path.set_project_path(show_error=True)
 
-
 def _merge_file_config(config):
   for f in list(reversed(CommandFile.expand('config.yml')))[1:]:
     try:
@@ -75,6 +74,7 @@ def _merge_file_config(config):
       except Exception as e:
         _add_exception_suffix(e, ' while merging config file', f)
         raise
+  return config
 
 def _add_exception_suffix(e, *suffixes):
   # TODO: use traceback.
