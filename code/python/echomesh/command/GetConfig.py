@@ -6,10 +6,19 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def get_config(_, value, *more):
+GET_ARGUMENT_ERROR = """
+"get" needs one or more arguments.
+
+Example:
+  get audio.input.enable
+"""
+
+def get_config(_, *items):
+  if not items:
+    raise Exception(GET_ARGUMENT_ERROR)
   errors = []
   successes = []
-  for v in (value,) + more:
+  for v in items:
     try:
       successes.append([v, Config.get(*v.split('.'))])
     except:
