@@ -130,16 +130,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\..\base64\base64.cpp"/>
+    <ClCompile Include="..\..\echomesh\base\LightConfig.cpp"/>
+    <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
+    <ClCompile Include="..\..\echomesh\component\LightComponent.cpp"/>
+    <ClCompile Include="..\..\echomesh\Main.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\LightReader.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp"/>
     <ClCompile Include="..\..\rec\base\RealTime.cpp"/>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp"/>
-    <ClCompile Include="..\..\echomesh\LightComponent.cpp"/>
-    <ClCompile Include="..\..\echomesh\LightConfig.cpp"/>
-    <ClCompile Include="..\..\echomesh\LightReader.cpp"/>
-    <ClCompile Include="..\..\echomesh\LineGetter.cpp"/>
-    <ClCompile Include="..\..\echomesh\Log.cpp"/>
-    <ClCompile Include="..\..\echomesh\Main.cpp"/>
-    <ClCompile Include="..\..\echomesh\ReadThread.cpp"/>
-    <ClCompile Include="..\..\echomesh\SocketLineGetter.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliascontent.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliasmanager.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\content.cpp"/>
@@ -1015,6 +1015,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\base64\base64.h"/>
+    <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
+    <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>
+    <ClInclude Include="..\..\echomesh\base\LightConfig.h"/>
+    <ClInclude Include="..\..\echomesh\base\Runnable.h"/>
+    <ClInclude Include="..\..\echomesh\component\Instrument.h"/>
+    <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>
+    <ClInclude Include="..\..\echomesh\component\LightComponent.h"/>
+    <ClInclude Include="..\..\echomesh\component\LightingWindow.h"/>
+    <ClInclude Include="..\..\echomesh\network\LightReader.h"/>
+    <ClInclude Include="..\..\echomesh\network\LineGetter.h"/>
+    <ClInclude Include="..\..\echomesh\network\LineQueue.h"/>
+    <ClInclude Include="..\..\echomesh\network\ReadThread.h"/>
+    <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h"/>
     <ClInclude Include="..\..\rec\base\ArraySize.h"/>
     <ClInclude Include="..\..\rec\base\base.h"/>
     <ClInclude Include="..\..\rec\base\BaseNoJuce.h"/>
@@ -1048,17 +1061,6 @@
     <ClInclude Include="..\..\rec\util\thread\ModalCallback.h"/>
     <ClInclude Include="..\..\rec\util\thread\Result.h"/>
     <ClInclude Include="..\..\rec\util\thread\Trash.h"/>
-    <ClInclude Include="..\..\echomesh\disallow.h"/>
-    <ClInclude Include="..\..\echomesh\Echomesh.h"/>
-    <ClInclude Include="..\..\echomesh\LightComponent.h"/>
-    <ClInclude Include="..\..\echomesh\LightConfig.h"/>
-    <ClInclude Include="..\..\echomesh\LightReader.h"/>
-    <ClInclude Include="..\..\echomesh\LineGetter.h"/>
-    <ClInclude Include="..\..\echomesh\LineQueue.h"/>
-    <ClInclude Include="..\..\echomesh\ReadThread.h"/>
-    <ClInclude Include="..\..\echomesh\Runnable.h"/>
-    <ClInclude Include="..\..\echomesh\SocketLineGetter.h"/>
-    <ClInclude Include="..\..\echomesh\types.h"/>
     <ClInclude Include="..\..\yaml-cpp-src\aliascontent.h"/>
     <ClInclude Include="..\..\yaml-cpp-src\collectionstack.h"/>
     <ClInclude Include="..\..\yaml-cpp-src\content.h"/>

@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH_SOCKET_LINE_GETTER__
 #define __ECHOMESH_SOCKET_LINE_GETTER__
 
-#include "echomesh/LineGetter.h"
+#include "echomesh/network/LineGetter.h"
 
 namespace echomesh {
 

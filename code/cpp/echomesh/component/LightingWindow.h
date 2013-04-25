@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH_LIGHTING_WINDOW__
 #define __ECHOMESH_LIGHTING_WINDOW__
 
-#include "echomesh/LightComponent.h"
+#include "echomesh/component/LightComponent.h"
 
 namespace echomesh {
 

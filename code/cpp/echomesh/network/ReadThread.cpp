@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "echomesh/LightComponent.h"
-#include "echomesh/LineGetter.h"
-#include "echomesh/ReadThread.h"
+#include "echomesh/component/LightComponent.h"
+#include "echomesh/network/LineGetter.h"
+#include "echomesh/network/ReadThread.h"
 
 #include "rec/util/thread/Callback.h"
 #include "rec/util/STL.h"

@@ -1,5 +1,5 @@
-#include "echomesh/LightComponent.h"
-#include "echomesh/Instrument.h"
+#include "echomesh/component/LightComponent.h"
+#include "echomesh/component/Instrument.h"
 
 namespace echomesh {
 

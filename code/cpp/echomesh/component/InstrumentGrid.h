@@ -1,9 +1,9 @@
 #ifndef __ECHOMESH_INSTRUMENT_PANEL__
 #define __ECHOMESH_INSTRUMENT_PANEL__
 
-#include "echomesh/Echomesh.h"
-#include "echomesh/LightConfig.h"
-#include "echomesh/Instrument.h"
+#include "echomesh/base/Echomesh.h"
+#include "echomesh/base/LightConfig.h"
+#include "echomesh/component/Instrument.h"
 #include "rec/util/STL.h"
 
 namespace echomesh {

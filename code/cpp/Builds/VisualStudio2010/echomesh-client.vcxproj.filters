@@ -8,6 +8,18 @@
     <Filter Include="echomesh-client\base64">
       <UniqueIdentifier>{689DE205-0857-704A-7424-63A761807F54}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\echomesh">
+      <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\echomesh\base">
+      <UniqueIdentifier>{F27FA859-2203-C883-0F61-261D1D50036D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\echomesh\component">
+      <UniqueIdentifier>{C7967F7D-D1B2-4EEF-6E44-5BC9AFCC5F32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\echomesh\network">
+      <UniqueIdentifier>{26D5B416-26CE-A57F-4D1C-7824CD1E4964}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\rec">
       <UniqueIdentifier>{51D23AE7-FBB3-8AA4-CF58-BAA70047AFF1}</UniqueIdentifier>
     </Filter>
@@ -19,9 +31,6 @@
     </Filter>
     <Filter Include="echomesh-client\rec\util\thread">
       <UniqueIdentifier>{71829ECD-877B-0F38-28F7-FF0BFF9FFE6E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="echomesh-client\echomesh">
-      <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
     </Filter>
     <Filter Include="echomesh-client\yaml-cpp-src">
       <UniqueIdentifier>{975B39E0-1428-C908-98E4-B25DD2B0ADB9}</UniqueIdentifier>
@@ -256,35 +265,35 @@
     <ClCompile Include="..\..\base64\base64.cpp">
       <Filter>echomesh-client\base64</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\base\LightConfig.cpp">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\base\Log.cpp">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\component\LightComponent.cpp">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\Main.cpp">
+      <Filter>echomesh-client\echomesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\LightReader.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\LineGetter.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\ReadThread.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\rec\base\RealTime.cpp">
       <Filter>echomesh-client\rec\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp">
       <Filter>echomesh-client\rec\util\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\LightComponent.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\LightConfig.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\LightReader.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\LineGetter.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\Log.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\Main.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\ReadThread.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\SocketLineGetter.cpp">
-      <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
     <ClCompile Include="..\..\yaml-cpp-src\aliascontent.cpp">
       <Filter>echomesh-client\yaml-cpp-src</Filter>
@@ -1305,6 +1314,45 @@
     <ClInclude Include="..\..\base64\base64.h">
       <Filter>echomesh-client\base64</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\echomesh\base\Disallow.h">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\base\Echomesh.h">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\base\LightConfig.h">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\base\Runnable.h">
+      <Filter>echomesh-client\echomesh\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\component\Instrument.h">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\component\LightComponent.h">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\component\LightingWindow.h">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\LightReader.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\LineGetter.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\LineQueue.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\ReadThread.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\rec\base\ArraySize.h">
       <Filter>echomesh-client\rec\base</Filter>
     </ClInclude>
@@ -1403,39 +1451,6 @@
     </ClInclude>
     <ClInclude Include="..\..\rec\util\thread\Trash.h">
       <Filter>echomesh-client\rec\util\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\disallow.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\Echomesh.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\LightComponent.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\LightConfig.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\LightReader.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\LineGetter.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\LineQueue.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\ReadThread.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\Runnable.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\SocketLineGetter.h">
-      <Filter>echomesh-client\echomesh</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\types.h">
-      <Filter>echomesh-client\echomesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\yaml-cpp-src\aliascontent.h">
       <Filter>echomesh-client\yaml-cpp-src</Filter>

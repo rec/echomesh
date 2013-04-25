@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "echomesh/Echomesh.h"
+#include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
 

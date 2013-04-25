@@ -212,6 +212,7 @@ light:
       label_padding:
         x: 2
         y: 2
+      label_starts_at_zero: false
       size: [32, 32]
 
 # The load modules are third-party Python modules that are optional to the core

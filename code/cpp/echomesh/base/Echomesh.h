@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "JuceLibraryCode/JuceHeader.h"
-#include "disallow.h"
+#include "echomesh/base/Disallow.h"
 
 using std::string;
 using std::vector;

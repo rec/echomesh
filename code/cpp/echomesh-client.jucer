@@ -7,6 +7,41 @@
       <FILE id="n9iHyB" name="base64.cpp" compile="1" resource="0" file="base64/base64.cpp"/>
       <FILE id="ErLUPv" name="base64.h" compile="0" resource="0" file="base64/base64.h"/>
     </GROUP>
+    <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
+      <GROUP id="{429E3C2C-59EE-BAB7-A05B-342F2532209E}" name="base">
+        <FILE id="PQw15X" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
+        <FILE id="BFY2kY" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
+        <FILE id="QlTEnB" name="LightConfig.cpp" compile="1" resource="0" file="echomesh/base/LightConfig.cpp"/>
+        <FILE id="fD9KiV" name="LightConfig.h" compile="0" resource="0" file="echomesh/base/LightConfig.h"/>
+        <FILE id="Hfe0Vf" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
+        <FILE id="ZktWBW" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
+      </GROUP>
+      <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
+        <FILE id="wNqeg4" name="Instrument.h" compile="0" resource="0" file="echomesh/component/Instrument.h"/>
+        <FILE id="lJBMqs" name="InstrumentGrid.h" compile="0" resource="0"
+              file="echomesh/component/InstrumentGrid.h"/>
+        <FILE id="Z7LfZl" name="LightComponent.cpp" compile="1" resource="0"
+              file="echomesh/component/LightComponent.cpp"/>
+        <FILE id="zvxvG4" name="LightComponent.h" compile="0" resource="0"
+              file="echomesh/component/LightComponent.h"/>
+        <FILE id="lAfEUN" name="LightingWindow.h" compile="0" resource="0"
+              file="echomesh/component/LightingWindow.h"/>
+      </GROUP>
+      <FILE id="VLeXuW" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
+      <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
+        <FILE id="tgmGON" name="LightReader.cpp" compile="1" resource="0" file="echomesh/network/LightReader.cpp"/>
+        <FILE id="zaOkjv" name="LightReader.h" compile="0" resource="0" file="echomesh/network/LightReader.h"/>
+        <FILE id="scLa25" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>
+        <FILE id="fTmxLT" name="LineGetter.h" compile="0" resource="0" file="echomesh/network/LineGetter.h"/>
+        <FILE id="corJGc" name="LineQueue.h" compile="0" resource="0" file="echomesh/network/LineQueue.h"/>
+        <FILE id="AiiESD" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/network/ReadThread.cpp"/>
+        <FILE id="ARScGJ" name="ReadThread.h" compile="0" resource="0" file="echomesh/network/ReadThread.h"/>
+        <FILE id="RXsTJD" name="SocketLineGetter.cpp" compile="1" resource="0"
+              file="echomesh/network/SocketLineGetter.cpp"/>
+        <FILE id="ivSQKb" name="SocketLineGetter.h" compile="0" resource="0"
+              file="echomesh/network/SocketLineGetter.h"/>
+      </GROUP>
+    </GROUP>
     <GROUP id="{28FAA7EC-8E42-A784-3F2C-F5E2520F9D23}" name="rec">
       <GROUP id="{0DF59FCB-164C-9455-C845-18717FCB4D00}" name="base">
         <FILE id="a7gJWf" name="ArraySize.h" compile="0" resource="0" file="rec/base/ArraySize.h"/>
@@ -50,31 +85,6 @@
           <FILE id="AgGLAg" name="Trash.h" compile="0" resource="0" file="rec/util/thread/Trash.h"/>
         </GROUP>
       </GROUP>
-    </GROUP>
-    <GROUP id="{8CECE8BA-9D3D-5A29-F7BD-160F65225432}" name="echomesh">
-      <FILE id="rxpXbx" name="disallow.h" compile="0" resource="0" file="echomesh/disallow.h"/>
-      <FILE id="nNi4JZ" name="Echomesh.h" compile="0" resource="0" file="echomesh/Echomesh.h"/>
-      <FILE id="VVEWrR" name="LightComponent.cpp" compile="1" resource="0"
-            file="echomesh/LightComponent.cpp"/>
-      <FILE id="z8ZYME" name="LightComponent.h" compile="0" resource="0"
-            file="echomesh/LightComponent.h"/>
-      <FILE id="ZEY5w9" name="LightConfig.cpp" compile="1" resource="0" file="echomesh/LightConfig.cpp"/>
-      <FILE id="GPvubv" name="LightConfig.h" compile="0" resource="0" file="echomesh/LightConfig.h"/>
-      <FILE id="k19sX4" name="LightReader.cpp" compile="1" resource="0" file="echomesh/LightReader.cpp"/>
-      <FILE id="aORj4J" name="LightReader.h" compile="0" resource="0" file="echomesh/LightReader.h"/>
-      <FILE id="oMJ0sJ" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/LineGetter.cpp"/>
-      <FILE id="MERojZ" name="LineGetter.h" compile="0" resource="0" file="echomesh/LineGetter.h"/>
-      <FILE id="TmEwYr" name="LineQueue.h" compile="0" resource="0" file="echomesh/LineQueue.h"/>
-      <FILE id="ls8JuX" name="Log.cpp" compile="1" resource="0" file="echomesh/Log.cpp"/>
-      <FILE id="NgcVgQ" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
-      <FILE id="I9nHkJ" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/ReadThread.cpp"/>
-      <FILE id="uMFSug" name="ReadThread.h" compile="0" resource="0" file="echomesh/ReadThread.h"/>
-      <FILE id="dIOdF9" name="Runnable.h" compile="0" resource="0" file="echomesh/Runnable.h"/>
-      <FILE id="QB7akQ" name="SocketLineGetter.cpp" compile="1" resource="0"
-            file="echomesh/SocketLineGetter.cpp"/>
-      <FILE id="UssOaR" name="SocketLineGetter.h" compile="0" resource="0"
-            file="echomesh/SocketLineGetter.h"/>
-      <FILE id="EnXseB" name="types.h" compile="0" resource="0" file="echomesh/types.h"/>
     </GROUP>
     <GROUP id="{F71EFCE8-1397-5ACA-3CB8-BAB289276E5D}" name="yaml-cpp-src">
       <FILE id="jgwKVx" name="aliascontent.cpp" compile="1" resource="0"

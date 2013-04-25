@@ -3,7 +3,7 @@
 
 #include <queue>
 
-#include "echomesh/Echomesh.h"
+#include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
 

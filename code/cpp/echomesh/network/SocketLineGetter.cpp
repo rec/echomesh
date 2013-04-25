@@ -1,6 +1,5 @@
-#include "echomesh/SocketLineGetter.h"
-
-#include "echomesh/LineQueue.h"
+#include "echomesh/network/SocketLineGetter.h"
+#include "echomesh/network/LineQueue.h"
 
 namespace echomesh {
 

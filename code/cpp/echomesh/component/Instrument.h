@@ -1,8 +1,8 @@
 #ifndef __ECHOMESH_INSTRUMENT__
 #define __ECHOMESH_INSTRUMENT__
 
-#include "echomesh/Echomesh.h"
-#include "echomesh/LightConfig.h"
+#include "echomesh/base/Echomesh.h"
+#include "echomesh/base/LightConfig.h"
 
 namespace echomesh {
 
@@ -46,7 +46,7 @@ class Instrument : public Component {
   }
 
  private:
-  const String label_;
+  String label_;
   LightDisplay config_;
   Colour color_;
   Colour labelColor_;

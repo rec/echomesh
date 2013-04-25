@@ -50,16 +50,16 @@ DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
   $(OBJDIR)/base64_1eb4a3a4.o \
+  $(OBJDIR)/LightConfig_1aa14e0c.o \
+  $(OBJDIR)/Log_edbe3e58.o \
+  $(OBJDIR)/LightComponent_1f23fbeb.o \
+  $(OBJDIR)/Main_ed86ae4b.o \
+  $(OBJDIR)/LightReader_649349d0.o \
+  $(OBJDIR)/LineGetter_4e1cc2f2.o \
+  $(OBJDIR)/ReadThread_1a08d793.o \
+  $(OBJDIR)/SocketLineGetter_649dfac5.o \
   $(OBJDIR)/RealTime_4c146fff.o \
   $(OBJDIR)/Trash_ed189496.o \
-  $(OBJDIR)/LightComponent_ca7161d9.o \
-  $(OBJDIR)/LightConfig_ab12f5b0.o \
-  $(OBJDIR)/LightReader_7a4022b1.o \
-  $(OBJDIR)/LineGetter_d2f0c9f1.o \
-  $(OBJDIR)/Log_7f13c9fc.o \
-  $(OBJDIR)/Main_ed86ae4b.o \
-  $(OBJDIR)/ReadThread_9edcde92.o \
-  $(OBJDIR)/SocketLineGetter_112a8684.o \
   $(OBJDIR)/aliascontent_51f9ebd9.o \
   $(OBJDIR)/aliasmanager_6b830d0d.o \
   $(OBJDIR)/content_2bb6a053.o \
@@ -123,6 +123,46 @@ $(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
 	@echo "Compiling base64.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/LightConfig_1aa14e0c.o: ../../echomesh/base/LightConfig.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LightConfig.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Log.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LightComponent_1f23fbeb.o: ../../echomesh/component/LightComponent.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LightComponent.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Main.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LightReader_649349d0.o: ../../echomesh/network/LightReader.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LightReader.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/LineGetter_4e1cc2f2.o: ../../echomesh/network/LineGetter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling LineGetter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ReadThread_1a08d793.o: ../../echomesh/network/ReadThread.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ReadThread.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SocketLineGetter_649dfac5.o: ../../echomesh/network/SocketLineGetter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SocketLineGetter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/RealTime_4c146fff.o: ../../rec/base/RealTime.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling RealTime.cpp"
@@ -131,46 +171,6 @@ $(OBJDIR)/RealTime_4c146fff.o: ../../rec/base/RealTime.cpp
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Trash.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LightComponent_ca7161d9.o: ../../echomesh/LightComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LightComponent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LightConfig_ab12f5b0.o: ../../echomesh/LightConfig.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LightConfig.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LightReader_7a4022b1.o: ../../echomesh/LightReader.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LightReader.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LineGetter_d2f0c9f1.o: ../../echomesh/LineGetter.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LineGetter.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/Log_7f13c9fc.o: ../../echomesh/Log.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Log.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Main.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/ReadThread_9edcde92.o: ../../echomesh/ReadThread.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling ReadThread.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/SocketLineGetter_112a8684.o: ../../echomesh/SocketLineGetter.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling SocketLineGetter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/aliascontent_51f9ebd9.o: ../../yaml-cpp-src/aliascontent.cpp

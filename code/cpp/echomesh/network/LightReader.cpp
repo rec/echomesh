@@ -4,8 +4,8 @@
 #include <string>
 
 #include "base64/base64.h"
-#include "echomesh/LightComponent.h"
-#include "echomesh/LightReader.h"
+#include "echomesh/component/LightComponent.h"
+#include "echomesh/network/LightReader.h"
 #include "rec/util/thread/MakeCallback.h"
 
 namespace echomesh {
