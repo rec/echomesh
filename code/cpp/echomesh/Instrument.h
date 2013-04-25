@@ -8,17 +8,13 @@ namespace echomesh {
 
 class Instrument : public Component {
  public:
-  Instrument(const String& label, const LightDisplay& config)
-      : label_(label),
-        config_(config),
-        color_(Colours::black),
-        labelColor_(Colours::white) {
-  }
+  Instrument() : color_(Colours::black), labelColor_(Colours::white) {}
   ~Instrument() {}
 
-  void setConfig(const LightDisplay& config) {
+  void configure(const String& label, const LightDisplay& config) {
     MessageManagerLock l;
     config_ = config;
+    label_ = label;
     repaint();
   }
 

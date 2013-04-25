@@ -39,6 +39,7 @@ void operator>>(const YAML::Node& node, LightDisplay& p) {
   node["border"] >> p.border;
   node["label"] >> p.label;
   node["label_padding"] >> p.labelPadding;
+  node["label_starts_at_zero"] >> p.labelStartsAtZero;
   node["padding"] >> p.padding;
   node["shape"] >> p.shape;
   node["size"] >> p.size;
