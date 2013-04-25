@@ -8,8 +8,7 @@ network:
     allow_reuse_address: true
 
 ---
-
-speed: 500%
 debug: false
-new:
-  foo: 12
+new: {foo: 12}
+speed: 10%
+start: ''
