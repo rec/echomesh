@@ -35,6 +35,7 @@ class Instrument : public Component {
   }
 
   virtual void paint(Graphics& g) {
+    log("painting Instrument");
     g.setColour(color_);
     Rectangle<int> b = getLocalBounds();
     if (config_.isRect)
@@ -43,7 +44,8 @@ class Instrument : public Component {
       g.fillEllipse(b.getX(), b.getY(), b.getWidth(), b.getHeight());
 
     if (config_.label) {
-      b.reduce(config_.labelPadding.x / 2, config_.labelPadding.x / 2);
+      log("writing the label!!!");
+      b.reduce(config_.labelPadding.x / 2, config_.labelPadding.y / 2);
       g.setColour(labelColor_);
       g.drawFittedText(label_, b, Justification::centred, 1);
     }

@@ -7,7 +7,7 @@
 
 namespace echomesh {
 
-static const bool USE_INSTRUMENT_GRID = false;
+static const bool USE_INSTRUMENT_GRID = not false;
 
 class LightingWindow : public DocumentWindow {
  public:
@@ -35,6 +35,7 @@ class LightingWindow : public DocumentWindow {
     else
       instrumentGrid_->setLights(cl);
   }
+
   void setConfig(const LightConfig& config) {
     if (lightComponent_)
       lightComponent_->setConfig(config);

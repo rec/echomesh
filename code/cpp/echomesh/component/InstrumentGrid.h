@@ -10,8 +10,7 @@ namespace echomesh {
 
 class InstrumentGrid : public Component {
  public:
-  InstrumentGrid() {}
-
+  InstrumentGrid() { setSize(64, 64); }
   ~InstrumentGrid() { rec::stl::deletePointers(&instruments_); }
 
   void setConfig(const LightConfig& config) {
