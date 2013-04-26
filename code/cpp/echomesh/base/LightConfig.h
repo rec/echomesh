@@ -23,7 +23,7 @@ struct LightDisplay {
   bool isRect;
   bool label;
   Point labelPadding;
-  Point labelStartsAtZero;
+  bool labelStartsAtZero;
   Point padding;
   Point size;
   string shape;

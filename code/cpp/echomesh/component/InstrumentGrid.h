@@ -11,37 +11,45 @@ namespace echomesh {
 class InstrumentGrid : public Component {
  public:
   InstrumentGrid(const LightConfig& config) : config_(config) {}
-  ~InstrumentGrid() { stl::deletePointers(&instruments); }
+  ~InstrumentGrid() { rec::stl::deletePointers(&instruments_); }
 
   void setConfig(const LightConfig& config) {
     MessageManagerLock l;
     config_ = config;
-    int oldCount = instruments_.count();
+    int oldCount = instruments_.size();
 
     for (int i = config_.count; i < oldCount; ++i)
       delete instruments_[i];
     instruments_.resize(config_.count);
-    for (int i = old_count; i < config_.count; ++i)
+    for (int i = oldCount; i < config_.count; ++i)
       instruments_[i] = new Instrument;
 
-    int delta = config_.labelStartsAtZero ? 0 : 1;
     const LightDisplay& light = config_.display.light;
+    int delta = light.labelStartsAtZero ? 0 : 1;
     for (int i = 0; i < instruments_.size(); ++i)
-      instruments_->configure(String(i + delta), light);
+      instruments_[i]->configure(String(i + delta), light);
 
-    g.fillAll(config_.display.background);
-    int width = light.size.x + light.padding.x;
-    int height = light.size.y + light.padding.y;
+    int top = config_.display.padding.top;
+    int left = config_.display.padding.left;
+    int columns = config.display.layout.x;
+    int rows = config.display.layout.y;
 
+    int w = light.size.x;
+    int h = light.size.y;
     int index = 0;
-    for (int y = 0; y < config.display.layout.y; ++y) {
-      for (int x = 0; x < config.display.layout.x; ++x, ++index)
-        instruments_->setBounds(x * width, y * height, width, height);
+    for (int y = 0; y < rows; ++y) {
+      for (int x = 0; x < columns; ++x)
+        instruments_[index++]->setBounds(left + x * w, top + y * h, w, h);
     }
 
+    setSize(left + w * columns + config_.display.padding.right,
+            top + h * rows + config_.display.padding.bottom);
     repaint();
   }
 
+  void paint(Graphics& g) {
+    g.fillAll(config_.display.background);
+  }
 
  private:
   LightConfig config_;

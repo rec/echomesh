@@ -1,5 +1,5 @@
-#include "echomesh/LightingWindow.h"
-#include "echomesh/LightReader.h"
+#include "echomesh/component/LightingWindow.h"
+#include "echomesh/network/LightReader.h"
 
 class Echomesh  : public JUCEApplication {
  public:

@@ -2,6 +2,7 @@
 #define __ECHOMESH_LIGHTING_WINDOW__
 
 #include "echomesh/component/LightComponent.h"
+#include "echomesh/component/InstrumentGrid.h"
 
 namespace echomesh {
 
