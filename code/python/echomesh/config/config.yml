@@ -195,8 +195,8 @@ light:
     background: white
     layout: [16, 16]
     padding:
-      top: 10
-      left: 10
+      top: 5
+      left: 5
       bottom: 5
       right: 5
     light:

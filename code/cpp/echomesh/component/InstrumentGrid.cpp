@@ -3,6 +3,9 @@
 
 namespace echomesh {
 
+static const int TOP_TWEAK = 5;
+static const int LEFT_TWEAK = 5;
+
 InstrumentGrid::InstrumentGrid() {
   setSize(64, 64);
 }
@@ -31,8 +34,8 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   for (int i = 0; i < instruments_.size(); ++i)
     instruments_[i]->configure(String(i + delta), light);
 
-  int top = config_.display.padding.top;
-  int left = config_.display.padding.left;
+  int top = config_.display.padding.top + TOP_TWEAK;
+  int left = config_.display.padding.left + LEFT_TWEAK;
   int columns = config.display.layout.x;
   int rows = config.display.layout.y;
 
