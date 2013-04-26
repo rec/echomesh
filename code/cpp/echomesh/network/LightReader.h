@@ -11,11 +11,11 @@
 
 namespace echomesh {
 
-class LightComponent;
+class LightingWindow;
 
 class LightReader : public ReadThread {
  public:
-  LightReader(LightComponent* light, const String& commandLine);
+  LightReader(LightingWindow* window, const String& commandLine);
   virtual ~LightReader();
 
  private:
@@ -29,7 +29,7 @@ class LightReader : public ReadThread {
 
   uint8 getLedColor(float color) const;
 
-  LightComponent* const lightComponent_;
+  LightingWindow* const lightingWindow_;
   bool compressed_;
   FILE* file_;
   ColorList colors_;

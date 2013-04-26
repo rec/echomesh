@@ -30,6 +30,10 @@ class Instrument : public Component {
     }
   }
 
+  void setColor(const Colour& c) {
+    setColor(c.getRed(), c.getGreen(), c.getBlue());
+  }
+
   virtual void paint(Graphics& g) {
     g.setColour(color_);
     Rectangle<int> b = getLocalBounds();

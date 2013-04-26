@@ -4,7 +4,7 @@
 #include <string>
 
 #include "base64/base64.h"
-#include "echomesh/component/LightComponent.h"
+#include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
 #include "rec/util/thread/MakeCallback.h"
 
@@ -17,9 +17,9 @@ static const char DEVICE_NAME[] = "/dev/spidev0.0";
 const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 
-LightReader::LightReader(LightComponent* light, const String& commandLine)
+LightReader::LightReader(LightingWindow* window, const String& commandLine)
     : ReadThread(commandLine),
-      lightComponent_(light),
+      lightingWindow_(window),
       compressed_(true)
 #if JUCE_LINUX
 , file_(fopen(DEVICE_NAME, "w"))
@@ -69,7 +69,7 @@ void LightReader::config() {
   for (int i = 0; i < 3; ++i)
     rgbOrder_[i] = config_.rgbOrder.find("rgb"[i]);
   log("set config set light.");
-  lightComponent_->setConfig(config_);
+  lightingWindow_->setConfig(config_);
   log("config done.");
 }
 
@@ -116,7 +116,7 @@ void LightReader::displayLights() {
   fwrite(LATCH, 1, 3, file_);
   fflush(file_);
 #endif
-  lightComponent_->setLights(colors_);
+  lightingWindow_->setLights(colors_);
 }
 
 void LightReader::clight() {

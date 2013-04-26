@@ -10,7 +10,8 @@ namespace echomesh {
 
 class InstrumentGrid : public Component {
  public:
-  InstrumentGrid(const LightConfig& config) : config_(config) {}
+  InstrumentGrid() {}
+
   ~InstrumentGrid() { rec::stl::deletePointers(&instruments_); }
 
   void setConfig(const LightConfig& config) {
@@ -45,6 +46,11 @@ class InstrumentGrid : public Component {
     setSize(left + w * columns + config_.display.padding.right,
             top + h * rows + config_.display.padding.bottom);
     repaint();
+  }
+
+  void setLights(const ColorList& lights) {
+    for (int i = 0; i < lights.size(); ++i)
+      instruments_[i]->setColor(lights[i]);
   }
 
   void paint(Graphics& g) {

@@ -1,7 +1,6 @@
 #ifndef __LIGHT_COMPONENT__
 #define __LIGHT_COMPONENT__
 
-#include "echomesh/base/Echomesh.h"
 #include "echomesh/base/LightConfig.h"
 
 namespace echomesh {
