@@ -194,24 +194,16 @@ light:
   display:
     background: white
     layout: [16, 16]
-    padding:
-      top: 5
-      left: 5
-      bottom: 5
-      right: 5
+    padding: [5, 5]
     light:
       background: 0x606060
       border:
         color: black
         width: 1
-      padding:
-        x: 4
-        y: 4
+      padding: [4, 4]
       shape: circle
       label: false
-      label_padding:
-        x: 2
-        y: 2
+      label_padding: [2, 2]
       label_starts_at_zero: false
       size: [32, 32]
 

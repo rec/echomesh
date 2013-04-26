@@ -29,17 +29,10 @@ struct LightDisplay {
   string shape;
 };
 
-struct Padding {
-  int top;
-  int left;
-  int bottom;
-  int right;
-};
-
 struct Display {
   Colour background;
   Point layout;
-  Padding padding;
+  Point padding;
   LightDisplay light;
 };
 
@@ -59,7 +52,6 @@ void operator>>(const YAML::Node&, Colour&);
 void operator>>(const YAML::Node&, Point&);
 void operator>>(const YAML::Node&, Border&);
 void operator>>(const YAML::Node&, LightDisplay&);
-void operator>>(const YAML::Node&, Padding&);
 void operator>>(const YAML::Node&, Display&);
 void operator>>(const YAML::Node&, LightConfig&);
 void operator>>(const YAML::Node&, ColorBytes&);

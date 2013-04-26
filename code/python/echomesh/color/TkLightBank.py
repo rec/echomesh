@@ -98,10 +98,10 @@ class TkLightBank(LightBank):
     self.padding = _get('padding')
     self.columns, self.rows = _get_dimension(self.count, *_get('layout'))
     self.width = (self.padding['top'] +
-                  self.columns * (self.size[0] + self.light_padding['x']) +
+                  self.columns * (self.size[0] + self.light_padding[0]) +
                   self.padding['right'])
     self.height = (self.padding['top'] +
-                   self.rows * (self.size[1] + self.light_padding['y']) +
+                   self.rows * (self.size[1] + self.light_padding[1]) +
                    self.padding['bottom'])
     TkThreadRunner.defer(self.initialize_tk)
 
@@ -109,10 +109,10 @@ class TkLightBank(LightBank):
     column = index % self.columns
     row = index // self.columns
     x = (self.padding['left'] +
-         column * (self.size[0] + self.light_padding['x']))
+         column * (self.size[0] + self.light_padding[0]))
 
     y = (self.padding['top'] +
-         row * (self.size[1] + self.light_padding['y']))
+         row * (self.size[1] + self.light_padding[1]))
     return self.method(x, y, x + self.size[0], y + self.size[1],
                        outline=self.border_color)
 

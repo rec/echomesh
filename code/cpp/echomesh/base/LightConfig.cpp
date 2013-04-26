@@ -46,13 +46,6 @@ void operator>>(const YAML::Node& node, LightDisplay& p) {
   p.isRect = not p.shape.find("rectangle");
 }
 
-void operator>>(const YAML::Node& node, Padding& p) {
-  node["top"] >> p.top;
-  node["left"] >> p.left;
-  node["bottom"] >> p.bottom;
-  node["right"] >> p.right;
-}
-
 void operator>>(const YAML::Node& node, Display& p) {
   node["background"] >> p.background;
   node["layout"] >> p.layout;
