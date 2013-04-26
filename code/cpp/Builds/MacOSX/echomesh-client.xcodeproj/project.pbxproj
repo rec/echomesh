@@ -38,12 +38,14 @@
 		6442A216D48909650AAE8258 /* RecentFilesMenuTemplate.nib in Resources */ = {isa = PBXBuildFile; fileRef = 6D5C6234A89D4C71DADA4875 /* RecentFilesMenuTemplate.nib */; };
 		68A840717E354FB355B6ED71 /* directives.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BB208320B385233AF2FAF81E /* directives.cpp */; };
 		6AC19809C5883D022B11C17E /* parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F46E56BFC66D75390C080320 /* parser.cpp */; };
+		72508A69E10C7D0855BCC35A /* InstrumentGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6145AC903FD545F24B53F366 /* InstrumentGrid.cpp */; };
 		7F9DD4077337852B2A39418F /* SocketLineGetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 887D32E470CBEC6060702FEB /* SocketLineGetter.cpp */; };
 		83C97472F3751810DCC039B1 /* juce_core.mm in Sources */ = {isa = PBXBuildFile; fileRef = A0D0ED530154D323197843BD /* juce_core.mm */; };
 		84940BBD0E59D991135F1707 /* LineGetter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 359DD407D68F87EC1A96DF96 /* LineGetter.cpp */; };
 		87FA0CC531FCF3AD52B1E522 /* emitfromevents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46D2D67D2524FD69FBA2B3F3 /* emitfromevents.cpp */; };
 		8E6FA8FBB9A5221292315467 /* juce_gui_extra.mm in Sources */ = {isa = PBXBuildFile; fileRef = CDA5451F8259693B54B9D87A /* juce_gui_extra.mm */; };
 		8ECB2070675D7DAF12942952 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F269060C84844E9EC4698021 /* IOKit.framework */; };
+		93E4FA3CEC4BD2D7B6966378 /* Instrument.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 11AF059AC697C16933E107AE /* Instrument.cpp */; };
 		940C735B452C0A4333F3C28A /* Log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC502C0C2825B430AFB4E5A4 /* Log.cpp */; };
 		96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24E63E16EC76E02BB9136591 /* LightReader.cpp */; };
 		9D84C98F7C02EE3EFFF12A69 /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6121C566C06EC2553A4634B5 /* ostream.cpp */; };
@@ -137,6 +139,7 @@
 		10FDFBC9F2D4DF08AF1A3CAC /* juce_android_Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_android_Network.cpp; path = ../../JuceLibraryCode/modules/juce_core/native/juce_android_Network.cpp; sourceTree = SOURCE_ROOT; };
 		11509C54EC707E62EE52DCF6 /* juce_opengl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_opengl.h; path = ../../JuceLibraryCode/modules/juce_opengl/juce_opengl.h; sourceTree = SOURCE_ROOT; };
 		11AAA46115D40DE78FAFC148 /* juce_TreeView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_TreeView.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_TreeView.h; sourceTree = SOURCE_ROOT; };
+		11AF059AC697C16933E107AE /* Instrument.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Instrument.cpp; path = ../../echomesh/component/Instrument.cpp; sourceTree = SOURCE_ROOT; };
 		11E7D411CC08BBB7E6BE3947 /* juce_SystemStats.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_SystemStats.h; path = ../../JuceLibraryCode/modules/juce_core/system/juce_SystemStats.h; sourceTree = SOURCE_ROOT; };
 		1207B77CEE41BD683197E77A /* juce_gui_extra.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_gui_extra.h; path = ../../JuceLibraryCode/modules/juce_gui_extra/juce_gui_extra.h; sourceTree = SOURCE_ROOT; };
 		122570A8D0E353A43E7301CE /* juce_GlyphArrangement.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_GlyphArrangement.cpp; path = ../../JuceLibraryCode/modules/juce_graphics/fonts/juce_GlyphArrangement.cpp; sourceTree = SOURCE_ROOT; };
@@ -384,6 +387,7 @@
 		5F7BBF50C6A3C2C769167B6E /* juce_linux_Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_linux_Network.cpp; path = ../../JuceLibraryCode/modules/juce_core/native/juce_linux_Network.cpp; sourceTree = SOURCE_ROOT; };
 		5FCA918669221AEE769422FC /* juce_BubbleMessageComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_BubbleMessageComponent.cpp; path = ../../JuceLibraryCode/modules/juce_gui_extra/misc/juce_BubbleMessageComponent.cpp; sourceTree = SOURCE_ROOT; };
 		6121C566C06EC2553A4634B5 /* ostream.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ostream.cpp; path = "../../yaml-cpp-src/ostream.cpp"; sourceTree = SOURCE_ROOT; };
+		6145AC903FD545F24B53F366 /* InstrumentGrid.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = InstrumentGrid.cpp; path = ../../echomesh/component/InstrumentGrid.cpp; sourceTree = SOURCE_ROOT; };
 		614CE37E402812007125FF62 /* juce_MouseListener.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_MouseListener.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_MouseListener.cpp; sourceTree = SOURCE_ROOT; };
 		61A6CF0B568EFC691CC18B22 /* juce_ImageButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ImageButton.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/buttons/juce_ImageButton.cpp; sourceTree = SOURCE_ROOT; };
 		61F1D35F99289E6C5A4188EC /* juce_DynamicObject.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DynamicObject.h; path = ../../JuceLibraryCode/modules/juce_core/containers/juce_DynamicObject.h; sourceTree = SOURCE_ROOT; };
@@ -1423,8 +1427,8 @@
 		556733086AE44D5A34F67B55 /* echomesh-client */ = {
 			isa = PBXGroup;
 			children = (
-				4834AA623B5E1AD2CA0029AE /* base64 */,
 				1DB6AF849C3C3DB805FE26C0 /* echomesh */,
+				4834AA623B5E1AD2CA0029AE /* base64 */,
 				1AE0513C7F255098E74FCE2E /* rec */,
 				577F58F3D4253046CC558D6D /* yaml-cpp-src */,
 			);
@@ -1879,7 +1883,9 @@
 		AAB956C9F4EEC35B737DE235 /* component */ = {
 			isa = PBXGroup;
 			children = (
+				11AF059AC697C16933E107AE /* Instrument.cpp */,
 				3C90A9A14B7AEB2EC8FA96D0 /* Instrument.h */,
+				6145AC903FD545F24B53F366 /* InstrumentGrid.cpp */,
 				408D26A89213AE6F25F1034F /* InstrumentGrid.h */,
 				1FFA4DB7E2E4D43B959F9F46 /* LightComponent.cpp */,
 				CB7DA4C021AE28E9F01431D0 /* LightComponent.h */,
@@ -2458,15 +2464,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				63C87B5B2E9CDA067BAB7EED /* base64.cpp in Sources */,
 				03F584E356FC3B5B41DDBBEF /* LightConfig.cpp in Sources */,
 				940C735B452C0A4333F3C28A /* Log.cpp in Sources */,
+				93E4FA3CEC4BD2D7B6966378 /* Instrument.cpp in Sources */,
+				72508A69E10C7D0855BCC35A /* InstrumentGrid.cpp in Sources */,
 				F5A281DCBE64DB63224780E3 /* LightComponent.cpp in Sources */,
 				AADC33FC886CCFE9036FCBBB /* Main.cpp in Sources */,
 				96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */,
 				84940BBD0E59D991135F1707 /* LineGetter.cpp in Sources */,
 				3B5525618E59AFC0792B904D /* ReadThread.cpp in Sources */,
 				7F9DD4077337852B2A39418F /* SocketLineGetter.cpp in Sources */,
+				63C87B5B2E9CDA067BAB7EED /* base64.cpp in Sources */,
 				437EB51228F79A2616A8411F /* RealTime.cpp in Sources */,
 				AC7727F577C473B79C5AE478 /* Trash.cpp in Sources */,
 				CA8E4A8A497BB0D016C99E2D /* aliascontent.cpp in Sources */,

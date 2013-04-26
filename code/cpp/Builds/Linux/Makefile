@@ -49,15 +49,17 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
-  $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/LightConfig_1aa14e0c.o \
   $(OBJDIR)/Log_edbe3e58.o \
+  $(OBJDIR)/Instrument_a35abecb.o \
+  $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightComponent_1f23fbeb.o \
   $(OBJDIR)/Main_ed86ae4b.o \
   $(OBJDIR)/LightReader_649349d0.o \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
+  $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/RealTime_4c146fff.o \
   $(OBJDIR)/Trash_ed189496.o \
   $(OBJDIR)/aliascontent_51f9ebd9.o \
@@ -118,11 +120,6 @@ strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
-$(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling base64.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/LightConfig_1aa14e0c.o: ../../echomesh/base/LightConfig.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightConfig.cpp"
@@ -131,6 +128,16 @@ $(OBJDIR)/LightConfig_1aa14e0c.o: ../../echomesh/base/LightConfig.cpp
 $(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Log.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Instrument_a35abecb.o: ../../echomesh/component/Instrument.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Instrument.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling InstrumentGrid.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LightComponent_1f23fbeb.o: ../../echomesh/component/LightComponent.cpp
@@ -161,6 +168,11 @@ $(OBJDIR)/ReadThread_1a08d793.o: ../../echomesh/network/ReadThread.cpp
 $(OBJDIR)/SocketLineGetter_649dfac5.o: ../../echomesh/network/SocketLineGetter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling SocketLineGetter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling base64.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/RealTime_4c146fff.o: ../../rec/base/RealTime.cpp
