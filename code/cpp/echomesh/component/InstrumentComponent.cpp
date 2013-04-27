@@ -8,30 +8,40 @@ InstrumentComponent::InstrumentComponent()
 
 void InstrumentComponent::configure(const String& label,
                                     const Instrument& config) {
-  MessageManagerLock l;
+  ScopedLock l(lock_);
   config_ = config;
   label_ = label;
-  repaint();
 }
 
 void InstrumentComponent::setColor(uint8 r, uint8 g, uint8 b) {
-  if (r != color_.getRed() ||
-      g != color_.getGreen() ||
-      b != color_.getBlue()) {
-    MessageManagerLock l;
-    color_ = Colour(r, g, b);
-    static const int GREY = (3 * 0xFF) / 2;
-    labelColor_ = ((r + g + b) >= GREY) ? Colours::black : Colours::white;
-    repaint();
-  }
+  ScopedLock l(lock_);
+  color_ = Colour(r, g, b);
+  setLabel();
 }
 
 void InstrumentComponent::setColor(const Colour& c) {
-  setColor(c.getRed(), c.getGreen(), c.getBlue());
+  ScopedLock l(lock_);
+  color_ = c;
+  setLabel();
+}
+
+void InstrumentComponent::setLabel() {
+  static const int GREY = (3 * 0xFF) / 2;
+  uint8 r = color_.getRed();
+  uint8 g = color_.getGreen();
+  uint8 b = color_.getBlue();
+  labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
 }
 
 void InstrumentComponent::paint(Graphics& g) {
-  g.setColour(color_);
+  ScopedLock l(lock_);
+  Colour back, label;
+  {
+    back = color_;
+    label = labelColor_;
+  }
+
+  g.setColour(back);
   Rectangle<int> b = getLocalBounds();
   if (config_.isRect)
     g.fillRect(b);
@@ -40,7 +50,7 @@ void InstrumentComponent::paint(Graphics& g) {
 
   if (config_.label) {
     b.reduce(config_.labelPadding.x / 2, config_.labelPadding.y / 2);
-    g.setColour(labelColor_);
+    g.setColour(label);
     g.drawFittedText(label_, b, Justification::centred, 1);
   }
 }

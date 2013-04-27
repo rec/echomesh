@@ -19,10 +19,13 @@ class InstrumentComponent : public Component {
   virtual void paint(Graphics&);
 
  private:
+  void setLabel();
+
   String label_;
   Instrument config_;
   Colour color_;
   Colour labelColor_;
+  CriticalSection lock_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentComponent)
 };

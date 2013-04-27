@@ -57,6 +57,8 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
 void InstrumentGrid::setLights(const ColorList& lights) {
   for (int i = 0; i < lights.size(); ++i)
     instruments_[i]->setColor(lights[i]);
+  MessageManagerLock l;
+  repaint();
 }
 
 void InstrumentGrid::paint(Graphics& g) {

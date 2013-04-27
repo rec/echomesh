@@ -90,6 +90,7 @@ uint8 LightReader::getLedColor(float color) const {
 }
 
 void LightReader::displayLights() {
+  lightingWindow_->setLights(colors_);
   if (config_.hardware.local)  // Do the lights in Python.
     return;
 
@@ -117,7 +118,6 @@ void LightReader::displayLights() {
   fwrite(LATCH, 1, 3, file_);
   fflush(file_);
 #endif
-  lightingWindow_->setLights(colors_);
 }
 
 void LightReader::light() {
@@ -128,8 +128,10 @@ void LightReader::light() {
   string lights2 = base64::decode(lights);
 
   if (lights2.size() != 3 * config_.count) {
-    throw Exception("Size " + String(int(lights.size()) +
-                                     ", count " + config_.count));
+    String msg = "Size " + String(int(lights.size())) +
+      ", count " + String(config_.count);
+    log(msg);
+    return;
   }
 
   const char* data = lights2.data();
