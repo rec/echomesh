@@ -51,7 +51,7 @@ DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 OBJECTS := \
   $(OBJDIR)/LightConfig_1aa14e0c.o \
   $(OBJDIR)/Log_edbe3e58.o \
-  $(OBJDIR)/Instrument_a35abecb.o \
+  $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/Main_ed86ae4b.o \
   $(OBJDIR)/LightReader_649349d0.o \
@@ -129,9 +129,9 @@ $(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp
 	@echo "Compiling Log.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Instrument_a35abecb.o: ../../echomesh/component/Instrument.cpp
+$(OBJDIR)/InstrumentComponent_75edd5bc.o: ../../echomesh/component/InstrumentComponent.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Instrument.cpp"
+	@echo "Compiling InstrumentComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp

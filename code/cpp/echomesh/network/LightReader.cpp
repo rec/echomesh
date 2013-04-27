@@ -36,7 +36,6 @@ LightReader::LightReader(LightingWindow* window, const String& commandLine)
 #endif
 {
   registerCallback("clear", methodCallback(this, &LightReader::clear));
-  registerCallback("clight", methodCallback(this, &LightReader::clight));
   registerCallback("config", methodCallback(this, &LightReader::config));
   registerCallback("light", methodCallback(this, &LightReader::light));
   registerCallback("quit", methodCallback(this, &LightReader::quit));
@@ -49,9 +48,7 @@ LightReader::~LightReader() {
 }
 
 void LightReader::quit() {
-  log("quitting");
   (new QuitMessage)->post();
-  log("done");
 }
 
 void LightReader::clear() {
@@ -77,7 +74,7 @@ void LightReader::config() {
   enforceSizes();
 
   for (int i = 0; i < 3; ++i)
-    rgbOrder_[i] = config_.rgbOrder.find("rgb"[i]);
+    rgbOrder_[i] = config_.hardware.rgbOrder.find("rgb"[i]);
   log("set config set light.");
   lightingWindow_->setConfig(config_);
   log("config done.");
@@ -92,16 +89,10 @@ uint8 LightReader::getLedColor(float color) const {
   return static_cast<uint8>(jmin(c, 0xFF));
 }
 
-void LightReader::light() {
-  compressed_ = false;
-  const YAML::Node& data = node_["data"];
-  data["colors"] >> colors_;
-  data["brightness"] >> brightness_;
-  enforceSizes();
-  displayLights();
-}
-
 void LightReader::displayLights() {
+  if (config_.hardware.local)  // Do the lights in Python.
+    return;
+
   if (compressed_) {
     for (int i = 0; i < config_.count; ++i) {
       const Colour& color = colors_[i];
@@ -129,7 +120,7 @@ void LightReader::displayLights() {
   lightingWindow_->setLights(colors_);
 }
 
-void LightReader::clight() {
+void LightReader::light() {
   compressed_ = true;
   string lights;
   node_["data"] >> lights;

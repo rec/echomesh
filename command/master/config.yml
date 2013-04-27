@@ -1,7 +1,3 @@
-light:
-  type: client
-  period: 2ms
-
 network:
   client:
     start: true

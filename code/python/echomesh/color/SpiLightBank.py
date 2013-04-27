@@ -24,7 +24,7 @@ class SpiLightBank(LightBank):
     assert LightsEnabled.lights_enabled(), "Lighting is not enabled."
 
     super(SpiLightBank, self).__init__(count=count)
-    order = Config.get('light', 'rgb_order')
+    order = Config.get('light', 'hardware', 'rgb_order')
     self.order = getattr(LightBank, order.upper(), None)
     if not self.order:
       LOGGER.error("Didn't understand order %s", order)

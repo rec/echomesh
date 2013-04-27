@@ -1,19 +1,20 @@
-#include "/development/echomesh/code/cpp/echomesh/component/Instrument.h"
+#include "/development/echomesh/code/cpp/echomesh/component/InstrumentComponent.h"
 
 namespace echomesh {
 
-Instrument::Instrument()
+InstrumentComponent::InstrumentComponent()
     : color_(Colours::black), labelColor_(Colours::white) {
 }
 
-void Instrument::configure(const String& label, const LightDisplay& config) {
+void InstrumentComponent::configure(const String& label,
+                                    const Instrument& config) {
   MessageManagerLock l;
   config_ = config;
   label_ = label;
   repaint();
 }
 
-void Instrument::setColor(uint8 r, uint8 g, uint8 b) {
+void InstrumentComponent::setColor(uint8 r, uint8 g, uint8 b) {
   if (r != color_.getRed() ||
       g != color_.getGreen() ||
       b != color_.getBlue()) {
@@ -25,11 +26,11 @@ void Instrument::setColor(uint8 r, uint8 g, uint8 b) {
   }
 }
 
-void Instrument::setColor(const Colour& c) {
+void InstrumentComponent::setColor(const Colour& c) {
   setColor(c.getRed(), c.getGreen(), c.getBlue());
 }
 
-void Instrument::paint(Graphics& g) {
+void InstrumentComponent::paint(Graphics& g) {
   g.setColour(color_);
   Rectangle<int> b = getLocalBounds();
   if (config_.isRect)

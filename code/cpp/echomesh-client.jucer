@@ -13,8 +13,10 @@
         <FILE id="ZnCbU4" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
       </GROUP>
       <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
-        <FILE id="VmZRiL" name="Instrument.cpp" compile="1" resource="0" file="echomesh/component/Instrument.cpp"/>
-        <FILE id="dgFCdl" name="Instrument.h" compile="0" resource="0" file="echomesh/component/Instrument.h"/>
+        <FILE id="qMMr6Z" name="InstrumentComponent.h" compile="0" resource="0"
+              file="echomesh/component/InstrumentComponent.h"/>
+        <FILE id="fdk7F4" name="InstrumentComponent.cpp" compile="1" resource="0"
+              file="echomesh/component/InstrumentComponent.cpp"/>
         <FILE id="jJOfFk" name="InstrumentGrid.cpp" compile="1" resource="0"
               file="echomesh/component/InstrumentGrid.cpp"/>
         <FILE id="KYhXQF" name="InstrumentGrid.h" compile="0" resource="0"

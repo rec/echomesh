@@ -182,19 +182,21 @@ light:
   brightness: 100%
   count: 256
   enable: false
-  rgb_order: rgb
 
-  # period needs to be 40ms or up if you are using tk but can be as short as 2ms
-  # if you're using hardware lighting.
-  # Update:  period needs to be 200ms on RP!
-  period: 5ms
-  type: tk
+  hardware:
+    enable: true
+    period: 5ms
+    local: true
+    rgb_order: rgb
 
-  display:
+  visualizer:
+    type: client
+    period: 20ms
+
     background: white
     layout: [16, 16]
     padding: [3, 3]
-    light:
+    instrument:
       background: 0x606060
       border:
         color: black

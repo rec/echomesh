@@ -3,7 +3,7 @@
 
 #include "echomesh/base/Echomesh.h"
 #include "echomesh/base/LightConfig.h"
-#include "echomesh/component/Instrument.h"
+#include "echomesh/component/InstrumentComponent.h"
 
 namespace echomesh {
 
@@ -18,7 +18,7 @@ class InstrumentGrid : public Component {
 
  private:
   LightConfig config_;
-  vector<Instrument*> instruments_;
+  vector<InstrumentComponent*> instruments_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentGrid)
 };

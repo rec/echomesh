@@ -66,10 +66,10 @@ class ExternalLightBank(LightBank):
   def config_update(self, get):
     super(ExternalLightBank, self).config_update(get)
     light = copy.deepcopy(get('light'))
-    display = light['display']
-    display['background'] = ColorTable.to_color(display['background'])
+    visualizer = light['visualizer']
+    visualizer['background'] = ColorTable.to_color(visualizer['background'])
 
-    dl = display['light']
+    dl = visualizer['instrument']
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
 
@@ -100,4 +100,4 @@ class ExternalLightBank(LightBank):
 
   def _display_bytes(self):
     with self.lock:
-      self._send(type='clight', data=base64.b64encode(self.bytes))
+      self._send(type='light', data=base64.b64encode(self.bytes))

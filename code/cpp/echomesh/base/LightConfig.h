@@ -1,11 +1,13 @@
-#ifndef __LIGHT_CONFIG__
-#define __LIGHT_CONFIG__
+#ifndef __ECHOMESH_LIGHT_CONFIG__
+#define __ECHOMESH_LIGHT_CONFIG__
 
 #include "yaml-cpp/yaml.h"
 
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+
+// See echomesh/code/python/echomesh/config/config.yml
 
 struct Point {
   int x;
@@ -17,7 +19,7 @@ struct Border {
   int width;
 };
 
-struct LightDisplay {
+struct Instrument {
   Colour background;
   Border border;
   bool isRect;
@@ -29,18 +31,27 @@ struct LightDisplay {
   string shape;
 };
 
-struct Display {
+struct Visualizer {
+  int period;
   Colour background;
   Point layout;
   Point padding;
-  LightDisplay light;
+  Instrument instrument;
+};
+
+struct Hardware {
+  bool enable;
+  int period;
+  bool local;
+  string rgbOrder;
 };
 
 struct LightConfig {
   int count;
-  string rgbOrder;
+  bool enable;
+  Hardware hardware;
 
-  Display display;
+  Visualizer visualizer;
 };
 
 typedef uint8 ColorBytes[3];
@@ -51,12 +62,13 @@ typedef std::vector<uint8> ByteList;
 void operator>>(const YAML::Node&, Colour&);
 void operator>>(const YAML::Node&, Point&);
 void operator>>(const YAML::Node&, Border&);
-void operator>>(const YAML::Node&, LightDisplay&);
-void operator>>(const YAML::Node&, Display&);
+void operator>>(const YAML::Node&, Instrument&);
+void operator>>(const YAML::Node&, Visualizer&);
+void operator>>(const YAML::Node&, Hardware&);
 void operator>>(const YAML::Node&, LightConfig&);
 void operator>>(const YAML::Node&, ColorBytes&);
 void operator>>(const YAML::Node&, ColorList&);
 
 }  // namespace echomesh
 
-#endif  // __LIGHT_CONFIG__
+#endif  // __ECHOMESH_LIGHT_CONFIG__

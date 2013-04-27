@@ -59,7 +59,10 @@ class LightBank(ThreadLoop):
       if not len(lights):
         return  # TODO: this always happens the first time:  why?
       self._display_lights(lights, brightness)
-    self._next_time += UnitConfig.get('light', 'period')
+
+    self._next_time += UnitConfig.get('light', 'visualizer', 'period')
+    # TODO: which period?
+
     time.sleep(max(0, self._next_time - time.time()))
 
   def config_update(self, get):

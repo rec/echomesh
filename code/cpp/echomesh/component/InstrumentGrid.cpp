@@ -25,32 +25,32 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   }
   instruments_.resize(config_.count);
   for (int i = oldCount; i < config_.count; ++i) {
-    instruments_[i] = new Instrument;
+    instruments_[i] = new InstrumentComponent;
     addAndMakeVisible(instruments_[i]);
   }
 
-  const LightDisplay& light = config_.display.light;
-  int delta = light.labelStartsAtZero ? 0 : 1;
+  const Instrument& instrument = config_.visualizer.instrument;
+  int delta = instrument.labelStartsAtZero ? 0 : 1;
   for (int i = 0; i < instruments_.size(); ++i)
-    instruments_[i]->configure(String(i + delta), light);
+    instruments_[i]->configure(String(i + delta), instrument);
 
-  int top = config_.display.padding.y + TOP_TWEAK;
-  int left = config_.display.padding.x + LEFT_TWEAK;
-  int columns = config.display.layout.x;
-  int rows = config.display.layout.y;
+  int top = config_.visualizer.padding.y + TOP_TWEAK;
+  int left = config_.visualizer.padding.x + LEFT_TWEAK;
+  int columns = config_.visualizer.layout.x;
+  int rows = config_.visualizer.layout.y;
 
-  int w = light.size.x + light.padding.x;
-  int h = light.size.y + light.padding.y;
+  int w = instrument.size.x + instrument.padding.x;
+  int h = instrument.size.y + instrument.padding.y;
   int index = 0;
   for (int y = 0; y < rows; ++y) {
     for (int x = 0; x < columns; ++x) {
       instruments_[index++]->setBounds(left + x * w, top + y * h,
-                                       light.size.x, light.size.y);
+                                       instrument.size.x, instrument.size.y);
     }
   }
 
-  setSize(left + w * columns + config_.display.padding.x,
-          top + h * rows + config_.display.padding.y);
+  setSize(left + w * columns + config_.visualizer.padding.x,
+          top + h * rows + config_.visualizer.padding.y);
   repaint();
 }
 
@@ -60,7 +60,7 @@ void InstrumentGrid::setLights(const ColorList& lights) {
 }
 
 void InstrumentGrid::paint(Graphics& g) {
-  g.fillAll(config_.display.background);
+  g.fillAll(config_.visualizer.background);
 }
 
 }  // namespace echomesh

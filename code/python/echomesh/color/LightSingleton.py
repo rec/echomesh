@@ -51,7 +51,7 @@ class LightSingleton(Runnable):
 
   def _make_lights(self):
     if not self.lights:
-      classpath = _TYPE_MAP[Config.get('light', 'type')]
+      classpath = _TYPE_MAP[Config.get('light', 'visualizer', 'type')]
       self.lights = Importer.imp(classpath, defer_failure=False)()
       self.lights.start()
 

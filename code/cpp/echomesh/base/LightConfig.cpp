@@ -34,7 +34,7 @@ void operator>>(const YAML::Node& node, Border& p) {
   node["width"] >> p.width;
 }
 
-void operator>>(const YAML::Node& node, LightDisplay& p) {
+void operator>>(const YAML::Node& node, Instrument& p) {
   node["background"] >> p.background;
   node["border"] >> p.border;
   node["label"] >> p.label;
@@ -46,17 +46,26 @@ void operator>>(const YAML::Node& node, LightDisplay& p) {
   p.isRect = not p.shape.find("rectangle");
 }
 
-void operator>>(const YAML::Node& node, Display& p) {
+void operator>>(const YAML::Node& node, Visualizer& p) {
   node["background"] >> p.background;
   node["layout"] >> p.layout;
   node["padding"] >> p.padding;
-  node["light"] >> p.light;
+  node["period"] >> p.period;
+  node["instrument"] >> p.instrument;
+}
+
+void operator>>(const YAML::Node& node, Hardware& p) {
+  node["enable"] >> p.enable;
+  node["period"] >> p.period;
+  node["local"] >> p.local;
+  node["rgb_order"] >> p.rgbOrder;
 }
 
 void operator>>(const YAML::Node& node, LightConfig& p) {
   node["count"] >> p.count;
-  node["rgb_order"] >> p.rgbOrder;
-  node["display"] >> p.display;
+  node["enable"] >> p.enable;
+  node["hardware"] >> p.hardware;
+  node["visualizer"] >> p.visualizer;
 }
 
 void operator>>(const YAML::Node& node, ColorBytes& p) {

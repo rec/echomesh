@@ -21,7 +21,6 @@ class LightReader : public ReadThread {
  private:
   virtual void quit();
   void clear();
-  void clight();
   void light();
   void config();
   void displayLights();

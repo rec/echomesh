@@ -77,7 +77,7 @@ class TkLightBank(LightBank):
   def config_update(self, get):
     count = Config.get('light', 'count')
     def _get(*items):
-      return get(*(('light', 'display') + items))
+      return get(*(('light', 'visualizer') + items))
 
     last_get = _get()
     if self.last_get == last_get and self.count == count:
@@ -88,13 +88,13 @@ class TkLightBank(LightBank):
     def _color(*items):
       return ColorTable.to_tk(ColorTable.to_color(_get(*items)))
 
-    self.border_color = _color('light', 'border', 'color')
-    self.button_background = _color('light', 'background')
+    self.border_color = _color('instrument', 'border', 'color')
+    self.button_background = _color('instrument', 'background')
     self.background = _color('background')
-    self.border_width = _get('light', 'border', 'width')
-    self.shape = _get('light', 'shape')
-    self.size = _get('light', 'size')
-    self.light_padding = _get('light', 'padding')
+    self.border_width = _get('instrument', 'border', 'width')
+    self.shape = _get('instrument', 'shape')
+    self.size = _get('instrument', 'size')
+    self.light_padding = _get('instrument', 'padding')
     self.padding = _get('padding')
     self.columns, self.rows = _get_dimension(self.count, *_get('layout'))
     self.width = (self.padding['top'] +
