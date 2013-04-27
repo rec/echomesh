@@ -4,7 +4,6 @@
 #include <iostream>
 #include <string>
 
-#include "echomesh/component/LightComponent.h"
 #include "echomesh/network/LineGetter.h"
 #include "echomesh/network/ReadThread.h"
 

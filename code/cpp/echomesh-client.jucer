@@ -19,10 +19,6 @@
               file="echomesh/component/InstrumentGrid.cpp"/>
         <FILE id="KYhXQF" name="InstrumentGrid.h" compile="0" resource="0"
               file="echomesh/component/InstrumentGrid.h"/>
-        <FILE id="zIN6vy" name="LightComponent.cpp" compile="1" resource="0"
-              file="echomesh/component/LightComponent.cpp"/>
-        <FILE id="POm1zh" name="LightComponent.h" compile="0" resource="0"
-              file="echomesh/component/LightComponent.h"/>
         <FILE id="F5HJMt" name="LightingWindow.h" compile="0" resource="0"
               file="echomesh/component/LightingWindow.h"/>
       </GROUP>

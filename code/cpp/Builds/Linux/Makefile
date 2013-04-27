@@ -53,7 +53,6 @@ OBJECTS := \
   $(OBJDIR)/Log_edbe3e58.o \
   $(OBJDIR)/Instrument_a35abecb.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
-  $(OBJDIR)/LightComponent_1f23fbeb.o \
   $(OBJDIR)/Main_ed86ae4b.o \
   $(OBJDIR)/LightReader_649349d0.o \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
@@ -138,11 +137,6 @@ $(OBJDIR)/Instrument_a35abecb.o: ../../echomesh/component/Instrument.cpp
 $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling InstrumentGrid.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/LightComponent_1f23fbeb.o: ../../echomesh/component/LightComponent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LightComponent.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp

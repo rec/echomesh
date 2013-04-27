@@ -274,9 +274,6 @@
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp">
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\component\LightComponent.cpp">
-      <Filter>echomesh-client\echomesh\component</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\echomesh\Main.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
@@ -1333,9 +1330,6 @@
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h">
-      <Filter>echomesh-client\echomesh\component</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\component\LightComponent.h">
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h">

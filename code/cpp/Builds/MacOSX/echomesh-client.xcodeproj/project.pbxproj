@@ -65,7 +65,6 @@
 		F2EDD1B13880D397C078D2CA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1BF256C5EB53ADEDCC6D24 /* OpenGL.framework */; };
 		F385468C749A85D30E126F66 /* exp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5E4A9F30B92E2E61251AC222 /* exp.cpp */; };
 		F4B1CA2B1358E811FAFCB883 /* aliasmanager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C3C90E80FDA189BA9D11099A /* aliasmanager.cpp */; };
-		F5A281DCBE64DB63224780E3 /* LightComponent.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1FFA4DB7E2E4D43B959F9F46 /* LightComponent.cpp */; };
 		F982D2E76CAB618911097414 /* stream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6B921583AAF219B2BC1816 /* stream.cpp */; };
 /* End PBXBuildFile section */
 
@@ -184,7 +183,6 @@
 		1ED2C3DFBDB1C461EDE6DE29 /* juce_ImagePreviewComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ImagePreviewComponent.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_ImagePreviewComponent.h; sourceTree = SOURCE_ROOT; };
 		1FB94F47B07D8674624AE816 /* juce_Variant.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Variant.cpp; path = ../../JuceLibraryCode/modules/juce_core/containers/juce_Variant.cpp; sourceTree = SOURCE_ROOT; };
 		1FD8EE8ED54BE9C4E00E23DC /* juce_NativeMessageBox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_NativeMessageBox.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_NativeMessageBox.h; sourceTree = SOURCE_ROOT; };
-		1FFA4DB7E2E4D43B959F9F46 /* LightComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LightComponent.cpp; path = ../../echomesh/component/LightComponent.cpp; sourceTree = SOURCE_ROOT; };
 		209943C2BA90C99FB2BABD53 /* echomesh-client.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "echomesh-client.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		20CEC8AA083C7B4FE0405C99 /* node.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = node.cpp; path = "../../yaml-cpp-src/node.cpp"; sourceTree = SOURCE_ROOT; };
 		20EE2F791850E131B42A5BD3 /* juce_ThreadWithProgressWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ThreadWithProgressWindow.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_ThreadWithProgressWindow.cpp; sourceTree = SOURCE_ROOT; };
@@ -707,7 +705,6 @@
 		CB174F06803370C0A97B121B /* juce_ToggleButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ToggleButton.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/buttons/juce_ToggleButton.h; sourceTree = SOURCE_ROOT; };
 		CB6493B0222A0C874F168D67 /* juce_XmlDocument.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_XmlDocument.h; path = ../../JuceLibraryCode/modules/juce_core/xml/juce_XmlDocument.h; sourceTree = SOURCE_ROOT; };
 		CB77704EAA475A031BA0C0A5 /* juce_HyperlinkButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_HyperlinkButton.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/buttons/juce_HyperlinkButton.h; sourceTree = SOURCE_ROOT; };
-		CB7DA4C021AE28E9F01431D0 /* LightComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LightComponent.h; path = ../../echomesh/component/LightComponent.h; sourceTree = SOURCE_ROOT; };
 		CC7DAA8CCD17569B61DFA6B1 /* juce_Label.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Label.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_Label.h; sourceTree = SOURCE_ROOT; };
 		CCC0CC1EFCD3EE639B4F854C /* juce_ImageComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_ImageComponent.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_ImageComponent.cpp; sourceTree = SOURCE_ROOT; };
 		CCC5201034531C4C85D123D1 /* juce_DrawableRectangle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DrawableRectangle.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/drawables/juce_DrawableRectangle.h; sourceTree = SOURCE_ROOT; };
@@ -1887,8 +1884,6 @@
 				3C90A9A14B7AEB2EC8FA96D0 /* Instrument.h */,
 				6145AC903FD545F24B53F366 /* InstrumentGrid.cpp */,
 				408D26A89213AE6F25F1034F /* InstrumentGrid.h */,
-				1FFA4DB7E2E4D43B959F9F46 /* LightComponent.cpp */,
-				CB7DA4C021AE28E9F01431D0 /* LightComponent.h */,
 				E5D867DFD64E428FE04EAB18 /* LightingWindow.h */,
 			);
 			name = component;
@@ -2468,7 +2463,6 @@
 				940C735B452C0A4333F3C28A /* Log.cpp in Sources */,
 				93E4FA3CEC4BD2D7B6966378 /* Instrument.cpp in Sources */,
 				72508A69E10C7D0855BCC35A /* InstrumentGrid.cpp in Sources */,
-				F5A281DCBE64DB63224780E3 /* LightComponent.cpp in Sources */,
 				AADC33FC886CCFE9036FCBBB /* Main.cpp in Sources */,
 				96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */,
 				84940BBD0E59D991135F1707 /* LineGetter.cpp in Sources */,
