@@ -189,7 +189,6 @@ light:
   # Update:  period needs to be 200ms on RP!
   period: 5ms
   type: tk
-  compress: true
 
   display:
     background: white

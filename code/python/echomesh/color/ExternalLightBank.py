@@ -72,7 +72,6 @@ class ExternalLightBank(LightBank):
     dl = display['light']
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
-    self.compress_lights = light['compress']
 
     with self.lock:
       self._send(type='config', data=light)
@@ -97,10 +96,7 @@ class ExternalLightBank(LightBank):
 
   def _display_lights(self, lights, brightness):
     with self.lock:
-      if self.compress_lights:
-        self._send_compressed(lights, brightness)
-      else:
-        self._send('light', colors=lights, brightness=brightness)
+      self._send_compressed(lights, brightness)
 
   def _display_bytes(self):
     with self.lock:

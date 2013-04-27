@@ -10,6 +10,16 @@
 
 namespace echomesh {
 
+namespace {
+
+struct QuitMessage : public CallbackMessage {
+  virtual void messageCallback() {
+    JUCEApplication::quit();
+  };
+};
+
+}
+
 using namespace std;
 using namespace rec::util::thread;
 
@@ -40,7 +50,7 @@ LightReader::~LightReader() {
 
 void LightReader::quit() {
   log("quitting");
-  JUCEApplication::quit();
+  (new QuitMessage)->post();
   log("done");
 }
 
