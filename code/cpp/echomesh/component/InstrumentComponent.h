@@ -13,14 +13,10 @@ class InstrumentComponent : public Component {
 
   void configure(const String& label, const Instrument&);
 
-  void setColor(uint8 r, uint8 g, uint8 b);
-
   void setColor(const Colour&);
   virtual void paint(Graphics&);
 
  private:
-  void setLabel();
-
   String label_;
   Instrument config_;
   Colour color_;

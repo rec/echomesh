@@ -190,6 +190,7 @@ light:
     rgb_order: rgb
 
   visualizer:
+    enable: true
     type: client
     period: 20ms
 

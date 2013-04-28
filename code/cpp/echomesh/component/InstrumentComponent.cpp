@@ -13,30 +13,24 @@ void InstrumentComponent::configure(const String& label,
   label_ = label;
 }
 
-void InstrumentComponent::setColor(uint8 r, uint8 g, uint8 b) {
-  ScopedLock l(lock_);
-  color_ = Colour(r, g, b);
-  setLabel();
-}
-
 void InstrumentComponent::setColor(const Colour& c) {
   ScopedLock l(lock_);
-  color_ = c;
-  setLabel();
-}
+  if (c == color_)
+    return;
 
-void InstrumentComponent::setLabel() {
+  color_ = c;
   static const int GREY = (3 * 0xFF) / 2;
   uint8 r = color_.getRed();
   uint8 g = color_.getGreen();
   uint8 b = color_.getBlue();
   labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
+  repaint();
 }
 
 void InstrumentComponent::paint(Graphics& g) {
-  ScopedLock l(lock_);
   Colour back, label;
   {
+    ScopedLock l(lock_);
     back = color_;
     label = labelColor_;
   }
