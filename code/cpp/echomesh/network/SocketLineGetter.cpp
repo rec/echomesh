@@ -32,12 +32,15 @@ void SocketLineGetter::check(bool condition, const String& msg) {
   }
 }
 
-void SocketLineGetter::writeSocket(const void* data, int size) {
-  log("starting to write");
+static const char YAML_SEPARATOR[] = "\n---\n";
+
+void SocketLineGetter::writeSocket(const char* data, int size) {
+  string s(data, size);
+  s += YAML_SEPARATOR;
+
   tryToConnect();
-  if (socket_.write(data, size) < 0)
+  if (socket_.write(s.data(), s.size()) < 0)
     log("ERROR writing data.");
-  log("write done");
 }
 
 void SocketLineGetter::tryToConnect() {

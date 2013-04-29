@@ -26,7 +26,7 @@ class SocketLineGetter : public LineGetter {
   virtual string getLine();
   virtual bool eof() const { return eof_; }
 
-  void writeSocket(const void*, int);
+  void writeSocket(const char*, int);
 
  private:
   string readSocket();

@@ -55,6 +55,7 @@ class Server(ThreadRunnable):
           continue
       if data and self.read_callback:
         self.read_callback(data)
+
       if disconnect:
         time.sleep(self.timeout)
 
