@@ -274,6 +274,9 @@
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp">
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp">
+      <Filter>echomesh-client\echomesh\component</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\Main.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>

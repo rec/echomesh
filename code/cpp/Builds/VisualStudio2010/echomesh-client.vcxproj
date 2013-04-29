@@ -133,6 +133,7 @@
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
+    <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp"/>
     <ClCompile Include="..\..\echomesh\Main.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LightReader.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>

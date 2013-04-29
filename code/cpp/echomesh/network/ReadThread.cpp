@@ -49,7 +49,6 @@ void ReadThread::handleMessage(const string& str) {
     YAML::Parser parser(s);
     if (parser.GetNextDocument(node_)) {
       node_["type"] >> type_;
-      // log("type! " + type_);
       MessageMap::iterator i = messageMap_.find(type_);
       if (i == messageMap_.end()) {
         log("Didn't find message type " + type_);

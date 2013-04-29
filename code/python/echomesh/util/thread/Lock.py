@@ -4,7 +4,7 @@ import threading
 import traceback
 
 DEBUG = not True
-SUSPICIOUS_LOCK = 4
+SUSPICIOUS_LOCK = -1
 
 def print_traceback():
   for line in traceback.format_stack():

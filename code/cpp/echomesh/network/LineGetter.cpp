@@ -61,7 +61,6 @@ LineGetter* makeLineGetter(const String& command) {
     desc.bufferSize = (parts.size() > 4) ? parts[4].getIntValue() : 4096;
     desc.tries = 0;
     desc.retryTimeout = 1000;
-    log("created a SocketLineGetter");
     return new SocketLineGetter(desc);
   }
 

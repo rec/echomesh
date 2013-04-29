@@ -5,6 +5,7 @@ import yaml
 
 from six.moves import queue
 
+from echomesh.base import Yaml
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util import Log
 
@@ -14,7 +15,6 @@ LOGGER = Log.logger(__name__)
 
 MAX_SIZE = 1024
 
-SEGMENT = '\n---\n'
 TIMEOUT = 0.1
 
 class Socket(MasterRunnable):
@@ -41,7 +41,7 @@ class Socket(MasterRunnable):
       return False
 
     self.buffer += res
-    parts = self.buffer.split(SEGMENT)
+    parts = self.buffer.split(Yaml.SEPARATOR)
     self.buffer = parts.pop()
     for part in parts:
       if part:
@@ -60,7 +60,7 @@ class Socket(MasterRunnable):
       except queue.Empty:
         return
 
-      data = yaml.safe_dump(item) + SEGMENT
+      data = yaml.safe_dump(item) + Yaml.SEPARATOR
       while data:
         packet, data = data[0:self.max_size], data[self.max_size:]
         self._raw_send(packet)

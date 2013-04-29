@@ -51,14 +51,8 @@ class LightBank(ThreadLoop):
     if not client_lights:
       return
 
-    if COMBINE_TO_BYTEARRAY:
-      Combiner.combine_to_bytearray(self.bytes, client_lights, brightness)
-      self._display_bytes()
-    else:
-      lights = Combiner.combine(Combiner.sup, *client_lights)
-      if not len(lights):
-        return  # TODO: this always happens the first time:  why?
-      self._display_lights(lights, brightness)
+    Combiner.combine_to_bytearray(self.bytes, client_lights, brightness)
+    self._display_lights()
 
     self._next_time += UnitConfig.get('light', 'visualizer', 'period')
     # TODO: which period?
@@ -69,8 +63,5 @@ class LightBank(ThreadLoop):
     self.count = get('light', 'count')
     self.bytes = bytearray(3 * self.count)
 
-  def _display_lights(self, lights):
-    pass
-
-  def _display_bytes(self):
+  def _display_lights(self):
     pass

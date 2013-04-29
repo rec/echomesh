@@ -3,15 +3,24 @@
 
 namespace echomesh {
 
+static SocketLineGetter* INSTANCE = NULL;
+
 SocketLineGetter::SocketLineGetter(const SocketDescription& desc)
     : buffer_(desc.bufferSize), desc_(desc), connected_(false), eof_(false),
       lineQueue_(new LineQueue) {
+  INSTANCE = this;
 }
 
-SocketLineGetter::~SocketLineGetter() {}
+SocketLineGetter::~SocketLineGetter() {
+  INSTANCE = NULL;
+}
+
+SocketLineGetter* SocketLineGetter::instance() {
+  return INSTANCE;
+}
 
 string SocketLineGetter::getLine() {
-  if (lineQueue_->empty())
+  while (lineQueue_->empty())
     lineQueue_->push(readSocket());
   return lineQueue_->pop();
 }
@@ -23,12 +32,23 @@ void SocketLineGetter::check(bool condition, const String& msg) {
   }
 }
 
-string SocketLineGetter::readSocket() {
+void SocketLineGetter::writeSocket(const void* data, int size) {
+  log("starting to write");
+  tryToConnect();
+  if (socket_.write(data, size) < 0)
+    log("ERROR writing data.");
+  log("write done");
+}
+
+void SocketLineGetter::tryToConnect() {
   for (int attempts = 0; !connected_; ++attempts) {
     check(not desc_.tries or attempts <= desc_.tries, "Failed to connect");
     connected_ = socket_.connect(desc_.server, desc_.port, desc_.retryTimeout);
   }
+}
 
+string SocketLineGetter::readSocket() {
+  tryToConnect();
   while (true) {
     check(socket_.isConnected(), "StreamingSocket: Socket disconnected.");
 
@@ -40,6 +60,7 @@ string SocketLineGetter::readSocket() {
     check(socket_.isConnected(), "Socket was ready, then disconnected.");
 
     int read = socket_.read(&buffer_.front(), buffer_.size(), false);
+
     check(read, "Socket was ready, but got zero data.");
     check(read > 0, "StreamingSocket read error");
     return string(&buffer_.front(), read);

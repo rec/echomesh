@@ -21,12 +21,18 @@ class SocketLineGetter : public LineGetter {
   SocketLineGetter(const SocketDescription&);
   virtual ~SocketLineGetter();
 
+  static SocketLineGetter* instance();
+
   virtual string getLine();
   virtual bool eof() const { return eof_; }
+
+  void writeSocket(const void*, int);
 
  private:
   string readSocket();
   void check(bool, const String&);
+
+  void tryToConnect();
 
   StreamingSocket socket_;
   vector<char> buffer_;

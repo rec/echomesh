@@ -11,61 +11,62 @@ from echomesh.util import Log
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 from echomesh.util.thread import Lock
 
-QUEUED_WRITES = False
-
 LOGGER = Log.logger(__name__)
 
 class Server(ThreadRunnable):
-  def __init__(self, host, port, timeout, max_queue_size=20,
+  def __init__(self, host, port, timeout, read_callback=None, max_queue_size=20,
                logging=False, allow_reuse_address=True):
     super(Server, self).__init__()
     self.timeout = timeout
+    self.read_callback = read_callback
     self.queue = None
+    self.config = None
     self.bytes_written = 0
     self.next_target = 0
     self.packets = 0
     self.lock = Lock.Lock()
-    self.writer = None
+    self.handler = None
     self.server = ServerMaker.make_server(
-      self.handle, host, port, timeout, logging, allow_reuse_address)
+      self._handle, host, port, timeout, logging, allow_reuse_address)
 
   def target(self):
     self.server.serve_forever(poll_interval=self.timeout)
 
-  def handle(self, handler):
-    self.writer = handler.wfile
-    self._on_new_handler()
-    with self.lock:
-      if self.queue:
-        data = []
-        while not self.queue.empty():
-          data.append(self.queue.get(False))
-        self.writer.write(''.join(data))
-        self.queue = None
+  def _write(self, *data):
+    if self.handler and data:
+      for d in data:
+        self.handler.wfile.write(d)
+      self.handler.wfile.flush()
 
-    while self.is_running and self.writer:
-      time.sleep(self.timeout)
-
-  def write(self, data):
+  def _handle(self, handler):
     with self.lock:
-      if self.writer:
+      self.handler = handler
+      self._write(*self.config)
+
+    while self.is_running:
+      with self.lock:
+        rfile = self.handler.rfile
+        disconnect = not self.handler
+      data = None
+      if not disconnect:
         try:
-          self.writer.write(data)
-          return
+          data = rfile.readline()
         except:
-          self.writer = None
-          self.lost_connection = True
+          continue
+      if data and self.read_callback:
+        self.read_callback(data)
+      if disconnect:
+        time.sleep(self.timeout)
 
-      if not self.queue:
-        self.queue = queue.Queue()
-      self.queue.put(data)
+  def set_config(self, *config):
+    with self.lock:
+      self.config = config
+      self._write(*config)
 
-  def flush(self):
-    self.writer and self.writer.flush()
+  def write(self, *data):
+    with self.lock:
+      self._write(*data)
 
   def _after_thread_pause(self):
     self.server.shutdown()
     self.server = None
-
-  def _on_new_handler(self):
-    pass

@@ -5,7 +5,8 @@ import yaml
 
 from contextlib import closing
 
-SEPARATOR = '\n---\n'
+SEPARATOR_BASE = '---'
+SEPARATOR = '\n%s\n' % SEPARATOR_BASE
 PROPAGATE_EXCEPTIONS = False
 
 def filename(name):

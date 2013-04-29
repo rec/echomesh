@@ -66,18 +66,14 @@ void LightReader::enforceSizes() {
     colorBytes_.resize(3 * config_.count, 0x80);
 }
 
-
 void LightReader::config() {
   const YAML::Node& data = node_["data"];
-  log("config.");
   data >> config_;
   enforceSizes();
 
   for (int i = 0; i < 3; ++i)
     rgbOrder_[i] = config_.hardware.rgbOrder.find("rgb"[i]);
-  log("set config set light.");
   lightingWindow_->setConfig(config_);
-  log("config done.");
 }
 
 inline uint8 getSpiColor(uint8 color) {

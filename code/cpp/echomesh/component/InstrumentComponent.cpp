@@ -28,9 +28,9 @@ void InstrumentComponent::setColor(const Colour& c) {
 }
 
 void InstrumentComponent::paint(Graphics& g) {
+  ScopedLock l(lock_);
   Colour back, label;
   {
-    ScopedLock l(lock_);
     back = color_;
     label = labelColor_;
   }

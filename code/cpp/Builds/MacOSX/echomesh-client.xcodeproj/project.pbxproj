@@ -48,6 +48,7 @@
 		940C735B452C0A4333F3C28A /* Log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC502C0C2825B430AFB4E5A4 /* Log.cpp */; };
 		96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24E63E16EC76E02BB9136591 /* LightReader.cpp */; };
 		9D84C98F7C02EE3EFFF12A69 /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6121C566C06EC2553A4634B5 /* ostream.cpp */; };
+		9EE698BCF01882C66A0DD433 /* LightingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E326E8F45F9F28B0FA3A8934 /* LightingWindow.cpp */; };
 		A22E823A45BC6178E06D028A /* parserstate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F99F9002926D7A4CF48DF11C /* parserstate.cpp */; };
 		A62CFF8C78338F86FEC36DC3 /* juce_data_structures.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0C21028F1054D39788E82D6E /* juce_data_structures.mm */; };
 		A81EB5EB51D0222B9D2C3EE4 /* juce_graphics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 06E5FE2E175B5905D590282A /* juce_graphics.mm */; };
@@ -771,6 +772,7 @@
 		E24B82CA847DB3061923E471 /* juce_ActiveXControlComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ActiveXControlComponent.h; path = ../../JuceLibraryCode/modules/juce_gui_extra/embedding/juce_ActiveXControlComponent.h; sourceTree = SOURCE_ROOT; };
 		E26F25E46988F97E69FA6B72 /* juce_Primes.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_Primes.cpp; path = ../../JuceLibraryCode/modules/juce_cryptography/encryption/juce_Primes.cpp; sourceTree = SOURCE_ROOT; };
 		E305356D8388F5E03D9BB65E /* parserstate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = parserstate.h; path = "../../yaml-cpp-src/parserstate.h"; sourceTree = SOURCE_ROOT; };
+		E326E8F45F9F28B0FA3A8934 /* LightingWindow.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LightingWindow.cpp; path = ../../echomesh/component/LightingWindow.cpp; sourceTree = SOURCE_ROOT; };
 		E3856D4E05D6D5ADE163CE6C /* juce_DrawableShape.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_DrawableShape.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/drawables/juce_DrawableShape.h; sourceTree = SOURCE_ROOT; };
 		E3A90EEB6EB19A9B43129911 /* juce_SplashScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_SplashScreen.h; path = ../../JuceLibraryCode/modules/juce_gui_extra/misc/juce_SplashScreen.h; sourceTree = SOURCE_ROOT; };
 		E42733AC053666908EF8048D /* juce_linux_Threads.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_linux_Threads.cpp; path = ../../JuceLibraryCode/modules/juce_core/native/juce_linux_Threads.cpp; sourceTree = SOURCE_ROOT; };
@@ -1884,6 +1886,7 @@
 				D751E90BBB7CA5830BAE90BC /* InstrumentComponent.cpp */,
 				6145AC903FD545F24B53F366 /* InstrumentGrid.cpp */,
 				408D26A89213AE6F25F1034F /* InstrumentGrid.h */,
+				E326E8F45F9F28B0FA3A8934 /* LightingWindow.cpp */,
 				E5D867DFD64E428FE04EAB18 /* LightingWindow.h */,
 			);
 			name = component;
@@ -2463,6 +2466,7 @@
 				940C735B452C0A4333F3C28A /* Log.cpp in Sources */,
 				E60FACFC83103C3AAD826C48 /* InstrumentComponent.cpp in Sources */,
 				72508A69E10C7D0855BCC35A /* InstrumentGrid.cpp in Sources */,
+				9EE698BCF01882C66A0DD433 /* LightingWindow.cpp in Sources */,
 				AADC33FC886CCFE9036FCBBB /* Main.cpp in Sources */,
 				96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */,
 				84940BBD0E59D991135F1707 /* LineGetter.cpp in Sources */,
