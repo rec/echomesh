@@ -19,7 +19,6 @@ def save_config(_, *values):
   if MergeConfig.LOCAL_CHANGES:
     config_file, data = _get_raw_file()
     data = [d for d in data if d.strip()]
-    print('!!!! data ', data)
     if len(data) < 2:
       data.append(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
     else:

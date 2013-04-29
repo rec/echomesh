@@ -25,5 +25,5 @@ def make_command():
   parts.append(str(timeout))
   parts.append(str(config['buffer_size']))
 
-  return 'BOZO', parts
+  return parts
 

@@ -45,13 +45,13 @@ class LightBank(ThreadLoop):
     return not not self.clients
 
   def single_loop(self):
-    brightness = UnitConfig.get('light', 'brightness')
     with self.lock:
       client_lights = [client() for client in self.clients]
     if not client_lights:
       return
 
-    Combiner.combine_to_bytearray(self.bytes, client_lights, brightness)
+    Combiner.combine_to_bytearray(self.bytes, client_lights,
+                                  UnitConfig.get('light', 'brightness'))
     self._display_lights()
 
     self._next_time += UnitConfig.get('light', 'visualizer', 'period')

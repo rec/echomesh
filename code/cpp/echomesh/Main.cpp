@@ -17,9 +17,6 @@ class Echomesh  : public JUCEApplication {
   }
 
   void shutdown() {
-    std::cerr << "Shutting down\n";
-    std::cerr.flush();
-    echomesh::log("shutting down");
     lightingWindow_ = nullptr;
     echomesh::close_log();
   }
