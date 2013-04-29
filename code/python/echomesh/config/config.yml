@@ -54,7 +54,7 @@ audio:
     # Otherwise, it uses the default input - most of the time, the default input
     # will work perfectly well.
     device_index: -1  # See https://github.com/rec/echomesh/issues/196.
-    device_name: ''
+    device_name: ""
 
     periodsize: 160
 
@@ -88,14 +88,14 @@ audio:
     # This is the location of the binary for the aplay program used as an
     # external player for mp3s.  The Mac and RP have good defaults if you
     # leave this blank.
-    aplay_binary: ''
+    aplay_binary: ""
 
     chunk_size: 1024
 
     # Similar to device_index and device_name for input.
     # Not being used, see https://github.com/rec/echomesh/issues/196.
     device_index: -1
-    device_name: ''
+    device_name: ""
 
     enable: true
 
@@ -110,6 +110,7 @@ audio:
     # At this time, we can only play mp3 files with aplay.
     # aplay does not allow volume or pan envelopes.
     use_aplay: false
+
 
 # This little section controls whether you're running a control program
 # or a slave program, and whether that control program uses a Tk/GUI
@@ -154,14 +155,14 @@ diagnostics:
 # The discovery section controls how the echomesh unit contacts other nodes.
 network:
   client:
+    allow_reuse_address: true
+    binary: ""
     buffer_size: 4096
     host_name: localhost
-    input_file: ''
+    input_file: ""
     port: 1239
-    timeout: 100ms
-    type: socket
     start: true
-    allow_reuse_address: false
+    timeout: 100ms
 
   discovery:
     port: 1238
@@ -250,7 +251,7 @@ logging:
 
   # An empty format means that the program decides what format to use based on
   # your diagnostics level and error level.
-  format: ''
+  format: ""
 
   # This filters out the levels of logging.  At the default "info" level,
   # you'll everything except debugging information.
@@ -279,10 +280,10 @@ pi3d:
   full_screen: true
   near: null
   tk: False
-  window_title: ''
+  window_title: ""
 
 # The path to your project's root directory.
-project: ''
+project: ""
 
 speed: 100%
 
@@ -310,12 +311,12 @@ speed: 100%
 #   score:  myScore1.yml as m1, myScore2.yml as m2
 #   score:  myScore2.yml myScore1.yml as m2, m1
 
-start: ''
+start: ""
 
 # Any scores in load: will be loaded on startup but not run.
 # See the comments above for score:
 
-load: ''
+load: ""
 
 # echomesh lets you assign names and tags to echomesh nodes by filling in this
 # :map area in your global score.  This is particularly handy when you have a

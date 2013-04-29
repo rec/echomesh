@@ -14,21 +14,18 @@ from echomesh.network.Server import Server
 
 class ExternalLightBank(LightBank):
   def __init__(self):
-    self.client_type, cmd = Client.make_command()
     self.process = None
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _before_thread_start(self):
-    self.client_type, cmd = Client.make_command()
     config = Config.get('network', 'client')
-
     self.server = Server(config['host_name'], config['port'],
                          timeout=Units.convert(config['timeout']),
                          allow_reuse_address=config['allow_reuse_address'])
     self.server.start()
 
-    if Config.get('network', 'client', 'start'):
-      self.process = subprocess.Popen(cmd,
+    if config['start']:
+      self.process = subprocess.Popen(Client.make_command(),
                                       stdin=subprocess.PIPE,
                                       stdout=subprocess.PIPE)
     super(ExternalLightBank, self)._before_thread_start()
