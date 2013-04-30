@@ -45,6 +45,11 @@ class Registry(object):
     return GetPrefix.get_prefix(self.registry, name,
                                 allow_prefixes=self.allow_prefixes)
 
+  def get_or_none(self, name, allow_prefixes=None):
+    if allow_prefixes is None:
+      allow_prefixes = self.allow_prefixes
+    return GetPrefix.get(self.registry, name, allow_prefixes)
+
   def get(self, name):
     return self._get(name)[1][0]
 

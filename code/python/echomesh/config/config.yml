@@ -8,6 +8,9 @@
 
 type: config
 
+aliases:
+  save_with_project: false
+
 # Can you remotely request the shutdown and restart of this machine?
 allow_shutdown: true
 

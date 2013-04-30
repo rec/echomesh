@@ -24,3 +24,9 @@ def get_prefix(table, name, allow_prefixes=True):
       cmds = Join.join_words(words)
       raise PrefixException('"%s" matches more than one: %s.' % (name, cmds))
   raise PrefixException('"%s" is not valid.' % (name))
+
+def get(table, name, allow_prefixes=True):
+  try:
+    return get_prefix(table, name, allow_prefixes)
+  except PrefixException:
+    return None
