@@ -25,8 +25,8 @@ class PersistentDict(dict):
   def _write(self):
     Yaml.write(self._filename, self)
 
-  def __delitem___(self, key):
-    super(PersistentDict, self).__delitem___(key)
+  def __delitem__(self, *args, **kwds):
+    super(PersistentDict, self).__delitem__(*args, **kwds)
     self._write()
 
   def __setitem__(self, key, value):
@@ -54,6 +54,3 @@ class PersistentDict(dict):
   def update(self, *args, **kwds):
     super(PersistentDict, self).update(*arg, **kwds)
     self._write()
-
-
-
