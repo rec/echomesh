@@ -69,47 +69,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     elif self.processor(buff.strip()):
       self.pause()
 
-
-USE_CURSES = Config.get('control_program', 'use_curses')
-
-if USE_CURSES:
-
-  # pylint: disable=E0202,E1101,C0322,W0232,W0612,
-
-  import npyscreen
-
-  class RunnableApp(ThreadRunnable.ThreadRunnable):
-    def __init__(self):
-      super(RunnableApp, self).__init__()
-      self.app = TestApp()
-
-    def target(self):
-      self.app.run()
-
-  class TestApp(npyscreen.NPSApp):
-    def main(self):
-      # These lines create the form and populate it with widgets.
-      # A fairly complex screen in only 8 or so lines of code - a line for each control.
-      self.keypress_timeout_default = 10
-      F = npyscreen.ActionForm(parentApp=self, name="Welcome to Npyscreen",)
-      t = F.add(npyscreen.TitleText, name="Text:", )
-      fn = F.add(npyscreen.TitleFilename, name="Filename:")
-      dt = F.add(npyscreen.TitleDateCombo, name="Date:")
-      s = F.add(npyscreen.TitleSlider, out_of=12, name="Slider", color='DANGER')
-      ml= F.add(npyscreen.MultiLineEdit,
-                value = """try typing here!\nMutiline text, press ^R to reformat.\n""",
-        max_height=5, rely=9)
-      ms= F.add(npyscreen.TitleSelectOne, max_height=4, value=[1], name="Pick One",
-                values = ["Option1","Option2","Option3"], scroll_exit=True)
-
-      # This lets the user play with the Form.
-      F.edit()
-
-  def keyboard(_):
-    return RunnableApp()
-
-else:
-  def keyboard(echomesh):
-    processor = lambda line: Command.execute(echomesh, line)
-    sleep = Units.get_config('delay_before_keyboard_activates')
-    return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+def keyboard(echomesh):
+  processor = lambda line: Command.execute(echomesh, line)
+  sleep = Units.get_config('delay_before_keyboard_activates')
+  return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
