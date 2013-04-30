@@ -35,4 +35,3 @@ def instance():
     Config.add_client(Aliases.INSTANCE)
 
   return Aliases.DICT
-

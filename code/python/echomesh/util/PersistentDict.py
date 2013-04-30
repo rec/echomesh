@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Yaml
+from echomesh.base import GetPrefix
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -17,6 +18,9 @@ class PersistentDict(dict):
   def set_filename(self, filename):
     self._filename = filename
     self._write()
+
+  def get_prefix(self, *args):
+    return GetPrefix.get(self, *args)
 
   def _write(self):
     Yaml.write(self._filename, self)

@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.command import Aliases
 from echomesh.command import Context
 from echomesh.command import Register
 from echomesh.command import Scores
@@ -28,6 +29,13 @@ def _info(d, spaces='  '):
 
 def addresses(_):
   _info(Name.addresses())
+
+def aliases(*_):
+  aliases = Aliases.instance()
+  if aliases:
+    _info(aliases)
+  else:
+    LOGGER.info('  No aliases')
 
 def _all(echomesh_instance):
   LOGGER.info('')
@@ -108,6 +116,10 @@ ADDRESSES_HELP = """
 Shows:
   This machine's current IP address.
   This machine's permanent MAC address.
+"""
+
+ALIASES_HELP = """
+Shows all the command aliases that have been registered.
 """
 
 BROADCAST_HELP = """
@@ -198,6 +210,7 @@ Show all variables for each element currently running.
 
 SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
+  aliases=(aliases, ALIASES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
   contexts=(Context.contexts, Context.CONTEXTS_HELP),
   directories=(directories, DIRECTORIES_HELP),

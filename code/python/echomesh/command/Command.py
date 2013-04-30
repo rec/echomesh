@@ -2,10 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.command import Aliases
 from echomesh.base import Join
-from echomesh.base import GetPrefix
 
 # pylint: disable=W0611
-from echomesh.command import Broadcast, GetConfig, Register, Remote
+from echomesh.command import Alias, Broadcast, GetConfig, Register, Remote
 from echomesh.command import Score, SaveConfig, SetConfig, Show, Transfer
 
 # Must be the last one to load.
@@ -46,7 +45,6 @@ def usage():
     result.append(Join.join_words(aliases))
   return ' '.join(result)
 
-
 def _expand(command):
   aliases = Aliases.instance()
   stack = set()
@@ -56,14 +54,14 @@ def _expand(command):
     for command in cmds:
       parts = Split.split_words(command)
       name = parts.pop(0)
-      alias = GetPrefix.get(aliases, command)
+      alias = aliases.get_prefix(command)
       if alias:
         cmd, alias_commands = alias
         registry = Register.get_or_none(name)
         if cmd == command or (not registry or registry[0] != name):
-          assert cmd not in expand_stack
+          assert cmd not in stack
           stack.add(cmd)
-          expand(alias_commands)
+          expand(*alias_commands)
           stack.remove(cmd)
           continue
 
