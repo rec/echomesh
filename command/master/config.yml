@@ -3,8 +3,11 @@ network:
     start: true
     allow_reuse_address: true
 
----
-debug: false
-new: {foo: 12}
-speed: 10%
-start: ''
+light:
+  count: 2160
+  visualizer:
+    layout: [48, 45]
+    instrument:
+      size: [4, 4]
+      shape: rect
+      padding: [1, 1]
