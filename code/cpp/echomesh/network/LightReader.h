@@ -37,6 +37,7 @@ class LightReader : public ReadThread {
   LightConfig config_;
   ColorBytes rgbOrder_;
   float brightness_;
+  bool configReceived_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };

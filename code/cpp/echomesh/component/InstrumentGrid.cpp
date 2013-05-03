@@ -42,15 +42,19 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   int w = instrument.size.x + instrument.padding.x;
   int h = instrument.size.y + instrument.padding.y;
   int index = 0;
-  for (int y = 0; y < rows; ++y) {
-    for (int x = 0; x < columns; ++x) {
+  for (int y = 0; y < rows and index >= instruments_.size(); ++y) {
+    for (int x = 0; x < columns and index >= instruments_.size(); ++x) {
       instruments_[index++]->setBounds(left + x * w, top + y * h,
                                        instrument.size.x, instrument.size.y);
     }
   }
 
-  setSize(left + w * columns + config_.visualizer.padding.x,
-          top + h * rows + config_.visualizer.padding.y);
+  int screenWidth = left + w * columns + config_.visualizer.padding.x,
+    screenHeight = top + h * rows + config_.visualizer.padding.y;
+
+  log(String(screenWidth) + "x" + String(screenHeight));
+
+  setSize(screenWidth, screenHeight);
   repaint();
 }
 

@@ -3,6 +3,13 @@
 
 namespace echomesh {
 
+namespace {
+
+const bool logAllSocketData = true;
+
+
+}  // namespace
+
 static SocketLineGetter* INSTANCE = NULL;
 
 SocketLineGetter::SocketLineGetter(const SocketDescription& desc)
@@ -66,7 +73,10 @@ string SocketLineGetter::readSocket() {
 
     check(read, "Socket was ready, but got zero data.");
     check(read > 0, "StreamingSocket read error");
-    return string(&buffer_.front(), read);
+    string s(&buffer_.front(), read);
+    if (logAllSocketData)
+      log2(s);
+    return s;
   }
 }
 

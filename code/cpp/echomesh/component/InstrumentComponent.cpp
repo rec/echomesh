@@ -4,6 +4,7 @@ namespace echomesh {
 
 InstrumentComponent::InstrumentComponent()
     : color_(Colours::black), labelColor_(Colours::white) {
+  setPaintingIsUnclipped(true);
 }
 
 void InstrumentComponent::configure(const String& label,

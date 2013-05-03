@@ -21,14 +21,13 @@ class ReadThread : public Thread {
   ReadThread(const String& commandLine);
   virtual ~ReadThread();
   virtual void run();
-  void handleMessage(const string&);
-  virtual void quit() = 0;
-  void registerCallback(const string& name, Callback* cb) {
-    messageMap_[name] = cb;
-  }
 
  protected:
-  virtual void parseNode() {}
+  void handleMessage(const string&);
+  virtual void quit() = 0;
+
+  void addHandler(const string& name, Callback* cb) { messageMap_[name] = cb; }
+  virtual void parseNode() = 0;
 
   typedef std::map<string, Callback*> MessageMap;
 

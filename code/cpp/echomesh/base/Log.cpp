@@ -18,7 +18,7 @@ static const bool LOG_TO_STDOUT = true;
 const char FILENAME[] = "/tmp/echomesh.log";
 OutputStream* STREAM = NULL;
 
-const char FILENAME2[] = "/tmp/echomesh.2.log";
+const char FILENAME2[] = "/tmp/echomesh.socket.log";
 OutputStream* STREAM2 = NULL;
 
 }  // namespace

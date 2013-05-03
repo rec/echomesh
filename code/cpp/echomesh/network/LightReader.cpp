@@ -23,26 +23,32 @@ struct QuitMessage : public CallbackMessage {
 using namespace std;
 using namespace rec::util::thread;
 
+#if 0 && JUCE_LINUX
+
 static const char DEVICE_NAME[] = "/dev/spidev0.0";
 const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 
-LightReader::LightReader(LightingWindow* window, const String& commandLine)
-    : ReadThread(commandLine),
-      lightingWindow_(window),
-      compressed_(true)
-#if JUCE_LINUX
-, file_(fopen(DEVICE_NAME, "w"))
 #endif
-{
-  registerCallback("clear", methodCallback(this, &LightReader::clear));
-  registerCallback("config", methodCallback(this, &LightReader::config));
-  registerCallback("light", methodCallback(this, &LightReader::light));
-  registerCallback("quit", methodCallback(this, &LightReader::quit));
+
+LightReader::LightReader(LightingWindow* wind, const String& commandLine)
+    : ReadThread(commandLine),
+      lightingWindow_(wind),
+      compressed_(true),
+#if 0 && JUCE_LINUX
+      file_(fopen(DEVICE_NAME, "w")),
+#endif
+      configReceived_(false) {
+  addHandler("clear", methodCallback(this, &LightReader::clear));
+  addHandler("config", methodCallback(this, &LightReader::config));
+  addHandler("light", methodCallback(this, &LightReader::light));
+  addHandler("quit", methodCallback(this, &LightReader::quit));
+  addHandler("show", methodCallback(wind, &LightingWindow::setVisible, true));
+  addHandler("hide", methodCallback(wind, &LightingWindow::setVisible, false));
 }
 
 LightReader::~LightReader() {
-#if JUCE_LINUX
+#if 0 && JUCE_LINUX
   fclose(file_);
 #endif
 }
@@ -73,7 +79,14 @@ void LightReader::config() {
 
   for (int i = 0; i < 3; ++i)
     rgbOrder_[i] = config_.hardware.rgbOrder.find("rgb"[i]);
+
   lightingWindow_->setConfig(config_);
+
+  if (not configReceived_) {
+    configReceived_ = true;
+    MessageManagerLock l;
+    lightingWindow_->setVisible(true);
+  }
 }
 
 inline uint8 getSpiColor(uint8 color) {
@@ -108,7 +121,7 @@ void LightReader::displayLights() {
     }
   }
 
-#if JUCE_LINUX
+#if 0 && JUCE_LINUX
   fwrite(&colorBytes_.front(), 1, colorBytes_.size(), file_);
   fflush(file_);
   fwrite(LATCH, 1, 3, file_);
@@ -119,7 +132,16 @@ void LightReader::displayLights() {
 void LightReader::light() {
   compressed_ = true;
   string lights;
-  node_["data"] >> lights;
+  const YAML::Node& lightNode = node_["data"];
+  if (lightNode.size() == 1) {
+    lightNode[0] >> lights;
+  } else {
+    for (int i = 0; i < lightNode.size(); ++i) {
+      string lt;
+      lightNode[i] >> lt;
+      lights += lt;
+    }
+  }
 
   string lights2 = base64::decode(lights);
 

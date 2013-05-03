@@ -10,7 +10,6 @@ LightingWindow::LightingWindow()
     instrumentGrid_(new echomesh::InstrumentGrid) {
   setContentOwned(instrumentGrid_, true);
   centreWithSize(getWidth(), getHeight());
-  setVisible(true);
   setUsingNativeTitleBar(true);
 }
 

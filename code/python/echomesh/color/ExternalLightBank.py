@@ -12,6 +12,17 @@ from echomesh.color.LightBank import LightBank
 from echomesh.expression import Units
 from echomesh.network.Server import Server
 
+
+_LONGEST_STRING = 3000
+
+def _split_long_strings(s):
+  result = []
+  while len(s) > _LONGEST_STRING:
+    result.append(s[0:_LONGEST_STRING])
+    s = s[_LONGEST_STRING:]
+  result.append(s)
+  return result
+
 class ExternalLightBank(LightBank):
   def __init__(self):
     self.process = None
@@ -66,4 +77,5 @@ class ExternalLightBank(LightBank):
 
   def _display_lights(self):
     with self.lock:
-      self._send(type='light', data=base64.b64encode(self.bytes))
+      self._send(type='light',
+                 data=_split_long_strings(base64.b64encode(self.bytes)))

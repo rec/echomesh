@@ -33,11 +33,13 @@ void ReadThread::run() {
       break;
     }
     if (s.find("---")) {
-      accum_.add(s.c_str());
+      accum_.add(String(s.data(), s.size()));
     } else {
       String result = accum_.joinIntoString("\n");
+      if (result.indexOfChar('\0') + 1)
+        log("Contains \\0:\n" + result);
       accum_.clear();
-      handleMessage(string(result.toUTF8()));
+      handleMessage(result.toStdString());
     }
   }
   quit();
@@ -61,7 +63,8 @@ void ReadThread::handleMessage(const string& str) {
       log("Didn't find a document in this input!");
     }
   } catch (YAML::Exception& e) {
-    log(string("ERROR: ") + e.what() + ("in:\n" + str));
+    // log(string("ERROR: ") + e.what() + (" in:\n" + str));
+    log(string("ERROR: ") + e.what() + (" in:\n" + str.substr(0, 20)));
   }
 }
 

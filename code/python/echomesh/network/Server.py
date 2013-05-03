@@ -13,6 +13,11 @@ from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
 
+LOG_ALL_DATA = True
+
+if LOG_ALL_DATA:
+  FILE = open('/tmp/echomesh.socket.out.txt', 'w')
+
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, read_callback=None, max_queue_size=20,
                logging=False, allow_reuse_address=True):
@@ -36,6 +41,9 @@ class Server(ThreadRunnable):
     if self.handler and data:
       for d in data:
         self.handler.wfile.write(d)
+        if LOG_ALL_DATA:
+          FILE.write(d)
+          FILE.flush()
       self.handler.wfile.flush()
 
   def _handle(self, handler):

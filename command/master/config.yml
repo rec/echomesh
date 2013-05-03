@@ -4,10 +4,10 @@ network:
     allow_reuse_address: true
 
 light:
-  count: 2160
+  count: 2000
   visualizer:
     layout: [48, 45]
     instrument:
-      size: [4, 4]
+      size: [1, 1]
       shape: rect
       padding: [1, 1]
