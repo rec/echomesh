@@ -4,13 +4,10 @@ import time
 
 from echomesh.base import Config
 from echomesh.color import Combiner
-from echomesh.expression import Units
 from echomesh.expression import UnitConfig
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 from echomesh.util.thread import Lock
-
-COMBINE_TO_BYTEARRAY = True
 
 class LightBank(ThreadLoop):
   def __init__(self, is_daemon=True):

@@ -2,26 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import base64
 import copy
-import subprocess
 
-from echomesh.base import Config
-from echomesh.base import Yaml
 from echomesh.color import ColorTable
-from echomesh.color import Client
 from echomesh.color.LightBank import LightBank
-from echomesh.expression import Units
-from echomesh.network.Server import Server
-
-
-_LONGEST_STRING = 3000
-
-def _split_long_strings(s):
-  result = []
-  while len(s) > _LONGEST_STRING:
-    result.append(s[0:_LONGEST_STRING])
-    s = s[_LONGEST_STRING:]
-  result.append(s)
-  return result
+from echomesh.network import ClientServer
 
 class ExternalLightBank(LightBank):
   def __init__(self):
@@ -29,33 +13,15 @@ class ExternalLightBank(LightBank):
     super(ExternalLightBank, self).__init__(is_daemon=True)
 
   def _before_thread_start(self):
-    config = Config.get('network', 'client')
-    self.server = Server(config['host_name'], config['port'],
-                         timeout=Units.convert(config['timeout']),
-                         allow_reuse_address=config['allow_reuse_address'])
-    self.server.start()
-
-    if config['start']:
-      self.process = subprocess.Popen(Client.make_command(),
-                                      stdin=subprocess.PIPE,
-                                      stdout=subprocess.PIPE)
+    ClientServer.instance()
     super(ExternalLightBank, self)._before_thread_start()
 
-  def _send(self, **data):
-    self.server.write(Yaml.encode_one(data), Yaml.SEPARATOR)
-
-  def __del__(self):
-    self.shutdown()
-
   def shutdown(self):
-    with self.lock:
-      if self.process:
-        self._send(type='quit')
-        self.process.terminate()
+    ClientServer.instance().write(type='hide')
 
   def clear(self):
     with self.lock:
-      self._send(type='clear')
+      ClientServer.instance().write(type='clear')
 
   def config_update(self, get):
     super(ExternalLightBank, self).config_update(get)
@@ -68,8 +34,9 @@ class ExternalLightBank(LightBank):
     dl['background'] = ColorTable.to_color(dl['background'])
 
     with self.lock:
-      self.server.set_config(Yaml.encode_one({'type': 'config', 'data': light}),
-                             Yaml.SEPARATOR)
+      ClientServer.instance().set_config(
+        {'type': 'config', 'data': light},
+        {'type': 'show'})
 
   def _after_thread_pause(self):
     super(ExternalLightBank, self)._after_thread_pause()
@@ -77,5 +44,17 @@ class ExternalLightBank(LightBank):
 
   def _display_lights(self):
     with self.lock:
-      self._send(type='light',
-                 data=_split_long_strings(base64.b64encode(self.bytes)))
+      bytes = _split_long_strings(base64.b64encode(self.bytes))
+      ClientServer.instance().write(type='light', data=bytes)
+
+
+# Fix for https://github.com/rec/echomesh/issues/342
+_LONGEST_STRING = 3000
+
+def _split_long_strings(s):
+  result = []
+  while len(s) > _LONGEST_STRING:
+    result.append(s[0:_LONGEST_STRING])
+    s = s[_LONGEST_STRING:]
+  result.append(s)
+  return result

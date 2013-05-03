@@ -7,6 +7,7 @@
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
 #include "rec/util/thread/MakeCallback.h"
+#include "rec/util/thread/LockedCallback.h"
 
 namespace echomesh {
 
@@ -34,23 +35,27 @@ uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 LightReader::LightReader(LightingWindow* wind, const String& commandLine)
     : ReadThread(commandLine),
       lightingWindow_(wind),
-      compressed_(true),
 #if 0 && JUCE_LINUX
       file_(fopen(DEVICE_NAME, "w")),
 #endif
-      configReceived_(false) {
+      compressed_(true) {
   addHandler("clear", methodCallback(this, &LightReader::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
   addHandler("light", methodCallback(this, &LightReader::light));
   addHandler("quit", methodCallback(this, &LightReader::quit));
-  addHandler("show", methodCallback(wind, &LightingWindow::setVisible, true));
-  addHandler("hide", methodCallback(wind, &LightingWindow::setVisible, false));
+  addHandler("show", methodCallback(this, &LightReader::setVisible, true));
+  addHandler("hide", methodCallback(this, &LightReader::setVisible, false));
 }
 
 LightReader::~LightReader() {
 #if 0 && JUCE_LINUX
   fclose(file_);
 #endif
+}
+
+void LightReader::setVisible(bool isVisible) {
+  MessageManagerLock l;
+  lightingWindow_->setVisible(isVisible);
 }
 
 void LightReader::quit() {
@@ -81,12 +86,6 @@ void LightReader::config() {
     rgbOrder_[i] = config_.hardware.rgbOrder.find("rgb"[i]);
 
   lightingWindow_->setConfig(config_);
-
-  if (not configReceived_) {
-    configReceived_ = true;
-    MessageManagerLock l;
-    lightingWindow_->setVisible(true);
-  }
 }
 
 inline uint8 getSpiColor(uint8 color) {

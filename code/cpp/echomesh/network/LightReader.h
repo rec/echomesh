@@ -23,14 +23,15 @@ class LightReader : public ReadThread {
   void clear();
   void light();
   void config();
+  void setVisible(bool isVisible);
   void displayLights();
   void enforceSizes();
 
   uint8 getLedColor(float color) const;
 
   LightingWindow* const lightingWindow_;
-  bool compressed_;
   FILE* file_;
+  bool compressed_;
   ColorList colors_;
   ColorByteBank bytes_;
   ByteList colorBytes_;

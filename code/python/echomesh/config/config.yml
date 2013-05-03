@@ -163,6 +163,8 @@ network:
     buffer_size: 4096
     host_name: localhost
     input_file: ""
+    pipe_stdin: true
+    pipe_stdout: true
     port: 1239
     start: true
     timeout: 100ms

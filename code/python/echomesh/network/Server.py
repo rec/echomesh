@@ -6,6 +6,7 @@ import SocketServer
 
 from six.moves import queue
 
+from echomesh.base import Yaml
 from echomesh.network import ServerMaker
 from echomesh.util import Log
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
@@ -25,7 +26,7 @@ class Server(ThreadRunnable):
     self.timeout = timeout
     self.read_callback = read_callback
     self.queue = None
-    self.config = None
+    self.config = []
     self.bytes_written = 0
     self.next_target = 0
     self.packets = 0
@@ -37,19 +38,22 @@ class Server(ThreadRunnable):
   def target(self):
     self.server.serve_forever(poll_interval=self.timeout)
 
-  def _write(self, *data):
+  def _write(self, data):
     if self.handler and data:
-      for d in data:
-        self.handler.wfile.write(d)
-        if LOG_ALL_DATA:
-          FILE.write(d)
-          FILE.flush()
+      d = Yaml.encode_one(data)
+      self.handler.wfile.write(d)
+      self.handler.wfile.write(Yaml.SEPARATOR)
+      if LOG_ALL_DATA:
+        FILE.write(d)
+        FILE.write(Yaml.SEPARATOR)
+        FILE.flush()
       self.handler.wfile.flush()
 
   def _handle(self, handler):
     with self.lock:
       self.handler = handler
-      self._write(*self.config)
+      for c in self.config:
+        self._write(c)
 
     while self.is_running:
       with self.lock:
@@ -70,11 +74,12 @@ class Server(ThreadRunnable):
   def set_config(self, *config):
     with self.lock:
       self.config = config
-      self._write(*config)
+      for c in config:
+        self._write(c)
 
-  def write(self, *data):
+  def write(self, **data):
     with self.lock:
-      self._write(*data)
+      self._write(data)
 
   def _after_thread_pause(self):
     self.server.shutdown()

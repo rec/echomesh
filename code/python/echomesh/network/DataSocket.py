@@ -39,7 +39,10 @@ class DataSocket(MasterRunnable):
         item = self.receive_socket.queue.get(timeout=self.timeout)
       except queue.Empty:
         return
-      self.callback(item)
+      try:
+        self.callback(item)
+      except Exception as e:
+        print('DataSocket.receive:', e)
 
     self.receive_thread = ThreadLoop.ThreadLoop(single_loop=receive,
                                                 name='DataSocket.receive')
