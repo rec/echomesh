@@ -25,17 +25,17 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   }
   instruments_.resize(config_.count);
   for (int i = oldCount; i < config_.count; ++i) {
-    InstrumentComponent* inst = new InstrumentComponent;
-    instruments_[i] = inst;
-    inst->setPaintingIsUnclipped(config_.visualizer.instrument.paintUnclipped);
-
+    instruments_[i] = new InstrumentComponent;
     addAndMakeVisible(instruments_[i]);
   }
 
   const Instrument& instrument = config_.visualizer.instrument;
   int delta = instrument.labelStartsAtZero ? 0 : 1;
-  for (int i = 0; i < instruments_.size(); ++i)
-    instruments_[i]->configure(String(i + delta), instrument);
+  for (int i = 0; i < instruments_.size(); ++i) {
+    InstrumentComponent* inst = instruments_[i];
+    inst->setPaintingIsUnclipped(config_.visualizer.instrument.paintUnclipped);
+    inst->configure(String(i + delta), instrument);
+  }
 
   int top = config_.visualizer.padding.y;
   int left = config_.visualizer.padding.x;

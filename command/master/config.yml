@@ -3,16 +3,16 @@ network:
     start: true
     allow_reuse_address: true
 
-light:
-  count: 256
-  visualizer:
-    period: 10ms
-    padding: [0, 0]
-    layout: [16, 16]
-    instrument:
-      size: [1, 1]
-      shape: rect
-      padding: [1, 1]
+# light:
+#   count: 256
+#   visualizer:
+#     period: 10ms
+#     padding: [0, 0]
+#     layout: [16, 16]
+#     instrument:
+#       size: [1, 1]
+#       shape: rect
+#       padding: [1, 1]
 
 network:
   client:
