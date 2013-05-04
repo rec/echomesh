@@ -27,6 +27,7 @@ struct Instrument {
   Point labelPadding;
   bool labelStartsAtZero;
   Point padding;
+  bool paintUnclipped;
   Point size;
   string shape;
 };

@@ -25,7 +25,10 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   }
   instruments_.resize(config_.count);
   for (int i = oldCount; i < config_.count; ++i) {
-    instruments_[i] = new InstrumentComponent;
+    InstrumentComponent* inst = new InstrumentComponent;
+    instruments_[i] = inst;
+    inst->setPaintingIsUnclipped(config_.visualizer.instrument.paintUnclipped);
+
     addAndMakeVisible(instruments_[i]);
   }
 

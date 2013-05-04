@@ -8,7 +8,7 @@ light:
   visualizer:
     period: 10ms
     padding: [0, 0]
-    layout: [48, 48]
+    layout: [16, 16]
     instrument:
       size: [1, 1]
       shape: rect

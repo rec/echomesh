@@ -208,11 +208,12 @@ light:
       border:
         color: black
         width: 1
-      padding: [2, 2]
-      shape: circle
       label: false
       label_padding: [2, 2]
       label_starts_at_zero: false
+      padding: [2, 2]
+      paint_unclipped: false
+      shape: circle
       size: [12, 12]
 
 # The load modules are third-party Python modules that are optional to the core
