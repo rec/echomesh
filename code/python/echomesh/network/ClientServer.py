@@ -53,6 +53,10 @@ class ClientServer(Server):
     except:
       pass
     try:
+      self.process.kill()
+    except:
+      pass
+    try:
       Subprocess.run(Client.KILL_COMMAND)
     except:
       pass
