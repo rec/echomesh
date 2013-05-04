@@ -27,7 +27,7 @@ void LightingWindow::closeButtonPressed() {
 
     out << YAML::BeginMap
         << YAML::Key << "type"
-        << YAML::Value << "close"
+        << YAML::Value << "hide"
         << YAML::EndMap;
 
     getter->writeSocket(out.c_str(), out.size());

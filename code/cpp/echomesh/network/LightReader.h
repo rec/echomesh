@@ -23,7 +23,6 @@ class LightReader : public ReadThread {
   void clear();
   void light();
   void config();
-  void setVisible(bool isVisible);
   void displayLights();
   void enforceSizes();
 

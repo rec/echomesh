@@ -17,6 +17,12 @@ InstrumentGrid::~InstrumentGrid() {
 void InstrumentGrid::setConfig(const LightConfig& config) {
   MessageManagerLock l;
   config_ = config;
+
+  getParentComponent()->setVisible(config_.visualizer.show);
+
+  if (not config_.visualizer.show)
+    return;
+
   int oldCount = instruments_.size();
 
   for (int i = config_.count; i < oldCount; ++i) {
@@ -54,8 +60,6 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
 
   int screenWidth = left + w * columns + config_.visualizer.padding.x,
     screenHeight = top + h * rows + config_.visualizer.padding.y;
-
-  log(String(screenWidth) + "x" + String(screenHeight));
 
   setSize(screenWidth, screenHeight);
   repaint();

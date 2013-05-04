@@ -11,13 +11,8 @@ LOGGER = Log.logger(__name__)
 
 def set_config(_, *values):
   if values:
-    assignments = MergeConfig.merge_assignments(
-      Config.CONFIG, Args.split_args(values))
-
-    for address, value in assignments:
+    for address, value in Config.assign(*values):
       LOGGER.info('Set %s=%s', '.'.join(address), value)
-    if assignments:
-      Config.update_clients()
   elif MergeConfig.LOCAL_CHANGES:
     LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
   else:

@@ -7,6 +7,7 @@ import six
 
 from compatibility.weakref import WeakSet
 
+from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import MergeConfig
 from echomesh.base import Name
@@ -62,6 +63,13 @@ def get(*parts):
     pass
 
   return value
+
+def assign(*values):
+  assignments = Args.split_args(values)
+  merged = MergeConfig.merge_assignments(CONFIG, assignments)
+  if merged:
+    update_clients()
+  return merged
 
 def get_unvisited():
   def fix(d):

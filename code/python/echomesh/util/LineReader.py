@@ -3,14 +3,19 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Yaml
 
 class LineReader(object):
-  def __init__(self):
+  def __init__(self, callback):
     self.lines = []
     self.results = []
+    self.callback = callback
 
-  def add_line(self, line):
-    if line.startswith(Yaml.SEPARATOR_BASE):
-      self.lines, lines = [], self.lines
-      return Yaml.decode_one(''.join(lines))
-
-    self.lines.append(line)
+  def add(self, line):
+    if line:
+      if line.startswith(Yaml.SEPARATOR_BASE):
+        if self.callback and self.lines:
+          res = ''.join(self.lines)
+          result = Yaml.decode_one(res)
+          self.callback(result)
+        self.lines = []
+      else:
+        self.lines.append(line)
 

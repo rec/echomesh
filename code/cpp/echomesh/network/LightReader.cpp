@@ -43,19 +43,12 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
   addHandler("config", methodCallback(this, &LightReader::config));
   addHandler("light", methodCallback(this, &LightReader::light));
   addHandler("quit", methodCallback(this, &LightReader::quit));
-  addHandler("show", methodCallback(this, &LightReader::setVisible, true));
-  addHandler("hide", methodCallback(this, &LightReader::setVisible, false));
 }
 
 LightReader::~LightReader() {
 #if 0 && JUCE_LINUX
   fclose(file_);
 #endif
-}
-
-void LightReader::setVisible(bool isVisible) {
-  MessageManagerLock l;
-  lightingWindow_->setVisible(isVisible);
 }
 
 void LightReader::quit() {

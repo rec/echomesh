@@ -197,6 +197,7 @@ light:
 
   visualizer:
     enable: true
+    show: true
     type: client
     period: 40ms
 

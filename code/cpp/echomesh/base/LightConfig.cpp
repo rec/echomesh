@@ -49,10 +49,11 @@ void operator>>(const YAML::Node& node, Instrument& p) {
 
 void operator>>(const YAML::Node& node, Visualizer& p) {
   node["background"] >> p.background;
+  node["instrument"] >> p.instrument;
   node["layout"] >> p.layout;
   node["padding"] >> p.padding;
   node["period"] >> p.period;
-  node["instrument"] >> p.instrument;
+  node["show"] >> p.show;
 }
 
 void operator>>(const YAML::Node& node, Hardware& p) {

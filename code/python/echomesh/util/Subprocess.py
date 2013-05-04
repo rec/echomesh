@@ -15,4 +15,3 @@ def run(command, **kwds):
     LOGGER.error('Command failed with returncode %d', popen.returncode)
 
   return result, popen.returncode
-

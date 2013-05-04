@@ -5,17 +5,14 @@ import os.path
 from echomesh.base import Config
 from echomesh.base import Enum
 from echomesh.base import Path
-from echomesh.base import Platform
 from echomesh.expression import Units
 
 CLIENT_NAME = 'echomesh-client'
 COMMAND = os.path.join(Path.BINARY_PATH, CLIENT_NAME)
+KILLALL = '/usr/bin/killall'
 
 def make_command():
   parts = []
-  if Platform.IS_LINUX:
-    parts.append('sudo')
-
   config = Config.get('network', 'client')
 
   parts.append(config['binary'] or COMMAND)
@@ -27,3 +24,5 @@ def make_command():
 
   return parts
 
+def make_kill_command():
+  return [KILLALLL, CLIENT_NAME]

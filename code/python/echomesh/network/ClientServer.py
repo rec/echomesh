@@ -6,6 +6,7 @@ from echomesh.base import Config
 from echomesh.color import Client
 from echomesh.expression import Units
 from echomesh.network.Server import Server
+from echomesh.util import Subprocess
 from echomesh.util import Quit
 
 class ClientServer(Server):
@@ -16,7 +17,7 @@ class ClientServer(Server):
     self.process = None
     self.constructed = False
     Config.add_client(self)
-    Quit.register(self.pause)
+    Quit.register(self.kill)
 
   def config_update(self, get):
     config = get('network', 'client')
@@ -43,9 +44,22 @@ class ClientServer(Server):
       self.process = subprocess.Popen(Client.make_command(), **args)
 
   def read_callback(self, data):
-    if data['type'] == 'close':
-      self.write(**data)
+    if data.get('type') == 'hide':
+      Config.assign('light.vis.show=false')
 
+  def kill(self):
+    try:
+      self.process.terminate()
+    except:
+      pass
+    try:
+      Subprocess.run(Client.KILL_COMMAND)
+    except:
+      pass
+    try:
+      self.pause()
+    except:
+      pass
 
 def instance():
   return ClientServer.INSTANCE or (not Quit.QUITTING and ClientServer())

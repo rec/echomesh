@@ -33,11 +33,12 @@ struct Instrument {
 };
 
 struct Visualizer {
-  int period;
   Colour background;
+  Instrument instrument;
   Point layout;
   Point padding;
-  Instrument instrument;
+  int period;
+  bool show;
 };
 
 struct Hardware {

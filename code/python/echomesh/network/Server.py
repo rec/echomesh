@@ -9,6 +9,7 @@ from six.moves import queue
 from echomesh.base import Yaml
 from echomesh.network import ServerMaker
 from echomesh.util import Log
+from echomesh.util.LineReader import LineReader
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 from echomesh.util.thread import Lock
 
@@ -24,7 +25,6 @@ class Server(ThreadRunnable):
                logging=False, allow_reuse_address=True):
     super(Server, self).__init__()
     self.timeout = timeout
-    self.read_callback = read_callback
     self.queue = None
     self.config = []
     self.bytes_written = 0
@@ -34,6 +34,7 @@ class Server(ThreadRunnable):
     self.handler = None
     self.server = ServerMaker.make_server(
       self._handle, host, port, timeout, logging, allow_reuse_address)
+    self.line_reader = LineReader(read_callback)
 
   def target(self):
     self.server.serve_forever(poll_interval=self.timeout)
@@ -65,8 +66,7 @@ class Server(ThreadRunnable):
           data = rfile.readline()
         except:
           continue
-      if data and self.read_callback:
-        self.read_callback(data)
+        self.line_reader.add(data)
 
       if disconnect:
         time.sleep(self.timeout)
