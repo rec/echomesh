@@ -2,7 +2,7 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import atexit
+import time
 
 from echomesh.base import Config
 from echomesh.color import LightSingleton
@@ -60,6 +60,7 @@ class Instance(MasterRunnable):
     self.run()
     self.display.loop()
     self.keyboard.thread and self.keyboard.thread.join()
+    time.sleep(0.1)  # Prevents crashes in shutdown.
 
   def start_mic(self):
     if not self.mic:

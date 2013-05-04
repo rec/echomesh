@@ -37,7 +37,8 @@ class DataSocket(MasterRunnable):
 
     def receive():
       try:
-        item = self.receive_socket.queue.get(timeout=self.timeout)
+        if not Quit.QUITTING:
+          item = self.receive_socket.queue.get(timeout=self.timeout)
       except queue.Empty:
         return
       except:

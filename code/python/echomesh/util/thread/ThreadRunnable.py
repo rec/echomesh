@@ -27,7 +27,10 @@ class ThreadRunnable(MasterRunnable):
         if self.is_running or self.report_error:
           LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
         self.pause()
-      self._after_thread_pause()
+      try:
+        self._after_thread_pause()
+      except Exception as e:
+        print('ThreadRunnable', e)
 
     self._before_thread_start()
     self.thread = threading.Thread(target=target, name=self.name)

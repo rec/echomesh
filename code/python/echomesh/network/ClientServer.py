@@ -16,6 +16,7 @@ class ClientServer(Server):
     self.process = None
     self.constructed = False
     Config.add_client(self)
+    Quit.register(self.pause)
 
   def config_update(self, get):
     config = get('network', 'client')

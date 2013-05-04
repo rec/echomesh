@@ -6,6 +6,7 @@ import copy
 from echomesh.color import ColorTable
 from echomesh.color.LightBank import LightBank
 from echomesh.network import ClientServer
+from echomesh.util import Quit
 
 class ExternalLightBank(LightBank):
   def __init__(self):
@@ -17,7 +18,8 @@ class ExternalLightBank(LightBank):
     super(ExternalLightBank, self)._before_thread_start()
 
   def shutdown(self):
-    ClientServer.instance().write(type='hide')
+    if not Quit.QUITTING:
+      ClientServer.instance().write(type='hide')
 
   def clear(self):
     with self.lock:
@@ -39,8 +41,9 @@ class ExternalLightBank(LightBank):
         {'type': 'show'})
 
   def _after_thread_pause(self):
-    super(ExternalLightBank, self)._after_thread_pause()
-    self.shutdown()
+    if not Quit.QUITTING:
+      super(ExternalLightBank, self)._after_thread_pause()
+      self.shutdown()
 
   def _display_lights(self):
     with self.lock:

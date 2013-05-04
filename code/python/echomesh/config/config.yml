@@ -198,7 +198,7 @@ light:
   visualizer:
     enable: true
     type: client
-    period: 20ms
+    period: 40ms
 
     background: white
     layout: [16, 16]

@@ -27,7 +27,7 @@ def _atexit_quit():
   if QUITTING:
     reason = 'at your request'
   else:
-    readon = 'due to a fatal error'
+    reason = 'due to a fatal error'
     request_quit()
 
   print('echomesh shut down %s.' % reason)

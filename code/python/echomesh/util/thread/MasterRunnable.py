@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util.thread.LockedList import LockedList
 from echomesh.util.thread.Runnable import Runnable
+from echomesh.util import Quit
 
 class MasterRunnable(Runnable):
   def __init__(self):
@@ -36,11 +37,15 @@ class MasterRunnable(Runnable):
     self.runnables.foreach('run')
 
   def pause(self):
-    if self.is_running:
-      self.is_running = False
-      self.pausables.foreach('pause')
-      self.is_running = True
-    super(MasterRunnable, self).pause()
+    try:
+      if self.is_running:
+        self.is_running = False
+        self.pausables.foreach('pause')
+        self.is_running = True
+      super(MasterRunnable, self).pause()
+    except:
+      if not Quit.QUITTING:
+        raise
 
   def begin(self):
     super(MasterRunnable, self).begin()
