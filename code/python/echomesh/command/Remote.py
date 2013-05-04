@@ -6,6 +6,7 @@ import sys
 
 from echomesh.base import Config
 from echomesh.util import Log
+from echomesh.util import Quit
 from echomesh.util import Subprocess
 from gittwit.git import Git
 import echomesh.command.Register
@@ -55,8 +56,7 @@ def _initialize(echomesh_instance):
   os.execl(*sys.argv)
 
 def _quit(echomesh_instance):
-  echomesh_instance.quitting = True
-  echomesh_instance.pause()
+  Quit.request_quit()
   return True
 
 def _update(echomesh_instance):

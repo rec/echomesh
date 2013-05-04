@@ -4,10 +4,16 @@ network:
     allow_reuse_address: true
 
 light:
-  count: 2000
+  count: 256
   visualizer:
-    layout: [48, 45]
+    period: 10ms
+    padding: [0, 0]
+    layout: [48, 48]
     instrument:
       size: [1, 1]
       shape: rect
       padding: [1, 1]
+
+network:
+  client:
+    binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Release/echomesh-client.app/Contents/MacOS/echomesh-client

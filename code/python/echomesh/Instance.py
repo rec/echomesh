@@ -11,6 +11,7 @@ from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.util import Log
+from echomesh.util import Quit
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
@@ -29,18 +30,13 @@ class Instance(MasterRunnable):
       self.keyboard = Keyboard.keyboard(self)
     else:
       self.keyboard = None
-    self.quitting = False
 
     self.add_mutual_pause_slave(self.socket, self.keyboard)
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.mic = None
-    atexit.register(self.atexit)
-
-  def atexit(self):
-    reason = 'at your request' if self.quitting else 'due to a fatal error'
-    LOGGER.info('echomesh shut down %s.' % reason)
+    Quit.register(self.pause)
 
   def _on_pause(self):
     super(Instance, self)._on_pause()

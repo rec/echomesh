@@ -39,9 +39,9 @@ void InstrumentComponent::paint(Graphics& g) {
   g.setColour(back);
   Rectangle<int> b = getLocalBounds();
   if (config_.isRect)
-    g.fillRect(b);
+    g.fillRect(b.getX(), b.getY(), b.getWidth() + 1, b.getHeight() + 1);
   else
-    g.fillEllipse(b.getX(), b.getY(), b.getWidth(), b.getHeight());
+    g.fillEllipse(b.getX(), b.getY(), b.getWidth() + 1, b.getHeight() + 1);
 
   if (config_.label) {
     b.reduce(config_.labelPadding.x / 2, config_.labelPadding.y / 2);

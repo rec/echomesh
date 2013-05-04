@@ -6,6 +6,7 @@ import select
 import socket
 
 from echomesh.network import Socket
+from echomesh.util import Quit
 
 class BroadcastSocket(Socket.Socket):
   def __init__(self, port, bind_port):
@@ -22,7 +23,11 @@ class Send(BroadcastSocket):
     self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
 
   def _raw_send(self, res):
-    self.socket.sendto(res, ('<broadcast>', self.port))
+    try:
+      self.socket.sendto(res, ('<broadcast>', self.port))
+    except Exceptionn as e:
+      if not Quit.QUITTING:
+        raise
 
   def old_write(self, data):
     try:

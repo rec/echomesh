@@ -34,8 +34,8 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
   for (int i = 0; i < instruments_.size(); ++i)
     instruments_[i]->configure(String(i + delta), instrument);
 
-  int top = config_.visualizer.padding.y + TOP_TWEAK;
-  int left = config_.visualizer.padding.x + LEFT_TWEAK;
+  int top = config_.visualizer.padding.y;
+  int left = config_.visualizer.padding.x;
   int columns = config_.visualizer.layout.x;
   int rows = config_.visualizer.layout.y;
 

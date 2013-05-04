@@ -49,12 +49,13 @@ class LightBank(ThreadLoop):
 
     Combiner.combine_to_bytearray(self.bytes, client_lights,
                                   UnitConfig.get('light', 'brightness'))
-    self._display_lights()
+    if self.is_running:
+      self._display_lights()
 
-    self._next_time += UnitConfig.get('light', 'visualizer', 'period')
-    # TODO: which period?
-
-    time.sleep(max(0, self._next_time - time.time()))
+    if self.is_running:
+      self._next_time += UnitConfig.get('light', 'visualizer', 'period')
+      # TODO: which period?
+      time.sleep(max(0, self._next_time - time.time()))
 
   def config_update(self, get):
     self.count = get('light', 'count')

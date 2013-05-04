@@ -7,6 +7,7 @@ from six.moves import queue
 
 from echomesh.network import BroadcastSocket
 from echomesh.network import SelectLoop
+from echomesh.util import Quit
 from echomesh.util.thread import ThreadLoop
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
@@ -39,8 +40,13 @@ class DataSocket(MasterRunnable):
         item = self.receive_socket.queue.get(timeout=self.timeout)
       except queue.Empty:
         return
+      except:
+        if not Quit.QUITTING:
+          raise
+
       try:
-        self.callback(item)
+        if not Quit.QUITTING:
+          self.callback(item)
       except Exception as e:
         print('DataSocket.receive:', e)
 
