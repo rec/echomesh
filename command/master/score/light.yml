@@ -3,12 +3,12 @@ type: sequence
 variables:
   loop:
     type: counter
-    period: 20ms
+    period: 10ms
 
 patterns:
   one:
     type: insert
-    begin: local.loop + 32
+    begin: local.loop / 2 + 32
     length: config.light.count
 
     rollover: true
@@ -16,19 +16,30 @@ patterns:
       type: spread
       begin: red
       end: white
-      steps: 8
+      steps: 48
 
   two:
     type: insert
-    begin: 2 * local.loop
+    begin: local.loop / 4
     length: config.light.count
-    skip: 2
+    skip: 4
     rollover: true
     pattern:
       type: spread
       begin: red
       end: blue
-      steps: 8
+      steps: 16
+
+  three:
+    type: insert
+    begin: config.light.count - local.loop
+    length: config.light.count
+    rollover: true
+    pattern:
+      type: spread
+      begin: burnt sienna
+      end: cadmium yellow
+      steps: 24
 
 
 elements:
@@ -40,5 +51,10 @@ elements:
   -
     type: pattern
     pattern: two
+    output: light
+
+  -
+    type: pattern
+    pattern: three
     output: light
 
