@@ -9,7 +9,6 @@ patterns:
   one:
     type: insert
     begin: local.loop / 2 + 32
-    length: config.light.count
 
     rollover: true
     pattern:
@@ -21,7 +20,6 @@ patterns:
   two:
     type: insert
     begin: local.loop / 4
-    length: config.light.count
     skip: 4
     rollover: true
     pattern:
@@ -33,7 +31,6 @@ patterns:
   three:
     type: insert
     begin: config.light.count - local.loop
-    length: config.light.count
     rollover: true
     pattern:
       type: spread

@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import itertools
 
 from echomesh.color import ColorTable
+from echomesh.base import Config
 
 USE_NUMPY = False
 
@@ -27,10 +28,7 @@ def insert(light_set, target=None, begin=None, length=None, rollover=True,
   skip = int(skip or 1)
   begin = int(begin or 0)
   if length is None:
-    if target is None:
-      length = begin + len(light_set) * skip
-    else:
-      length = len(target)
+    length = Config.get('light', 'count') if target is None else len(target)
 
   result = target or ([None] * length)
   for i, light in enumerate(light_set):
