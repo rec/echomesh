@@ -53,10 +53,11 @@ class _Counter(object):
 
     count = int(UnitConfig.get('speed') * self.element.elapsed_time() //
                 self.period)
-    repeat = count // self.count
-    if repeat >= self.repeat:
-      return self.end
-    count -= repeat * self.count
+    if self.count != Units.INFINITY:
+      repeat = count // self.count
+      if repeat >= self.repeat:
+        return self.end
+      count -= repeat * self.count
     return self.begin + self.skip * count
 
 def _counter(element, description):

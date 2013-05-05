@@ -53,7 +53,7 @@ def inject(element, desc):
 
 def insert(element, desc):
   return Maker(element, desc, Combiner.insert,
-                  'length', 'offset', 'rollover', 'skip')
+               'begin', 'length', 'rollover', 'skip')
 
 def reverse(element, desc):
   return Maker(element, desc, reversed)

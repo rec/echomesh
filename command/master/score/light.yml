@@ -3,13 +3,19 @@ type: sequence
 variables:
   loop:
     type: counter
-    count:  config.light.count
     period: 20ms
+
+  loop2:
+    type: counter
+    period: 40ms
 
 patterns:
   one:
     type: insert
-    offset: local.loop + 32
+    begin: local.loop + 32
+    length: config.light.count
+
+    rollover: true
     pattern:
       type: spread
       begin: red
@@ -18,8 +24,10 @@ patterns:
 
   two:
     type: insert
-    offset: 2 * local.loop
+    begin: 2 * local.loop2
+    length: config.light.count
     skip: 2
+    rollover: true
     pattern:
       type: spread
       begin: red

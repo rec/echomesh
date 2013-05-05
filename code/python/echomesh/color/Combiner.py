@@ -22,30 +22,25 @@ def applier(function):
 # The Python built-in works perfectly.
 reverse = reversed
 
-# Must set one of length or target.
-def insert(light_set, length=None, target=None, offset=None, skip=None,
-           rollover=False):
+def insert(light_set, target=None, begin=None, length=None, rollover=True,
+           skip=None):
   skip = int(skip or 1)
-  offset = int(offset or 0)
-  if length is None and target is None:
-    length = offset + len(light_set) * skip
-  result = target or ([None] * length)
+  begin = int(begin or 0)
   if length is None:
-    length = len(result)
-  else:
-    assert length >= 0
+    if target is None:
+      length = begin + len(light_set) * skip
+    else:
+      length = len(target)
 
-  index = offset
-  while index < 0:
-    index += length
-  for light in light_set:
-    while index >= length:
-      index -= length
+  result = target or ([None] * length)
+  for i, light in enumerate(light_set):
+    index = begin + i
+    if index < 0 or index >= length:
+      if rollover:
+        index = index % length
+      else:
+        continue
     result[index] = light
-    index += skip
-
-    if not rollover and index >= length:
-      break
 
   return result
 
