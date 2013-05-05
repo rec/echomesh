@@ -5,10 +5,6 @@ variables:
     type: counter
     period: 20ms
 
-  loop2:
-    type: counter
-    period: 40ms
-
 patterns:
   one:
     type: insert
@@ -24,7 +20,7 @@ patterns:
 
   two:
     type: insert
-    begin: 2 * local.loop2
+    begin: 2 * local.loop
     length: config.light.count
     skip: 2
     rollover: true
