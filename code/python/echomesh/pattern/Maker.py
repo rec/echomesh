@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.color import ColorSpread
-from echomesh.color import Combiner
 from echomesh.expression.Expression import Expression
+from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
 from echomesh.util import Registry
 
@@ -48,28 +48,28 @@ class Maker(object):
   def is_constant(self):
     return all(v.is_constant() for v in self.table.itervalues())
 
-def concatenate(element, desc):
-  return Maker(element, desc, Combiner.concatenate)
+def choose(element, desc):
+  return Maker(element, desc, MakerFunctions.choose, 'choose')
 
-def transpose(element, desc):
-  return Maker(element, desc, Combiner.transpose,
-               'x', 'y', 'reverse_x', 'reverse_y')
+def concatenate(element, desc):
+  return Maker(element, desc, MakerFunctions.concatenate)
 
 def inject(element, desc):
-  return Maker(element, desc, Combiner.inject)
+  return Maker(element, desc, MakerFunctions.inject)
 
 def insert(element, desc):
-  return Maker(element, desc, Combiner.insert,
+  return Maker(element, desc, MakerFunctions.insert,
                'begin', 'length', 'rollover', 'skip')
 
 def reverse(element, desc):
-  return Maker(element, desc, reversed)
+  return Maker(element, desc, MakerFunctions.reverse)
 
 def spread(element, desc):
   return Maker(element, desc, ColorSpread.color_name_spread, 'steps')
 
-def choose(element, desc):
-  return Maker(element, desc, Combiner.choose, 'choose')
+def transpose(element, desc):
+  return Maker(element, desc, MakerFunctions.transpose,
+               'x', 'y', 'reverse_x', 'reverse_y')
 
 _REGISTRY.register(choose)
 _REGISTRY.register(concatenate)
