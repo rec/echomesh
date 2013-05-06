@@ -9,7 +9,9 @@ from echomesh.util import Registry
 _REGISTRY = Registry.Registry('pattern types')
 
 def make_pattern(element, desc):
-  return desc and _REGISTRY.get(desc.pop('type'))(element, desc)
+  type_value = desc.pop('type')
+  if type_value:
+    return desc and _REGISTRY.get(type_value)(element, desc)
 
 def make_patterns(element, description):
   result = {}
@@ -28,9 +30,12 @@ class Maker(object):
       self.table[k] = v
     self.function = function
     patterns = desc.get('patterns') or desc.get('pattern')
-    if type(patterns) is not list:
-      patterns = [patterns]
-    self.patterns = filter(None, (make_pattern(element, p) for p in patterns))
+    if patterns:
+      if type(patterns) is not list:
+        patterns = [patterns]
+      self.patterns = filter(None, (make_pattern(element, p) for p in patterns))
+    else:
+      self.patterns = []
 
   def evaluate(self):
     return self()
@@ -39,8 +44,6 @@ class Maker(object):
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
     if self.patterns:
       pat = [p() for p in self.patterns]
-      if len(pat) == 1:
-        pat = pat[0]
       return self.function(pat, **table)
     else:
       return self.function(**table)

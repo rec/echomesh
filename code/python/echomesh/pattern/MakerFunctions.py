@@ -20,7 +20,7 @@ def choose(light_sets, choose=None):
 def concatenate(light_sets):
   return list(itertools.chain(*light_sets))
 
-def inject(light_set, mapping, length):
+def inject(light_sets, mapping, length):
   """
     mapping:
       Maps a light index in the result to the light index in the original
@@ -28,14 +28,20 @@ def inject(light_set, mapping, length):
       light in the input to many lights in the output.
 
   """
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
+
   def _map(i):
     x = mapping.get(i)
     return x is not None and light_set[x]
 
   return [_map(i) for i in range(max(int(length), 0))]
 
-def insert(light_set, target=None, begin=None, length=None, rollover=True,
+def insert(light_sets, target=None, begin=None, length=None, rollover=True,
            skip=None):
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
+
   skip = int(skip or 1)
   begin = int(begin or 0)
   if length is None:
@@ -53,7 +59,9 @@ def insert(light_set, target=None, begin=None, length=None, rollover=True,
 
   return result
 
-def transpose(light_set, x=None, y=None, reverse_x=False, reverse_y=False):
+def transpose(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
   if not (x and y):
     default_x, default_y = Config.get('light', 'visualizer', 'layout')
     x = x or default_x
@@ -73,5 +81,8 @@ def transpose(light_set, x=None, y=None, reverse_x=False, reverse_y=False):
   return result
 
 # The Python built-in works perfectly.
-reverse = reversed
+def reverse(light_sets):
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
+  return reversed(light_set)
 
