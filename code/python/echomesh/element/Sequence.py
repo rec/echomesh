@@ -6,9 +6,9 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
-from echomesh.element import PatternMaker
 from echomesh.expression import UnitConfig
 from echomesh.expression import Units
+from echomesh.pattern import Maker
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -16,18 +16,16 @@ LOGGER = Log.logger(__name__)
 class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
 
-  def __init__(self, parent, description):
+  def __init__(self, parent, desc):
     times = []
-    for e in description.get('elements', []):
+    for e in desc.get('elements', []):
       times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
-    self.pattern_makers = PatternMaker.make_patterns(
-      self, description.get('patterns', {}))
-
-    super(Sequence, self).__init__(parent, description, name='Sequence',
-                                   full_slave=False)
-    self.loops = Units.get_table(description, 'loops', 1)
-    self.duration = Units.get_table(description, 'duration', Units.INFINITY)
+    self.pattern_makers = Maker.make_patterns(self, desc.get('patterns', {}))
+    super(Sequence, self).__init__(
+      parent, desc, name='Sequence', full_slave=False)
+    self.loops = Units.get_table(desc, 'loops', 1)
+    self.duration = Units.get_table(desc, 'duration', Units.INFINITY)
     self.sequence = []
     self.paused_children = set()
 
