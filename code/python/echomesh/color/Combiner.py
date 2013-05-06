@@ -68,9 +68,10 @@ def concatenate(light_sets):
 
 def transpose(light_set, x=None, y=None, reverse_x=False, reverse_y=False):
   if not (x and y):
-   default_x, default_y = Config.get('light', 'visualizer', 'layout')
+    default_x, default_y = Config.get('light', 'visualizer', 'layout')
     x = x or default_x
     y = y or default_y
+
   result = [None] * len(light_set)
   for i, light in enumerate(light_set):
     my_x = i % x;

@@ -48,6 +48,13 @@ class Maker(object):
   def is_constant(self):
     return all(v.is_constant() for v in self.table.itervalues())
 
+def concatenate(element, desc):
+  return Maker(element, desc, Combiner.concatenate)
+
+def transpose(element, desc):
+  return Maker(element, desc, Combiner.transpose,
+               'x', 'y', 'reverse_x', 'reverse_y')
+
 def inject(element, desc):
   return Maker(element, desc, Combiner.inject)
 
@@ -65,7 +72,9 @@ def choose(element, desc):
   return Maker(element, desc, Combiner.choose, 'choose')
 
 _REGISTRY.register(choose)
+_REGISTRY.register(concatenate)
 _REGISTRY.register(inject)
 _REGISTRY.register(insert)
 _REGISTRY.register(reverse)
 _REGISTRY.register(spread)
+_REGISTRY.register(transpose)
