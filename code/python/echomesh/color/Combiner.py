@@ -7,19 +7,6 @@ from echomesh.base import Config
 
 USE_NUMPY = False
 
-def apply_processor(function, lighter):
-  if callable(lighter):
-    def func(t):
-      return function(lighter(t))
-    return func
-  else:
-    return function(lighter)
-
-def applier(function):
-  def f(light_set):
-    return [function(light) for light in light_set]
-  return f
-
 # The Python built-in works perfectly.
 reverse = reversed
 
@@ -75,6 +62,27 @@ def combine(combiner, *lighters):
     return numpy.array([combiner(z) for z in linverse])
   else:
     return [combiner(z) for z in linverse]
+
+def concatenate(light_sets):
+  return list(itertools.chain(*light_sets))
+
+def transpose(light_set, x=None, y=None, reverse_x=False, reverse_y=False):
+  if not (x and y):
+   default_x, default_y = Config.get('light', 'visualizer', 'layout')
+    x = x or default_x
+    y = y or default_y
+  result = [None] * len(light_set)
+  for i, light in enumerate(light_set):
+    my_x = i % x;
+    my_y = i // x;
+    if reverse_x:
+      my_x = x - my_x - 1
+    if reverse_y:
+      my_y = y - my_y - 1
+    index = my_x * y + my_y
+    if index < len(result):
+      result[index] = light
+  return result
 
 def first(items):
   return items[0]
