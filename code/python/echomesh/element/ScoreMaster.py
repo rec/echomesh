@@ -19,6 +19,9 @@ from echomesh.util.thread import Lock
 LOGGER = Log.logger(__name__)
 _NEW_STYLE_CALLS = True
 
+EMPTY_IMPLIES_EVERYTHING = set(['begin', 'pause', 'reload', 'run', 'start',
+                                'unload'])
+
 class ScoreMaster(MasterRunnable.MasterRunnable):
   INSTANCE = None
 
@@ -52,7 +55,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     assert isinstance(action, six.string_types), action
     getter = operator.attrgetter(action)
     with self.lock:
-      if '*' in names:
+      if ((action in EMPTY_IMPLIES_EVERYTHING) and
+          not names or names == ['*']):
         names = self.elements.keys()
       for name in names:
         try:
@@ -135,7 +139,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
   def _on_pause(self):
     super(ScoreMaster, self)._on_pause()
     try:
-      self.perform_element('pause', ['*'])
+      self.perform_element('pause', [])
     except:
       pass
 

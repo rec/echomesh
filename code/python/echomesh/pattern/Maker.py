@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.color import ColorSpread
 from echomesh.expression.Expression import Expression
 from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
@@ -68,7 +67,7 @@ def reverse(element, desc):
   return Maker(element, desc, MakerFunctions.reverse)
 
 def spread(element, desc):
-  return Maker(element, desc, ColorSpread.color_name_spread, 'steps')
+  return Maker(element, desc, MakerFunctions.spread, 'colors', 'steps')
 
 def transpose(element, desc):
   return Maker(element, desc, MakerFunctions.transpose,

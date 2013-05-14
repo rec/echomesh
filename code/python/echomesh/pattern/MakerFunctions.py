@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import itertools
 
+from echomesh.color import ColorSpread
 from echomesh.color import ColorTable
 from echomesh.base import Config
 
@@ -85,4 +86,26 @@ def reverse(light_sets):
   assert len(light_sets) == 1
   light_set = light_sets[0]
   return reversed(light_set)
+
+def spread(colors=None, steps=None, transforms=None):
+  assert colors
+  assert steps
+
+  if not isinstance(steps, list):
+    steps = [steps]
+
+  if transforms is not None and not isinstance(transforms, list):
+    transforms = [transforms]
+
+
+
+  result = []
+  for i in xrange(len(colors) - 1):
+    s = steps[i if i < len(steps) else -1]
+    t = transforms and transforms[i if i < len(transforms) else -1]
+    result.extend(ColorSpread.color_name_spread(begin=colors[i],
+                                                end=colors[i + 1],
+                                                steps=s,
+                                                transform=t))
+  return result
 

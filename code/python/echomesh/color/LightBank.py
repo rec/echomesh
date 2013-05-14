@@ -9,6 +9,8 @@ from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop
 from echomesh.util.thread import Lock
 
+LOGGER = Log.logger(__name__)
+
 class LightBank(ThreadLoop):
   def __init__(self, is_daemon=True):
     super(LightBank, self).__init__(is_daemon=is_daemon)
@@ -43,7 +45,13 @@ class LightBank(ThreadLoop):
 
   def single_loop(self):
     with self.lock:
-      client_lights = [client() for client in self.clients]
+      client_lights = []
+      for client in self.clients:
+        try:
+          client_lights.append(client())
+        except:
+          LOGGER.error(limit=8)
+
     if not client_lights:
       return
 

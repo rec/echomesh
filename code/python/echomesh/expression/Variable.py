@@ -21,12 +21,15 @@ REGISTRY = Registry.Registry('variable classes')
 INFINITY = float('inf')
 
 def variable(element, description):
-  description = copy.copy(description)
-  vtype = description.pop('type', None)
-  if vtype:
-    return REGISTRY.get(vtype)(element, description)
-
-  raise Exception('No type in variable %s.' % description)
+  if isinstance(description, dict):
+    description = copy.copy(description)
+    vtype = description.pop('type', None)
+    if vtype:
+      return REGISTRY.get(vtype)(element, description)
+    else:
+      raise Exception('No type in variable %s.' % description)
+  else:
+    return _Value(element, description)
 
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
@@ -74,7 +77,22 @@ class _Envelope(Envelope):
   def __call__(self):
     return self.interpolate(self.element.elapsed_time())
 
+class _Value(object):
+  def __init__(self, element, value=None):
+    self.element = element
+    self.value = Units.UnitExpression(value)
+
+  def is_constant(self):
+    return self.value.is_constant(self.element)
+
+  def evaluate(self):
+    return self()
+
+  def __call__(self):
+    return self.value()
+
 REGISTRY.register_all(
   counter=_counter,
   envelope=_Envelope,
+  value=_Value,
   )
