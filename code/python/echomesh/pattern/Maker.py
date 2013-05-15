@@ -43,7 +43,11 @@ class Maker(object):
       if k.startswith('pattern'):
         continue
       if k in attributes:
-        v = Expression(v, pattern_desc.element)
+        try:
+          v = Expression(v, pattern_desc.element)
+        except Exception as e:
+          raise Exception('%s in %s' % (e, pattern_desc))
+
       self.table[k] = v
     self.function = function
     patterns = desc.get('patterns') or desc.get('pattern') or []
