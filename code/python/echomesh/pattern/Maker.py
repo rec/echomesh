@@ -9,38 +9,57 @@ from echomesh.util import Registry
 
 _REGISTRY = Registry.Registry('pattern types')
 
-PatternDesc = collections.namedtuple('PatternDesc', 'element desc name')
+class PatternDesc(collections.namedtuple('PatternDesc',
+                                         'element description name')):
+  def __str__(self):
+    return 'pattern "%s" in element "%s"' % (
+      self.name, self.element.class_name())
 
-def _make_pattern(element, desc, name='', parent_name=''):
-  type_value = desc.pop('type')
-  if type_value and desc:
-    full_type, maker = _REGISTRY.get_key_and_value(type_value)
-    full_name = name if name else '%s:%s' % (parent_name, full_type)
-    return maker(element, desc)  #, full_name)
+def _make_pattern(desc, is_top_level):
+  type_value = desc.description.pop('type', None)
+  if not type_value:
+    raise Exception('No type value found')
+  full_type, maker = _REGISTRY.get_key_and_value_or_none(type_value)
+  if not full_type:
+    raise Exception('Didn\'t understand type="%s"' % type_value)
+
+  if not is_top_level:
+    desc = PatternDesc(desc.element, desc.description,
+                       desc.name + ':%s' % full_type)
+  return maker(desc)
 
 def make_patterns(element, description):
   result = {}
   for name, desc in description.iteritems():
-    result[name] = _make_pattern(element, desc, name=name)
+    result[name] = _make_pattern(PatternDesc(element, desc, name), True)
   return result
 
 class Maker(object):
-  def __init__(self, element, desc, function, *attributes):
+  def __init__(self, pattern_desc, function, *attributes):
+    self.pattern_desc = pattern_desc
     self.table = {}
+    desc = pattern_desc.description
     for k, v in desc.iteritems():
       if k.startswith('pattern'):
         continue
       if k in attributes:
-        v = Expression(v, element)
+        v = Expression(v, pattern_desc.element)
       self.table[k] = v
     self.function = function
-    patterns = desc.get('patterns') or desc.get('pattern')
-    if patterns:
-      if type(patterns) is not list:
-        patterns = [patterns]
-      self.patterns = filter(None, (_make_pattern(element, p) for p in patterns))
-    else:
-      self.patterns = []
+    patterns = desc.get('patterns') or desc.get('pattern') or []
+    self.patterns = []
+    if type(patterns) is not list:
+      patterns = [patterns]
+
+    for p in patterns:
+      pd = PatternDesc(pattern_desc.element, p, pattern_desc.name)
+      try:
+        pattern = _make_pattern(pd, False)
+      except Exception as e:
+        raise Exception('%s in %s' % (e, pd))
+      else:
+        if pattern:
+          self.patterns.append(pattern)
 
   def evaluate(self):
     return self()
@@ -48,35 +67,40 @@ class Maker(object):
   def __call__(self):
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
     if self.patterns:
-      pat = [p() for p in self.patterns]
-      return self.function(pat, **table)
+      arg = [[p() for p in self.patterns]]
     else:
-      return self.function(**table)
+      arg = []
+
+    try:
+      return self.function(*arg, **table)
+    except Exception as e:
+      raise Exception('%s in %s' % (e, self.pattern_desc))
+
 
   def is_constant(self):
     return all(v.is_constant() for v in self.table.itervalues())
 
-def choose(element, desc):
-  return Maker(element, desc, MakerFunctions.choose, 'choose')
+def choose(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.choose, 'choose')
 
-def concatenate(element, desc):
-  return Maker(element, desc, MakerFunctions.concatenate)
+def concatenate(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.concatenate)
 
-def inject(element, desc):
-  return Maker(element, desc, MakerFunctions.inject)
+def inject(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.inject)
 
-def insert(element, desc):
-  return Maker(element, desc, MakerFunctions.insert,
+def insert(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.insert,
                'begin', 'length', 'rollover', 'skip')
 
-def reverse(element, desc):
-  return Maker(element, desc, MakerFunctions.reverse)
+def reverse(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.reverse)
 
-def spread(element, desc):
-  return Maker(element, desc, MakerFunctions.spread, 'colors', 'steps')
+def spread(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.spread, 'colors', 'steps')
 
-def transpose(element, desc):
-  return Maker(element, desc, MakerFunctions.transpose,
+def transpose(pattern_desc):
+  return Maker(pattern_desc, MakerFunctions.transpose,
                'x', 'y', 'reverse_x', 'reverse_y')
 
 _REGISTRY.register(choose)

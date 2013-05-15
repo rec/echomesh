@@ -57,6 +57,14 @@ class Registry(object):
     key, values = self._get(name)
     return key, values[0]
 
+  def get_key_and_value_or_none(self, name):
+    kv = self._get(name)
+    if kv:
+      key, values = kv
+      return key, values[0]
+    else:
+      return None, None
+
   def get_help(self, name):
     full_name, (_, help_text, see_also) = self._get(name)
 
