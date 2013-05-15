@@ -21,6 +21,7 @@ class Sequence(Loop.Loop):
     for e in desc.get('elements', []):
       times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
+    self.elements = []
     self.pattern_makers = Maker.make_patterns(self, desc.get('patterns', {}))
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)

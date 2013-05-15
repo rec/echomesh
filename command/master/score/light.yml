@@ -12,8 +12,7 @@ patterns:
 
     pattern:
       type: spread
-      begin: red
-      end: white
+      colors: [red, white]
       steps: 48
 
   two:
@@ -22,8 +21,7 @@ patterns:
     skip: 4
     pattern:
       type: spread
-      begin: red
-      end: blue
+      colors: [red, blue]
       steps: 16
 
   three:
@@ -33,8 +31,7 @@ patterns:
       begin: config.light.count - local.loop
       pattern:
         type: spread
-        begin: burnt sienna
-        end: cadmium yellow
+        colors: [burnt sienna, cadmium yellow]
         steps: 24
 
 elements:
