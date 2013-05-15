@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import collections
+
 from echomesh.expression.Expression import Expression
 from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
@@ -7,24 +9,28 @@ from echomesh.util import Registry
 
 _REGISTRY = Registry.Registry('pattern types')
 
-def make_pattern(element, desc):
+PatternDesc = collections.namedtuple('PatternDesc', 'element desc name')
+
+def _make_pattern(element, desc, name='', parent_name=''):
   type_value = desc.pop('type')
-  if type_value:
-    return desc and _REGISTRY.get(type_value)(element, desc)
+  if type_value and desc:
+    full_type, maker = _REGISTRY.get_key_and_value(type_value)
+    full_name = name if name else '%s:%s' % (parent_name, full_type)
+    return maker(element, desc)  #, full_name)
 
 def make_patterns(element, description):
   result = {}
-  for k, v in description.iteritems():
-    result[k] = make_pattern(element, v)
+  for name, desc in description.iteritems():
+    result[name] = _make_pattern(element, desc, name=name)
   return result
 
 class Maker(object):
-  def __init__(self, element, desc, function, *names):
+  def __init__(self, element, desc, function, *attributes):
     self.table = {}
     for k, v in desc.iteritems():
       if k.startswith('pattern'):
         continue
-      if k in names:
+      if k in attributes:
         v = Expression(v, element)
       self.table[k] = v
     self.function = function
@@ -32,7 +38,7 @@ class Maker(object):
     if patterns:
       if type(patterns) is not list:
         patterns = [patterns]
-      self.patterns = filter(None, (make_pattern(element, p) for p in patterns))
+      self.patterns = filter(None, (_make_pattern(element, p) for p in patterns))
     else:
       self.patterns = []
 
