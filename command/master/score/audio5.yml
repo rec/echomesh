@@ -1,8 +1,0 @@
-# This element plays stereo-2450.wav three times at a lower volume.
-
-type: audio
-file: stereo-2450.wav
-loops: 3
-level: 1 + 3/4 decibels
-
-# Yes, it will even do simple operations like 1 + 3 / 4.

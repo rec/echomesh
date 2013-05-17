@@ -1,6 +1,0 @@
-type: audio
-file: stereo-2450.wav
-loops: 3
-level: -12 db
-
-# ...or you can use units like decibels...

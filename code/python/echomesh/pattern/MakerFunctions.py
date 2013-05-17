@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import itertools
+import math
 
 from echomesh.color import ColorSpread
 from echomesh.color import ColorTable
@@ -89,7 +90,12 @@ def reverse(light_sets):
 
 def spread(colors=None, steps=None, transforms=None):
   assert colors
-  assert steps
+
+  if not isinstance(colors, list):
+    colors = [colors]
+
+  if steps is None:
+    steps = math.ceil(Config.get('light', 'count') / len(colors))
 
   if not isinstance(steps, list):
     steps = [steps]
@@ -97,7 +103,8 @@ def spread(colors=None, steps=None, transforms=None):
   if transforms is not None and not isinstance(transforms, list):
     transforms = [transforms]
 
-
+  if len(colors) == 1:
+    colors = [colors[0], colors[0]]
 
   result = []
   for i in xrange(len(colors) - 1):

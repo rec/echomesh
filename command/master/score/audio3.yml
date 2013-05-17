@@ -1,8 +1,0 @@
-# This element plays stereo-2450.wav three times at a lower volume.
-
-type: audio
-file: stereo-2450.wav
-loops: 3
-level: 90%
-
-# You can use units like % - very convenient!
