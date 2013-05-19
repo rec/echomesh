@@ -9,6 +9,8 @@ from echomesh.util import Registry
 
 _REGISTRY = Registry.Registry('pattern types')
 
+RAISE_ORIGINAL_EXCEPTION = not False
+
 class PatternDesc(collections.namedtuple('PatternDesc',
                                          'element description name')):
   def __str__(self):
@@ -34,41 +36,57 @@ def make_patterns(element, description):
     result[name] = _make_pattern(PatternDesc(element, desc, name), True)
   return result
 
+def _make_table(pattern_desc, attributes):
+  table = {}
+  for k, v in pattern_desc.description.iteritems():
+    if k.startswith('pattern'):
+      continue
+    if k in attributes:
+      try:
+        v = Expression(v, pattern_desc.element)
+      except Exception as e:
+        if RAISE_ORIGINAL_EXCEPTION:
+          raise
+        raise Exception('%s in %s' % (e, pattern_desc))
+
+    table[k] = v
+  return table
+
+
+def _make_patterns_from_desc(pattern_desc):
+  desc = pattern_desc.description
+  patterns = desc.get('patterns') or desc.get('pattern') or []
+  if type(patterns) is not list:
+    patterns = [patterns]
+
+  result = []
+
+  for p in patterns:
+    pd = PatternDesc(pattern_desc.element, p, pattern_desc.name)
+    try:
+      pattern = _make_pattern(pd, False)
+    except Exception as e:
+      if RAISE_ORIGINAL_EXCEPTION:
+        raise
+      raise Exception('%s in %s' % (e, pd))
+    else:
+      if pattern:
+        result.append(pattern)
+  return result
+
+
 class Maker(object):
   def __init__(self, pattern_desc, function, *attributes):
     self.pattern_desc = pattern_desc
-    self.table = {}
-    desc = pattern_desc.description
-    for k, v in desc.iteritems():
-      if k.startswith('pattern'):
-        continue
-      if k in attributes:
-        try:
-          v = Expression(v, pattern_desc.element)
-        except Exception as e:
-          raise Exception('%s in %s' % (e, pattern_desc))
-
-      self.table[k] = v
+    self.table = _make_table(pattern_desc, attributes)
     self.function = function
-    patterns = desc.get('patterns') or desc.get('pattern') or []
-    self.patterns = []
-    if type(patterns) is not list:
-      patterns = [patterns]
-
-    for p in patterns:
-      pd = PatternDesc(pattern_desc.element, p, pattern_desc.name)
-      try:
-        pattern = _make_pattern(pd, False)
-      except Exception as e:
-        raise Exception('%s in %s' % (e, pd))
-      else:
-        if pattern:
-          self.patterns.append(pattern)
+    self.patterns = _make_patterns_from_desc(pattern_desc)
 
   def evaluate(self):
     return self()
 
   def __call__(self):
+    # print('!!!!', self.table)
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
     if self.patterns:
       arg = [[p() for p in self.patterns]]
@@ -78,6 +96,8 @@ class Maker(object):
     try:
       return self.function(*arg, **table)
     except Exception as e:
+      if RAISE_ORIGINAL_EXCEPTION:
+        raise
       raise Exception('%s in %s' % (e, self.pattern_desc))
 
 
