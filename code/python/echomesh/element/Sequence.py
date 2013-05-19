@@ -8,7 +8,8 @@ from echomesh.element import Load
 from echomesh.element import Loop
 from echomesh.expression import UnitConfig
 from echomesh.expression import Units
-from echomesh.pattern import Maker
+from echomesh.pattern import Maker  # TODO: we need this for a side-effect!
+from echomesh.pattern import PatternDesc
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -22,7 +23,8 @@ class Sequence(Loop.Loop):
       times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
     self.elements = []
-    self.pattern_makers = Maker.make_patterns(self, desc.get('patterns', {}))
+    self.pattern_makers = PatternDesc.make_patterns(self,
+                                                    desc.get('patterns', {}))
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
     self.loops = Units.get_table(desc, 'loops', 1)

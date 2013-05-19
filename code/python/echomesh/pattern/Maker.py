@@ -1,86 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import collections
-
-from echomesh.expression.Expression import Expression
 from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
-from echomesh.util import Registry
-
-_REGISTRY = Registry.Registry('pattern types')
-
-RAISE_ORIGINAL_EXCEPTION = not False
-
-class PatternDesc(collections.namedtuple('PatternDesc',
-                                         'element description name')):
-  def __str__(self):
-    return 'pattern "%s" in element "%s"' % (
-      self.name, self.element.class_name())
-
-def _make_pattern(desc, is_top_level):
-  type_value = desc.description.pop('type', None)
-  if not type_value:
-    raise Exception('No type value found')
-  full_type, maker = _REGISTRY.get_key_and_value_or_none(type_value)
-  if not full_type:
-    raise Exception('Didn\'t understand type="%s"' % type_value)
-
-  if not is_top_level:
-    desc = PatternDesc(desc.element, desc.description,
-                       desc.name + ':%s' % full_type)
-  return maker(desc)
-
-def make_patterns(element, description):
-  result = {}
-  for name, desc in description.iteritems():
-    result[name] = _make_pattern(PatternDesc(element, desc, name), True)
-  return result
-
-def _make_table(pattern_desc, attributes):
-  table = {}
-  for k, v in pattern_desc.description.iteritems():
-    if k.startswith('pattern'):
-      continue
-    if k in attributes:
-      try:
-        v = Expression(v, pattern_desc.element)
-      except Exception as e:
-        if RAISE_ORIGINAL_EXCEPTION:
-          raise
-        raise Exception('%s in %s' % (e, pattern_desc))
-
-    table[k] = v
-  return table
-
-
-def _make_patterns_from_desc(pattern_desc):
-  desc = pattern_desc.description
-  patterns = desc.get('patterns') or desc.get('pattern') or []
-  if type(patterns) is not list:
-    patterns = [patterns]
-
-  result = []
-
-  for p in patterns:
-    pd = PatternDesc(pattern_desc.element, p, pattern_desc.name)
-    try:
-      pattern = _make_pattern(pd, False)
-    except Exception as e:
-      if RAISE_ORIGINAL_EXCEPTION:
-        raise
-      raise Exception('%s in %s' % (e, pd))
-    else:
-      if pattern:
-        result.append(pattern)
-  return result
-
+from echomesh.pattern import PatternDesc
 
 class Maker(object):
   def __init__(self, pattern_desc, function, *attributes):
-    self.pattern_desc = pattern_desc
-    self.table = _make_table(pattern_desc, attributes)
+    self.name = str(pattern_desc)
+    self.table = PatternDesc.make_table(pattern_desc, attributes)
     self.function = function
-    self.patterns = _make_patterns_from_desc(pattern_desc)
+    self.patterns = PatternDesc.make_patterns_from_desc(pattern_desc)
 
   def evaluate(self):
     return self()
@@ -96,9 +25,9 @@ class Maker(object):
     try:
       return self.function(*arg, **table)
     except Exception as e:
-      if RAISE_ORIGINAL_EXCEPTION:
+      if PatternDesc.RAISE_ORIGINAL_EXCEPTION:
         raise
-      raise Exception('%s in %s' % (e, self.pattern_desc))
+      raise Exception('%s in %s' % (e, self.name))
 
 
   def is_constant(self):
@@ -126,6 +55,7 @@ def spread(pattern_desc):
 def transpose(pattern_desc):
   return Maker(pattern_desc, MakerFunctions.transpose,
                'x', 'y', 'reverse_x', 'reverse_y')
+_REGISTRY = PatternDesc.REGISTRY
 
 _REGISTRY.register(choose)
 _REGISTRY.register(concatenate)
