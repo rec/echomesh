@@ -35,43 +35,33 @@ def make_patterns_for_element(element, description):
     result[name] = _make_pattern(_PatternDesc(element, desc, name), True)
   return result
 
-def make_table(pattern_desc, attributes):
-  table = {}
-  for k, v in pattern_desc.description.iteritems():
-    if k.startswith('pattern'):
-      continue
-    if k in attributes:
-      try:
-        v = Expression(v, pattern_desc.element)
-      except Exception as e:
-        if RAISE_ORIGINAL_EXCEPTION:
-          raise
-        raise Exception('%s in %s' % (e, pattern_desc))
-
-    table[k] = v
-  return table
-
-def make_patterns_from_desc(pattern_desc):
-  desc = pattern_desc.description
-  patterns = desc.get('patterns') or desc.get('pattern') or []
-  if type(patterns) is not list:
-    patterns = [patterns]
-
-  result = []
-
-  for p in patterns:
-    pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
-    try:
-      pattern = _make_pattern(pd, False)
-    except Exception as e:
-      if RAISE_ORIGINAL_EXCEPTION:
-        raise
-      raise Exception('%s in %s' % (e, pd))
-    else:
-      if pattern:
-        result.append(pattern)
-  return result
-
 def make_table_and_patterns(pattern_desc, attributes):
-  return (make_table(pattern_desc, attributes),
-          make_patterns_from_desc(pattern_desc))
+  table = {}
+  patterns = []
+
+  desc = pattern_desc.description
+  pd = pattern_desc
+
+  try:
+    for k, v in desc.iteritems():
+      if not k.startswith('pattern'):
+        if k in attributes:
+          v = Expression(v, pattern_desc.element)
+        table[k] = v
+
+    pats = desc.get('patterns') or desc.get('pattern') or []
+    if type(pats) is not list:
+      pats = [pats]
+
+    for p in pats:
+      pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
+      pattern = _make_pattern(pd, False)
+      if pattern:
+        patterns.append(pattern)
+  except Exception as e:
+    if RAISE_ORIGINAL_EXCEPTION:
+      raise
+    else:
+      raise Exception('%s in %s' % (e, pd))
+
+  return table, patterns
