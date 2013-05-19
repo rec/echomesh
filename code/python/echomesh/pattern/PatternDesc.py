@@ -16,7 +16,7 @@ class _PatternDesc(_Parent):
     return 'pattern "%s" in element "%s"' % (
       self.name, self.element.class_name())
 
-def _make_one_pattern(desc, is_top_level):
+def _make_pattern(desc, is_top_level):
   type_value = desc.description.pop('type', None)
   if not type_value:
     raise Exception('No type value found')
@@ -32,7 +32,7 @@ def _make_one_pattern(desc, is_top_level):
 def make_patterns_for_element(element, description):
   result = {}
   for name, desc in description.iteritems():
-    result[name] = _make_one_pattern(_PatternDesc(element, desc, name), True)
+    result[name] = _make_pattern(_PatternDesc(element, desc, name), True)
   return result
 
 def make_table(pattern_desc, attributes):
@@ -62,7 +62,7 @@ def make_patterns_from_desc(pattern_desc):
   for p in patterns:
     pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
     try:
-      pattern = _make_one_pattern(pd, False)
+      pattern = _make_pattern(pd, False)
     except Exception as e:
       if RAISE_ORIGINAL_EXCEPTION:
         raise
@@ -72,3 +72,6 @@ def make_patterns_from_desc(pattern_desc):
         result.append(pattern)
   return result
 
+def make_table_and_patterns(pattern_desc, attributes):
+  return (make_table(pattern_desc, attributes),
+          make_patterns_from_desc(pattern_desc))

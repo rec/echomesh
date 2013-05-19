@@ -7,15 +7,14 @@ from echomesh.pattern import PatternDesc
 class Maker(object):
   def __init__(self, pattern_desc, function, *attributes):
     self.name = str(pattern_desc)
-    self.table = PatternDesc.make_table(pattern_desc, attributes)
     self.function = function
-    self.patterns = PatternDesc.make_patterns_from_desc(pattern_desc)
+    self.table, self.patterns = PatternDesc.make_table_and_patterns(
+      pattern_desc, attributes)
 
   def evaluate(self):
     return self()
 
   def __call__(self):
-    # print('!!!!', self.table)
     table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
     if self.patterns:
       arg = [[p() for p in self.patterns]]
