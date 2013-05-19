@@ -9,13 +9,14 @@ REGISTRY = Registry.Registry('pattern types')
 
 RAISE_ORIGINAL_EXCEPTION = not False
 
-class PatternDesc(collections.namedtuple('PatternDesc',
-                                         'element description name')):
+_Parent = collections.namedtuple('_PatternDesc', 'element description name')
+
+class _PatternDesc(_Parent):
   def __str__(self):
     return 'pattern "%s" in element "%s"' % (
       self.name, self.element.class_name())
 
-def make_pattern(desc, is_top_level):
+def _make_one_pattern(desc, is_top_level):
   type_value = desc.description.pop('type', None)
   if not type_value:
     raise Exception('No type value found')
@@ -24,14 +25,14 @@ def make_pattern(desc, is_top_level):
     raise Exception('Didn\'t understand type="%s"' % type_value)
 
   if not is_top_level:
-    desc = PatternDesc(desc.element, desc.description,
+    desc = _PatternDesc(desc.element, desc.description,
                        desc.name + ':%s' % full_type)
   return maker(desc)
 
-def make_patterns(element, description):
+def make_patterns_for_element(element, description):
   result = {}
   for name, desc in description.iteritems():
-    result[name] = make_pattern(PatternDesc(element, desc, name), True)
+    result[name] = _make_one_pattern(_PatternDesc(element, desc, name), True)
   return result
 
 def make_table(pattern_desc, attributes):
@@ -59,9 +60,9 @@ def make_patterns_from_desc(pattern_desc):
   result = []
 
   for p in patterns:
-    pd = PatternDesc(pattern_desc.element, p, pattern_desc.name)
+    pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
     try:
-      pattern = make_pattern(pd, False)
+      pattern = _make_one_pattern(pd, False)
     except Exception as e:
       if RAISE_ORIGINAL_EXCEPTION:
         raise

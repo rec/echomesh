@@ -50,7 +50,7 @@ def reverse(pattern_desc):
   return Maker(pattern_desc, MakerFunctions.reverse)
 
 def spread(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.spread, 'colors', 'steps')
+  return Maker(pattern_desc, MakerFunctions.spread, 'steps')
 
 def transpose(pattern_desc):
   return Maker(pattern_desc, MakerFunctions.transpose,

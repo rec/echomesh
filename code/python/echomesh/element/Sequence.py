@@ -23,8 +23,8 @@ class Sequence(Loop.Loop):
       times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
     self.elements = []
-    self.pattern_makers = PatternDesc.make_patterns(self,
-                                                    desc.get('patterns', {}))
+    self.pattern_makers = PatternDesc.make_patterns_for_element(
+      self, desc.get('patterns', {}))
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
     self.loops = Units.get_table(desc, 'loops', 1)
