@@ -55,8 +55,8 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     assert isinstance(action, six.string_types), action
     getter = operator.attrgetter(action)
     with self.lock:
-      if ((action in EMPTY_IMPLIES_EVERYTHING) and
-          not names or names == ['*']):
+      if (((action in EMPTY_IMPLIES_EVERYTHING) and not names)
+          or names and (names[0] == '*')):
         names = self.elements.keys()
       for name in names:
         try:
@@ -71,7 +71,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
             getter(element)()
           full_names.append(full_name)
         except Exception as e:
-          LOGGER.error('%s', str(e), exc_info=0)
+          LOGGER.error('', exc_info=0)
     return full_names
 
   def load_elements(self, names):
