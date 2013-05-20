@@ -7,8 +7,8 @@ from echomesh.expression import Units
 from echomesh.util.math import Poisson
 
 class Repeat(Loop):
-  def __init__(self, parent, description):
-    super(Repeat, self).__init__(parent, description, name='Repeat')
+  def __init__(self, parent, description, name='Repeat'):
+    super(Repeat, self).__init__(parent, description, name)
     self.random_delay = Units.convert(description.get('random_delay', 0))
     self.period = Units.convert(description.get('period', 0))
     self.repeat = Units.convert(description.get('repeat', 'infinite'))

@@ -1,14 +1,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.element import Element
+from echomesh.element.Repeat import Repeat
 from echomesh.element import Load
 from gittwit.twitter.Search import Search
 
 DEFAULT_PRELOAD = 1
 
-class Twitter(Element.Element):
+class Twitter(Repeat):
   def __init__(self, parent, description):
-    super(Twitter, self).__init__(parent, description)
+    super(Twitter, self).__init__(parent, description, name='Twitter')
     preload = description.get('preload', DEFAULT_PRELOAD)
     search = description['search']
     if not isinstance(search, list):
@@ -24,9 +24,8 @@ class Twitter(Element.Element):
       self.handler = Load.make_one(self, self.handler)
     self.broadcast = description.get('broadcast', not self.handler)
 
-  def _on_run(self):
-    super(Twitter, self)._on_run()
+  def loop_target(self, t):
     for s in self.searches:
       s.refresh()
-    return True
+    super(Twitter, self).loop_target(t)
 
