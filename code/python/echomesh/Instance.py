@@ -7,7 +7,7 @@ import time
 from echomesh.base import Config
 from echomesh.color import LightSingleton
 from echomesh.element import ScoreMaster
-from echomesh.graphics import Display
+from echomesh.graphics import Pi3dDisplay
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.util import Log
@@ -24,7 +24,7 @@ class Instance(MasterRunnable):
     self.peers = Peers.Peers(self)
     self.socket = PeerSocket.PeerSocket(self, self.peers)
 
-    self.display = Display.Display()
+    self.display = Pi3dDisplay.Pi3dDisplay()
     if Config.get('control_program', 'enable'):
       from echomesh.util.thread import Keyboard
       self.keyboard = Keyboard.keyboard(self)

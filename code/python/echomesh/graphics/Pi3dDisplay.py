@@ -10,9 +10,9 @@ pi3d = ImportIf.imp('pi3d')
 
 DEFAULT_TIMEOUT = 0.2
 
-class Display(Runnable.Runnable):
+class Pi3dDisplay(Runnable.Runnable):
   def __init__(self):
-    super(Display, self).__init__()
+    super(Pi3dDisplay, self).__init__()
     self.timeout = DEFAULT_TIMEOUT
     if not Config.get('load_module', 'pi3d'):
       self.display = None
@@ -41,13 +41,13 @@ class Display(Runnable.Runnable):
       self.display.frames_per_second = get('pi3d', 'frames_per_second')
 
   def _on_run(self):
-    super(Display, self)._on_run()
+    super(Pi3dDisplay, self)._on_run()
     if self.display:
       self.display.first_time = True
       self.display.is_running = True
 
   def _on_pause(self):
-    super(Display, self)._on_pause()
+    super(Pi3dDisplay, self)._on_pause()
     if self.display:
       self.display.stop()
 
