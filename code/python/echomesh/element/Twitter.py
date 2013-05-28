@@ -16,30 +16,29 @@ class Twitter(Repeat):
     if not isinstance(search, list):
       search = [search]
 
-    def callback(twitter):
-      if self.handler:
-        text = twitter['text']
-        try:
-          text = unicode(text, 'utf-8')
-        except:
-          try:
-            text = unicode(text)
-          except:
-            return
-        if self.remove_hashtags:
-          text = RemoveHashtags.remove_hashtags(text)
-        twitter['text'] = text
-        self.handler.handle(twitter)
-
-    self.searches = [Search(s, callback, preload=preload) for s in search]
+    self.searches = [Search(s, self.callback, preload=preload) for s in search]
     self.handler = description.get('handler')
     if self.handler:
       self.handler = Load.make_one(self, self.handler)
-    self.broadcast = description.get('broadcast', not self.handler)
     self.remove_hashtags = description.get('remove_hashtags', True)
 
   def loop_target(self, t):
     for s in self.searches:
       s.refresh()
     super(Twitter, self).loop_target(t)
+
+  def callback(self, twitter):
+    if self.handler:
+      text = twitter['text']
+      try:
+        text = unicode(text, 'utf-8')
+      except:
+        try:
+          text = unicode(text)
+        except:
+          return
+      if self.remove_hashtags:
+        text = RemoveHashtags.remove_hashtags(text)
+      twitter['text'] = text
+      self.handler.handle(twitter)
 

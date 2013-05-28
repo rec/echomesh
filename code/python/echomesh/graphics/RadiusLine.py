@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-def path(angle, width, height):
+def radius_line(angle, width, height):
   angle = angle % 360.0 - 180
   theta = math.radians(angle)
 
