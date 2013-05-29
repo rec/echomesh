@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import CommandFile
 from echomesh.base import Yaml
 from echomesh.base import Merge
-from echomesh.remote import Register
+from echomesh.remote import RemoteRegistry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -21,7 +21,7 @@ def config(_, scope, cfg):
   # TODO: needs to propagate!
   LOGGER.info('Changing configuration for %s', scope)
 
-Register.register_all(
+RemoteRegistry.register_all(
   config=config,
   event=event,
   peer=peer,

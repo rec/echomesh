@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.util import Log
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.command import Aliases
 from echomesh.command import Show
 
@@ -61,4 +61,4 @@ alias <name> <command> [& <command> & <command>]:
 
 """
 
-Register.register(alias, 'alias', ALIAS_HELP)
+CommandRegistry.register(alias, 'alias', ALIAS_HELP)

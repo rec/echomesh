@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -37,4 +37,4 @@ Examples:
   config.get audio.input.enabled audio.output.enabled
 """
 
-Register.register(get_config, 'get', GET_HELP)
+CommandRegistry.register(get_config, 'get', GET_HELP)

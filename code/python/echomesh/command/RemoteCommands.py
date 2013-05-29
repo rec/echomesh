@@ -9,8 +9,8 @@ from echomesh.util import Log
 from echomesh.util import Quit
 from echomesh.util import Subprocess
 from gittwit.git import Git
-import echomesh.command.Register
-import echomesh.remote.Register
+from echomesh.command import CommandRegistry
+from echomesh.remote import RemoteRegistry
 
 LOGGER = Log.logger(__name__)
 
@@ -67,9 +67,8 @@ def _update(echomesh_instance):
 def _register():
   for cmd, help_text, see_also in COMMANDS:
     name = cmd.__name__.strip('_')
-    echomesh.command.Register.register(_local(cmd, name), name,
-                                       help_text, see_also)
-    echomesh.remote.Register.register(_remote(cmd), name)
+    CommandRegistry.register(_local(cmd, name), name, help_text, see_also)
+    RemoteRegistry.register(_remote(cmd), name)
 
 COMMANDS = [
   (_boot, 'Reboot this machine or all machines.', ['initialize', 'halt']),

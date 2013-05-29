@@ -4,7 +4,7 @@ import os
 import os.path
 
 from echomesh.base import Path
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -75,8 +75,6 @@ def _get_files_table(files):
   return files_table
 
 
-
-
 TRANSFER_HELP = """
 Transfer files from this machine to other echomesh nodes.
 
@@ -93,4 +91,4 @@ transfer
   Like transfer *, but prompts to make sure that you want to do it.
 """
 
-Register.register(transfer, 'transfer', TRANSFER_HELP)
+CommandRegistry.register(transfer, 'transfer', TRANSFER_HELP)

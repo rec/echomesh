@@ -4,7 +4,7 @@ from echomesh.base import Args
 from echomesh.base import Config
 from echomesh.base import MergeConfig
 from echomesh.base import Yaml
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -28,4 +28,4 @@ Examples:
   set speed=10% light.period=40ms
 """
 
-Register.register(set_config, 'set', SET_HELP)
+CommandRegistry.register(set_config, 'set', SET_HELP)

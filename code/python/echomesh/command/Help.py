@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.command import Show
 
 from echomesh.util import Log
@@ -17,11 +17,11 @@ Type "help TOPIC" for more information - for example, "help quit" or "help run".
 
 def _help(_, *parts):
   if not parts:
-    LOGGER.info(HELP_TEXT, Register.join_keys(command_only=False))
+    LOGGER.info(HELP_TEXT, CommandRegistry.join_keys(command_only=False))
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
-      help_text = Register.get_help(cmd)
+      help_text = CommandRegistry.get_help(cmd)
       LOGGER.info(help_text or ('No help text available for "%s"' % cmd))
     elif cmd == 'show':
       sub = parts[0]
@@ -50,5 +50,5 @@ Echomesh has the following commands:
 
   """
 
-Register.register(None, 'commands', COMMANDS_HELP, ['help'])
-Register.register(_help, 'help', HELP_HELP)
+CommandRegistry.register(None, 'commands', COMMANDS_HELP, ['help'])
+CommandRegistry.register(_help, 'help', HELP_HELP)

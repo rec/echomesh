@@ -4,7 +4,7 @@ import os
 import os.path
 import shutil
 
-from echomesh.remote import Register
+from echomesh.remote import RemoteRegistry
 
 from echomesh.base import Config
 from echomesh.base import MakeDirs
@@ -40,4 +40,4 @@ def transfer(_, **data):
     except:
       pass
 
-Register.register_all(transfer=transfer)
+RemoteRegistry.register_all(transfer=transfer)

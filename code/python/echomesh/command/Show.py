@@ -4,7 +4,7 @@ from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.command import Aliases
 from echomesh.command import Context
-from echomesh.command import Register
+from echomesh.command import CommandRegistry
 from echomesh.command import Scores
 from echomesh.expression import Units
 from echomesh.sound import Sound
@@ -252,4 +252,4 @@ SHOW_HELP = """
 
 """ + SHOW_USAGE
 
-Register.register_all(show=(_show, SHOW_HELP))
+CommandRegistry.register_all(show=(_show, SHOW_HELP))
