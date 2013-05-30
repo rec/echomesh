@@ -27,4 +27,9 @@ cd /tmp/py-spidev &&\
 python setup.py install &&\
 popd &&\
 rm -Rf /tmp/py-spidev &&\
+\
+wget http://omxplayer.sconde.net/builds/omxplayer_0.2.6~git20130427~fcfb7911_armhf.deb &&\
+dpkg -i omxplayer_0.2.6~git20130427~fcfb7911_armhf.deb &&\
+rm omxplayer_0.2.6~git20130427~fcfb7911_armhf.deb &&\
+\
 echo "Raspberry Pi libraries installation completed."

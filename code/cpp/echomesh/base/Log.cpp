@@ -21,6 +21,8 @@ OutputStream* STREAM = NULL;
 const char FILENAME2[] = "/tmp/echomesh.socket.log";
 OutputStream* STREAM2 = NULL;
 
+const bool USE_LOG2 = false;
+
 }  // namespace
 
 void log(const String& msg) {
@@ -43,7 +45,7 @@ void log(const String& msg) {
 }
 
 void log2(const String& msg) {
-  if (!*FILENAME2)
+  if (!(*FILENAME2 and USE_LOG2))
     return;
   ScopedLock l(lock_);
   if (!STREAM2) {

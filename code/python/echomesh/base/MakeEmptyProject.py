@@ -12,6 +12,9 @@ There doesn't seem to be an echomesh project in your directory "%s".
 
 Would you like an empty project created for you? (Y/n) """
 
+_MISSING_DIRECTORY_ERROR = """
+No echomesh project found in directory %s.  echomesh must exit.
+"""
 
 _CLOSING_MESSAGE = """
 Empty echomesh project created.
@@ -53,6 +56,9 @@ def ask_to_make_empty_project(path):
   if not (yn and yn[0] == 'n'):
     make_empty_project(path)
     return True
+  else:
+    print(_MISSING_DIRECTORY_ERROR % path)
+    return False
 
 _CONFIG = """\
 # This is your master config file.
