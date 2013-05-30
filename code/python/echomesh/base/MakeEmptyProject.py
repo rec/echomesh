@@ -8,9 +8,11 @@ import os.path
 
 _CREATE_MISSING_DIRECTORY_PROJECT = """
 
-There doesn't seem to be an echomesh project in your directory "%s".
-
+There doesn't seem to be an echomesh project in your directory %s.
 Would you like an empty project created for you? (Y/n) """
+
+_PROGRESS_MESSAGE = """
+Creating files..."""
 
 _MISSING_DIRECTORY_ERROR = """
 No echomesh project found in directory %s.  echomesh must exit.
@@ -20,6 +22,11 @@ _CLOSING_MESSAGE = """
 Empty echomesh project created.
 
 """
+
+_PATH_FORMAT = '  %s'
+
+def _print_path(p):
+  print(_PATH_FORMAT % p)
 
 def make_empty_project(path):
   """Make an empty echomesh project at this path."""
@@ -37,7 +44,7 @@ def _make(path, value):
   if value is None or is_dict:
     if not exists:
       MakeDirs.makedirs(path)
-      print(path)
+      _print_path(path)
     if is_dict:
       for k, v in value.iteritems():
         _make(os.path.join(path, k), v)
@@ -46,7 +53,7 @@ def _make(path, value):
   else:
     with open(path, 'w') as f:
       f.write(value)
-    print(path)
+    _print_path(path)
 
 def ask_to_make_empty_project(path):
   yn = '?'
@@ -54,6 +61,7 @@ def ask_to_make_empty_project(path):
     print(_CREATE_MISSING_DIRECTORY_PROJECT % path, end='')
     yn = raw_input().strip().lower()
   if not (yn and yn[0] == 'n'):
+    print(_PROGRESS_MESSAGE, end='')
     make_empty_project(path)
     return True
   else:

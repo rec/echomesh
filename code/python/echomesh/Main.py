@@ -24,7 +24,10 @@ def main():
   p('Loading echomesh ')
 
   from echomesh.base import Path
+  if not Path.PROJECT_PATH:
+    return
   p()
+
 
   Path.fix_sys_path()
   p()
