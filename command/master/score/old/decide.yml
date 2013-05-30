@@ -1,0 +1,15 @@
+type: mapper
+event_type: mic
+
+mapping:
+  silent:
+    type: print
+    text: it's silent
+
+  quiet:
+    type: print
+    text: it's QUIET!
+
+  medium:
+    type: print
+    text: MEDIUM!

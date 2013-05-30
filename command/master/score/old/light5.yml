@@ -1,0 +1,14 @@
+type: sequence
+
+patterns:
+  a pattern:
+    type: spread
+    begin: red
+    end: white
+    steps: 32
+
+elements:
+  -
+    type: pattern
+    pattern: a pattern
+    output: light

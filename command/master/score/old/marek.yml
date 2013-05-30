@@ -1,0 +1,28 @@
+type: random
+mean: 3.0
+
+elements:
+  type: select
+  choices:
+    -
+      weight: 3
+      elements:
+        type: speak
+        text: Hello, world!
+    -
+      elements:
+        type: print
+        text: Hello, Marek!
+
+    -
+      weight: 1
+      elements:
+        type: print
+        text: It's all working.
+
+    -
+      weight: 3
+      elements:
+        type: print
+        text: "echomesh: the wave of the future."
+

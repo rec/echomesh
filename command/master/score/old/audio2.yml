@@ -1,0 +1,5 @@
+# This element plays stereo-2450.wav three times.
+
+type: audio
+file: stereo-2450.wav
+loops: 3

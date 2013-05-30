@@ -1,0 +1,24 @@
+# The Sequence Element triggers events in temporal sequence.
+
+type: sequence
+duration: 5 seconds
+loops: infinite
+
+elements:
+  -
+    begin: 0
+    elements:
+      type: speak
+      text: Hello, world!
+  -
+    begin: 1.5
+    elements:
+      type: speak
+      text: Hello, Tom!
+
+  -
+    begin: 3.0
+    elements:
+      type: speak
+      text: Hello, it worked!
+

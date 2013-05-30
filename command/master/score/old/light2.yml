@@ -1,0 +1,36 @@
+type: sequence
+
+patterns:
+  one:
+    type: insert
+    pattern:
+      type: spread
+      begin: blue
+      end: white
+      steps: 32
+
+elements:
+  -
+    type: pattern
+    pattern: one
+
+---
+
+type: sequence
+
+patterns:
+  two:
+    type: insert
+    offset: 32
+    pattern:
+      type: spread
+      begin: white
+      end: red
+      steps: 32
+
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: two

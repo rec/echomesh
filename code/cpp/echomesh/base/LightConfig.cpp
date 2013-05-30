@@ -44,7 +44,7 @@ void operator>>(const YAML::Node& node, Instrument& p) {
   node["paint_unclipped"] >> p.paintUnclipped;
   node["shape"] >> p.shape;
   node["size"] >> p.size;
-  p.isRect = not p.shape.find("rectangle");
+  p.isRect = not string("rectangle").find(p.shape);
 }
 
 void operator>>(const YAML::Node& node, Visualizer& p) {

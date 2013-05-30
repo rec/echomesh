@@ -1,0 +1,24 @@
+type: sequence
+
+variables:
+  loop:
+    type: counter
+    period: 20ms
+
+patterns:
+  three:
+    type: transpose
+    pattern:
+      type: insert
+      begin: config.light.count - local.loop
+      pattern:
+        type: spread
+        colors: [burnt sienna, cadmium yellow]
+        steps: 24
+
+elements:
+  -
+    type: pattern
+    pattern: three
+    output: light
+

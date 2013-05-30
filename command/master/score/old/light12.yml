@@ -1,0 +1,13 @@
+type: sequence
+
+patterns:
+  one:
+    type: spread
+    colors: red
+    steps: 128
+
+elements:
+  -
+    type: pattern
+    pattern: one
+    output: light

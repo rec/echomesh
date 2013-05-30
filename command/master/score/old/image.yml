@@ -1,0 +1,20 @@
+type: image
+
+# I know this file exists, because I get a good error if I change the name.
+file: Raspi64x64.png
+
+# I've tried 10, 100 and -1 for z, nothing.
+z:
+  0: 100
+  10: 100
+  20: 100
+
+position:
+  0: [0, 0]
+  10: [100, 100]
+  20: [-1000, -1000]
+
+duration: 20 seconds
+
+# I've tried simply omitting this.
+size: 1.0

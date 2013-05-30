@@ -1,0 +1,6 @@
+type: list
+elements:
+  -
+    type: repeat
+    period: 2
+      elements:

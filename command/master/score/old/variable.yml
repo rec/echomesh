@@ -1,0 +1,9 @@
+type: print
+text: hello
+
+variables:
+  index:
+    type: counter
+    count:  config.light.count
+    period: 500ms
+
