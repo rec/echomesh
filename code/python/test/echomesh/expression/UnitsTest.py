@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 >>> Units.convert(12)
 12
@@ -57,6 +58,12 @@
 >>> Units.convert('1/2sec')
 0.5
 
+>>> Units.convert('(1/2)sec')
+0.5
+
+>>> Units.convert('½sec')
+0.5
+
 >>> Units.convert('1Hz')
 1.0
 
@@ -71,4 +78,3 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.expression import Units
-

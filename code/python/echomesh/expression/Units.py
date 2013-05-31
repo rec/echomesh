@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
@@ -35,7 +37,7 @@ NAMES_FOR_INFINITY = set(('inf', 'infinite', 'infinity'))
 
 _TIME = re.compile(r'( ( \d+ ) : )? ( \d+ ) : ( \d \d (\. ( \d* ) )? )', re.X)
 _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
-_ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s ) ) ( [a-z%]* ) \s* $', re.X)
+_ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s | \) ) ) ( [a-z%]* ) \s* $', re.X)
 
 def list_units(separator='  '):
   keys = UNITS_SOURCE.iterkeys()
@@ -78,22 +80,47 @@ def convert_number(expression, assume_minutes):
   else:
     return expression
 
+_TRANSLATION_TABLE = {
+  '¼': '(1/4)',
+  '½': '(1/2)',
+  '¾': '(3/4)',
+  '⅓': '(1/3)',
+  '⅔': '(2/3)',
+  '⅕': '(1/5)',
+  '⅖': '(2/5)',
+  '⅗': '(3/5)',
+  '⅘': '(4/5)',
+  '⅙': '(1/6)',
+  '⅚': '(5/6)',
+  '⅛': '(1/8)',
+  '⅜': '(3/8)',
+  '⅝': '(5/8)',
+  '⅞': '(7/8)',
+  }
+
+def _replace_unicode_fractions(s):
+  if isinstance(s, six.string_types):
+    for k, v in _TRANSLATION_TABLE.iteritems():
+      s = s.replace(k, v)
+  return s
+
 class UnitExpression(object):
   def __init__(self, expression, assume_minutes=True):
     self.expression = self.value = None
     if expression is not None:
-      self.value = convert_number(expression, assume_minutes)
+      expr = _replace_unicode_fractions(expression)
+      self.value = convert_number(expr, assume_minutes)
       if self.value is None:
-        expression = expression.lower()
-        unit_match = _ANY_UNIT.match(expression)
+        expr = expr.lower()
+        unit_match = _ANY_UNIT.match(expr)
 
         if unit_match:
-          expression, unit = unit_match.groups()
+          expr, unit = unit_match.groups()
           self.unit_converter = UNITS.get(unit)
         else:
           self.unit_converter = None
 
-        self.expression = RawExpression.RawExpression(expression)
+        self.expression = RawExpression.RawExpression(expr)
 
   def evaluate(self, element=None):
     return self(element)
