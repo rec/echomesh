@@ -2,15 +2,20 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element.Repeat import Repeat
 from echomesh.element import Load
+from echomesh.util import Log
 from echomesh.util import RemoveHashtags
 
 from gittwit.twitter.Search import Search
 
+LOGGER = Log.logger(__name__)
+
 DEFAULT_PRELOAD = 1
+FIX_UNICODE = not True
 
 class Twitter(Repeat):
   def __init__(self, parent, description):
-    super(Twitter, self).__init__(parent, description, name='Twitter')
+    super(Twitter, self).__init__(
+      parent, description, name='Twitter', pause_on_exception=False)
     preload = description.get('preload', DEFAULT_PRELOAD)
     search = description['search']
     if not isinstance(search, list):
@@ -30,15 +35,6 @@ class Twitter(Repeat):
   def callback(self, twitter):
     if self.handler:
       text = twitter['text']
-      try:
-        text = unicode(text, 'utf-8')
-      except:
-        try:
-          text = unicode(text)
-        except:
-          return
       if self.remove_hashtags:
-        text = RemoveHashtags.remove_hashtags(text)
-      twitter['text'] = text
+        twitter['text'] = RemoveHashtags.remove_hashtags(text)
       self.handler.handle(twitter)
-

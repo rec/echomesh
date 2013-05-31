@@ -1,0 +1,11 @@
+type: sequence
+
+patterns:
+  just red:
+    type: spread
+    colors: red
+
+elements:
+  -
+    type: pattern
+    pattern: just red

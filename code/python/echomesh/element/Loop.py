@@ -16,12 +16,13 @@ DEFAULT_INTERVAL = INFINITY
 class Loop(Element.Element):
   def __init__(self, parent, description, interval=1, name='Element.Loop',
                report_error_on_close=False, timeout=DEFAULT_TIMEOUT,
-               full_slave=True):
+               full_slave=True, pause_on_exception=True):
     super(Loop, self).__init__(parent, description, full_slave=full_slave)
     self.name = name or repr(self)
     self.report_error_on_close = report_error_on_close
     self.interval = interval
     self.timeout = timeout
+    self.pause_on_exception = pause_on_exception
 
   def next_time(self, t):
     # TODO: is this right?
@@ -34,13 +35,15 @@ class Loop(Element.Element):
     while self.is_running:
       try:
         self.single_loop()
-      except Exception:
-        if self.is_running or self.report_error_on_close:
-          LOGGER.error('Thread %s reports an error:', self.name)
-          try:
-            self.pause()
-          except:
-            pass
+      except:
+        if self.is_running:
+          if self.report_error_on_close:
+            LOGGER.error('Thread %s reports an error:', self.name, exc_info=1)
+          if self.pause_on_exception and self.is_running:
+            try:
+              self.pause()
+            except:
+              pass
 
   def _on_run(self):
     super(Loop, self)._on_run()

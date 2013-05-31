@@ -15,8 +15,7 @@ PARSER = HTMLParser.HTMLParser()
 
 def json_to_tweet(tweet):
   def get(name):
-    res = tweet.get(name, '')
-    return urllib.unquote(PARSER.unescape(res.encode('utf8')))
+    return urllib.unquote(PARSER.unescape(tweet.get(name, '')))
 
   image_url = get('profile_image_url')
   try:

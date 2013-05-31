@@ -15,6 +15,8 @@ search:
                        # You could also just write this:
                        # search: [xyzzy, "#baseball"]
   - "#love"
+  - "#football"
+  - "#soccer"
 
 handler:
   type: print          # Print the twitter to the console.
