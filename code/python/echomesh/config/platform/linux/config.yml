@@ -1,5 +1,3 @@
-# This is the default configuration for Darwin (Mac OS/X) systems.
-
 type: config
 
 load_module:

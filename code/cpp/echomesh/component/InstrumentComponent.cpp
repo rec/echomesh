@@ -1,4 +1,4 @@
-#include "/development/echomesh/code/cpp/echomesh/component/InstrumentComponent.h"
+#include "echomesh/component/InstrumentComponent.h"
 
 namespace echomesh {
 
