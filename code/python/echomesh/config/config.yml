@@ -273,6 +273,7 @@ permission:
   halt: true
   initialize: true
   quit: true
+  shutdown: true
   update: true
 
 # These are the configuration settings for the pi3d Open GL library - please
