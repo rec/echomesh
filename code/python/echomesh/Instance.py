@@ -25,13 +25,18 @@ class Instance(MasterRunnable):
     self.socket = PeerSocket.PeerSocket(self, self.peers)
 
     self.display = Pi3dDisplay.Pi3dDisplay()
+    self.keyboard = self.osc = None
     if Config.get('control_program', 'enable'):
       from echomesh.util.thread import Keyboard
       self.keyboard = Keyboard.keyboard(self)
-    else:
-      self.keyboard = None
 
-    self.add_mutual_pause_slave(self.socket, self.keyboard)
+    osc_client = Config.get('osc', 'client', 'enable')
+    osc_server = Config.get('osc', 'server', 'enable')
+    if osc_client or osc_server:
+      from echomesh.sound import Osc
+      self.osc = Osc.make_osc(osc_client, osc_server)
+
+    self.add_mutual_pause_slave(self.socket, self.keyboard, self.osc)
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)

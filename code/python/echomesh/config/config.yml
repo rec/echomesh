@@ -264,6 +264,20 @@ logging:
   # you'll everything except debugging information.
   level: info
 
+# The OpenSoundControl protocol named OSC
+osc:
+  client:
+    enable: false
+    port: 2222   # The default port for any hosts.
+    hosts: localhost
+    # This can either be a single host, or a lists of hosts.
+    # A host looks like hostname:portnumber, where portnumber is optional
+    # and default to osc.client.port.
+
+  server:
+    enable: true
+    port: 2222
+
 # The permissions area controls whether this machine is allowed to perform
 # the system activities boot, halt, initialize, quit or update.
 permission:
