@@ -13,9 +13,13 @@ class OscClient(ThreadRunnable):
   def __init__(self):
     super(OscClient, self).__init__()
     self.client = None
+    self.port = None
+    self.host = None
     Config.add_client(self)
 
   def config_update(self, get):
+    port = get('osc', 'client', 'port')
+    host = get('osc', 'client', 'host')
     if self.client:
       return  # TODO: allow a restart
 
@@ -28,13 +32,14 @@ class OscServer(ThreadRunnable):
 
   def config_update(self, get):
     port = get('osc', 'server', 'port')
-    if port != self.port:
-      if self.server:
-        self.server.close()
-        self.server = None
-      self.port = port
-      self.server = OSC.OSCServer(('', port), None, port)
-      self.server.socket.settimeout(get('osc', 'server', 'timeout'))
+    if port == self.port:
+      return
+    if self.server:
+      self.server.close()
+      self.server = None
+    self.port = port
+    self.server = OSC.OSCServer(('', port), None, port)
+    self.server.socket.settimeout(get('osc', 'server', 'timeout'))
 
   def target(self):
     while self.is_running:
