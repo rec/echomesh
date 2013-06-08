@@ -33,8 +33,8 @@ class Instance(MasterRunnable):
     osc_client = Config.get('osc', 'client', 'enable')
     osc_server = Config.get('osc', 'server', 'enable')
     if osc_client or osc_server:
-      from echomesh.sound import Osc
-      self.osc = Osc.make_osc(osc_client, osc_server)
+      from echomesh.sound.Osc import Osc
+      self.osc = Osc(osc_client, osc_server)
 
     self.add_mutual_pause_slave(self.socket, self.keyboard, self.osc)
     self.add_slave(self.score_master)

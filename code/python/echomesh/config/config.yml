@@ -277,6 +277,7 @@ osc:
   server:
     enable: true
     port: 2222
+    timeout: 0.5
 
 # The permissions area controls whether this machine is allowed to perform
 # the system activities boot, halt, initialize, quit or update.
