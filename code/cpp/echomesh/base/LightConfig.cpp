@@ -4,6 +4,19 @@ namespace echomesh {
 
 using namespace std;
 
+void operator>>(const YAML::Node& node, ColorBytes& p) {
+  node[0] >> p[0];
+  node[1] >> p[1];
+  node[2] >> p[2];
+}
+
+void operator>>(const YAML::Node& node, ColorList& p) {
+  p.resize(node.size());
+
+  for (int i = 0; i < node.size(); ++i)
+    node[i] >> p[i];
+}
+
 void operator>>(const YAML::Node& node, Colour& p) {
   if (node.size()) {
     float r, g, b;
@@ -70,17 +83,8 @@ void operator>>(const YAML::Node& node, LightConfig& p) {
   node["visualizer"] >> p.visualizer;
 }
 
-void operator>>(const YAML::Node& node, ColorBytes& p) {
-  node[0] >> p[0];
-  node[1] >> p[1];
-  node[2] >> p[2];
-}
-
-void operator>>(const YAML::Node& node, ColorList& p) {
-  p.resize(node.size());
-
-  for (int i = 0; i < node.size(); ++i)
-    node[i] >> p[i];
+void operator>>(const YAML::Node& node, Config& p) {
+  node["light"] >> p.light;
 }
 
 }  // namespace echomesh

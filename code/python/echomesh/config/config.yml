@@ -267,7 +267,7 @@ logging:
 # The OpenSoundControl protocol named OSC
 osc:
   client:
-    enable: true
+    enable: false
     port: 2222   # The default port for any hosts.
     host: localhost
 

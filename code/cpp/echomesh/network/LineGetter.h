@@ -10,7 +10,8 @@
 #include <queue>
 
 #include "yaml-cpp/yaml.h"
-#include "echomesh/base/LightConfig.h"
+
+#include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
 

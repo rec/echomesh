@@ -56,11 +56,17 @@ struct LightConfig {
   Visualizer visualizer;
 };
 
+struct Config {
+  LightConfig light;
+};
+
 typedef uint8 ColorBytes[3];
 typedef std::vector<ColorBytes> ColorByteBank;
 typedef std::vector<Colour> ColorList;
 typedef std::vector<uint8> ByteList;
 
+void operator>>(const YAML::Node&, ColorBytes&);
+void operator>>(const YAML::Node&, ColorList&);
 void operator>>(const YAML::Node&, Colour&);
 void operator>>(const YAML::Node&, Point&);
 void operator>>(const YAML::Node&, Border&);
@@ -68,8 +74,7 @@ void operator>>(const YAML::Node&, Instrument&);
 void operator>>(const YAML::Node&, Visualizer&);
 void operator>>(const YAML::Node&, Hardware&);
 void operator>>(const YAML::Node&, LightConfig&);
-void operator>>(const YAML::Node&, ColorBytes&);
-void operator>>(const YAML::Node&, ColorList&);
+void operator>>(const YAML::Node&, Config&);
 
 }  // namespace echomesh
 

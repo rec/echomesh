@@ -34,7 +34,7 @@ class LightReader : public ReadThread {
   ColorList colors_;
   ColorByteBank bytes_;
   ByteList colorBytes_;
-  LightConfig config_;
+  Config config_;
   ColorBytes rgbOrder_;
   float brightness_;
   bool configReceived_;

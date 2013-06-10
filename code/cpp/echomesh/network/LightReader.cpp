@@ -63,11 +63,11 @@ void LightReader::clear() {
 }
 
 void LightReader::enforceSizes() {
-  if (colors_.size() != config_.count)
-    colors_.resize(config_.count, Colours::black);
+  if (colors_.size() != config_.light.count)
+    colors_.resize(config_.light.count, Colours::black);
 
-  if (colorBytes_.size() != 3 * config_.count)
-    colorBytes_.resize(3 * config_.count, 0x80);
+  if (colorBytes_.size() != 3 * config_.light.count)
+    colorBytes_.resize(3 * config_.light.count, 0x80);
 }
 
 void LightReader::config() {
@@ -76,9 +76,9 @@ void LightReader::config() {
   enforceSizes();
 
   for (int i = 0; i < 3; ++i)
-    rgbOrder_[i] = config_.hardware.rgbOrder.find("rgb"[i]);
+    rgbOrder_[i] = config_.light.hardware.rgbOrder.find("rgb"[i]);
 
-  lightingWindow_->setConfig(config_);
+  lightingWindow_->setConfig(config_.light);
 }
 
 inline uint8 getSpiColor(uint8 color) {
@@ -92,11 +92,11 @@ uint8 LightReader::getLedColor(float color) const {
 
 void LightReader::displayLights() {
   lightingWindow_->setLights(colors_);
-  if (config_.hardware.local)  // Do the lights in Python.
+  if (config_.light.hardware.local)  // Do the lights in Python.
     return;
 
   if (compressed_) {
-    for (int i = 0; i < config_.count; ++i) {
+    for (int i = 0; i < config_.light.count; ++i) {
       const Colour& color = colors_[i];
       uint8* light = &colorBytes_[3 * i];
       light[rgbOrder_[0]] = getSpiColor(color.getRed());
@@ -104,7 +104,7 @@ void LightReader::displayLights() {
       light[rgbOrder_[2]] = getSpiColor(color.getBlue());
     }
   } else {
-    for (int i = 0; i < config_.count; ++i) {
+    for (int i = 0; i < config_.light.count; ++i) {
       const Colour& color = colors_[i];
       uint8* light = &colorBytes_[3 * i];
       light[rgbOrder_[0]] = getLedColor(color.getFloatRed());
@@ -137,9 +137,9 @@ void LightReader::light() {
 
   string lights2 = base64::decode(lights);
 
-  if (lights2.size() != 3 * config_.count) {
+  if (lights2.size() != 3 * config_.light.count) {
     String msg = "Size " + String(int(lights.size())) +
-      ", count " + String(config_.count);
+      ", count " + String(config_.light.count);
     log(msg);
     return;
   }
@@ -147,7 +147,7 @@ void LightReader::light() {
   const char* data = lights2.data();
   const uint8* bytes = reinterpret_cast<const uint8*>(data);
 
-  for (int i = 0; i < config_.count; ++i)
+  for (int i = 0; i < config_.light.count; ++i)
     colors_[i] = Colour(bytes[3 * i], bytes[3 * i + 1], bytes[3 * i + 2]);
 
   displayLights();

@@ -2,10 +2,11 @@
 #define __ECHOMESH_INSTRUMENT_PANEL__
 
 #include "echomesh/base/Echomesh.h"
-#include "echomesh/base/LightConfig.h"
 #include "echomesh/component/InstrumentComponent.h"
 
 namespace echomesh {
+
+class LightConfig;
 
 class InstrumentGrid : public Component {
  public:

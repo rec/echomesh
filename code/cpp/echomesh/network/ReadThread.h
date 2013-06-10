@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "yaml-cpp/yaml.h"
-#include "echomesh/base/LightConfig.h"
 
 namespace echomesh {
 

@@ -37,7 +37,7 @@ class ExternalLightBank(LightBank):
 
     with self.lock:
       ClientServer.instance().set_config(
-        {'type': 'config', 'data': light},
+        {'type': 'config', 'data': {'light': light}},
         {'type': 'show'})
 
   def _after_thread_pause(self):
