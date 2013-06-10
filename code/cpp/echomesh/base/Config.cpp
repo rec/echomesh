@@ -76,6 +76,17 @@ void operator>>(const YAML::Node& node, Hardware& p) {
   node["rgb_order"] >> p.rgbOrder;
 }
 
+void operator>>(const YAML::Node& node, OneMidiConfig& p) {
+  node["external"] >> p.external;
+  node["index"] >> p.index;
+  node["name"] >> p.name;
+}
+
+void operator>>(const YAML::Node& node, MidiConfig& p) {
+  node["input"] >> p.input;
+  node["output"] >> p.output;
+}
+
 void operator>>(const YAML::Node& node, LightConfig& p) {
   node["count"] >> p.count;
   node["enable"] >> p.enable;
@@ -85,6 +96,7 @@ void operator>>(const YAML::Node& node, LightConfig& p) {
 
 void operator>>(const YAML::Node& node, Config& p) {
   node["light"] >> p.light;
+  node["midi"] >> p.midi;
 }
 
 }  // namespace echomesh

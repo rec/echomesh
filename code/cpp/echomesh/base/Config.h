@@ -56,8 +56,19 @@ struct LightConfig {
   Visualizer visualizer;
 };
 
+struct OneMidiConfig {
+  bool external;
+  int index;
+  string name;
+};
+
+struct MidiConfig {
+  OneMidiConfig input, output;
+};
+
 struct Config {
   LightConfig light;
+  MidiConfig midi;
 };
 
 typedef uint8 ColorBytes[3];
@@ -73,6 +84,8 @@ void operator>>(const YAML::Node&, Border&);
 void operator>>(const YAML::Node&, Instrument&);
 void operator>>(const YAML::Node&, Visualizer&);
 void operator>>(const YAML::Node&, Hardware&);
+void operator>>(const YAML::Node&, OneMidiConfig&);
+void operator>>(const YAML::Node&, MidiConfig&);
 void operator>>(const YAML::Node&, LightConfig&);
 void operator>>(const YAML::Node&, Config&);
 
