@@ -129,6 +129,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
@@ -1249,6 +1250,7 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
     <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
     <ClInclude Include="..\..\echomesh\base\Config.h"/>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>

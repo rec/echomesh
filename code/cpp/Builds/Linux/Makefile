@@ -49,6 +49,7 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
+  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
@@ -124,6 +125,11 @@ clean:
 strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling GetDevice.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
 	-@mkdir -p $(OBJDIR)

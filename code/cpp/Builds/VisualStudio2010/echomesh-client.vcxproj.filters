@@ -8,6 +8,9 @@
     <Filter Include="echomesh-client\echomesh">
       <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\echomesh\util">
+      <UniqueIdentifier>{308CBD36-D043-A694-1B23-DCB611B5A271}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\echomesh\base">
       <UniqueIdentifier>{F27FA859-2203-C883-0F61-261D1D50036D}</UniqueIdentifier>
     </Filter>
@@ -334,6 +337,9 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
+      <Filter>echomesh-client\echomesh\util</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\base\Config.cpp">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClCompile>
@@ -1641,6 +1647,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\echomesh\util\GetDevice.h">
+      <Filter>echomesh-client\echomesh\util</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Disallow.h">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>

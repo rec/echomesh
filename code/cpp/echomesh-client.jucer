@@ -4,6 +4,10 @@
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh-client">
     <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
+      <GROUP id="{0D195147-262C-833F-6196-824726AFB99E}" name="util">
+        <FILE id="OFcgGh" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
+        <FILE id="eLLHQJ" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
+      </GROUP>
       <GROUP id="{429E3C2C-59EE-BAB7-A05B-342F2532209E}" name="base">
         <FILE id="Zw3ZOV" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
         <FILE id="aSIV6w" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
