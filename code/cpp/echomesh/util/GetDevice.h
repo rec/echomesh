@@ -38,7 +38,7 @@ class ConfigMidi {
 
 class ConfigMidiInput : public ConfigMidi<MidiInput> {
  public:
-  explicit ConfigMidiInput(MidiInputCallback* cb) : callback_(cb) {}
+  explicit ConfigMidiInput(MidiInputCallback* cb = NULL) : callback_(cb) {}
 
  protected:
   virtual MidiInput* newDevice();
@@ -46,7 +46,7 @@ class ConfigMidiInput : public ConfigMidi<MidiInput> {
  private:
   ScopedPointer<MidiInputCallback> callback_;
 
-  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(ConfigMidiInput);
+  DISALLOW_COPY_ASSIGN_AND_LEAKS(ConfigMidiInput);
 };
 
 

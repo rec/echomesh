@@ -12,6 +12,8 @@
 namespace echomesh {
 
 class LightingWindow;
+class ConfigMidiInput;
+class ConfigMidiOutput;
 
 class LightReader : public ReadThread {
  public:
@@ -38,6 +40,8 @@ class LightReader : public ReadThread {
   ColorBytes rgbOrder_;
   float brightness_;
   bool configReceived_;
+  ScopedPointer<ConfigMidiInput> midiInput_;
+  ScopedPointer<ConfigMidiOutput> midiOutput_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };

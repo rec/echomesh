@@ -6,6 +6,7 @@
 #include "base64/base64.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
+#include "echomesh/util/GetDevice.h"
 #include "rec/util/thread/MakeCallback.h"
 #include "rec/util/thread/LockedCallback.h"
 
@@ -38,7 +39,9 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
 #if 0 && JUCE_LINUX
       file_(fopen(DEVICE_NAME, "w")),
 #endif
-      compressed_(true) {
+      compressed_(true),
+      midiInput_(new ConfigMidiInput),
+      midiOutput_(new ConfigMidiOutput) {
   addHandler("clear", methodCallback(this, &LightReader::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
   addHandler("light", methodCallback(this, &LightReader::light));
