@@ -31,8 +31,6 @@ int getDeviceIndex(const OneMidiConfig& config) {
   return getDeviceIndex<DeviceClass>(String(config.name), config.index);
 }
 
-}  // namespace
-
 MidiInput* openMidiInput(const OneMidiConfig& config,
                          MidiInputCallback* callback) {
   int index = getDeviceIndex<MidiInput>(config);
@@ -44,5 +42,48 @@ MidiOutput* openMidiOutput(const OneMidiConfig& config) {
   return index >= 0 ? MidiOutput::openDevice(index) : NULL;
 }
 
-}  // namespace echomesh
+class CallbackContainer : public MidiInputCallback {
+ public:
+  explicit CallbackContainer(MidiInputCallback* cb) : callback_(cb) {}
 
+  virtual void handleIncomingMidiMessage(MidiInput* source,
+                                         const MidiMessage& message) {
+    if (callback_)
+      callback_->handleIncomingMidiMessage(source, message);
+  }
+
+  virtual void handlePartialSysexMessage(MidiInput* src,
+                                         const uint8* msg,
+                                         int bytes,
+                                         double ts) {
+    if (callback_)
+      callback_->handlePartialSysexMessage(src, msg, bytes, ts);
+  }
+
+ private:
+  MidiInputCallback* callback_;
+};
+
+}  // namespace
+
+bool equals(const OneMidiConfig& x, const OneMidiConfig& y) {
+  return x.external == y.external and x.index == y.index and x.name == y.name;
+}
+
+MidiInput* ConfigMidiInput::newDevice() {
+  int index = getDeviceIndex<MidiInput>(config_);
+  return index >= 0 ?
+    MidiInput::openDevice(index, new CallbackContainer(callback_.get())) :  NULL;
+}
+
+MidiOutput* ConfigMidiOutput::newDevice() {
+  int index = getDeviceIndex<MidiOutput>(config_);
+  return index >= 0 ? MidiOutput::openDevice(index) : NULL;
+}
+
+void ConfigMidiOutput::sendMessageNow(const MidiMessage& msg) {
+  if (device_)
+    device_->sendMessageNow(msg);
+}
+
+}  // namespace echomesh
