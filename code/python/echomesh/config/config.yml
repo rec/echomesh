@@ -269,10 +269,11 @@ osc:
   client:
     enable: true
     port: 2222   # The default port for any hosts.
-    hosts: localhost
-    # This can either be a single host, or a lists of hosts.
-    # A host looks like hostname:portnumber, where portnumber is optional
-    # and default to osc.client.port.
+    host: localhost
+
+    # TODO: extend the host field to allow a list of hosts,
+    # looking like hostname:portnumber, where portnumber is optional
+    # and defaults to osc.client.port.
 
   server:
     enable: false

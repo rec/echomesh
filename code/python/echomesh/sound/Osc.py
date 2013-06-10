@@ -10,18 +10,29 @@ from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 LOGGER = Log.logger(__name__)
 
 class OscClient(ThreadRunnable):
-  def __init__(self):
-    super(OscClient, self).__init__()
+  def config_update(self, get):
+    port = get('osc', 'client', 'port')
+    host = get('osc', 'client', 'host')
+    if self.port != port or self.host != host:
+      self.client = None
+
+  def target(self):
+    if not self.client:
+      pass
+
+  def _on_run(self):
+    super(OscClient, self)._on_run()
     self.client = None
     self.port = None
     self.host = None
     Config.add_client(self)
 
-  def config_update(self, get):
-    port = get('osc', 'client', 'port')
-    host = get('osc', 'client', 'host')
-    if self.client:
-      return  # TODO: allow a restart
+  def _on_pause(self):
+    Config.remove_client(self)
+    super(OscClient, self)._on_pause()
+    self.client.close()
+    self.client = None
+
 
 class OscServer(ThreadRunnable):
   def __init__(self):
