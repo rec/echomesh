@@ -129,7 +129,7 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\echomesh\base\LightConfig.cpp"/>
+    <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
@@ -1250,8 +1250,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
+    <ClInclude Include="..\..\echomesh\base\Config.h"/>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>
-    <ClInclude Include="..\..\echomesh\base\LightConfig.h"/>
     <ClInclude Include="..\..\echomesh\base\Runnable.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>

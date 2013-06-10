@@ -264,6 +264,17 @@ logging:
   # you'll everything except debugging information.
   level: info
 
+midi:
+  input:
+    external: true
+    index: -1
+    name: ""
+
+  output:
+    external: true
+    index: -1
+    name: ""
+
 # The OpenSoundControl protocol named OSC
 osc:
   client:

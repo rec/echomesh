@@ -49,7 +49,7 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
-  $(OBJDIR)/LightConfig_1aa14e0c.o \
+  $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
@@ -125,9 +125,9 @@ strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
-$(OBJDIR)/LightConfig_1aa14e0c.o: ../../echomesh/base/LightConfig.cpp
+$(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling LightConfig.cpp"
+	@echo "Compiling Config.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp

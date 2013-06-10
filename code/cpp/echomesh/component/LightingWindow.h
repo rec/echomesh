@@ -2,7 +2,7 @@
 #define __ECHOMESH_LIGHTING_WINDOW__
 
 #include "yaml-cpp/yaml.h"
-#include "echomesh/base/LightConfig.h"
+#include "echomesh/base/Config.h"
 #include "echomesh/component/InstrumentGrid.h"
 
 namespace echomesh {

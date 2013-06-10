@@ -6,9 +6,9 @@
     <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
       <GROUP id="{429E3C2C-59EE-BAB7-A05B-342F2532209E}" name="base">
         <FILE id="Zw3ZOV" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
+        <FILE id="aSIV6w" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
+        <FILE id="qHhxvR" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
         <FILE id="W2A6NI" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
-        <FILE id="i7IuvF" name="LightConfig.cpp" compile="1" resource="0" file="echomesh/base/LightConfig.cpp"/>
-        <FILE id="fFywGd" name="LightConfig.h" compile="0" resource="0" file="echomesh/base/LightConfig.h"/>
         <FILE id="m3Vg47" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
         <FILE id="ZnCbU4" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
       </GROUP>

@@ -334,7 +334,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\echomesh\base\LightConfig.cpp">
+    <ClCompile Include="..\..\echomesh\base\Config.cpp">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\base\Log.cpp">
@@ -1644,10 +1644,10 @@
     <ClInclude Include="..\..\echomesh\base\Disallow.h">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\base\Echomesh.h">
+    <ClInclude Include="..\..\echomesh\base\Config.h">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\base\LightConfig.h">
+    <ClInclude Include="..\..\echomesh\base\Echomesh.h">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Runnable.h">

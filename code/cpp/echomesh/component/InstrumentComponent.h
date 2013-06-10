@@ -2,7 +2,7 @@
 #define __ECHOMESH_INSTRUMENT_COMPONENT__
 
 #include "echomesh/base/Echomesh.h"
-#include "echomesh/base/LightConfig.h"
+#include "echomesh/base/Config.h"
 
 namespace echomesh {
 

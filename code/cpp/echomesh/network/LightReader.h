@@ -6,7 +6,7 @@
 #include <istream>
 #include <vector>
 
-#include "echomesh/base/LightConfig.h"
+#include "echomesh/base/Config.h"
 #include "echomesh/network/ReadThread.h"
 
 namespace echomesh {

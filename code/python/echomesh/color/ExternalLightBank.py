@@ -35,9 +35,11 @@ class ExternalLightBank(LightBank):
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
 
+    config = {'light': light, 'midi': get('midi')}
+
     with self.lock:
       ClientServer.instance().set_config(
-        {'type': 'config', 'data': {'light': light}},
+        {'type': 'config', 'data': config},
         {'type': 'show'})
 
   def _after_thread_pause(self):
