@@ -5,7 +5,7 @@ namespace echomesh {
 
 namespace {
 
-const bool logAllSocketData = true;
+const bool logAllSocketData = not true;
 
 
 }  // namespace

@@ -82,6 +82,8 @@ void LightReader::config() {
     rgbOrder_[i] = config_.light.hardware.rgbOrder.find("rgb"[i]);
 
   lightingWindow_->setConfig(config_.light);
+  midiInput_->setConfig(config_.midi.input);
+  midiOutput_->setConfig(config_.midi.output);
 }
 
 inline uint8 getSpiColor(uint8 color) {

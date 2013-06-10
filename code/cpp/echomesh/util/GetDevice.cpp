@@ -8,6 +8,7 @@ namespace {
 template <typename DeviceClass>
 int getDeviceIndex(const String& name, int index) {
   StringArray names = DeviceClass::getDevices();
+  log(names.joinIntoString(", "));
   if (index >= 0)
     return index < names.size() ? index : -1;
 

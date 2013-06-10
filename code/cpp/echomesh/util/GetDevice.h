@@ -10,7 +10,7 @@ namespace echomesh {
 bool equals(const OneMidiConfig&, const OneMidiConfig&);
 
 template <typename DeviceClass>
-class ConfigMidi {
+class ConfigMidi : public CallbackMessage {
  public:
   ConfigMidi() : configAssigned_(false) {}
   virtual ~ConfigMidi() {}
@@ -19,11 +19,15 @@ class ConfigMidi {
     if (not (configAssigned_ and equals(config_, config))) {
       configAssigned_ = true;
       config_ = config;
-      device_ = config_.external ? newDevice() : NULL;
+      post();
     }
   }
 
  protected:
+  virtual void messageCallback() {
+    device_ = config_.external ? newDevice() : NULL;
+  }
+
   virtual DeviceClass* newDevice() = 0;
 
   OneMidiConfig config_;

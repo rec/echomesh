@@ -45,7 +45,7 @@ void log(const String& msg) {
 }
 
 void log2(const String& msg) {
-  if (!(*FILENAME2 and USE_LOG2))
+  if (!((*FILENAME2) and USE_LOG2))
     return;
   ScopedLock l(lock_);
   if (!STREAM2) {

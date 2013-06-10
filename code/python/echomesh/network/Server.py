@@ -15,7 +15,7 @@ from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
 
-LOG_ALL_DATA = True
+LOG_ALL_DATA = not True
 
 if LOG_ALL_DATA:
   FILE = open('/tmp/echomesh.socket.out.txt', 'w')
