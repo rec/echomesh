@@ -6,8 +6,11 @@ from echomesh.base import Config
 from echomesh.color import Client
 from echomesh.expression import Units
 from echomesh.network.Server import Server
+from echomesh.util import Log
 from echomesh.util import Subprocess
 from echomesh.util import Quit
+
+LOGGER = Log.logger(__name__)
 
 class ClientServer(Server):
   INSTANCE = None

@@ -55,9 +55,7 @@ class ConfigMidi : public CallbackMessage {
 
 class ConfigMidiInput : public ConfigMidi<MidiInput> {
  public:
-  explicit ConfigMidiInput(MidiInputCallback* cb = NULL)
-      : callback_(cb) {
-  }
+  explicit ConfigMidiInput(MidiInputCallback* cb) : callback_(cb) {}
 
  protected:
   virtual MidiInput* newDevice();

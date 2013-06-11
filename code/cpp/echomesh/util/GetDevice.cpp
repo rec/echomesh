@@ -25,7 +25,7 @@ int getDeviceIndex(const String& name, int index) {
       index = DeviceClass::getDefaultDeviceIndex();
   }
 
-  log("Opened: " + names[index]);
+  log("Found: " + names[index]);
   return index;
 }
 
@@ -78,14 +78,14 @@ bool equals(const OneMidiConfig& x, const OneMidiConfig& y) {
 }
 
 MidiInput* ConfigMidiInput::newDevice() {
-  int index = getDeviceIndex<MidiInput>(config_);
-  return index >= 0 ?
-    MidiInput::openDevice(index, new CallbackContainer(callback_)) :  NULL;
+  MidiInput* input = openMidiInput(config_, new CallbackContainer(callback_));
+  if (input)
+    input->start();
+  return input;
 }
 
 MidiOutput* ConfigMidiOutput::newDevice() {
-  int index = getDeviceIndex<MidiOutput>(config_);
-  return index >= 0 ? MidiOutput::openDevice(index) : NULL;
+  return openMidiOutput(config_);
 }
 
 void ConfigMidiOutput::sendMessageNow(const MidiMessage& msg) {

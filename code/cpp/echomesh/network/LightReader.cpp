@@ -56,6 +56,18 @@ LightReader::~LightReader() {
 #endif
 }
 
+struct SendThread : public Thread {
+  SendThread(const string& s, SocketLineGetter* getter) : Thread("SendThread"), string_(s), getter_(getter) {
+  }
+
+  virtual void run() {
+    getter_->writeSocket(string_.c_str(), string_.size());
+  }
+
+  string string_;
+  SocketLineGetter* getter_;
+};
+
 void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
   log("Incoming MIDI message");
   if (SocketLineGetter* getter = SocketLineGetter::instance()) {
@@ -64,7 +76,8 @@ void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) 
     out << YAML::BeginMap
         << YAML::Key << "type"
         << YAML::Value << "midi"
-        << YAML::BeginSeq;
+        << YAML::Key << "data"
+        << YAML::Value << YAML::BeginSeq;
 
     int size = msg.getRawDataSize();
     const uint8* data = msg.getRawData();
@@ -74,6 +87,7 @@ void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) 
     out << YAML::EndSeq << YAML::EndMap;
 
     getter->writeSocket(out.c_str(), out.size());
+    // (new SendThread(string(out.c_str(), out.size()), getter))->startThread();
   }
 }
 
