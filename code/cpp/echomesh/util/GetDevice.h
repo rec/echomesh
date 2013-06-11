@@ -9,6 +9,20 @@ namespace echomesh {
 
 bool equals(const OneMidiConfig&, const OneMidiConfig&);
 
+class CallbackWrapper : public CallbackMessage {
+ public:
+  explicit CallbackWrapper(CallbackMessage* cb) : callback_(cb) {}
+
+  virtual void messageCallback() {
+    callback_->messageCallback();
+  }
+
+ private:
+  CallbackMessage* const callback_;
+
+  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CallbackWrapper);
+};
+
 template <typename DeviceClass>
 class ConfigMidi : public CallbackMessage {
  public:
@@ -19,11 +33,10 @@ class ConfigMidi : public CallbackMessage {
     if (not (configAssigned_ and equals(config_, config))) {
       configAssigned_ = true;
       config_ = config;
-      post();
+      (new CallbackWrapper(this))->post();
     }
   }
 
- protected:
   virtual void messageCallback() {
     device_ = config_.external ? newDevice() : NULL;
   }
@@ -42,13 +55,15 @@ class ConfigMidi : public CallbackMessage {
 
 class ConfigMidiInput : public ConfigMidi<MidiInput> {
  public:
-  explicit ConfigMidiInput(MidiInputCallback* cb = NULL) : callback_(cb) {}
+  explicit ConfigMidiInput(MidiInputCallback* cb = NULL)
+      : callback_(cb) {
+  }
 
  protected:
   virtual MidiInput* newDevice();
 
  private:
-  ScopedPointer<MidiInputCallback> callback_;
+  MidiInputCallback* callback_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(ConfigMidiInput);
 };

@@ -9,18 +9,23 @@ template <typename DeviceClass>
 int getDeviceIndex(const String& name, int index) {
   StringArray names = DeviceClass::getDevices();
   log(names.joinIntoString(", "));
-  if (index >= 0)
-    return index < names.size() ? index : -1;
-
-  index = names.indexOf(name);
-  if (index < 0) {
-    for (int i = 0; i < names.size(); ++i) {
-      if (names[i].startsWith(name))
-        return i;
+  if (index >= 0) {
+    index = jmin(index, names.size() - 1);
+  } else {
+    index = names.indexOf(name);
+    if (index < 0) {
+      for (int i = 0; i < names.size(); ++i) {
+        if (names[i].startsWith(name)) {
+          index = i;
+          break;
+        }
+      }
     }
-    index = DeviceClass::getDefaultDeviceIndex();
+    if (index < 0)
+      index = DeviceClass::getDefaultDeviceIndex();
   }
 
+  log("Opened: " + names[index]);
   return index;
 }
 
@@ -49,6 +54,7 @@ class CallbackContainer : public MidiInputCallback {
 
   virtual void handleIncomingMidiMessage(MidiInput* source,
                                          const MidiMessage& message) {
+    log("FIRST handleIncomingMidiMessage");
     if (callback_)
       callback_->handleIncomingMidiMessage(source, message);
   }
@@ -74,7 +80,7 @@ bool equals(const OneMidiConfig& x, const OneMidiConfig& y) {
 MidiInput* ConfigMidiInput::newDevice() {
   int index = getDeviceIndex<MidiInput>(config_);
   return index >= 0 ?
-    MidiInput::openDevice(index, new CallbackContainer(callback_.get())) :  NULL;
+    MidiInput::openDevice(index, new CallbackContainer(callback_)) :  NULL;
 }
 
 MidiOutput* ConfigMidiOutput::newDevice() {

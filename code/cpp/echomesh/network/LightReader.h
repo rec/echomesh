@@ -15,18 +15,20 @@ class LightingWindow;
 class ConfigMidiInput;
 class ConfigMidiOutput;
 
-class LightReader : public ReadThread {
+class LightReader : public ReadThread, public MidiInputCallback {
  public:
   LightReader(LightingWindow* window, const String& commandLine);
   virtual ~LightReader();
+  virtual void handleIncomingMidiMessage (MidiInput*, const MidiMessage&);
 
  private:
   virtual void quit();
   void clear();
-  void light();
   void config();
   void displayLights();
   void enforceSizes();
+  void light();
+  void midi();
 
   uint8 getLedColor(float color) const;
 

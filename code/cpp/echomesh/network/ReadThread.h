@@ -24,7 +24,9 @@ class ReadThread : public Thread {
  protected:
   virtual void quit() = 0;
 
-  void addHandler(const string& name, Callback* cb) { messageMap_[name] = cb; }
+  void addHandler(const string& name, Callback* cb) {
+    messageMap_[name] = cb;
+  }
 
   typedef std::map<string, Callback*> MessageMap;
 

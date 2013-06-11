@@ -6,6 +6,7 @@
 #include "base64/base64.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
+#include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/thread/MakeCallback.h"
 #include "rec/util/thread/LockedCallback.h"
@@ -40,11 +41,12 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
       file_(fopen(DEVICE_NAME, "w")),
 #endif
       compressed_(true),
-      midiInput_(new ConfigMidiInput),
+      midiInput_(new ConfigMidiInput(this)),
       midiOutput_(new ConfigMidiOutput) {
   addHandler("clear", methodCallback(this, &LightReader::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
   addHandler("light", methodCallback(this, &LightReader::light));
+  addHandler("midi", methodCallback(this, &LightReader::midi));
   addHandler("quit", methodCallback(this, &LightReader::quit));
 }
 
@@ -52,6 +54,27 @@ LightReader::~LightReader() {
 #if 0 && JUCE_LINUX
   fclose(file_);
 #endif
+}
+
+void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
+  log("Incoming MIDI message");
+  if (SocketLineGetter* getter = SocketLineGetter::instance()) {
+    YAML::Emitter out;
+
+    out << YAML::BeginMap
+        << YAML::Key << "type"
+        << YAML::Value << "midi"
+        << YAML::BeginSeq;
+
+    int size = msg.getRawDataSize();
+    const uint8* data = msg.getRawData();
+    for (int i = 0; i < size; ++i)
+      out << static_cast<int>(data[i]);
+
+    out << YAML::EndSeq << YAML::EndMap;
+
+    getter->writeSocket(out.c_str(), out.size());
+  }
 }
 
 void LightReader::quit() {
@@ -84,6 +107,21 @@ void LightReader::config() {
   lightingWindow_->setConfig(config_.light);
   midiInput_->setConfig(config_.midi.input);
   midiOutput_->setConfig(config_.midi.output);
+}
+
+static MidiMessage makeMidiMessage(const YAML::Node& data) {
+  int size = data.size();
+  int b;
+  vector<uint8> bytes(size);
+  for (int i = 0; i < size; ++i) {
+    data[i] >> b;
+    bytes[i] = static_cast<uint8>(b);
+  }
+  return MidiMessage(&bytes.begin(), size);
+}
+
+void LightReader::midi() {
+  midiOutput_->sendMessageNow(makeMidiMessage(node_["data"]));
 }
 
 inline uint8 getSpiColor(uint8 color) {

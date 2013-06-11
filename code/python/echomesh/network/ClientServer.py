@@ -47,6 +47,9 @@ class ClientServer(Server):
     if data.get('type') == 'hide':
       Config.assign('light.vis.show=false')
 
+    if data.get('type') == 'midi':
+      LOGGER.info('MIDI! %s', data)
+
   def kill(self):
     try:
       self.process.terminate()
