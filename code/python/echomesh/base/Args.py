@@ -6,13 +6,27 @@ from echomesh.base import Enum
 from echomesh.base import Yaml
 
 ARGS = []
+_ARGUMENT_ERROR = """
+ERROR: Didn't understand arguments to echomesh: "%s".
+
+echomesh needs to be called with arguments looking like "name=value".
+
+Examples:
+  echomesh
+  echomesh debug=true
+  echomesh audio.input.enable=false light.enable=false
+"""
 
 _LEFT = '{[('
 _RIGHT_TO_LEFT = dict(zip('}])', _LEFT))
 
 def set_arguments(argv):
   global ARGS
-  ARGS[:] = split_args(argv[1:])
+  try:
+    ARGS[:] = split_args(argv[1:])
+    return True
+  except:
+    print(_ARGUMENT_ERROR % ' '.join(argv[1:]))
 
 # Assignment looks like this:
 #  some.name.here = "123"  other.name.here = [1, 2]

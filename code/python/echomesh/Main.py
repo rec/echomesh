@@ -35,7 +35,9 @@ def main():
   from echomesh.base import Args
   p()
 
-  Args.set_arguments(sys.argv)
+  if not Args.set_arguments(sys.argv):
+    return
+
   p()
 
   from echomesh.base import Config
@@ -48,7 +50,8 @@ def main():
     print()
     from echomesh.util import Log
     Log.logger(__name__).info("Not autostarting because autostart=False")
-    exit(0)
+    return
+
   p()
 
   from echomesh import Instance
