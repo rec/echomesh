@@ -147,9 +147,11 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 def _make_elements(score_names, table):
   result = {}
   for score_file, name in score_names:
-    resolved_file = CommandFile.resolve('score', Yaml.filename(score_file))
+    fname = Yaml.filename(score_file)
+    resolved_file = CommandFile.resolve('score', fname)
     if not resolved_file:
-      LOGGER.error('No such score file: "%s".', score_file)
+      LOGGER.error('No such score file: "%s".',
+                   CommandFile.base_file('score', fname))
       continue
     elements = Yaml.read(resolved_file)
     description = {'elements': elements, 'type': 'score'}

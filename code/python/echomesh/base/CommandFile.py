@@ -50,6 +50,9 @@ def load(*path):
 
   raise Exception("Couldn't read Yaml from file %s" % os.path.join(*path))
 
+def base_file(*path):
+  return _command_file('master', *path)
+
 def config_file(scope):
   return _command_file(scope, 'config.yml')
 
