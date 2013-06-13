@@ -52,6 +52,7 @@ class ConfigSetter(object):
       DEBUG_FORMAT if self.debug
       else DEFAULT_FORMAT)
 
+    self.kwds = dict((str(k), v) for k, v in self.kwds.iteritems())
     logging.basicConfig(**self.kwds)
 
 
