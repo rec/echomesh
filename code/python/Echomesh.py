@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-from __future__ import absolute_import, division, print_function, unicode_literals
-
 if __name__ == '__main__':
-  try:
-    from echomesh import Main
-    Main.main()
-  except:
-    import traceback
-    print(traceback.format_exc())
+  from echomesh.base import Version
+
+  if Version.TOO_OLD:
+    from echomesh.util import TooOld
+    TooOld.too_old()
+    exit(-1)
+
+  from echomesh import Main
+  Main.main()

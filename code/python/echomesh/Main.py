@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 USE_DIGITS_FOR_PROGRESS_BAR = False
 COUNT = 0
 
-def main():
+def _main():
   import sys
 
   times = []
@@ -22,6 +22,10 @@ def main():
     times.append(time.time())
 
   p('Loading echomesh ')
+
+  from echomesh.base import Version
+  if Version.TOO_NEW:
+    print(Version.ERROR)
 
   from echomesh.base import Path
   if not Path.PROJECT_PATH:
@@ -68,3 +72,11 @@ def main():
   if Config.get('diagnostics', 'unused_configs'):
     import yaml
     print(yaml.safe_dump(Config.get_unvisited()))
+
+def main():
+  try:
+    _main()
+  except:
+    import traceback
+    print(traceback.format_exc())
+
