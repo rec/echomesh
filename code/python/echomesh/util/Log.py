@@ -99,5 +99,5 @@ def logger(name=None):
   return log
 
 LOGGER = logger(__name__)
-LOGGER.debug('Log level is %s', CONFIG.log_level)
+LOGGER.debug('\nLog level is %s', CONFIG.log_level)
 

@@ -3,6 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import requests
 
 from echomesh.util.file import Cache
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 URL = 'http://translate.google.com/translate_tts'
 HEADERS = {'User-Agent': 'Mozilla'}
@@ -15,10 +18,14 @@ def text_to_speech(text, tl='en'):
 
   """
   params = dict(PARAMS, q=text, tl=tl)
+  LOGGER.debug('About to request url=%s, params=%s', URL, params)
   r = requests.get(URL, params=params, headers=HEADERS)
   if not r.ok:
+    LOGGER.debug("%d: couldn't read URL %s for '%s'",
+                 r.status_code, r.url, text)
     raise Exception("%d: couldn't read URL %s for '%s'" %
                     (r.status_code, r.url, text))
+
   return r.content
 
 class TextToSpeechCache(Cache.Cache):
