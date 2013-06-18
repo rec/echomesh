@@ -50,9 +50,9 @@ def _get_files_to_transfer(path):
           for ffs in fs:
             if TRANSFER_ALL_FILES or ffs.endswith('.yml'):
               files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
-      LOGGER.debug('Adding directory %s', p)
+      LOGGER.vdebug('Transferring directory %s', p)
     else:
-      LOGGER.debug('Adding file %s', p)
+      LOGGER.vdebug('Transferring file %s', p)
       files.add(f)
 
   return _get_files_table(files), directories

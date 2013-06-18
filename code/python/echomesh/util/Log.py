@@ -13,6 +13,14 @@ import traceback
 DEBUG = False
 STACK_TRACES = False
 
+VDEBUG = 5
+logging.addLevelName(VDEBUG, 'VDEBUG')
+
+def vdebug(self, message, *args, **kws):
+  self.log(VDEBUG, message, *args, **kws)
+logging.Logger.vdebug = vdebug
+logging.VDEBUG = VDEBUG
+
 LOG_LEVEL = 'INFO'
 
 DEFAULT_FORMAT = '%(message)s'

@@ -62,7 +62,6 @@ class Sequence(Loop.Loop):
         self.next_command = 0
         return self._command_time()
       else:
-        LOGGER.debug('Sequence finished %s', self)
         self.pause()
         return 0
 

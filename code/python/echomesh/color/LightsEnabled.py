@@ -17,8 +17,8 @@ def _is_blacklisted():
       LOGGER.info(' ', BLACKLIST_FILE)
       return any(_blacklist_line(line) for line in f)
   except:
-    LOGGER.debug('You are not running the Raspian distribution, '
-                 'no blacklist found.')
+    LOGGER.warning('You are not running the Raspian distribution, '
+                   'no blacklist found.')
 
 def _fix_blacklist():
   try:

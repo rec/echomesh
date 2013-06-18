@@ -22,24 +22,24 @@ class Runnable(object):
 
       if self._on_run():
         self.pause()
-        LOGGER.debug('%s paused in startup', self)
+        LOGGER.vdebug('%s paused in startup', self)
       else:
-        LOGGER.debug('Started %s', self)
+        LOGGER.vdebug('Started %s', self)
     else:
-      LOGGER.debug('Tried to run a running %s', self)
+      LOGGER.vdebug('Tried to run a running %s', self)
 
   def pause(self):
     """Pause running, if we are running."""
     if self.is_running:
       self.is_running = False
       self._on_pause()
-      LOGGER.debug('Paused %s', self)
+      LOGGER.vdebug('Paused %s', self)
     else:
-      LOGGER.debug('Tried to pause a paused %s', self)
+      LOGGER.vdebug('Tried to pause a paused %s', self)
 
   def begin(self):
     """Reset this Runnable to the beginning, whether or not it is running."""
-    LOGGER.debug('Resetting %s', self)
+    LOGGER.vdebug('Resetting %s', self)
     self.begin_called = True
     self._on_begin()
 

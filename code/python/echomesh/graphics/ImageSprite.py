@@ -76,7 +76,7 @@ class ImageSprite(Runnable):
         self._time = 0
         elapsed = 0
       else:
-        LOGGER.debug('Finishing image sprite')
+        LOGGER.vdebug('Finishing image sprite')
         self.pause()
         return
 
