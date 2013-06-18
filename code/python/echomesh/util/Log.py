@@ -12,14 +12,7 @@ import traceback
 
 DEBUG = False
 STACK_TRACES = False
-
 VDEBUG = 5
-logging.addLevelName(VDEBUG, 'VDEBUG')
-
-def vdebug(self, message, *args, **kws):
-  self.log(VDEBUG, message, *args, **kws)
-logging.Logger.vdebug = vdebug
-logging.VDEBUG = VDEBUG
 
 LOG_LEVEL = 'INFO'
 
@@ -40,6 +33,14 @@ def _check_error_count(limit, every):
       _ERROR_COUNTER[line] = errors + 1
       return not (every and (errors % every))
 
+def _add_vdebug():
+  logging.addLevelName(VDEBUG, 'VDEBUG')
+
+  def vdebug(self, message, *args, **kws):
+    self.log(VDEBUG, message, *args, **kws)
+
+  logging.Logger.vdebug = vdebug
+  logging.VDEBUG = VDEBUG
 
 class ConfigSetter(object):
   def config_update(self, get):
@@ -47,6 +48,9 @@ class ConfigSetter(object):
     self.stack_traces = STACK_TRACES or self.debug or (
       get and get('diagnostics', 'stack_traces'))
     self.log_level = (get and get('logging','level').upper()) or LOG_LEVEL
+    if self.debug:
+      if self.log_level not in ['DEBUG', 'VDEBUG']:
+        self.log_level = 'DEBUG'
 
     self.kwds = {u'level': getattr(logging, self.log_level)}
     self.filename = get and get('logging', 'file')
@@ -63,6 +67,8 @@ class ConfigSetter(object):
     self.kwds = dict((str(k), v) for k, v in self.kwds.iteritems())
     logging.basicConfig(**self.kwds)
 
+
+_add_vdebug()
 
 CONFIG = ConfigSetter()
 try:
