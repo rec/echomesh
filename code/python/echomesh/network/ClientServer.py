@@ -16,6 +16,7 @@ class ClientServer(Server):
   INSTANCE = None
 
   def __init__(self):
+    LOGGER.debug('Creating ClientServer')
     ClientServer.INSTANCE = self
     self.process = None
     self.constructed = False
@@ -44,7 +45,11 @@ class ClientServer(Server):
         args['stdin'] = subprocess.PIPE
       if config['pipe_stdout']:
         args['stdout'] = subprocess.PIPE
+      LOGGER.debug("About to start client process")
       self.process = subprocess.Popen(Client.make_command(), **args)
+      LOGGER.debug("Client process started!")
+    else:
+      LOGGER.debug("Didn't start client process")
 
   def read_callback(self, data):
     if data.get('type') == 'hide':

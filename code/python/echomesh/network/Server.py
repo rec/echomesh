@@ -23,6 +23,7 @@ if LOG_ALL_DATA:
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, read_callback=None, max_queue_size=20,
                logging=False, allow_reuse_address=True):
+    LOGGER.debug('Creating Server')
     super(Server, self).__init__()
     self.timeout = timeout
     self.queue = None
@@ -32,8 +33,10 @@ class Server(ThreadRunnable):
     self.packets = 0
     self.lock = Lock.Lock()
     self.handler = None
+    LOGGER.debug('About to open IP server %s:%s', host, port)
     self.server = ServerMaker.make_server(
       self._handle, host, port, timeout, logging, allow_reuse_address)
+    LOGGER.debug('Ip server opened')
     self.line_reader = LineReader(read_callback)
 
   def target(self):

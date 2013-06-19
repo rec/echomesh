@@ -19,6 +19,9 @@ void LightingWindow::setLights(const ColorList& cl) {
 
 void LightingWindow::setConfig(const LightConfig& config) {
   instrumentGrid_->setConfig(config);
+  
+  MessageManagerLock l;
+  toFront(true);
 }
 
 void LightingWindow::closeButtonPressed() {

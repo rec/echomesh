@@ -131,7 +131,7 @@ static MidiMessage makeMidiMessage(const YAML::Node& data) {
     data[i] >> b;
     bytes[i] = static_cast<uint8>(b);
   }
-  return MidiMessage(&bytes.begin(), size);
+  return MidiMessage(&bytes[0], size);
 }
 
 void LightReader::midi() {
