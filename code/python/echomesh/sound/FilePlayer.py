@@ -4,7 +4,6 @@ import sndhdr
 
 from echomesh.base import Config
 from echomesh.expression.Expression import Expression
-from echomesh.sound import Aplay
 from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util import ImportIf
@@ -17,6 +16,11 @@ LOGGER = Log.logger(__name__)
 
 BITS_PER_BYTE = 8
 MAX_DEVICE_NUMBERS = 8
+
+UNKNOWN_FORMAT_ERROR = """\
+%s
+is not a file type that the pyaudio player can play.
+Try using the client player, or the aplay player."""
 
 class FilePlayer(ThreadLoop):
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
@@ -37,7 +41,10 @@ class FilePlayer(ThreadLoop):
     self.loops = loops
 
     filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(self.file)
-    filetype = sndhdr.what(filename)[0]
+    what = sndhdr.what(filename)
+    if not what:
+      raise Exception(UNKNOWN_FORMAT_ERROR % filename)
+    filetype = [0]
     handler = Util.FILE_READERS.get(filetype)
     if not handler:
       LOGGER.error("Can't understand the file type of file %s", filename)
@@ -171,13 +178,3 @@ class FilePlayer(ThreadLoop):
 
     return Util.interleave(left, right).tostring()
 
-def play(element, **kwds):
-  if 'type' in kwds:
-    del kwds['type']
-  if 'use_aplay' in kwds:
-    use_aplay = kwds['use_aplay']
-    del kwds['use_aplay']
-  else:
-    use_aplay = Config.get('audio', 'output', 'use_aplay')
-
-  return Aplay.play(**kwds) if use_aplay else FilePlayer(element, **kwds)

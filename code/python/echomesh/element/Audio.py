@@ -11,10 +11,10 @@ class Audio(Element.Element):
     super(Audio, self).__init__(parent, description)
     if Config.get('audio', 'output', 'enable'):
       try:
-        from echomesh.sound import FilePlayer
-        self.add_mutual_pause_slave(FilePlayer.play(self, **description))
+        from echomesh.sound import Play
+        self.add_mutual_pause_slave(Play.play(self, **description))
       except:
-        LOGGER.error("Couldn't play audio with %s", description)
+        LOGGER.error()
     else:
       LOGGER.debug('Audio disabled for %s', description.get('file', None))
     description.clear_accessed()

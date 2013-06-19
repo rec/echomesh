@@ -109,10 +109,17 @@ audio:
     # Disabled, see https://github.com/rec/echomesh/issues/197.
     route: audio
 
-    # Do we use aplay to play sound files, or do it internally with Python?
-    # At this time, we can only play mp3 files with aplay.
-    # aplay does not allow volume or pan envelopes.
-    use_aplay: false
+    # There are three types of player:
+    #
+    #   aplay:    Use the external aplay program to play sound files.
+    #   client:   Play sounds from the external C++ client.
+    #   pyaudio:  Play sounds internally with Python.
+    #
+    # aplay supports mp3s envelopes but not volume and pan.
+    # client supports everything but isn't yet implemented.
+    # pyaudio supports volume and pan envelopes but not mp3s.
+
+    player: pyaudio
 
 
 # This little section controls whether you're running a control program
