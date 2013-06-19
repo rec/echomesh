@@ -26,7 +26,7 @@ void LightingWindow::setConfig(const LightConfig& config) {
 void LightingWindow::toFront(bool foreground) {
   log(String("toFront") + (foreground ? " true" : " false"));
   setVisible(true);
-  Thread::sleep(2000);
+  Thread::sleep(100);  // Values up to 2000 made no difference.
   Component::toFront(foreground);
 }
 
