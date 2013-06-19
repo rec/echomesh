@@ -1,5 +1,6 @@
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/SocketLineGetter.h"
+#include "rec/util/thread/CallAsync.h"
 
 namespace echomesh {
 
@@ -19,9 +20,14 @@ void LightingWindow::setLights(const ColorList& cl) {
 
 void LightingWindow::setConfig(const LightConfig& config) {
   instrumentGrid_->setConfig(config);
-  
-  MessageManagerLock l;
-  toFront(true);
+  rec::util::thread::callAsync(this, &LightingWindow::toFront, true);
+}
+
+void LightingWindow::toFront(bool foreground) {
+  log(String("toFront") + (foreground ? " true" : " false"));
+  setVisible(true);
+  Thread::sleep(2000);
+  Component::toFront(foreground);
 }
 
 void LightingWindow::closeButtonPressed() {

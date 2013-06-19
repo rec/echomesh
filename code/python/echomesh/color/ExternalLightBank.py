@@ -38,9 +38,7 @@ class ExternalLightBank(LightBank):
     config = {'light': light, 'midi': get('midi')}
 
     with self.lock:
-      ClientServer.instance().set_config(
-        {'type': 'config', 'data': config},
-        {'type': 'show'})
+      ClientServer.instance().set_config({'type': 'config', 'data': config})
 
   def _after_thread_pause(self):
     if not Quit.QUITTING:

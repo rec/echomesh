@@ -14,6 +14,7 @@ class LightingWindow : public DocumentWindow {
   void setLights(const ColorList& cl);
   void setConfig(const LightConfig& config);
   void closeButtonPressed();
+  void toFront(bool foreground);
 
  private:
   echomesh::InstrumentGrid* instrumentGrid_;
