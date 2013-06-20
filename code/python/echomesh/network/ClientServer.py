@@ -45,11 +45,17 @@ class ClientServer(Server):
         args['stdin'] = subprocess.PIPE
       if config['pipe_stdout']:
         args['stdout'] = subprocess.PIPE
+
       LOGGER.debug("About to start client process")
-      self.process = subprocess.Popen(Client.make_command(), **args)
-      LOGGER.debug("Client process started!")
-    else:
-      LOGGER.debug("Didn't start client process")
+      command = Client.make_command()
+      try:
+        self.process = subprocess.Popen(command, **args)
+      except:
+        LOGGER.error("Couldn't start the subprocess with command '%s'", command)
+      else:
+        LOGGER.debug("Client process started!")
+    elif self.process:
+      LOGGER.debug('Not starting client: the configuration said not to.')
 
   def read_callback(self, data):
     t = data.get('type')

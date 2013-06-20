@@ -11,7 +11,10 @@ class Pattern(Element.Element):
     self.maker = parent.pattern_makers[self.pattern_name]
     self.output = description.get('output', 'light')
     if self.output == 'light':
-      LightSingleton.add_owner()
+      try:
+        LightSingleton.add_owner()
+      except:
+        LOGGER.error('There was an error starting the Light visualizer.')
 
   def _on_unload(self):
     super(Pattern, self)._on_unload()
