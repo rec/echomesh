@@ -67,6 +67,7 @@ void operator>>(const YAML::Node& node, Visualizer& p) {
   node["padding"] >> p.padding;
   node["period"] >> p.period;
   node["show"] >> p.show;
+  node["top_left"] >> p.topLeft;
 }
 
 void operator>>(const YAML::Node& node, Hardware& p) {

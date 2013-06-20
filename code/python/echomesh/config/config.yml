@@ -211,6 +211,7 @@ light:
     background: white
     layout: [16, 16]
     padding: [3, 3]
+    top_left: [0, 0]
     instrument:
       background: 0x606060
       border:

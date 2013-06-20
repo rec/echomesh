@@ -19,15 +19,10 @@ void LightingWindow::setLights(const ColorList& cl) {
 }
 
 void LightingWindow::setConfig(const LightConfig& config) {
+  MessageManagerLock l;
+  setTopLeftPosition(config.visualizer.topLeft.x, config.visualizer.topLeft.y);
   instrumentGrid_->setConfig(config);
-  rec::util::thread::callAsync(this, &LightingWindow::toFront, true);
-}
-
-void LightingWindow::toFront(bool foreground) {
-  log(String("toFront") + (foreground ? " true" : " false"));
-  setVisible(true);
-  Thread::sleep(100);  // Values up to 2000 made no difference.
-  Component::toFront(foreground);
+  toFront(true);
 }
 
 void LightingWindow::closeButtonPressed() {

@@ -37,6 +37,7 @@ struct Visualizer {
   Instrument instrument;
   Point layout;
   Point padding;
+  Point topLeft;
   int period;
   bool show;
 };
