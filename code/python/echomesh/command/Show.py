@@ -35,7 +35,7 @@ def aliases(*_):
   if aliases:
     _info(aliases)
   else:
-    LOGGER.info('  No aliases')
+    LOGGER.info('  No aliases\n')
 
 def _all(echomesh_instance):
   LOGGER.info('')
@@ -99,8 +99,9 @@ def variables(instance):
   if results:
     for path, value in sorted(results):
       LOGGER.info('  %s = %s', '.'.join(path), value)
+    LOGGER.info('')
   else:
-    LOGGER.info('  No variables were found.')
+    LOGGER.info('  No variables were found.\n')
 
 
 NO_NODES_ERROR = """\
