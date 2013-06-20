@@ -12,9 +12,16 @@ from echomesh.util import SizeName
 
 LOGGER = Log.logger(__name__)
 
-def _time(t):
-  return time.strftime('%H:%M', time.localtime(t))
+ONE_DAY = 60 * 60 * 24
 
+def _time(t):
+  if (time.time() - t) >= ONE_DAY:
+    fmt = '%d %b'
+  else:
+    fmt = ' %H:%M'
+  return time.strftime(fmt, time.localtime(t))
+
+#                 file   bytes a   m   c
 ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
 
 def _scores(path, resolve=False, context='all', recursive=False):
