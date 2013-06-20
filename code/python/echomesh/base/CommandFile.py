@@ -19,14 +19,22 @@ def _command_file(*path):
 
 COMMAND_PATH = None
 def compute_command_path():
-  global COMMAND_PATH
-  COMMAND_PATH = ([
-    'name/' + Name.NAME] +
-    [('tag/' + t) for t in Name.TAGS] +
-    ['platform/' + Platform.PLATFORM,
-     'master',
-     _command_file('default/platform/%s' % Platform.PLATFORM),
-     _command_file('default')])
+  global COMMAND_PATH, COMMAND_PATH_NAMES
+  COMMAND_PATH = (['name/' + Name.NAME] +
+                  [('tag/' + t) for t in Name.TAGS] +
+                  ['platform/' + Platform.PLATFORM,
+                   'master',
+                   _command_file('default/platform/%s' % Platform.PLATFORM),
+                   _command_file('default')])
+
+  COMMAND_PATH_NAMES = (['name'] +
+                        [('tag/' + t) for t in Name.TAGS] +
+                        ['platform/' + Platform.PLATFORM,
+                         'master',
+                         'default/platform/%s' % Platform.PLATFORM,
+                         'default'])
+
+
 
 compute_command_path()
 
