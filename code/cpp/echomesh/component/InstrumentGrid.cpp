@@ -16,7 +16,6 @@ InstrumentGrid::~InstrumentGrid() {
 }
 
 void InstrumentGrid::setConfig(const LightConfig& config) {
-  MessageManagerLock l;
   config_ = config;
 
   getParentComponent()->setVisible(config_.visualizer.show);

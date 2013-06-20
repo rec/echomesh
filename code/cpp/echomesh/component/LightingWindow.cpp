@@ -38,5 +38,22 @@ void LightingWindow::closeButtonPressed() {
   }
 }
 
+void LightingWindow::moved() {
+  if (SocketLineGetter* getter = SocketLineGetter::instance()) {
+    YAML::Emitter out;
+
+    out << YAML::BeginMap
+        << YAML::Key << "type"
+        << YAML::Value << "move"
+        << YAML::Key << "top_left"
+        << YAML::Value << YAML::BeginSeq
+        << getX() << getY() - getTitleBarHeight()
+        << YAML::EndSeq
+        << YAML::EndMap;
+
+    getter->writeSocket(out.c_str(), out.size());
+  }
+}
+
 }  // namespace echomesh
 

@@ -6,12 +6,12 @@ import sys
 
 from echomesh.base import Config
 from echomesh.base import Path
+from echomesh.command import CommandRegistry
+from echomesh.remote import RemoteRegistry
 from echomesh.util import Log
 from echomesh.util import Quit
 from echomesh.util import Subprocess
 from gittwit.git import Git
-from echomesh.command import CommandRegistry
-from echomesh.remote import RemoteRegistry
 
 LOGGER = Log.logger(__name__)
 
@@ -58,7 +58,7 @@ def _initialize(echomesh_instance):
   if INITIALIZE_ENABLED:
     echomesh_instance.pause()
     shell = os.getenv('SHELL', DEFAULT_SHELL)
-    LOGGER.info('Echomesh is restartingn.')
+    LOGGER.info('Echomesh is restarting.')
     os.execl(shell, shell, *sys.argv)
   else:
     _quit(echomesh_instance)

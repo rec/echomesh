@@ -8,3 +8,7 @@ midi:
 
   output:
     name: to Max
+
+light:
+  visualizer:
+    visualizer_closes_echomesh: true

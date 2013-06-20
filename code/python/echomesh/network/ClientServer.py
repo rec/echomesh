@@ -52,11 +52,15 @@ class ClientServer(Server):
       LOGGER.debug("Didn't start client process")
 
   def read_callback(self, data):
-    if data.get('type') == 'hide':
+    t = data.get('type')
+    if t == 'hide':
       Config.assign('light.vis.show=false')
 
-    if data.get('type') == 'midi':
+    elif t == 'midi':
       LOGGER.info('MIDI! %s', data)
+
+    elif t == 'move':
+      LOGGER.info('Move! %s', data)
 
   def kill(self):
     try:

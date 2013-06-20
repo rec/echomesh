@@ -15,6 +15,8 @@ class LightingWindow : public DocumentWindow {
   void setConfig(const LightConfig& config);
   void closeButtonPressed();
 
+  virtual void moved();
+
  private:
   echomesh::InstrumentGrid* instrumentGrid_;
 
