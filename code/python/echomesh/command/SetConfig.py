@@ -11,7 +11,7 @@ LOGGER = Log.logger(__name__)
 
 def set_config(_, *values):
   if values:
-    for address, value in Config.assign(*values):
+    for address, value in Config.assign(values):
       LOGGER.info('Set %s=%s', '.'.join(address), value)
   elif MergeConfig.LOCAL_CHANGES:
     LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))

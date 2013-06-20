@@ -2,3 +2,9 @@ network:
   client:
     start: true
     allow_reuse_address: true
+
+---
+light:
+  visualizer:
+    top_left: [114, 330]
+start: light1

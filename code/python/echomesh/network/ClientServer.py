@@ -54,13 +54,13 @@ class ClientServer(Server):
   def read_callback(self, data):
     t = data.get('type')
     if t == 'hide':
-      Config.assign('light.vis.show=false')
+      Config.assign(['light.vis.show=false'])
 
     elif t == 'midi':
       LOGGER.info('MIDI! %s', data)
 
     elif t == 'move':
-      LOGGER.info('Move! %s', data)
+      Config.assign(['light.vis.top_left=%s' % data['top_left']], False)
 
   def kill(self):
     try:
