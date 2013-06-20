@@ -46,8 +46,8 @@ class ClientServer(Server):
       if config['pipe_stdout']:
         args['stdout'] = subprocess.PIPE
 
-      LOGGER.debug("About to start client process")
       command = Client.make_command()
+      LOGGER.debug("About to start client process: '%s'" % command)
       try:
         self.process = subprocess.Popen(command, **args)
       except:
