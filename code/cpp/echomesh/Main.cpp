@@ -1,3 +1,4 @@
+#include "echomesh/audio/Player.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
 
@@ -26,6 +27,7 @@ class Echomesh  : public JUCEApplication {
  private:
   ScopedPointer<echomesh::LightingWindow> lightingWindow_;
   ScopedPointer<echomesh::LightReader> readThread_;
+  echomesh::Player player_;
 
  private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Echomesh)
