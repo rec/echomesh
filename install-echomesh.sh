@@ -11,6 +11,7 @@ CODE_DIR=$TARGET_DIR/code
 
 BASH_CODE=$CODE_DIR/bash/$PLATFORM
 
+mkdir -p "$TARGET_BIN_DIR"
 rm -Rf "$TARGET_DIR"
 
 cp -Rp "$SOURCE_DIR" "$TARGET_DIR"
