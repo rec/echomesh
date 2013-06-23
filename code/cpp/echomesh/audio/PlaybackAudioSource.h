@@ -15,6 +15,7 @@ class PlaybackAudioSource : public AudioSource {
       buffer_->setSize(2, samplesPerBlockExpected, false, false, true);
     else
       buffer_ = new AudioSampleBuffer(2, samplesPerBlockExpected);
+
     info_.numSamples = samplesPerBlockExpected;
     info_.buffer = buffer_;
   }
@@ -39,6 +40,17 @@ class PlaybackAudioSource : public AudioSource {
         block.buffer->addFrom(ch, 0, *info_.buffer, 0, 0, block.numSamples);
     }
   }
+
+  void addSource(PositionableAudioSource* source) {
+    ScopedLock l(lock_);
+    sources_.add(source);
+  }
+
+  void removeSource(PositionableAudioSource* source) {
+    ScopedLock l(lock_);
+    sources_.removeObject(source);
+  }
+
 
  private:
   AudioSourceChannelInfo info_;
