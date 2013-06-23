@@ -17,9 +17,13 @@ BIN := $(ROOT)bin/darwin/
 
 debug:
 	cd $(BUILD_ROOT) && xcodebuild -project "echomesh-client.xcodeproj" -configuration Debug
-	cp $(DEBUG_EXECUTABLE) $(BIN)
 
 release:
 	cd $(BUILD_ROOT) && xcodebuild -project "echomesh-client.xcodeproj" -configuration Release
+
+debug_deploy: debug
+	cp $(DEBUG_EXECUTABLE) $(BIN)
+
+release_deploy: release
 	cp $(RELEASE_EXECUTABLE) $(BIN)
 
