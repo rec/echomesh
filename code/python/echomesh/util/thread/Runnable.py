@@ -48,6 +48,10 @@ class Runnable(object):
     self.begin()
     self.run()
 
+  def unload(self):
+    """Unload is called when the runnable is unloaded from memory."""
+    pass
+
   def _on_run(self):
     """This is called on a state change from not running to running.
     This function should return True if the Runnable was either unable to run

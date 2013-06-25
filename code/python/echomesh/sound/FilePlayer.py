@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function #, unicode_lite
 import sndhdr
 
 from echomesh.base import Config
-from echomesh.expression.Expression import Expression
+from echomesh.sound import PlayerSetter
 from echomesh.sound import Sound
 from echomesh.sound import Util
 from echomesh.util import ImportIf
@@ -25,26 +25,21 @@ Try using the client player, or the aplay player."""
 class FilePlayer(ThreadLoop):
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
     super(FilePlayer, self).__init__(name='FilePlayer')
+    PlayerSetter.set_player(self, element, level=1, pan=0, loops=1, **kwds)
+
     from echomesh.sound import SetOutput
     if not SetOutput.OUTPUT_SET:
       SetOutput.set_output()
 
-    self.element = element
-    self.file = kwds.pop('file')
-    if kwds:
-      LOGGER.error('Unused keywords %s', kwds)
-    self.debug = True
-    self.passthrough = (level == 1 and pan == 0)
-
-    self.level = Expression(level, element)
-    self.pan = Expression(pan, element)
-    self.loops = loops
-
     filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(self.file)
-    what = sndhdr.what(filename)
+    try:
+      what = sndhdr.what(filename)
+    except IOError:
+      raise Exception('Can\'t open file %s' % filename)
+
     if not what:
       raise Exception(UNKNOWN_FORMAT_ERROR % filename)
-    filetype = [0]
+    filetype = what[0]
     handler = Util.FILE_READERS.get(filetype)
     if not handler:
       LOGGER.error("Can't understand the file type of file %s", filename)
@@ -177,4 +172,3 @@ class FilePlayer(ThreadLoop):
       self.current_pan = next_pan
 
     return Util.interleave(left, right).tostring()
-

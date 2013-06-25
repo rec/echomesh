@@ -4,8 +4,11 @@ import bisect
 
 from echomesh.expression import SplitNumbers
 from echomesh.expression import Units
+from echomesh.util import Dict
 
 class Envelope(object):
+  _FIELDS = 'data', 'loop_length', 'loops', 'reverse', 'times'
+
   def __init__(self, data):
     self.is_constant = not isinstance(data, dict)
     if self.is_constant:
@@ -27,6 +30,9 @@ class Envelope(object):
       else:
         self.length = self.loop_length * self.loops
       self.slot = 0
+
+  def description(self):
+    return Dict.from_attributes(self, Envelope._FIELDS)
 
   def interpolate(self, time):
     if self.is_constant:

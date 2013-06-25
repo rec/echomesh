@@ -49,3 +49,7 @@ class Access(dict):
   # TODO: why do I need both get and __getitem__ ?
   # probably should  use either collections.MutableMapping or UserDict but not
   # obvious how to do it.
+
+def from_attributes(object, fields):
+  return dict((f, getattr(object, f, None)) for f in fields)
+

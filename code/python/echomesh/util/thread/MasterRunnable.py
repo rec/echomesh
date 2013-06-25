@@ -50,3 +50,7 @@ class MasterRunnable(Runnable):
   def begin(self):
     super(MasterRunnable, self).begin()
     self.runnables.foreach('begin')
+
+  def unload(self):
+    super(MasterRunnable, self).unload()
+    self.runnables.foreach('unload')

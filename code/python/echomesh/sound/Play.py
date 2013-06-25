@@ -24,6 +24,7 @@ def play(element, **kwds):
     return FilePlayer(element, **kwds)
 
   if player == 'client':
-    raise Exception('client player is not yet implemented')
+    from echomesh.sound import ExternalPlayer
+    return ExternalPlayer(element, **kwds)
 
   raise Exception('Don\'t understand player %s' % player)
