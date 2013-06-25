@@ -4,24 +4,16 @@
 #include <string>
 
 #include "base64/base64.h"
+#include "echomesh/base/Quit.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightReader.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/thread/MakeCallback.h"
 #include "rec/util/thread/LockedCallback.h"
+#include "rec/util/thread/CallAsync.h"
 
 namespace echomesh {
-
-namespace {
-
-struct QuitMessage : public CallbackMessage {
-  virtual void messageCallback() {
-    JUCEApplication::quit();
-  };
-};
-
-}
 
 using namespace std;
 using namespace rec::util::thread;
@@ -33,6 +25,43 @@ const int LATCH_BYTE_COUNT = 3;
 uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 
 #endif
+
+static const string DEFAULT_CONFIG =
+  "data:\n"
+  "  light:\n"
+  "    brightness: 100%\n"
+  "    count: 256\n"
+  "    enable: false\n"
+  "    hardware: {enable: true, local: true, period: 5ms, rgb_order: rgb}\n"
+  "    visualizer:\n"
+  "      background: [1.0, 1.0, 1.0]\n"
+  "      enable: true\n"
+  "      instrument:\n"
+  "        background: [0.3764705882352941, 0.3764705882352941, 0.3764705882352941]\n"
+  "        border:\n"
+  "          color: [0.0, 0.0, 0.0]\n"
+  "          width: 1\n"
+  "        label: false\n"
+  "        label_padding: [2, 2]\n"
+  "        label_starts_at_zero: false\n"
+  "        padding: [2, 2]\n"
+  "        paint_unclipped: false\n"
+  "        shape: circle\n"
+  "        size: [12, 12]\n"
+  "      layout: [16, 16]\n"
+  "      padding: [3, 3]\n"
+  "      period: 10ms\n"
+  "      show: true\n"
+  "      top_left: [0, 44]\n"
+  "      type: client\n"
+  "      visualizer_closes_echomesh: true\n"
+  "  midi:\n"
+  "    input: {external: true, index: -1, name: from Max}\n"
+  "    output: {external: true, index: -1, name: to Max}\n"
+  "type: config\n"
+  "---\n"
+;
+
 
 LightReader::LightReader(LightingWindow* wind, const String& commandLine)
     : ReadThread(commandLine),
@@ -48,6 +77,11 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
   addHandler("light", methodCallback(this, &LightReader::light));
   addHandler("midi", methodCallback(this, &LightReader::midi));
   addHandler("quit", methodCallback(this, &LightReader::quit));
+
+  if (commandLine.isEmpty()) {
+    lightingWindow_->setRunningInTest();
+    parse(DEFAULT_CONFIG);
+  }
 }
 
 LightReader::~LightReader() {
@@ -55,18 +89,6 @@ LightReader::~LightReader() {
   fclose(file_);
 #endif
 }
-
-struct SendThread : public Thread {
-  SendThread(const string& s, SocketLineGetter* getter) : Thread("SendThread"), string_(s), getter_(getter) {
-  }
-
-  virtual void run() {
-    getter_->writeSocket(string_.c_str(), string_.size());
-  }
-
-  string string_;
-  SocketLineGetter* getter_;
-};
 
 void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
   log("Incoming MIDI message");
@@ -87,12 +109,11 @@ void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) 
     out << YAML::EndSeq << YAML::EndMap;
 
     getter->writeSocket(out.c_str(), out.size());
-    // (new SendThread(string(out.c_str(), out.size()), getter))->startThread();
   }
 }
 
 void LightReader::quit() {
-  (new QuitMessage)->post();
+  ::echomesh::quit();
 }
 
 void LightReader::clear() {

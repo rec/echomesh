@@ -33,16 +33,7 @@ void ReadThread::run() {
         continue;
       }
 
-      str = accum_.joinIntoString("\n").toStdString();
-      istringstream s(str);
-      YAML::Parser parser(s);
-      parser.GetNextDocument(node_);
-      node_["type"] >> type_;
-      MessageMap::iterator i = messageMap_.find(type_);
-      if (i == messageMap_.end())
-        log("Didn't find message type " + type_);
-      else
-        (*i->second)();
+      parse(accum_.joinIntoString("\n").toStdString());
       accum_.clear();
     } catch (YAML::Exception& e) {
       log(string("Yaml parsing error: ") + e.what() + (" in:\n" + str));
@@ -52,6 +43,21 @@ void ReadThread::run() {
     }
   }
   quit();
+}
+
+void ReadThread::parse(const string& str) {
+  ScopedLock l(lock_);
+  log("!! !! !!" + String(str));
+  istringstream s(str);
+  YAML::Parser parser(s);
+  parser.GetNextDocument(node_);
+  node_["type"] >> type_;
+  MessageMap::iterator i = messageMap_.find(type_);
+  if (i == messageMap_.end())
+    log("Didn't find message type " + type_);
+  else
+    (*i->second)();
+  log("parse done!");
 }
 
 }  // namespace echomesh

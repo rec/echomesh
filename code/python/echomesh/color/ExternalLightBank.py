@@ -53,10 +53,11 @@ class ExternalLightBank(LightBank):
     dl['border']['color'] = ColorTable.to_color(dl['border']['color'])
     dl['background'] = ColorTable.to_color(dl['background'])
 
-    config = {'light': light, 'midi': get('midi')}
+    data = {'light': light, 'midi': get('midi')}
+    config = {'type': 'config', 'data': data}
 
     with self.lock:
-      ClientServer.instance().set_config({'type': 'config', 'data': config})
+      ClientServer.instance().set_config(config)
 
   def _after_thread_pause(self):
     if not Quit.QUITTING:

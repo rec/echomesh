@@ -14,11 +14,14 @@ class LightingWindow : public DocumentWindow {
   void setLights(const ColorList& cl);
   void setConfig(const LightConfig& config);
   void closeButtonPressed();
+  void setRunningInTest() { runningInTest_ = true; }
 
   virtual void moved();
 
  private:
   echomesh::InstrumentGrid* instrumentGrid_;
+  bool initialized_;
+  bool runningInTest_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LightingWindow)
 };

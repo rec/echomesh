@@ -23,6 +23,7 @@ class ReadThread : public Thread {
 
  protected:
   virtual void quit() = 0;
+  void parse(const string&);
 
   void addHandler(const string& name, Callback* cb) {
     messageMap_[name] = cb;
@@ -37,6 +38,8 @@ class ReadThread : public Thread {
 
   ScopedPointer<LineGetter> lineGetter_;
 
+ private:
+  CriticalSection lock_;
   DISALLOW_COPY_AND_ASSIGN(ReadThread);
 };
 
