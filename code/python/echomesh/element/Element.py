@@ -59,7 +59,7 @@ class Element(MasterRunnable):
       self.parent.child_paused(self)
 
   def unload(self):
-    super(self, Element).unload()
+    super(Element, self).unload()
     if self.is_running:
       self.pause()
     self._on_unload()

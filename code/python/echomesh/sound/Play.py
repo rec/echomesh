@@ -24,7 +24,7 @@ def play(element, **kwds):
     return FilePlayer(element, **kwds)
 
   if player == 'client':
-    from echomesh.sound import ExternalPlayer
+    from echomesh.sound.ExternalPlayer import ExternalPlayer
     return ExternalPlayer(element, **kwds)
 
   raise Exception('Don\'t understand player %s' % player)

@@ -4,7 +4,7 @@ from echomesh.network import ClientServer
 from echomesh.sound import PlayerSetter
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util.thread import Runnable
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
@@ -20,19 +20,25 @@ def _fix(player, name):
     raise Exception(_ENVELOPE_ERROR % name)
   setattr(player, name, result)
 
-class ExternalPlayer(Runnable):
+class ExternalPlayer(MasterRunnable):
   _FIELDS = 'file', 'passthrough', 'level', 'pan', 'loops'
+
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
-    super(self, ExternalPlayer).__init__()
+    ClientServer.instance()
+    super(ExternalPlayer, self).__init__()
     PlayerSetter.set_player(self, element, level=1, pan=0, loops=1, **kwds)
     _fix(self, 'level')
     _fix(self, 'pan')
-    self._write('construct', **Dict.from_attributes(self, _FIELDS))
+    data = Dict.from_attributes(self, ExternalPlayer._FIELDS)
+    self._write('construct', **data)
 
   def _write(self, wtype, **data):
     data['type'] = wtype
     data['hash'] = hash(self)
-    ClientServer.instance().write(type='audio', data=data)
+    if not False:
+      ClientServer.instance().write(type='audio', data=data)
+    else:
+      print('!!!', data)
 
   def _on_run(self):
     self._write('run')
