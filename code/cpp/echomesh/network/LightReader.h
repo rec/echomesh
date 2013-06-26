@@ -14,6 +14,8 @@ namespace echomesh {
 class LightingWindow;
 class ConfigMidiInput;
 class ConfigMidiOutput;
+class LightController;
+class MidiController;
 
 class LightReader : public ReadThread, public MidiInputCallback {
  public:
@@ -45,6 +47,8 @@ class LightReader : public ReadThread, public MidiInputCallback {
 
   ScopedPointer<ConfigMidiInput> midiInput_;
   ScopedPointer<ConfigMidiOutput> midiOutput_;
+  ScopedPointer<LightController> lightController_;
+  ScopedPointer<MidiController> midiController_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };

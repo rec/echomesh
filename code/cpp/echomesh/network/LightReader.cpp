@@ -6,7 +6,9 @@
 #include "base64/base64.h"
 #include "echomesh/base/Quit.h"
 #include "echomesh/component/LightingWindow.h"
+#include "echomesh/network/LightController.h"
 #include "echomesh/network/LightReader.h"
+#include "echomesh/network/MidiController.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/thread/MakeCallback.h"
@@ -70,7 +72,9 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
 #endif
       compressed_(true),
       midiInput_(new ConfigMidiInput(this)),
-      midiOutput_(new ConfigMidiOutput) {
+      midiOutput_(new ConfigMidiOutput),
+      lightController_(new LightController(wind, &node_)),
+      midiController_(new MidiController(&node_)) {
   addHandler("audio", methodCallback(this, &LightReader::clear));
   addHandler("clear", methodCallback(this, &LightReader::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
