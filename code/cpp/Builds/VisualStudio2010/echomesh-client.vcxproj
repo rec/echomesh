@@ -139,6 +139,7 @@
     <ClCompile Include="..\..\echomesh\network\LightController.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LightReader.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\MidiController.cpp"/>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp"/>
     <ClCompile Include="..\..\base64\base64.cpp"/>
@@ -1270,6 +1271,7 @@
     <ClInclude Include="..\..\echomesh\network\LightReader.h"/>
     <ClInclude Include="..\..\echomesh\network\LineGetter.h"/>
     <ClInclude Include="..\..\echomesh\network\LineQueue.h"/>
+    <ClInclude Include="..\..\echomesh\network\MidiController.h"/>
     <ClInclude Include="..\..\echomesh\network\ReadThread.h"/>
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h"/>
     <ClInclude Include="..\..\base64\base64.h"/>

@@ -367,6 +367,9 @@
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\MidiController.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
@@ -1693,6 +1696,9 @@
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\LineQueue.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\MidiController.h">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\ReadThread.h">

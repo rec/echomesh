@@ -42,6 +42,10 @@
         <FILE id="dRCgu0" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>
         <FILE id="qgUqM3" name="LineGetter.h" compile="0" resource="0" file="echomesh/network/LineGetter.h"/>
         <FILE id="XU2lVV" name="LineQueue.h" compile="0" resource="0" file="echomesh/network/LineQueue.h"/>
+        <FILE id="bL9dXJ" name="MidiController.cpp" compile="1" resource="0"
+              file="echomesh/network/MidiController.cpp"/>
+        <FILE id="uzPMhB" name="MidiController.h" compile="0" resource="0"
+              file="echomesh/network/MidiController.h"/>
         <FILE id="WDzgwd" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/network/ReadThread.cpp"/>
         <FILE id="AcCTvO" name="ReadThread.h" compile="0" resource="0" file="echomesh/network/ReadThread.h"/>
         <FILE id="FHPTjO" name="SocketLineGetter.cpp" compile="1" resource="0"

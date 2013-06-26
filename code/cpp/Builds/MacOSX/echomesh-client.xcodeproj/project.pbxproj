@@ -53,6 +53,7 @@
 		940C735B452C0A4333F3C28A /* Log.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BC502C0C2825B430AFB4E5A4 /* Log.cpp */; };
 		96B7C91546841FD6D3FEA1E0 /* CoreMIDI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1C53C5E228F6CB4B752EFEC9 /* CoreMIDI.framework */; };
 		96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 24E63E16EC76E02BB9136591 /* LightReader.cpp */; };
+		99EF91AB969F57EF2D36CA01 /* MidiController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 3B785A35A862EDC83D5E2374 /* MidiController.cpp */; };
 		9D84C98F7C02EE3EFFF12A69 /* ostream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6121C566C06EC2553A4634B5 /* ostream.cpp */; };
 		9EE698BCF01882C66A0DD433 /* LightingWindow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E326E8F45F9F28B0FA3A8934 /* LightingWindow.cpp */; };
 		A118D0B9949CDD3AB6B694E8 /* juce_audio_processors.mm in Sources */ = {isa = PBXBuildFile; fileRef = EFE3F9F2D88625DF8EF29785 /* juce_audio_processors.mm */; };
@@ -335,6 +336,7 @@
 		3949A1861E7ADF27D7E80C93 /* LightReader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = LightReader.h; path = ../../echomesh/network/LightReader.h; sourceTree = SOURCE_ROOT; };
 		3984F502A35E23A76DA220CC /* token.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = token.h; path = "../../yaml-cpp-src/token.h"; sourceTree = SOURCE_ROOT; };
 		399DD9EE49E3022F581ABE25 /* juce_OpenGLTexture.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_OpenGLTexture.cpp; path = ../../JuceLibraryCode/modules/juce_opengl/opengl/juce_OpenGLTexture.cpp; sourceTree = SOURCE_ROOT; };
+		39CE3518E2753B8A95909C7A /* MidiController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = MidiController.h; path = ../../echomesh/network/MidiController.h; sourceTree = SOURCE_ROOT; };
 		3A01411FC3D2DE97BFF90179 /* juce_WindowsMediaAudioFormat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_WindowsMediaAudioFormat.h; path = ../../JuceLibraryCode/modules/juce_audio_formats/codecs/juce_WindowsMediaAudioFormat.h; sourceTree = SOURCE_ROOT; };
 		3A0ACD514E2E61E3F851B44E /* juce_AlertWindow.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_AlertWindow.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_AlertWindow.h; sourceTree = SOURCE_ROOT; };
 		3A9FEAFF05C9D3AC2CF22B64 /* juce_ComponentAnimator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_ComponentAnimator.h; path = ../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ComponentAnimator.h; sourceTree = SOURCE_ROOT; };
@@ -343,6 +345,7 @@
 		3B43F4F8F38B2B10899DC35A /* juce_data_structures.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_data_structures.h; path = ../../JuceLibraryCode/modules/juce_data_structures/juce_data_structures.h; sourceTree = SOURCE_ROOT; };
 		3B48838A56BB826740CAF73B /* juce_linux_Clipboard.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_linux_Clipboard.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/native/juce_linux_Clipboard.cpp; sourceTree = SOURCE_ROOT; };
 		3B646B47314EFFA4BE9AF33C /* juce_module_info */ = {isa = PBXFileReference; lastKnownFileType = text; name = juce_module_info; path = ../../JuceLibraryCode/modules/juce_audio_formats/juce_module_info; sourceTree = SOURCE_ROOT; };
+		3B785A35A862EDC83D5E2374 /* MidiController.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MidiController.cpp; path = ../../echomesh/network/MidiController.cpp; sourceTree = SOURCE_ROOT; };
 		3B9CEB011DF6CE0756F9BAD6 /* juce_WavAudioFormat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_WavAudioFormat.cpp; path = ../../JuceLibraryCode/modules/juce_audio_formats/codecs/juce_WavAudioFormat.cpp; sourceTree = SOURCE_ROOT; };
 		3BE0335C7B882C32852C6EEB /* juce_FileSearchPathListComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_FileSearchPathListComponent.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileSearchPathListComponent.cpp; sourceTree = SOURCE_ROOT; };
 		3BE2A392FDE10DCF6375C43C /* juce_OpenGLFrameBuffer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_OpenGLFrameBuffer.h; path = ../../JuceLibraryCode/modules/juce_opengl/opengl/juce_OpenGLFrameBuffer.h; sourceTree = SOURCE_ROOT; };
@@ -1676,6 +1679,8 @@
 				359DD407D68F87EC1A96DF96 /* LineGetter.cpp */,
 				2E61B863C3C8859A3A3FAB0D /* LineGetter.h */,
 				D976BCDFA2C283FD54D58628 /* LineQueue.h */,
+				3B785A35A862EDC83D5E2374 /* MidiController.cpp */,
+				39CE3518E2753B8A95909C7A /* MidiController.h */,
 				F08650F9F3E3CD065868F727 /* ReadThread.cpp */,
 				6927D50B0A706F4EF175A9EF /* ReadThread.h */,
 				887D32E470CBEC6060702FEB /* SocketLineGetter.cpp */,
@@ -3053,6 +3058,7 @@
 				30200E7C2E28ABC84EDDE13A /* LightController.cpp in Sources */,
 				96CEA2E9F55905DE1A7214C6 /* LightReader.cpp in Sources */,
 				84940BBD0E59D991135F1707 /* LineGetter.cpp in Sources */,
+				99EF91AB969F57EF2D36CA01 /* MidiController.cpp in Sources */,
 				3B5525618E59AFC0792B904D /* ReadThread.cpp in Sources */,
 				7F9DD4077337852B2A39418F /* SocketLineGetter.cpp in Sources */,
 				63C87B5B2E9CDA067BAB7EED /* base64.cpp in Sources */,

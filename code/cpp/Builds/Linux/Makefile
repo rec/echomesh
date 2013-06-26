@@ -59,6 +59,7 @@ OBJECTS := \
   $(OBJDIR)/LightController_57a59429.o \
   $(OBJDIR)/LightReader_649349d0.o \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
+  $(OBJDIR)/MidiController_3003c470.o \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
   $(OBJDIR)/base64_1eb4a3a4.o \
@@ -175,6 +176,11 @@ $(OBJDIR)/LightReader_649349d0.o: ../../echomesh/network/LightReader.cpp
 $(OBJDIR)/LineGetter_4e1cc2f2.o: ../../echomesh/network/LineGetter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LineGetter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/MidiController_3003c470.o: ../../echomesh/network/MidiController.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling MidiController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ReadThread_1a08d793.o: ../../echomesh/network/ReadThread.cpp
