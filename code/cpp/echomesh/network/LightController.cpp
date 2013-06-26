@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <iostream>
+#include <istream>
 #include <string>
 
 #include "base64/base64.h"

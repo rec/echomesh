@@ -1,11 +1,6 @@
 #ifndef __ECHOMESH_LIGHT_CONTROLLER__
 #define __ECHOMESH_LIGHT_CONTROLLER__
 
-#include <stdio.h>
-
-#include <istream>
-#include <vector>
-
 #include "echomesh/base/Config.h"
 
 namespace echomesh {
@@ -39,7 +34,6 @@ class LightController {
 
   DISALLOW_COPY_AND_ASSIGN(LightController);
 };
-
 
 }  // namespace echomesh
 
