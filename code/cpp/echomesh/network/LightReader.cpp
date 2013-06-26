@@ -5,6 +5,7 @@
 
 #include "base64/base64.h"
 #include "echomesh/base/Quit.h"
+#include "echomesh/network/AudioController.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightController.h"
 #include "echomesh/network/LightReader.h"
@@ -56,9 +57,11 @@ static const string DEFAULT_CONFIG =
 
 LightReader::LightReader(LightingWindow* wind, const String& commandLine)
     : ReadThread(commandLine),
+      audioController_(new AudioController(&node_)),
       lightController_(new LightController(wind, &node_)),
       midiController_(new MidiController(&node_)) {
-  addHandler("audio", methodCallback(this, &LightReader::audio));
+  addHandler("audio", methodCallback(audioController_.get(),
+                                     &AudioController::audio));
   addHandler("clear", methodCallback(lightController_.get(),
                                      &LightController::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
@@ -83,10 +86,6 @@ LightReader::~LightReader() {
 void LightReader::config() {
   lightController_->config();
   midiController_->config();
-}
-
-void LightReader::audio() {
-  log("audio");
 }
 
 void LightReader::quit() {

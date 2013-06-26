@@ -136,6 +136,7 @@
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
     <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp"/>
     <ClCompile Include="..\..\echomesh\Main.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\AudioController.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LightController.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LightReader.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
@@ -1267,6 +1268,7 @@
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h"/>
+    <ClInclude Include="..\..\echomesh\network\AudioController.h"/>
     <ClInclude Include="..\..\echomesh\network\LightController.h"/>
     <ClInclude Include="..\..\echomesh\network\LightReader.h"/>
     <ClInclude Include="..\..\echomesh\network\LineGetter.h"/>

@@ -358,6 +358,9 @@
     <ClCompile Include="..\..\echomesh\Main.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\network\AudioController.cpp">
+      <Filter>echomesh-client\echomesh\network</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\network\LightController.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
@@ -1685,6 +1688,9 @@
     </ClInclude>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h">
       <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\network\AudioController.h">
+      <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\LightController.h">
       <Filter>echomesh-client\echomesh\network</Filter>

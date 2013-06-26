@@ -33,6 +33,10 @@
       </GROUP>
       <FILE id="gzaXQx" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
       <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
+        <FILE id="QDhTEL" name="AudioController.cpp" compile="1" resource="0"
+              file="echomesh/network/AudioController.cpp"/>
+        <FILE id="wL1FA4" name="AudioController.h" compile="0" resource="0"
+              file="echomesh/network/AudioController.h"/>
         <FILE id="FfU0s8" name="LightController.cpp" compile="1" resource="0"
               file="echomesh/network/LightController.cpp"/>
         <FILE id="VIfXhM" name="LightController.h" compile="0" resource="0"

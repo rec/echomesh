@@ -56,6 +56,7 @@ OBJECTS := \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
   $(OBJDIR)/Main_ed86ae4b.o \
+  $(OBJDIR)/AudioController_e6752ae9.o \
   $(OBJDIR)/LightController_57a59429.o \
   $(OBJDIR)/LightReader_649349d0.o \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
@@ -161,6 +162,11 @@ $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 $(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Main.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/AudioController_e6752ae9.o: ../../echomesh/network/AudioController.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling AudioController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/LightController_57a59429.o: ../../echomesh/network/LightController.cpp
