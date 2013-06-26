@@ -56,9 +56,6 @@ static const string DEFAULT_CONFIG =
 
 LightReader::LightReader(LightingWindow* wind, const String& commandLine)
     : ReadThread(commandLine),
-#if 0 && JUCE_LINUX
-      file_(fopen(DEVICE_NAME, "w")),
-#endif
       lightController_(new LightController(wind, &node_)),
       midiController_(new MidiController(&node_)) {
   addHandler("audio", methodCallback(this, &LightReader::audio));

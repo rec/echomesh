@@ -5,10 +5,19 @@
 
 #include "echomesh/network/MidiController.h"
 #include "echomesh/network/SocketLineGetter.h"
+#include "echomesh/util/GetDevice.h"
 
 namespace echomesh {
 
 using namespace std;
+
+MidiController::MidiController(YAML::Node* node)
+  : node_(node),
+    midiInput_(new ConfigMidiInput(this)),
+    midiOutput_(new ConfigMidiOutput) {
+}
+
+MidiController::~MidiController() {}
 
 void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
   log("Incoming MIDI message");
@@ -44,14 +53,14 @@ static MidiMessage makeMidiMessage(const YAML::Node& data) {
 }
 
 void MidiController::midi() {
-  midiOutput_.sendMessageNow(makeMidiMessage((*node_)["data"]));
+  midiOutput_->sendMessageNow(makeMidiMessage((*node_)["data"]));
 }
 
 void MidiController::config() {
   Config config;
   (*node_)["data"] >> config;
-  midiInput_.setConfig(config.midi.input);
-  midiOutput_.setConfig(config.midi.output);
+  midiInput_->setConfig(config.midi.input);
+  midiOutput_->setConfig(config.midi.output);
 }
 
 }  // namespace echomesh

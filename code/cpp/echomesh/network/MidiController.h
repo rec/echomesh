@@ -3,17 +3,19 @@
 
 #include <stdio.h>
 
-#include <istream>
-#include <vector>
+#include "echomesh/base/Echomesh.h"
 
-#include "echomesh/util/GetDevice.h"
+namespace YAML { class Node; }
 
 namespace echomesh {
 
+class ConfigMidiInput;
+class ConfigMidiOutput;
+
 class MidiController : public MidiInputCallback {
  public:
-  MidiController(YAML::Node* node) : node_(node), midiInput_(this) {}
-  virtual ~MidiController() {}
+  MidiController(YAML::Node*);
+  virtual ~MidiController();
   virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
 
   void config();
@@ -21,8 +23,8 @@ class MidiController : public MidiInputCallback {
 
  private:
   YAML::Node* node_;
-  ConfigMidiInput midiInput_;
-  ConfigMidiOutput midiOutput_;
+  ScopedPointer<ConfigMidiInput> midiInput_;
+  ScopedPointer<ConfigMidiOutput> midiOutput_;
 
   DISALLOW_COPY_AND_ASSIGN(MidiController);
 };

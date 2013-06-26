@@ -15,7 +15,7 @@ class LightingWindow;
 class LightController;
 class MidiController;
 
-class LightReader : public ReadThread, public MidiInputCallback {
+class LightReader : public ReadThread {
  public:
   LightReader(LightingWindow* window, const String& commandLine);
   virtual ~LightReader();
