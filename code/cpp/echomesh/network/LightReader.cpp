@@ -10,8 +10,8 @@
 #include "echomesh/network/LightController.h"
 #include "echomesh/network/LightReader.h"
 #include "echomesh/network/MidiController.h"
+#include "rec/util/thread/FunctionCallback.h"
 #include "rec/util/thread/MakeCallback.h"
-#include "rec/util/thread/CallAsync.h"
 
 namespace echomesh {
 
@@ -54,7 +54,6 @@ static const string DEFAULT_CONFIG =
   "---\n"
 ;
 
-
 LightReader::LightReader(LightingWindow* wind, const String& commandLine)
     : ReadThread(commandLine),
       audioController_(new AudioController(&node_)),
@@ -69,7 +68,7 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
                                      &LightController::light));
   addHandler("midi", methodCallback(midiController_.get(),
                                     &MidiController::midi));
-  addHandler("quit", methodCallback(this, &LightReader::quit));
+  addHandler("quit", functionCB(::echomesh::quit));
 
   if (commandLine.isEmpty()) {
     wind->setRunningInTest();
@@ -86,10 +85,6 @@ LightReader::~LightReader() {
 void LightReader::config() {
   lightController_->config();
   midiController_->config();
-}
-
-void LightReader::quit() {
-  ::echomesh::quit();
 }
 
 }  // namespace echomesh

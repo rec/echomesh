@@ -22,7 +22,6 @@ class ReadThread : public Thread {
   virtual void run();
 
  protected:
-  virtual void quit() = 0;
   void parse(const string&);
 
   void addHandler(const string& name, Callback* cb) {

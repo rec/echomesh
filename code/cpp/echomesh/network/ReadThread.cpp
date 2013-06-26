@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 
+#include "echomesh/base/Quit.h"
 #include "echomesh/network/LineGetter.h"
 #include "echomesh/network/ReadThread.h"
 
@@ -42,7 +43,7 @@ void ReadThread::run() {
       break;
     }
   }
-  quit();
+  ::echomesh::quit();
 }
 
 void ReadThread::parse(const string& str) {

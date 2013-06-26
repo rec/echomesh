@@ -22,7 +22,6 @@ class LightReader : public ReadThread {
   virtual ~LightReader();
 
  private:
-  virtual void quit();
   void config();
 
   ScopedPointer<AudioController> audioController_;
