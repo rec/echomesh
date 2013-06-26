@@ -30,25 +30,21 @@ class ExternalPlayer(MasterRunnable):
     _fix(self, 'level')
     _fix(self, 'pan')
     data = Dict.from_attributes(self, ExternalPlayer._FIELDS)
-    self._write('construct', **data)
-
-  def _write(self, wtype, **data):
-    data['type'] = wtype
-    data['hash'] = hash(self)
-    if not False:
-      print('!!!?', data)
-      ClientServer.instance().write(type='audio', data=data)
-    else:
-      print('!!!', data)
+    self._write(type='construct', **data)
 
   def _on_run(self):
-    self._write('run')
+    self._write(type='run')
 
   def _on_begin(self):
-    self._write('begin')
+    self._write(type='begin')
 
   def _on_pause(self):
-    self._write('pause')
+    self._write(type='pause')
 
   def unload(self):
-    self._write('unload')
+    self._write(type='unload')
+
+  def _write(self, wtype, **data):
+    data['hash'] = hash(self)
+    ClientServer.instance().write(type='audio', data=data)
+

@@ -1,13 +1,15 @@
 #ifndef __ECHOMESH_AUDIO_CONTROLLER__
 #define __ECHOMESH_AUDIO_CONTROLLER__
 
-#include <stdio.h>
+#include <map>
 
 #include "echomesh/base/Echomesh.h"
 
 namespace YAML { class Node; }
 
 namespace echomesh {
+
+class EnvelopeAudioSource;
 
 class AudioController {
  public:
@@ -17,6 +19,10 @@ class AudioController {
   void audio();
 
  private:
+  typedef uint64 Hash;
+  typedef std::map<Hash, EnvelopeAudioSource*> Sources;
+  Sources sources_;
+
   YAML::Node* node_;
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };
