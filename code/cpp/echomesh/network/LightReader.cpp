@@ -62,10 +62,13 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine)
       lightController_(new LightController(wind, &node_)),
       midiController_(new MidiController(&node_)) {
   addHandler("audio", methodCallback(this, &LightReader::audio));
-  addHandler("clear", methodCallback(this, &LightReader::clear));
+  addHandler("clear", methodCallback(lightController_.get(),
+                                     &LightController::clear));
   addHandler("config", methodCallback(this, &LightReader::config));
-  addHandler("light", methodCallback(this, &LightReader::light));
-  addHandler("midi", methodCallback(this, &LightReader::midi));
+  addHandler("light", methodCallback(lightController_.get(),
+                                     &LightController::light));
+  addHandler("midi", methodCallback(midiController_.get(),
+                                    &MidiController::midi));
   addHandler("quit", methodCallback(this, &LightReader::quit));
 
   if (commandLine.isEmpty()) {
@@ -80,23 +83,9 @@ LightReader::~LightReader() {
 #endif
 }
 
-
-void LightReader::clear() {
-  lightController_->clear();
-}
-
 void LightReader::config() {
   lightController_->config();
   midiController_->config();
-}
-
-
-void LightReader::midi() {
-  midiController_->midi();
-}
-
-void LightReader::light() {
-  lightController_->light();
 }
 
 void LightReader::audio() {
