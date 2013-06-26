@@ -36,6 +36,7 @@ class ExternalPlayer(MasterRunnable):
     data['type'] = wtype
     data['hash'] = hash(self)
     if not False:
+      print('!!!?', data)
       ClientServer.instance().write(type='audio', data=data)
     else:
       print('!!!', data)

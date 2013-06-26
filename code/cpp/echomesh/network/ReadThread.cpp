@@ -47,7 +47,6 @@ void ReadThread::run() {
 
 void ReadThread::parse(const string& str) {
   ScopedLock l(lock_);
-  log("!! !! !!" + String(str));
   istringstream s(str);
   YAML::Parser parser(s);
   parser.GetNextDocument(node_);
@@ -57,7 +56,6 @@ void ReadThread::parse(const string& str) {
     log("Didn't find message type " + type_);
   else
     (*i->second)();
-  log("parse done!");
 }
 
 }  // namespace echomesh
