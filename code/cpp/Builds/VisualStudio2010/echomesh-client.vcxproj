@@ -136,6 +136,7 @@
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
     <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp"/>
     <ClCompile Include="..\..\echomesh\Main.cpp"/>
+    <ClCompile Include="..\..\echomesh\network\LightController.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LightReader.cpp"/>
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
@@ -494,6 +495,9 @@
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\files\juce_TemporaryFile.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_IPAddress.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_MACAddress.cpp">
@@ -1189,6 +1193,9 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\native\juce_linux_WebBrowserComponent.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\native\juce_mac_SystemTrayIcon.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_gui_extra\native\juce_win32_ActiveXComponent.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1254,10 +1261,12 @@
     <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
     <ClInclude Include="..\..\echomesh\base\Config.h"/>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>
+    <ClInclude Include="..\..\echomesh\base\Quit.h"/>
     <ClInclude Include="..\..\echomesh\base\Runnable.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h"/>
+    <ClInclude Include="..\..\echomesh\network\LightController.h"/>
     <ClInclude Include="..\..\echomesh\network\LightReader.h"/>
     <ClInclude Include="..\..\echomesh\network\LineGetter.h"/>
     <ClInclude Include="..\..\echomesh\network\LineQueue.h"/>
@@ -1475,6 +1484,7 @@
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\files\juce_FileSearchPath.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\files\juce_MemoryMappedFile.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\files\juce_TemporaryFile.h"/>
+    <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_IPAddress.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_MACAddress.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_NamedPipe.h"/>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_core\network\juce_Socket.h"/>

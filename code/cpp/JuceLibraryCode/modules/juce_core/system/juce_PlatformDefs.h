@@ -286,10 +286,14 @@ namespace juce
 //==============================================================================
 // Here, we'll check for C++11 compiler support, and if it's not available, define
 // a few workarounds, so that we can still use some of the newer language features.
-#if defined (__GXX_EXPERIMENTAL_CXX0X__) && defined (__GNUC__) && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 5))
+#if defined (__GXX_EXPERIMENTAL_CXX0X__) && defined (__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 405
  #define JUCE_COMPILER_SUPPORTS_NOEXCEPT 1
  #define JUCE_COMPILER_SUPPORTS_NULLPTR 1
  #define JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS 1
+
+ #if (__GNUC__ * 100 + __GNUC_MINOR__) >= 407 && ! defined (JUCE_COMPILER_SUPPORTS_OVERRIDE_AND_FINAL)
+  #define JUCE_COMPILER_SUPPORTS_OVERRIDE_AND_FINAL 1
+ #endif
 #endif
 
 #if JUCE_CLANG && defined (__has_feature)
@@ -323,10 +327,6 @@ namespace juce
  #define JUCE_COMPILER_SUPPORTS_OVERRIDE_AND_FINAL 1
 #endif
 
-#if (! JUCE_CLANG) && defined (__GNUC__) && (__GNUC__ * 100 + __GNUC_MINOR__) >= 40700
- #define JUCE_COMPILER_SUPPORTS_OVERRIDE_AND_FINAL 1
-#endif
-
 //==============================================================================
 // Declare some fake versions of nullptr and noexcept, for older compilers:
 #if ! (DOXYGEN || JUCE_COMPILER_SUPPORTS_NOEXCEPT)
@@ -349,8 +349,6 @@ namespace juce
 #if ! (DOXYGEN || JUCE_COMPILER_SUPPORTS_OVERRIDE_AND_FINAL)
  #undef  override
  #define override
- #undef  final
- #define final
 #endif
 
 #endif   // __JUCE_PLATFORMDEFS_JUCEHEADER__

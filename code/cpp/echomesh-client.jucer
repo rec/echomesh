@@ -14,6 +14,7 @@
         <FILE id="qHhxvR" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
         <FILE id="W2A6NI" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
         <FILE id="m3Vg47" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
+        <FILE id="w9aICF" name="Quit.h" compile="0" resource="0" file="echomesh/base/Quit.h"/>
         <FILE id="ZnCbU4" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
       </GROUP>
       <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
@@ -32,6 +33,10 @@
       </GROUP>
       <FILE id="gzaXQx" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
       <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
+        <FILE id="FfU0s8" name="LightController.cpp" compile="1" resource="0"
+              file="echomesh/network/LightController.cpp"/>
+        <FILE id="VIfXhM" name="LightController.h" compile="0" resource="0"
+              file="echomesh/network/LightController.h"/>
         <FILE id="dXD7VC" name="LightReader.cpp" compile="1" resource="0" file="echomesh/network/LightReader.cpp"/>
         <FILE id="u18ba6" name="LightReader.h" compile="0" resource="0" file="echomesh/network/LightReader.h"/>
         <FILE id="dRCgu0" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>

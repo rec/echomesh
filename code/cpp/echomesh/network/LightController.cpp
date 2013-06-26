@@ -6,11 +6,10 @@
 #include "base64/base64.h"
 #include "echomesh/base/Quit.h"
 #include "echomesh/component/LightingWindow.h"
-#include "echomesh/network/LightReader.h"
+#include "echomesh/network/LightController.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/thread/MakeCallback.h"
-#include "rec/util/thread/CallAsync.h"
 
 namespace echomesh {
 
@@ -62,68 +61,29 @@ static const string DEFAULT_CONFIG =
 ;
 
 
-LightReader::LightReader(LightingWindow* wind, const String& commandLine)
-    : ReadThread(commandLine),
-      lightingWindow_(wind),
+LightController::LightController(LightingWindow* wind, YAML::Node* node)
+    : lightingWindow_(wind),
+      node_(node),
 #if 0 && JUCE_LINUX
       file_(fopen(DEVICE_NAME, "w")),
 #endif
-      compressed_(true),
-      midiInput_(new ConfigMidiInput(this)),
-      midiOutput_(new ConfigMidiOutput) {
-  addHandler("audio", methodCallback(this, &LightReader::clear));
-  addHandler("clear", methodCallback(this, &LightReader::clear));
-  addHandler("config", methodCallback(this, &LightReader::config));
-  addHandler("light", methodCallback(this, &LightReader::light));
-  addHandler("midi", methodCallback(this, &LightReader::midi));
-  addHandler("quit", methodCallback(this, &LightReader::quit));
-
-  if (commandLine.isEmpty()) {
-    lightingWindow_->setRunningInTest();
-    parse(DEFAULT_CONFIG);
-  }
+      compressed_(true) {
 }
 
-LightReader::~LightReader() {
+LightController::~LightController() {
 #if 0 && JUCE_LINUX
   fclose(file_);
 #endif
 }
 
-void LightReader::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
-  log("Incoming MIDI message");
-  if (SocketLineGetter* getter = SocketLineGetter::instance()) {
-    YAML::Emitter out;
-
-    out << YAML::BeginMap
-        << YAML::Key << "type"
-        << YAML::Value << "midi"
-        << YAML::Key << "data"
-        << YAML::Value << YAML::BeginSeq;
-
-    int size = msg.getRawDataSize();
-    const uint8* data = msg.getRawData();
-    for (int i = 0; i < size; ++i)
-      out << static_cast<int>(data[i]);
-
-    out << YAML::EndSeq << YAML::EndMap;
-
-    getter->writeSocket(out.c_str(), out.size());
-  }
-}
-
-void LightReader::quit() {
-  ::echomesh::quit();
-}
-
-void LightReader::clear() {
+void LightController::clear() {
   for (int i = 0; i < colors_.size(); ++i)
     colors_[i] = Colours::black;
 
   displayLights();
 }
 
-void LightReader::enforceSizes() {
+void LightController::enforceSizes() {
   if (colors_.size() != config_.light.count)
     colors_.resize(config_.light.count, Colours::black);
 
@@ -131,8 +91,8 @@ void LightReader::enforceSizes() {
     colorBytes_.resize(3 * config_.light.count, 0x80);
 }
 
-void LightReader::config() {
-  const YAML::Node& data = node_["data"];
+void LightController::config() {
+  const YAML::Node& data = (*node_)["data"];
   data >> config_;
   enforceSizes();
 
@@ -140,35 +100,18 @@ void LightReader::config() {
     rgbOrder_[i] = config_.light.hardware.rgbOrder.find("rgb"[i]);
 
   lightingWindow_->setConfig(config_.light);
-  midiInput_->setConfig(config_.midi.input);
-  midiOutput_->setConfig(config_.midi.output);
-}
-
-static MidiMessage makeMidiMessage(const YAML::Node& data) {
-  int size = data.size();
-  int b;
-  vector<uint8> bytes(size);
-  for (int i = 0; i < size; ++i) {
-    data[i] >> b;
-    bytes[i] = static_cast<uint8>(b);
-  }
-  return MidiMessage(&bytes[0], size);
-}
-
-void LightReader::midi() {
-  midiOutput_->sendMessageNow(makeMidiMessage(node_["data"]));
 }
 
 inline uint8 getSpiColor(uint8 color) {
   return color / 2 + 0x80;
 }
 
-uint8 LightReader::getLedColor(float color) const {
+uint8 LightController::getLedColor(float color) const {
   int c = static_cast<int>((color * brightness_ + 1) * 0x80);
   return static_cast<uint8>(jmin(c, 0xFF));
 }
 
-void LightReader::displayLights() {
+void LightController::displayLights() {
   lightingWindow_->setLights(colors_);
   if (config_.light.hardware.local)  // Do the lights in Python.
     return;
@@ -199,10 +142,10 @@ void LightReader::displayLights() {
 #endif
 }
 
-void LightReader::light() {
+void LightController::light() {
   compressed_ = true;
   string lights;
-  const YAML::Node& lightNode = node_["data"];
+  const YAML::Node& lightNode = (*node_)["data"];
   if (lightNode.size() == 1) {
     lightNode[0] >> lights;
   } else {
@@ -229,10 +172,6 @@ void LightReader::light() {
     colors_[i] = Colour(bytes[3 * i], bytes[3 * i + 1], bytes[3 * i + 2]);
 
   displayLights();
-}
-
-void LightReader::audio() {
-  log("audio");
 }
 
 }  // namespace echomesh

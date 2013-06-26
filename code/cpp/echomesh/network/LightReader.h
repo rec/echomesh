@@ -19,10 +19,11 @@ class LightReader : public ReadThread, public MidiInputCallback {
  public:
   LightReader(LightingWindow* window, const String& commandLine);
   virtual ~LightReader();
-  virtual void handleIncomingMidiMessage (MidiInput*, const MidiMessage&);
+  virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
 
  private:
   virtual void quit();
+  void audio();
   void clear();
   void config();
   void displayLights();
@@ -41,7 +42,7 @@ class LightReader : public ReadThread, public MidiInputCallback {
   Config config_;
   ColorBytes rgbOrder_;
   float brightness_;
-  bool configReceived_;
+
   ScopedPointer<ConfigMidiInput> midiInput_;
   ScopedPointer<ConfigMidiOutput> midiOutput_;
 
