@@ -47,4 +47,11 @@ void MidiController::midi() {
   midiOutput_.sendMessageNow(makeMidiMessage((*node_)["data"]));
 }
 
+void MidiController::config() {
+  Config config;
+  (*node_)["data"] >> config;
+  midiInput_.setConfig(config.midi.input);
+  midiOutput_.setConfig(config.midi.output);
+}
+
 }  // namespace echomesh
