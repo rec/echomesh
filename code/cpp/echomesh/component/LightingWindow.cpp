@@ -1,6 +1,6 @@
-#include "echomesh/base/Quit.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/SocketLineGetter.h"
+#include "echomesh/util/Quit.h"
 #include "rec/util/thread/CallAsync.h"
 
 namespace echomesh {

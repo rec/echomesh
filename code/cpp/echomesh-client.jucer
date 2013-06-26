@@ -4,17 +4,32 @@
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh-client">
     <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
+      <GROUP id="{417D3527-65CC-AA07-99C0-D28FEACB0469}" name="audio">
+        <FILE id="SBvsik" name="AudioController.cpp" compile="1" resource="0"
+              file="echomesh/audio/AudioController.cpp"/>
+        <FILE id="GfiMhj" name="AudioController.h" compile="0" resource="0"
+              file="echomesh/audio/AudioController.h"/>
+        <FILE id="mv8cuw" name="MidiController.cpp" compile="1" resource="0"
+              file="echomesh/audio/MidiController.cpp"/>
+        <FILE id="vAjWOv" name="MidiController.h" compile="0" resource="0"
+              file="echomesh/audio/MidiController.h"/>
+        <FILE id="gFpdnu" name="EnvelopeAudioSource.h" compile="0" resource="0"
+              file="echomesh/audio/EnvelopeAudioSource.h"/>
+        <FILE id="tXuWED" name="PlaybackAudioSource.h" compile="0" resource="0"
+              file="echomesh/audio/PlaybackAudioSource.h"/>
+        <FILE id="C7WwjA" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
+      </GROUP>
       <GROUP id="{0D195147-262C-833F-6196-824726AFB99E}" name="util">
         <FILE id="OFcgGh" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
         <FILE id="eLLHQJ" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
       </GROUP>
+      <FILE id="ACG7xF" name="Quit.h" compile="0" resource="0" file="echomesh/util/Quit.h"/>
       <GROUP id="{429E3C2C-59EE-BAB7-A05B-342F2532209E}" name="base">
         <FILE id="Zw3ZOV" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
         <FILE id="aSIV6w" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
         <FILE id="qHhxvR" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
         <FILE id="W2A6NI" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
         <FILE id="m3Vg47" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
-        <FILE id="w9aICF" name="Quit.h" compile="0" resource="0" file="echomesh/base/Quit.h"/>
         <FILE id="ZnCbU4" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
       </GROUP>
       <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
@@ -33,10 +48,6 @@
       </GROUP>
       <FILE id="gzaXQx" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
       <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
-        <FILE id="QDhTEL" name="AudioController.cpp" compile="1" resource="0"
-              file="echomesh/network/AudioController.cpp"/>
-        <FILE id="wL1FA4" name="AudioController.h" compile="0" resource="0"
-              file="echomesh/network/AudioController.h"/>
         <FILE id="FfU0s8" name="LightController.cpp" compile="1" resource="0"
               file="echomesh/network/LightController.cpp"/>
         <FILE id="VIfXhM" name="LightController.h" compile="0" resource="0"
@@ -46,10 +57,6 @@
         <FILE id="dRCgu0" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>
         <FILE id="qgUqM3" name="LineGetter.h" compile="0" resource="0" file="echomesh/network/LineGetter.h"/>
         <FILE id="XU2lVV" name="LineQueue.h" compile="0" resource="0" file="echomesh/network/LineQueue.h"/>
-        <FILE id="bL9dXJ" name="MidiController.cpp" compile="1" resource="0"
-              file="echomesh/network/MidiController.cpp"/>
-        <FILE id="uzPMhB" name="MidiController.h" compile="0" resource="0"
-              file="echomesh/network/MidiController.h"/>
         <FILE id="WDzgwd" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/network/ReadThread.cpp"/>
         <FILE id="AcCTvO" name="ReadThread.h" compile="0" resource="0" file="echomesh/network/ReadThread.h"/>
         <FILE id="FHPTjO" name="SocketLineGetter.cpp" compile="1" resource="0"

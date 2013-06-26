@@ -4,9 +4,9 @@
 #include <iostream>
 #include <string>
 
-#include "echomesh/base/Quit.h"
 #include "echomesh/network/LineGetter.h"
 #include "echomesh/network/ReadThread.h"
+#include "echomesh/util/Quit.h"
 
 #include "rec/util/thread/Callback.h"
 #include "rec/util/STL.h"

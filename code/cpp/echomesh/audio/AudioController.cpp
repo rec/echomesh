@@ -5,8 +5,8 @@
 
 #include "yaml-cpp/yaml.h"
 
-#include "echomesh/network/AudioController.h"
-#include "echomesh/network/EnvelopeAudioSource.h"
+#include "echomesh/audio/AudioController.h"
+#include "echomesh/audio/EnvelopeAudioSource.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/STL.h"

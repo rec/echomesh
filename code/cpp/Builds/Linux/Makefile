@@ -49,6 +49,8 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
+  $(OBJDIR)/AudioController_2cdb5551.o \
+  $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
@@ -56,11 +58,9 @@ OBJECTS := \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
   $(OBJDIR)/Main_ed86ae4b.o \
-  $(OBJDIR)/AudioController_e6752ae9.o \
   $(OBJDIR)/LightController_57a59429.o \
   $(OBJDIR)/LightReader_649349d0.o \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
-  $(OBJDIR)/MidiController_3003c470.o \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
   $(OBJDIR)/base64_1eb4a3a4.o \
@@ -129,6 +129,16 @@ strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
+$(OBJDIR)/AudioController_2cdb5551.o: ../../echomesh/audio/AudioController.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling AudioController.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling MidiController.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling GetDevice.cpp"
@@ -164,11 +174,6 @@ $(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp
 	@echo "Compiling Main.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/AudioController_e6752ae9.o: ../../echomesh/network/AudioController.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling AudioController.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/LightController_57a59429.o: ../../echomesh/network/LightController.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightController.cpp"
@@ -182,11 +187,6 @@ $(OBJDIR)/LightReader_649349d0.o: ../../echomesh/network/LightReader.cpp
 $(OBJDIR)/LineGetter_4e1cc2f2.o: ../../echomesh/network/LineGetter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LineGetter.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/MidiController_3003c470.o: ../../echomesh/network/MidiController.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling MidiController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/ReadThread_1a08d793.o: ../../echomesh/network/ReadThread.cpp

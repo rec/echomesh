@@ -4,12 +4,12 @@
 #include <string>
 
 #include "base64/base64.h"
-#include "echomesh/base/Quit.h"
-#include "echomesh/network/AudioController.h"
+#include "echomesh/audio/AudioController.h"
+#include "echomesh/audio/MidiController.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/LightController.h"
 #include "echomesh/network/LightReader.h"
-#include "echomesh/network/MidiController.h"
+#include "echomesh/util/Quit.h"
 #include "rec/util/thread/FunctionCallback.h"
 #include "rec/util/thread/MakeCallback.h"
 

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <string>
 
-#include "echomesh/network/MidiController.h"
+#include "echomesh/audio/MidiController.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 

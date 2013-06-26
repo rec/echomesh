@@ -8,6 +8,9 @@
     <Filter Include="echomesh-client\echomesh">
       <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\echomesh\audio">
+      <UniqueIdentifier>{9C29F809-DA72-1741-C809-A087501355AF}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\echomesh\util">
       <UniqueIdentifier>{308CBD36-D043-A694-1B23-DCB611B5A271}</UniqueIdentifier>
     </Filter>
@@ -337,6 +340,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\echomesh\audio\AudioController.cpp">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
       <Filter>echomesh-client\echomesh\util</Filter>
     </ClCompile>
@@ -358,9 +367,6 @@
     <ClCompile Include="..\..\echomesh\Main.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\network\AudioController.cpp">
-      <Filter>echomesh-client\echomesh\network</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\echomesh\network\LightController.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
@@ -368,9 +374,6 @@
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp">
-      <Filter>echomesh-client\echomesh\network</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\network\MidiController.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp">
@@ -1662,8 +1665,26 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\echomesh\audio\AudioController.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\MidiController.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\Player.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\echomesh\util\GetDevice.h">
       <Filter>echomesh-client\echomesh\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\util\Quit.h">
+      <Filter>echomesh-client\echomesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Disallow.h">
       <Filter>echomesh-client\echomesh\base</Filter>
@@ -1672,9 +1693,6 @@
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h">
-      <Filter>echomesh-client\echomesh\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\base\Quit.h">
       <Filter>echomesh-client\echomesh\base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Runnable.h">
@@ -1689,9 +1707,6 @@
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h">
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\network\AudioController.h">
-      <Filter>echomesh-client\echomesh\network</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\echomesh\network\LightController.h">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
@@ -1702,9 +1717,6 @@
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\LineQueue.h">
-      <Filter>echomesh-client\echomesh\network</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\network\MidiController.h">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\ReadThread.h">
