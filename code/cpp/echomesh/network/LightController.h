@@ -9,7 +9,7 @@ class LightingWindow;
 
 class LightController {
  public:
-  LightController(LightingWindow*, YAML::Node*);
+  LightController(LightingWindow*, Node*);
   virtual ~LightController();
 
   void clear();
@@ -21,7 +21,7 @@ class LightController {
   uint8 getLedColor(float color) const;
 
   LightingWindow* const lightingWindow_;
-  YAML::Node* const node_;
+  Node* const node_;
 
   FILE* file_;
   bool compressed_;

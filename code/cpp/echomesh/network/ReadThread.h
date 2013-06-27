@@ -30,7 +30,7 @@ class ReadThread : public Thread {
 
   typedef std::map<string, Callback*> MessageMap;
 
-  YAML::Node node_;
+  Node node_;
   string type_;
   StringArray accum_;
   MessageMap messageMap_;

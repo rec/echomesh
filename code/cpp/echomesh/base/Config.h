@@ -77,20 +77,30 @@ typedef std::vector<ColorBytes> ColorByteBank;
 typedef std::vector<Colour> ColorList;
 typedef std::vector<uint8> ByteList;
 
-void operator>>(const YAML::Node&, ColorBytes&);
-void operator>>(const YAML::Node&, ColorList&);
-void operator>>(const YAML::Node&, Colour&);
-void operator>>(const YAML::Node&, Point&);
-void operator>>(const YAML::Node&, Border&);
-void operator>>(const YAML::Node&, Instrument&);
-void operator>>(const YAML::Node&, Visualizer&);
-void operator>>(const YAML::Node&, Hardware&);
-void operator>>(const YAML::Node&, OneMidiConfig&);
-void operator>>(const YAML::Node&, MidiConfig&);
-void operator>>(const YAML::Node&, LightConfig&);
-void operator>>(const YAML::Node&, Config&);
-void operator>>(const YAML::Node&, SampleTime&);
-void operator>>(const YAML::Node&, RealTime&);
+template <typename Array>
+void fillArray(const Node& node, Array* array) {
+  array->resize(node.size());
+
+  for (int i = 0; i < node.size(); ++i)
+    node[i] >> (*array)[i];
+}
+
+
+inline void operator>>(const Node& n, ColorList& cl) { fillArray(n, &cl); }
+
+void operator>>(const Node&, ColorBytes&);
+void operator>>(const Node&, Colour&);
+void operator>>(const Node&, Point&);
+void operator>>(const Node&, Border&);
+void operator>>(const Node&, Instrument&);
+void operator>>(const Node&, Visualizer&);
+void operator>>(const Node&, Hardware&);
+void operator>>(const Node&, OneMidiConfig&);
+void operator>>(const Node&, MidiConfig&);
+void operator>>(const Node&, LightConfig&);
+void operator>>(const Node&, Config&);
+void operator>>(const Node&, SampleTime&);
+void operator>>(const Node&, RealTime&);
 
 }  // namespace echomesh
 

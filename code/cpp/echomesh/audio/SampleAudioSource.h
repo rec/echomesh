@@ -3,13 +3,11 @@
 
 #include "echomesh/base/Echomesh.h"
 
-namespace YAML { class Node; }
-
 namespace echomesh {
 
 class SampleAudioSource : public AudioSource {
  public:
-  SampleAudioSource(const YAML::Node&);
+  SampleAudioSource(const Node&);
   virtual ~SampleAudioSource();
 
   virtual void prepareToPlay(int samplesPerBlockExpected,

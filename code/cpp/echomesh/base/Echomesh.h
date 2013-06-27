@@ -23,21 +23,15 @@ using rec::SampleRate;
 // http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
-namespace rec {
-namespace util {
-namespace thread {
-namespace callback {
+namespace YAML { class Node; }
 
-class Callback;
-
-}  // namespace callback
-}  // namespace thread
-}  // namespace util
-}  // namespace rec
+namespace rec { namespace util { namespace thread { namespace callback {
+class Callback; } } } }
 
 namespace echomesh {
 
 typedef rec::util::thread::callback::Callback Callback;
+typedef YAML::Node Node;
 
 void log(const String&);
 void log2(const String&);

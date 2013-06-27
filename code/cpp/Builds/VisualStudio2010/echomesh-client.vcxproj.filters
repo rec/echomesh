@@ -346,6 +346,9 @@
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\audio\Envelope.cpp">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
@@ -1669,6 +1672,9 @@
       <Filter>echomesh-client\base64</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\AudioController.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\Envelope.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\MidiController.h">

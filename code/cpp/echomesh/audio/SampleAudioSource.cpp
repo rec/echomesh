@@ -2,14 +2,14 @@
 
 namespace echomesh {
 
-SampleAudioSource::SampleAudioSource(const YAML::Node&) {
+SampleAudioSource::SampleAudioSource(const Node& node) {
 
 }
 
 SampleAudioSource::~SampleAudioSource() {}
 
 void SampleAudioSource::prepareToPlay(int samplesPerBlockExpected,
-                                        double sampleRate) {
+                                      double sampleRate) {
 }
 
 void SampleAudioSource::releaseResources() {}

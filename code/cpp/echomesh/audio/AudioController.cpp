@@ -15,14 +15,14 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(YAML::Node* node) : node_(node) {}
+AudioController::AudioController(Node* node) : node_(node) {}
 
 AudioController::~AudioController() {
   rec::stl::deleteMapPointers(&sources_);
 }
 
 void AudioController::audio() {
-  const YAML::Node& data = (*node_)["data"];
+  const Node& data = (*node_)["data"];
   string type;
   Hash hash;
   data["type"] >> type;

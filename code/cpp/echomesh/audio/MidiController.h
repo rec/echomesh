@@ -5,8 +5,6 @@
 
 #include "echomesh/base/Echomesh.h"
 
-namespace YAML { class Node; }
-
 namespace echomesh {
 
 class ConfigMidiInput;
@@ -14,7 +12,7 @@ class ConfigMidiOutput;
 
 class MidiController : public MidiInputCallback {
  public:
-  MidiController(YAML::Node*);
+  MidiController(Node*);
   virtual ~MidiController();
   virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
 
@@ -22,7 +20,7 @@ class MidiController : public MidiInputCallback {
   void midi();
 
  private:
-  YAML::Node* node_;
+  Node* node_;
   ScopedPointer<ConfigMidiInput> midiInput_;
   ScopedPointer<ConfigMidiOutput> midiOutput_;
 

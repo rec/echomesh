@@ -11,7 +11,7 @@ namespace echomesh {
 
 using namespace std;
 
-MidiController::MidiController(YAML::Node* node)
+MidiController::MidiController(Node* node)
   : node_(node),
     midiInput_(new ConfigMidiInput(this)),
     midiOutput_(new ConfigMidiOutput) {
@@ -41,7 +41,7 @@ void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& ms
   }
 }
 
-static MidiMessage makeMidiMessage(const YAML::Node& data) {
+static MidiMessage makeMidiMessage(const Node& data) {
   int size = data.size();
   int b;
   vector<uint8> bytes(size);

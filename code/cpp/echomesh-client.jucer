@@ -13,6 +13,8 @@
               file="echomesh/audio/AudioController.cpp"/>
         <FILE id="OztJRC" name="AudioController.h" compile="0" resource="0"
               file="echomesh/audio/AudioController.h"/>
+        <FILE id="nSHQp4" name="Envelope.cpp" compile="1" resource="0" file="echomesh/audio/Envelope.cpp"/>
+        <FILE id="wjcDBs" name="Envelope.h" compile="0" resource="0" file="echomesh/audio/Envelope.h"/>
         <FILE id="Pgpcck" name="MidiController.cpp" compile="1" resource="0"
               file="echomesh/audio/MidiController.cpp"/>
         <FILE id="woTZdJ" name="MidiController.h" compile="0" resource="0"

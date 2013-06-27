@@ -5,15 +5,13 @@
 
 #include "echomesh/base/Echomesh.h"
 
-namespace YAML { class Node; }
-
 namespace echomesh {
 
 class SampleAudioSource;
 
 class AudioController {
  public:
-  AudioController(YAML::Node*);
+  AudioController(Node*);
   virtual ~AudioController();
 
   void audio();
@@ -23,7 +21,7 @@ class AudioController {
   typedef std::map<Hash, SampleAudioSource*> Sources;
   Sources sources_;
 
-  YAML::Node* node_;
+  Node* node_;
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };
 
