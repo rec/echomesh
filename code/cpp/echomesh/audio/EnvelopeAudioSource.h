@@ -24,6 +24,8 @@ class EnvelopeAudioSource : public AudioSource {
   void unload();
 
  private:
+
+
   DISALLOW_COPY_ASSIGN_AND_LEAKS(EnvelopeAudioSource);
 };
 

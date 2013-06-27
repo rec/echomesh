@@ -52,9 +52,9 @@ OBJECTS := \
   $(OBJDIR)/AudioController_2cdb5551.o \
   $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/EnvelopeAudioSource_8ab46660.o \
-  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
+  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
@@ -145,11 +145,6 @@ $(OBJDIR)/EnvelopeAudioSource_8ab46660.o: ../../echomesh/audio/EnvelopeAudioSour
 	@echo "Compiling EnvelopeAudioSource.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling GetDevice.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Config.cpp"
@@ -158,6 +153,11 @@ $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
 $(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Log.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling GetDevice.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InstrumentComponent_75edd5bc.o: ../../echomesh/component/InstrumentComponent.cpp

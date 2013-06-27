@@ -132,9 +132,9 @@
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp"/>
-    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
+    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
     <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp"/>
@@ -1265,12 +1265,13 @@
     <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\Player.h"/>
-    <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
-    <ClInclude Include="..\..\echomesh\util\Quit.h"/>
-    <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
+    <ClInclude Include="..\..\echomesh\base\ArraySize.h"/>
     <ClInclude Include="..\..\echomesh\base\Config.h"/>
+    <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>
     <ClInclude Include="..\..\echomesh\base\Runnable.h"/>
+    <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
+    <ClInclude Include="..\..\echomesh\util\Quit.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h"/>

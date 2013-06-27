@@ -1042,6 +1042,7 @@
 		FA0F6289E87DF35D8816C597 /* juce_KeyMappingEditorComponent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_KeyMappingEditorComponent.h; path = ../../JuceLibraryCode/modules/juce_gui_extra/misc/juce_KeyMappingEditorComponent.h; sourceTree = SOURCE_ROOT; };
 		FA172EE05F2D5B1AB9835029 /* juce_Value.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Value.h; path = ../../JuceLibraryCode/modules/juce_data_structures/values/juce_Value.h; sourceTree = SOURCE_ROOT; };
 		FA1B62B1FFF8311463372E23 /* juce_URL.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_URL.cpp; path = ../../JuceLibraryCode/modules/juce_core/network/juce_URL.cpp; sourceTree = SOURCE_ROOT; };
+		FA1FB7AA3E354EF6310F5F32 /* ArraySize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ArraySize.h; path = ../../echomesh/base/ArraySize.h; sourceTree = SOURCE_ROOT; };
 		FA24264690A9AB542AADC21E /* juce_VSTPluginFormat.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_VSTPluginFormat.cpp; path = ../../JuceLibraryCode/modules/juce_audio_processors/format_types/juce_VSTPluginFormat.cpp; sourceTree = SOURCE_ROOT; };
 		FA307BBB6741954C7E8650D4 /* juce_DrawableButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_DrawableButton.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/buttons/juce_DrawableButton.cpp; sourceTree = SOURCE_ROOT; };
 		FA32C66502E9A947EBADB800 /* juce_MultiTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_MultiTimer.h; path = ../../JuceLibraryCode/modules/juce_events/timers/juce_MultiTimer.h; sourceTree = SOURCE_ROOT; };
@@ -1307,19 +1308,6 @@
 			name = juce_core;
 			sourceTree = "<group>";
 		};
-		147191BDE1B974F49DA08D37 /* base */ = {
-			isa = PBXGroup;
-			children = (
-				955FD8EE91EFDDA3790B84D7 /* Disallow.h */,
-				F17C4E22796A0D7C5FAF1DE8 /* Config.cpp */,
-				CC9A515375D6980AA80C2984 /* Config.h */,
-				D2C3ACA8D50A94362335A85D /* Echomesh.h */,
-				BC502C0C2825B430AFB4E5A4 /* Log.cpp */,
-				EBFA4B096C5A77F21F8CFD78 /* Runnable.h */,
-			);
-			name = base;
-			sourceTree = "<group>";
-		};
 		154F56A04D278588DA8A6A03 /* image_formats */ = {
 			isa = PBXGroup;
 			children = (
@@ -1371,9 +1359,9 @@
 			isa = PBXGroup;
 			children = (
 				10996868F2A167BF1C239A88 /* audio */,
+				894772AA32438AE55A5416D8 /* base */,
 				C61A2ABBE02FF8DFCFD48BB1 /* util */,
 				DC78AF7751E64CCCDE7D3992 /* Quit.h */,
-				147191BDE1B974F49DA08D37 /* base */,
 				AAB956C9F4EEC35B737DE235 /* component */,
 				C62B4604DE4FD5771976655A /* Main.cpp */,
 				4DD990906F61C6C8025450DD /* network */,
@@ -2221,6 +2209,20 @@
 				971AADF50C2249300A24796C /* juce_events.h */,
 			);
 			name = juce_events;
+			sourceTree = "<group>";
+		};
+		894772AA32438AE55A5416D8 /* base */ = {
+			isa = PBXGroup;
+			children = (
+				FA1FB7AA3E354EF6310F5F32 /* ArraySize.h */,
+				F17C4E22796A0D7C5FAF1DE8 /* Config.cpp */,
+				CC9A515375D6980AA80C2984 /* Config.h */,
+				955FD8EE91EFDDA3790B84D7 /* Disallow.h */,
+				D2C3ACA8D50A94362335A85D /* Echomesh.h */,
+				BC502C0C2825B430AFB4E5A4 /* Log.cpp */,
+				EBFA4B096C5A77F21F8CFD78 /* Runnable.h */,
+			);
+			name = base;
 			sourceTree = "<group>";
 		};
 		8EBF4389D2A4359DB787856D /* filebrowser */ = {
@@ -3073,9 +3075,9 @@
 				910D7F0E142CAF8963295EB3 /* AudioController.cpp in Sources */,
 				5F321094C903D06D15C47CA6 /* MidiController.cpp in Sources */,
 				8B5773C3B7EBB77CEE5FADE0 /* EnvelopeAudioSource.cpp in Sources */,
-				D8D63070AFCE475982E221CD /* GetDevice.cpp in Sources */,
 				FCEE9203E40192461BB98F8E /* Config.cpp in Sources */,
 				940C735B452C0A4333F3C28A /* Log.cpp in Sources */,
+				D8D63070AFCE475982E221CD /* GetDevice.cpp in Sources */,
 				E60FACFC83103C3AAD826C48 /* InstrumentComponent.cpp in Sources */,
 				72508A69E10C7D0855BCC35A /* InstrumentGrid.cpp in Sources */,
 				9EE698BCF01882C66A0DD433 /* LightingWindow.cpp in Sources */,

@@ -21,19 +21,20 @@
               file="echomesh/audio/PlaybackAudioSource.h"/>
         <FILE id="C7WwjA" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
       </GROUP>
+      <GROUP id="{CF535866-C4A9-9E98-4F8F-703FA48F8B52}" name="base">
+        <FILE id="VZiCi0" name="ArraySize.h" compile="0" resource="0" file="echomesh/base/ArraySize.h"/>
+        <FILE id="SIh3LD" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
+        <FILE id="NV9ift" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
+        <FILE id="T4VPDK" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
+        <FILE id="ybFQGg" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
+        <FILE id="p7bKtm" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
+        <FILE id="uvrSvu" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
+      </GROUP>
       <GROUP id="{0D195147-262C-833F-6196-824726AFB99E}" name="util">
         <FILE id="OFcgGh" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
         <FILE id="eLLHQJ" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
       </GROUP>
       <FILE id="ACG7xF" name="Quit.h" compile="0" resource="0" file="echomesh/util/Quit.h"/>
-      <GROUP id="{429E3C2C-59EE-BAB7-A05B-342F2532209E}" name="base">
-        <FILE id="Zw3ZOV" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
-        <FILE id="aSIV6w" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
-        <FILE id="qHhxvR" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
-        <FILE id="W2A6NI" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
-        <FILE id="m3Vg47" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
-        <FILE id="ZnCbU4" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
-      </GROUP>
       <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
         <FILE id="qMMr6Z" name="InstrumentComponent.h" compile="0" resource="0"
               file="echomesh/component/InstrumentComponent.h"/>
