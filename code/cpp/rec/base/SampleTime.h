@@ -56,6 +56,8 @@ struct SampleTime {
   JUCE_LEAK_DETECTOR(SampleTime);
 };
 
+inline RealTime::RealTime(const SampleTime& t, SampleRate r) : time_(t / r) {}
+
 }  // namespace rec
 
 #endif  // __REC_BASE_SAMPLETIME__

@@ -49,12 +49,12 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
+  $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/AudioController_2cdb5551.o \
-  $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/EnvelopeAudioSource_8ab46660.o \
+  $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
-  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
@@ -64,8 +64,7 @@ OBJECTS := \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
-  $(OBJDIR)/base64_1eb4a3a4.o \
-  $(OBJDIR)/RealTime_4c146fff.o \
+  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Trash_ed189496.o \
   $(OBJDIR)/aliascontent_51f9ebd9.o \
   $(OBJDIR)/aliasmanager_6b830d0d.o \
@@ -130,19 +129,24 @@ strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
 
+$(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling base64.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/AudioController_2cdb5551.o: ../../echomesh/audio/AudioController.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling AudioController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling MidiController.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/EnvelopeAudioSource_8ab46660.o: ../../echomesh/audio/EnvelopeAudioSource.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling EnvelopeAudioSource.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling MidiController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
@@ -153,11 +157,6 @@ $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp
 $(OBJDIR)/Log_edbe3e58.o: ../../echomesh/base/Log.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Log.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling GetDevice.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InstrumentComponent_75edd5bc.o: ../../echomesh/component/InstrumentComponent.cpp
@@ -205,14 +204,9 @@ $(OBJDIR)/SocketLineGetter_649dfac5.o: ../../echomesh/network/SocketLineGetter.c
 	@echo "Compiling SocketLineGetter.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
+$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
 	-@mkdir -p $(OBJDIR)
-	@echo "Compiling base64.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/RealTime_4c146fff.o: ../../rec/base/RealTime.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling RealTime.cpp"
+	@echo "Compiling GetDevice.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp

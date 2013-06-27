@@ -3,74 +3,74 @@
 <JUCERPROJECT id="XEYpdN" name="echomesh-client" projectType="guiapp" version="1.0.0"
               bundleIdentifier="org.echomesh" jucerVersion="3.1.0">
   <MAINGROUP id="TUlrr5" name="echomesh-client">
-    <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
-      <GROUP id="{417D3527-65CC-AA07-99C0-D28FEACB0469}" name="audio">
-        <FILE id="SBvsik" name="AudioController.cpp" compile="1" resource="0"
-              file="echomesh/audio/AudioController.cpp"/>
-        <FILE id="GfiMhj" name="AudioController.h" compile="0" resource="0"
-              file="echomesh/audio/AudioController.h"/>
-        <FILE id="mv8cuw" name="MidiController.cpp" compile="1" resource="0"
-              file="echomesh/audio/MidiController.cpp"/>
-        <FILE id="vAjWOv" name="MidiController.h" compile="0" resource="0"
-              file="echomesh/audio/MidiController.h"/>
-        <FILE id="KrhTUL" name="EnvelopeAudioSource.cpp" compile="1" resource="0"
-              file="echomesh/audio/EnvelopeAudioSource.cpp"/>
-        <FILE id="gFpdnu" name="EnvelopeAudioSource.h" compile="0" resource="0"
-              file="echomesh/audio/EnvelopeAudioSource.h"/>
-        <FILE id="tXuWED" name="PlaybackAudioSource.h" compile="0" resource="0"
-              file="echomesh/audio/PlaybackAudioSource.h"/>
-        <FILE id="C7WwjA" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
-      </GROUP>
-      <GROUP id="{CF535866-C4A9-9E98-4F8F-703FA48F8B52}" name="base">
-        <FILE id="VZiCi0" name="ArraySize.h" compile="0" resource="0" file="echomesh/base/ArraySize.h"/>
-        <FILE id="SIh3LD" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
-        <FILE id="NV9ift" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
-        <FILE id="T4VPDK" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
-        <FILE id="ybFQGg" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
-        <FILE id="p7bKtm" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
-        <FILE id="uvrSvu" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
-      </GROUP>
-      <GROUP id="{0D195147-262C-833F-6196-824726AFB99E}" name="util">
-        <FILE id="OFcgGh" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
-        <FILE id="eLLHQJ" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
-      </GROUP>
-      <FILE id="ACG7xF" name="Quit.h" compile="0" resource="0" file="echomesh/util/Quit.h"/>
-      <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
-        <FILE id="qMMr6Z" name="InstrumentComponent.h" compile="0" resource="0"
-              file="echomesh/component/InstrumentComponent.h"/>
-        <FILE id="fdk7F4" name="InstrumentComponent.cpp" compile="1" resource="0"
-              file="echomesh/component/InstrumentComponent.cpp"/>
-        <FILE id="jJOfFk" name="InstrumentGrid.cpp" compile="1" resource="0"
-              file="echomesh/component/InstrumentGrid.cpp"/>
-        <FILE id="KYhXQF" name="InstrumentGrid.h" compile="0" resource="0"
-              file="echomesh/component/InstrumentGrid.h"/>
-        <FILE id="lRO97o" name="LightingWindow.cpp" compile="1" resource="0"
-              file="echomesh/component/LightingWindow.cpp"/>
-        <FILE id="F5HJMt" name="LightingWindow.h" compile="0" resource="0"
-              file="echomesh/component/LightingWindow.h"/>
-      </GROUP>
-      <FILE id="gzaXQx" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
-      <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
-        <FILE id="FfU0s8" name="LightController.cpp" compile="1" resource="0"
-              file="echomesh/network/LightController.cpp"/>
-        <FILE id="VIfXhM" name="LightController.h" compile="0" resource="0"
-              file="echomesh/network/LightController.h"/>
-        <FILE id="dXD7VC" name="LightReader.cpp" compile="1" resource="0" file="echomesh/network/LightReader.cpp"/>
-        <FILE id="u18ba6" name="LightReader.h" compile="0" resource="0" file="echomesh/network/LightReader.h"/>
-        <FILE id="dRCgu0" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>
-        <FILE id="qgUqM3" name="LineGetter.h" compile="0" resource="0" file="echomesh/network/LineGetter.h"/>
-        <FILE id="XU2lVV" name="LineQueue.h" compile="0" resource="0" file="echomesh/network/LineQueue.h"/>
-        <FILE id="WDzgwd" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/network/ReadThread.cpp"/>
-        <FILE id="AcCTvO" name="ReadThread.h" compile="0" resource="0" file="echomesh/network/ReadThread.h"/>
-        <FILE id="FHPTjO" name="SocketLineGetter.cpp" compile="1" resource="0"
-              file="echomesh/network/SocketLineGetter.cpp"/>
-        <FILE id="MOmj9y" name="SocketLineGetter.h" compile="0" resource="0"
-              file="echomesh/network/SocketLineGetter.h"/>
-      </GROUP>
-    </GROUP>
     <GROUP id="{402AE164-4ADD-B41C-BCA4-92AA2F1EAEE0}" name="base64">
       <FILE id="n9iHyB" name="base64.cpp" compile="1" resource="0" file="base64/base64.cpp"/>
       <FILE id="ErLUPv" name="base64.h" compile="0" resource="0" file="base64/base64.h"/>
+    </GROUP>
+    <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
+      <GROUP id="{E092D677-2055-62E7-1E77-4EA5F1180C33}" name="audio">
+        <FILE id="xx3T3C" name="AudioController.cpp" compile="1" resource="0"
+              file="echomesh/audio/AudioController.cpp"/>
+        <FILE id="OztJRC" name="AudioController.h" compile="0" resource="0"
+              file="echomesh/audio/AudioController.h"/>
+        <FILE id="a3WSbz" name="EnvelopeAudioSource.cpp" compile="1" resource="0"
+              file="echomesh/audio/EnvelopeAudioSource.cpp"/>
+        <FILE id="hm2hJT" name="EnvelopeAudioSource.h" compile="0" resource="0"
+              file="echomesh/audio/EnvelopeAudioSource.h"/>
+        <FILE id="Pgpcck" name="MidiController.cpp" compile="1" resource="0"
+              file="echomesh/audio/MidiController.cpp"/>
+        <FILE id="woTZdJ" name="MidiController.h" compile="0" resource="0"
+              file="echomesh/audio/MidiController.h"/>
+        <FILE id="HM7xl1" name="PlaybackAudioSource.h" compile="0" resource="0"
+              file="echomesh/audio/PlaybackAudioSource.h"/>
+        <FILE id="Cm0wXx" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
+      </GROUP>
+      <GROUP id="{27BB2E8C-EF00-A3EE-6D50-1BC13156C3BD}" name="base">
+        <FILE id="aTB8wh" name="ArraySize.h" compile="0" resource="0" file="echomesh/base/ArraySize.h"/>
+        <FILE id="whRkOf" name="Config.cpp" compile="1" resource="0" file="echomesh/base/Config.cpp"/>
+        <FILE id="obdsc0" name="Config.h" compile="0" resource="0" file="echomesh/base/Config.h"/>
+        <FILE id="RtJ1vh" name="Disallow.h" compile="0" resource="0" file="echomesh/base/Disallow.h"/>
+        <FILE id="f8EKKK" name="Echomesh.h" compile="0" resource="0" file="echomesh/base/Echomesh.h"/>
+        <FILE id="Wg16GE" name="Log.cpp" compile="1" resource="0" file="echomesh/base/Log.cpp"/>
+        <FILE id="EjfpnQ" name="Runnable.h" compile="0" resource="0" file="echomesh/base/Runnable.h"/>
+      </GROUP>
+      <GROUP id="{F974271C-3D33-2197-A047-100CC8C4CD37}" name="component">
+        <FILE id="oLLo3t" name="InstrumentComponent.cpp" compile="1" resource="0"
+              file="echomesh/component/InstrumentComponent.cpp"/>
+        <FILE id="GCTt8Z" name="InstrumentComponent.h" compile="0" resource="0"
+              file="echomesh/component/InstrumentComponent.h"/>
+        <FILE id="Xzhwr2" name="InstrumentGrid.cpp" compile="1" resource="0"
+              file="echomesh/component/InstrumentGrid.cpp"/>
+        <FILE id="bkXvWq" name="InstrumentGrid.h" compile="0" resource="0"
+              file="echomesh/component/InstrumentGrid.h"/>
+        <FILE id="UpRyGr" name="LightingWindow.cpp" compile="1" resource="0"
+              file="echomesh/component/LightingWindow.cpp"/>
+        <FILE id="HtpVhP" name="LightingWindow.h" compile="0" resource="0"
+              file="echomesh/component/LightingWindow.h"/>
+      </GROUP>
+      <FILE id="uxNyBJ" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
+      <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
+        <FILE id="BbSew1" name="LightController.cpp" compile="1" resource="0"
+              file="echomesh/network/LightController.cpp"/>
+        <FILE id="YCsmK9" name="LightController.h" compile="0" resource="0"
+              file="echomesh/network/LightController.h"/>
+        <FILE id="SyI0yd" name="LightReader.cpp" compile="1" resource="0" file="echomesh/network/LightReader.cpp"/>
+        <FILE id="I90GVg" name="LightReader.h" compile="0" resource="0" file="echomesh/network/LightReader.h"/>
+        <FILE id="gCXIAm" name="LineGetter.cpp" compile="1" resource="0" file="echomesh/network/LineGetter.cpp"/>
+        <FILE id="PIBGFD" name="LineGetter.h" compile="0" resource="0" file="echomesh/network/LineGetter.h"/>
+        <FILE id="CJfopo" name="LineQueue.h" compile="0" resource="0" file="echomesh/network/LineQueue.h"/>
+        <FILE id="l3xcWN" name="ReadThread.cpp" compile="1" resource="0" file="echomesh/network/ReadThread.cpp"/>
+        <FILE id="Txldwv" name="ReadThread.h" compile="0" resource="0" file="echomesh/network/ReadThread.h"/>
+        <FILE id="bnOwWQ" name="SocketLineGetter.cpp" compile="1" resource="0"
+              file="echomesh/network/SocketLineGetter.cpp"/>
+        <FILE id="X3edGB" name="SocketLineGetter.h" compile="0" resource="0"
+              file="echomesh/network/SocketLineGetter.h"/>
+      </GROUP>
+      <GROUP id="{DBD331AF-CBE1-660D-5F8C-D06338F304CD}" name="util">
+        <FILE id="m3hVSu" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
+        <FILE id="H9emas" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
+        <FILE id="JaZU1x" name="Quit.h" compile="0" resource="0" file="echomesh/util/Quit.h"/>
+      </GROUP>
     </GROUP>
     <GROUP id="{28FAA7EC-8E42-A784-3F2C-F5E2520F9D23}" name="rec">
       <GROUP id="{0DF59FCB-164C-9455-C845-18717FCB4D00}" name="base">
@@ -82,10 +82,8 @@
         <FILE id="KSVVBG" name="Cast.h" compile="0" resource="0" file="rec/base/Cast.h"/>
         <FILE id="asBr56" name="CompileAssert.h" compile="0" resource="0" file="rec/base/CompileAssert.h"/>
         <FILE id="ZVeIpK" name="disallow.h" compile="0" resource="0" file="rec/base/disallow.h"/>
-        <FILE id="eNRsiD" name="Juce.h" compile="0" resource="0" file="rec/base/Juce.h"/>
         <FILE id="NOk2h8" name="port.h" compile="0" resource="0" file="rec/base/port.h"/>
         <FILE id="tD2gju" name="ptr.h" compile="0" resource="0" file="rec/base/ptr.h"/>
-        <FILE id="BHLUpz" name="RealTime.cpp" compile="1" resource="0" file="rec/base/RealTime.cpp"/>
         <FILE id="stIJbj" name="RealTime.h" compile="0" resource="0" file="rec/base/RealTime.h"/>
         <FILE id="rpJgdo" name="SampleRate.h" compile="0" resource="0" file="rec/base/SampleRate.h"/>
         <FILE id="mUDyFx" name="SampleTime.h" compile="0" resource="0" file="rec/base/SampleTime.h"/>

@@ -5,6 +5,9 @@
     <Filter Include="echomesh-client">
       <UniqueIdentifier>{5A28992E-2A75-947E-A5C4-A2A2537C5E17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\base64">
+      <UniqueIdentifier>{689DE205-0857-704A-7424-63A761807F54}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\echomesh">
       <UniqueIdentifier>{3E9758F3-703D-DFA7-9330-BBEC3496F5CF}</UniqueIdentifier>
     </Filter>
@@ -14,17 +17,14 @@
     <Filter Include="echomesh-client\echomesh\base">
       <UniqueIdentifier>{F27FA859-2203-C883-0F61-261D1D50036D}</UniqueIdentifier>
     </Filter>
-    <Filter Include="echomesh-client\echomesh\util">
-      <UniqueIdentifier>{308CBD36-D043-A694-1B23-DCB611B5A271}</UniqueIdentifier>
-    </Filter>
     <Filter Include="echomesh-client\echomesh\component">
       <UniqueIdentifier>{C7967F7D-D1B2-4EEF-6E44-5BC9AFCC5F32}</UniqueIdentifier>
     </Filter>
     <Filter Include="echomesh-client\echomesh\network">
       <UniqueIdentifier>{26D5B416-26CE-A57F-4D1C-7824CD1E4964}</UniqueIdentifier>
     </Filter>
-    <Filter Include="echomesh-client\base64">
-      <UniqueIdentifier>{689DE205-0857-704A-7424-63A761807F54}</UniqueIdentifier>
+    <Filter Include="echomesh-client\echomesh\util">
+      <UniqueIdentifier>{308CBD36-D043-A694-1B23-DCB611B5A271}</UniqueIdentifier>
     </Filter>
     <Filter Include="echomesh-client\rec">
       <UniqueIdentifier>{51D23AE7-FBB3-8AA4-CF58-BAA70047AFF1}</UniqueIdentifier>
@@ -340,13 +340,16 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\base64\base64.cpp">
+      <Filter>echomesh-client\base64</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
+    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp">
+    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\base\Config.cpp">
@@ -354,9 +357,6 @@
     </ClCompile>
     <ClCompile Include="..\..\echomesh\base\Log.cpp">
       <Filter>echomesh-client\echomesh\base</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
-      <Filter>echomesh-client\echomesh\util</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp">
       <Filter>echomesh-client\echomesh\component</Filter>
@@ -385,11 +385,8 @@
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\base64\base64.cpp">
-      <Filter>echomesh-client\base64</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\rec\base\RealTime.cpp">
-      <Filter>echomesh-client\rec\base</Filter>
+    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
+      <Filter>echomesh-client\echomesh\util</Filter>
     </ClCompile>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp">
       <Filter>echomesh-client\rec\util\thread</Filter>
@@ -1668,13 +1665,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\base64\base64.h">
+      <Filter>echomesh-client\base64</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\AudioController.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\audio\MidiController.h">
+    <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h">
+    <ClInclude Include="..\..\echomesh\audio\MidiController.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h">
@@ -1697,12 +1697,6 @@
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\Runnable.h">
       <Filter>echomesh-client\echomesh\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\util\GetDevice.h">
-      <Filter>echomesh-client\echomesh\util</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\echomesh\util\Quit.h">
-      <Filter>echomesh-client\echomesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h">
       <Filter>echomesh-client\echomesh\component</Filter>
@@ -1731,8 +1725,11 @@
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\base64\base64.h">
-      <Filter>echomesh-client\base64</Filter>
+    <ClInclude Include="..\..\echomesh\util\GetDevice.h">
+      <Filter>echomesh-client\echomesh\util</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\util\Quit.h">
+      <Filter>echomesh-client\echomesh\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\rec\base\ArraySize.h">
       <Filter>echomesh-client\rec\base</Filter>
@@ -1756,9 +1753,6 @@
       <Filter>echomesh-client\rec\base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\rec\base\disallow.h">
-      <Filter>echomesh-client\rec\base</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\rec\base\Juce.h">
       <Filter>echomesh-client\rec\base</Filter>
     </ClInclude>
     <ClInclude Include="..\..\rec\base\port.h">

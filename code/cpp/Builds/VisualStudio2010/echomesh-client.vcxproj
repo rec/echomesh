@@ -129,12 +129,12 @@
     </Bscmake>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\base64\base64.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp"/>
-    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp"/>
+    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
-    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentGrid.cpp"/>
     <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp"/>
@@ -144,8 +144,7 @@
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp"/>
-    <ClCompile Include="..\..\base64\base64.cpp"/>
-    <ClCompile Include="..\..\rec\base\RealTime.cpp"/>
+    <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliascontent.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliasmanager.cpp"/>
@@ -1260,9 +1259,10 @@
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_video\juce_video.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\base64\base64.h"/>
     <ClInclude Include="..\..\echomesh\audio\AudioController.h"/>
-    <ClInclude Include="..\..\echomesh\audio\MidiController.h"/>
     <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h"/>
+    <ClInclude Include="..\..\echomesh\audio\MidiController.h"/>
     <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\Player.h"/>
     <ClInclude Include="..\..\echomesh\base\ArraySize.h"/>
@@ -1270,8 +1270,6 @@
     <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
     <ClInclude Include="..\..\echomesh\base\Echomesh.h"/>
     <ClInclude Include="..\..\echomesh\base\Runnable.h"/>
-    <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
-    <ClInclude Include="..\..\echomesh\util\Quit.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentComponent.h"/>
     <ClInclude Include="..\..\echomesh\component\InstrumentGrid.h"/>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h"/>
@@ -1281,7 +1279,8 @@
     <ClInclude Include="..\..\echomesh\network\LineQueue.h"/>
     <ClInclude Include="..\..\echomesh\network\ReadThread.h"/>
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h"/>
-    <ClInclude Include="..\..\base64\base64.h"/>
+    <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
+    <ClInclude Include="..\..\echomesh\util\Quit.h"/>
     <ClInclude Include="..\..\rec\base\ArraySize.h"/>
     <ClInclude Include="..\..\rec\base\base.h"/>
     <ClInclude Include="..\..\rec\base\BaseNoJuce.h"/>
@@ -1290,7 +1289,6 @@
     <ClInclude Include="..\..\rec\base\Cast.h"/>
     <ClInclude Include="..\..\rec\base\CompileAssert.h"/>
     <ClInclude Include="..\..\rec\base\disallow.h"/>
-    <ClInclude Include="..\..\rec\base\Juce.h"/>
     <ClInclude Include="..\..\rec\base\port.h"/>
     <ClInclude Include="..\..\rec\base\ptr.h"/>
     <ClInclude Include="..\..\rec\base\RealTime.h"/>

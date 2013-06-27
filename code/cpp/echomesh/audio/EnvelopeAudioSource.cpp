@@ -2,7 +2,10 @@
 
 namespace echomesh {
 
-EnvelopeAudioSource::EnvelopeAudioSource(const YAML::Node&) {}
+EnvelopeAudioSource::EnvelopeAudioSource(const YAML::Node&) {
+
+}
+
 EnvelopeAudioSource::~EnvelopeAudioSource() {}
 
 void EnvelopeAudioSource::prepareToPlay(int samplesPerBlockExpected,

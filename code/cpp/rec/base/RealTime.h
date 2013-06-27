@@ -20,7 +20,6 @@ struct RealTime {
     //
   }
 
-
   const RealTime operator+(RealTime p) { return time_ + p; }
   const RealTime operator-(RealTime p) { return time_ - p; }
 
