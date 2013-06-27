@@ -1,5 +1,5 @@
-#ifndef __ECHOMESH_ENVELOPEAUDIOSOURCE__
-#define __ECHOMESH_ENVELOPEAUDIOSOURCE__
+#ifndef __ECHOMESH_SAMPLEAUDIOSOURCE__
+#define __ECHOMESH_SAMPLEAUDIOSOURCE__
 
 #include "echomesh/base/Echomesh.h"
 
@@ -7,10 +7,10 @@ namespace YAML { class Node; }
 
 namespace echomesh {
 
-class EnvelopeAudioSource : public AudioSource {
+class SampleAudioSource : public AudioSource {
  public:
-  EnvelopeAudioSource(const YAML::Node&);
-  virtual ~EnvelopeAudioSource();
+  SampleAudioSource(const YAML::Node&);
+  virtual ~SampleAudioSource();
 
   virtual void prepareToPlay(int samplesPerBlockExpected,
                              double sampleRate);
@@ -24,11 +24,9 @@ class EnvelopeAudioSource : public AudioSource {
   void unload();
 
  private:
-
-
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(EnvelopeAudioSource);
+  DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };
 
+#endif  // __ECHOMESH_SAMPLEAUDIOSOURCE__
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_ENVELOPEAUDIOSOURCE__

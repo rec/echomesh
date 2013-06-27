@@ -6,7 +6,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "echomesh/audio/AudioController.h"
-#include "echomesh/audio/EnvelopeAudioSource.h"
+#include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/STL.h"
@@ -27,13 +27,13 @@ void AudioController::audio() {
   Hash hash;
   data["type"] >> type;
   data["hash"] >> hash;
-  EnvelopeAudioSource*& source = sources_[hash];
+  SampleAudioSource*& source = sources_[hash];
 
   if (type == "construct") {
     if (source)
       log("Warning: already created a source for hash " + String(hash));
     else
-      source = new EnvelopeAudioSource(data);
+      source = new SampleAudioSource(data);
   } else if (type == "run") {
     source->run();
   } else if (type == "begin") {

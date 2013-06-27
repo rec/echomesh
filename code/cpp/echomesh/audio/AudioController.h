@@ -9,7 +9,7 @@ namespace YAML { class Node; }
 
 namespace echomesh {
 
-class EnvelopeAudioSource;
+class SampleAudioSource;
 
 class AudioController {
  public:
@@ -20,7 +20,7 @@ class AudioController {
 
  private:
   typedef uint64 Hash;
-  typedef std::map<Hash, EnvelopeAudioSource*> Sources;
+  typedef std::map<Hash, SampleAudioSource*> Sources;
   Sources sources_;
 
   YAML::Node* node_;

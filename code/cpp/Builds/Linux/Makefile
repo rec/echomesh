@@ -51,8 +51,8 @@ DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 OBJECTS := \
   $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/AudioController_2cdb5551.o \
-  $(OBJDIR)/EnvelopeAudioSource_8ab46660.o \
   $(OBJDIR)/MidiController_f87aad08.o \
+  $(OBJDIR)/SampleAudioSource_602b6bc6.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
@@ -139,14 +139,14 @@ $(OBJDIR)/AudioController_2cdb5551.o: ../../echomesh/audio/AudioController.cpp
 	@echo "Compiling AudioController.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/EnvelopeAudioSource_8ab46660.o: ../../echomesh/audio/EnvelopeAudioSource.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling EnvelopeAudioSource.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling MidiController.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SampleAudioSource_602b6bc6.o: ../../echomesh/audio/SampleAudioSource.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SampleAudioSource.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Config_4a6afa38.o: ../../echomesh/base/Config.cpp

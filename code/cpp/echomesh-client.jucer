@@ -13,10 +13,6 @@
               file="echomesh/audio/AudioController.cpp"/>
         <FILE id="OztJRC" name="AudioController.h" compile="0" resource="0"
               file="echomesh/audio/AudioController.h"/>
-        <FILE id="a3WSbz" name="EnvelopeAudioSource.cpp" compile="1" resource="0"
-              file="echomesh/audio/EnvelopeAudioSource.cpp"/>
-        <FILE id="hm2hJT" name="EnvelopeAudioSource.h" compile="0" resource="0"
-              file="echomesh/audio/EnvelopeAudioSource.h"/>
         <FILE id="Pgpcck" name="MidiController.cpp" compile="1" resource="0"
               file="echomesh/audio/MidiController.cpp"/>
         <FILE id="woTZdJ" name="MidiController.h" compile="0" resource="0"
@@ -24,6 +20,10 @@
         <FILE id="HM7xl1" name="PlaybackAudioSource.h" compile="0" resource="0"
               file="echomesh/audio/PlaybackAudioSource.h"/>
         <FILE id="Cm0wXx" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
+        <FILE id="VAilKE" name="SampleAudioSource.cpp" compile="1" resource="0"
+              file="echomesh/audio/SampleAudioSource.cpp"/>
+        <FILE id="tcIGiQ" name="SampleAudioSource.h" compile="0" resource="0"
+              file="echomesh/audio/SampleAudioSource.h"/>
       </GROUP>
       <GROUP id="{27BB2E8C-EF00-A3EE-6D50-1BC13156C3BD}" name="base">
         <FILE id="aTB8wh" name="ArraySize.h" compile="0" resource="0" file="echomesh/base/ArraySize.h"/>

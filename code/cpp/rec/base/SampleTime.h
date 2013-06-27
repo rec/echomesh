@@ -44,9 +44,6 @@ struct SampleTime {
   operator int64() const { return position_; }
   int64 get() { return position_; }
 
-  // We shouldn't need this, but Juce sometimes wants ints.  Bug Jules!
-  int toInt() const { return static_cast<int>(position_); }
-
  private:
   SampleTime(RealTime time);
   SampleTime(double time);

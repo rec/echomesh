@@ -346,10 +346,10 @@
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp">
+    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
+    <ClCompile Include="..\..\echomesh\audio\SampleAudioSource.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\echomesh\base\Config.cpp">
@@ -1671,9 +1671,6 @@
     <ClInclude Include="..\..\echomesh\audio\AudioController.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h">
-      <Filter>echomesh-client\echomesh\audio</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\MidiController.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
@@ -1681,6 +1678,9 @@
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\Player.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\SampleAudioSource.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\base\ArraySize.h">

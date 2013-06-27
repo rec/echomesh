@@ -131,8 +131,8 @@
   <ItemGroup>
     <ClCompile Include="..\..\base64\base64.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp"/>
-    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
+    <ClCompile Include="..\..\echomesh\audio\SampleAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
     <ClCompile Include="..\..\echomesh\component\InstrumentComponent.cpp"/>
@@ -1261,10 +1261,10 @@
   <ItemGroup>
     <ClInclude Include="..\..\base64\base64.h"/>
     <ClInclude Include="..\..\echomesh\audio\AudioController.h"/>
-    <ClInclude Include="..\..\echomesh\audio\EnvelopeAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\MidiController.h"/>
     <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\Player.h"/>
+    <ClInclude Include="..\..\echomesh\audio\SampleAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\base\ArraySize.h"/>
     <ClInclude Include="..\..\echomesh\base\Config.h"/>
     <ClInclude Include="..\..\echomesh\base\Disallow.h"/>
