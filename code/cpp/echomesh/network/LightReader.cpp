@@ -39,7 +39,7 @@ static const string DEFAULT_CONFIG =
   "        padding: [2, 2]\n"
   "        paint_unclipped: false\n"
   "        shape: circle\n"
-  "        size: [12, 12]\n"
+  "        size: [4, 4]\n"
   "      layout: [16, 16]\n"
   "      padding: [3, 3]\n"
   "      period: 10ms\n"
@@ -83,8 +83,10 @@ LightReader::~LightReader() {
 }
 
 void LightReader::config() {
+  log("The client got the config message, and is configuring its parts.");
   lightController_->config();
   midiController_->config();
+  log("The client finished configuring itself.");
 }
 
 }  // namespace echomesh

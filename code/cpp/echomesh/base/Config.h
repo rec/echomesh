@@ -89,6 +89,8 @@ void operator>>(const YAML::Node&, OneMidiConfig&);
 void operator>>(const YAML::Node&, MidiConfig&);
 void operator>>(const YAML::Node&, LightConfig&);
 void operator>>(const YAML::Node&, Config&);
+void operator>>(const YAML::Node&, SampleTime&);
+void operator>>(const YAML::Node&, RealTime&);
 
 }  // namespace echomesh
 

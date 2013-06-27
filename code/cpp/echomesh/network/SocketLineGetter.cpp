@@ -47,7 +47,7 @@ void SocketLineGetter::writeSocket(const char* data, int size) {
 
   tryToConnect();
   if (socket_.write(s.data(), s.size()) < 0)
-    log("ERROR writing data.");
+    log("ERROR attempting to communicate with the master.");
 }
 
 void SocketLineGetter::tryToConnect() {

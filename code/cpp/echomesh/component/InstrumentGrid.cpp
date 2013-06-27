@@ -18,7 +18,7 @@ InstrumentGrid::~InstrumentGrid() {
 void InstrumentGrid::setConfig(const LightConfig& config) {
   config_ = config;
 
-  getParentComponent()->setVisible(config_.visualizer.show);
+  getParentComponent()->setVisible(true or config_.visualizer.show);
 
   if (not config_.visualizer.show)
     return;

@@ -42,6 +42,19 @@ void operator>>(const YAML::Node& node, Point& p) {
   }
 }
 
+void operator>>(const YAML::Node& node, SampleTime& t) {
+  uint64 time;
+  node >> time;
+  t = time;
+}
+
+void operator>>(const YAML::Node& node, RealTime& t) {
+  double time;
+  node >> time;
+  t = time;
+}
+
+
 void operator>>(const YAML::Node& node, Border& p) {
   node["color"] >> p.color;
   node["width"] >> p.width;

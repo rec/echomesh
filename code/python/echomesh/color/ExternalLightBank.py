@@ -56,8 +56,12 @@ class ExternalLightBank(LightBank):
     data = {'light': light, 'midi': get('midi')}
     config = {'type': 'config', 'data': data}
 
+    LOGGER.debug('The server connected to the client and is about to send a '
+                 + 'configuration looking like this: %s', config)
     with self.lock:
+      LOGGER.debug('The server took the client/server lock')
       ClientServer.instance().set_config(config)
+    LOGGER.debug('The server sent the configuration to the client and released the lock.')
 
   def _after_thread_pause(self):
     if not Quit.QUITTING:

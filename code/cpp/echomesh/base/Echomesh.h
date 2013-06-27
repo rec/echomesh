@@ -9,9 +9,16 @@
 
 #include "JuceLibraryCode/JuceHeader.h"
 #include "echomesh/base/Disallow.h"
+#include "rec/base/RealTime.h"
+#include "rec/base/SampleTime.h"
+#include "rec/base/SampleRate.h"
 
 using std::string;
 using std::vector;
+
+using rec::RealTime;
+using rec::SampleTime;
+using rec::SampleRate;
 
 // http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
