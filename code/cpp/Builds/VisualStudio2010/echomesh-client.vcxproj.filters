@@ -346,6 +346,9 @@
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
       <Filter>echomesh-client\echomesh\util</Filter>
     </ClCompile>

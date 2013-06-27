@@ -51,6 +51,7 @@ DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 OBJECTS := \
   $(OBJDIR)/AudioController_2cdb5551.o \
   $(OBJDIR)/MidiController_f87aad08.o \
+  $(OBJDIR)/EnvelopeAudioSource_8ab46660.o \
   $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
@@ -137,6 +138,11 @@ $(OBJDIR)/AudioController_2cdb5551.o: ../../echomesh/audio/AudioController.cpp
 $(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling MidiController.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/EnvelopeAudioSource_8ab46660.o: ../../echomesh/audio/EnvelopeAudioSource.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling EnvelopeAudioSource.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp

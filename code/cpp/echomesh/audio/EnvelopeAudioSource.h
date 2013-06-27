@@ -9,21 +9,19 @@ namespace echomesh {
 
 class EnvelopeAudioSource : public AudioSource {
  public:
-  EnvelopeAudioSource(const YAML::Node&) {}
+  EnvelopeAudioSource(const YAML::Node&);
+  virtual ~EnvelopeAudioSource();
 
-  virtual void prepareToPlay (int samplesPerBlockExpected,
-                              double sampleRate) {}
+  virtual void prepareToPlay(int samplesPerBlockExpected,
+                             double sampleRate);
 
-  virtual void releaseResources() {}
+  virtual void releaseResources();
+  virtual void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill);
 
-  virtual void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill) {
-    bufferToFill.clearActiveBufferRegion();
-  }
-
-  void run() {}
-  void begin() {}
-  void pause() {}
-  void unload() {}
+  void run();
+  void begin();
+  void pause();
+  void unload();
 
  private:
   DISALLOW_COPY_ASSIGN_AND_LEAKS(EnvelopeAudioSource);

@@ -131,6 +131,7 @@
   <ItemGroup>
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
+    <ClCompile Include="..\..\echomesh\audio\EnvelopeAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
