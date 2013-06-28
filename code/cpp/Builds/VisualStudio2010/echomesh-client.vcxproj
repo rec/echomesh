@@ -146,6 +146,9 @@
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp"/>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
+    <ClCompile Include="..\..\rec\audio\format\Manager.cpp"/>
+    <ClCompile Include="..\..\rec\audio\format\RegisterFormats.cpp"/>
+    <ClCompile Include="..\..\rec\audio\OutputSampleRate.cpp"/>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliascontent.cpp"/>
     <ClCompile Include="..\..\yaml-cpp-src\aliasmanager.cpp"/>
@@ -1283,6 +1286,9 @@
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h"/>
     <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
     <ClInclude Include="..\..\echomesh\util\Quit.h"/>
+    <ClInclude Include="..\..\rec\audio\format\Manager.h"/>
+    <ClInclude Include="..\..\rec\audio\format\RegisterFormats.h"/>
+    <ClInclude Include="..\..\rec\audio\OutputSampleRate.h"/>
     <ClInclude Include="..\..\rec\base\ArraySize.h"/>
     <ClInclude Include="..\..\rec\base\base.h"/>
     <ClInclude Include="..\..\rec\base\BaseNoJuce.h"/>
@@ -1301,6 +1307,7 @@
     <ClInclude Include="..\..\rec\base\types.h"/>
     <ClInclude Include="..\..\rec\util\Deletable.h"/>
     <ClInclude Include="..\..\rec\util\HasLock.h"/>
+    <ClInclude Include="..\..\rec\util\Listener.h"/>
     <ClInclude Include="..\..\rec\util\STL.h"/>
     <ClInclude Include="..\..\rec\util\thread\CallAsync.h"/>
     <ClInclude Include="..\..\rec\util\thread\Callback.h"/>
@@ -1310,9 +1317,11 @@
     <ClInclude Include="..\..\rec\util\thread\Callback3.h"/>
     <ClInclude Include="..\..\rec\util\thread\Callback4.h"/>
     <ClInclude Include="..\..\rec\util\thread\FunctionCallback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\LockedCallback.h"/>
     <ClInclude Include="..\..\rec\util\thread\MakeCallback.h"/>
     <ClInclude Include="..\..\rec\util\thread\MakeThread.h"/>
     <ClInclude Include="..\..\rec\util\thread\ModalCallback.h"/>
+    <ClInclude Include="..\..\rec\util\thread\Pointer.h"/>
     <ClInclude Include="..\..\rec\util\thread\Result.h"/>
     <ClInclude Include="..\..\rec\util\thread\Trash.h"/>
     <ClInclude Include="..\..\yaml-cpp-src\aliascontent.h"/>

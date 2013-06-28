@@ -29,6 +29,12 @@
     <Filter Include="echomesh-client\rec">
       <UniqueIdentifier>{51D23AE7-FBB3-8AA4-CF58-BAA70047AFF1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\rec\audio">
+      <UniqueIdentifier>{A884D157-8EB2-4C5D-91C4-12DB9C5220CB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\rec\audio\format">
+      <UniqueIdentifier>{4D489F5F-E21B-AB38-1EAE-141743EA3E5A}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\rec\base">
       <UniqueIdentifier>{F5B6ED92-D52C-408E-9ECE-3F452C0B9D97}</UniqueIdentifier>
     </Filter>
@@ -390,6 +396,15 @@
     </ClCompile>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
       <Filter>echomesh-client\echomesh\util</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rec\audio\format\Manager.cpp">
+      <Filter>echomesh-client\rec\audio\format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rec\audio\format\RegisterFormats.cpp">
+      <Filter>echomesh-client\rec\audio\format</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\rec\audio\OutputSampleRate.cpp">
+      <Filter>echomesh-client\rec\audio</Filter>
     </ClCompile>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp">
       <Filter>echomesh-client\rec\util\thread</Filter>
@@ -1737,6 +1752,15 @@
     <ClInclude Include="..\..\echomesh\util\Quit.h">
       <Filter>echomesh-client\echomesh\util</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\rec\audio\format\Manager.h">
+      <Filter>echomesh-client\rec\audio\format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\audio\format\RegisterFormats.h">
+      <Filter>echomesh-client\rec\audio\format</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\audio\OutputSampleRate.h">
+      <Filter>echomesh-client\rec\audio</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\rec\base\ArraySize.h">
       <Filter>echomesh-client\rec\base</Filter>
     </ClInclude>
@@ -1791,6 +1815,9 @@
     <ClInclude Include="..\..\rec\util\HasLock.h">
       <Filter>echomesh-client\rec\util</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\rec\util\Listener.h">
+      <Filter>echomesh-client\rec\util</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\rec\util\STL.h">
       <Filter>echomesh-client\rec\util</Filter>
     </ClInclude>
@@ -1818,6 +1845,9 @@
     <ClInclude Include="..\..\rec\util\thread\FunctionCallback.h">
       <Filter>echomesh-client\rec\util\thread</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\LockedCallback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\rec\util\thread\MakeCallback.h">
       <Filter>echomesh-client\rec\util\thread</Filter>
     </ClInclude>
@@ -1825,6 +1855,9 @@
       <Filter>echomesh-client\rec\util\thread</Filter>
     </ClInclude>
     <ClInclude Include="..\..\rec\util\thread\ModalCallback.h">
+      <Filter>echomesh-client\rec\util\thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\rec\util\thread\Pointer.h">
       <Filter>echomesh-client\rec\util\thread</Filter>
     </ClInclude>
     <ClInclude Include="..\..\rec\util\thread\Result.h">

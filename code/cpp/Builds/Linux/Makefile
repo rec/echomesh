@@ -66,6 +66,9 @@ OBJECTS := \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
   $(OBJDIR)/GetDevice_bdff9491.o \
+  $(OBJDIR)/Manager_ac61fac2.o \
+  $(OBJDIR)/RegisterFormats_a3caa84e.o \
+  $(OBJDIR)/OutputSampleRate_b96311f8.o \
   $(OBJDIR)/Trash_ed189496.o \
   $(OBJDIR)/aliascontent_51f9ebd9.o \
   $(OBJDIR)/aliasmanager_6b830d0d.o \
@@ -213,6 +216,21 @@ $(OBJDIR)/SocketLineGetter_649dfac5.o: ../../echomesh/network/SocketLineGetter.c
 $(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling GetDevice.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Manager_ac61fac2.o: ../../rec/audio/format/Manager.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Manager.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/RegisterFormats_a3caa84e.o: ../../rec/audio/format/RegisterFormats.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling RegisterFormats.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/OutputSampleRate_b96311f8.o: ../../rec/audio/OutputSampleRate.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling OutputSampleRate.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp

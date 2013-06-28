@@ -75,44 +75,62 @@
       </GROUP>
     </GROUP>
     <GROUP id="{28FAA7EC-8E42-A784-3F2C-F5E2520F9D23}" name="rec">
-      <GROUP id="{0DF59FCB-164C-9455-C845-18717FCB4D00}" name="base">
-        <FILE id="a7gJWf" name="ArraySize.h" compile="0" resource="0" file="rec/base/ArraySize.h"/>
-        <FILE id="idYNfN" name="base.h" compile="0" resource="0" file="rec/base/base.h"/>
-        <FILE id="JCspO9" name="BaseNoJuce.h" compile="0" resource="0" file="rec/base/BaseNoJuce.h"/>
-        <FILE id="EwrFxn" name="basictypes.h" compile="0" resource="0" file="rec/base/basictypes.h"/>
-        <FILE id="Rl9ChI" name="build_config.h" compile="0" resource="0" file="rec/base/build_config.h"/>
-        <FILE id="KSVVBG" name="Cast.h" compile="0" resource="0" file="rec/base/Cast.h"/>
-        <FILE id="asBr56" name="CompileAssert.h" compile="0" resource="0" file="rec/base/CompileAssert.h"/>
-        <FILE id="ZVeIpK" name="disallow.h" compile="0" resource="0" file="rec/base/disallow.h"/>
-        <FILE id="NOk2h8" name="port.h" compile="0" resource="0" file="rec/base/port.h"/>
-        <FILE id="tD2gju" name="ptr.h" compile="0" resource="0" file="rec/base/ptr.h"/>
-        <FILE id="stIJbj" name="RealTime.h" compile="0" resource="0" file="rec/base/RealTime.h"/>
-        <FILE id="rpJgdo" name="SampleRate.h" compile="0" resource="0" file="rec/base/SampleRate.h"/>
-        <FILE id="mUDyFx" name="SampleTime.h" compile="0" resource="0" file="rec/base/SampleTime.h"/>
-        <FILE id="lo8diu" name="scoped_array.h" compile="0" resource="0" file="rec/base/scoped_array.h"/>
-        <FILE id="Ia3yrN" name="string_piece.h" compile="0" resource="0" file="rec/base/string_piece.h"/>
-        <FILE id="MqcZEV" name="types.h" compile="0" resource="0" file="rec/base/types.h"/>
+      <GROUP id="{3930AF75-A2DA-48DA-0B16-CCF330CF7521}" name="audio">
+        <GROUP id="{5F6440D5-7214-2A51-48BE-7732EF5FF08D}" name="format">
+          <FILE id="Vee9Ua" name="Manager.cpp" compile="1" resource="0" file="rec/audio/format/Manager.cpp"/>
+          <FILE id="wwPnS8" name="Manager.h" compile="0" resource="0" file="rec/audio/format/Manager.h"/>
+          <FILE id="E1Qqf1" name="RegisterFormats.cpp" compile="1" resource="0"
+                file="rec/audio/format/RegisterFormats.cpp"/>
+          <FILE id="wExl6n" name="RegisterFormats.h" compile="0" resource="0"
+                file="rec/audio/format/RegisterFormats.h"/>
+        </GROUP>
+        <FILE id="gcOoia" name="OutputSampleRate.cpp" compile="1" resource="0"
+              file="rec/audio/OutputSampleRate.cpp"/>
+        <FILE id="sTfH01" name="OutputSampleRate.h" compile="0" resource="0"
+              file="rec/audio/OutputSampleRate.h"/>
       </GROUP>
-      <GROUP id="{96252E04-3A8C-CCE4-57C5-CE39E2391111}" name="util">
-        <FILE id="peTbsV" name="Deletable.h" compile="0" resource="0" file="rec/util/Deletable.h"/>
-        <FILE id="mGfpeB" name="HasLock.h" compile="0" resource="0" file="rec/util/HasLock.h"/>
-        <FILE id="qQpVge" name="STL.h" compile="0" resource="0" file="rec/util/STL.h"/>
-        <GROUP id="{1BE3DC6B-CDBE-BD2D-E64A-27C226880AF2}" name="thread">
-          <FILE id="cp4DbY" name="CallAsync.h" compile="0" resource="0" file="rec/util/thread/CallAsync.h"/>
-          <FILE id="MsdKda" name="Callback.h" compile="0" resource="0" file="rec/util/thread/Callback.h"/>
-          <FILE id="yOzNqP" name="Callback0.h" compile="0" resource="0" file="rec/util/thread/Callback0.h"/>
-          <FILE id="cdQrSe" name="Callback1.h" compile="0" resource="0" file="rec/util/thread/Callback1.h"/>
-          <FILE id="x8Edbu" name="Callback2.h" compile="0" resource="0" file="rec/util/thread/Callback2.h"/>
-          <FILE id="lFc5dU" name="Callback3.h" compile="0" resource="0" file="rec/util/thread/Callback3.h"/>
-          <FILE id="Mj1KIW" name="Callback4.h" compile="0" resource="0" file="rec/util/thread/Callback4.h"/>
-          <FILE id="Szo5NR" name="FunctionCallback.h" compile="0" resource="0"
+      <GROUP id="{B5C5CEF6-80C2-E2C0-4B4D-92272BAD97B6}" name="base">
+        <FILE id="CEG7J1" name="ArraySize.h" compile="0" resource="0" file="rec/base/ArraySize.h"/>
+        <FILE id="aqpGWx" name="base.h" compile="0" resource="0" file="rec/base/base.h"/>
+        <FILE id="pDvnTt" name="BaseNoJuce.h" compile="0" resource="0" file="rec/base/BaseNoJuce.h"/>
+        <FILE id="TTkC94" name="basictypes.h" compile="0" resource="0" file="rec/base/basictypes.h"/>
+        <FILE id="Z1RCsO" name="build_config.h" compile="0" resource="0" file="rec/base/build_config.h"/>
+        <FILE id="ATDYsn" name="Cast.h" compile="0" resource="0" file="rec/base/Cast.h"/>
+        <FILE id="vjSEyD" name="CompileAssert.h" compile="0" resource="0" file="rec/base/CompileAssert.h"/>
+        <FILE id="ySL01e" name="disallow.h" compile="0" resource="0" file="rec/base/disallow.h"/>
+        <FILE id="FuTYey" name="port.h" compile="0" resource="0" file="rec/base/port.h"/>
+        <FILE id="gXACrG" name="ptr.h" compile="0" resource="0" file="rec/base/ptr.h"/>
+        <FILE id="ZSWe2Z" name="RealTime.h" compile="0" resource="0" file="rec/base/RealTime.h"/>
+        <FILE id="W3YglB" name="SampleRate.h" compile="0" resource="0" file="rec/base/SampleRate.h"/>
+        <FILE id="riPbUv" name="SampleTime.h" compile="0" resource="0" file="rec/base/SampleTime.h"/>
+        <FILE id="wnuo8G" name="scoped_array.h" compile="0" resource="0" file="rec/base/scoped_array.h"/>
+        <FILE id="WND2zJ" name="string_piece.h" compile="0" resource="0" file="rec/base/string_piece.h"/>
+        <FILE id="rUAeDF" name="types.h" compile="0" resource="0" file="rec/base/types.h"/>
+      </GROUP>
+      <GROUP id="{15132880-0C06-92D6-13CD-F56B8F5E60BF}" name="util">
+        <FILE id="Z6vHBR" name="Deletable.h" compile="0" resource="0" file="rec/util/Deletable.h"/>
+        <FILE id="RbOSEa" name="HasLock.h" compile="0" resource="0" file="rec/util/HasLock.h"/>
+        <FILE id="VD8DSf" name="Listener.h" compile="0" resource="0" file="rec/util/Listener.h"/>
+        <FILE id="aORRn2" name="STL.h" compile="0" resource="0" file="rec/util/STL.h"/>
+        <GROUP id="{6276E7A0-539D-829C-ADBA-94FE8BBCDA53}" name="thread">
+          <FILE id="yJpiKh" name="CallAsync.h" compile="0" resource="0" file="rec/util/thread/CallAsync.h"/>
+          <FILE id="FE4cBT" name="Callback.h" compile="0" resource="0" file="rec/util/thread/Callback.h"/>
+          <FILE id="UsgmrV" name="Callback0.h" compile="0" resource="0" file="rec/util/thread/Callback0.h"/>
+          <FILE id="p69OgE" name="Callback1.h" compile="0" resource="0" file="rec/util/thread/Callback1.h"/>
+          <FILE id="pz6LCN" name="Callback2.h" compile="0" resource="0" file="rec/util/thread/Callback2.h"/>
+          <FILE id="oHTZxO" name="Callback3.h" compile="0" resource="0" file="rec/util/thread/Callback3.h"/>
+          <FILE id="gOYsAw" name="Callback4.h" compile="0" resource="0" file="rec/util/thread/Callback4.h"/>
+          <FILE id="kxUxYP" name="FunctionCallback.h" compile="0" resource="0"
                 file="rec/util/thread/FunctionCallback.h"/>
-          <FILE id="SVBHoZ" name="MakeCallback.h" compile="0" resource="0" file="rec/util/thread/MakeCallback.h"/>
-          <FILE id="XZujps" name="MakeThread.h" compile="0" resource="0" file="rec/util/thread/MakeThread.h"/>
-          <FILE id="ZgkieM" name="ModalCallback.h" compile="0" resource="0" file="rec/util/thread/ModalCallback.h"/>
-          <FILE id="nnmDXV" name="Result.h" compile="0" resource="0" file="rec/util/thread/Result.h"/>
-          <FILE id="PTK5yF" name="Trash.cpp" compile="1" resource="0" file="rec/util/thread/Trash.cpp"/>
-          <FILE id="AgGLAg" name="Trash.h" compile="0" resource="0" file="rec/util/thread/Trash.h"/>
+          <FILE id="sR7BhG" name="LockedCallback.h" compile="0" resource="0"
+                file="rec/util/thread/LockedCallback.h"/>
+          <FILE id="J7K3w2" name="MakeCallback.h" compile="0" resource="0" file="rec/util/thread/MakeCallback.h"/>
+          <FILE id="VBjj1A" name="MakeThread.h" compile="0" resource="0" file="rec/util/thread/MakeThread.h"/>
+          <FILE id="agVGvG" name="ModalCallback.h" compile="0" resource="0" file="rec/util/thread/ModalCallback.h"/>
+          <FILE id="zPc0n0" name="Pointer.h" compile="0" resource="0" file="rec/util/thread/Pointer.h"/>
+          <FILE id="CTHTPR" name="Result.h" compile="0" resource="0" file="rec/util/thread/Result.h"/>
+          <FILE id="A9KJeh" name="Trash.cpp" compile="1" resource="0" file="rec/util/thread/Trash.cpp"/>
+          <FILE id="kgC5Tf" name="Trash.h" compile="0" resource="0" file="rec/util/thread/Trash.h"/>
         </GROUP>
       </GROUP>
     </GROUP>
