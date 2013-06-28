@@ -20,8 +20,17 @@ struct Value {
   double value;
 };
 
+struct Playback {
+  string file;
+  Value level;
+  int loops;
+  Value pan;
+  bool passthrough;
+};
+
 void operator>>(const Node&, Envelope&);
 void operator>>(const Node&, Value&);
+void operator>>(const Node&, Playback&);
 
 }  // namespace echomesh
 

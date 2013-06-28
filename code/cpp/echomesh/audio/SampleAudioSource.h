@@ -2,6 +2,7 @@
 #define __ECHOMESH_SAMPLEAUDIOSOURCE__
 
 #include "echomesh/base/Echomesh.h"
+#include "echomesh/audio/Envelope.h"
 
 namespace echomesh {
 
@@ -22,6 +23,8 @@ class SampleAudioSource : public AudioSource {
   void unload();
 
  private:
+  Playback playback_;
+
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };
 

@@ -3,7 +3,7 @@
 namespace echomesh {
 
 SampleAudioSource::SampleAudioSource(const Node& node) {
-
+  node >> playback_;
 }
 
 SampleAudioSource::~SampleAudioSource() {}

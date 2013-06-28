@@ -28,4 +28,12 @@ void operator>>(const Node& node, Value& value) {
     node["envelope"] >> value.envelope;
 }
 
+void operator>>(const Node& node, Playback& playback) {
+  node["file"] >> playback.file;
+  node["level"] >> playback.level;
+  node["loops"] >> playback.loops;
+  node["pan"] >> playback.pan;
+  node["passthrough"] >> playback.passthrough;
+}
+
 }  // namespace echomesh
