@@ -12,10 +12,11 @@ _ENVELOPE_ERROR = "ExternalPlayer.%s must either be constant or an envelope."
 
 def _fix(player, name):
   part = getattr(player, name)
+  result = {'is_constant': part.is_constant}
   if part.is_constant:
-    result = part.evaluate()
+    result['value'] = part.evaluate()
   elif part.envelope:
-    result = part.envelope.description()
+    result['envelope'] = part.envelope.description()
   else:
     raise Exception(_ENVELOPE_ERROR % name)
   setattr(player, name, result)
@@ -47,4 +48,3 @@ class ExternalPlayer(MasterRunnable):
   def _write(self, wtype, **data):
     data['hash'] = hash(self)
     ClientServer.instance().write(type='audio', data=data)
-

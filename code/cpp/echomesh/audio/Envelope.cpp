@@ -20,4 +20,12 @@ void operator>>(const Node& node, Envelope& env) {
   }
 }
 
+void operator>>(const Node& node, Value& value) {
+  node["is_constant"] >> value.isConstant;
+  if (value.isConstant)
+    node["value"] >> value.value;
+  else
+    node["envelope"] >> value.envelope;
+}
+
 }  // namespace echomesh

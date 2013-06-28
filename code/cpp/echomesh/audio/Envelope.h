@@ -11,9 +11,17 @@ struct Envelope {
   int loops;
   bool reverse;
   vector<SampleTime> times;
+
+};
+
+struct Value {
+  bool isConstant;
+  Envelope envelope;
+  double value;
 };
 
 void operator>>(const Node&, Envelope&);
+void operator>>(const Node&, Value&);
 
 }  // namespace echomesh
 
