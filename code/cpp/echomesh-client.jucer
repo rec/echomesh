@@ -8,23 +8,25 @@
       <FILE id="ErLUPv" name="base64.h" compile="0" resource="0" file="base64/base64.h"/>
     </GROUP>
     <GROUP id="{8ACBEE09-FC58-2307-D686-2B325A31EC2A}" name="echomesh">
-      <GROUP id="{E092D677-2055-62E7-1E77-4EA5F1180C33}" name="audio">
-        <FILE id="xx3T3C" name="AudioController.cpp" compile="1" resource="0"
+      <GROUP id="{417D3527-65CC-AA07-99C0-D28FEACB0469}" name="audio">
+        <FILE id="kfjejx" name="AudioController.cpp" compile="1" resource="0"
               file="echomesh/audio/AudioController.cpp"/>
-        <FILE id="OztJRC" name="AudioController.h" compile="0" resource="0"
+        <FILE id="p2UEZ0" name="AudioController.h" compile="0" resource="0"
               file="echomesh/audio/AudioController.h"/>
-        <FILE id="nSHQp4" name="Envelope.cpp" compile="1" resource="0" file="echomesh/audio/Envelope.cpp"/>
-        <FILE id="wjcDBs" name="Envelope.h" compile="0" resource="0" file="echomesh/audio/Envelope.h"/>
-        <FILE id="Pgpcck" name="MidiController.cpp" compile="1" resource="0"
+        <FILE id="v7Zp6P" name="Envelope.cpp" compile="1" resource="0" file="echomesh/audio/Envelope.cpp"/>
+        <FILE id="D35C2o" name="Envelope.h" compile="0" resource="0" file="echomesh/audio/Envelope.h"/>
+        <FILE id="JGV9Xe" name="GetReader.cpp" compile="1" resource="0" file="echomesh/audio/GetReader.cpp"/>
+        <FILE id="UU3Pkh" name="GetReader.h" compile="0" resource="0" file="echomesh/audio/GetReader.h"/>
+        <FILE id="T9mQLw" name="MidiController.cpp" compile="1" resource="0"
               file="echomesh/audio/MidiController.cpp"/>
-        <FILE id="woTZdJ" name="MidiController.h" compile="0" resource="0"
+        <FILE id="ocACdF" name="MidiController.h" compile="0" resource="0"
               file="echomesh/audio/MidiController.h"/>
-        <FILE id="HM7xl1" name="PlaybackAudioSource.h" compile="0" resource="0"
+        <FILE id="UhjESM" name="PlaybackAudioSource.h" compile="0" resource="0"
               file="echomesh/audio/PlaybackAudioSource.h"/>
-        <FILE id="Cm0wXx" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
-        <FILE id="VAilKE" name="SampleAudioSource.cpp" compile="1" resource="0"
+        <FILE id="CKKDbF" name="Player.h" compile="0" resource="0" file="echomesh/audio/Player.h"/>
+        <FILE id="AKapVi" name="SampleAudioSource.cpp" compile="1" resource="0"
               file="echomesh/audio/SampleAudioSource.cpp"/>
-        <FILE id="tcIGiQ" name="SampleAudioSource.h" compile="0" resource="0"
+        <FILE id="vsMy7l" name="SampleAudioSource.h" compile="0" resource="0"
               file="echomesh/audio/SampleAudioSource.h"/>
       </GROUP>
       <GROUP id="{27BB2E8C-EF00-A3EE-6D50-1BC13156C3BD}" name="base">

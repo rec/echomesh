@@ -132,6 +132,7 @@
     <ClCompile Include="..\..\base64\base64.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\AudioController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\Envelope.cpp"/>
+    <ClCompile Include="..\..\echomesh\audio\GetReader.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\SampleAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
@@ -1266,6 +1267,7 @@
     <ClInclude Include="..\..\base64\base64.h"/>
     <ClInclude Include="..\..\echomesh\audio\AudioController.h"/>
     <ClInclude Include="..\..\echomesh\audio\Envelope.h"/>
+    <ClInclude Include="..\..\echomesh\audio\GetReader.h"/>
     <ClInclude Include="..\..\echomesh\audio\MidiController.h"/>
     <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\Player.h"/>

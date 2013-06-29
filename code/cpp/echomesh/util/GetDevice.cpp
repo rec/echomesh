@@ -25,7 +25,6 @@ int getDeviceIndex(const String& name, int index) {
       index = DeviceClass::getDefaultDeviceIndex();
   }
 
-  log("Found: " + names[index]);
   return index;
 }
 
