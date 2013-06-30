@@ -5,7 +5,8 @@
 
 namespace echomesh {
 
-PositionableAudioSource* getReader(const String&);
+PositionableAudioSource* getReader(const String&,
+                                   SampleTime begin, SampleTime end);
 
 }  // namespace echomesh
 

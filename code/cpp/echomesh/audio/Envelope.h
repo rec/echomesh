@@ -6,7 +6,6 @@
 namespace echomesh {
 
 struct Envelope {
-  SampleTime begin, end;
   vector<double> data;
   rec::SampleTime length;
   int loops;
@@ -21,6 +20,7 @@ struct Value {
 };
 
 struct Playback {
+  SampleTime begin, end;
   string file;
   Value level;
   int loops;

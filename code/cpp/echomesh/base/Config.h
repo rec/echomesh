@@ -85,8 +85,10 @@ void fillArray(const Node& node, Array* array) {
     node[i] >> (*array)[i];
 }
 
+template <typename T>
+inline void operator>>(const Node& n, vector<T>& vt) { fillArray(n, &vt); }
 
-inline void operator>>(const Node& n, ColorList& cl) { fillArray(n, &cl); }
+// inline void operator>>(const Node& n, ColorList& cl) { fillArray(n, &cl); }
 
 void operator>>(const Node&, ColorBytes&);
 void operator>>(const Node&, Colour&);

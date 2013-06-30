@@ -1,8 +1,12 @@
+#include <limits>
+
 #include "echomesh/base/Config.h"
 
 namespace echomesh {
 
 using namespace std;
+
+static SampleRate SAMPLE_RATE(44100.0);
 
 void operator>>(const Node& node, ColorBytes& p) {
   node[0] >> p[0];
@@ -36,9 +40,14 @@ void operator>>(const Node& node, Point& p) {
 }
 
 void operator>>(const Node& node, SampleTime& t) {
-  uint64 time;
+  double time;
   node >> time;
-  t = time;
+  if (isinf(time)) {
+    t = (time > 0.0) ? numeric_limits<int64>::max() :
+      numeric_limits<int64>::min();
+  } else {
+    t = SampleTime(time, SAMPLE_RATE);
+  }
 }
 
 void operator>>(const Node& node, RealTime& t) {
