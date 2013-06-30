@@ -6,12 +6,12 @@
 namespace echomesh {
 
 struct Envelope {
+  SampleTime begin, end;
   vector<double> data;
-  rec::SampleTime loopLength;
+  rec::SampleTime length;
   int loops;
   bool reverse;
   vector<SampleTime> times;
-
 };
 
 struct Value {

@@ -22,15 +22,15 @@ def _fix(player, name):
   setattr(player, name, result)
 
 class ExternalPlayer(MasterRunnable):
-  _FIELDS = 'file', 'passthrough', 'level', 'pan', 'loops'
+  _FIELDS = 'begin', 'end', 'file', 'passthrough', 'level', 'pan', 'loops'
 
   def __init__(self, element, level=1, pan=0, loops=1, **kwds):
     ClientServer.instance()
     super(ExternalPlayer, self).__init__()
     PlayerSetter.set_player(self, element, level=1, pan=0, loops=1, **kwds)
-    _fix(self, 'level')
-    _fix(self, 'pan')
-    data = Dict.from_attributes(self, ExternalPlayer._FIELDS)
+    _fix(self, '_level')
+    _fix(self, '_pan')
+    data = dict((f, getattr(self, '_' + f)) for f in ExternalPlayer._FIELDS)
     self._write(type='construct', **data)
 
   def _on_run(self):
@@ -45,6 +45,6 @@ class ExternalPlayer(MasterRunnable):
   def unload(self):
     self._write(type='unload')
 
-  def _write(self, wtype, **data):
+  def _write(self, **data):
     data['hash'] = hash(self)
     ClientServer.instance().write(type='audio', data=data)

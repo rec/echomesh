@@ -5,13 +5,16 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def set_player(self, element, level=1, pan=0, loops=1, **kwds):
-  self.element = element
-  self.file = kwds.pop('file')
+def set_player(self, element,
+               level=1, pan=0, loops=1, begin=0, end=float('inf'), **kwds):
+  self._element = element
+  self._file = kwds.pop('file')
   if kwds:
     LOGGER.error('Unused keywords %s', kwds)
-  self.passthrough = (level == 1 and pan == 0)
+  self._passthrough = (level == 1 and pan == 0)
 
-  self.level = Expression(level, element)
-  self.pan = Expression(pan, element)
-  self.loops = loops
+  self._level = Expression(level, element)
+  self._pan = Expression(pan, element)
+  self._loops = loops
+  self._begin = begin
+  self._end = end

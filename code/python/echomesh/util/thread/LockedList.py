@@ -21,7 +21,7 @@ class LockedList(object):
       try:
         getattr(e, member_name)()
       except:
-        LOGGER.error('%s:%s', member_name, e)
+        LOGGER.error('\nTried to get %s.%s\n', e, member_name)
         if RAISE_EXCEPTIONS:
           raise
 
@@ -46,5 +46,5 @@ class LockedList(object):
         try:
           self._entries.remove(e)
         except ValueError:
-          LOGGER.warn('Tried to remove non-existent value %s from %s',
-                      e, self._entries)
+          LOGGER.error('Tried to remove non-existent value %s from %s',
+                       e, self._entries)

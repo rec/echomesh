@@ -7,7 +7,7 @@ from echomesh.expression import Units
 from echomesh.util import Dict
 
 class Envelope(object):
-  _FIELDS = 'data', 'loop_length', 'loops', 'reverse', 'times'
+  _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
 
   def __init__(self, data):
     self.is_constant = not isinstance(data, dict)
