@@ -38,22 +38,21 @@ class FilePlayer(ThreadLoop):
     if not SetOutput.OUTPUT_SET:
       SetOutput.set_output()
 
-    filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(self._file)
     try:
-      what = sndhdr.what(filename)
+      what = sndhdr.what(self._filename)
     except IOError:
-      raise Exception('Can\'t open file %s' % filename)
+      raise Exception('Can\'t open file %s' % self._filename)
 
     if not what:
-      raise Exception(UNKNOWN_FORMAT_ERROR % filename)
+      raise Exception(UNKNOWN_FORMAT_ERROR % self._filename)
     filetype = what[0]
     handler = Util.FILE_READERS.get(filetype)
     if not handler:
-      LOGGER.error("Can't understand the file type of file %s", filename)
+      LOGGER.error("Can't understand the file type of file %s", self._filename)
       self.pause()
       return
 
-    self._file_stream = handler.open(filename, 'rb')
+    self._file_stream = handler.open(self._filename, 'rb')
     self._sample_width = self._file_stream.getsampwidth()
 
     (self._channels, self._sample_width, self._sampling_rate,
