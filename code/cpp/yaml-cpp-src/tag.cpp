@@ -2,6 +2,7 @@
 #include "directives.h"
 #include "token.h"
 #include <cassert>
+#include <stdexcept>
 
 namespace YAML
 {
@@ -40,11 +41,12 @@ namespace YAML
 			case NAMED_HANDLE:
 				return directives.TranslateTagHandle("!" + handle + "!") + value;
 			case NON_SPECIFIC:
+				// TODO:
 				return "!";
 			default:
 				assert(false);
-				return "!";
 		}
+		throw std::runtime_error("yaml-cpp: internal error, bad tag type");
 	}
 }
 

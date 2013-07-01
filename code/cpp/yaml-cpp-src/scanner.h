@@ -1,7 +1,9 @@
-#pragma once
-
 #ifndef SCANNER_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define SCANNER_H_62B23520_7C8E_11DE_8A39_0800200C9A66
+
+#if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4)) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
 
 #include <ios>
@@ -10,6 +12,7 @@
 #include <stack>
 #include <set>
 #include <map>
+#include "ptr_vector.h"
 #include "stream.h"
 #include "token.h"
 
@@ -112,16 +115,16 @@ namespace YAML
 		Stream INPUT;
 
 		// the output (tokens)
-		std::queue <Token> m_tokens;
+		std::queue<Token> m_tokens;
 
 		// state info
 		bool m_startedStream, m_endedStream;
 		bool m_simpleKeyAllowed;
 		bool m_canBeJSONFlow;
-		std::stack <SimpleKey> m_simpleKeys;
-		std::stack <IndentMarker *> m_indents;
-		std::vector <IndentMarker *> m_indentRefs; // for "garbage collection"
-		std::stack <FLOW_MARKER> m_flows;
+		std::stack<SimpleKey> m_simpleKeys;
+		std::stack<IndentMarker *> m_indents;
+		ptr_vector<IndentMarker> m_indentRefs; // for "garbage collection"
+		std::stack<FLOW_MARKER> m_flows;
 	};
 }
 

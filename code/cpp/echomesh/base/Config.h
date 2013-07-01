@@ -38,13 +38,13 @@ struct Visualizer {
   Point layout;
   Point padding;
   Point topLeft;
-  int period;
+  SampleTime period;
   bool show;
 };
 
 struct Hardware {
   bool enable;
-  int period;
+  SampleTime period;
   bool local;
   string rgbOrder;
 };

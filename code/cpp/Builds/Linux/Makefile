@@ -49,6 +49,33 @@ endif
 DEPFLAGS := $(if $(word 2, $(TARGET_ARCH)), , -MMD)
 
 OBJECTS := \
+  $(OBJDIR)/aliasmanager_6b830d0d.o \
+  $(OBJDIR)/binary_6a84dff1.o \
+  $(OBJDIR)/graphbuilder_3e9247f3.o \
+  $(OBJDIR)/graphbuilderadapter_403d2f86.o \
+  $(OBJDIR)/conversion_51b63106.o \
+  $(OBJDIR)/directives_a829c6f4.o \
+  $(OBJDIR)/emitfromevents_d2126bc6.o \
+  $(OBJDIR)/emitter_919ca4c8.o \
+  $(OBJDIR)/emitterstate_f549893.o \
+  $(OBJDIR)/emitterutils_d22dd4b3.o \
+  $(OBJDIR)/exp_ff0c1e77.o \
+  $(OBJDIR)/iterator_3b9f5b1e.o \
+  $(OBJDIR)/node_9bbecc32.o \
+  $(OBJDIR)/nodebuilder_271e7cb3.o \
+  $(OBJDIR)/nodeownership_5e4951c7.o \
+  $(OBJDIR)/null_e72d9937.o \
+  $(OBJDIR)/ostream_8adb6189.o \
+  $(OBJDIR)/parser_6588d10f.o \
+  $(OBJDIR)/regex_c10dea61.o \
+  $(OBJDIR)/scanner_dc701758.o \
+  $(OBJDIR)/scanscalar_1b773f19.o \
+  $(OBJDIR)/scantag_126715d7.o \
+  $(OBJDIR)/scantoken_f539c6b6.o \
+  $(OBJDIR)/simplekey_565ab407.o \
+  $(OBJDIR)/singledocparser_509dffe9.o \
+  $(OBJDIR)/stream_57c84bf0.o \
+  $(OBJDIR)/tag_f0cb4d74.o \
   $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/AudioController_2cdb5551.o \
   $(OBJDIR)/Envelope_e091de3b.o \
@@ -72,35 +99,6 @@ OBJECTS := \
   $(OBJDIR)/RegisterFormats_a3caa84e.o \
   $(OBJDIR)/OutputSampleRate_b96311f8.o \
   $(OBJDIR)/Trash_ed189496.o \
-  $(OBJDIR)/aliascontent_51f9ebd9.o \
-  $(OBJDIR)/aliasmanager_6b830d0d.o \
-  $(OBJDIR)/content_2bb6a053.o \
-  $(OBJDIR)/conversion_51b63106.o \
-  $(OBJDIR)/directives_a829c6f4.o \
-  $(OBJDIR)/emitfromevents_d2126bc6.o \
-  $(OBJDIR)/emitter_919ca4c8.o \
-  $(OBJDIR)/emitterstate_f549893.o \
-  $(OBJDIR)/emitterutils_d22dd4b3.o \
-  $(OBJDIR)/exp_ff0c1e77.o \
-  $(OBJDIR)/iterator_3b9f5b1e.o \
-  $(OBJDIR)/map_7efe8236.o \
-  $(OBJDIR)/node_9bbecc32.o \
-  $(OBJDIR)/nodebuilder_271e7cb3.o \
-  $(OBJDIR)/null_e72d9937.o \
-  $(OBJDIR)/ostream_8adb6189.o \
-  $(OBJDIR)/parser_6588d10f.o \
-  $(OBJDIR)/parserstate_5d4c00ac.o \
-  $(OBJDIR)/regex_c10dea61.o \
-  $(OBJDIR)/scalar_bdb065c.o \
-  $(OBJDIR)/scanner_dc701758.o \
-  $(OBJDIR)/scanscalar_1b773f19.o \
-  $(OBJDIR)/scantag_126715d7.o \
-  $(OBJDIR)/scantoken_f539c6b6.o \
-  $(OBJDIR)/sequence_4c55e8f1.o \
-  $(OBJDIR)/simplekey_565ab407.o \
-  $(OBJDIR)/singledocparser_509dffe9.o \
-  $(OBJDIR)/stream_57c84bf0.o \
-  $(OBJDIR)/tag_f0cb4d74.o \
   $(OBJDIR)/juce_audio_basics_2442e4ea.o \
   $(OBJDIR)/juce_audio_devices_a4c8a728.o \
   $(OBJDIR)/juce_audio_formats_d349f0c8.o \
@@ -134,6 +132,141 @@ clean:
 strip:
 	@echo Stripping echomesh-client
 	-@strip --strip-unneeded $(OUTDIR)/$(TARGET)
+
+$(OBJDIR)/aliasmanager_6b830d0d.o: ../../yaml-cpp-src/aliasmanager.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling aliasmanager.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/binary_6a84dff1.o: ../../yaml-cpp-src/binary.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling binary.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/graphbuilder_3e9247f3.o: ../../yaml-cpp-src/contrib/graphbuilder.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling graphbuilder.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/graphbuilderadapter_403d2f86.o: ../../yaml-cpp-src/contrib/graphbuilderadapter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling graphbuilderadapter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/conversion_51b63106.o: ../../yaml-cpp-src/conversion.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling conversion.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/directives_a829c6f4.o: ../../yaml-cpp-src/directives.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling directives.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/emitfromevents_d2126bc6.o: ../../yaml-cpp-src/emitfromevents.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling emitfromevents.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/emitter_919ca4c8.o: ../../yaml-cpp-src/emitter.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling emitter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/emitterstate_f549893.o: ../../yaml-cpp-src/emitterstate.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling emitterstate.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/emitterutils_d22dd4b3.o: ../../yaml-cpp-src/emitterutils.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling emitterutils.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/exp_ff0c1e77.o: ../../yaml-cpp-src/exp.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling exp.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/iterator_3b9f5b1e.o: ../../yaml-cpp-src/iterator.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling iterator.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/node_9bbecc32.o: ../../yaml-cpp-src/node.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling node.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/nodebuilder_271e7cb3.o: ../../yaml-cpp-src/nodebuilder.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling nodebuilder.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/nodeownership_5e4951c7.o: ../../yaml-cpp-src/nodeownership.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling nodeownership.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/null_e72d9937.o: ../../yaml-cpp-src/null.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling null.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ostream_8adb6189.o: ../../yaml-cpp-src/ostream.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ostream.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/parser_6588d10f.o: ../../yaml-cpp-src/parser.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling parser.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/regex_c10dea61.o: ../../yaml-cpp-src/regex.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling regex.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/scanner_dc701758.o: ../../yaml-cpp-src/scanner.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling scanner.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/scanscalar_1b773f19.o: ../../yaml-cpp-src/scanscalar.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling scanscalar.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/scantag_126715d7.o: ../../yaml-cpp-src/scantag.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling scantag.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/scantoken_f539c6b6.o: ../../yaml-cpp-src/scantoken.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling scantoken.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/simplekey_565ab407.o: ../../yaml-cpp-src/simplekey.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling simplekey.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/singledocparser_509dffe9.o: ../../yaml-cpp-src/singledocparser.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling singledocparser.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/stream_57c84bf0.o: ../../yaml-cpp-src/stream.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling stream.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/tag_f0cb4d74.o: ../../yaml-cpp-src/tag.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling tag.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/base64_1eb4a3a4.o: ../../base64/base64.cpp
 	-@mkdir -p $(OBJDIR)
@@ -248,151 +381,6 @@ $(OBJDIR)/OutputSampleRate_b96311f8.o: ../../rec/audio/OutputSampleRate.cpp
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Trash.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/aliascontent_51f9ebd9.o: ../../yaml-cpp-src/aliascontent.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling aliascontent.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/aliasmanager_6b830d0d.o: ../../yaml-cpp-src/aliasmanager.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling aliasmanager.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/content_2bb6a053.o: ../../yaml-cpp-src/content.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling content.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/conversion_51b63106.o: ../../yaml-cpp-src/conversion.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling conversion.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/directives_a829c6f4.o: ../../yaml-cpp-src/directives.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling directives.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/emitfromevents_d2126bc6.o: ../../yaml-cpp-src/emitfromevents.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling emitfromevents.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/emitter_919ca4c8.o: ../../yaml-cpp-src/emitter.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling emitter.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/emitterstate_f549893.o: ../../yaml-cpp-src/emitterstate.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling emitterstate.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/emitterutils_d22dd4b3.o: ../../yaml-cpp-src/emitterutils.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling emitterutils.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/exp_ff0c1e77.o: ../../yaml-cpp-src/exp.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling exp.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/iterator_3b9f5b1e.o: ../../yaml-cpp-src/iterator.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling iterator.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/map_7efe8236.o: ../../yaml-cpp-src/map.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling map.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/node_9bbecc32.o: ../../yaml-cpp-src/node.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling node.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/nodebuilder_271e7cb3.o: ../../yaml-cpp-src/nodebuilder.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling nodebuilder.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/null_e72d9937.o: ../../yaml-cpp-src/null.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling null.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/ostream_8adb6189.o: ../../yaml-cpp-src/ostream.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling ostream.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/parser_6588d10f.o: ../../yaml-cpp-src/parser.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling parser.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/parserstate_5d4c00ac.o: ../../yaml-cpp-src/parserstate.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling parserstate.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/regex_c10dea61.o: ../../yaml-cpp-src/regex.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling regex.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/scalar_bdb065c.o: ../../yaml-cpp-src/scalar.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling scalar.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/scanner_dc701758.o: ../../yaml-cpp-src/scanner.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling scanner.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/scanscalar_1b773f19.o: ../../yaml-cpp-src/scanscalar.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling scanscalar.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/scantag_126715d7.o: ../../yaml-cpp-src/scantag.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling scantag.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/scantoken_f539c6b6.o: ../../yaml-cpp-src/scantoken.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling scantoken.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/sequence_4c55e8f1.o: ../../yaml-cpp-src/sequence.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling sequence.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/simplekey_565ab407.o: ../../yaml-cpp-src/simplekey.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling simplekey.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/singledocparser_509dffe9.o: ../../yaml-cpp-src/singledocparser.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling singledocparser.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/stream_57c84bf0.o: ../../yaml-cpp-src/stream.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling stream.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/tag_f0cb4d74.o: ../../yaml-cpp-src/tag.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling tag.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2442e4ea.o: ../../JuceLibraryCode/modules/juce_audio_basics/juce_audio_basics.cpp

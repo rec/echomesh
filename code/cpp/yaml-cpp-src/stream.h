@@ -1,21 +1,22 @@
-#pragma once
-
 #ifndef STREAM_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define STREAM_H_62B23520_7C8E_11DE_8A39_0800200C9A66
+
+#if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4)) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
 
 #include "yaml-cpp/noncopyable.h"
 #include "yaml-cpp/mark.h"
+#include <cstddef>
 #include <deque>
 #include <ios>
-#include <string>
 #include <iostream>
 #include <set>
+#include <string>
 
 namespace YAML
 {
-	static const size_t MAX_PARSER_PUSHBACK = 8;
-
 	class Stream: private noncopyable
 	{
 	public:
@@ -47,8 +48,6 @@ namespace YAML
 		Mark m_mark;
 		
 		CharacterSet m_charSet;
-		unsigned char m_bufPushback[MAX_PARSER_PUSHBACK];
-		mutable size_t m_nPushedBack;
 		mutable std::deque<char> m_readahead;
 		unsigned char* const m_pPrefetched;
 		mutable size_t m_nPrefetchedAvailable;

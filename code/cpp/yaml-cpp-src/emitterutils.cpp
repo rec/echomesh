@@ -1,6 +1,7 @@
 #include "emitterutils.h"
 #include "exp.h"
 #include "indentation.h"
+#include "yaml-cpp/binary.h"
 #include "yaml-cpp/exceptions.h"
 #include "stringsource.h"
 #include <sstream>
@@ -128,6 +129,9 @@ namespace YAML
 			}
 			
 			bool IsValidPlainScalar(const std::string& str, bool inFlow, bool allowOnlyAscii) {
+				if(str.empty())
+					return false;
+				
 				// first check the start
 				const RegEx& start = (inFlow ? Exp::PlainScalarInFlow() : Exp::PlainScalar());
 				if(!start.Matches(str))
@@ -265,9 +269,29 @@ namespace YAML
 			return true;
 		}
 		
+		bool WriteChar(ostream& out, char ch)
+		{
+			if(('a' <= ch && ch <= 'z') || ('A' <= ch && ch <= 'Z'))
+				out << ch;
+			else if((0x20 <= ch && ch <= 0x7e) || ch == ' ')
+				out << "\"" << ch << "\"";
+			else if(ch == '\t')
+				out << "\"\\t\"";
+			else if(ch == '\n')
+				out << "\"\\n\"";
+			else if(ch == '\b')
+				out << "\"\\b\"";
+			else {
+				out << "\"";
+				WriteDoubleQuoteEscapeSequence(out, ch);
+				out << "\"";
+			}
+			return true;
+		}
+
 		bool WriteComment(ostream& out, const std::string& str, int postCommentIndent)
 		{
-			unsigned curIndent = out.col();
+			const unsigned curIndent = out.col();
 			out << "#" << Indentation(postCommentIndent);
 			int codePoint;
 			for(std::string::const_iterator i = str.begin();
@@ -344,41 +368,10 @@ namespace YAML
 			return true;
 		}
 
-		bool WriteBinary(ostream& out, const char *data, std::size_t size)
+		bool WriteBinary(ostream& out, const Binary& binary)
 		{
-			static const char encoding[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-			const char PAD = '=';
-			
-			out << "\"";
-			std::size_t chunks = size / 3;
-			std::size_t remainder = size % 3;
-
-			for(std::size_t i=0;i<chunks;i++, data += 3) {
-				out << encoding[data[0] >> 2];
-				out << encoding[((data[0] & 0x3) << 4) | (data[1] >> 4)];
-				out << encoding[((data[1] & 0xf) << 2) | (data[2] >> 6)];
-				out << encoding[data[2] & 0x3f];
-			}
-			
-			switch(remainder) {
-				case 0:
-					break;
-				case 1:
-					out << encoding[data[0] >> 2];
-					out << encoding[((data[0] & 0x3) << 4)];
-					out << PAD;
-					out << PAD;
-					break;
-				case 2:
-					out << encoding[data[0] >> 2];
-					out << encoding[((data[0] & 0x3) << 4) | (data[1] >> 4)];
-					out << encoding[((data[1] & 0xf) << 2)];
-					out << PAD;
-					break;
-			}
-			
-			out << "\"";
-			return true;
+            WriteDoubleQuotedString(out, EncodeBase64(binary.data(), binary.size()), false);
+            return true;
 		}
 	}
 }

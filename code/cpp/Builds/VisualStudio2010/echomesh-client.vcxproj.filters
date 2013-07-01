@@ -5,6 +5,12 @@
     <Filter Include="echomesh-client">
       <UniqueIdentifier>{5A28992E-2A75-947E-A5C4-A2A2537C5E17}</UniqueIdentifier>
     </Filter>
+    <Filter Include="echomesh-client\yaml-cpp-src">
+      <UniqueIdentifier>{975B39E0-1428-C908-98E4-B25DD2B0ADB9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="echomesh-client\yaml-cpp-src\contrib">
+      <UniqueIdentifier>{60D05FE0-FA7C-975C-010D-4EFE47074964}</UniqueIdentifier>
+    </Filter>
     <Filter Include="echomesh-client\base64">
       <UniqueIdentifier>{689DE205-0857-704A-7424-63A761807F54}</UniqueIdentifier>
     </Filter>
@@ -43,9 +49,6 @@
     </Filter>
     <Filter Include="echomesh-client\rec\util\thread">
       <UniqueIdentifier>{71829ECD-877B-0F38-28F7-FF0BFF9FFE6E}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="echomesh-client\yaml-cpp-src">
-      <UniqueIdentifier>{975B39E0-1428-C908-98E4-B25DD2B0ADB9}</UniqueIdentifier>
     </Filter>
     <Filter Include="Juce Modules">
       <UniqueIdentifier>{422C46B7-0467-2DB0-BF3C-16DFCAFD69AC}</UniqueIdentifier>
@@ -346,6 +349,87 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\yaml-cpp-src\aliasmanager.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\binary.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\contrib\graphbuilder.cpp">
+      <Filter>echomesh-client\yaml-cpp-src\contrib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\contrib\graphbuilderadapter.cpp">
+      <Filter>echomesh-client\yaml-cpp-src\contrib</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\conversion.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\directives.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\emitfromevents.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\emitter.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\emitterstate.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\emitterutils.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\exp.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\iterator.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\node.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\nodebuilder.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\nodeownership.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\null.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\ostream.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\parser.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\regex.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\scanner.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\scanscalar.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\scantag.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\scantoken.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\simplekey.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\singledocparser.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\stream.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\yaml-cpp-src\tag.cpp">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\base64\base64.cpp">
       <Filter>echomesh-client\base64</Filter>
     </ClCompile>
@@ -414,93 +498,6 @@
     </ClCompile>
     <ClCompile Include="..\..\rec\util\thread\Trash.cpp">
       <Filter>echomesh-client\rec\util\thread</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\aliascontent.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\aliasmanager.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\content.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\conversion.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\directives.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\emitfromevents.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\emitter.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\emitterstate.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\emitterutils.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\exp.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\iterator.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\map.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\node.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\nodebuilder.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\null.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\ostream.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\parser.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\parserstate.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\regex.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\scalar.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\scanner.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\scanscalar.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\scantag.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\scantoken.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\sequence.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\simplekey.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\singledocparser.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\stream.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\yaml-cpp-src\tag.cpp">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\JuceLibraryCode\modules\juce_audio_basics\buffers\juce_AudioDataConverters.cpp">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>
@@ -1689,6 +1686,78 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\yaml-cpp-src\collectionstack.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\contrib\graphbuilderadapter.h">
+      <Filter>echomesh-client\yaml-cpp-src\contrib</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\directives.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\emitterstate.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\emitterutils.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\exp.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\indentation.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\iterpriv.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\nodebuilder.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\nodeownership.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\ptr_stack.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\ptr_vector.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\regex.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\regeximpl.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\scanner.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\scanscalar.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\scantag.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\setting.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\singledocparser.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\stream.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\streamcharsource.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\stringsource.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\tag.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\yaml-cpp-src\token.h">
+      <Filter>echomesh-client\yaml-cpp-src</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\base64\base64.h">
       <Filter>echomesh-client\base64</Filter>
     </ClInclude>
@@ -1874,90 +1943,6 @@
     </ClInclude>
     <ClInclude Include="..\..\rec\util\thread\Trash.h">
       <Filter>echomesh-client\rec\util\thread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\aliascontent.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\collectionstack.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\content.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\directives.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\emitterstate.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\emitterutils.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\exp.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\indentation.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\iterpriv.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\ltnode.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\map.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\nodebuilder.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\parserstate.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\ptr_stack.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\regex.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\regeximpl.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\scalar.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\scanner.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\scanscalar.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\scantag.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\sequence.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\setting.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\singledocparser.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\stream.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\streamcharsource.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\stringsource.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\tag.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\yaml-cpp-src\token.h">
-      <Filter>echomesh-client\yaml-cpp-src</Filter>
     </ClInclude>
     <ClInclude Include="..\..\JuceLibraryCode\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h">
       <Filter>Juce Modules\juce_audio_basics\buffers</Filter>

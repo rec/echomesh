@@ -21,7 +21,7 @@ struct Value {
 
 struct Playback {
   SampleTime begin, end;
-  string file;
+  string filename;
   rec::SampleTime length;
   Value level;
   int loops;

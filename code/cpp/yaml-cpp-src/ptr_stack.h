@@ -1,9 +1,13 @@
-#pragma once
-
 #ifndef PTR_STACK_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define PTR_STACK_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 
+#if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4)) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
+
 #include "yaml-cpp/noncopyable.h"
+#include <cstddef>
+#include <cstdlib>
 #include <memory>
 #include <vector>
 
@@ -33,6 +37,7 @@ public:
 		return t;
 	}
 	T& top() { return *m_data.back(); }
+	const T& top() const { return *m_data.back(); }
 	
 private:
 	std::vector<T*> m_data;

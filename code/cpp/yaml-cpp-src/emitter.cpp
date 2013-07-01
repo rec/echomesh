@@ -6,31 +6,31 @@
 #include <sstream>
 
 namespace YAML
-{
+{	
 	Emitter::Emitter(): m_pState(new EmitterState)
 	{
 	}
-
+	
 	Emitter::~Emitter()
 	{
 	}
-
+	
 	const char *Emitter::c_str() const
 	{
 		return m_stream.str();
 	}
-
+	
 	unsigned Emitter::size() const
 	{
 		return m_stream.pos();
 	}
-
+	
 	// state checking
 	bool Emitter::good() const
 	{
 		return m_pState->good();
 	}
-
+	
 	const std::string Emitter::GetLastError() const
 	{
 		return m_pState->GetLastError();
@@ -46,7 +46,7 @@ namespace YAML
 	{
 		return m_pState->SetStringFormat(value, GLOBAL);
 	}
-
+	
 	bool Emitter::SetBoolFormat(EMITTER_MANIP value)
 	{
 		bool ok = false;
@@ -58,17 +58,17 @@ namespace YAML
 			ok = true;
 		return ok;
 	}
-
+	
 	bool Emitter::SetIntBase(EMITTER_MANIP value)
 	{
 		return m_pState->SetIntFormat(value, GLOBAL);
 	}
-
+	
 	bool Emitter::SetSeqFormat(EMITTER_MANIP value)
 	{
 		return m_pState->SetFlowType(GT_SEQ, value, GLOBAL);
 	}
-
+	
 	bool Emitter::SetMapFormat(EMITTER_MANIP value)
 	{
 		bool ok = false;
@@ -78,21 +78,31 @@ namespace YAML
 			ok = true;
 		return ok;
 	}
-
+	
 	bool Emitter::SetIndent(unsigned n)
 	{
 		return m_pState->SetIndent(n, GLOBAL);
 	}
-
+	
 	bool Emitter::SetPreCommentIndent(unsigned n)
 	{
 		return m_pState->SetPreCommentIndent(n, GLOBAL);
 	}
-
+	
 	bool Emitter::SetPostCommentIndent(unsigned n)
 	{
 		return m_pState->SetPostCommentIndent(n, GLOBAL);
 	}
+    
+    bool Emitter::SetFloatPrecision(unsigned n)
+    {
+        return m_pState->SetFloatPrecision(n, GLOBAL);
+    }
+
+    bool Emitter::SetDoublePrecision(unsigned n)
+    {
+        return m_pState->SetDoublePrecision(n, GLOBAL);
+    }
 
 	// SetLocalValue
 	// . Either start/end a group, or set a modifier locally
@@ -100,8 +110,14 @@ namespace YAML
 	{
 		if(!good())
 			return *this;
-
+		
 		switch(value) {
+			case BeginDoc:
+				EmitBeginDoc();
+				break;
+			case EndDoc:
+				EmitEndDoc();
+				break;
 			case BeginSeq:
 				EmitBeginSeq();
 				break;
@@ -132,12 +148,21 @@ namespace YAML
 		}
 		return *this;
 	}
-
+	
 	Emitter& Emitter::SetLocalIndent(const _Indent& indent)
 	{
 		m_pState->SetIndent(indent.value, LOCAL);
 		return *this;
 	}
+
+    Emitter& Emitter::SetLocalPrecision(const _Precision& precision)
+    {
+        if(precision.floatPrecision >= 0)
+            m_pState->SetFloatPrecision(precision.floatPrecision, LOCAL);
+        if(precision.doublePrecision >= 0)
+            m_pState->SetDoublePrecision(precision.doublePrecision, LOCAL);
+        return *this;
+    }
 
 	// GotoNextPreAtomicState
 	// . Runs the state machine, emitting if necessary, and returns 'true' if done (i.e., ready to emit an atom)
@@ -145,24 +170,25 @@ namespace YAML
 	{
 		if(!good())
 			return true;
-
+		
 		unsigned curIndent = m_pState->GetCurIndent();
-
+		
 		EMITTER_STATE curState = m_pState->GetCurState();
 		switch(curState) {
 				// document-level
 			case ES_WAITING_FOR_DOC:
-				m_stream << "---";
-				m_pState->RequireSeparation();
 				m_pState->SwitchState(ES_WRITING_DOC);
 				return true;
 			case ES_WRITING_DOC:
 				return true;
-
+			case ES_DONE_WITH_DOC:
+				EmitBeginDoc();
+				return false;
+				
 				// block sequence
 			case ES_WAITING_FOR_BLOCK_SEQ_ENTRY:
 				m_stream << IndentTo(curIndent) << "-";
-				m_pState->RequireSeparation();
+				m_pState->RequireSoftSeparation();
 				m_pState->SwitchState(ES_WRITING_BLOCK_SEQ_ENTRY);
 				return true;
 			case ES_WRITING_BLOCK_SEQ_ENTRY:
@@ -171,7 +197,7 @@ namespace YAML
 				m_stream << '\n';
 				m_pState->SwitchState(ES_WAITING_FOR_BLOCK_SEQ_ENTRY);
 				return false;
-
+				
 				// flow sequence
 			case ES_WAITING_FOR_FLOW_SEQ_ENTRY:
 				m_pState->SwitchState(ES_WRITING_FLOW_SEQ_ENTRY);
@@ -179,11 +205,12 @@ namespace YAML
 			case ES_WRITING_FLOW_SEQ_ENTRY:
 				return true;
 			case ES_DONE_WITH_FLOW_SEQ_ENTRY:
+				EmitSeparationIfNecessary();
 				m_stream << ',';
-				m_pState->RequireSeparation();
+				m_pState->RequireSoftSeparation();
 				m_pState->SwitchState(ES_WAITING_FOR_FLOW_SEQ_ENTRY);
 				return false;
-
+				
 				// block map
 			case ES_WAITING_FOR_BLOCK_MAP_ENTRY:
 				m_pState->SetError(ErrorMsg::EXPECTED_KEY_TOKEN);
@@ -191,7 +218,7 @@ namespace YAML
 			case ES_WAITING_FOR_BLOCK_MAP_KEY:
 				if(m_pState->CurrentlyInLongKey()) {
 					m_stream << IndentTo(curIndent) << '?';
-					m_pState->RequireSeparation();
+					m_pState->RequireSoftSeparation();
 				}
 				m_pState->SwitchState(ES_WRITING_BLOCK_MAP_KEY);
 				return true;
@@ -208,17 +235,17 @@ namespace YAML
 			case ES_DONE_WITH_BLOCK_MAP_VALUE:
 				m_pState->SetError(ErrorMsg::EXPECTED_KEY_TOKEN);
 				return true;
-
+				
 				// flow map
 			case ES_WAITING_FOR_FLOW_MAP_ENTRY:
 				m_pState->SetError(ErrorMsg::EXPECTED_KEY_TOKEN);
 				return true;
 			case ES_WAITING_FOR_FLOW_MAP_KEY:
+				EmitSeparationIfNecessary();
 				m_pState->SwitchState(ES_WRITING_FLOW_MAP_KEY);
 				if(m_pState->CurrentlyInLongKey()) {
-					EmitSeparationIfNecessary();
 					m_stream << '?';
-					m_pState->RequireSeparation();
+					m_pState->RequireSoftSeparation();
 				}
 				return true;
 			case ES_WRITING_FLOW_MAP_KEY:
@@ -227,8 +254,9 @@ namespace YAML
 				m_pState->SetError(ErrorMsg::EXPECTED_VALUE_TOKEN);
 				return true;
 			case ES_WAITING_FOR_FLOW_MAP_VALUE:
+				EmitSeparationIfNecessary();
 				m_stream << ':';
-				m_pState->RequireSeparation();
+				m_pState->RequireSoftSeparation();
 				m_pState->SwitchState(ES_WRITING_FLOW_MAP_VALUE);
 				return true;
 			case ES_WRITING_FLOW_MAP_VALUE:
@@ -243,7 +271,7 @@ namespace YAML
 		assert(false);
 		return true;
 	}
-
+	
 	// PreAtomicWrite
 	// . Depending on the emitter state, write to the stream to get it
 	//   in position to do an atomic write (e.g., scalar, sequence, or map)
@@ -251,18 +279,18 @@ namespace YAML
 	{
 		if(!good())
 			return;
-
+		
 		while(!GotoNextPreAtomicState())
 			;
 	}
-
+	
 	// PostAtomicWrite
 	// . Clean up
 	void Emitter::PostAtomicWrite()
 	{
 		if(!good())
 			return;
-
+		
 		EMITTER_STATE curState = m_pState->GetCurState();
 		switch(curState) {
 				// document-level
@@ -274,24 +302,24 @@ namespace YAML
 			case ES_WRITING_BLOCK_SEQ_ENTRY:
 				m_pState->SwitchState(ES_DONE_WITH_BLOCK_SEQ_ENTRY);
 				break;
-
+				
 				// flow seq
 			case ES_WRITING_FLOW_SEQ_ENTRY:
 				m_pState->SwitchState(ES_DONE_WITH_FLOW_SEQ_ENTRY);
 				break;
-
+				
 				// block map
 			case ES_WRITING_BLOCK_MAP_KEY:
 				if(!m_pState->CurrentlyInLongKey()) {
 					m_stream << ':';
-					m_pState->RequireSeparation();
+					m_pState->RequireSoftSeparation();
 				}
 				m_pState->SwitchState(ES_DONE_WITH_BLOCK_MAP_KEY);
 				break;
 			case ES_WRITING_BLOCK_MAP_VALUE:
 				m_pState->SwitchState(ES_DONE_WITH_BLOCK_MAP_VALUE);
 				break;
-
+				
 				// flow map
 			case ES_WRITING_FLOW_MAP_KEY:
 				m_pState->SwitchState(ES_DONE_WITH_FLOW_MAP_KEY);
@@ -302,19 +330,62 @@ namespace YAML
 			default:
 				assert(false);
 		};
-
+				
 		m_pState->ClearModifiedSettings();
 	}
-
+	
 	// EmitSeparationIfNecessary
 	void Emitter::EmitSeparationIfNecessary()
 	{
 		if(!good())
 			return;
-
-		if(m_pState->RequiresSeparation())
+		
+		if(m_pState->RequiresSoftSeparation())
 			m_stream << ' ';
+		else if(m_pState->RequiresHardSeparation())
+			m_stream << '\n';
 		m_pState->UnsetSeparation();
+	}
+	
+	// EmitBeginDoc
+	void Emitter::EmitBeginDoc()
+	{
+		if(!good())
+			return;
+		
+		EMITTER_STATE curState = m_pState->GetCurState();
+		if(curState != ES_WAITING_FOR_DOC && curState != ES_WRITING_DOC && curState != ES_DONE_WITH_DOC) {
+			m_pState->SetError("Unexpected begin document");
+			return;
+		}
+		
+		if(curState == ES_WRITING_DOC || curState == ES_DONE_WITH_DOC)
+			m_stream << '\n';		
+		m_stream << "---\n";
+
+		m_pState->UnsetSeparation();
+		m_pState->SwitchState(ES_WAITING_FOR_DOC);
+	}
+	
+	// EmitEndDoc
+	void Emitter::EmitEndDoc()
+	{
+		if(!good())
+			return;
+
+		
+		EMITTER_STATE curState = m_pState->GetCurState();
+		if(curState != ES_WAITING_FOR_DOC && curState != ES_WRITING_DOC && curState != ES_DONE_WITH_DOC) {
+			m_pState->SetError("Unexpected end document");
+			return;
+		}
+		
+		if(curState == ES_WRITING_DOC || curState == ES_DONE_WITH_DOC)
+			m_stream << '\n';		
+		m_stream << "...\n";
+		
+		m_pState->UnsetSeparation();
+		m_pState->SwitchState(ES_WAITING_FOR_DOC);
 	}
 
 	// EmitBeginSeq
@@ -322,12 +393,12 @@ namespace YAML
 	{
 		if(!good())
 			return;
-
+		
 		// must have a long key if we're emitting a sequence
 		m_pState->StartLongKey();
-
+		
 		PreAtomicWrite();
-
+		
 		EMITTER_STATE curState = m_pState->GetCurState();
 		EMITTER_MANIP flowType = m_pState->GetFlowType(GT_SEQ);
 		if(flowType == Block) {
@@ -335,8 +406,10 @@ namespace YAML
 			   curState == ES_WRITING_BLOCK_MAP_KEY || curState == ES_WRITING_BLOCK_MAP_VALUE ||
 			   curState == ES_WRITING_DOC
 			) {
-				m_stream << "\n";
-				m_pState->UnsetSeparation();
+				if(m_pState->RequiresHardSeparation() || curState != ES_WRITING_DOC) {
+					m_stream << "\n";
+					m_pState->UnsetSeparation();
+				}
 			}
 			m_pState->PushState(ES_WAITING_FOR_BLOCK_SEQ_ENTRY);
 		} else if(flowType == Flow) {
@@ -348,16 +421,16 @@ namespace YAML
 
 		m_pState->BeginGroup(GT_SEQ);
 	}
-
+	
 	// EmitEndSeq
 	void Emitter::EmitEndSeq()
 	{
 		if(!good())
 			return;
-
+		
 		if(m_pState->GetCurGroupType() != GT_SEQ)
 			return m_pState->SetError(ErrorMsg::UNEXPECTED_END_SEQ);
-
+		
 		EMITTER_STATE curState = m_pState->GetCurState();
 		FLOW_TYPE flowType = m_pState->GetCurGroupFlowType();
 		if(flowType == FT_BLOCK) {
@@ -378,19 +451,19 @@ namespace YAML
 			m_stream << "]";
 		} else
 			assert(false);
-
+		
 		m_pState->PopState();
 		m_pState->EndGroup(GT_SEQ);
 
 		PostAtomicWrite();
 	}
-
+	
 	// EmitBeginMap
 	void Emitter::EmitBeginMap()
 	{
 		if(!good())
 			return;
-
+		
 		// must have a long key if we're emitting a map
 		m_pState->StartLongKey();
 
@@ -403,8 +476,10 @@ namespace YAML
 			   curState == ES_WRITING_BLOCK_MAP_KEY || curState == ES_WRITING_BLOCK_MAP_VALUE ||
 			   curState == ES_WRITING_DOC
 			) {
-				m_stream << "\n";
-				m_pState->UnsetSeparation();
+				if(m_pState->RequiresHardSeparation() || (curState != ES_WRITING_DOC && curState != ES_WRITING_BLOCK_SEQ_ENTRY)) {
+					m_stream << "\n";
+					m_pState->UnsetSeparation();
+				}
 			}
 			m_pState->PushState(ES_WAITING_FOR_BLOCK_MAP_ENTRY);
 		} else if(flowType == Flow) {
@@ -413,16 +488,16 @@ namespace YAML
 			m_pState->PushState(ES_WAITING_FOR_FLOW_MAP_ENTRY);
 		} else
 			assert(false);
-
+		
 		m_pState->BeginGroup(GT_MAP);
 	}
-
+	
 	// EmitEndMap
 	void Emitter::EmitEndMap()
 	{
 		if(!good())
 			return;
-
+		
 		if(m_pState->GetCurGroupType() != GT_MAP)
 			return m_pState->SetError(ErrorMsg::UNEXPECTED_END_MAP);
 
@@ -442,22 +517,23 @@ namespace YAML
 		} else if(flowType == FT_FLOW) {
 			// Note: flow maps are allowed to be empty
 			assert(curState == ES_DONE_WITH_FLOW_MAP_VALUE || curState == ES_WAITING_FOR_FLOW_MAP_ENTRY);
+			EmitSeparationIfNecessary();
 			m_stream << "}";
 		} else
 			assert(false);
-
+		
 		m_pState->PopState();
 		m_pState->EndGroup(GT_MAP);
-
+		
 		PostAtomicWrite();
 	}
-
+	
 	// EmitKey
 	void Emitter::EmitKey()
 	{
 		if(!good())
 			return;
-
+		
 		EMITTER_STATE curState = m_pState->GetCurState();
 		FLOW_TYPE flowType = m_pState->GetCurGroupFlowType();
 		if(curState != ES_WAITING_FOR_BLOCK_MAP_ENTRY && curState != ES_DONE_WITH_BLOCK_MAP_VALUE
@@ -469,16 +545,18 @@ namespace YAML
 				m_stream << '\n';
 			unsigned curIndent = m_pState->GetCurIndent();
 			m_stream << IndentTo(curIndent);
+			m_pState->UnsetSeparation();
 			m_pState->SwitchState(ES_WAITING_FOR_BLOCK_MAP_KEY);
 		} else if(flowType == FT_FLOW) {
+			EmitSeparationIfNecessary();
 			if(curState == ES_DONE_WITH_FLOW_MAP_VALUE) {
 				m_stream << ',';
-				m_pState->RequireSeparation();
+				m_pState->RequireSoftSeparation();
 			}
 			m_pState->SwitchState(ES_WAITING_FOR_FLOW_MAP_KEY);
 		} else
 			assert(false);
-
+		
 		if(m_pState->GetMapKeyFormat() == LongKey)
 			m_pState->StartLongKey();
 		else if(m_pState->GetMapKeyFormat() == Auto)
@@ -486,7 +564,7 @@ namespace YAML
 		else
 			assert(false);
 	}
-
+	
 	// EmitValue
 	void Emitter::EmitValue()
 	{
@@ -503,7 +581,7 @@ namespace YAML
 				m_stream << '\n';
 				m_stream << IndentTo(m_pState->GetCurIndent());
 				m_stream << ':';
-				m_pState->RequireSeparation();
+				m_pState->RequireSoftSeparation();
 			}
 			m_pState->SwitchState(ES_WAITING_FOR_BLOCK_MAP_VALUE);
 		} else if(flowType == FT_FLOW) {
@@ -518,8 +596,10 @@ namespace YAML
 		if(!good())
 			return;
 
-		if(CanEmitNewline())
+		if(CanEmitNewline()) {
 			m_stream << '\n';
+			m_pState->UnsetSeparation();
+		}
 	}
 
 	bool Emitter::CanEmitNewline() const
@@ -534,19 +614,19 @@ namespace YAML
 
 	// *******************************************************************************************
 	// overloads of Write
-
+	
 	Emitter& Emitter::Write(const std::string& str)
 	{
 		if(!good())
 			return *this;
-
+		
 		// literal scalars must use long keys
 		if(m_pState->GetStringFormat() == Literal && m_pState->GetCurGroupFlowType() != FT_FLOW)
 			m_pState->StartLongKey();
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
-
+		
 		bool escapeNonAscii = m_pState->GetOutputCharset() == EscapeNonAscii;
 		EMITTER_MANIP strFmt = m_pState->GetStringFormat();
 		FLOW_TYPE flowType = m_pState->GetCurGroupFlowType();
@@ -574,7 +654,7 @@ namespace YAML
 			default:
 				assert(false);
 		}
-
+		
 		PostAtomicWrite();
 		return *this;
 	}
@@ -583,16 +663,18 @@ namespace YAML
 	{
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
-
+		
 		EMITTER_MANIP intFmt = m_pState->GetIntFormat();
 		switch(intFmt) {
 			case Dec:
 				str << std::dec;
 				break;
 			case Hex:
+                str << "0x";
 				str << std::hex;
 				break;
-				case Oct:
+			case Oct:
+                str << "0";
 				str << std::oct;
 				break;
 			default:
@@ -600,42 +682,79 @@ namespace YAML
 		}
 	}
 
+	void Emitter::PreWriteStreamable(std::stringstream&)
+	{
+		PreAtomicWrite();
+		EmitSeparationIfNecessary();
+	}
+
+    unsigned Emitter::GetFloatPrecision() const
+    {
+        return m_pState->GetFloatPrecision();
+    }
+    
+    unsigned Emitter::GetDoublePrecision() const
+    {
+        return m_pState->GetDoublePrecision();
+    }
+
 	void Emitter::PostWriteIntegralType(const std::stringstream& str)
 	{
 		m_stream << str.str();
 		PostAtomicWrite();
 	}
 
+	void Emitter::PostWriteStreamable(const std::stringstream& str)
+	{
+		m_stream << str.str();
+		PostAtomicWrite();
+	}
+
+	const char *Emitter::ComputeFullBoolName(bool b) const
+	{
+		const EMITTER_MANIP mainFmt = (m_pState->GetBoolLengthFormat() == ShortBool ? YesNoBool : m_pState->GetBoolFormat());
+		const EMITTER_MANIP caseFmt = m_pState->GetBoolCaseFormat();
+		switch(mainFmt) {
+			case YesNoBool:
+				switch(caseFmt) {
+					case UpperCase: return b ? "YES" : "NO";
+					case CamelCase: return b ? "Yes" : "No";
+					case LowerCase: return b ? "yes" : "no";
+					default: break;
+				}
+				break;
+			case OnOffBool:
+				switch(caseFmt) {
+					case UpperCase: return b ? "ON" : "OFF";
+					case CamelCase: return b ? "On" : "Off";
+					case LowerCase: return b ? "on" : "off";
+					default: break;
+				}
+				break;
+			case TrueFalseBool:
+				switch(caseFmt) {
+					case UpperCase: return b ? "TRUE" : "FALSE";
+					case CamelCase: return b ? "True" : "False";
+					case LowerCase: return b ? "true" : "false";
+					default: break;
+				}
+				break;
+			default:
+				break;
+		}
+		return b ? "y" : "n"; // should never get here, but it can't hurt to give these answers
+	}
+
 	Emitter& Emitter::Write(bool b)
 	{
 		if(!good())
 			return *this;
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
-
-		// set up all possible bools to write
-		struct BoolName { std::string trueName, falseName; };
-		struct BoolFormatNames { BoolName upper, lower, camel; };
-		struct BoolTypes { BoolFormatNames yesNo, trueFalse, onOff; };
-
-		static const BoolTypes boolTypes = {
-			{ { "YES", "NO" }, { "yes", "no" }, { "Yes", "No" } },
-			{ { "TRUE", "FALSE" }, { "true", "false" }, { "True", "False" } },
-			{ { "ON", "OFF" }, { "on", "off" }, { "On", "Off" } }
-		};
-
-		// select the right one
-		EMITTER_MANIP boolFmt = m_pState->GetBoolFormat();
-		EMITTER_MANIP boolLengthFmt = m_pState->GetBoolLengthFormat();
-		EMITTER_MANIP boolCaseFmt = m_pState->GetBoolCaseFormat();
-
-		const BoolFormatNames& fmtNames = (boolFmt == YesNoBool ? boolTypes.yesNo : boolFmt == TrueFalseBool ? boolTypes.trueFalse : boolTypes.onOff);
-		const BoolName& boolName = (boolCaseFmt == UpperCase ? fmtNames.upper : boolCaseFmt == LowerCase ? fmtNames.lower : fmtNames.camel);
-		const std::string& name = (b ? boolName.trueName : boolName.falseName);
-
-		// and say it!
-		if(boolLengthFmt == ShortBool)
+	
+		const char *name = ComputeFullBoolName(b);
+		if(m_pState->GetBoolLengthFormat() == ShortBool)
 			m_stream << name[0];
 		else
 			m_stream << name;
@@ -644,11 +763,25 @@ namespace YAML
 		return *this;
 	}
 
+	Emitter& Emitter::Write(char ch)
+	{
+		if(!good())
+			return *this;
+		
+		PreAtomicWrite();
+		EmitSeparationIfNecessary();
+		
+		Utils::WriteChar(m_stream, ch);
+		
+		PostAtomicWrite();
+		return *this;
+	}
+
 	Emitter& Emitter::Write(const _Alias& alias)
 	{
 		if(!good())
 			return *this;
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
 		if(!Utils::WriteAlias(m_stream, alias.content)) {
@@ -658,23 +791,23 @@ namespace YAML
 		PostAtomicWrite();
 		return *this;
 	}
-
+	
 	Emitter& Emitter::Write(const _Anchor& anchor)
 	{
 		if(!good())
 			return *this;
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
 		if(!Utils::WriteAnchor(m_stream, anchor.content)) {
 			m_pState->SetError(ErrorMsg::INVALID_ANCHOR);
 			return *this;
 		}
-		m_pState->RequireSeparation();
+		m_pState->RequireHardSeparation();
 		// Note: no PostAtomicWrite() because we need another value for this node
 		return *this;
 	}
-
+	
 	Emitter& Emitter::Write(const _Tag& tag)
 	{
 		if(!good())
@@ -682,7 +815,7 @@ namespace YAML
 
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
-
+		
 		bool success = false;
 		if(tag.type == _Tag::Type::Verbatim)
 			success = Utils::WriteTag(m_stream, tag.content, true);
@@ -690,13 +823,13 @@ namespace YAML
 			success = Utils::WriteTag(m_stream, tag.content, false);
 		else
 			success = Utils::WriteTagWithPrefix(m_stream, tag.prefix, tag.content);
-
+		
 		if(!success) {
 			m_pState->SetError(ErrorMsg::INVALID_TAG);
 			return *this;
 		}
-
-		m_pState->RequireSeparation();
+		
+		m_pState->RequireHardSeparation();
 		// Note: no PostAtomicWrite() because we need another value for this node
 		return *this;
 	}
@@ -710,9 +843,13 @@ namespace YAML
 	{
 		if(!good())
 			return *this;
-
-		m_stream << Indentation(m_pState->GetPreCommentIndent());
+		
+		if(m_stream.col() > 0)
+			m_stream << Indentation(m_pState->GetPreCommentIndent());
 		Utils::WriteComment(m_stream, comment.content, m_pState->GetPostCommentIndent());
+		m_pState->RequireHardSeparation();
+		m_pState->ForceHardSeparation();
+		
 		return *this;
 	}
 
@@ -720,7 +857,7 @@ namespace YAML
 	{
 		if(!good())
 			return *this;
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
 		m_stream << "~";
@@ -728,16 +865,16 @@ namespace YAML
 		return *this;
 	}
 
-	Emitter& Emitter::Write(const _Binary& binary)
+	Emitter& Emitter::Write(const Binary& binary)
 	{
 		Write(SecondaryTag("binary"));
 
 		if(!good())
 			return *this;
-
+		
 		PreAtomicWrite();
 		EmitSeparationIfNecessary();
-		Utils::WriteBinary(m_stream, binary.data, binary.size);
+		Utils::WriteBinary(m_stream, binary);
 		PostAtomicWrite();
 		return *this;
 	}

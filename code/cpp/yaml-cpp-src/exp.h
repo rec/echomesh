@@ -1,7 +1,9 @@
-#pragma once
-
 #ifndef EXP_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define EXP_H_62B23520_7C8E_11DE_8A39_0800200C9A66
+
+#if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4)) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
 
 #include "regex.h"
@@ -112,6 +114,10 @@ namespace YAML
 			static const RegEx e = RegEx('#');
 			return e;
 		}
+		inline const RegEx& Anchor() {
+			static const RegEx e = !(RegEx("[]{},", REGEX_OR) || BlankOrBreak());
+			return e;
+		}
 		inline const RegEx& AnchorEnd() {
 			static const RegEx e = RegEx("?:,]}%@`", REGEX_OR) || BlankOrBreak();
 			return e;
@@ -131,7 +137,7 @@ namespace YAML
 		// . In the block context - ? : must be not be followed with a space.
 		// . In the flow context ? is illegal and : and - must not be followed with a space.
 		inline const RegEx& PlainScalar() {
-			static const RegEx e = !(BlankOrBreak() || RegEx(",[]{}#&*!|>\'\"%@`", REGEX_OR) || (RegEx("-?:", REGEX_OR) + Blank()));
+			static const RegEx e = !(BlankOrBreak() || RegEx(",[]{}#&*!|>\'\"%@`", REGEX_OR) || (RegEx("-?:", REGEX_OR) + (BlankOrBreak() || RegEx())));
 			return e;
 		}
 		inline const RegEx& PlainScalarInFlow() {
@@ -143,7 +149,7 @@ namespace YAML
 			return e;
 		}
 		inline const RegEx& EndScalarInFlow() {
-			static const RegEx e = (RegEx(':') + (BlankOrBreak() || RegEx(",]}", REGEX_OR))) || RegEx(",?[]{}", REGEX_OR);
+			static const RegEx e = (RegEx(':') + (BlankOrBreak() || RegEx() || RegEx(",]}", REGEX_OR))) || RegEx(",?[]{}", REGEX_OR);
 			return e;
 		}
 

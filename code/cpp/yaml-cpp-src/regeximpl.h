@@ -1,7 +1,9 @@
-#pragma once
-
 #ifndef REGEXIMPL_H_62B23520_7C8E_11DE_8A39_0800200C9A66
 #define REGEXIMPL_H_62B23520_7C8E_11DE_8A39_0800200C9A66
+
+#if defined(_MSC_VER) || (defined(__GNUC__) && (__GNUC__ == 3 && __GNUC_MINOR__ >= 4) || (__GNUC__ >= 4)) // GCC supports "pragma once" correctly since 3.4
+#pragma once
+#endif
 
 
 #include "stream.h"
@@ -58,7 +60,13 @@ namespace YAML
 	template<>
 	inline bool RegEx::IsValidSource<StringCharSource>(const StringCharSource&source) const
 	{
-		return source || m_op == REGEX_EMPTY;
+		switch(m_op) {
+			case REGEX_MATCH:
+			case REGEX_RANGE:
+				return source;
+			default:
+				return true;
+		}
 	}
 
 	template <typename Source>

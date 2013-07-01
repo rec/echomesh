@@ -1,8 +1,8 @@
 #include "yaml-cpp/parser.h"
-#include "directives.h"
 #include "yaml-cpp/eventhandler.h"
 #include "yaml-cpp/exceptions.h"
 #include "yaml-cpp/node.h"
+#include "directives.h"
 #include "nodebuilder.h"
 #include "scanner.h"
 #include "singledocparser.h"
@@ -16,7 +16,7 @@ namespace YAML
 	Parser::Parser()
 	{
 	}
-
+	
 	Parser::Parser(std::istream& in)
 	{
 		Load(in);
@@ -49,7 +49,7 @@ namespace YAML
 		ParseDirectives();
 		if(m_pScanner->empty())
 			return false;
-
+		
 		SingleDocParser sdp(*m_pScanner, *m_pDirectives);
 		sdp.HandleDocument(eventHandler);
 		return true;
@@ -103,7 +103,7 @@ namespace YAML
 	{
 		if(token.params.size() != 1)
 			throw ParserException(token.mark, ErrorMsg::YAML_DIRECTIVE_ARGS);
-
+		
 		if(!m_pDirectives->version.isDefault)
 			throw ParserException(token.mark, ErrorMsg::REPEATED_YAML_DIRECTIVE);
 
@@ -112,12 +112,13 @@ namespace YAML
 		str.get();
 		str >> m_pDirectives->version.minor;
 		if(!str || str.peek() != EOF)
-			throw ParserException(token.mark, ErrorMsg::YAML_VERSION + token.params[0]);
+			throw ParserException(token.mark, std::string(ErrorMsg::YAML_VERSION) + token.params[0]);
 
 		if(m_pDirectives->version.major > 1)
 			throw ParserException(token.mark, ErrorMsg::YAML_MAJOR_VERSION);
 
 		m_pDirectives->version.isDefault = false;
+		// TODO: warning on major == 1, minor > 2?
 	}
 
 	// HandleTagDirective
@@ -131,7 +132,7 @@ namespace YAML
 		const std::string& prefix = token.params[1];
 		if(m_pDirectives->tags.find(handle) != m_pDirectives->tags.end())
 			throw ParserException(token.mark, ErrorMsg::REPEATED_TAG_DIRECTIVE);
-
+		
 		m_pDirectives->tags[handle] = prefix;
 	}
 
@@ -139,7 +140,7 @@ namespace YAML
 	{
 		if(!m_pScanner.get())
 			return;
-
+		
 		while(1) {
 			if(m_pScanner->empty())
 				break;
