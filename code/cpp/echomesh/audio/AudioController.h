@@ -12,11 +12,10 @@ class SampleAudioSource;
 
 class AudioController {
  public:
-  AudioController(Node*);
+  AudioController(Node*, PlaybackAudioSource*);
   virtual ~AudioController();
 
   void audio();
-  PlaybackAudioSource* playbackSource() { return playbackSource_.get(); }
 
  private:
   typedef uint64 Hash;
@@ -24,7 +23,7 @@ class AudioController {
 
   Sources sources_;
   Node* node_;
-  ScopedPointer<PlaybackAudioSource> playbackSource_;
+  PlaybackAudioSource* playbackSource_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };

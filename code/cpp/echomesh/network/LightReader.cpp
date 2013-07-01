@@ -54,9 +54,10 @@ static const string DEFAULT_CONFIG =
   "---\n"
 ;
 
-LightReader::LightReader(LightingWindow* wind, const String& commandLine)
+LightReader::LightReader(LightingWindow* wind, const String& commandLine,
+                         PlaybackAudioSource* source)
     : ReadThread(commandLine),
-      audioController_(new AudioController(&node_)),
+      audioController_(new AudioController(&node_, source)),
       lightController_(new LightController(wind, &node_)),
       midiController_(new MidiController(&node_)) {
   addHandler("audio", methodCallback(audioController_.get(),

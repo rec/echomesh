@@ -13,7 +13,8 @@ class Echomesh  : public JUCEApplication {
   void initialise(const String& commandLine) {
     lightingWindow_ = new echomesh::LightingWindow;
 
-    readThread_ = new echomesh::LightReader(lightingWindow_, commandLine);
+    readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
+                                            player_.source());
     readThread_->startThread();
   }
 

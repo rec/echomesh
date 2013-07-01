@@ -9,11 +9,13 @@ class Player {
  public:
   Player() {
     String err = manager_.initialise(1, 2, NULL, true);
-    if (err.length()) 
+    if (err.length())
       log(String("Couldn't initialize audio::Device, error ") + err);
     player_.setSource(&source_);
     manager_.addAudioCallback(&player_);
   }
+
+  PlaybackAudioSource* source() { return &source_; }
 
  private:
   AudioSourcePlayer player_;

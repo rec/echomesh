@@ -16,9 +16,8 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(Node* node)
-    : node_(node),
-      playbackSource_(new PlaybackAudioSource) {
+AudioController::AudioController(Node* node, PlaybackAudioSource* source)
+    : node_(node), playbackSource_(source) {
 }
 
 AudioController::~AudioController() {

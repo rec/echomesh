@@ -15,10 +15,12 @@ class AudioController;
 class LightingWindow;
 class LightController;
 class MidiController;
+class PlaybackAudioSource;
 
 class LightReader : public ReadThread {
  public:
-  LightReader(LightingWindow* window, const String& commandLine);
+  LightReader(LightingWindow* window, const String& commandLine,
+              PlaybackAudioSource* source);
   virtual ~LightReader();
 
  private:
