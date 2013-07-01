@@ -13,8 +13,9 @@ _INF = float('inf')
 
 def _fix(player, name):
   part = getattr(player, name)
-  result = {'is_constant': part.is_constant}
-  if part.is_constant:
+  is_constant = part.is_constant()
+  result = {'is_constant': is_constant}
+  if is_constant:
     result['value'] = part.evaluate()
   elif part.envelope:
     result['envelope'] = part.envelope.description()

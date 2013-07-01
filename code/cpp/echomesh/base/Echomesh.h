@@ -9,6 +9,7 @@
 
 #include "JuceLibraryCode/JuceHeader.h"
 #include "echomesh/base/Disallow.h"
+#include "echomesh/base/Log.h"
 #include "rec/base/RealTime.h"
 #include "rec/base/SampleTime.h"
 #include "rec/base/SampleRate.h"
@@ -33,11 +34,6 @@ namespace echomesh {
 typedef rec::util::thread::callback::Callback Callback;
 typedef YAML::Node Node;
 
-void log(const String&);
-void log2(const String&);
-
-void close_log();
-
 class Exception : public std::exception {
  public:
   Exception(const String& m) : message_(m) {}
@@ -49,6 +45,6 @@ class Exception : public std::exception {
   const String message_;
 };
 
-}
+}  // namespace echomesh
 
 #endif  // __ECHOMESH__

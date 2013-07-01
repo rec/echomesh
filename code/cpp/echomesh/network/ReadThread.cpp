@@ -34,7 +34,7 @@ void ReadThread::run() {
         continue;
       }
 
-      parse(accum_.joinIntoString("\n").toStdString());
+      parse(accum_.joinIntoString("").toStdString());
       accum_.clear();
     } catch (YAML::Exception& e) {
       log(string("Yaml parsing error: ") + e.what() + (" in:\n" + str));
@@ -49,7 +49,7 @@ void ReadThread::run() {
 void ReadThread::parse(const string& str) {
   ScopedLock l(lock_);
   if (lineGetter_->debug())
-    log(str);
+    log(str, false);
 
   istringstream s(str);
   YAML::Parser parser(s);

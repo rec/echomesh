@@ -25,7 +25,7 @@ const bool USE_LOG2 = false;
 
 }  // namespace
 
-void log(const String& msg) {
+void log(const String& msg, bool newLine) {
   if (LOG_TO_STDOUT) {
     std::cout << msg << "\n";
     std::cout.flush();
@@ -40,7 +40,8 @@ void log(const String& msg) {
     STREAM = new FileOutputStream(f);
   }
   STREAM->writeString(msg);
-  STREAM->write("\n", 1);
+  if (newLine)
+    STREAM->write("\n", 1);
   STREAM->flush();
 }
 
