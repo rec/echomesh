@@ -23,7 +23,7 @@ class AudioController {
 
   Sources sources_;
   Node* node_;
-  PlaybackAudioSource* playbackSource_;
+  PlaybackAudioSource* playbackAudioSource_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };

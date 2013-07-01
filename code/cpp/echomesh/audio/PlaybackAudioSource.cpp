@@ -43,4 +43,3 @@ void PlaybackAudioSource::removeSource(AudioSource* source) {
 }
 
 }  // namespace echomesh
-

@@ -15,7 +15,9 @@ SampleAudioSource::SampleAudioSource(const Node& node)
   }
 }
 
-SampleAudioSource::~SampleAudioSource() {}
+SampleAudioSource::~SampleAudioSource() {
+  currentTime_ = 0;  // for bp only
+}
 
 void SampleAudioSource::prepareToPlay(int samplesPerBlockExpected,
                                       double sampleRate) {

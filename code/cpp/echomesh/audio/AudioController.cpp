@@ -17,11 +17,7 @@ namespace echomesh {
 using namespace std;
 
 AudioController::AudioController(Node* node, PlaybackAudioSource* source)
-    : node_(node), playbackSource_(source) {
-}
-
-AudioController::~AudioController() {
-  rec::stl::deleteMapPointers(&sources_);
+    : node_(node), playbackAudioSource_(source) {
 }
 
 void AudioController::audio() {
@@ -39,7 +35,7 @@ void AudioController::audio() {
       return;
     }
     source = new SampleAudioSource(data);
-    playbackSource_->addSource(source);
+    playbackAudioSource_->addSource(source);
     return;
   }
 
@@ -55,8 +51,8 @@ void AudioController::audio() {
     log("pause");
     source->pause();
   } else if (type == "unload") {
-    playbackSource_->removeSource(source);
     sources_.erase(hash);
+    playbackAudioSource_->removeSource(source);
   }
 }
 
