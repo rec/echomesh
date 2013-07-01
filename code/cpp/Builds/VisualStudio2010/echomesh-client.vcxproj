@@ -134,6 +134,7 @@
     <ClCompile Include="..\..\echomesh\audio\Envelope.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\GetReader.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
+    <ClCompile Include="..\..\echomesh\audio\PlaybackAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\SampleAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>

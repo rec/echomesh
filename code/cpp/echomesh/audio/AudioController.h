@@ -7,6 +7,7 @@
 
 namespace echomesh {
 
+class PlaybackAudioSource;
 class SampleAudioSource;
 
 class AudioController {
@@ -15,13 +16,16 @@ class AudioController {
   virtual ~AudioController();
 
   void audio();
+  PlaybackAudioSource* playbackSource() { return playbackSource_.get(); }
 
  private:
   typedef uint64 Hash;
   typedef std::map<Hash, SampleAudioSource*> Sources;
-  Sources sources_;
 
+  Sources sources_;
   Node* node_;
+  ScopedPointer<PlaybackAudioSource> playbackSource_;
+
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };
 

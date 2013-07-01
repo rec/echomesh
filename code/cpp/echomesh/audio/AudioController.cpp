@@ -6,6 +6,7 @@
 #include "yaml-cpp/yaml.h"
 
 #include "echomesh/audio/AudioController.h"
+#include "echomesh/audio/PlaybackAudioSource.h"
 #include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
@@ -15,7 +16,10 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(Node* node) : node_(node) {}
+AudioController::AudioController(Node* node)
+    : node_(node),
+      playbackSource_(new PlaybackAudioSource) {
+}
 
 AudioController::~AudioController() {
   rec::stl::deleteMapPointers(&sources_);
@@ -30,10 +34,12 @@ void AudioController::audio() {
   SampleAudioSource*& source = sources_[hash];
 
   if (type == "construct") {
-    if (source)
+    if (source) {
       log("Warning: already created a source for hash " + String(hash));
-    else
-      source = new SampleAudioSource(data);
+      return;
+    }
+    source = new SampleAudioSource(data);
+    playbackSource_->addSource(source);
   } else if (type == "run") {
     source->run();
   } else if (type == "begin") {
@@ -41,7 +47,8 @@ void AudioController::audio() {
   } else if (type == "pause") {
     source->pause();
   } else if (type == "unload") {
-    source->unload();
+    playbackSource_->removeSource(source);
+    sources_.erase(hash);
   }
 }
 

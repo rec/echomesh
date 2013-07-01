@@ -23,6 +23,7 @@ void operator>>(const Node& node, Playback& playback) {
   node["begin"] >> playback.begin;
   node["end"] >> playback.end;
   node["file"] >> playback.file;
+  node["length"] >> playback.length;
   node["level"] >> playback.level;
   node["loops"] >> playback.loops;
   node["pan"] >> playback.pan;

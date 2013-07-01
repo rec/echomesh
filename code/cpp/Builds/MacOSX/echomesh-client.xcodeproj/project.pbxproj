@@ -36,6 +36,7 @@
 		52BF6F4139DFC4E7728F48DC /* juce_gui_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = BB5DBBB8CA6703AD087E6E87 /* juce_gui_basics.mm */; };
 		53964E74734DAB703E5AA83E /* Envelope.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BFE7BB9FB421AD116AD0A33D /* Envelope.cpp */; };
 		56028800E64B3C1D3B988EC0 /* null.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D0D53EA4EF699E4A4D904765 /* null.cpp */; };
+		5E6982B733F692E923754AAE /* PlaybackAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FFA852E71202D04EA2E2880C /* PlaybackAudioSource.cpp */; };
 		5F321094C903D06D15C47CA6 /* MidiController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6292C9D8ED0D80B728ADC739 /* MidiController.cpp */; };
 		609C33AB4D5554DD8FBED044 /* scantoken.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4F222B4921AD79B9ED3D7D57 /* scantoken.cpp */; };
 		61B111925552D929288975E1 /* juce_audio_basics.mm in Sources */ = {isa = PBXBuildFile; fileRef = 1061C4F70DAB06B20FB547B6 /* juce_audio_basics.mm */; };
@@ -1084,6 +1085,7 @@
 		FF34909595A9113C19870AED /* juce_TextEditor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_TextEditor.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_TextEditor.cpp; sourceTree = SOURCE_ROOT; };
 		FF68737E4CDD07149C3CF639 /* juce_Sampler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = juce_Sampler.h; path = ../../JuceLibraryCode/modules/juce_audio_formats/sampler/juce_Sampler.h; sourceTree = SOURCE_ROOT; };
 		FF6E86AE3C13739F98FE7D61 /* QTKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QTKit.framework; path = System/Library/Frameworks/QTKit.framework; sourceTree = SDKROOT; };
+		FFA852E71202D04EA2E2880C /* PlaybackAudioSource.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PlaybackAudioSource.cpp; path = ../../echomesh/audio/PlaybackAudioSource.cpp; sourceTree = SOURCE_ROOT; };
 		FFFDD225955FB2DA294E6CD8 /* juce_FileBrowserComponent.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = juce_FileBrowserComponent.cpp; path = ../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileBrowserComponent.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
@@ -1279,6 +1281,7 @@
 				B1C464283A43EA08ADBCECC8 /* GetReader.h */,
 				6292C9D8ED0D80B728ADC739 /* MidiController.cpp */,
 				D2464B1B4D89754D1F839DD8 /* MidiController.h */,
+				FFA852E71202D04EA2E2880C /* PlaybackAudioSource.cpp */,
 				0296B72E3D55154005BC6CA6 /* PlaybackAudioSource.h */,
 				09313DEF18BA7CABE57000E1 /* Player.h */,
 				8D33BEA7C5DD1EFFA4EC55F7 /* SampleAudioSource.cpp */,
@@ -3119,6 +3122,7 @@
 				53964E74734DAB703E5AA83E /* Envelope.cpp in Sources */,
 				1EC6F629ADF8CA692B29CE4A /* GetReader.cpp in Sources */,
 				5F321094C903D06D15C47CA6 /* MidiController.cpp in Sources */,
+				5E6982B733F692E923754AAE /* PlaybackAudioSource.cpp in Sources */,
 				049FB7D472D2C9768BD393E7 /* SampleAudioSource.cpp in Sources */,
 				FCEE9203E40192461BB98F8E /* Config.cpp in Sources */,
 				940C735B452C0A4333F3C28A /* Log.cpp in Sources */,

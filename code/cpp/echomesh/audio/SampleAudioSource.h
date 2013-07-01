@@ -25,8 +25,10 @@ class SampleAudioSource : public AudioSource {
  private:
   Playback playback_;
   bool isRunning_;
-
+  SampleTime currentTime_;
+  SampleTime length_;
   ScopedPointer<PositionableAudioSource> source_;
+  CriticalSection lock_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };

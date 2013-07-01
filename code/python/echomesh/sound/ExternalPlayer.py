@@ -22,12 +22,14 @@ def _fix(player, name):
   setattr(player, name, result)
 
 class ExternalPlayer(MasterRunnable):
-  _FIELDS = 'begin', 'end', 'file', 'passthrough', 'level', 'pan', 'loops'
+  _FIELDS = ['begin', 'end', 'file', 'passthrough', 'level', 'pan', 'length',
+             'loops']
 
-  def __init__(self, element, level=1, pan=0, loops=1, **kwds):
+  def __init__(self, element, level=1, pan=0, loops=1, length=, **kwds):
     ClientServer.instance()
     super(ExternalPlayer, self).__init__()
-    PlayerSetter.set_player(self, element, level=1, pan=0, loops=1, **kwds)
+    PlayerSetter.set_player(self, element, level=1, pan=0, loops=1,
+                            length=length, **kwds)
     _fix(self, '_level')
     _fix(self, '_pan')
     data = dict((f, getattr(self, '_' + f)) for f in ExternalPlayer._FIELDS)
