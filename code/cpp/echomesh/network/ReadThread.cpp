@@ -48,6 +48,9 @@ void ReadThread::run() {
 
 void ReadThread::parse(const string& str) {
   ScopedLock l(lock_);
+  if (lineGetter_->debug())
+    log(str);
+
   istringstream s(str);
   YAML::Parser parser(s);
   parser.GetNextDocument(node_);

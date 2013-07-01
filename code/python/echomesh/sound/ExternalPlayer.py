@@ -22,6 +22,7 @@ def _fix(player, name):
     raise Exception(_ENVELOPE_ERROR % name)
   setattr(player, name, result)
 
+
 class ExternalPlayer(MasterRunnable):
   _FIELDS = ['begin', 'end', 'filename', 'passthrough', 'level', 'pan',
              'length', 'loops']

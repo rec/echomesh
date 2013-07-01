@@ -168,6 +168,7 @@ network:
     allow_reuse_address: true
     binary: ""
     buffer_size: 4096
+    debug: true
     host_name: localhost
     input_file: ""
     pipe_stdin: true

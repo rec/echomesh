@@ -14,6 +14,7 @@ struct SocketDescription {
   int bufferSize;
   int tries;
   int retryTimeout;
+  bool debug;
 };
 
 class SocketLineGetter : public LineGetter {
@@ -27,6 +28,7 @@ class SocketLineGetter : public LineGetter {
   virtual bool eof() const { return eof_; }
 
   void writeSocket(const char*, int);
+  virtual bool debug() const { return desc_.debug; }
 
  private:
   string readSocket();

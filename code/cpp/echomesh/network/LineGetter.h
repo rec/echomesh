@@ -21,6 +21,7 @@ class LineGetter {
   virtual ~LineGetter() {}
   virtual string getLine() = 0;
   virtual bool eof() const = 0;
+  virtual bool debug() const = 0;
 };
 
 LineGetter* makeLineGetter(const String& commandLine);

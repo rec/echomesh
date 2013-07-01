@@ -29,8 +29,11 @@ void SampleAudioSource::releaseResources() {
 }
 
 void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
+  log("getNextAudioBlock.");
+
   ScopedLock l(lock_);
   if (not (source_ and isRunning_)) {
+    log("No element.");
     buf.clearActiveBufferRegion();
     return;
   }
@@ -38,10 +41,12 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   currentTime_ += buf.numSamples;
   SampleTime overrun(currentTime_ - length_);
   if (overrun < 0) {
+    log("full sample.");
     source_->getNextAudioBlock(buf);
     return;
   }
 
+  log("partial sample.");
   AudioSourceChannelInfo b = buf;
   b.numSamples -= overrun;
   source_->getNextAudioBlock(b);

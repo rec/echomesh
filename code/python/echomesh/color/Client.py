@@ -21,6 +21,7 @@ def make_command():
   timeout = Units.convert(config['timeout'])
   parts.append(str(timeout))
   parts.append(str(config['buffer_size']))
+  parts.append(str(config['debug']))
 
   return parts
 

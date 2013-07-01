@@ -22,12 +22,13 @@ if LOG_ALL_DATA:
 
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, read_callback=None, max_queue_size=20,
-               logging=False, allow_reuse_address=True):
+               logging=False, allow_reuse_address=True, debug=False):
     LOGGER.debug('Creating Server')
     super(Server, self).__init__()
     self.timeout = timeout
     self.queue = None
     self.config = []
+    self.debug = debug
     self.bytes_written = 0
     self.next_target = 0
     self.packets = 0
@@ -47,7 +48,7 @@ class Server(ThreadRunnable):
       d = Yaml.encode_one(data)
       self.handler.wfile.write(d)
       self.handler.wfile.write(Yaml.SEPARATOR)
-      if LOG_ALL_DATA:
+      if self.debug or LOG_ALL_DATA:
         FILE.write(d)
         FILE.write(Yaml.SEPARATOR)
         FILE.flush()

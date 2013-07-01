@@ -32,6 +32,7 @@ void AudioController::audio() {
   data["hash"] >> hash;
   SampleAudioSource*& source = sources_[hash];
 
+  log("Receiving " + type);
   if (type == "construct") {
     if (source) {
       log("Warning: already created a source for hash " + String(hash));
@@ -39,11 +40,19 @@ void AudioController::audio() {
     }
     source = new SampleAudioSource(data);
     playbackSource_->addSource(source);
+    return;
+  }
+
+  if (not source) {
+    log("No source?? " + type);
   } else if (type == "run") {
+    log("run");
     source->run();
   } else if (type == "begin") {
+    log("begin");
     source->begin();
   } else if (type == "pause") {
+    log("pause");
     source->pause();
   } else if (type == "unload") {
     playbackSource_->removeSource(source);

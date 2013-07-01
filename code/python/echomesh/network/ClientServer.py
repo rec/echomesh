@@ -34,6 +34,7 @@ class ClientServer(Server):
         config['host_name'],
         config['port'],
         allow_reuse_address=config['allow_reuse_address'],
+        debug=config['debug'],
         read_callback=self.read_callback,
         timeout=Units.convert(config['timeout']),
         )
@@ -60,13 +61,13 @@ class ClientServer(Server):
   def read_callback(self, data):
     t = data.get('type')
     if t == 'hide':
-      Config.assign(['light.vis.show=false'])
+      Config.assign(['light.visualizer.show=false'])
 
     elif t == 'midi':
       LOGGER.info('MIDI! %s', data)
 
     elif t == 'move':
-      Config.assign(['light.vis.top_left=%s' % data['top_left']], False)
+      Config.assign(['light.visualizer.top_left=%s' % data['top_left']], False)
 
   def kill(self):
     try:
