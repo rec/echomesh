@@ -13,7 +13,7 @@ class SampleAudioSource;
 class AudioController {
  public:
   AudioController(Node*, PlaybackAudioSource*);
-  virtual ~AudioController();
+  virtual ~AudioController() {}
 
   void audio();
 

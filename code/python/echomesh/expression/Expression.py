@@ -6,12 +6,12 @@ from echomesh.expression import Units
 class Expression(object):
   def __init__(self, expression, element=None):
     self.element = element
-    if isinstance(expression, dict):
-      self.envelope = Envelope.Envelope(expression)
-      self.unit_expression = None
-    else:
+    self.envelope = Envelope.Envelope(expression)
+    if self.envelope.is_constant:
       self.envelope = None
       self.unit_expression = Units.UnitExpression(expression)
+    else:
+      self.unit_expression = None
 
   def __call__(self, element=None):
     element = element or self.element

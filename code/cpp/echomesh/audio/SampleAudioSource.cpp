@@ -3,10 +3,7 @@
 
 namespace echomesh {
 
-SampleAudioSource::SampleAudioSource(const Node& node)
-    : isRunning_(false),
-      currentTime_(0),
-      length_(0) {
+SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
   node >> playback_;
   source_ = getReader(playback_.filename, playback_.begin, playback_.end);
   if (source_) {
@@ -15,9 +12,7 @@ SampleAudioSource::SampleAudioSource(const Node& node)
   }
 }
 
-SampleAudioSource::~SampleAudioSource() {
-  currentTime_ = 0;  // for bp only
-}
+SampleAudioSource::~SampleAudioSource() {}
 
 void SampleAudioSource::prepareToPlay(int samplesPerBlockExpected,
                                       double sampleRate) {
@@ -61,6 +56,7 @@ void SampleAudioSource::run() {
 void SampleAudioSource::begin() {
   ScopedLock l(lock_);
   currentTime_ = 0;
+  levelIndex_ = panIndex_ = 0;
   if (source_)
     source_->setNextReadPosition(0);
 }

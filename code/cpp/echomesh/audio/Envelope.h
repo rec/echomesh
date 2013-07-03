@@ -6,31 +6,50 @@
 namespace echomesh {
 
 struct Envelope {
-  vector<double> data;
-  rec::SampleTime length;
+  struct Point {
+    Point() {}
+    Point(SampleTime t, float v) : time(t), value(v) {}
+
+    SampleTime time;
+    float value;
+  };
+
+  typedef vector<Point> PointList;
+
+  SampleTime length;
   int loops;
+  PointList points;
   bool reverse;
-  vector<SampleTime> times;
 };
 
-struct Value {
+inline Envelope::Point operator-(const Envelope::Point& x,
+                                 const Envelope::Point& y) {
+  return Envelope::Point(x.time - y.time, x.value - y.value);
+}
+
+
+// Normalize an envelope so that the first segment always starts at zero,
+// and the last segment always is at least as long as length.
+void normalizeEnvelope(Envelope*);
+
+struct EnvelopeValue {
   bool isConstant;
   Envelope envelope;
-  double value;
+  float value;
 };
 
 struct Playback {
   SampleTime begin, end;
   string filename;
   rec::SampleTime length;
-  Value level;
+  EnvelopeValue level;
   int loops;
-  Value pan;
+  EnvelopeValue pan;
   bool passthrough;
 };
 
 void operator>>(const Node&, Envelope&);
-void operator>>(const Node&, Value&);
+void operator>>(const Node&, EnvelopeValue&);
 void operator>>(const Node&, Playback&);
 
 }  // namespace echomesh

@@ -79,6 +79,7 @@ OBJECTS := \
   $(OBJDIR)/base64_1eb4a3a4.o \
   $(OBJDIR)/AudioController_2cdb5551.o \
   $(OBJDIR)/Envelope_e091de3b.o \
+  $(OBJDIR)/EnvelopeValuePlayer_308b601.o \
   $(OBJDIR)/GetReader_4ae00cf8.o \
   $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/PlaybackAudioSource_260be0b5.o \
@@ -281,6 +282,11 @@ $(OBJDIR)/AudioController_2cdb5551.o: ../../echomesh/audio/AudioController.cpp
 $(OBJDIR)/Envelope_e091de3b.o: ../../echomesh/audio/Envelope.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Envelope.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/EnvelopeValuePlayer_308b601.o: ../../echomesh/audio/EnvelopeValuePlayer.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling EnvelopeValuePlayer.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/GetReader_4ae00cf8.o: ../../echomesh/audio/GetReader.cpp

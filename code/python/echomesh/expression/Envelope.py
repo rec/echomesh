@@ -5,6 +5,9 @@ import bisect
 from echomesh.expression import SplitNumbers
 from echomesh.expression import Units
 from echomesh.util import Dict
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 class Envelope(object):
   _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
@@ -12,24 +15,35 @@ class Envelope(object):
   def __init__(self, data):
     self.is_constant = not isinstance(data, dict)
     if self.is_constant:
-      # TODO: this case is probably now redundant.
       self.data = Units.convert(data)
       self.length = 0
+      return
 
+    kwds, numeric = SplitNumbers.split(data)
+    self.times, self.data = zip(*numeric)
+    if not data:
+      raise Exception('Didn\'t understand envelope %s' % data)
+
+    if len(self.data) == 1:
+      self.is_constant = True
+      self.data = Units.convert(data[0])
+      self.length = 0
+      return
+
+    for i in range(1, len(self.times)):
+      if self.times[i - 1] >= self.times[i]:
+        raise Exception('Envelope times must be strictly increasing.')
+
+    self.loops = kwds.get('loops', 1)
+    self.reverse = kwds.get('reverse', False)
+    self.loop_length = self.times[-1]
+
+    length = kwds.get('length')
+    if length:
+      self.length = Units.convert(length)
     else:
-      kwds, numeric = SplitNumbers.split(data)
-      self.times, self.data = zip(*numeric)
-
-      self.loops = kwds.get('loops', 1)
-      self.reverse = kwds.get('reverse', False)
-      self.loop_length = self.times[-1]
-
-      length = kwds.get('length')
-      if length:
-        self.length = Units.convert(length)
-      else:
-        self.length = self.loop_length * self.loops
-      self.slot = 0
+      self.length = self.loop_length * self.loops
+    self.slot = 0
 
   def description(self):
     return Dict.from_attributes(self, Envelope._FIELDS)
@@ -58,7 +72,3 @@ class Envelope(object):
       return d1 * (1 - ratio) + d2 * ratio
     else:
       return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
-
-
-def make_envelope(data):
-  return data if isinstance(data, Envelope) else Envelope(data)

@@ -439,6 +439,9 @@
     <ClCompile Include="..\..\echomesh\audio\Envelope.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\audio\EnvelopeValuePlayer.cpp">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\audio\GetReader.cpp">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClCompile>
@@ -1765,6 +1768,9 @@
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\Envelope.h">
+      <Filter>echomesh-client\echomesh\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\audio\EnvelopeValuePlayer.h">
       <Filter>echomesh-client\echomesh\audio</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\audio\GetReader.h">

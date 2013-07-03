@@ -32,12 +32,12 @@ struct SampleTime {
   const SampleTime operator+(SampleTime p) { return position_ + p; }
   const SampleTime operator-(SampleTime p) { return position_ - p; }
   const SampleTime operator+(int p) { return position_ + p; }
-  const SampleTime operator-(int p) { return position_ - p; }
-  const SampleTime operator+(uint p) { return position_ + p; }
-  const SampleTime operator-(uint p) { return position_ - p; }
   const SampleTime operator+(int64 p) { return position_ + p; }
-  const SampleTime operator-(int64 p) { return position_ - p; }
+  const SampleTime operator+(uint p) { return position_ + p; }
   const SampleTime operator+(uint64 p) { return position_ + p; }
+  const SampleTime operator-(int p) { return position_ - p; }
+  const SampleTime operator-(int64 p) { return position_ - p; }
+  const SampleTime operator-(uint p) { return position_ - p; }
   const SampleTime operator-(uint64 p) { return position_ - p; }
   const SampleTime operator-() { return -position_; }
 
@@ -52,6 +52,16 @@ struct SampleTime {
 
   JUCE_LEAK_DETECTOR(SampleTime);
 };
+
+inline const SampleTime operator+(int p, SampleTime q) { return SampleTime(p) + q; }
+inline const SampleTime operator+(int64 p, SampleTime q) { return SampleTime(p) + q; }
+inline const SampleTime operator+(uint p, SampleTime q) { return SampleTime(p) + q; }
+inline const SampleTime operator+(uint64 p, SampleTime q) { return SampleTime(p) + q; }
+inline const SampleTime operator-(int p, SampleTime q) { return SampleTime(p) - q; }
+inline const SampleTime operator-(int64 p, SampleTime q) { return SampleTime(p) - q; }
+inline const SampleTime operator-(uint p, SampleTime q) { return SampleTime(p) - q; }
+inline const SampleTime operator-(uint64 p, SampleTime q) { return SampleTime(p) - q; }
+
 
 inline RealTime::RealTime(const SampleTime& t, SampleRate r) : time_(t / r) {}
 

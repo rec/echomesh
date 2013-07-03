@@ -66,10 +66,11 @@ class _Counter(object):
 def _counter(element, description):
   return _Counter(element, **description)
 
+# TODO: not tested.
 class _Envelope(Envelope):
-  def __init__(self, element, kwds):
+  def __init__(self, element, **kwds):
     self.element = element
-    super(_Envelope, self).__init__(kwds)
+    super(_Envelope, self).__init__(**kwds)
 
   def evaluate(self):
     return self()

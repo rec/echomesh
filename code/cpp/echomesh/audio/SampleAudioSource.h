@@ -15,7 +15,7 @@ class SampleAudioSource : public AudioSource {
                              double sampleRate);
 
   virtual void releaseResources();
-  virtual void getNextAudioBlock (const AudioSourceChannelInfo& bufferToFill);
+  virtual void getNextAudioBlock(const AudioSourceChannelInfo&);
 
   void run();
   void begin();
@@ -23,12 +23,15 @@ class SampleAudioSource : public AudioSource {
   void unload();
 
  private:
+  CriticalSection lock_;
+
   Playback playback_;
-  bool isRunning_;
   SampleTime currentTime_;
   SampleTime length_;
+  SampleTime levelIndex_;
+  SampleTime panIndex_;
   ScopedPointer<PositionableAudioSource> source_;
-  CriticalSection lock_;
+  bool isRunning_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };

@@ -82,6 +82,10 @@
               file="echomesh/audio/AudioController.h"/>
         <FILE id="MskluS" name="Envelope.cpp" compile="1" resource="0" file="echomesh/audio/Envelope.cpp"/>
         <FILE id="iNc1YR" name="Envelope.h" compile="0" resource="0" file="echomesh/audio/Envelope.h"/>
+        <FILE id="VfRmY7" name="EnvelopeValuePlayer.cpp" compile="1" resource="0"
+              file="echomesh/audio/EnvelopeValuePlayer.cpp"/>
+        <FILE id="TYuuVo" name="EnvelopeValuePlayer.h" compile="0" resource="0"
+              file="echomesh/audio/EnvelopeValuePlayer.h"/>
         <FILE id="u9On3n" name="GetReader.cpp" compile="1" resource="0" file="echomesh/audio/GetReader.cpp"/>
         <FILE id="pW27KZ" name="GetReader.h" compile="0" resource="0" file="echomesh/audio/GetReader.h"/>
         <FILE id="IeqVjp" name="MidiController.cpp" compile="1" resource="0"

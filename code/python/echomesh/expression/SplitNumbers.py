@@ -13,5 +13,3 @@ def split(items):
     else:
       numeric.append([Units.convert(k), Units.convert(v)])
   return kwds, sorted(numeric)
-
-
