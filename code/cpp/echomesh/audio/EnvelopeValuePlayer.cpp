@@ -31,7 +31,7 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
   Segment seg;
   bool reverse = envelopeValue_.envelope.reverse;
   seg.first = Point(0, point_.value);
-  if (loops_ > envelopeValue_.envelope.loops) {
+  if (loops_ and loops_ > envelopeValue_.envelope.loops) {
     seg.second = Point(numSamples, point_.value);
     result.push_back(seg);
     numSamples = 0;

@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include <fstream>
+#include <istream>
 #include <iostream>
 #include <string>
 
