@@ -10,7 +10,7 @@ namespace echomesh {
 namespace {
 
 typedef Envelope::Point Point;
-typedef EnvelopeValuePlayer::SegmentList SegmentList;
+typedef EnvelopeValuePlayer::PointList PointList;
 
 class EnvelopeValuePlayerTest : public ::testing::Test {
  public:
@@ -66,12 +66,12 @@ TEST_F(EnvelopeValuePlayerTest, TwoParts) {
   EXPECT_FALSE(player_->isConstant());
   EXPECT_EQ(player_->value(), 0.0);
 
-  SegmentList segments = player_->getSegments(250);
-  ASSERT_EQ(segments.size(), 1);
-  EXPECT_NEAR(segments[0].first.value, 0.0, EPSILON);
-  EXPECT_NEAR(segments[0].second.value, 0.250, EPSILON);
-  EXPECT_EQ(segments[0].first.time, 0);
-  EXPECT_EQ(segments[0].second.time, 250);
+  PointList segments = player_->getSegments(250);
+  ASSERT_EQ(segments.size(), 2);
+  EXPECT_NEAR(segments[0].value, 0.0, EPSILON);
+  EXPECT_NEAR(segments[1].value, 0.250, EPSILON);
+  EXPECT_EQ(segments[0].time, 0);
+  EXPECT_EQ(segments[1].time, 250);
 }
 
 }  // namespace echomesh

@@ -22,21 +22,22 @@ void EnvelopeValuePlayer::begin() {
 //   point_.time >= envelope.points[index_].time
 //   point_.time < envelope.points[index_ + 1].time
 
-typedef EnvelopeValuePlayer::SegmentList SegmentList;
+typedef EnvelopeValuePlayer::PointList PointList;
 
-SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
+PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
   typedef Envelope::Point Point;
 
-  SegmentList result;
-  Segment seg;
   bool reverse = envelopeValue_.envelope.reverse;
-  seg.first = Point(0, point_.value);
+
+  PointList result;
+  result.push_back(Point(0, point_.value));
+
   if (loops_ and loops_ > envelopeValue_.envelope.loops) {
-    seg.second = Point(numSamples, point_.value);
-    result.push_back(seg);
+    result.push_back(Point(numSamples, point_.value));
     numSamples = 0;
   }
 
+  SampleTime elapsed = 0;
   while (numSamples > 0) {
     const Point* previous = &points()[index_];
     const Point* next = previous + 1;
@@ -64,15 +65,15 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     }
 
     Point delta = *next - *previous;
-    float slope = directionMult * delta.value / delta.time;
+    float slope = delta.value / delta.time;
 
     SampleTime t = jmin(remains, numSamples);
+    elapsed += t;
     numSamples -= t;
     point_.time += directionMult * t;
+    point_.value += directionMult * t * slope;
 
-    seg.second = Point(seg.first.time + t, seg.first.value + slope * t);
-    result.push_back(seg);
-    seg.first = seg.second;
+    result.push_back(Point(elapsed, point_.value));
   }
 
   return result;
