@@ -10,7 +10,7 @@ namespace echomesh {
 namespace {
 
 typedef Envelope::Point Point;
-typedef EnvelopeValuePlayer::PointList PointList;
+typedef EnvelopeValuePlayer::SegmentList SegmentList;
 
 class EnvelopeValuePlayerTest : public ::testing::Test {
  public:
@@ -66,63 +66,12 @@ TEST_F(EnvelopeValuePlayerTest, TwoParts) {
   EXPECT_FALSE(player_->isConstant());
   EXPECT_EQ(player_->value(), 0.0);
 
-  PointList segments = player_->getSegments(250);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.0, EPSILON);
-  EXPECT_NEAR(segments[1].value, 0.250, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 250);
-
-  segments = player_->getSegments(740);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.250, EPSILON);
-  EXPECT_NEAR(segments[1].value, 0.990, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 740);
-
-  segments = player_->getSegments(10);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.990, EPSILON);
-  EXPECT_NEAR(segments[1].value, 1.0, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 10);
-
-  segments = player_->getSegments(10);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.0, EPSILON);
-  EXPECT_NEAR(segments[1].value, 0.010, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 10);
-}
-
-TEST_F(EnvelopeValuePlayerTest, OverBoundary) {
-  add(0, 0);
-  add(1000, 1.0);
-  begin();
-  EXPECT_FALSE(player_->isConstant());
-  EXPECT_EQ(player_->value(), 0.0);
-
-  segments = player_->getSegments(990);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.0, EPSILON);
-  EXPECT_NEAR(segments[1].value, 0.990, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 990);
-
-  segments = player_->getSegments(20);
-  ASSERT_EQ(segments.size(), 3);
-  EXPECT_NEAR(segments[0].value, 0.990, EPSILON);
-  EXPECT_NEAR(segments[1].value, 1.0, EPSILON);
-  EXPECT_NEAR(segments[2].value, 1.0, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 10);
-
-  segments = player_->getSegments(10);
-  ASSERT_EQ(segments.size(), 2);
-  EXPECT_NEAR(segments[0].value, 0.0, EPSILON);
-  EXPECT_NEAR(segments[1].value, 0.010, EPSILON);
-  EXPECT_EQ(segments[0].time, 0);
-  EXPECT_EQ(segments[1].time, 10);
+  SegmentList segments = player_->getSegments(250);
+  ASSERT_EQ(segments.size(), 1);
+  EXPECT_NEAR(segments[0].first.value, 0.0, EPSILON);
+  EXPECT_NEAR(segments[0].second.value, 0.250, EPSILON);
+  EXPECT_EQ(segments[0].first.time, 0);
+  EXPECT_EQ(segments[0].second.time, 250);
 }
 
 }  // namespace echomesh

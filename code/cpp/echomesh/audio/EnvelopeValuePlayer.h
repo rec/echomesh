@@ -7,7 +7,8 @@ namespace echomesh {
 
 class EnvelopeValuePlayer {
  public:
-  typedef vector<Envelope::Point> PointList;
+  typedef std::pair<Envelope::Point, Envelope::Point> Segment;
+  typedef vector<Segment> SegmentList;
 
   EnvelopeValuePlayer(const EnvelopeValue&);
   bool isConstant() const { return envelopeValue_.isConstant; }
@@ -21,7 +22,7 @@ class EnvelopeValuePlayer {
   void begin();
 
   // Only call this if isConstant is false.
-  PointList getSegments(SampleTime);
+  SegmentList getSegments(SampleTime);
 
  private:
   const EnvelopeValue& envelopeValue_;

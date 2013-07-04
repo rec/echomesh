@@ -22,22 +22,21 @@ void EnvelopeValuePlayer::begin() {
 //   point_.time >= envelope.points[index_].time
 //   point_.time < envelope.points[index_ + 1].time
 
-typedef EnvelopeValuePlayer::PointList PointList;
+typedef EnvelopeValuePlayer::SegmentList SegmentList;
 
-PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
+SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
   typedef Envelope::Point Point;
 
+  SegmentList result;
+  Segment seg;
   bool reverse = envelopeValue_.envelope.reverse;
-
-  PointList result;
-  result.push_back(Point(0, point_.value));
-
-  if (envelopeValue_.envelope.loops and loops_ > envelopeValue_.envelope.loops) {
-    result.push_back(Point(numSamples, point_.value));
+  seg.first = Point(0, point_.value);
+  if (loops_ and loops_ > envelopeValue_.envelope.loops) {
+    seg.second = Point(numSamples, point_.value);
+    result.push_back(seg);
     numSamples = 0;
   }
 
-  SampleTime elapsed = 0;
   while (numSamples > 0) {
     const Point* previous = &points()[index_];
     const Point* next = previous + 1;
@@ -47,35 +46,33 @@ PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     SampleTime now = point_.time;
     SampleTime remains = forward ? (next->time - now) : (now - previous->time);
 
-    bool rollover = false;
     if (remains <= numSamples) {
       // Move to a different index.
       if (forward) {
         if (++index_ >= points().size() - 1) {
           loops_++;
-          if (not reverse) {
-            rollover = true;
+          if (not reverse)
             index_ = 0;
-          }
         }
       } else {
-        if (--index_ < 0)
+        if (--index_ < 0) {
           loops_++;
+          if (not reverse)
+            index_ = points().size() - 2;
+        }
       }
     }
 
     Point delta = *next - *previous;
-    float slope = delta.value / delta.time;
+    float slope = directionMult * delta.value / delta.time;
 
     SampleTime t = jmin(remains, numSamples);
-    elapsed += t;
     numSamples -= t;
     point_.time += directionMult * t;
-    point_.value += directionMult * t * slope;
 
-    result.push_back(Point(elapsed, point_.value));
-    if (rollover)
-      point_ = Point(0, points()[0].value);
+    seg.second = Point(seg.first.time + t, seg.first.value + slope * t);
+    result.push_back(seg);
+    seg.first = seg.second;
   }
 
   return result;
