@@ -27,10 +27,11 @@ class EnvelopeValuePlayer {
  private:
   const EnvelopeValue& envelopeValue_;
   const bool isConstant_;
+  const int loops_;
 
   Envelope::Point point_;
   int index_;
-  int loops_;
+  int loopCount_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EnvelopeValuePlayer);
 };
