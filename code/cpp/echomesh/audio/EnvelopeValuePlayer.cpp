@@ -32,7 +32,7 @@ PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
   PointList result;
   result.push_back(Point(0, point_.value));
 
-  if (loops_ and loops_ > envelopeValue_.envelope.loops) {
+  if (envelopeValue_.envelope.loops and loops_ > envelopeValue_.envelope.loops) {
     result.push_back(Point(numSamples, point_.value));
     numSamples = 0;
   }
@@ -47,20 +47,20 @@ PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     SampleTime now = point_.time;
     SampleTime remains = forward ? (next->time - now) : (now - previous->time);
 
+    bool rollover = false;
     if (remains <= numSamples) {
       // Move to a different index.
       if (forward) {
         if (++index_ >= points().size() - 1) {
           loops_++;
-          if (not reverse)
+          if (not reverse) {
+            rollover = true;
             index_ = 0;
+          }
         }
       } else {
-        if (--index_ < 0) {
+        if (--index_ < 0)
           loops_++;
-          if (not reverse)
-            index_ = points().size() - 2;
-        }
       }
     }
 
@@ -74,6 +74,8 @@ PointList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     point_.value += directionMult * t * slope;
 
     result.push_back(Point(elapsed, point_.value));
+    if (rollover)
+      point_ = Point(0, points()[0].value);
   }
 
   return result;
