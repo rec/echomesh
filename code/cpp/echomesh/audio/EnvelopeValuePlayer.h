@@ -14,6 +14,7 @@ class EnvelopeValuePlayer {
   bool isConstant() const { return envelopeValue_.isConstant; }
 
   const Envelope::Point point() const { return point_; }
+  float value() const { return point_.value; }
   const Envelope::PointList& points() const {
     return envelopeValue_.envelope.points;
   }

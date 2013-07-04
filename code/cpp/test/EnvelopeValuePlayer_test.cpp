@@ -9,21 +9,25 @@ namespace {
 class EnvelopeValuePlayerTest : public ::testing::Test {
  public:
   EnvelopeValuePlayerTest() {}
-  
+
  protected:
-  void make() {
-    player_ = new EnvelopeValuePlayer(ev_);
+  void begin() {
+    player_ = new EnvelopeValuePlayer(envelopeValue_);
+    player_->begin();
   }
 
-  EnvelopeValue ev_;
+  EnvelopeValue envelopeValue_;
   ScopedPointer<EnvelopeValuePlayer> player_;
 };
 
 }  // namespace
 
 TEST_F(EnvelopeValuePlayerTest, Base) {
-  make();
+  envelopeValue_.isConstant = true;
+  envelopeValue_.value = 20.0;
+  begin();
   ASSERT_TRUE(player_->isConstant());
+  ASSERT_EQ(player_->value(), 20.0);
 }
 
 }  // namespace echomesh
