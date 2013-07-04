@@ -128,43 +128,21 @@ TEST_F(EnvelopeValuePlayerTest, ThreeParts) {
 
   test(990);
   ASSERT_EQ(segments_.size(), 1);
-  EXPECT_NEAR(first(0).value, 0.0, EPSILON);
-  EXPECT_NEAR(second(0).value, 0.990, EPSILON);
-  EXPECT_EQ(first(0).time, 0);
-  EXPECT_EQ(second(0).time, 990);
+  assertPoint(0, Point(0, 0.0), Point(990, 0.990));
 
   test(20);
   ASSERT_EQ(segments_.size(), 2);
-
-  EXPECT_NEAR(first(0).value, 0.990, EPSILON);
-  EXPECT_NEAR(second(0).value, 1.000, EPSILON);
-  EXPECT_EQ(first(0).time, 0);
-  EXPECT_EQ(second(0).time, 10);
-
-  EXPECT_NEAR(first(1).value, 1.0, EPSILON);
-  EXPECT_NEAR(second(1).value, 1.020, EPSILON);
-  EXPECT_EQ(first(1).time, 10);
-  EXPECT_EQ(second(1).time, 20);
+  assertPoint(0, Point(0, 0.990), Point(10, 1.000));
+  assertPoint(1, Point(10, 1.000), Point(20, 1.020));
 
   test(10);
   ASSERT_EQ(segments_.size(), 1);
-  EXPECT_NEAR(first(0).value, 1.020, EPSILON);
-  EXPECT_NEAR(second(0).value, 1.040, EPSILON);
-  EXPECT_EQ(first(0).time, 0);
-  EXPECT_EQ(second(0).time, 10);
+  assertPoint(0, Point(0, 1.020), Point(10, 1.040));
 
   test(500);
   ASSERT_EQ(segments_.size(), 2);
-
-  EXPECT_NEAR(first(0).value, 1.040, EPSILON);
-  EXPECT_NEAR(second(0).value, 2.0, EPSILON);
-  EXPECT_EQ(first(0).time, 0);
-  EXPECT_EQ(second(0).time, 480);
-
-  EXPECT_NEAR(first(1).value, 0.0, EPSILON);
-  EXPECT_NEAR(second(1).value, 0.020, EPSILON);
-  EXPECT_EQ(first(1).time, 480);
-  EXPECT_EQ(second(1).time, 500);
+  assertPoint(0, Point(0, 1.040), Point(480, 2.000));
+  assertPoint(1, Point(480, 0.0), Point(500, 0.020));
 }
 
 TEST_F(EnvelopeValuePlayerTest, Loops) {
