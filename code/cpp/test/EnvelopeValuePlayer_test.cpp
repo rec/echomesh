@@ -4,13 +4,26 @@
 
 namespace echomesh {
 
-TEST(EnvelopeValuePlayer, Base) {
-  EnvelopeValue ev;
-  ev.isConstant = true;
-  ev.value = 23.0;
+namespace {
 
-  EnvelopeValuePlayer player(ev);
-  ASSERT_TRUE(player.isConstant());
+class EnvelopeValuePlayerTest : public ::testing::Test {
+ public:
+  EnvelopeValuePlayerTest() {}
+  
+ protected:
+  void make() {
+    player_ = new EnvelopeValuePlayer(ev_);
+  }
+
+  EnvelopeValue ev_;
+  ScopedPointer<EnvelopeValuePlayer> player_;
+};
+
+}  // namespace
+
+TEST_F(EnvelopeValuePlayerTest, Base) {
+  make();
+  ASSERT_TRUE(player_->isConstant());
 }
 
 }  // namespace echomesh
