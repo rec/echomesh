@@ -25,6 +25,8 @@ class EnvelopeValuePlayer {
   SegmentList getSegments(SampleTime);
 
  private:
+  bool loopsDone() const { return loops_ and loopCount_ >= loops_; }
+
   const EnvelopeValue& envelopeValue_;
   const bool isConstant_;
   const int loops_;

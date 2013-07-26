@@ -154,6 +154,11 @@ TEST_F(EnvelopeValuePlayerTest, Loops) {
   begin();
   test(4000);
   ASSERT_EQ(segments_.size(), 5);
+  assertPoint(0, Point(0, 0.0), Point(1000, 1.0));
+  assertPoint(1, Point(1000, 1.0), Point(1500, 2.0));
+  assertPoint(2, Point(1500, 0.0), Point(2500, 1.0));
+  assertPoint(3, Point(2500, 1.0), Point(3000, 2.0));
+  assertPoint(4, Point(3000, 2.0), Point(4000, 2.0));
 }
 
 }  // namespace echomesh

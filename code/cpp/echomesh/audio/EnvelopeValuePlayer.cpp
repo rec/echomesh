@@ -33,7 +33,7 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
   Point start(0, point_.value);
   Segment seg(start, start);
   bool reverse = envelopeValue_.envelope.reverse;
-  if (loops_ and loopCount_ > loops_) {
+  if (loopsDone()) {
     seg.second = Point(numSamples, point_.value);
     result.push_back(seg);
     numSamples = 0;
@@ -79,7 +79,7 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     seg.second.time += t;
     seg.second.value += dv;
     result.push_back(seg);
-    if (rollover) {
+    if (rollover and not loopsDone()) {
       point_ = Point(0, points().front().value);
       seg.second.value = point_.value;
     }
