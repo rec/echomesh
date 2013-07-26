@@ -1,14 +1,15 @@
-*~
-.svn
-*.o
 .DS_Store
 .pulse-cookie
+.svn
+code/TAGS
+
+asset/
+bin/
+cache/
+command/.echomesh-xfer/
+log/
 
 *#*
+*.o
+*~
 
-bin/
-
-log/
-cache/
-code/TAGS
-command/.echomesh-xfer/
