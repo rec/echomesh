@@ -10,8 +10,8 @@ from echomesh.base import GetPrefix
 from echomesh.base import Yaml
 from echomesh.element import Root
 from echomesh.util import Log
-from echomesh.util import Split
-from echomesh.util import UniqueName
+from echomesh.util.string import Split
+from echomesh.util.string import UniqueName
 from echomesh.util.thread import MasterRunnable
 from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Lock

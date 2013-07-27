@@ -6,10 +6,10 @@ import time
 
 from echomesh.base import Path
 from echomesh.base import Yaml
-from echomesh.util import Flag
 from echomesh.util import Log
 from echomesh.util import Context
-from echomesh.util import SizeName
+from echomesh.util.string import Flag
+from echomesh.util.string import SizeName
 
 LOGGER = Log.logger(__name__)
 

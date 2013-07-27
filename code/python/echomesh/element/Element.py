@@ -4,7 +4,7 @@ import datetime
 import time
 
 from echomesh.expression import Variable
-from echomesh.util import UniqueName
+from echomesh.util.string import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 class Element(MasterRunnable):

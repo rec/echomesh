@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import twitter
 
 from echomesh.base import Name
-from echomesh.util import Truncate
+from echomesh.util.string import Truncate
 
 TWITTER_SIZE = 140
 

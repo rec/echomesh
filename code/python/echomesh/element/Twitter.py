@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element.Repeat import Repeat
 from echomesh.element import Load
 from echomesh.util import Log
-from echomesh.util import RemoveHashtags
+from echomesh.util.string import RemoveHashtags
 
 from gittwit.twitter.Search import Search
 

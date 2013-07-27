@@ -14,9 +14,9 @@ from echomesh.command import Help
 # pylint: enable=W0611
 # TODO: use the late loading from echomesh.element
 
-from echomesh.util import FindComment
 from echomesh.util import Log
-from echomesh.util import Split
+from echomesh.util.string import FindComment
+from echomesh.util.string import Split
 
 LOGGER = Log.logger(__name__)
 

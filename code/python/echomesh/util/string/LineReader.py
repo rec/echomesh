@@ -18,4 +18,3 @@ class LineReader(object):
         self.lines = []
       else:
         self.lines.append(line)
-

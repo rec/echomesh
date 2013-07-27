@@ -9,7 +9,7 @@ from six.moves import queue
 from echomesh.base import Yaml
 from echomesh.network import ServerMaker
 from echomesh.util import Log
-from echomesh.util.LineReader import LineReader
+from echomesh.util.string.LineReader import LineReader
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 from echomesh.util.thread import Lock
 
