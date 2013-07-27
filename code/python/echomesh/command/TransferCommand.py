@@ -4,6 +4,7 @@ import os
 import os.path
 
 from echomesh.base import Path
+from echomesh.base import Yaml
 from echomesh.command import CommandRegistry
 from echomesh.util import Log
 
@@ -48,7 +49,7 @@ def _get_files_to_transfer(path):
       for root, _, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
-            if TRANSFER_ALL_FILES or ffs.endswith('.yml') or ffs.endswith('.json'):
+            if TRANSFER_ALL_FILES or Yaml.has_extension(ffs):
               files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
       LOGGER.vdebug('Transferring directory %s', p)
     else:

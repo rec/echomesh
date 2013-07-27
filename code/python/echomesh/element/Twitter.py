@@ -10,7 +10,6 @@ from gittwit.twitter.Search import Search
 LOGGER = Log.logger(__name__)
 
 DEFAULT_PRELOAD = 1
-FIX_UNICODE = not True
 
 class Twitter(Repeat):
   def __init__(self, parent, description):
