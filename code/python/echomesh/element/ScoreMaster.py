@@ -75,13 +75,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return full_names
 
   def load_elements(self, names):
-    return self.load_raw_elements(Split.split_scores(names))
-
-  def load_raw_elements(self, score_names):
-    with self.lock:
-      elements = _make_elements(score_names, self.elements)
-      self.elements.update(elements)
-      return elements.keys()
+    return self._load_raw_elements(Split.split_scores(names))
 
   def start_elements(self, names):
     score_names = Split.split_scores(names)
@@ -99,11 +93,17 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           is_file = True
           score_file += '.yml'
       if is_file:
-        element_names.extend(self.load_raw_elements([[score_file, name]]))
+        element_names.extend(self._load_raw_elements([[score_file, name]]))
       else:
         element_names.append(name)
 
     return self.perform_element('start', element_names)
+
+  def _load_raw_elements(self, score_names):
+    with self.lock:
+      elements = _make_elements(score_names, self.elements)
+      self.elements.update(elements)
+      return elements.keys()
 
   def handle(self, event):
     for score in self.elements.itervalues():
