@@ -38,15 +38,14 @@ def _resolve_extensions(data):
     extension = data.get('inherit')
     if not extension:
       break
-    extension = Yaml.filename(extension)
+
+    try:
+      extension, data = CommandFile.load_resolve('score', extension)
+    except Exception as e:
+      raise Exception("Couldn't find extension for %s: %s" % (extension, str(e)))
 
     if extension in extensions:
       raise Exception('Infinite circular extension for %s' % extension)
-
-    try:
-      data = CommandFile.load('score', extension)
-    except Exception as e:
-      raise Exception("Couldn't find extension for %s: %s" % (extension, str(e)))
 
     if len(data) > 1:
       LOGGER.error("More than one element in extension %s", extension)

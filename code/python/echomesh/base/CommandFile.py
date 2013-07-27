@@ -46,17 +46,22 @@ def expand(*path):
 def resolve(*path):
   x = expand(*path)
   for f in x:
-    if os.path.exists(f):
-      return f
+    try:
+      return Yaml.filename(f)
+    except:
+      continue
 
-def load(*path):
+def load_resolve(*path):
   f = resolve(*path)
   if f:
     data = Yaml.read(f)
     if data:
-      return data
+      return f, data
 
   raise Exception("Couldn't read Yaml from file %s" % os.path.join(*path))
+
+def load(*path):
+  return load_resolve(*path)[1]
 
 def base_file(*path):
   return _command_file('master', *path)

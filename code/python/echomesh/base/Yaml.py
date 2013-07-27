@@ -10,7 +10,17 @@ SEPARATOR = '\n%s\n' % SEPARATOR_BASE
 PROPAGATE_EXCEPTIONS = False
 
 def filename(name):
-  return name if name.endswith('.yml') else (name + '.yml')
+  if os.path.exists(name):
+    return name
+  _, extension = os.path.splitext(name)
+  if extension not in ['.yml', '.json']:
+    n = name + '.yml'
+    if os.path.exists(n):
+      return n
+    n = name + '.json'
+    if os.path.exists(n):
+      return n
+  raise Exception("Couldn't find a file matching %s" % name)
 
 def encode_one(item):
   return yaml.safe_dump(item)
@@ -46,5 +56,5 @@ def write(fname, *items):
       raise
 
 def _open_userfile(fname, perms='r'):
-  return open(os.path.expanduser(filename(fname)), perms)
+  return open(filename(os.path.expanduser(fname)), perms)
 
