@@ -34,6 +34,10 @@ class Envelope(object):
       if self.times[i - 1] >= self.times[i]:
         raise Exception('Envelope times must be strictly increasing.')
 
+    for i, t in enumerate(self.times):
+      if t < 0:
+        raise Exception('Envelope times cannot be negative.')
+
     self.loops = kwds.get('loops', 1)
     self.reverse = kwds.get('reverse', False)
     self.loop_length = self.times[-1]
@@ -41,9 +45,17 @@ class Envelope(object):
     length = kwds.get('length')
     if length:
       self.length = Units.convert(length)
+      if self.length < 0:
+        LOGGER.error('Negative length "%s" is not allowed.', length)
+        self.length = 0
     else:
       self.length = self.loop_length * self.loops
-    self.slot = 0
+
+    if self.length:
+      self.slot = 0
+    else:
+      self.is_constant = True
+      self.data = Units.convert(self.data[0])
 
   def description(self):
     return Dict.from_attributes(self, Envelope._FIELDS)

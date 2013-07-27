@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_FV8ZQO__
-#define __JUCE_APPCONFIG_FV8ZQO__
+#ifndef __JUCE_APPCONFIG_XEYPDN__
+#define __JUCE_APPCONFIG_XEYPDN__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -182,4 +182,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_FV8ZQO__
+#endif  // __JUCE_APPCONFIG_XEYPDN__

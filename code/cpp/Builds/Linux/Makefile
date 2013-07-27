@@ -95,6 +95,7 @@ OBJECTS := \
   $(OBJDIR)/LineGetter_4e1cc2f2.o \
   $(OBJDIR)/ReadThread_1a08d793.o \
   $(OBJDIR)/SocketLineGetter_649dfac5.o \
+  $(OBJDIR)/FastTrig_b97710bd.o \
   $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Manager_ac61fac2.o \
   $(OBJDIR)/RegisterFormats_a3caa84e.o \
@@ -362,6 +363,11 @@ $(OBJDIR)/ReadThread_1a08d793.o: ../../echomesh/network/ReadThread.cpp
 $(OBJDIR)/SocketLineGetter_649dfac5.o: ../../echomesh/network/SocketLineGetter.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling SocketLineGetter.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FastTrig_b97710bd.o: ../../echomesh/util/FastTrig.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FastTrig.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp

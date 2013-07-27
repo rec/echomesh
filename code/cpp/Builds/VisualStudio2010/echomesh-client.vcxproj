@@ -175,6 +175,7 @@
     <ClCompile Include="..\..\echomesh\network\LineGetter.cpp"/>
     <ClCompile Include="..\..\echomesh\network\ReadThread.cpp"/>
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp"/>
+    <ClCompile Include="..\..\echomesh\util\FastTrig.cpp"/>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp"/>
     <ClCompile Include="..\..\rec\audio\format\Manager.cpp"/>
     <ClCompile Include="..\..\rec\audio\format\RegisterFormats.cpp"/>
@@ -1311,6 +1312,7 @@
     <ClInclude Include="..\..\echomesh\network\LineQueue.h"/>
     <ClInclude Include="..\..\echomesh\network\ReadThread.h"/>
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h"/>
+    <ClInclude Include="..\..\echomesh\util\FastTrig.h"/>
     <ClInclude Include="..\..\echomesh\util\GetDevice.h"/>
     <ClInclude Include="..\..\echomesh\util\Quit.h"/>
     <ClInclude Include="..\..\rec\audio\format\Manager.h"/>

@@ -487,6 +487,9 @@
     <ClCompile Include="..\..\echomesh\network\SocketLineGetter.cpp">
       <Filter>echomesh-client\echomesh\network</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\util\FastTrig.cpp">
+      <Filter>echomesh-client\echomesh\util</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\util\GetDevice.cpp">
       <Filter>echomesh-client\echomesh\util</Filter>
     </ClCompile>
@@ -1829,6 +1832,9 @@
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\SocketLineGetter.h">
       <Filter>echomesh-client\echomesh\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\util\FastTrig.h">
+      <Filter>echomesh-client\echomesh\util</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\util\GetDevice.h">
       <Filter>echomesh-client\echomesh\util</Filter>

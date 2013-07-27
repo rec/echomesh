@@ -144,6 +144,8 @@
               file="echomesh/network/SocketLineGetter.h"/>
       </GROUP>
       <GROUP id="{DBD331AF-CBE1-660D-5F8C-D06338F304CD}" name="util">
+        <FILE id="x2vd66" name="FastTrig.cpp" compile="1" resource="0" file="echomesh/util/FastTrig.cpp"/>
+        <FILE id="trEGyJ" name="FastTrig.h" compile="0" resource="0" file="echomesh/util/FastTrig.h"/>
         <FILE id="m3hVSu" name="GetDevice.cpp" compile="1" resource="0" file="echomesh/util/GetDevice.cpp"/>
         <FILE id="H9emas" name="GetDevice.h" compile="0" resource="0" file="echomesh/util/GetDevice.h"/>
         <FILE id="JaZU1x" name="Quit.h" compile="0" resource="0" file="echomesh/util/Quit.h"/>
