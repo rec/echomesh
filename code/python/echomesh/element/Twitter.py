@@ -5,7 +5,7 @@ from echomesh.element import Load
 from echomesh.util import Log
 from echomesh.util.string import RemoveHashtags
 
-from gittwit.twitter.Search import Search
+from echomesh.util.Twitter import Search
 
 LOGGER = Log.logger(__name__)
 
