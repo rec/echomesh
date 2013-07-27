@@ -14,8 +14,12 @@ API = None
 def _get_api():
   global API
   if not API:
-    auth = CommandFile.resolve('auth.py')
-    API = auth and twitter.Api(**auth['twitter'])
+    try:
+      auth = CommandFile.load('auth.yml')[0]
+    except:
+      raise Exception('Couldn\'t get twitter authorization')
+    else:
+      API = twitter.Api(**auth['twitter'])
   return API
 
 def post_update(text, *names):
@@ -33,13 +37,14 @@ class Search(object):
     self.callback = callback
     self.preload = preload
     self.max_id = None
+    print('Search done')
 
   def refresh(self):
     first_time = not self.max_id
     if first_time:
-      results = API.GetSearch(**kwds)
+      results = API.GetSearch(**self.kwds)
     else:
-      results = API.GetSearch(since_id=self.max_id, **kwds)
+      results = API.GetSearch(since_id=self.max_id, **self.kwds)
 
     if first_time and len(results) > self.preload:
       results = results[len(results) - self.preload:]

@@ -29,6 +29,7 @@ class Twitter(Repeat):
   def loop_target(self, t):
     for s in self.searches:
       s.refresh()
+
     super(Twitter, self).loop_target(t)
 
   def callback(self, twitter):
