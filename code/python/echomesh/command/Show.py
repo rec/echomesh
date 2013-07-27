@@ -101,7 +101,7 @@ def variables(instance):
       LOGGER.info('  %s = %s', '.'.join(path), value)
     LOGGER.info('')
   else:
-    LOGGER.info('  No variables were found.\n')
+    LOGGER.info('  No variables have been set.\n')
 
 
 NO_NODES_ERROR = """\
@@ -227,7 +227,7 @@ SHOW_REGISTRY.register_all(
   )
 
 SHOW_NAMES = SHOW_REGISTRY.join_keys()
-SHOW_USAGE = 'You can show any of the following values: %s.\n' % SHOW_NAMES
+SHOW_USAGE = 'You can show any of the following values: \n  %s.\n' % SHOW_NAMES
 
 ALL_HELP = """
 Shows all information on all values:
@@ -241,11 +241,14 @@ def _show(echomesh_instance, *parts):
     LOGGER.info('\n' + SHOW_USAGE)
   else:
     for name in parts:
-      function = SHOW_REGISTRY.get(name)
+      try:
+        function = SHOW_REGISTRY.get(name)
+      except:
+        function = None
       if function:
         function(echomesh_instance)
       else:
-        raise Exception("Didn't understand command 'show %s'. %s" %
+        raise Exception("Didn't understand command 'show %s'. \n\n%s" %
                         (name, SHOW_USAGE))
 
 SHOW_HELP = """
