@@ -35,7 +35,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def perform(self, action, names):
     if action == 'load':
-      return self.load_elements(names)
+      return self._load_elements(names)
 
     if action == 'start':
       return self.start_elements(names)
@@ -74,9 +74,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           LOGGER.error('', exc_info=0)
     return full_names
 
-  def load_elements(self, names):
-    return self._load_raw_elements(Split.split_scores(names))
-
   def start_elements(self, names):
     score_names = Split.split_scores(names)
     element_names = []
@@ -98,12 +95,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         element_names.append(name)
 
     return self.perform_element('start', element_names)
-
-  def _load_raw_elements(self, score_names):
-    with self.lock:
-      elements = _make_elements(score_names, self.elements)
-      self.elements.update(elements)
-      return elements.keys()
 
   def handle(self, event):
     for score in self.elements.itervalues():
@@ -128,7 +119,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     if self.startup:
       self.startup = False
       try:
-        self.load_elements(Config.get('load'))
+        self._load_elements(Config.get('load'))
       except:
         LOGGER.error()
       try:
@@ -142,6 +133,15 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       self.perform_element('pause', [])
     except:
       pass
+
+  def _load_elements(self, names):
+    return self._load_raw_elements(Split.split_scores(names))
+
+  def _load_raw_elements(self, score_names):
+    with self.lock:
+      elements = _make_elements(score_names, self.elements)
+      self.elements.update(elements)
+      return elements.keys()
 
 
 def _make_elements(score_names, table):
