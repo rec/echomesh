@@ -9,11 +9,14 @@ SEPARATOR_BASE = '---'
 SEPARATOR = '\n%s\n' % SEPARATOR_BASE
 PROPAGATE_EXCEPTIONS = False
 
+def has_extension(f):
+  return f.endswith('.yml') or f.endswith('.json')
+
 def filename(name):
   if os.path.exists(name):
     return name
-  _, extension = os.path.splitext(name)
-  if extension not in ['.yml', '.json']:
+  if not has_extension(name):
+    _, extension = os.path.splitext(name)
     n = name + '.yml'
     if os.path.exists(n):
       return n

@@ -82,7 +82,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         is_file = True
       else:
         name = score_file
-        is_file = score_file.endswith('.yml') or score_file.endswith('.json')
+        is_file = Yaml.has_extension(score_file)
         if is_file:
           name = name[:-4]
         elif name not in self.elements:

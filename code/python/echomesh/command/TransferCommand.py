@@ -48,7 +48,7 @@ def _get_files_to_transfer(path):
       for root, _, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
-            if TRANSFER_ALL_FILES or ffs.endswith('.yml'):
+            if TRANSFER_ALL_FILES or ffs.endswith('.yml') or ffs.endswith('.json'):
               files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
       LOGGER.vdebug('Transferring directory %s', p)
     else:
