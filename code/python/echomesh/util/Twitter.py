@@ -37,7 +37,6 @@ class Search(object):
     self.callback = callback
     self.preload = preload
     self.max_id = None
-    print('Search done')
 
   def refresh(self):
     first_time = not self.max_id
@@ -52,4 +51,3 @@ class Search(object):
     for status in results:
       self.max_id = max(self.max_id, status.id)
       self.callback(status.AsDict())
-
