@@ -12,6 +12,7 @@ struct Envelope {
 
     SampleTime time;
     float value;
+    String toString() const { return String(time) + "=" + String(value); }
   };
 
   typedef vector<Point> PointList;
