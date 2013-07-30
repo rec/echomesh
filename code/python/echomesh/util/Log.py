@@ -1,4 +1,4 @@
-"""Typical usage:  at the top of your file:
+"""Typical usage:  at the top of your file, put:
 
 LOGGER = Log.logger(__name__)
 """
@@ -10,15 +10,12 @@ import logging.config
 import sys
 import traceback
 
-DEBUG = False
-STACK_TRACES = False
 VDEBUG = 5
 
 LOG_LEVEL = 'INFO'
 
 DEFAULT_FORMAT = '%(message)s'
 DEBUG_FORMAT = '%(message)s'
-# DEBUG_FORMAT = '%(levelname)s: %(message)s'
 FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 
 _LOG_SIGNATURE = 'util/Log.py'
@@ -33,7 +30,7 @@ def _check_error_count(limit, every):
       _ERROR_COUNTER[line] = errors + 1
       return not (every and (errors % every))
 
-def _add_vdebug():
+def _add_level_vdebug():
   logging.addLevelName(VDEBUG, 'VDEBUG')
 
   def vdebug(self, message, *args, **kws):
@@ -42,24 +39,26 @@ def _add_vdebug():
   logging.Logger.vdebug = vdebug
   logging.VDEBUG = VDEBUG
 
-class ConfigSetter(object):
+_add_level_vdebug()
+
+class _ConfigClient(object):
   def config_update(self, get):
-    self.debug = DEBUG or (get and get('debug'))
-    self.stack_traces = STACK_TRACES or self.debug or (
-      get and get('diagnostics', 'stack_traces'))
-    self.log_level = (get and get('logging','level').upper()) or LOG_LEVEL
+    get = get or (lambda: None)
+    self.debug = get('debug')
+    self.stack_traces = self.debug or get('diagnostics', 'stack_traces')
+    self.log_level = get('logging','level').upper() or LOG_LEVEL
     if self.debug:
       if self.log_level not in ['DEBUG', 'VDEBUG']:
         self.log_level = 'DEBUG'
 
     self.kwds = {u'level': getattr(logging, self.log_level)}
-    self.filename = get and get('logging', 'file')
+    self.filename = get('logging', 'file')
     if self.filename:
       self.kwds[u'filename'] = self.filename
     else:
       self.kwds[u'stream'] = sys.stdout
 
-    self.kwds[u'format'] = (get and get('logging', 'format')) or (
+    self.kwds[u'format'] = get('logging', 'format') or (
       FILE_FORMAT if self.filename else
       DEBUG_FORMAT if self.debug
       else DEFAULT_FORMAT)
@@ -68,15 +67,13 @@ class ConfigSetter(object):
     logging.basicConfig(**self.kwds)
 
 
-_add_vdebug()
-
-CONFIG = ConfigSetter()
+_CONFIG = _ConfigClient()
 try:
   from echomesh.base import Config
-  Config.add_client(CONFIG)
 except:
-  CONFIG.config_update(None)
-
+  _CONFIG.config_update(None)
+else:
+  Config.add_client(_CONFIG)
 
 def logger(name=None):
   assert name
@@ -96,8 +93,8 @@ def logger(name=None):
     exc_type, exc_value = sys.exc_info()[:2]
     if exc_type and not raw:
       message = '%s %s' % (exc_value, message)
-      kwds['exc_info'] = kwds.get('exc_info', CONFIG.stack_traces)
-    if not CONFIG.filename:
+      kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
+    if not _CONFIG.filename:
       message = 'ERROR: %s\n' % message
     original_error_logger(message, *args, **kwds)
 
@@ -105,5 +102,5 @@ def logger(name=None):
   return log
 
 LOGGER = logger(__name__)
-LOGGER.debug('\nLog level is %s', CONFIG.log_level)
+LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
 
