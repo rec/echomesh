@@ -33,3 +33,6 @@ def play(filename, run_in_thread=True):
 
   else:
     pass  # TODO: Log or something?
+
+def AplayPlayer(_, filename, **kwds):
+  return play(filename, **kwds)

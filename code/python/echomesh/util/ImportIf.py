@@ -10,4 +10,4 @@ def imp(module):
   if Config.get('load_module', module):
     return Importer.imp(module)
   else:
-    return Importer.Failure(ERROR_MESSAGE % module)
+    return Importer.FailedImport(ERROR_MESSAGE % module)

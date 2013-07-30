@@ -24,15 +24,15 @@ Try using the client player, or the aplay player."""
 
 INF = float('inf')
 
-class FilePlayer(ThreadLoop):
+class PyaudioPlayer(ThreadLoop):
   def __init__(self, element,
                level=1, pan=0, loops=1, begin=0.0, end=INF, **kwds):
-    super(FilePlayer, self).__init__(name='FilePlayer')
+    super(PyaudioPlayer, self).__init__(name='PyaudioPlayer')
     PlayerSetter.set_player(self, element,
-                            level=1, pan=0, loops=1, begin=begin, end=end, **kwds)
+                            level=level, pan=pan, loops=loops, begin=begin, end=end, **kwds)
 
     if begin > 0.0 or end != INF:
-      LOGGER.error('The Python FilePlayer doesn\'t support begin or end')
+      LOGGER.error('The Python PyaudioPlayer doesn\'t support begin or end')
 
     from echomesh.sound import SetOutput
     if not SetOutput.OUTPUT_SET:
@@ -66,7 +66,7 @@ class FilePlayer(ThreadLoop):
     self.restart_sound()
 
   def run(self):
-    super(FilePlayer, self).run()
+    super(PyaudioPlayer, self).run()
 
   def config_update(self, get):
     self._frames_per_buffer = get('audio', 'output', 'frames_per_buffer')
@@ -99,7 +99,7 @@ class FilePlayer(ThreadLoop):
     self._current_pan = self._pan()
 
   def _on_pause(self):
-    super(FilePlayer, self)._on_pause()
+    super(PyaudioPlayer, self)._on_pause()
     self._close_stream()
 
   def _close_stream(self):
@@ -121,7 +121,7 @@ class FilePlayer(ThreadLoop):
 
   def single_loop(self):
     if not self._audio_stream:
-      LOGGER.error('FilePlayer.single_loop terminates')
+      LOGGER.error('PyaudioPlayer.single_loop terminates')
       # TODO: why should I have to do this given that restart_sound calls pause?
       self.pause()
       return

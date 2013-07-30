@@ -26,7 +26,7 @@ class Instance(MasterRunnable):
 
     self.display = Pi3dDisplay.Pi3dDisplay()
     self.keyboard = self.osc = None
-    if Config.get('control_program', 'enable'):
+    if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
       self.keyboard = Keyboard.keyboard(self)
 

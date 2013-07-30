@@ -2,9 +2,7 @@ network:
   client:
     start: true
     allow_reuse_address: true
-
-network:
-  client:
     binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Debug/echomesh-client.app/Contents/MacOS/echomesh-client
+
 ---
-{autosave: true, speed: 50%}
+{debug: true, start: old/audio6}

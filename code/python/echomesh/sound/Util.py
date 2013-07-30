@@ -44,7 +44,7 @@ def to_numpy(frames, dtype, sample_width, channels):
   frames = numpy.fromstring(frames, dtype=dtype)
   if sample_width == 1:
     frames *= 256.0
-  elif self.sample_width == 4:
+  elif sample_width == 4:
     frames /= 65536.0
 
   if channels == 1:
