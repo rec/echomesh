@@ -10,7 +10,7 @@ QUITTING = False
 HANDLERS = []
 PRINT_EXCEPTIONS = not False
 
-def register(handler):
+def register_atexit(handler):
   HANDLERS.append(handler)
 
 def request_quit():
@@ -33,4 +33,3 @@ def _atexit_quit():
   print('echomesh shut down %s.' % reason)
 
 atexit.register(_atexit_quit)
-

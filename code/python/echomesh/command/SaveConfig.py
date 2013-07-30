@@ -10,12 +10,11 @@ from echomesh.base import Yaml
 from echomesh.command import CommandRegistry
 from echomesh.command import SetConfig
 from echomesh.util import Log
+from echomesh.util import Quit
 
 LOGGER = Log.logger(__name__)
 
-def save_config(_, *values):
-  if values:
-    SetConfig.set_config(_, *values)
+def _save():
   if MergeConfig.LOCAL_CHANGES:
     config_file, data = _get_raw_file()
     data = [d for d in data if d.strip()]
@@ -27,9 +26,25 @@ def save_config(_, *values):
       data[1] = Yaml.encode_one(old_data)
     MergeConfig.LOCAL_CHANGES = {}
     _raw_write(config_file, data)
-    LOGGER.info('Saved to file %s.', config_file)
+    return config_file
+
+def _save_automatically():
+  config_file = Config.get('autosave') and _save()
+  if config_file:
+    LOGGER.info('Configuration automatically saved to file %s.', config_file)
+
+# Automatically save any changed variables on exit.
+Quit.register_atexit(_save_automatically)
+
+
+def save_config(_, *values):
+  if values:
+    SetConfig.set_config(_, *values)
+  config_file = _save()
+  if config_file:
+    LOGGER.info('Configuration saved to file %s.', config_file)
   else:
-    LOGGER.error('There are no changes to save.')
+    LOGGER.error('There are no configuration changes to save.')
 
 def _get_raw_file(context='master'):
   config_file = CommandFile.config_file(context)

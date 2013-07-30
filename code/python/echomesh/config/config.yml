@@ -14,6 +14,9 @@ aliases:
 # Can you remotely request the shutdown and restart of this machine?
 allow_shutdown: true
 
+# Do changes to the configuration save automatically?
+autosave: true
+
 # Enable autostart.
 #
 # You still have to configure your computer to automatically run echomesh before
@@ -205,6 +208,8 @@ light:
 
   visualizer:
     enable: true
+    hide_on_no_clients: true
+    show_at_startup: true
     show: true
     type: client
     period: 10ms

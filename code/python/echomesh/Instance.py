@@ -41,7 +41,7 @@ class Instance(MasterRunnable):
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.mic = None
-    Quit.register(self.pause)
+    Quit.register_atexit(self.pause)
 
   def _on_pause(self):
     super(Instance, self)._on_pause()

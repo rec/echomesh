@@ -6,3 +6,5 @@ network:
 network:
   client:
     binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Debug/echomesh-client.app/Contents/MacOS/echomesh-client
+---
+{autosave: true, speed: 50%}

@@ -41,7 +41,8 @@ class LightBank(ThreadLoop):
         pass
 
   def has_clients(self):
-    return not not self.clients
+    with self.lock:
+      return not not self.clients
 
   def single_loop(self):
     with self.lock:
