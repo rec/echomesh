@@ -5,6 +5,9 @@
 >>> split_args('x=2')
 [[[u'x'], 2]]
 
+>>> split_args('x=false')
+[[[u'x'], False]]
+
 >>> split_args('x="a b c"')
 [[[u'x'], 'a b c']]
 

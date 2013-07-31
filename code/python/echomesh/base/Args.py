@@ -21,7 +21,7 @@ _RIGHT_TO_LEFT = dict(zip('}])', _LEFT))
 def set_arguments(argv):
   global ARGS
   try:
-    ARGS[:] = split_args(argv[1:])
+    ARGS[:] = split_args(''.join(argv[1:]))
     return True
   except:
     print(_ARGUMENT_ERROR % ' '.join(argv[1:]))
@@ -56,24 +56,6 @@ class _ArgParser(object):
     self.add_result()
     return self.results
 
-  def clear(self):
-    self.address = []
-    self.value = []
-    self.state = self.before_address
-    self.in_quotes = False
-    self.backslashed = False
-    self.bracket_stack = []
-
-  def add_result(self):
-    if self.address:
-      value = ''.join(self.value or 'true').strip()
-      address = ''.join(self.address).strip().split('.')
-      self.results.append([address, Yaml.decode_one(value)])
-      self.clear()
-
-  def error(self, msg):
-    raise Exception('At column %d: %s.' % (self.col, msg))
-
   def before_address(self, ch):
     if ch.isalpha():
       self.address.append(ch)
@@ -94,11 +76,11 @@ class _ArgParser(object):
   def before_equals(self, ch):
     if ch == '=':
       self.state = self.before_value
-    elif ch.isspace():
-      self.col += 1
-    else:
+    elif not ch.isspace():
       self.value = 'true'
       self.add_result()
+
+    self.col += 1
 
   def before_value(self, ch):
     if ch.isspace():
@@ -148,6 +130,23 @@ class _ArgParser(object):
     else:
       self.value.append(ch)
 
+  def clear(self):
+    self.address = []
+    self.value = []
+    self.state = self.before_address
+    self.in_quotes = False
+    self.backslashed = False
+    self.bracket_stack = []
+
+  def add_result(self):
+    if self.address:
+      value = ''.join(self.value or 'true').strip()
+      address = ''.join(self.address).strip().split('.')
+      self.results.append([address, Yaml.decode_one(value)])
+      self.clear()
+
+  def error(self, msg):
+    raise Exception('At column %d: %s.' % (self.col, msg))
 
 def split_args(s):
   return _ArgParser().split(s)

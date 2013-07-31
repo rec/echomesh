@@ -65,7 +65,7 @@ def get(*parts):
   return value
 
 def assign(values, update=True):
-  assignments = Args.split_args(values)
+  assignments = Args.split_args(''.join(values))
   merged = MergeConfig.merge_assignments(CONFIG, assignments)
   if merged and update:
     update_clients()
