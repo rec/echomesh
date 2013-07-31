@@ -8,14 +8,8 @@
 >>> split_args('x="a b c"')
 [[[u'x'], 'a b c']]
 
->>> do_try('xyz="a')
-ERROR: At column 6: unterminated quotation mark.
-
->>> do_try('xyz')
-ERROR: At column 3: expected to see a value.
-
->>> do_try('xyz=')
-ERROR: At column 4: expected to see a value.
+>>> do_try('xyz="')
+ERROR: At column 5: unterminated quotation mark.
 
 >>> split_args('x=[1, 2, 3]')
 [[[u'x'], [1, 2, 3]]]
@@ -41,10 +35,10 @@ ERROR: At column 15: Got closing [ for opening {.
 [[[u'x'], [{1: 2, 3: 4}]]]
 
 >>> do_try(part[:-1])
-ERROR: At column 15: Missing closing brackets for [.
+ERROR: At column 15: missing closing brackets in [.
 
 >>> do_try(part[:-2])
-ERROR: At column 14: Missing closing brackets for [{.
+ERROR: At column 14: missing closing brackets in [{.
 
 >>> split_args('x=2 y=3')
 [[[u'x'], 2], [[u'y'], 3]]
