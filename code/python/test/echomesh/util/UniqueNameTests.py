@@ -18,4 +18,4 @@ u'bar-3'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.UniqueName import unique_name
+from echomesh.util.string.UniqueName import unique_name

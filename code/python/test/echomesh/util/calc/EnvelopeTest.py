@@ -1,38 +1,4 @@
 """
->>> env = Envelope.Envelope(10)
-
->>> env.interpolate(-1)
-10
-
->>> env.interpolate(0)
-10
-
->>> env.interpolate(0.5)
-10
-
->>> env.interpolate(1)
-10
-
->>> env.interpolate(1.5)
-10
-
->>> env = Envelope.Envelope([23, 42])
-
->>> env.interpolate(-1)
-[23, 42]
-
->>> env.interpolate(0)
-[23, 42]
-
->>> env.interpolate(0.5)
-[23, 42]
-
->>> env.interpolate(1)
-[23, 42]
-
->>> env.interpolate(1.5)
-[23, 42]
-
 >>> env = Envelope.Envelope({0: 5.0, 1: 10.0, 2: 20.0})
 
 >>> env.interpolate(-1)

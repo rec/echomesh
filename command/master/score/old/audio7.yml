@@ -1,0 +1,9 @@
+type:   audio
+file:   long-saw.wav
+loops:  3  # Doesn't work?
+
+# Level doesn't have to be a single number - it can be an *envelope*, which is a
+# list of times and levels.
+
+level:
+  0:00:   0db

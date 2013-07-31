@@ -39,4 +39,4 @@
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.Split import *
+from echomesh.util.string.Split import *

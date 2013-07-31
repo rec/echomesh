@@ -95,8 +95,8 @@ class PyaudioPlayer(ThreadLoop):
       LOGGER.error("Couldn't open sound on loop %d", self._loop_number)
       self.pause()
     self._element.time = 0
-    self._current_level = self._level()
-    self._current_pan = self._pan()
+    self._current_level = self._level.evaluate()
+    self._current_pan = self._pan.evaluate()
 
   def _on_pause(self):
     super(PyaudioPlayer, self)._on_pause()
@@ -157,6 +157,7 @@ class PyaudioPlayer(ThreadLoop):
     if self._level.is_constant():
       left *= self._current_level
       right *= self._current_level
+
     else:
       next_level = self._level()
       levels = numpy.linspace(self._current_level, next_level, len(left))
@@ -168,6 +169,7 @@ class PyaudioPlayer(ThreadLoop):
       lpan, rpan = Util.calculate_pan(self._current_pan)
       left *= lpan
       right *= rpan
+
     else:
       next_pan = self._pan()
       angles = numpy.linspace(Util.pan_to_angle(self._current_pan),

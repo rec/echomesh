@@ -43,10 +43,10 @@ _add_level_vdebug()
 
 class _ConfigClient(object):
   def config_update(self, get):
-    get = get or (lambda: None)
+    get = get or (lambda *x: None)
     self.debug = get('debug')
     self.stack_traces = self.debug or get('diagnostics', 'stack_traces')
-    self.log_level = get('logging','level').upper() or LOG_LEVEL
+    self.log_level = (get('logging','level') or LOG_LEVEL).upper()
     if self.debug:
       if self.log_level not in ['DEBUG', 'VDEBUG']:
         self.log_level = 'DEBUG'

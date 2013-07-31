@@ -34,6 +34,6 @@ def imp(path, name=None, defer_failure=True):
     return import_path(path)
   except ImportError as e:
     if defer_failure:
-      return FailedImport(ERROR_MESSAGE % (name or module))
+      return FailedImport(ERROR_MESSAGE % (name or path))
     else:
       raise

@@ -20,6 +20,6 @@ u'hello world "this # is #\\' it" \\'# not\\' '
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.FindComment import remove_comment
+from echomesh.util.string.FindComment import remove_comment
 
 HARD_ONE = """hello world "this # is #' it" '# not' # comment"""

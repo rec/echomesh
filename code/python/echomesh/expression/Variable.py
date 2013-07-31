@@ -72,25 +72,29 @@ class _Envelope(Envelope):
     self.element = element
     super(_Envelope, self).__init__(**kwds)
 
-  def evaluate(self):
-    return self()
+  def evaluate(self, element=None):
+    return super(_Envelope, self).evaluate(element or self.element)
 
-  def __call__(self):
-    return self.interpolate(self.element.elapsed_time())
+  def is_constant(self, element=None):
+    return super(_Envelope, self).is_constant(element or self.element)
+
+  def __call__(self, element=None):
+    return self.evaluate(element)
 
 class _Value(object):
   def __init__(self, element, value=None):
     self.element = element
     self.value = Units.UnitExpression(value)
 
-  def is_constant(self):
-    return self.value.is_constant(self.element)
+  def is_constant(self, element=None):
+    return self.value.is_constant(element or self.element)
 
-  def evaluate(self):
-    return self()
+  def evaluate(self, element=None):
+    return self.value.is_constant(element or self.element)
 
-  def __call__(self):
-    return self.value()
+  def __call__(self, element=None):
+    return self.evaluate(element)
+
 
 REGISTRY.register_all(
   counter=_counter,
