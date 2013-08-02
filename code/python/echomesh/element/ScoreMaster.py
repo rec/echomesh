@@ -141,7 +141,6 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       self.elements.update(elements)
       return elements.keys()
 
-
 def _make_elements(score_names, table):
   result = {}
   for score_file, name in score_names:

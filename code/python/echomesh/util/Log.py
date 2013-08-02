@@ -10,6 +10,7 @@ import logging.config
 import sys
 import traceback
 
+FORCE_DEBUG = not True
 VDEBUG = 5
 
 LOG_LEVEL = 'INFO'
@@ -44,7 +45,7 @@ _add_level_vdebug()
 class _ConfigClient(object):
   def config_update(self, get):
     get = get or (lambda *x: None)
-    self.debug = get('debug')
+    self.debug = FORCE_DEBUG or get('debug')
     self.stack_traces = self.debug or get('diagnostics', 'stack_traces')
     self.log_level = (get('logging','level') or LOG_LEVEL).upper()
     if self.debug:

@@ -66,6 +66,8 @@ def load(*path):
 def base_file(*path):
   return _command_file('master', *path)
 
-def config_file(scope):
+def config_file(scope='default'):
   return _command_file(scope, 'config.yml')
 
+def read_config(scope='default'):
+  return Yaml.read(config_file(scope))

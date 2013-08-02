@@ -1,41 +1,41 @@
 """
->>> split_args('')
+>>> split('')
 []
 
->>> split_args('x=2')
-[[[u'x'], 2]]
+>>> split('x=2')
+[[u'x', 2]]
 
->>> split_args('x=false')
-[[[u'x'], False]]
+>>> split('x=false')
+[[u'x', False]]
 
->>> split_args('x="a b c"')
-[[[u'x'], 'a b c']]
+>>> split('x="a b c"')
+[[u'x', 'a b c']]
 
 >>> do_try('xyz="')
 ERROR: At column 5: unterminated quotation mark.
 
->>> split_args('x=[1, 2, 3]')
-[[[u'x'], [1, 2, 3]]]
+>>> split('x=[1, 2, 3]')
+[[u'x', [1, 2, 3]]]
 
->>> split_args('x=[1, 2]')
-[[[u'x'], [1, 2]]]
+>>> split('x=[1, 2]')
+[[u'x', [1, 2]]]
 
->>> split_args('x={1: 2, 3: 4}')
-[[[u'x'], {1: 2, 3: 4}]]
+>>> split('x={1: 2, 3: 4}')
+[[u'x', {1: 2, 3: 4}]]
 
->>> split_args('x=[{1: 2, 3: 4}]')
-[[[u'x'], [{1: 2, 3: 4}]]]
+>>> split('x=[{1: 2, 3: 4}]')
+[[u'x', [{1: 2, 3: 4}]]]
 
->>> split_args('light.display.layout=[64, 0]')
-[[[u'light', u'display', u'layout'], [64, 0]]]
+>>> split('light.display.layout=[64, 0]')
+[[u'light.display.layout', [64, 0]]]
 
 >>> do_try('x=[{1: 2, 3: 4]}')
 ERROR: At column 15: Got closing [ for opening {.
 
 >>> part = 'x=[{1: 2, 3: 4}]'
 
->>> split_args(part)
-[[[u'x'], [{1: 2, 3: 4}]]]
+>>> split(part)
+[[u'x', [{1: 2, 3: 4}]]]
 
 >>> do_try(part[:-1])
 ERROR: At column 15: missing closing brackets in [.
@@ -43,23 +43,23 @@ ERROR: At column 15: missing closing brackets in [.
 >>> do_try(part[:-2])
 ERROR: At column 14: missing closing brackets in [{.
 
->>> split_args('x=2 y=3')
-[[[u'x'], 2], [[u'y'], 3]]
+>>> split('x=2 y=3')
+[[u'x', 2], [u'y', 3]]
 
->>> split_args('extra= 32')
-[[[u'extra'], 32]]
+>>> split('extra= 32')
+[[u'extra', 32]]
 
->>> split_args('extra =32')
-[[[u'extra'], 32]]
+>>> split('extra =32')
+[[u'extra', 32]]
 
->>> split_args('extra = 32')
-[[[u'extra'], 32]]
+>>> split('extra = 32')
+[[u'extra', 32]]
 
->>> split_args('ac.de = .defeg.')
-[[[u'ac', u'de'], '.defeg.']]
+>>> split('ac.de = .defeg.')
+[[u'ac.de', '.defeg.']]
 
->>> split_args('extra="32 men" ac.de = .defeg. foo = [ bar, baz ]')
-[[[u'extra'], '32 men'], [[u'ac', u'de'], '.defeg.'], [[u'foo'], ['bar', 'baz']]]
+>>> split('extra="32 men" ac.de = .defeg. foo = [ bar, baz ]')
+[[u'extra', '32 men'], [u'ac.de', '.defeg.'], [u'foo', ['bar', 'baz']]]
 
 """
 
@@ -69,7 +69,7 @@ from echomesh.base.Args import *
 
 def do_try(x):
   try:
-    split_args(x)
+    split(x)
   except Exception as e:
     print('ERROR:', e)
   else:

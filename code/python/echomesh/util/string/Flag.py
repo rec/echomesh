@@ -5,7 +5,7 @@ def split_flag(flag):
   flag = parts.pop(0)
   return flag, ((parts and parts[0]) or True)
 
-def split_args(args):
+def split_flag_args(args):
   flags, new_args = {}, []
 
   for a in args:

@@ -36,24 +36,16 @@ def _main():
   Path.fix_sys_path()
   p()
 
-  from echomesh.base import Args
-  p()
-
-  if not Args.set_arguments(sys.argv):
-    return
-
-  p()
-
   from echomesh.base import Config
   p()
 
-  Config.recalculate()
+  Config.reconfigure()
   p()
 
   if Config.get('autostart') and not Config.get('permission', 'autostart'):
     print()
     from echomesh.util import Log
-    Log.logger(__name__).info("Not autostarting because autostart=False")
+    Log.logger(__name__).info('No permission to autostart')
     return
 
   p()

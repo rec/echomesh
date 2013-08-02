@@ -77,7 +77,7 @@ See "help show contexts" for more information.
 """
 
 def scores(_, *args):
-  flags, paths = Flag.split_args(args)
+  flags, paths = Flag.split_flag_args(args)
   paths = paths or ['']
   printed = False
   for p in paths:

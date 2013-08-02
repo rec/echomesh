@@ -5,4 +5,4 @@ network:
     binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Debug/echomesh-client.app/Contents/MacOS/echomesh-client
 
 ---
-{debug: false}
+debug: {}

@@ -19,9 +19,13 @@ CLIENTS = WeakSet()
 
 THROW_EXCEPTIONS = True
 
-def recalculate():
+def reconfigure():
   _fix_home_directory_environment_variable()
-  _reset_configs()
+
+  global CONFIG, CONFIGS_UNVISITED
+  CONFIG = MergeConfig.reconfigure()
+  CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+
   _get_name_and_tags()
 
 def add_client(client):
@@ -64,12 +68,14 @@ def get(*parts):
 
   return value
 
-def assign(values, update=True):
-  assignments = Args.split_args(''.join(values))
-  merged = MergeConfig.merge_assignments(CONFIG, assignments)
-  if merged and update:
+def assign(values):
+  return MergeConfig.merge_assignments(CONFIG, Args.split(values))
+
+def assign_and_update(values):
+  assignments = assign(values)
+  if assignments:
     update_clients()
-  return merged
+  return assignments
 
 def get_unvisited():
   def fix(d):
@@ -84,17 +90,15 @@ def get_unvisited():
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
 
+
+_HOME_VARIABLE_FIXED = False;
+
 def _fix_home_directory_environment_variable():
-  # If running as root, export user pi's home directory as $HOME.
-  if getpass.getuser() == 'root':
-    os.environ['HOME'] = '/home/pi'
-
-def _reset_configs():
-  global CONFIG, CONFIGS_UNVISITED
-
-  # Do this the first time to get everything before tag and name resolution.
-  CONFIG = MergeConfig.merge_config()
-  CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+  if not _HOME_VARIABLE_FIXED:
+    # If running as root, export user pi's home directory as $HOME.
+    if getpass.getuser() == 'root':
+      os.environ['HOME'] = '/home/pi'
+    _HOME_VARIABLE_FIXED = True
 
 def _get_name_and_tags():
   name = Name.lookup(get('map', 'name'))
@@ -109,4 +113,3 @@ def _get_name_and_tags():
 
   if name or tags:
     CommandFile.compute_command_path()
-

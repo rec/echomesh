@@ -14,21 +14,29 @@ Example:
   get audio.input.enable
 """
 
+def _route_items(items, successes, failures):
+  for v in items:
+    try:
+      successes.append([v, Config.get(*v.split('.'))])
+    except:
+      failures.append(v)
+
+
 def get_config(_, *items):
   if not items:
-    raise Exception(GET_ARGUMENT_ERROR)
-  errors = []
+    items =
+  failures = []
   successes = []
   for v in items:
     try:
       successes.append([v, Config.get(*v.split('.'))])
     except:
-      errors.append(v)
+      failures.append(v)
 
   for value, result in successes:
     LOGGER.info('%s=%s', value, result)
-  if errors:
-    LOGGER.error('Didn\'t understand %s', Join.join_words(errors))
+  if failures:
+    LOGGER.error('Didn\'t understand %s', Join.join_words(failures))
 
 GET_HELP = """
   Prints one or more configuration variables.

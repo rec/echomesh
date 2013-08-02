@@ -30,3 +30,41 @@ def get(table, name, allow_prefixes=True):
     return get_prefix(table, name, allow_prefixes)
   except PrefixException:
     return None
+
+def accessor(table, names,
+             allow_prefixes=True, unmapped_names=None, create=False):
+  path = []
+  unmapped = False
+  for i, name in enumerate(names):
+    is_last = i >= len(names) - 1
+    if create:
+      value = table.setdefault(name, None if is_last else {})
+    elif unmapped:
+      value = (table or {}).get(name, None)
+    else:
+      name, value = get_prefix(table, name, allow_prefixes)
+    path.append(name)
+    if is_last:
+      return path, table, value
+    table = value
+    if (not i) and unmapped_names and name in unmapped_names:
+      unmapped = True
+
+def get_accessor(table, names, **kwds):
+  return accessor(table, names, **kwds)[2]
+
+def set_accessor(table, names, value, create=True, allow_prefixes=False):
+  for i, name in enumerate(names):
+    if i < len(names) - 1:
+      if create:
+        table = table.setdefault(name, {})
+      else:
+        table = get_prefix(table, name, allow_prefixes)
+    else:
+      table[name] = value
+
+def set_assignment(address, value, master_table, slave_table,
+                    allow_prefixes=True, unmapped_names=None):
+  names = accessor(master_table, address.split('.'),
+                   allow_prefixes, unmapped_names)[0]
+  set_accessor(slave_table, names, value)

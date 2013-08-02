@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
 import six
+import sys
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
@@ -10,51 +12,70 @@ from echomesh.base import Path
 from echomesh.base import Yaml
 
 LOCAL_CHANGES = {}
+ARGUMENT_CHANGES = {}
 
-def merge_config():
-  config = Merge.merge(*Yaml.read(CommandFile.config_file('default')))
+_ARGUMENT_ERROR = """
+ERROR: Didn't understand arguments to echomesh: "%s".
+
+echomesh needs to be called with arguments looking like "name=value".
+
+Examples:
+  echomesh
+  echomesh debug=true
+  echomesh audio.input.enable=false light.enable=false
+"""
+
+def reconfigure():
+  config = CommandFile.read_config('default')
   assert config, 'Unable to read default config file'
 
-  _set_project_path()
+  args = _get_args()
+  _set_project_path(args)
   config = _merge_file_config(config)
-  merge_assignments(config, Args.ARGS)
+  merge_assignments(config, args, save=False)
+
   return config
 
-def merge_assignments(config, assignments):
-  results = []
-  for address, value in assignments:
-    try:
-      cfg, changes = config, LOCAL_CHANGES
-      path = []
-      for i, field in enumerate(address):
-        k, v = GetPrefix.get_prefix(cfg, field)
-        path.append(k)
-        if i < len(address) - 1:
-          cfg = v
-          changes = changes.setdefault(k, {})
-        else:
-          cfg[k] = changes[k] = value
-          results.append([path, value])
+def merge_assignments(config, assignments, changes=None):
+  changes = changes or LOCAL_CHANGES
+  def _merge(address, value):
+    path = []
+    values = []
+    for i, field in enumerate(address.split('.')):
+      key, val = GetPrefix.get_prefix(config, field)
+      path.append(key)
+      if i == len(address) - 1:
+        changes[key] = val
+        config[key] = copy.deepcopy(val)
+        return [path, value]
+      else:
+        config = val
+        changes = changes.setdefault(key, {})
+  return [_merge(a, v) for a, v in assignments]
 
-    except GetPrefix.PrefixException:
-      raise Exception('Configuration variable "%s" doesn\'t exist' %
-                      '.'.join(address))
 
-  return results
+def _get_args():
+  arg = ' '.join(sys.argv[1:])
+  try:
+    return Args.split(arg)
+  except:
+    print(_ARGUMENT_ERROR % arg)
+    raise
 
-def _set_project_path():
-  # First, find out if we're autostarting.
-  autostart = False
-  for address, value in Args.ARGS:
-    if len(address) == 1 and 'autostart'.startswith(address[0]):
-      autostart = True
-      break
+
+def _is_autostart(args):
+  for address, value in args:
+    if 'autostart'.startswith(address):
+      return True
+
+def _set_project_path(args):
+  prompt = not _is_autostart(args)
 
   # Get the project field out of the command line if it exists,
   # before we get any file past the default configuration.
-  for address, value in Args.ARGS:
-    if len(address) == 1 and 'project'.startswith(address[0]):
-      Path.set_project_path(value, show_error=True, prompt=not autostart)
+  for address, value in args:
+    if 'project'.startswith(address):
+      Path.set_project_path(value, show_error=True, prompt=prompt)
       CommandFile.compute_command_path()
       break
   else:

@@ -142,7 +142,6 @@ delay_before_keyboard_activates: 0.5 seconds
 delete_backups_after_transfer: false
 
 # Turns on various debugging mechanisms and gives better diagnositics.
-# Does not turn on debug logging.
 debug: false
 
 diagnostics:

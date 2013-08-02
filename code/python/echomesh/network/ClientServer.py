@@ -67,7 +67,7 @@ class ClientServer(Server):
       LOGGER.info('MIDI! %s', data)
 
     elif t == 'move':
-      Config.assign(['light.visualizer.top_left=%s' % data['top_left']], False)
+      Config.assign(['light.visualizer.top_left=%s' % data['top_left']])
 
   def kill(self):
     try:
