@@ -28,7 +28,7 @@ def _possible_project(path):
       return False
   return True
 
-def set_project_path(project_path=None, show_error=False, prompt=True):
+def set_project_path(project_path=None, show_error=True, prompt=True):
   original_path = os.path.abspath(os.path.expanduser(project_path or os.curdir))
   path = original_path
 

@@ -284,6 +284,10 @@ midi:
     index: -1
     name: ""
 
+# Set the name of the machine, overriding
+# This gives you a last-ditch ability to override your own name.
+name: ""
+
 # The OpenSoundControl protocol named OSC
 osc:
   client:
@@ -330,6 +334,8 @@ pi3d:
 project: ""
 
 speed: 100%
+
+tag: []
 
 # RUNNING OR LOADING SCORES ON STARTUP
 #

@@ -8,7 +8,7 @@ from contextlib import closing
 from echomesh.base import Merge
 from echomesh.base import Platform
 
-TAGS = []
+TAGS = ()
 
 def ip_address():
   try:
@@ -44,9 +44,13 @@ IP_ADDRESS = ip_address()
 UNAME = platform.uname()[1].lower()
 NAME = UNAME
 
-def set_name(name):
+def set_name(name=None):
   global NAME
-  NAME = name
+  NAME = name or UNAME
+
+def set_tags(*tags):
+  global TAGS
+  TAGS = tags
 
 def lookup(table, dflt=None):
   """

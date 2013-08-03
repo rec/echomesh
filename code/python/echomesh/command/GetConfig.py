@@ -21,17 +21,20 @@ def _route_items(items, successes, failures):
     except:
       failures.append(v)
 
-
 def get_config(_, *items):
-  if not items:
-    items =
   failures = []
-  successes = []
-  for v in items:
-    try:
-      successes.append([v, Config.get(*v.split('.'))])
-    except:
-      failures.append(v)
+  if items:
+    successes = []
+    for i in items:
+      parts = i.split('.')
+      try:
+        value = Config.get(*parts)
+      except:
+        failures.append(i)
+      else:
+        successes.append([i, value])
+  else:
+    successes = Config.MERGE_CONFIG.assignments().items()
 
   for value, result in successes:
     LOGGER.info('%s=%s', value, result)

@@ -68,3 +68,25 @@ def set_assignment(address, value, master_table, slave_table,
   names = accessor(master_table, address.split('.'),
                    allow_prefixes, unmapped_names)[0]
   set_accessor(slave_table, names, value)
+
+def leafs(table):
+  values = {}
+  def recurse(item, path):
+    if isinstance(item, dict):
+      for key, value in item.iteritems():
+        recurse(value, path + (key,))
+    else:
+      values[path] = value
+  recurse(table, ())
+  return values
+
+def leafs_parent(table):
+  values = []
+  def recurse(item, parent, path):
+    if isinstance(item, dict):
+      for key, value in item.iteritems():
+        recurse(value, item, path + [key])
+    else:
+      values.append((path, value, parent))
+  recurse(table, None, [])
+  return values

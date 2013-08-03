@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import getpass
 import os
-import six
 
 from compatibility.weakref import WeakSet
 
@@ -11,8 +10,9 @@ from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import MergeConfig
 from echomesh.base import Name
+from echomesh.base import Path
 
-CONFIG = None
+MERGE_CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
 
 CLIENTS = WeakSet()
@@ -20,13 +20,34 @@ CLIENTS = WeakSet()
 THROW_EXCEPTIONS = True
 
 def reconfigure():
+  global MERGE_CONFIG, CONFIGS_UNVISITED
+
   _fix_home_directory_environment_variable()
 
-  global CONFIG, CONFIGS_UNVISITED
-  CONFIG = MergeConfig.reconfigure()
-  CONFIGS_UNVISITED = copy.deepcopy(CONFIG)
+  # Read a configuration file with a given name, tags, and project.
+  def _make(name, tags, project, show_error, prompt):
+    Name.set_name(name)
+    Name.set_tags(tags)
+    Path.set_project_path(project_path=project, show_error=show_error)
 
-  _get_name_and_tags()
+    CommandFile.compute_command_path()
+    return MergeConfig.MergeConfig()
+
+  # First, make a config with the default information.
+  merge_config = _make(None, [], None, False, False)
+
+  # Now, use the name, tags and project to get the correct configuration.
+  get = merge_config.config.get
+
+  name = get('name') or Name.lookup(get('map', {}).get('name', {}))
+  tags = get('tag') or Name.lookup(get('map', {}).get('tag', {}))
+  project = get('project')
+
+  if not isinstance(tags, (list, tuple)):
+    tags = [tags]
+
+  MERGE_CONFIG = _make(name, tags, project, True, prompt=not get('autostart'))
+  CONFIGS_UNVISITED = copy.deepcopy(MERGE_CONFIG.config)
 
 def add_client(client):
   if not client in CLIENTS:
@@ -42,7 +63,7 @@ def update_clients():
         raise
 
 def get(*parts):
-  config, unvisited = CONFIG, CONFIGS_UNVISITED
+  config, unvisited = MERGE_CONFIG.config, CONFIGS_UNVISITED
   none = object()
   def get_part(config, part):
     if not isinstance(config, dict):
@@ -69,13 +90,7 @@ def get(*parts):
   return value
 
 def assign(values):
-  return MergeConfig.merge_assignments(CONFIG, Args.split(values))
-
-def assign_and_update(values):
-  assignments = assign(values)
-  if assignments:
-    update_clients()
-  return assignments
+  return MERGE_CONFIG.assign(values)
 
 def get_unvisited():
   def fix(d):
@@ -90,26 +105,13 @@ def get_unvisited():
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
 
-
 _HOME_VARIABLE_FIXED = False;
 
+# TODO: why does this go here?
 def _fix_home_directory_environment_variable():
+  global _HOME_VARIABLE_FIXED
   if not _HOME_VARIABLE_FIXED:
     # If running as root, export user pi's home directory as $HOME.
     if getpass.getuser() == 'root':
       os.environ['HOME'] = '/home/pi'
     _HOME_VARIABLE_FIXED = True
-
-def _get_name_and_tags():
-  name = Name.lookup(get('map', 'name'))
-  if name:
-    Name.set_name(name)
-
-  tags = Name.lookup(get('map', 'tag'))
-  if tags:
-    if isinstance(tags, six.string_types):
-      tags = [tags]
-    Name.TAGS = tags
-
-  if name or tags:
-    CommandFile.compute_command_path()

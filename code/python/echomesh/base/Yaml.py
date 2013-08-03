@@ -3,6 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import yaml
 
+from echomesh.base.AddExceptionSuffix import add_exception_suffix
+
 from contextlib import closing
 
 SEPARATOR_BASE = '---'
@@ -34,17 +36,27 @@ def decode(s):
 def decode_one(s):
   return yaml.safe_load(s)
 
-def read(fname, allow_empty=True):
+def read(fname, file_type='', allow_empty=True):
+  def error(state, e):
+    if file_type:
+      msg = 'in %s %s file %s.' % (state, file_type, fname)
+    else:
+      msg = 'in %s file %s.' % (state, fname)
+    add_exception_suffix(e, msg)
+    raise
+
   try:
     f = _open_userfile(fname, 'r')
-  except:
-    if allow_empty:
-      return []
-    else:
-      raise
+  except Exception as e:
+    if not allow_empty:
+      error('reading', e)
+    return []
 
   with closing(f):
-    return decode(f)
+    try:
+      return decode(f)
+    except Exception as e:
+      error('decoding', e)
 
 def write(fname, *items):
   try:

@@ -27,7 +27,7 @@ def compute_command_path():
                    _command_file('default/platform/%s' % Platform.PLATFORM),
                    _command_file('default')])
 
-  COMMAND_PATH_NAMES = (['name'] +
+  COMMAND_PATH_NAMES = (['name'] +  # TODO: fix?
                         [('tag/' + t) for t in Name.TAGS] +
                         ['platform/' + Platform.PLATFORM,
                          'master',
