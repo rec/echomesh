@@ -33,6 +33,7 @@ def get(table, name, allow_prefixes=True):
 
 def accessor(table, names,
              allow_prefixes=True, unmapped_names=None, create=False):
+  assert isinstance(table, dict)
   path = []
   unmapped = False
   for i, name in enumerate(names):
@@ -54,6 +55,7 @@ def get_accessor(table, names, **kwds):
   return accessor(table, names, **kwds)[2]
 
 def set_accessor(table, names, value, create=True, allow_prefixes=False):
+  assert isinstance(table, dict)
   for i, name in enumerate(names):
     if i < len(names) - 1:
       if create:
@@ -65,6 +67,8 @@ def set_accessor(table, names, value, create=True, allow_prefixes=False):
 
 def set_assignment(address, value, master_table, slave_table,
                     allow_prefixes=True, unmapped_names=None):
+  assert isinstance(master_table, dict)
+  assert isinstance(slave_table, dict)
   names = accessor(master_table, address.split('.'),
                    allow_prefixes, unmapped_names)[0]
   set_accessor(slave_table, names, value)

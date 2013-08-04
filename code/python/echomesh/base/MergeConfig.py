@@ -36,33 +36,51 @@ class MergeConfig(object):
     self.read()
 
   def read(self):
-    files = _read_files()
-    self.file_configs = self._read_file_configs()
+    self._read_file_configs()
     self.arg_config = self._assignment_to_config(sys.argv[1:], _ARGUMENT_ERROR)
     return self.recalculate()
 
+  def recalculate(self):
+    self.config = None
+    self.changed = {}
+    for f, configs in self.file_configs:
+      self.config = Merge.merge(self.config, *configs)
+      self.changed = Merge.merge(self.changed, *configs[2:])
+
+    arg = copy.deepcopy(self.arg_config)
+    clean_arg = Merge.difference_strict(arg, self.changed)
+    Merge.merge_for_config(self.config, clean_arg)
+
+    return self.config
+
   def assign(self, args, index=-1):
-    configs = self.file_configs[index]  # default is 'master'
+    configs = self.file_configs[index][1]  # default is 'master'
     while len(configs) < 3:
       configs.append[{}]
     Merge.merge(configs[2], self._assignment_to_config(args, _ASSIGNMENT_ERROR))
     return self.recalculate()
 
+  def save(self):
+    saved_files = []
+    for f, configs in self.file_configs:
+      if len(configs) > 2:
+        saved_files.append(f)
+        Merge.merge(*configs[1:])
+        with open(f, 'r') as file:
+          data = file.read().split(Yaml.SEPARATOR)[0]
+
+        with open(f, 'wb') as file:
+          file.write(data)
+          file.write(Yaml.SEPARATOR)
+          file.write(Yaml.encode_one(configs[1]))
+
+    self.arg_config = Merge.difference_strict(self.arg_config, self.changed)
+    self.recalculate()
+    return saved_files
+
   def assignments(self, index=-1):
-    assigned = self.file_configs[index]
+    assigned = self.file_configs[index][1]
     return (len(assigned) > 2 and GetPrefix.leafs(assigned[2])) or {}
-
-  def recalculate(self):
-    self.config = {}
-    changed = {}
-    for _, configs in self.file_configs:
-      Merge.merge(self.config, *configs)
-      Merge.merge(changed, *configs[2:])
-
-    arg = copy.deepcopy(self.arg_config)
-    Merge.merge(self.config, Merge.difference_strict(arg, changed))
-
-    return self.config
 
   def _read_file_configs(self):
     self.file_configs = []
@@ -75,16 +93,17 @@ class MergeConfig(object):
           Merge.merge_for_config(base_config, c)
         else:
           base_config = copy.deepcopy(c)
-      self.file_configs.append([configs, f])
+      self.file_configs.append([f, configs])
 
   def _assignment_to_config(self, args, error):
     arg = ' '.join(args)
     config = {}
+    base_config = self.file_configs[0][1][0]
+    assert isinstance(base_config, dict)
     try:
       for address, value in Args.split(arg):
-        GetPrefix.set_accessor(address, value, self.config, config,
-                               unmapped_names=Merge.CONFIG_EXCEPTIONS,
-                               allow_prefixes=True)
+        GetPrefix.set_assignment(address, value, base_config, config,
+                                 unmapped_names=Merge.CONFIG_EXCEPTIONS)
       return config
 
     except Exception as e:
