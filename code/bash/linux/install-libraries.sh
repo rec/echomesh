@@ -1,24 +1,50 @@
-apt-get install\
- ffmpeg\
- freeglut3-dev\
- git\
- libasound2-dev\
- libasound2-dev\
- libfreetype6-dev\
- libjack-dev\
- libx11-dev\
- libxcomposite-dev\
- libxcursor-dev\
- libxinerama-dev\
- locate\
- mesa-common-dev\
- mpg123\
- oss-compat\
- python-httplib2\
- python-imaging\
- python-pyaudio\
- python2.7-dev\
+echo "----------------------"
+echo
+echo
+echo "Running apt-gets (this might take a while)."
+echo
+echo
+echo "----------------------"
+
+apt-get install \
+ ffmpeg \
+ freeglut3-dev \
+ git \
+ libasound2-dev \
+ libfreetype6-dev \
+ libjack-dev \
+ libx11-dev \
+ libxcomposite-dev \
+ libxcursor-dev \
+ libxinerama-dev \
+ locate \
+ mesa-common-dev \
+ mpg123 \
+ oss-compat \
+ python-httplib2 \
+ python-pip \
+ python-pyaudio \
+ python2.7-dev \
 &&\
+\
+echo "----------------------" &&\
+echo &&\
+echo &&\
+echo "Installing Pillow." &&\
+echo &&\
+echo &&\
+echo "----------------------" &&\
+\
+pip install Pillow &&\
+\
+\
+echo "----------------------" &&\
+echo &&\
+echo &&\
+echo "Installing spidev." &&\
+echo &&\
+echo &&\
+echo "----------------------" &&\
 \
 pushd /tmp &&\
 rm -Rf /tmp/py-spidev &&\
