@@ -49,7 +49,7 @@ class MergeConfig(object):
 
     arg = copy.deepcopy(self.arg_config)
     clean_arg = Merge.difference_strict(arg, self.changed)
-    Merge.merge_for_config(self.config, clean_arg)
+    self.config = Merge.merge_for_config(self.config, clean_arg)
 
     return self.config
 
