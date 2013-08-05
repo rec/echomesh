@@ -57,8 +57,10 @@ class MergeConfig(object):
     configs = self.file_configs[index][1]  # default is 'master'
     while len(configs) < 3:
       configs.append({})
-    Merge.merge(configs[2], self._assignment_to_config(args, _ASSIGNMENT_ERROR))
-    return self.recalculate()
+    assignments = self._assignment_to_config(args, _ASSIGNMENT_ERROR)
+    Merge.merge(configs[2], assignments)
+    self.recalculate()
+    return assignments
 
   def save(self):
     saved_files = []

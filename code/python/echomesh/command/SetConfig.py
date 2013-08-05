@@ -12,8 +12,9 @@ LOGGER = Log.logger(__name__)
 
 def set_config(_, *values):
   if values:
-    for address, value in six.iteritems(Config.assign(values)):
-      LOGGER.info('Set %s=%s', '.'.join(address), value)
+    assignment = Config.assign(values)
+    for address, value in six.iteritems(assignment):
+      LOGGER.info('Set %s=%s', address, value)
   elif MergeConfig.LOCAL_CHANGES:
     LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
   else:
