@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 class Factory(dict):
   def __init__(self, factory, *args, **kwds):
     super(Factory, self).__init__(*args, **kwds)
@@ -23,10 +25,10 @@ class Access(dict):
     self._accessed = set()
 
   def not_accessed(self):
-    return set(self.iterkeys()).difference(self._accessed)
+    return set(six.iterkeys(self)).difference(self._accessed)
 
   def clear_accessed(self):
-    self._accessed = set(self.iterkeys())
+    self._accessed = set(six.iterkeys(self))
 
   def pop(self, key, *args):
     self._accessed.add(key)

@@ -1,3 +1,4 @@
+import six
 import yaml
 
 def hex_to_rgb(number):

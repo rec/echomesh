@@ -32,7 +32,7 @@ class Maker(object):
 
 
   def is_constant(self):
-    return all(v.is_constant() for v in self.table.itervalues())
+    return all(v.is_constant() for v in six.itervalues(self.table))
 
 def choose(pattern_desc):
   return Maker(pattern_desc, MakerFunctions.choose, 'choose')
