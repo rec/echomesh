@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import six
 
 from echomesh.base import Config
+from echomesh.base import GetPrefix
 from echomesh.base import MergeConfig
 from echomesh.base import Yaml
 from echomesh.command import CommandRegistry
@@ -12,9 +13,9 @@ LOGGER = Log.logger(__name__)
 
 def set_config(_, *values):
   if values:
-    assignment = Config.assign(values)
+    assignment = GetPrefix.leafs(Config.assign(values))
     for address, value in six.iteritems(assignment):
-      LOGGER.info('Set %s=%s', address, value)
+      LOGGER.info('Set %s=%s', '.'.join(address), value)
   elif MergeConfig.LOCAL_CHANGES:
     LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
   else:

@@ -34,12 +34,17 @@ def get_config(_, *items):
       else:
         successes.append([i, value])
   else:
-    successes = Config.MERGE_CONFIG.assignments().items()
+    assignments = Config.MERGE_CONFIG.assignments().items()
+    successes = [('.'.join(s), v) for s, v in assignments]
 
-  for value, result in successes:
-    LOGGER.info('%s=%s', value, result)
-  if failures:
-    LOGGER.error('Didn\'t understand %s', Join.join_words(failures))
+  if successes or failures:
+    for value, result in successes:
+      LOGGER.info('%s=%s', value, result)
+    if failures:
+      LOGGER.error('Didn\'t understand %s', Join.join_words(failures))
+    LOGGER.info('')
+  else:
+    LOGGER.info('No configuration variables have been set.\n')
 
 GET_HELP = """
   Prints one or more configuration variables.

@@ -82,7 +82,7 @@ def leafs(table):
       for key, value in six.iteritems(item):
         recurse(value, path + (key,))
     else:
-      values[path] = value
+      values[path] = item
   recurse(table, ())
   return values
 

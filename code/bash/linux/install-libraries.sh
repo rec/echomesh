@@ -12,7 +12,10 @@ apt-get install \
  git \
  libasound2-dev \
  libfreetype6-dev \
+ libfreetype6-dev \
  libjack-dev \
+ libjpeg-dev \
+ libpng12-dev \
  libx11-dev \
  libxcomposite-dev \
  libxcursor-dev \
@@ -26,8 +29,9 @@ apt-get install \
  python-pyaudio \
  python2.7-dev \
  python3-dev \
- python3-setuptools \
  python3-pip \
+ python3-setuptools \
+ zlib1g-dev \
 &&\
 \
 echo "----------------------" &&\
