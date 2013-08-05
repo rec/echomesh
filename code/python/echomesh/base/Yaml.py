@@ -27,8 +27,8 @@ def filename(name):
       return n
   raise Exception("Couldn't find a file matching %s" % name)
 
-def encode_one(item):
-  return yaml.safe_dump(item)
+def encode_one(item, **kwds):
+  return yaml.safe_dump(item, **kwds)
 
 def decode(s):
   return list(yaml.safe_load_all(s))
