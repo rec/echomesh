@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
 from echomesh.pattern import PatternDesc
@@ -15,7 +17,7 @@ class Maker(object):
     return self()
 
   def __call__(self):
-    table = dict((k, Call.call(v)) for k, v in self.table.iteritems())
+    table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
       arg = [[p() for p in self.patterns]]
     else:

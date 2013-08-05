@@ -108,7 +108,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       if score:
         return score
 
-      for k, v in self.elements.iteritems():
+      for k, v in six.iteritems(self.elements):
         if k.startswith(name):
           return v
 

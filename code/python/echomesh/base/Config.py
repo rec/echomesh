@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import getpass
 import os
+import six
 
 from compatibility.weakref import WeakSet
 
@@ -95,7 +96,7 @@ def assign(values):
 def get_unvisited():
   def fix(d):
     if isinstance(d, dict):
-      for k, v in list(d.iteritems()):
+      for k, v in list(six.iteritems(d)):
         assert v is not None
         fix(v)
         if v == {}:

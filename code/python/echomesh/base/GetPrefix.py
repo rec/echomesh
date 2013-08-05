@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import Join
 
 class PrefixException(Exception):
@@ -16,7 +18,7 @@ def get_prefix(table, name, allow_prefixes=True):
     return name, result
 
   if allow_prefixes:
-    results = [(k, v) for (k, v) in table.iteritems() if k.startswith(name)]
+    results = [(k, v) for (k, v) in six.iteritems(table) if k.startswith(name)]
     if len(results) == 1:
       return results[0]
     elif len(results) > 1:
@@ -77,7 +79,7 @@ def leafs(table):
   values = {}
   def recurse(item, path):
     if isinstance(item, dict):
-      for key, value in item.iteritems():
+      for key, value in six.iteritems(item):
         recurse(value, path + (key,))
     else:
       values[path] = value
@@ -88,7 +90,7 @@ def leafs_parent(table):
   values = []
   def recurse(item, parent, path):
     if isinstance(item, dict):
-      for key, value in item.iteritems():
+      for key, value in six.iteritems(item):
         recurse(value, item, path + [key])
     else:
       values.append((path, value, parent))

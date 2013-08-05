@@ -7,6 +7,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import logging
 import logging.config
+import six
 import sys
 import traceback
 
@@ -64,7 +65,7 @@ class _ConfigClient(object):
       DEBUG_FORMAT if self.debug
       else DEFAULT_FORMAT)
 
-    self.kwds = dict((str(k), v) for k, v in self.kwds.iteritems())
+    self.kwds = dict((str(k), v) for k, v in six.iteritems(self.kwds))
     logging.basicConfig(**self.kwds)
 
 

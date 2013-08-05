@@ -1,10 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import MakeDirs
-from echomesh.base import Name
-
 import copy
 import os.path
+
+from echomesh.base import MakeDirs
+from echomesh.base import Name
 
 _CREATE_MISSING_DIRECTORY_PROJECT = """
 
@@ -46,7 +46,8 @@ def _make(path, value):
       MakeDirs.makedirs(path)
       _print_path(path)
     if is_dict:
-      for k, v in value.iteritems():
+      import six
+      for k, v in six.iteritems(value):
         _make(os.path.join(path, k), v)
   elif exists:
     print('Not overwriting existing', path)

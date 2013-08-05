@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os
 import os.path
 import shutil
+import six
 
 from echomesh.remote import RemoteRegistry
 
@@ -27,7 +28,7 @@ def transfer(_, **data):
     MakeDirs.parent_makedirs(parent)
     shutil.move(os.path.join(Path.COMMAND_PATH, directory), parent)
 
-  for f, value in data.get('files').iteritems():
+  for f, value in six.iteritems(data.get('files')):
     fname = os.path.join(Path.COMMAND_PATH, f)
     MakeDirs.parent_makedirs(fname)
     with open(fname, 'w') as o:

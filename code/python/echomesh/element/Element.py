@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import datetime
 import time
+import six
 
 from echomesh.expression import Variable
 from echomesh.util.string import UniqueName
@@ -37,7 +38,7 @@ class Element(MasterRunnable):
 
     for key in description.keys():
       if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
-        items = list(description[key].iteritems())
+        items = list(six.iteritems(description[key]))
         self.variables = dict((k, Variable.variable(self, v)) for k, v in items)
         break
 

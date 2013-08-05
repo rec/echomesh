@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 
@@ -24,7 +26,7 @@ class Registry(object):
       self.registry[function_name] = [function, help_text, see_also]
 
   def register_all(self, **kwds):
-    for item_name, item in kwds.iteritems():
+    for item_name, item in six.iteritems(kwds):
       help_text, see_also = None, None
       if isinstance(item, (list, tuple)):
         if len(item) > 1:
@@ -83,10 +85,10 @@ class Registry(object):
     return self.registry.keys()
 
   def join_keys(self, command_only=True):
-    w = (k for (k, v) in self.registry.iteritems()
+    w = (k for (k, v) in six.iteritems(self.registry)
          if (not command_only) or v[0])
     return Join.join_words(w)
 
   def dump(self, printer=print):
-    for k, v in self.registry.iteritems():
+    for k, v in six.iteritems(self.registry):
       printer(k, v)

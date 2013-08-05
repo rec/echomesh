@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.command import Aliases
@@ -22,7 +24,7 @@ def _indent(s, spaces='  '):
 def _info(d, spaces='  '):
   s = 'none'
   if d:
-    items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(d.iteritems())]
+    items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(six.iteritems(d))]
     length = max(len(k) for k, v in items)
     s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
   LOGGER.info('%s\n', s)
@@ -67,7 +69,7 @@ def names(_):
 def nodes(echomesh_instance):
   peers = echomesh_instance.peers.get_peers()
   if peers:
-    for name, peer in peers.iteritems():
+    for name, peer in six.iteritems(peers):
       LOGGER.info('  %s: ', name)
       _info(peer, '    ')
   else:
@@ -86,14 +88,14 @@ def units(_):
 
 def _variables(path, element, results):
   variables = getattr(element, 'variables', {})
-  for k, v in variables.iteritems():
+  for k, v in six.iteritems(variables):
     results.append([path + [k], v()])
   for e in element.elements:
     _variables(path + [e.name], e, results)
 
 def variables(instance):
   results = []
-  for name, v in instance.score_master.elements.iteritems():
+  for name, v in six.iteritems(instance.score_master.elements):
     _variables([name], v, results)
 
   if results:

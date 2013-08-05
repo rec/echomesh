@@ -15,7 +15,8 @@ def _merge_or_diff(old, new, is_merge, require_old_key, path='',
     # old = copy.deepcopy(old)
     pass
 
-  for key, new_v in (new or {}).iteritems():
+  import six
+  for key, new_v in six.iteritems(new or {}):
     new_path = '%s:%s' % (path, key)
     old_v = old.get(key, nothing)
 

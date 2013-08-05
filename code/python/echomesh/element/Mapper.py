@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import Name
 from echomesh.element import Element
 from echomesh.element import Handler
@@ -14,7 +16,7 @@ class Mapper(Handler.Handler):
     handlers = description.get('handlers', [])
     self.handlers = Load.make(self, handlers)
 
-    for key, element in self.mapping.iteritems():
+    for key, element in six.iteritems(self.mapping):
       self.mapping[key] = Load.make_one(self, element)
 
   def handle(self, event):

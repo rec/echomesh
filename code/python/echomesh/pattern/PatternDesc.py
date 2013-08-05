@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
+import six
 
 from echomesh.expression.Expression import Expression
 from echomesh.util import Registry
@@ -31,7 +32,7 @@ def _make_pattern(desc, is_top_level):
 
 def make_patterns_for_element(element, description):
   result = {}
-  for name, desc in description.iteritems():
+  for name, desc in six.iteritems(description):
     result[name] = _make_pattern(_PatternDesc(element, desc, name), True)
   return result
 
@@ -43,7 +44,7 @@ def make_table_and_patterns(pattern_desc, attributes):
   pd = pattern_desc
 
   try:
-    for k, v in desc.iteritems():
+    for k, v in six.iteritems(desc):
       if not k.startswith('pattern'):
         if k in attributes:
           v = Expression(v, pattern_desc.element)

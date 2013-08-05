@@ -7,7 +7,7 @@ from echomesh.expression import Units
 def split(items):
   kwds = {}
   numeric = []
-  for k, v in items.iteritems():
+  for k, v in six.iteritems(items):
     if isinstance(k, six.string_types) and k[0].isalpha():
       kwds[k] = v
     else:

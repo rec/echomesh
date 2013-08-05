@@ -3,7 +3,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
-
 import six
 
 from echomesh.expression import RawExpression
@@ -45,7 +44,7 @@ def list_units(separator='  '):
 
 UNITS = {}
 
-for _keys, _v in UNITS_SOURCE.iteritems():
+for _keys, _v in six.iteritems(UNITS_SOURCE):
   for _k in _keys:
     UNITS[_k] = _v
 
@@ -100,7 +99,7 @@ _TRANSLATION_TABLE = {
 
 def _replace_unicode_fractions(s):
   if isinstance(s, six.string_types):
-    for k, v in _TRANSLATION_TABLE.iteritems():
+    for k, v in six.iteritems(_TRANSLATION_TABLE):
       s = s.replace(k, v)
   return s
 
