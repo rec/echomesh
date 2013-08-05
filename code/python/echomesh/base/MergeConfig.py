@@ -56,7 +56,7 @@ class MergeConfig(object):
   def assign(self, args, index=-1):
     configs = self.file_configs[index][1]  # default is 'master'
     while len(configs) < 3:
-      configs.append[{}]
+      configs.append({})
     Merge.merge(configs[2], self._assignment_to_config(args, _ASSIGNMENT_ERROR))
     return self.recalculate()
 

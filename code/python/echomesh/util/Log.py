@@ -10,7 +10,7 @@ import logging.config
 import sys
 import traceback
 
-FORCE_DEBUG = not True
+FORCE_DEBUG = not not True
 VDEBUG = 5
 
 LOG_LEVEL = 'INFO'

@@ -25,6 +25,9 @@ apt-get install \
  python-pip \
  python-pyaudio \
  python2.7-dev \
+ python3-dev \
+ python3-setuptools \
+ python3-pip \
 &&\
 \
 echo "----------------------" &&\
@@ -36,6 +39,7 @@ echo &&\
 echo "----------------------" &&\
 \
 pip install Pillow &&\
+pip-3.2 install Pillow &&\
 \
 \
 echo "----------------------" &&\

@@ -26,7 +26,6 @@ def reconfigure():
 
   # Read a configuration file with a given name, tags, and project.
   def _make(name, tags, project, show_error, prompt):
-    print('name=', name, 'tags=', tags, 'project=', project)
     Name.set_name(name)
     Name.set_tags(tags)
     Path.set_project_path(project_path=project, show_error=show_error)
