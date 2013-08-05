@@ -53,21 +53,23 @@ class MergeConfig(object):
 
     return self.config
 
-  def assign(self, args, index=-1):
+  def assign(self, args, index=2):
     configs = self.file_configs[index][1]  # default is 'master'
     while len(configs) < 3:
       configs.append({})
     assignments = self._assignment_to_config(args, _ASSIGNMENT_ERROR)
-    Merge.merge(configs[2], assignments)
+    configs[2] = Merge.merge(configs[2], assignments)
     self.recalculate()
     return assignments
 
   def save(self):
     saved_files = []
     for f, configs in self.file_configs:
-      if len(configs) > 2:
+      if len(configs) > 2 and configs[2]:
         saved_files.append(f)
-        Merge.merge(*configs[1:])
+        configs[1] = Merge.merge(*configs[1:])
+        while len(configs) > 2:
+          configs.pop()
         with open(f, 'r') as file:
           data = file.read().split(Yaml.SEPARATOR)[0]
 
@@ -80,7 +82,7 @@ class MergeConfig(object):
     self.recalculate()
     return saved_files
 
-  def assignments(self, index=-1):
+  def assignments(self, index=2):
     assigned = self.file_configs[index][1]
     return (len(assigned) > 2 and GetPrefix.leafs(assigned[2])) or {}
 
@@ -92,7 +94,7 @@ class MergeConfig(object):
       configs = Yaml.read(f, 'config')
       for c in configs:
         if base_config:
-          Merge.merge_for_config(base_config, c)
+          base_config = Merge.merge_for_config(base_config, c)
         else:
           base_config = copy.deepcopy(c)
       self.file_configs.append([f, configs])

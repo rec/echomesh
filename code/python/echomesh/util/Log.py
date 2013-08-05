@@ -11,7 +11,7 @@ import six
 import sys
 import traceback
 
-FORCE_DEBUG = not not True
+FORCE_DEBUG = not True
 VDEBUG = 5
 
 LOG_LEVEL = 'INFO'
