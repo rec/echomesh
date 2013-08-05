@@ -1,7 +1,0 @@
-type: config
-
-load_module:
-  pi3d: true
-
-light:
-  enable: true
