@@ -24,7 +24,7 @@ class _Client(object):
 
   def config_update(self, get):
     with self.lock:
-      for path in self.clients.iterkeys():
+      for path in six.iterkeys(self.clients):
         self.clients[path] = Units.convert(Config.get(*path))
 
 _CLIENT = _Client()

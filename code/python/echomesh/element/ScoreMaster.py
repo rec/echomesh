@@ -95,7 +95,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     return self.perform_element('start', element_names)
 
   def handle(self, event):
-    for score in self.elements.itervalues():
+    for score in six.itervalues(self.elements):
       score.handle(event)
 
   def info(self):

@@ -39,7 +39,7 @@ _HEX = re.compile(r'( 0x [0-9a-f]+ )', re.X)
 _ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s | \) ) ) ( [a-z%]* ) \s* $', re.X)
 
 def list_units(separator='  '):
-  keys = UNITS_SOURCE.iterkeys()
+  keys = six.iterkeys(UNITS_SOURCE)
   return separator + ('\n' + separator).join((', '.join(k) for k in keys))
 
 UNITS = {}

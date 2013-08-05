@@ -40,14 +40,14 @@ def to_color(color):
 
 def _invert(table_in):
   table_out = {}
-  for name, value in table_in.itervalues():
+  for name, value in six.itervalues(table_in):
     table_out.setdefault(name, []).append(value)
   return table_out
 
 def _load_colors(s):
   table = yaml.safe_load(s)
   inverse = {}
-  for entry in table.itervalues():
+  for entry in six.itervalues(table):
     name, value = entry
     value = hex_to_rgb(value)
 
