@@ -2,11 +2,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
+from echomesh.base import Config
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.base import Yaml
 from echomesh.command import Aliases
-from echomesh.command import Context
 from echomesh.command import CommandRegistry
+from echomesh.command import Context
 from echomesh.command import Scores
 from echomesh.expression import Units
 from echomesh.sound import Sound
@@ -49,6 +51,9 @@ def _all(echomesh_instance):
 def broadcast(echomesh_instance):
   message = 'ON' if echomesh_instance.broadcasting() else 'off'
   LOGGER.info('  Broadcast is %s\n', message)
+
+def _config(_):
+  LOGGER.info(Yaml.encode_one(Config.MERGE_CONFIG.config))
 
 def directories(_):
   _info(Path.info())
@@ -134,6 +139,14 @@ by "echomesh!"
 
 """
 
+CONFIG_HELP = """
+  "show config" lists the merged configuration values for all scopes.
+  "show config <scope> [<scope>...]" shows the separate configurations
+    for each scope.
+  "show config all" shows all the separate configurations as well as the
+    merged configuration.
+"""
+
 NAMES_HELP = """
 "show names" shows you the following information about this echomesh node:
 
@@ -215,6 +228,7 @@ SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
   aliases=(aliases, ALIASES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
+  config=(_config, CONFIG_HELP),
   contexts=(Context.contexts, Context.CONTEXTS_HELP),
   directories=(directories, DIRECTORIES_HELP),
   elements=(elements, ELEMENTS_HELP),
