@@ -9,7 +9,7 @@ from echomesh.element import Loop
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
 from echomesh.expression import Units
-from echomesh.pattern import Maker  # TODO: we need this for a side-effect!
+from echomesh.pattern import MakerFunctions  # TODO: we need this for a side-effect!
 from echomesh.pattern import PatternDesc
 from echomesh.util import Log
 

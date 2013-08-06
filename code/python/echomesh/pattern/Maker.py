@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.pattern import MakerFunctions
 from echomesh.util import Call
 from echomesh.pattern import PatternDesc
 
@@ -34,42 +33,17 @@ class Maker(object):
   def is_constant(self):
     return all(v.is_constant() for v in six.itervalues(self.table))
 
-def maker(*args):
+
+def maker(*a):
+  args = a
   def wrap(f):
     def wrapped(pattern_desc):
       return Maker(pattern_desc, f, *args)
-    _REGISTRY.register(wrapped, funtion_name=f.__name__)
     return wrapped
-  return wrap
 
-def choose(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.choose, 'choose')
+  if len(args) == 1 and hasattr(args[0], '__call__'):
+    args = ()
+    return wrap(args[0])
+  else:
+    return wrap
 
-def concatenate(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.concatenate)
-
-def inject(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.inject)
-
-def insert(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.insert,
-               'begin', 'length', 'rollover', 'skip')
-
-def reverse(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.reverse)
-
-def spread(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.spread, 'steps')
-
-def transpose(pattern_desc):
-  return Maker(pattern_desc, MakerFunctions.transpose,
-               'x', 'y', 'reverse_x', 'reverse_y')
-_REGISTRY = PatternDesc.REGISTRY
-
-_REGISTRY.register(choose)
-_REGISTRY.register(concatenate)
-_REGISTRY.register(inject)
-_REGISTRY.register(insert)
-_REGISTRY.register(reverse)
-_REGISTRY.register(spread)
-_REGISTRY.register(transpose)

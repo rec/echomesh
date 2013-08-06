@@ -7,6 +7,8 @@ import six
 from echomesh.color import ColorSpread
 from echomesh.color import ColorTable
 from echomesh.base import Config
+from echomesh.pattern import Maker
+from echomesh.pattern import PatternDesc
 
 def choose(light_sets, choose=None):
   length = len(light_sets)
@@ -123,3 +125,34 @@ def spread(colors=None, steps=None, transforms=None):
                                                 transform=t))
   return result
 
+def _choose(pattern_desc):
+  return Maker.Maker(pattern_desc, choose, 'choose')
+
+def _concatenate(pattern_desc):
+  return Maker.Maker(pattern_desc, concatenate)
+
+def _inject(pattern_desc):
+  return Maker.Maker(pattern_desc, inject)
+
+def _insert(pattern_desc):
+  return Maker.Maker(pattern_desc, insert,
+               'begin', 'length', 'rollover', 'skip')
+
+def _reverse(pattern_desc):
+  return Maker.Maker(pattern_desc, reverse)
+
+def _spread(pattern_desc):
+  return Maker.Maker(pattern_desc, spread, 'steps')
+
+def _transpose(pattern_desc):
+  return Maker.Maker(pattern_desc, transpose,
+               'x', 'y', 'reverse_x', 'reverse_y')
+_REGISTRY = PatternDesc.REGISTRY
+
+_REGISTRY.register(_choose, 'choose')
+_REGISTRY.register(_concatenate, 'concatenate')
+_REGISTRY.register(_inject, 'inject')
+_REGISTRY.register(_insert, 'insert')
+_REGISTRY.register(_reverse, 'reverse')
+_REGISTRY.register(_spread, 'spread')
+_REGISTRY.register(_transpose, 'transpose')
