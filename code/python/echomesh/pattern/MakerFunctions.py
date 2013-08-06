@@ -8,6 +8,7 @@ from echomesh.color import ColorSpread
 from echomesh.color import ColorTable
 from echomesh.base import Config
 from echomesh.pattern import Maker
+from echomesh.pattern.Maker import maker
 from echomesh.pattern import PatternDesc
 
 def choose(light_sets, choose=None):
@@ -15,7 +16,7 @@ def choose(light_sets, choose=None):
   def restrict(size):
     return int(max(0, min(length - 1, size)))
 
-  if callable(choose):
+  if hasattr(choose, '__call__'):
     # TODO: there's no way to specify callables to choose.
     zipped = itertools.izip_longest(*light_sets)
     return [vec[restrict(choose(i))] for i, vec in enumerate(zipped)]
@@ -101,6 +102,7 @@ def _to_list(s):
   else:
     return s
 
+# @maker('steps')
 def spread(colors=None, steps=None, transforms=None):
   assert colors
 
@@ -154,5 +156,5 @@ _REGISTRY.register(_concatenate, 'concatenate')
 _REGISTRY.register(_inject, 'inject')
 _REGISTRY.register(_insert, 'insert')
 _REGISTRY.register(_reverse, 'reverse')
-_REGISTRY.register(_spread, 'spread')
+_REGISTRY.register(spread, 'spread')
 _REGISTRY.register(_transpose, 'transpose')
