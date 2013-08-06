@@ -5,7 +5,7 @@ import sys
 
 from echomesh.base import Config
 from echomesh.base import GetPrefix
-from echomesh.expression import Units
+from echomesh.expression import Expression
 from echomesh.util.thread import Lock
 
 class _Client(object):
@@ -18,14 +18,14 @@ class _Client(object):
     with self.lock:
       value = self.clients.get(path)
       if not value:
-        value = Units.convert(Config.get(*path))
+        value = Expression.convert(Config.get(*path))
         self.clients[path] = value
       return value
 
   def config_update(self, get):
     with self.lock:
       for path in six.iterkeys(self.clients):
-        self.clients[path] = Units.convert(Config.get(*path))
+        self.clients[path] = Expression.convert(Config.get(*path))
 
 _CLIENT = _Client()
 

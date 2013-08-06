@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.expression.Expression import Expression
-from echomesh.expression.Units import INFINITY
+from echomesh.expression.Convert import INFINITY
 from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
@@ -46,7 +46,7 @@ class ImageSprite(Runnable):
       if duration is None:
         duration = Units.INFINITY
     else:
-      self._duration = Units.convert(duration)
+      self._duration = Expression.convert(duration)
 
     if not self._duration:
       LOGGER.warning('An image sprite had a zero duration.')

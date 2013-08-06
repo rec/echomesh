@@ -34,6 +34,14 @@ class Maker(object):
   def is_constant(self):
     return all(v.is_constant() for v in six.itervalues(self.table))
 
+def maker(*args):
+  def wrap(f):
+    def wrapped(pattern_desc):
+      return Maker(pattern_desc, f, *args)
+    _REGISTRY.register(wrapped, funtion_name=f.__name__)
+    return wrapped
+  return wrap
+
 def choose(pattern_desc):
   return Maker(pattern_desc, MakerFunctions.choose, 'choose')
 

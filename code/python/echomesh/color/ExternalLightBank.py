@@ -5,7 +5,7 @@ import copy
 
 from echomesh.color import ColorTable
 from echomesh.color.LightBank import LightBank
-from echomesh.expression
+from echomesh.expression import Expression
 from echomesh.network import ClientServer
 from echomesh.util import Log
 from echomesh.util import Quit
@@ -46,9 +46,9 @@ class ExternalLightBank(LightBank):
   def config_update(self, get):
     super(ExternalLightBank, self).config_update(get)
     light = copy.deepcopy(get('light'))
-    light['brightness'] = Units.convert(light['brightness'])
-    light['hardware']['period'] = Units.convert(light['hardware']['period'])
-    light['visualizer']['period'] = Units.convert(light['visualizer']['period'])
+    light['brightness'] = Expression.convert(light['brightness'])
+    light['hardware']['period'] = Expression.convert(light['hardware']['period'])
+    light['visualizer']['period'] = Expression.convert(light['visualizer']['period'])
     visualizer = light['visualizer']
     self.visualizer_closes_echomesh = visualizer['visualizer_closes_echomesh']
     visualizer['background'] = ColorTable.to_color(visualizer['background'])

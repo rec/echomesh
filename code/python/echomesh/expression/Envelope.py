@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import bisect
 
 from echomesh.expression import SplitNumbers
-from echomesh.expression import Units
 from echomesh.util import Dict
 from echomesh.util import Log
 
@@ -26,7 +25,8 @@ class Envelope(object):
     self.loops = kwds.get('loops', 1)
     self.last_time = self.times[-1]
 
-    self.length = Units.convert(kwds.get('length', self.last_time * self.loops))
+    from echomesh.expression import UnitExpression
+    self.length = UnitExpression.convert(kwds.get('length', self.last_time * self.loops))
 
     if self.length > 0:
       self._is_constant = False
@@ -50,7 +50,7 @@ class Envelope(object):
 
   def _set_constant(self, value):
     self._is_constant = True
-    self.value = Units.convert(value)
+    self.value = Expression.convert(value)
     self.length = 0
 
   def interpolate(self, time):

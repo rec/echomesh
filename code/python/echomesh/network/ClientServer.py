@@ -4,7 +4,7 @@ import subprocess
 
 from echomesh.base import Config
 from echomesh.color import Client
-from echomesh.expression import Units
+from echomesh.expression import Expression
 from echomesh.network.Server import Server
 from echomesh.util import Log
 from echomesh.util import Subprocess
@@ -21,7 +21,7 @@ class ClientServer(Server):
     self.process = None
     self.constructed = False
     Config.add_client(self)
-    Quit.register(self.kill)
+    Quit.register_atexit(self.kill)
 
   def config_update(self, get):
     config = get('network', 'client')
@@ -36,7 +36,7 @@ class ClientServer(Server):
         allow_reuse_address=config['allow_reuse_address'],
         debug=config['debug'],
         read_callback=self.read_callback,
-        timeout=Units.convert(config['timeout']),
+        timeout=Expression.convert(config['timeout']),
         )
       self.start()
 

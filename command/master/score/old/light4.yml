@@ -1,35 +1,33 @@
-    type: sequence
+type: sequence
 
-    variables:
-      switch:
-        type: counter
-        count:  2
-        period: 1/2 second
+variables:
+  switch:
+    type: counter
+    count:  2
+    period: 1/2 second
 
-    patterns:
-      one:
-        type: choose
-        choose: local.switch
-        pattern:
-          -
-            type: insert
-            offset: 32
-            pattern:
-              type: spread
-              begin: white
-              end: red
-              steps: 32
-          -
-            type: insert
-            pattern:
-              type: spread
-              begin: blue
-              end: white
-              steps: 32
-
-    elements:
+patterns:
+  one:
+    type: choose
+    choose: local.switch
+    pattern:
       -
-        end: infinite
-        type: pattern
-        pattern: one
-        output: light
+        type: insert
+        offset: 32
+        pattern:
+          type: spread
+          colors: white, red
+          steps: 32
+      -
+        type: insert
+        pattern:
+          type: spread
+          colors: blue, white
+          steps: 32
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: one
+    output: light

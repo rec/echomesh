@@ -10,11 +10,11 @@ from echomesh.command import Aliases
 from echomesh.command import CommandRegistry
 from echomesh.command import Context
 from echomesh.command import Scores
+from echomesh.expression import Transform
 from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util import Registry
-from echomesh.expression import Transform
 
 LOGGER = Log.logger(__name__)
 

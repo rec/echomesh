@@ -8,12 +8,14 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 import time
 
-from echomesh.expression.Envelope import Envelope
-from echomesh.expression import Units
+from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.util.math import Interval
-from echomesh.util import Registry
+from echomesh.expression import UnitExpression
+from echomesh.expression import Units
+from echomesh.expression.Envelope import Envelope
 from echomesh.util import Log
+from echomesh.util import Registry
+from echomesh.util.math import Interval
 
 LOGGER = Log.logger(__name__)
 
@@ -35,11 +37,11 @@ class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
                repeat=INFINITY, **kwds):
     length = None if count is None else skip * count
-    parts = [Units.convert(x, element) for x in (count, begin, end, skip)]
+    parts = [Expression.convert(x, element) for x in (count, begin, end, skip)]
     self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
 
     self.element = element
-    self.period = Units.convert(period, element)
+    self.period = Expression.convert(period, element)
     self.repeat = repeat
     if kwds:
       LOGGER.error('Unused keywords %s', kwds)
@@ -84,7 +86,7 @@ class _Envelope(Envelope):
 class _Value(object):
   def __init__(self, element, value=None):
     self.element = element
-    self.value = Units.UnitExpression(value)
+    self.value = UnitExpression.UnitExpression(value)
 
   def is_constant(self, element=None):
     return self.value.is_constant(element or self.element)

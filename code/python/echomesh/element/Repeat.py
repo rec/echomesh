@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element import Element
 from echomesh.element.Loop import Loop
 from echomesh.expression import UnitConfig
-from echomesh.expression import Units
+from echomesh.expression import Expression
 from echomesh.util.math import Poisson
 
 class Repeat(Loop):
   def __init__(self, parent, description, name='Repeat', **kwds):
     super(Repeat, self).__init__(parent, description, name, **kwds)
-    self.random_delay = Units.convert(description.get('random_delay', 0))
-    self.period = Units.convert(description.get('period', 0))
-    self.repeat = Units.convert(description.get('repeat', 'infinite'))
+    self.random_delay = Expression.convert(description.get('random_delay', 0))
+    self.period = Expression.convert(description.get('period', 0))
+    self.repeat = Expression.convert(description.get('repeat', 'infinite'))
     assert self.random_delay > 0 or self.period > 0, (
       'You must set either a period or a random_delay')
 

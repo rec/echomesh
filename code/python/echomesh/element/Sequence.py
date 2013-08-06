@@ -6,6 +6,7 @@ import time
 from echomesh.element import Element
 from echomesh.element import Load
 from echomesh.element import Loop
+from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
 from echomesh.expression import Units
 from echomesh.pattern import Maker  # TODO: we need this for a side-effect!
@@ -20,15 +21,15 @@ class Sequence(Loop.Loop):
   def __init__(self, parent, desc):
     times = []
     for e in desc.get('elements', []):
-      times.append([Units.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
+      times.append([Expression.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
     self.elements = []
     self.pattern_makers = PatternDesc.make_patterns_for_element(
       self, desc.get('patterns', {}))
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
-    self.loops = Units.get_table(desc, 'loops', 1)
-    self.duration = Units.get_table(desc, 'duration', Units.INFINITY)
+    self.loops = Expression.convert(desc.get('loops', 1))
+    self.duration = Expression.convert(desc.get('duration', Units.INFINITY))
     self.sequence = []
     self.paused_children = set()
 

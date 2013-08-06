@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import Name
-from echomesh.expression import Units
+from echomesh.expression import Expression
 from echomesh.network import DataSocket
 from echomesh.remote import Remote
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -24,7 +24,7 @@ class PeerSocketBase(MasterRunnable):
     new_port = get('network', self.config_name, 'port')
     timeout = get('network', self.config_name, 'timeout')
     self.port, old_port = new_port, self.port
-    self.timeout = Units.convert(timeout)
+    self.timeout = Expression.convert(timeout)
     if self.is_running and self.socket:
       if self.port == old_port:
         self.socket.timeout = self.timeout
