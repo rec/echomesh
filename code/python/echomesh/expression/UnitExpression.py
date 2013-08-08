@@ -10,7 +10,7 @@ from echomesh.expression import Units
 _ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s | \) ) ) ( [a-z%]* ) \s* $', re.X)
 
 class UnitExpression(object):
-  def __init__(self, expression, assume_minutes=True, element=None):
+  def __init__(self, expression, element=None, assume_minutes=True):
     self.element = element
     self.expression = self.value = None
     if expression is not None:
@@ -28,17 +28,17 @@ class UnitExpression(object):
 
         self.expression = RawExpression.RawExpression(expr, element)
 
-  def evaluate(self, element=None):
+  def evaluate(self):
     if not self.expression:
       return self.value
 
-    val = self.expression.evaluate(element or self.element)
+    val = self.expression.evaluate()
     if self.unit_converter:
 
       return self.unit_converter(val)
     else:
       return val
 
-  def is_constant(self, element=None):
-    return not self.expression or self.expression.is_constant(element)
+  def is_constant(self):
+    return not self.expression or self.expression.is_constant()
 

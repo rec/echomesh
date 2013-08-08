@@ -11,7 +11,7 @@ OPERATORS = {
   }
 
 class Evaluator(object):
-  def __init__(self, stack, element=None):
+  def __init__(self, stack, element):
     self.stack = stack[:]
     self.element = element
 

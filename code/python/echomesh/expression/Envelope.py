@@ -42,10 +42,10 @@ class Envelope(object):
         LOGGER.error('Negative length "%s" is not allowed.', length)
         self.length = 0
 
-  def evaluate(self, element=None):
-    return self.interpolate((element or self.element).time)
+  def evaluate(self):
+    return self.interpolate(self.element.time)
 
-  def is_constant(self, element=None):
+  def is_constant(self):
     return self._is_constant
 
   def description(self):

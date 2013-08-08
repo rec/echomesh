@@ -13,9 +13,6 @@ class Maker(object):
       pattern_desc, attributes)
 
   def evaluate(self):
-    return self()
-
-  def __call__(self):
     table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
       arg = [[p() for p in self.patterns]]
@@ -28,7 +25,6 @@ class Maker(object):
       if PatternDesc.RAISE_ORIGINAL_EXCEPTION:
         raise
       raise Exception('%s in %s' % (e, self.name))
-
 
   def is_constant(self):
     return all(v.is_constant() for v in six.itervalues(self.table))

@@ -18,10 +18,10 @@ class _Values(object):
     self.system = system
     self.table = dict((name.lower(), True) for name in Names)
 
-  def evaluate(self, op, evaluator, element=None):
+  def evaluate(self, op, evaluator, element):
     return self._interpret(op, evaluator, element, True)
 
-  def is_constant(self, op, element=None):
+  def is_constant(self, op, element):
     return self._interpret(op, None, element, False)
 
   def _interpret(self, op, evaluator, element, is_evaluating):

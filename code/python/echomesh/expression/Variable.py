@@ -10,7 +10,7 @@ import time
 
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.expression import UnitExpression
+from echomesh.expression.UnitExpression import UnitExpression
 from echomesh.expression import Units
 from echomesh.expression.Envelope import Envelope
 from echomesh.util import Log
@@ -31,7 +31,7 @@ def variable(description, element):
     else:
       raise Exception('No type in variable %s.' % description)
   else:
-    return _Value(description, element)
+    return UnitExpression(description, element)
 
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
@@ -65,19 +65,8 @@ class _Counter(object):
 def _counter(description, element):
   return _Counter(element, **description)
 
-class _Value(object):
-  def __init__(self, element, value=None):
-    self.element = element
-    self.value = UnitExpression.UnitExpression(value)
-
-  def is_constant(self, element=None):
-    return self.value.is_constant(element or self.element)
-
-  def evaluate(self, element=None):
-    return self.value.is_constant(element or self.element)
-
 REGISTRY.register_all(
   counter=_counter,
   envelope=Envelope,
-  value=_Value,
+  value=UnitExpression,
   )

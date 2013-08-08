@@ -12,15 +12,15 @@ class Expression(object):
     else:
       self.expression = UnitExpression(expression, element)
 
-  def is_constant(self, element=None):
-    return self.expression.is_constant(element or self.element)
+  def is_constant(self):
+    return self.expression.is_constant()
 
-  def evaluate(self, element=None):
-    return self.expression.evaluate(element or self.element)
+  def evaluate(self):
+    return self.expression.evaluate()
 
 expression = Expression
 
 def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
-  return UnitExpression(number, assume_minutes, element).evaluate()
+  return UnitExpression(number, element, assume_minutes).evaluate()

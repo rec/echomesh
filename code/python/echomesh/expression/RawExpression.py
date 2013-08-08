@@ -13,17 +13,16 @@ class RawExpression(object):
     BNF.bnf(self.stack).parseString(expression, parseAll=True)
     self.value = None
 
-  def is_constant(self, element=None):
+  def is_constant(self):
     if self._is_constant is None:
       def const(s):
-        return not s[0].isalpha() or Values.is_constant(s, element or self.element)
+        return not s[0].isalpha() or Values.is_constant(s, self.element)
       self._is_constant = all(const(s) for s in self.stack)
     return self._is_constant
 
-  def evaluate(self, element=None):
-    element = element or self.element
-    if self.value is None or not self.is_constant(element):
-      evaluator = Evaluator.Evaluator(self.stack, element)
+  def evaluate(self):
+    if self.value is None or not self.is_constant():
+      evaluator = Evaluator.Evaluator(self.stack, self.element)
       self.value = evaluator.evaluate()
       assert not evaluator.stack
 
