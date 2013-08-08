@@ -16,17 +16,14 @@ class Evaluator(object):
     self.element = element
 
   def evaluate(self):
-    return self()
-
-  def __call__(self):
     op = self.stack.pop()
 
     if op == 'unary -':
-      return -self()
+      return -self.evaluate()
 
     if op in OPERATORS:
-      op2 = self()
-      op1 = self()
+      op2 = self.evaluate()
+      op1 = self.evaluate()
       return OPERATORS[op](op1, op2)
 
     if op.startswith('0x') or op.startswith('0X'):
@@ -39,3 +36,7 @@ class Evaluator(object):
       return float(op)
 
     return int(op)
+
+  def __call__(self):
+    if True:    raise Exception
+    return self.evaluate()

@@ -31,9 +31,12 @@ class UnitExpression(object):
     if not self.expression:
       return self.value
 
-    val = self.expression(element)
+    val = self.expression.evaluate(element)
     if self.unit_converter:
-      return self.unit_converter(val)
+      print('!!!', type(self.unit_converter))
+      print('!!!!!', getattr(self.unit_converter, '__name__', None))
+
+      return self.unit_converter.evaluate(val)
     else:
       return val
 
@@ -46,4 +49,4 @@ class UnitExpression(object):
 def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
-  return UnitExpression(number, assume_minutes)(element)
+  return UnitExpression(number, assume_minutes).evaluate(element)

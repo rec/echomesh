@@ -21,19 +21,33 @@ def identity(x):
 def reverse(x):
   return 1.0 - x
 
-IDENTITY = identity, identity
-SQUARE = lambda x: x * x, numpy.sqrt
-REVERSE = reverse, reverse
+def square(x)
+  return x * x
 
 def power(n):
-  return lambda x: numpy.power(x, n), lambda x: numpy.power(x, 1.0 / n)
+  def power(x):
+    return numpy.power(x, n)
+  def power_inverse(x):
+    return numpy.power(x, 1.0 / n)
+  return power, power_inverse
 
+def sine(x):
+  return (1 + numpy.sin(numpy.pi * (x - 0.5))) / 2
 
-SINE = (lambda x: (1 + numpy.sin(numpy.pi * (x - 0.5))) / 2,
-        lambda x: 0.5 + numpy.arcsin(2 * x - 1) / numpy.pi)
+def arcsine(x):
+  return 0.5 + numpy.arcsin(2 * x - 1) / numpy.pi
 
-EXP = (lambda x: (numpy.exp(x) - 1) / (numpy.e - 1),
-       lambda x: numpy.log((numpy.e - 1) * x + 1))
+def exp(x):
+  return (numpy.exp(x) - 1) / (numpy.e - 1)
+
+def log(x):
+  return numpy.log((numpy.e - 1) * x + 1))
+
+IDENTITY = identity, identity
+SQUARE = square, numpy.sqrt
+REVERSE = reverse, reverse
+SINE = sine, arcsine
+EXP = exp, log
 
 REGISTRY.register(power(3), 'cube',
                   help_text="""\

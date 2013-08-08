@@ -19,12 +19,13 @@ class RawExpression(object):
     return self._is_constant
 
   def evaluate(self, element=None):
-    return self(element)
-
-  def __call__(self, element=None):
     if self.value is None or not self.is_constant(element):
       evaluator = Evaluator.Evaluator(self.stack, element)
-      self.value = evaluator()
+      self.value = evaluator.evaluate()
       assert not evaluator.stack
 
     return self.value
+
+  def __call__(self, element=None):
+    if True: raise Exception
+    return self.evaluate(element)
