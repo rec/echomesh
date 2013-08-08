@@ -9,14 +9,27 @@ from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
 
-Entry = namedtuple('Entry', 'function help_text see_also')
+class Entry(object):
+  def __init__(self, function, help_text, see_also):
+    self.function = function
+    self.help_text = help_text
+    self.see_also = see_also
+
+  def __str__(self):
+    return 'RegistryEntry(function=%s, help_text=%s, see_also=%s)' % (
+      self.function, self.help_text, self.see_also)
+
+  def load(self):
+    pass
 
 class Registry(object):
-  def __init__(self, name, case_insensitive=True, allow_prefixes=True):
+  def __init__(self, name, case_insensitive=True, allow_prefixes=True,
+               entry_class=Entry):
     self.registry = {}
     self.name = name
     self.case_insensitive = case_insensitive
     self.allow_prefixes = allow_prefixes
+    self.entry_class = Entry
 
   def register(self, function, function_name=None,
                help_text=None, see_also=None):
@@ -29,7 +42,8 @@ class Registry(object):
     if old_function is not function:
       if old_function is not none:
         raise Exception('Conflicting registrations for %s' % function_name)
-      self.registry[function_name] = Entry(function, help_text, see_also)
+      self.registry[function_name] = self.entry_class(
+        function, help_text, see_also)
 
   def register_all(self, **kwds):
     for item_name, item in six.iteritems(kwds):
@@ -47,7 +61,7 @@ class Registry(object):
                                 allow_prefixes=self.allow_prefixes)
 
   def full_name(self, name):
-    result = GetPrefix.get(self.registry, name, allow_prefixes)
+    result = self._get(name)
     return result and result[0]
 
   def get(self, name):
@@ -66,16 +80,18 @@ class Registry(object):
       return None, None
 
   def get_help(self, name):
-    full_name, (_, help_text, see_also) = self._get(name)
+    full_name, entry = self._get(name)
+    entry.load()
+    help_text = entry.help_text
 
     if full_name == 'commands':  # HACK.
       help_text += self.join_keys()
 
     help_text = help_text or full_name
 
-    if see_also:
+    if entry.see_also:
       also = Join.join_words('"help %s"' % h for h in see_also)
-      return '%s\n\nSee also: %s\n' % (help_text, also)
+      return '%s\n\nSee also: %s\n' % (help_text, entry.see_also)
     else:
       return help_text
 
@@ -83,12 +99,14 @@ class Registry(object):
     return self.registry.keys()
 
   def join_keys(self, command_only=True):
-    w = (k for (k, v) in six.iteritems(self.registry)
-         if (not command_only) or v.function)
+    # TODO: not loading for this, will this work?
+    w = (k for (k, entry) in six.iteritems(self.registry)
+         if (not command_only) or entry.function)
     return Join.join_words(w)
 
-  def dump(self, printer=print):
+  def dump(self, printer=print, load=True):
     for k, v in six.iteritems(self.registry):
+      load and v.load()
       printer(k, v)
 
 def module_registry(module_name, name=None, **kwds):
