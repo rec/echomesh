@@ -5,7 +5,7 @@ from echomesh.util import Registry
 _REGISTRY = Registry.Registry('command')
 
 get = _REGISTRY.get
-full_name = _REGISTRY.full_name
+entry = _REGISTRY.entry
 get_help = _REGISTRY.get_help
 register = _REGISTRY.register
 register_all = _REGISTRY.register_all

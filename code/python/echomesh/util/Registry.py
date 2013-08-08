@@ -58,29 +58,29 @@ class Registry(object):
         item = item[0]
       self.register(item, item_name, help_text, see_also)
 
-  def _get(self, name):
+  def entry(self, name):
     return GetPrefix.get_prefix(self.registry, name,
                                 allow_prefixes=self.allow_prefixes)[1]
 
-  def full_name(self, name):
-    return self._get(name).name
-
   def get(self, name):
-    return self._get(name).function
+    return self.function(name)
+
+  def function(self, name):
+    return self.entry(name).function
 
   def get_key_and_value(self, name):
-    entry = self._get(name)
+    entry = self.entry(name)
     return entry.name, entry.function
 
   def get_key_and_value_or_none(self, name):
-    entry = self._get(name)
+    entry = self.entry(name)
     if not entry:
       return None, None
 
     return entry.name, entry.function
 
   def get_help(self, name):
-    entry = self._get(name)
+    entry = self.entry(name)
     entry.load()
     help_text = entry.help_text
 

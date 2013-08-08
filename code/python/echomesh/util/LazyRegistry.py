@@ -30,9 +30,9 @@ class LazyRegistry(Registry.Registry):
     optional_dot = '.' if classpath and not classpath.endswith('.') else ''
     self.classpath = classpath + optional_dot
 
-  def get(self, name):
-    entry = self._get(name)
+  def entry(self, name):
+    entry = super(LazyRegistry, self).entry(name)
     if not six.callable(entry.function):
       entry.function = Importer.imp(self.classpath + entry.function,
                                     defer_failure=False)
-    return entry.function
+    return entry
