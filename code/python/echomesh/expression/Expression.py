@@ -1,24 +1,22 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.expression import Envelope
-from echomesh.expression import Units
+import six
+
+from echomesh.expression.Envelope import Envelope
+from echomesh.expression.ListExpression import ListExpression
 from echomesh.expression.UnitExpression import UnitExpression
 
-class Expression(object):
-  def __init__(self, expression, element=None):
-    self.element = element
-    if isinstance(expression, dict):
-      self.expression = Envelope.Envelope(expression, element)
-    else:
-      self.expression = UnitExpression(expression, element)
+def expression(expr, element):
+  if isinstance(expr, dict):
+    return Envelope(expr, element)
 
-  def is_constant(self):
-    return self.expression.is_constant()
+  if isinstance(expr, (list, tuple)):
+    return ListExpression(expr, element)
 
-  def evaluate(self):
-    return self.expression.evaluate()
+  if isinstance(expr, six.string_types) and ',' in expr:
+    return ListExpression(expr.split(','), element)
 
-expression = Expression
+  return UnitExpression(expr, element)
 
 def convert(number, element=None, assume_minutes=True):
   if number is None:

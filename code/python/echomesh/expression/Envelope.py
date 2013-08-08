@@ -29,7 +29,7 @@ class Envelope(object):
 
     from echomesh.expression import Expression
     length = kwds.get('length', self.last_time * self.loops)
-    self.length = Expression.convert(length)
+    self.length = Expression.convert(length, self.element)
 
     if self.length > 0:
       self._is_constant = False
@@ -53,7 +53,7 @@ class Envelope(object):
 
   def _set_constant(self, value):
     self._is_constant = True
-    self.value = Expression.convert(value)
+    self.value = Expression.convert(value, self.element)
     self.length = 0
 
   def interpolate(self, time):
