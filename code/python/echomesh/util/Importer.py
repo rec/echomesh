@@ -15,12 +15,16 @@ def _split_module(path):
 
   return parts, '.'.join(module_path)
 
-def import_path(path):
-  parts, module = _split_module(path)
-  mod = __import__(module)
-  for comp in parts[1:]:
-    mod = getattr(mod, comp)
-  return mod
+try:
+  from importlib import import_module
+
+except:
+  def import_module(path):
+    parts, module = _split_module(path)
+    mod = __import__(module)
+    for comp in parts[1:]:
+      mod = getattr(mod, comp)
+    return mod
 
 class FailedImport(object):
   def __init__(self, message):
@@ -31,7 +35,7 @@ class FailedImport(object):
 
 def imp(path, name=None, defer_failure=True):
   try:
-    return import_path(path)
+    return import_module(path)
   except ImportError as e:
     if defer_failure:
       return FailedImport(ERROR_MESSAGE % (name or path))

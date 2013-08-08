@@ -1,9 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import six
+import sys
 
 from echomesh.base import GetPrefix
 from echomesh.base import Join
+from echomesh.util import Importer
 
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True):
@@ -92,3 +94,17 @@ class Registry(object):
   def dump(self, printer=print):
     for k, v in six.iteritems(self.registry):
       printer(k, v)
+
+def module_registry(module_name, name=None, **kwds):
+  registry = Registry(name or module_name, **kwds)
+  module = sys.modules[module_name]
+  for sub in module.__all__:
+    Importer.import_module('%s.%s' % (module_name, sub))
+    sub_module = getattr(module, sub)
+    function_variable = sub_module.getattr('FUNCTION', sub)
+    registry.register(
+      function=getattr(sub_module, function_variable),
+      function_name=getattr(sub_module, 'NAME', sub),
+      help_text=getattr(sub_module, 'HELP', None),
+      see_also=getattr(sub_module, 'SEE_ALSO', None))
+  return registry
