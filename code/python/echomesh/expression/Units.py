@@ -6,13 +6,19 @@ def log_scale(value, scale, exponent):
   return exponent ** (value / scale)
 
 def make_log(scale, exponent):
-  return lambda x: log_scale(x, scale, exponent)
+  def log_unit(x):
+    return log_scale(x, scale, exponent)
+  return log_scale
 
 def make_scale(scale):
-  return lambda x: x * scale
+  def scale_unit(x):
+    return x * scale
+  return scale_unit
 
 def inverse_scale(scale=1.0):
-  return lambda x: 1.0 / (scale * x)
+  def inverse_scale_unit(x):
+    return 1.0 / (scale * x)
+  return inverse_scale_unit
 
 UNITS_SOURCE = {
   ('%', 'percent'): make_scale(1 / 100),

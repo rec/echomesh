@@ -95,7 +95,14 @@ the start and then slows down as it approaches 1.0.""")
 def compose(f, g):
   ff, fi = f
   gg, gi = g
-  return lambda x: gg(ff(x)), lambda x: fi(gi(x))
+
+  def composed_function(x):
+    return gg(ff(x))
+
+  def composed_function_inverse(x):
+    return fi(gi((x)))
+
+  return composed_function, composed_function_inverse
 
 def transform(name):
   if name:

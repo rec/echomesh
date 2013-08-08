@@ -14,7 +14,8 @@ class RawExpression(object):
 
   def is_constant(self, element=None):
     if self._is_constant is None:
-      const = lambda s: not s[0].isalpha() or Values.is_constant(s, element)
+      def const(s):
+        return not s[0].isalpha() or Values.is_constant(s, element)
       self._is_constant = all(const(s) for s in self.stack)
     return self._is_constant
 
