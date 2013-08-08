@@ -58,7 +58,7 @@ def _expand(command):
       alias = aliases.get_prefix(command)
       if alias:
         cmd, alias_commands = alias
-        if cmd == command or name != CommandRegistry.full_name(name):
+        if cmd == command or name != CommandRegistry.entry(name).name:
           assert cmd not in stack
           stack.add(cmd)
           expand(*alias_commands)

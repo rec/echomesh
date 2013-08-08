@@ -68,17 +68,6 @@ class Registry(object):
   def function(self, name):
     return self.entry(name).function
 
-  def get_key_and_value(self, name):
-    entry = self.entry(name)
-    return entry.name, entry.function
-
-  def get_key_and_value_or_none(self, name):
-    entry = self.entry(name)
-    if not entry:
-      return None, None
-
-    return entry.name, entry.function
-
   def get_help(self, name):
     entry = self.entry(name)
     entry.load()

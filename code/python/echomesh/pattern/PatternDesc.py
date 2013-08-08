@@ -21,14 +21,14 @@ def _make_pattern(desc, is_top_level):
   type_value = desc.description.pop('type', None)
   if not type_value:
     raise Exception('No type value found')
-  full_type, maker = REGISTRY.get_key_and_value_or_none(type_value)
-  if not full_type:
+  entry = REGISTRY.entry(type_value)
+  if not entry:
     raise Exception('Didn\'t understand type="%s"' % type_value)
 
   if not is_top_level:
     desc = _PatternDesc(desc.element, desc.description,
-                       desc.name + ':%s' % full_type)
-  return maker(desc)
+                        desc.name + ':%s' % entry.name)
+  return entry.function(desc)
 
 def make_patterns_for_element(element, description):
   result = {}
