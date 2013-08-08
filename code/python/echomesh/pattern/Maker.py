@@ -38,7 +38,7 @@ def maker(*a):
 
   if len(args) == 1 and hasattr(args[0], '__call__'):
     args = ()
-    return wrap(args[0])
+    return wrap(a[0])
   else:
     return wrap
 

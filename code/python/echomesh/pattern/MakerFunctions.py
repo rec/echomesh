@@ -11,6 +11,7 @@ from echomesh.pattern import Maker
 from echomesh.pattern.Maker import maker
 from echomesh.pattern import PatternDesc
 
+@maker('choose')
 def choose(light_sets, choose=None):
   length = len(light_sets)
   def restrict(size):
@@ -23,9 +24,11 @@ def choose(light_sets, choose=None):
   else:
     return light_sets[restrict(choose)]
 
+@maker
 def concatenate(light_sets):
   return list(itertools.chain(*light_sets))
 
+@maker
 def inject(light_sets, mapping, length):
   """
     mapping:
@@ -43,6 +46,7 @@ def inject(light_sets, mapping, length):
 
   return [_map(i) for i in range(max(int(length), 0))]
 
+@maker('begin', 'length', 'rollover', 'skip')
 def insert(light_sets, target=None, offset=None, length=None, rollover=True,
            skip=None):
   assert len(light_sets) == 1
@@ -65,33 +69,6 @@ def insert(light_sets, target=None, offset=None, length=None, rollover=True,
 
   return result
 
-def transpose(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
-  assert len(light_sets) == 1
-  light_set = light_sets[0]
-  if not (x and y):
-    default_x, default_y = Config.get('light', 'visualizer', 'layout')
-    x = x or default_x
-    y = y or default_y
-
-  result = [None] * len(light_set)
-  for i, light in enumerate(light_set):
-    my_x = i % x;
-    my_y = i // x;
-    if reverse_x:
-      my_x = x - my_x - 1
-    if reverse_y:
-      my_y = y - my_y - 1
-    index = my_x * y + my_y
-    if index < len(result):
-      result[index] = light
-  return result
-
-# The Python built-in works perfectly.
-def reverse(light_sets):
-  assert len(light_sets) == 1
-  light_set = light_sets[0]
-  return reversed(light_set)
-
 def _to_list(s):
   if s is None:
     return []
@@ -102,7 +79,7 @@ def _to_list(s):
   else:
     return s
 
-# @maker('steps')
+@maker('steps')
 def spread(colors=None, steps=None, transforms=None):
   assert colors
 
@@ -127,34 +104,41 @@ def spread(colors=None, steps=None, transforms=None):
                                                 transform=t))
   return result
 
-def _choose(pattern_desc):
-  return Maker.Maker(pattern_desc, choose, 'choose')
+# The Python built-in works perfectly.
+@maker
+def reverse(light_sets):
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
+  return reversed(light_set)
 
-def _concatenate(pattern_desc):
-  return Maker.Maker(pattern_desc, concatenate)
+@maker('x', 'y', 'reverse_x', 'reverse_y')
+def transpose(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
+  assert len(light_sets) == 1
+  light_set = light_sets[0]
+  if not (x and y):
+    default_x, default_y = Config.get('light', 'visualizer', 'layout')
+    x = x or default_x
+    y = y or default_y
 
-def _inject(pattern_desc):
-  return Maker.Maker(pattern_desc, inject)
+  result = [None] * len(light_set)
+  for i, light in enumerate(light_set):
+    my_x = i % x;
+    my_y = i // x;
+    if reverse_x:
+      my_x = x - my_x - 1
+    if reverse_y:
+      my_y = y - my_y - 1
+    index = my_x * y + my_y
+    if index < len(result):
+      result[index] = light
+  return result
 
-def _insert(pattern_desc):
-  return Maker.Maker(pattern_desc, insert,
-               'begin', 'length', 'rollover', 'skip')
-
-def _reverse(pattern_desc):
-  return Maker.Maker(pattern_desc, reverse)
-
-def _spread(pattern_desc):
-  return Maker.Maker(pattern_desc, spread, 'steps')
-
-def _transpose(pattern_desc):
-  return Maker.Maker(pattern_desc, transpose,
-               'x', 'y', 'reverse_x', 'reverse_y')
 _REGISTRY = PatternDesc.REGISTRY
 
-_REGISTRY.register(_choose, 'choose')
-_REGISTRY.register(_concatenate, 'concatenate')
-_REGISTRY.register(_inject, 'inject')
-_REGISTRY.register(_insert, 'insert')
-_REGISTRY.register(_reverse, 'reverse')
-_REGISTRY.register(_spread, 'spread')
-_REGISTRY.register(_transpose, 'transpose')
+_REGISTRY.register(choose, 'choose')
+_REGISTRY.register(concatenate, 'concatenate')
+_REGISTRY.register(inject, 'inject')
+_REGISTRY.register(insert, 'insert')
+_REGISTRY.register(reverse, 'reverse')
+_REGISTRY.register(spread, 'spread')
+_REGISTRY.register(transpose, 'transpose')
