@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import operator
 import six
 import sys
 
@@ -37,13 +38,6 @@ class Registry(object):
             see_also = item[2]
         item = item[0]
       self.register(item, item_name, help_text, see_also)
-
-  def module(self, module):
-    function_name = module.__name__
-    function = getattr(module, function_name.lower(), None)
-    help_text = getattr(module, 'HELP', None)
-    see_also = getattr(module, 'SEE_ALSO', None)
-    self.register(function, function_name, help_text, see_also)
 
   def _get(self, name):
     return GetPrefix.get_prefix(self.registry, name,
@@ -96,15 +90,22 @@ class Registry(object):
       printer(k, v)
 
 def module_registry(module_name, name=None, **kwds):
-  registry = Registry(name or module_name, **kwds)
   module = sys.modules[module_name]
+
+  registry = Registry(name or module_name, **kwds)
+
   for sub in module.__all__:
-    Importer.import_module('%s.%s' % (module_name, sub))
-    sub_module = getattr(module, sub)
-    function_variable = sub_module.getattr('FUNCTION', sub)
+    sub_lower = sub.lower()
+    sub_module = Importer.import_module('%s.%s' % (module_name, sub))
+    function = (getattr(sub_module, 'FUNCTION', None) or
+                getattr(sub_module, sub_lower) )
     registry.register(
-      function=getattr(sub_module, function_variable),
-      function_name=getattr(sub_module, 'NAME', sub),
+      function=function,
+      function_name=getattr(sub_module, 'NAME', sub_lower),
       help_text=getattr(sub_module, 'HELP', None),
       see_also=getattr(sub_module, 'SEE_ALSO', None))
-  return registry
+
+  setattr(module, 'REGISTRY', registry)
+  for a in dir(registry):
+    if not a.startswith('_'):
+      setattr(module, a, getattr(registry, a))
