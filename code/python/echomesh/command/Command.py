@@ -58,8 +58,7 @@ def _expand(command):
       alias = aliases.get_prefix(command)
       if alias:
         cmd, alias_commands = alias
-        registry = CommandRegistry.get_or_none(name)
-        if cmd == command or (not registry or registry[0] != name):
+        if cmd == command or name != CommandRegistry.full_name(name):
           assert cmd not in stack
           stack.add(cmd)
           expand(*alias_commands)

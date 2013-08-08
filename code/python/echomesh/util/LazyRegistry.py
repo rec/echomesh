@@ -16,6 +16,6 @@ class LazyRegistry(Registry.Registry):
     name, (function, _, _) = self._get(name)
     if not six.callable(function):
       function = Importer.imp(self.classpath + function, defer_failure=False)
-      self.registry[name][0] = function
+      self.registry[name] = Registry.Entry(function, None, None)
     return function
 

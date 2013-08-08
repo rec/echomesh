@@ -29,7 +29,7 @@ class Registry(object):
     if old_function is not function:
       if old_function is not none:
         raise Exception('Conflicting registrations for %s' % function_name)
-      self.registry[function_name] = [function, help_text, see_also]
+      self.registry[function_name] = Entry(function, help_text, see_also)
 
   def register_all(self, **kwds):
     for item_name, item in six.iteritems(kwds):
@@ -46,23 +46,22 @@ class Registry(object):
     return GetPrefix.get_prefix(self.registry, name,
                                 allow_prefixes=self.allow_prefixes)
 
-  def get_or_none(self, name, allow_prefixes=None):
-    if allow_prefixes is None:
-      allow_prefixes = self.allow_prefixes
-    return GetPrefix.get(self.registry, name, allow_prefixes)
+  def full_name(self, name):
+    result = GetPrefix.get(self.registry, name, allow_prefixes)
+    return result and result[0]
 
   def get(self, name):
-    return self._get(name)[1][0]
+    return self._get(name)[1].function
 
   def get_key_and_value(self, name):
-    key, values = self._get(name)
-    return key, values[0]
+    key, entry = self._get(name)
+    return key, entry.function
 
   def get_key_and_value_or_none(self, name):
     kv = self._get(name)
     if kv:
-      key, values = kv
-      return key, values[0]
+      key, entry = kv
+      return key, entry.function
     else:
       return None, None
 
@@ -85,7 +84,7 @@ class Registry(object):
 
   def join_keys(self, command_only=True):
     w = (k for (k, v) in six.iteritems(self.registry)
-         if (not command_only) or v[0])
+         if (not command_only) or v.function)
     return Join.join_words(w)
 
   def dump(self, printer=print):
