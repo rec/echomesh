@@ -15,7 +15,7 @@ class Maker(object):
   def evaluate(self):
     table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
-      arg = [[p() for p in self.patterns]]
+      arg = [[p.evaluate() for p in self.patterns]]
     else:
       arg = []
 
@@ -28,7 +28,6 @@ class Maker(object):
 
   def is_constant(self):
     return all(v.is_constant() for v in six.itervalues(self.table))
-
 
 def maker(*a):
   args = a

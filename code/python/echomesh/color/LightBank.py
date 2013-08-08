@@ -49,7 +49,7 @@ class LightBank(ThreadLoop):
       client_lights = []
       for client in self.clients:
         try:
-          client_lights.append(client())
+          client_lights.append(client.evaluate())
         except:
           LOGGER.error(limit=8)
 

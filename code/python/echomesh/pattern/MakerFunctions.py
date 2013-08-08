@@ -43,19 +43,19 @@ def inject(light_sets, mapping, length):
 
   return [_map(i) for i in range(max(int(length), 0))]
 
-def insert(light_sets, target=None, begin=None, length=None, rollover=True,
+def insert(light_sets, target=None, offset=None, length=None, rollover=True,
            skip=None):
   assert len(light_sets) == 1
   light_set = light_sets[0]
 
   skip = int(skip or 1)
-  begin = int(begin or 0)
+  offset = int(offset or 0)
   if length is None:
     length = Config.get('light', 'count') if target is None else len(target)
 
   result = target or ([None] * length)
   for i, light in enumerate(light_set):
-    index = begin + i
+    index = offset + i
     if index < 0 or index >= length:
       if rollover:
         index = index % length
@@ -115,7 +115,7 @@ def spread(colors=None, steps=None, transforms=None):
   if steps is None:
     steps = [math.ceil(Config.get('light', 'count') / len(colors))]
   else:
-    steps = _to_list(steps)
+    steps = _to_list(steps.evaluate())
 
   result = []
   for i in xrange(len(colors) - 1):
@@ -156,5 +156,5 @@ _REGISTRY.register(_concatenate, 'concatenate')
 _REGISTRY.register(_inject, 'inject')
 _REGISTRY.register(_insert, 'insert')
 _REGISTRY.register(_reverse, 'reverse')
-_REGISTRY.register(spread, 'spread')
+_REGISTRY.register(_spread, 'spread')
 _REGISTRY.register(_transpose, 'transpose')
