@@ -159,7 +159,7 @@ class PyaudioPlayer(ThreadLoop):
       right *= self._current_level
 
     else:
-      next_level = self._level()
+      next_level = self._level.evaluate()
       levels = numpy.linspace(self._current_level, next_level, len(left))
       left *= levels
       right *= levels
@@ -171,7 +171,7 @@ class PyaudioPlayer(ThreadLoop):
       right *= rpan
 
     else:
-      next_pan = self._pan()
+      next_pan = self._pan.evaluate()
       angles = numpy.linspace(Util.pan_to_angle(self._current_pan),
                               Util.pan_to_angle(next_pan), len(left))
 
