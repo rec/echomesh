@@ -16,9 +16,11 @@ class Entry(Registry.Entry):
       module = Importer.imp(self.registry.classpath + module_name,
                             defer_failure=False)
       self.function = (getattr(module, 'FUNCTION', None) or
-                       getattr(module, module_name.lower(), None))
+                       getattr(module, module_name.lower(), None) or
+                       getattr(module, module_name, None))
       self.help_text = getattr(module, 'HELP', None)
       self.see_also = getattr(module, 'SEE_ALSO', None)
+
 
 class LazyRegistry(Registry.Registry):
   def __init__(self, name, classpath='',
@@ -29,9 +31,8 @@ class LazyRegistry(Registry.Registry):
     self.classpath = classpath + optional_dot
 
   def get(self, name):
-    name, entry = self._get(name)
-    function = entry.function
-    if not six.callable(function):
-      function = Importer.imp(self.classpath + function, defer_failure=False)
-      self.registry[name] = Registry.Entry(function, None, None)
-    return function
+    entry = self._get(name)
+    if not six.callable(entry.function):
+      entry.function = Importer.imp(self.classpath + entry.function,
+                                    defer_failure=False)
+    return entry.function

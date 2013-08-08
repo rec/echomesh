@@ -10,14 +10,16 @@ from echomesh.base import Join
 from echomesh.util import Importer
 
 class Entry(object):
-  def __init__(self, function, help_text, see_also):
+  def __init__(self, name, function, help_text, see_also):
+    self.name = name
     self.function = function
     self.help_text = help_text
     self.see_also = see_also
 
   def __str__(self):
-    return 'RegistryEntry(function=%s, help_text=%s, see_also=%s)' % (
-      self.function, self.help_text, self.see_also)
+    return (
+      'RegistryEntry(name=%s, function=%s, help_text=%s, see_also=%s)' %
+      (self.name, self.function, self.help_text, self.see_also))
 
   def load(self):
     pass
@@ -43,7 +45,7 @@ class Registry(object):
       if old_function is not none:
         raise Exception('Conflicting registrations for %s' % function_name)
       self.registry[function_name] = self.entry_class(
-        function, help_text, see_also)
+        function_name, function, help_text, see_also)
 
   def register_all(self, **kwds):
     for item_name, item in six.iteritems(kwds):
@@ -58,40 +60,38 @@ class Registry(object):
 
   def _get(self, name):
     return GetPrefix.get_prefix(self.registry, name,
-                                allow_prefixes=self.allow_prefixes)
+                                allow_prefixes=self.allow_prefixes)[1]
 
   def full_name(self, name):
-    result = self._get(name)
-    return result and result[0]
+    return self._get(name).name
 
   def get(self, name):
-    return self._get(name)[1].function
+    return self._get(name).function
 
   def get_key_and_value(self, name):
-    key, entry = self._get(name)
-    return key, entry.function
+    entry = self._get(name)
+    return entry.name, entry.function
 
   def get_key_and_value_or_none(self, name):
-    kv = self._get(name)
-    if kv:
-      key, entry = kv
-      return key, entry.function
-    else:
+    entry = self._get(name)
+    if not entry:
       return None, None
 
+    return entry.name, entry.function
+
   def get_help(self, name):
-    full_name, entry = self._get(name)
+    entry = self._get(name)
     entry.load()
     help_text = entry.help_text
 
-    if full_name == 'commands':  # HACK.
+    if entry.name == 'commands':  # HACK.
       help_text += self.join_keys()
 
-    help_text = help_text or full_name
+    help_text = help_text or entry.name
 
     if entry.see_also:
-      also = Join.join_words('"help %s"' % h for h in see_also)
-      return '%s\n\nSee also: %s\n' % (help_text, entry.see_also)
+      also = Join.join_words('"help %s"' % h for h in entry.see_also)
+      return '%s\n\nSee also: %s\n' % (help_text, also)
     else:
       return help_text
 
