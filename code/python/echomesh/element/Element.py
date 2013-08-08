@@ -39,7 +39,7 @@ class Element(MasterRunnable):
     for key in description.keys():
       if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
         items = list(six.iteritems(description[key]))
-        self.variables = dict((k, Variable.variable(self, v)) for k, v in items)
+        self.variables = dict((k, Variable.variable(v, self)) for k, v in items)
         break
 
   def _on_begin(self):

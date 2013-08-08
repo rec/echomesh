@@ -19,9 +19,6 @@ class _Values(object):
     self.table = dict((name.lower(), True) for name in Names)
 
   def evaluate(self, op, evaluator, element=None):
-    return self(op, evaluator, element)
-
-  def __call__(self, op, evaluator, element=None):
     return self._interpret(op, evaluator, element, True)
 
   def is_constant(self, op, element=None):
@@ -60,4 +57,3 @@ _VALUES = _Values(Functions.FUNCTIONS, System.SYSTEM)
 
 evaluate = _VALUES.evaluate
 is_constant = _VALUES.is_constant
-

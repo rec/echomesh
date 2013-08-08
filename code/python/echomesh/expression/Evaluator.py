@@ -36,7 +36,3 @@ class Evaluator(object):
       return float(op)
 
     return int(op)
-
-  def __call__(self):
-    if True:    raise Exception
-    return self.evaluate()

@@ -21,7 +21,7 @@ def identity(x):
 def reverse(x):
   return 1.0 - x
 
-def square(x)
+def square(x):
   return x * x
 
 def power(n):
@@ -41,7 +41,7 @@ def exp(x):
   return (numpy.exp(x) - 1) / (numpy.e - 1)
 
 def log(x):
-  return numpy.log((numpy.e - 1) * x + 1))
+  return numpy.log((numpy.e - 1) * x + 1)
 
 IDENTITY = identity, identity
 SQUARE = square, numpy.sqrt

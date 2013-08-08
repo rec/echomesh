@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.sound import Util
-from echomesh.expression.Expression import Expression
+from echomesh.expression import Expression
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -18,8 +18,8 @@ def set_player(self, element,
   self._passthrough = (level == 1 and pan == 0)
 
   self._length = length
-  self._level = Expression(level, element)
-  self._pan = Expression(pan, element)
+  self._level = Expression.expression(level, element)
+  self._pan = Expression.expression(pan, element)
   self._loops = loops
   self._begin = begin
   self._end = end

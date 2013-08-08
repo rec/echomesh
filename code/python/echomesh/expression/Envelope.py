@@ -11,7 +11,9 @@ LOGGER = Log.logger(__name__)
 class Envelope(object):
   _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
 
-  def __init__(self, data):
+  def __init__(self, data, element=None):
+    self.element = element
+
     kwds, numeric = SplitNumbers.split(data)
     self.times, self.data = zip(*numeric)
     if not self.times:
@@ -25,8 +27,9 @@ class Envelope(object):
     self.loops = kwds.get('loops', 1)
     self.last_time = self.times[-1]
 
-    from echomesh.expression import UnitExpression
-    self.length = UnitExpression.convert(kwds.get('length', self.last_time * self.loops))
+    from echomesh.expression import Expression
+    length = kwds.get('length', self.last_time * self.loops)
+    self.length = Expression.convert(length)
 
     if self.length > 0:
       self._is_constant = False
@@ -39,8 +42,8 @@ class Envelope(object):
         LOGGER.error('Negative length "%s" is not allowed.', length)
         self.length = 0
 
-  def evaluate(self, element):
-    return self.interpolate(element.time)
+  def evaluate(self, element=None):
+    return self.interpolate((element or self.element).time)
 
   def is_constant(self, element=None):
     return self._is_constant

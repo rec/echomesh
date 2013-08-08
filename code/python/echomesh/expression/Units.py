@@ -8,7 +8,7 @@ def log_scale(value, scale, exponent):
 def make_log(scale, exponent):
   def log_unit(x):
     return log_scale(x, scale, exponent)
-  return log_scale
+  return log_unit
 
 def make_scale(scale):
   def scale_unit(x):

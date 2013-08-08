@@ -33,8 +33,8 @@ def _set_player(player, element,
   player._passthrough = (level == 1 and pan == 0)
 
   player._length = length
-  player._level = Expression(level, element)
-  player._pan = Expression(pan, element)
+  player._level = Expression.expression(level, element)
+  player._pan = Expression.expression(pan, element)
   player._loops = loops
   player._begin = begin
   player._end = end

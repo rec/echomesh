@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import collections
 import six
 
-from echomesh.expression.Expression import Expression
+from echomesh.expression import Expression
 from echomesh.util import Registry
 
 REGISTRY = Registry.Registry('pattern types')
@@ -47,7 +47,7 @@ def make_table_and_patterns(pattern_desc, attributes):
     for k, v in six.iteritems(desc):
       if not k.startswith('pattern'):
         if k in attributes:
-          v = Expression(v, pattern_desc.element)
+          v = Expression.expression(v, pattern_desc.element)
         table[k] = v
 
     pats = desc.get('patterns') or desc.get('pattern') or []
