@@ -1,12 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import operator
+from collections import namedtuple
+
 import six
 import sys
 
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
+
+Entry = namedtuple('Entry', 'function help_text see_also')
 
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True):
