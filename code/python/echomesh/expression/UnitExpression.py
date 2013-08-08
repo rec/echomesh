@@ -36,7 +36,7 @@ class UnitExpression(object):
       print('!!!', type(self.unit_converter))
       print('!!!!!', getattr(self.unit_converter, '__name__', None))
 
-      return self.unit_converter.evaluate(val)
+      return self.unit_converter(val)
     else:
       return val
 

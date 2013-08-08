@@ -70,6 +70,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
       self.pause()
 
 def keyboard(echomesh):
-  processor = lambda line: Command.execute(echomesh, line)
+  def processor(line):
+    return Command.execute(echomesh, line)
   sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
   return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
