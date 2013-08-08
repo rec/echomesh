@@ -6,7 +6,7 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util.Registry import LazyRegistry
+from echomesh.util.LazyRegistry import LazyRegistry
 
 LOGGER = Log.logger(__name__)
 

@@ -89,24 +89,9 @@ class Registry(object):
     for k, v in six.iteritems(self.registry):
       printer(k, v)
 
-class LazyRegistry(Registry):
-  def __init__(self, name, classpath='',
-               case_insensitive=True, allow_prefixes=True):
-    super(LazyRegistry, self).__init__(name, case_insensitive, allow_prefixes)
-    optional_dot = '.' if classpath and not classpath.endswith('.') else ''
-    self.classpath = classpath + optional_dot
-
-  def get(self, name):
-    name, (function, _, _) = self._get(name)
-    if not six.callable(function):
-      function = Importer.imp(self.classpath + function, defer_failure=False)
-      self.registry[name][0] = function
-    return function
-
-def module_registry(module_name, name=None, lazy=False, **kwds):
+def module_registry(module_name, name=None, **kwds):
   module = sys.modules[module_name]
-  clazz = LazyRegistry if lazy else Registry
-  registry = clazz(name or module_name, **kwds)
+  registry = Registry(name or module_name, **kwds)
 
   for sub in module.__all__:
     sub_lower = sub.lower()
