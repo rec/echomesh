@@ -6,7 +6,7 @@ from echomesh.base import Config
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.util import Log
-from echomesh.util.PersistentDict import PersistentDict
+from echomesh.util.dict.PersistentDict import PersistentDict
 
 LOGGER = Log.logger(__name__)
 

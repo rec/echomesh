@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.network import ClientServer
 from echomesh.sound import PlayerSetter
-from echomesh.util import Dict
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 

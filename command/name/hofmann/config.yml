@@ -11,4 +11,4 @@ midi:
 
 light:
   visualizer:
-    visualizer_closes_echomesh: true
+    closes_echomesh: true

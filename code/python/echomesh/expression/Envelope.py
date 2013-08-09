@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import bisect
 
 from echomesh.expression import SplitNumbers
-from echomesh.util import Dict
+from echomesh.util.dict.FromAttributes import from_attributes
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -49,7 +49,7 @@ class Envelope(object):
     return self._is_constant
 
   def description(self):
-    return Dict.from_attributes(self, Envelope._FIELDS)
+    return from_attributes(self, Envelope._FIELDS)
 
   def _set_constant(self, value):
     self._is_constant = True

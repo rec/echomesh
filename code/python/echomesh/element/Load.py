@@ -4,13 +4,13 @@ from echomesh.element import Error
 from echomesh.element import Element
 from echomesh.element import REGISTRY
 from echomesh.element.ResolveExtensions import resolve_extensions
-from echomesh.util import Dict
+from echomesh.util.dict.Access import Access
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
 def load_one_element(parent, description):
-  description = Dict.Access(resolve_extensions(description))
+  description = Access(resolve_extensions(description))
   t = description.get('type', '').lower()
   if not t:
     raise Exception('No type field in element %s' % description)

@@ -207,7 +207,7 @@ light:
     show: true
     type: client
     period: 10ms
-    visualizer_closes_echomesh: false
+    closes_echomesh: false
 
     background: white
     layout: [16, 16]
