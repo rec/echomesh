@@ -5,7 +5,7 @@ from echomesh.base import Join
 
 # pylint: disable=W0611
 from echomesh.command import Alias, Broadcast, ElementCommands, GetConfig
-from echomesh.command import CommandRegistry, RemoteCommands, SaveConfig, SetConfig
+from echomesh.command import REGISTRY, RemoteCommands, SaveConfig, SetConfig
 from echomesh.command import Show, TransferCommand
 
 # Must be the last one to load.
@@ -24,8 +24,8 @@ COMMENT_HELP = """
 Comment lines start with a # - everything after that is ignored.
 """
 
-CommandRegistry.register(lambda e: None, '#', COMMENT_HELP)
-CommandRegistry.register(None, 'sample', 'This is a sample with just help')
+REGISTRY.register(lambda e: None, '#', COMMENT_HELP)
+REGISTRY.register(None, 'sample', 'This is a sample with just help')
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
@@ -39,7 +39,7 @@ def _fix_exception_message(m, name):
   return name + m
 
 def usage():
-  result = ['Valid commands are:', CommandRegistry.join_keys()]
+  result = ['Valid commands are:', REGISTRY.join_keys()]
   aliases = Aliases.instance()
   if aliases:
     result.append('\nand aliases are:')
@@ -58,14 +58,14 @@ def _expand(command):
       alias = aliases.get_prefix(command)
       if alias:
         cmd, alias_commands = alias
-        if cmd == command or name != CommandRegistry.entry(name).name:
+        if cmd == command or name != REGISTRY.entry(name).name:
           assert cmd not in stack
           stack.add(cmd)
           expand(*alias_commands)
           stack.remove(cmd)
           continue
 
-      result.append([CommandRegistry.function(name), parts])
+      result.append([REGISTRY.function(name), parts])
   expand(command)
   return result
 

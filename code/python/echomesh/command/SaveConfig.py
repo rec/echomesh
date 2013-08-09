@@ -8,7 +8,7 @@ from echomesh.base import Join
 from echomesh.base import Merge
 from echomesh.base import MergeConfig
 from echomesh.base import Yaml
-from echomesh.command import CommandRegistry
+from echomesh.command import REGISTRY
 from echomesh.command import SetConfig
 from echomesh.util import Log
 from echomesh.util import Quit
@@ -48,6 +48,6 @@ Examples:
   save speed=50% light.period=40ms
 """
 
-CommandRegistry.register(_save, 'save', SAVE_HELP)
+REGISTRY.register(_save, 'save', SAVE_HELP)
 
 

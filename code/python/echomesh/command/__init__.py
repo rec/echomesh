@@ -6,4 +6,3 @@ REGISTRY = _register(
   'Broadcast',
   'Transfer'
 )
-

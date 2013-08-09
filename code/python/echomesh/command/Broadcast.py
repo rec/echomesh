@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.command import CommandRegistry
 from echomesh.command import Show
 from echomesh.util import Log
 
@@ -30,5 +29,3 @@ nodes;  when broadcast mode is off, start and pause only go to this node.
 """
 
 SEE_ALSO = ['show broadcast']
-
-CommandRegistry.register(broadcast, 'broadcast', HELP, SEE_ALSO)

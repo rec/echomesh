@@ -5,7 +5,6 @@ import os.path
 
 from echomesh.base import Path
 from echomesh.base import Yaml
-from echomesh.command import CommandRegistry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -91,5 +90,3 @@ transfer *
 transfer
   Like transfer *, but prompts to make sure that you want to do it.
 """
-
-CommandRegistry.register(transfer, 'transfer', HELP)
