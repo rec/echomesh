@@ -76,7 +76,7 @@ def _get_files_table(files):
   return files_table
 
 
-TRANSFER_HELP = """
+HELP = """
 Transfer files from this machine to other echomesh nodes.
 
 transfer file-or-directory [file-or-directory...]:
@@ -92,4 +92,4 @@ transfer
   Like transfer *, but prompts to make sure that you want to do it.
 """
 
-CommandRegistry.register(transfer, 'transfer', TRANSFER_HELP)
+CommandRegistry.register(transfer, 'transfer', HELP)

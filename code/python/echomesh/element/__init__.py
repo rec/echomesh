@@ -1,6 +1,6 @@
 from echomesh.util.registry.Module import register as _register
 
-_register(
+REGISTRY = _register(
   __name__,
   'Audio',
   'Handler',
