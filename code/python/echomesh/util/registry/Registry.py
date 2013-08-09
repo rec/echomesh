@@ -16,7 +16,7 @@ LOGGER = Log.logger(__name__)
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True,
                class_path=None):
-    self.registry = {}
+    self._registry = {}
     self.name = name
     self.case_insensitive = case_insensitive
     self.allow_prefixes = allow_prefixes
@@ -28,9 +28,9 @@ class Registry(object):
     if self.case_insensitive:
       function_name = function_name.lower()
 
-    entry = self.registry.get(function_name, None)
+    entry = self._registry.get(function_name, None)
     if not entry:
-      self.registry[function_name] = Entry(
+      self._registry[function_name] = Entry(
         function_name, function, help_text, see_also, self)
     else:
       if entry.function is not function:
@@ -51,7 +51,7 @@ class Registry(object):
       self.register(item, item_name, help_text, see_also)
 
   def entry(self, name):
-    return GetPrefix.get_prefix(self.registry, name,
+    return GetPrefix.get_prefix(self._registry, name,
                                 allow_prefixes=self.allow_prefixes)[1]
 
   def get(self, name):
@@ -63,19 +63,19 @@ class Registry(object):
   def get_help(self, name):
     return self.entry(name).load().help()
 
-  def keys(self):
-    return self.registry.keys()
-
   def join_keys(self, command_only=True, load=True):
     words = []
-    for key, entry in six.iteritems(self.registry):
+    for key, entry in six.iteritems(self._registry):
       load and entry.load()
       if (not command_only) or entry.function:
         words.append(key)
 
+  def keys(self):
+    return self._registry.keys()
+
     return Join.join_words(words)
 
   def dump(self, printer=print, load=True):
-    for k, v in six.iteritems(self.registry):
+    for k, v in six.iteritems(self._registry):
       load and v.load()
       printer(k, v)

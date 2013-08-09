@@ -1,17 +1,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Log
+import sys
 
-LOGGER = Log.logger(__name__)
+from echomesh.util.registry.Registry import Registry
 
-def register(class_path, *modules, ***kwds):
+EXPORTED_ATTRIBUTES = 'entry', 'function', 'get_help', 'keys', 'join_keys'
+
+def register(class_path, *modules, **kwds):
   module = sys.modules[class_path]
   registry = Registry(class_path, class_path=class_path, **kwds)
 
-  for sub in module:
+  for sub in modules:
     registry.register(sub, sub.lower())
 
   setattr(module, 'REGISTRY', registry)
-  for a in dir(registry):
-    if not a.startswith('_'):
-      setattr(module, a, getattr(registry, a))
+  for a in EXPORTED_ATTRIBUTES:
+    setattr(module, a, getattr(registry, a))
+
+  return registry
