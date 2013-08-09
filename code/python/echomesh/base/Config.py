@@ -23,8 +23,6 @@ THROW_EXCEPTIONS = True
 def reconfigure():
   global MERGE_CONFIG, CONFIGS_UNVISITED
 
-  _fix_home_directory_environment_variable()
-
   # Read a configuration file with a given name, tags, and project.
   def _make(name, tags, project, show_error, prompt):
     Name.set_name(name)
@@ -106,13 +104,3 @@ def get_unvisited():
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
 
-_HOME_VARIABLE_FIXED = False;
-
-# TODO: why does this go here?
-def _fix_home_directory_environment_variable():
-  global _HOME_VARIABLE_FIXED
-  if not _HOME_VARIABLE_FIXED:
-    # If running as root, export user pi's home directory as $HOME.
-    if getpass.getuser() == 'root':
-      os.environ['HOME'] = '/home/pi'
-    _HOME_VARIABLE_FIXED = True

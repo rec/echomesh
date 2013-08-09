@@ -16,8 +16,8 @@ def set_config(_, *values):
     assignment = GetPrefix.leafs(Config.assign(values))
     for address, value in six.iteritems(assignment):
       LOGGER.info('Set %s=%s', '.'.join(address), value)
-  elif MergeConfig.LOCAL_CHANGES:
-    LOGGER.info(Yaml.encode_one(MergeConfig.LOCAL_CHANGES))
+  elif Config.MERGE_CONFIG.has_changes():
+    LOGGER.info(Yaml.encode_one(dict(Config.MERGE_CONFIG.get_changes())))
   else:
     LOGGER.info('You have made no changes.')
 

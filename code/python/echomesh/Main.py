@@ -33,6 +33,9 @@ def _main():
   p()
 
 
+  Path.fix_home_directory_environment_variable()
+  p()
+
   Path.fix_sys_path()
   p()
 

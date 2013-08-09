@@ -34,9 +34,10 @@ def compute_command_path():
                          'default/platform/%s' % Platform.PLATFORM,
                          'default'])
 
-
-
 compute_command_path()
+
+def named_paths():
+  return zip(COMMAND_PATH_NAMES, COMMAND_PATH)
 
 def expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.

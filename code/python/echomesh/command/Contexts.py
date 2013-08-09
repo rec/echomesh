@@ -9,7 +9,7 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def contexts(_):
-  parts = zip(CommandFile.COMMAND_PATH_NAMES, CommandFile.COMMAND_PATH)
+  parts = CommandFile.named_paths()
   con = ('  %s:\n    %s' % (x, os.path.abspath(y)) for x, y in parts)
   LOGGER.info('%s\n', '\n'.join(con))
 

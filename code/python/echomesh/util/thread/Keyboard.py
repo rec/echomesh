@@ -75,5 +75,6 @@ def keyboard(echomesh):
       return Command.execute(echomesh, line)
     except:
       LOGGER.error('Error processing command line.')
+
   sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
   return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)

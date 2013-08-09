@@ -53,8 +53,15 @@ class MergeConfig(object):
 
     return self.config
 
-  def assign(self, args, index=2):
-    configs = self.file_configs[index][1]  # default is 'master'
+  def has_changes(self):
+    return any(configs[2] for (_, configs) in self.file_configs)
+
+  def get_changes(self):
+    return [(f, c[2]) for (f, c) in self.file_configs if c[2]]
+
+  def assign(self, args, index=2):  # default is 'master'
+    configs = self.file_configs[index][1]
+
     while len(configs) < 3:
       configs.append({})
     assignments = self._assignment_to_config(args, _ASSIGNMENT_ERROR)
@@ -97,6 +104,8 @@ class MergeConfig(object):
           base_config = Merge.merge_for_config(base_config, c)
         else:
           base_config = copy.deepcopy(c)
+      while len(configs) < 3:
+        configs.append({})
       self.file_configs.append([f, configs])
 
   def _assignment_to_config(self, args, error):

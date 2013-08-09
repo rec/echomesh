@@ -75,3 +75,15 @@ def fix_sys_path():
       sys.path.insert(1, EXTERNAL_CODE_PATH)
     else:
       sys.path.append(EXTERNAL_CODE_PATH)
+
+_HOME_VARIABLE_FIXED = False
+
+# HACK!
+def fix_home_directory_environment_variable():
+  if Platform.IS_LINUX:
+    global _HOME_VARIABLE_FIXED
+    if not _HOME_VARIABLE_FIXED:
+      # If running as root, export user pi's home directory as $HOME.
+      if getpass.getuser() == 'root':
+        os.environ['HOME'] = '/home/pi'
+      _HOME_VARIABLE_FIXED = True

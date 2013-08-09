@@ -6,7 +6,6 @@ from echomesh.base import CommandFile
 from echomesh.base import Config
 from echomesh.base import Join
 from echomesh.base import Merge
-from echomesh.base import MergeConfig
 from echomesh.base import Yaml
 from echomesh.command import REGISTRY
 from echomesh.command import SetConfig
