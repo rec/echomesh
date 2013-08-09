@@ -6,6 +6,7 @@ _REGISTRY = Registry.Registry('command')
 
 get = _REGISTRY.get
 entry = _REGISTRY.entry
+function = _REGISTRY.function
 get_help = _REGISTRY.get_help
 register = _REGISTRY.register
 register_all = _REGISTRY.register_all

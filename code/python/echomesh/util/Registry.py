@@ -2,19 +2,24 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from collections import namedtuple
 
+import importlib
 import six
 import sys
 
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 class Entry(object):
-  def __init__(self, name, function, help_text, see_also):
+  def __init__(self, name, function, help_text, see_also, class_path):
     self.name = name
     self.function = function
     self.help_text = help_text
     self.see_also = see_also
+    self.class_path = class_path
 
   def __str__(self):
     return (
@@ -22,16 +27,30 @@ class Entry(object):
       (self.name, self.function, self.help_text, self.see_also))
 
   def load(self):
-    pass
+    if isinstance(self.function, six.string_types):
+      class_path = '%s.%s' % (self.class_path, self.function)
+      mod = importlib.import_module(class_path)
+      name = self.function.lower()
+      self.function = (getattr(mod, 'FUNCTION', None) or
+                       getattr(mod, name, None) or
+                       getattr(mod, self.function, None))
+      if not self.function:
+        print('!!!', dir(mod), type(mod), class_path)
+      assert self.function
+
+      self.help_text = getattr(mod, 'HELP', None)
+      self.see_also = getattr(mod, 'SEE_ALSO', None)
+    return self
+
 
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True,
-               entry_class=Entry):
+               class_path=None):
     self.registry = {}
     self.name = name
     self.case_insensitive = case_insensitive
     self.allow_prefixes = allow_prefixes
-    self.entry_class = Entry
+    self.class_path = class_path
 
   def register(self, function, function_name=None,
                help_text=None, see_also=None):
@@ -39,13 +58,16 @@ class Registry(object):
     if self.case_insensitive:
       function_name = function_name.lower()
 
-    none = object()
-    old_function = self.registry.get(function_name, (none, none))[0]
-    if old_function is not function:
-      if old_function is not none:
+    entry = self.registry.get(function_name, None)
+    if not entry:
+      self.registry[function_name] = Entry(
+        function_name, function, help_text, see_also, self.class_path)
+    else:
+      if entry.function is not function:
         raise Exception('Conflicting registrations for %s' % function_name)
-      self.registry[function_name] = self.entry_class(
-        function_name, function, help_text, see_also)
+      else:
+        LOGGER.error('Duplicate entry for %s in registry %s', function_name,
+                     self.name)
 
   def register_all(self, **kwds):
     for item_name, item in six.iteritems(kwds):
@@ -66,11 +88,10 @@ class Registry(object):
     return self.function(name)
 
   def function(self, name):
-    return self.entry(name).function
+    return self.entry(name).load().function
 
   def get_help(self, name):
-    entry = self.entry(name)
-    entry.load()
+    entry = self.entry(name).load()
     help_text = entry.help_text
 
     if entry.name == 'commands':  # HACK.

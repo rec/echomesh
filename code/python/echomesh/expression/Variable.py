@@ -27,7 +27,7 @@ def variable(description, element):
     description = copy.copy(description)
     vtype = description.pop('type', None)
     if vtype:
-      return REGISTRY.get(vtype)(description, element)
+      return REGISTRY.function(vtype)(description, element)
     else:
       raise Exception('No type in variable %s.' % description)
   else:

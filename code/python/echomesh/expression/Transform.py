@@ -110,7 +110,7 @@ def transform(name):
     parts = name.split('.')
     for part in parts:
       try:
-        transform = REGISTRY.get(part)
+        transform = REGISTRY.function(part)
       except:
         LOGGER.error("Transform: bad part %s in name %s.", part, name)
         break

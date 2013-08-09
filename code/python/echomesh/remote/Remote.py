@@ -11,7 +11,7 @@ LOGGER = Log.logger(__name__)
 def execute(instance, **data):
   try:
     data_type = data.pop('type')
-    function = RemoteRegistry.get(data_type)
+    function = RemoteRegistry.function(data_type)
     if not function:
       raise Exception("Didn't understand data type %s" % type)
 

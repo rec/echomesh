@@ -6,11 +6,11 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util.LazyRegistry import LazyRegistry
+from echomesh.util.Registry import Registry
 
 LOGGER = Log.logger(__name__)
 
-_REGISTRY = LazyRegistry(name='element', classpath='echomesh.element')
+_REGISTRY = Registry(name='element', class_path='echomesh.element')
 
 def register(classname, name=None):
   _REGISTRY.register(classname, (name or classname).lower())
@@ -79,7 +79,7 @@ def make_one(parent, description):
   if not t:
     raise Exception('No type field in element %s' % description)
 
-  element_class = _REGISTRY.get(t)
+  element_class = _REGISTRY.function(t)
   if not element_class:
     _REGISTRY.dump()
     raise Exception('No element class for type %s' % t)

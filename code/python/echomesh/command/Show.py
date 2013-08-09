@@ -46,7 +46,7 @@ def _all(echomesh_instance):
   for name in sorted(SHOW_REGISTRY.keys()):
     if name != 'all':
       LOGGER.info('%s:', name)
-      SHOW_REGISTRY.get(name)(echomesh_instance)
+      SHOW_REGISTRY.function(name)(echomesh_instance)
 
 def broadcast(echomesh_instance):
   message = 'ON' if echomesh_instance.broadcasting() else 'off'
@@ -258,7 +258,7 @@ def _show(echomesh_instance, *parts):
   else:
     for name in parts:
       try:
-        function = SHOW_REGISTRY.get(name)
+        function = SHOW_REGISTRY.function(name)
       except:
         function = None
       if function:

@@ -65,7 +65,7 @@ def _expand(command):
           stack.remove(cmd)
           continue
 
-      result.append([CommandRegistry.get(name), parts])
+      result.append([CommandRegistry.function(name), parts])
   expand(command)
   return result
 
