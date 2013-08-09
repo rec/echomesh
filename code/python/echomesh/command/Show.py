@@ -8,7 +8,7 @@ from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Aliases
 from echomesh.command import CommandRegistry
-from echomesh.command import Context
+from echomesh.command import Contexts
 from echomesh.command import Scores
 from echomesh.expression import Transform
 from echomesh.expression import Units
@@ -229,7 +229,7 @@ SHOW_REGISTRY.register_all(
   aliases=(aliases, ALIASES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
   config=(_config, CONFIG_HELP),
-  contexts=(Context.contexts, Context.CONTEXTS_HELP),
+  contexts=(Contexts.contexts, Contexts.HELP),
   directories=(directories, DIRECTORIES_HELP),
   elements=(elements, ELEMENTS_HELP),
   info=(info, INFO_HELP),

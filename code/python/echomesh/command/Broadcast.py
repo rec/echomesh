@@ -22,7 +22,7 @@ def broadcast(echomesh_instance, on_or_off=None):
       message = 'is now'
     LOGGER.info('broadcast mode %s %s.', message, name)
 
-BROADCAST_HELP = """
+HELP = """
 Set the broadcast mode on or off.
 
 When broadcast mode is on, all start and pause commands are sent to all echomesh
@@ -31,4 +31,4 @@ nodes;  when broadcast mode is off, start and pause only go to this node.
 
 SEE_ALSO = ['show broadcast']
 
-CommandRegistry.register(broadcast, 'broadcast', BROADCAST_HELP, SEE_ALSO)
+CommandRegistry.register(broadcast, 'broadcast', HELP, SEE_ALSO)

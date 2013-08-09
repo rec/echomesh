@@ -13,7 +13,7 @@ def contexts(_):
   con = ('  %s:\n    %s' % (x, os.path.abspath(y)) for x, y in parts)
   LOGGER.info('%s\n', '\n'.join(con))
 
-CONTEXTS_HELP = """
+HELP = """
 In order to control multiple machines and configurations effectively, echomesh
 configurations and scores live in one of five different types of "contexts".
 

@@ -41,9 +41,7 @@ def alias(instance, *path):
     aliases[alias] = parts
     LOGGER.info('Alias %s=%s', alias, parts)
 
-
-
-ALIAS_HELP = """
+HELP = """
   The alias command allows you to attach one or more commands to a
   shorthand alias.
 
@@ -61,4 +59,4 @@ alias <name> <command> [& <command> & <command>]:
 
 """
 
-CommandRegistry.register(alias, 'alias', ALIAS_HELP)
+CommandRegistry.register(alias, 'alias', HELP)
