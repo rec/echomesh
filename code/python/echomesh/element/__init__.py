@@ -1,6 +1,7 @@
 from echomesh.util.registry.Module import register as _register
 
-_ARGS = (
+_register(
+  __name__,
   'Audio',
   'Handler',
   'Image',
@@ -15,5 +16,3 @@ _ARGS = (
   'Speak',
   'Twitter',
 )
-
-_register(__name__, *_ARGS)

@@ -6,27 +6,9 @@ from echomesh.base import Yaml
 from echomesh.element import Element
 from echomesh.util import Dict
 from echomesh.util import Log
-from echomesh.util.registry import Module
+from echomesh.element import REGISTRY
 
 LOGGER = Log.logger(__name__)
-
-_ARGS = (
-  'Audio',
-  'Handler',
-  'Image',
-  'Loop',
-  'Print',
-  'Repeat',
-  'Root',
-  'Pattern',
-  'Schedule',
-  'Sequence',
-  'Select',
-  'Speak',
-  'Twitter',
-)
-
-REGISTRY = Module.register('echomesh.element', *_ARGS)
 
 def _resolve_extensions(data):
   extensions = set()
