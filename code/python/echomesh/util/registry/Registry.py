@@ -60,17 +60,20 @@ class Registry(object):
   def function(self, name):
     return self.entry(name).load().function
 
-  def help(self, name):
+  def get_help(self, name):
     return self.entry(name).load().help()
 
   def keys(self):
     return self.registry.keys()
 
-  def join_keys(self, command_only=True):
-    # TODO: not loading for this, will this work?
-    w = (k for (k, entry) in six.iteritems(self.registry)
-         if (not command_only) or entry.function)
-    return Join.join_words(w)
+  def join_keys(self, command_only=True, load=True):
+    words = []
+    for key, entry in six.iteritems(self.registry):
+      load and entry.load()
+      if (not command_only) or entry.function:
+        words.append(key)
+
+    return Join.join_words(words)
 
   def dump(self, printer=print, load=True):
     for k, v in six.iteritems(self.registry):
