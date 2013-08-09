@@ -9,9 +9,11 @@ from compatibility.weakref import WeakSet
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
+from echomesh.base import Join
 from echomesh.base import MergeConfig
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.base import Quit
 
 MERGE_CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
@@ -103,4 +105,14 @@ def get_unvisited():
   if not True:
     return CONFIGS_UNVISITED
   return fix(copy.deepcopy(CONFIGS_UNVISITED))
+
+# Automatically save any changed variables on exit.
+def _save_atexit():
+  files = get('autosave') and MERGE_CONFIG.save()
+  if files:
+    from echomesh.util import Log
+    Log.logger(__name__).info('Configuration automatically saved to %s.',
+                              Join.join_file_names(files))
+
+Quit.register_atexit(_save_atexit)
 

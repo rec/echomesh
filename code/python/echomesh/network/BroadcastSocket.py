@@ -6,7 +6,7 @@ import select
 import socket
 
 from echomesh.network import Socket
-from echomesh.util import Quit
+from echomesh.base import Quit
 
 class BroadcastSocket(Socket.Socket):
   def __init__(self, port, bind_port):

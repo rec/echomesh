@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util.thread.LockedList import LockedList
 from echomesh.util.thread.Runnable import Runnable
-from echomesh.util import Quit
+from echomesh.base import Quit
 
 class MasterRunnable(Runnable):
   def __init__(self):

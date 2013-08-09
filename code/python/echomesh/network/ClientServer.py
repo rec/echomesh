@@ -8,7 +8,7 @@ from echomesh.expression import Expression
 from echomesh.network.Server import Server
 from echomesh.util import Log
 from echomesh.util import Subprocess
-from echomesh.util import Quit
+from echomesh.base import Quit
 
 LOGGER = Log.logger(__name__)
 

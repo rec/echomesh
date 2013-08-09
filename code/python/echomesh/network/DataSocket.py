@@ -7,7 +7,7 @@ from six.moves import queue
 
 from echomesh.network import BroadcastSocket
 from echomesh.network import SelectLoop
-from echomesh.util import Quit
+from echomesh.base import Quit
 from echomesh.util.thread import ThreadLoop
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 

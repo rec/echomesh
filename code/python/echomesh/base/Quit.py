@@ -2,10 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import atexit
 
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
-
 QUITTING = False
 HANDLERS = []
 PRINT_EXCEPTIONS = not False
@@ -14,6 +10,7 @@ def register_atexit(handler):
   HANDLERS.append(handler)
 
 def request_quit():
+  print('request_quit')
   global QUITTING
   QUITTING = True
   for h in HANDLERS:

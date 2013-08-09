@@ -13,3 +13,10 @@ def join_words(words, fmt=''):
   if len(words) == 2:
     return ' and '.join(words)
   return '%s, and %s' % (', '.join(words[:-1]), words[-1])
+
+def join_file_names(file_names):
+  if len(file_names) == 1:
+    return 'file %s' % file_names[0]
+  else:
+    return 'files %s' % Join.join_words(file_names)
+

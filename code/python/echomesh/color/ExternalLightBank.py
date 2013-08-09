@@ -8,7 +8,7 @@ from echomesh.color.LightBank import LightBank
 from echomesh.expression import Expression
 from echomesh.network import ClientServer
 from echomesh.util import Log
-from echomesh.util import Quit
+from echomesh.base import Quit
 
 LOGGER = Log.logger(__name__)
 

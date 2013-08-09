@@ -9,7 +9,7 @@ from echomesh.base import Path
 from echomesh.command import REGISTRY
 from echomesh.remote import RemoteRegistry
 from echomesh.util import Log
-from echomesh.util import Quit
+from echomesh.base import Quit
 from echomesh.util import Subprocess
 from gittwit.git import Git
 

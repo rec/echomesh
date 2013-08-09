@@ -10,30 +10,16 @@ from echomesh.base import Yaml
 from echomesh.command import REGISTRY
 from echomesh.command import SetConfig
 from echomesh.util import Log
-from echomesh.util import Quit
+from echomesh.base import Quit
 
 LOGGER = Log.logger(__name__)
-
-def _file_name(file_names):
-  if len(file_names) == 1:
-    return 'file %s' % file_names[0]
-  else:
-    return 'files %s' % Join.join_words(file_names)
-
-# Automatically save any changed variables on exit.
-def _save_atexit():
-  files = Config.get('autosave') and Config.MERGE_CONFIG.save()
-  if files:
-    LOGGER.info('Configuration automatically saved to %s.', _file_name(files))
-
-Quit.register_atexit(_save_atexit)
 
 def save(_, *values):
   if values:
     SetConfig.set_config(_, *values)
   files = Config.MERGE_CONFIG.save()
   if files:
-    LOGGER.info('Configuration saved to %s.', _file_name(files))
+    LOGGER.info('Configuration saved to %s.', Join.join_file_names(files))
   else:
     LOGGER.error('There are no configuration changes to save.')
 
@@ -46,4 +32,3 @@ Examples:
   save
   save speed=50% light.period=40ms
 """
-

@@ -15,29 +15,30 @@ class _ArgParser(13,267
   def error(120,2822
 def split(123,2906
 
-echomesh/base/CommandFile.py,235
+echomesh/base/CommandFile.py,260
 def clean(10,229
 def _command_file(13,288
 def compute_command_path(21,526
-def expand(41,1231
-def resolve(46,1421
-def load_resolve(54,1542
-def load(63,1731
-def base_file(66,1781
-def config_file(69,1844
-def read_config(72,1923
+def named_paths(39,1229
+def expand(42,1296
+def resolve(47,1486
+def load_resolve(55,1607
+def load(64,1796
+def base_file(67,1846
+def config_file(70,1909
+def read_config(73,1988
 
-echomesh/base/Config.py,258
+echomesh/base/Config.py,230
 def reconfigure(23,482
-  def _make(29,657
-def add_client(53,1490
-def update_clients(58,1597
-def get(66,1729
-  def get_part(69,1825
-def assign(93,2411
-def get_unvisited(96,2469
-  def fix(97,2490
-def _fix_home_directory_environment_variable(112,2824
+  def _make(27,611
+def add_client(51,1444
+def update_clients(56,1551
+def get(64,1683
+  def get_part(67,1779
+def assign(91,2365
+def get_unvisited(94,2423
+  def fix(95,2444
+def _save_atexit(108,2768
 
 echomesh/base/Enum.py,103
 class Enum(8,145
@@ -85,16 +86,18 @@ def merge(75,2121
   def _merge(76,2149
 def merge_for_config(81,2273
 
-echomesh/base/MergeConfig.py,235
+echomesh/base/MergeConfig.py,289
 class MergeConfig(34,759
   def __init__(35,786
   def read(38,825
   def recalculate(43,984
-  def assign(56,1402
-  def save(65,1726
-  def assignments(85,2346
-  def _read_file_configs(89,2494
-  def _assignment_to_config(102,2885
+  def has_changes(56,1402
+  def get_changes(59,1493
+  def assign(62,1582
+  def save(72,1907
+  def assignments(92,2527
+  def _read_file_configs(96,2675
+  def _assignment_to_config(111,3123
 
 echomesh/base/Name.py,225
 def ip_address(13,228
@@ -108,11 +111,17 @@ def addresses(67,1586
 def names(73,1683
 def info(80,1786
 
-echomesh/base/Path.py,103
+echomesh/base/Path.py,156
 def _possible_project(25,737
 def set_project_path(31,884
 def info(62,1772
 def fix_sys_path(72,2010
+def fix_home_directory_environment_variable(82,2259
+
+echomesh/base/Quit.py,77
+def register_atexit(9,160
+def request_quit(12,218
+def _atexit_quit(23,436
 
 echomesh/base/Yaml.py,196
 def has_extension(14,302
@@ -240,8 +249,8 @@ class TkLightBank(28,675
 echomesh/color/WheelColor.py,24
 def wheel_color(15,379
 
-echomesh/command/Alias.py,18
-def alias(10,262
+echomesh/command/Alias.py,17
+def alias(9,217
 
 echomesh/command/Aliases.py,71
 class Aliases(18,414
@@ -249,52 +258,51 @@ class Aliases(18,414
 def instance(32,817
 
 echomesh/command/Broadcast.py,21
-def broadcast(9,225
+def broadcast(8,180
 
 echomesh/command/Command.py,118
-def _fix_exception_message(30,901
-def usage(41,1163
-def _expand(49,1396
-  def expand(54,1480
-def execute(72,1995
+def _fix_exception_message(32,862
+def usage(43,1124
+def _expand(51,1350
+  def expand(56,1434
+def execute(74,1935
 
 echomesh/command/Contexts.py,21
 def contexts(11,231
 
 echomesh/command/ElementCommands.py,114
-def _perform(11,279
-def _local(18,527
-  def f(19,547
-def _remote(26,750
-  def f(27,771
-def _register(32,875
+def _perform(11,292
+def _local(18,540
+  def f(19,560
+def _remote(26,763
+  def f(27,784
+def _register(32,888
 
 echomesh/command/GetConfig.py,48
-def _route_items(17,355
-def get_config(24,521
+def _route_items(17,348
+def get_config(24,514
 
 echomesh/command/Help.py,18
-def _help(18,375
+def _help(18,368
 
 echomesh/command/RemoteCommands.py,268
-def _remote(26,665
-  def f(27,688
-def _local(35,923
-  def f(37,982
-def _boot(44,1147
-def _exec(47,1240
-def _halt(54,1399
-def _initialize(57,1500
-def _quit(66,1756
-def _update(70,1823
-def _register(94,2460
-def _close_and_run(112,3147
-def _allowed(119,3289
+def _remote(26,658
+  def f(27,681
+def _local(35,916
+  def f(37,975
+def _boot(44,1140
+def _exec(47,1233
+def _halt(54,1392
+def _initialize(57,1493
+def _quit(66,1749
+def _update(70,1816
+def _register(94,2453
+def _close_and_run(112,3133
+def _allowed(119,3275
 
-echomesh/command/SaveConfig.py,66
-def _file_name(18,477
-def _save_atexit(25,682
-def _save(32,894
+echomesh/command/Save.py,40
+def _file_name(17,432
+def save(23,585
 
 echomesh/command/Scores.py,58
 def _time(18,384
@@ -302,32 +310,32 @@ def _scores(28,611
 def scores(79,2315
 
 echomesh/command/SetConfig.py,23
-def set_config(14,341
+def set_config(14,334
 
-echomesh/command/Show.py,377
-def _indent(23,648
-def _info(26,740
-def addresses(34,1001
-def aliases(37,1046
-def _all(44,1170
-def broadcast(51,1369
-def _config(55,1514
-def directories(58,1597
-def elements(61,1639
-def info(68,1817
-def names(71,1852
-def nodes(74,1889
-def sound(83,2123
-def transforms(86,2160
-def units(91,2324
-def _variables(94,2381
-def variables(101,2621
-def _show(255,7065
+echomesh/command/Show.py,376
+def _indent(23,641
+def _info(26,733
+def addresses(34,994
+def aliases(37,1039
+def _all(44,1163
+def broadcast(51,1362
+def _config(55,1507
+def directories(58,1590
+def elements(61,1632
+def info(68,1810
+def names(71,1845
+def nodes(74,1882
+def sound(83,2116
+def transforms(86,2153
+def units(91,2317
+def _variables(94,2374
+def variables(101,2614
+def _show(255,7058
 
-echomesh/command/TransferCommand.py,87
-def transfer(20,465
-def _get_files_to_transfer(38,1006
-def _get_files_table(61,1687
+echomesh/command/Transfer.py,86
+def transfer(19,422
+def _get_files_to_transfer(37,964
+def _get_files_table(60,1646
 
 echomesh/element/Audio.py,42
 class Audio(9,216
@@ -620,7 +628,7 @@ class Instance(19,541
 echomesh/Main.py,51
 def _main(6,131
   def p(11,172
-def main(68,1318
+def main(71,1374
 
 echomesh/network/BroadcastSocket.py,262
 class BroadcastSocket(11,223
@@ -970,11 +978,6 @@ class PersistentDict(9,213
   def setdefault(50,1250
   def update(54,1365
 
-echomesh/util/Quit.py,78
-def register_atexit(13,222
-def request_quit(16,280
-def _atexit_quit(26,474
-
 echomesh/util/registry/Entry.py,102
 class Entry(8,145
   def __init__(9,166
@@ -1231,8 +1234,6 @@ echomesh/event/Address.py,0
 echomesh/event/__init__.py,0
 
 echomesh/element/__init__.py,0
-
-echomesh/command/CommandRegistry.py,0
 
 echomesh/command/__init__.py,0
 

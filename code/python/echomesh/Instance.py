@@ -11,7 +11,7 @@ from echomesh.graphics import Pi3dDisplay
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.util import Log
-from echomesh.util import Quit
+from echomesh.base import Quit
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
