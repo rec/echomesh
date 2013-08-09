@@ -2,7 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import copy
 
-from echomesh.expression import Envelope
+from echomesh.base import Config
+from echomesh.color import ColorTable
+from echomesh.util.dict import Setter
 
 UNIT_ADDRESSES = [
   ['light', 'brightness'],
@@ -16,16 +18,8 @@ COLOR_ADDRESSES = [
   ['light', 'visualizer', 'instrument', 'background'],
 ]
 
-def resolve_expressions(config, addresses=None):
-  config = copy.deepcopy(config)
-  addresses = addresses or DEFAULT_ADDRESSES
-  for address in addresses:
-    cfg = config
-    last = len(address) - 1
-    for i, part in enumerate(address):
-      if i < last:
-        cfg = cfg[part]
-      else:
-        cfg[part] = Expression.convert(cfg[part])
+def evaluate_config():
+  config = copy.deepcopy(Config.MERGE_CONFIG.config)
+  Setter.apply_function(config, Expression.convert, *UNIT_ADDRESSES)
+  Setter.apply_function(config, ColorTable.to_color, *COLOR_ADDRESSES)
   return config
-
