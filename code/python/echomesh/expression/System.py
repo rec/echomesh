@@ -7,7 +7,6 @@ import time
 from echomesh.sound import Level
 from echomesh.util.registry.Registry import Registry
 
-
 def _system_register():
   CONSTANTS = {
     'e': [math.e, True],

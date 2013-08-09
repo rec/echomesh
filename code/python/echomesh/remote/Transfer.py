@@ -41,4 +41,5 @@ def transfer(_, **data):
     except:
       pass
 
-RemoteRegistry.register_all(transfer=transfer)
+HELP = """transfer:  transfer all your files to all the other echomesh nodes.
+"""
