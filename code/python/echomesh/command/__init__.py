@@ -4,5 +4,6 @@ REGISTRY = _register(
   __name__,
   'Alias',
   'Broadcast',
-  'Transfer'
+  'Transfer',
+  'Save'
 )

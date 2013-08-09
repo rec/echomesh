@@ -3,9 +3,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.command import Aliases
 from echomesh.base import Join
 
+from echomesh.command import REGISTRY
+
 # pylint: disable=W0611
 from echomesh.command import ElementCommands, GetConfig
-from echomesh.command import REGISTRY, RemoteCommands, SaveConfig, SetConfig
+from echomesh.command import RemoteCommands, SetConfig
 from echomesh.command import Show
 
 # Must be the last one to load.

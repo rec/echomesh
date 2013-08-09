@@ -29,7 +29,7 @@ def _save_atexit():
 
 Quit.register_atexit(_save_atexit)
 
-def _save(_, *values):
+def save(_, *values):
   if values:
     SetConfig.set_config(_, *values)
   files = Config.MERGE_CONFIG.save()
@@ -38,7 +38,7 @@ def _save(_, *values):
   else:
     LOGGER.error('There are no configuration changes to save.')
 
-SAVE_HELP = """
+HELP = """
   Saves the current configuration values.
 
   Conveniently, you can optionally add values to set before saving.
@@ -47,7 +47,4 @@ Examples:
   save
   save speed=50% light.period=40ms
 """
-
-REGISTRY.register(_save, 'save', SAVE_HELP)
-
 
