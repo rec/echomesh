@@ -8,12 +8,9 @@ import six
 from compatibility.weakref import WeakSet
 
 from echomesh.base import Args
-from echomesh.base import CommandFile
 from echomesh.base import Join
-from echomesh.base import MergeConfig
-from echomesh.base import Name
-from echomesh.base import Path
 from echomesh.base import Quit
+from echomesh.base import Reconfigure
 
 MERGE_CONFIG = None
 CONFIGS_UNVISITED = None  # Report on config items that aren't used.
@@ -24,30 +21,7 @@ THROW_EXCEPTIONS = True
 
 def reconfigure():
   global MERGE_CONFIG, CONFIGS_UNVISITED
-
-  # Read a configuration file with a given name, tags, and project.
-  def _make(name, tags, project, show_error, prompt):
-    Name.set_name(name)
-    Name.set_tags(tags)
-    Path.set_project_path(project_path=project, show_error=show_error)
-
-    CommandFile.compute_command_path()
-    return MergeConfig.MergeConfig()
-
-  # First, make a config with the default information.
-  merge_config = _make(None, [], None, False, False)
-
-  # Now, use the name, tags and project to get the correct configuration.
-  get = merge_config.config.get
-
-  name = get('name') or Name.lookup(get('map', {}).get('name', {}))
-  tags = get('tag') or Name.lookup(get('map', {}).get('tag', {})) or []
-  project = get('project')
-
-  if not isinstance(tags, (list, tuple)):
-    tags = [tags]
-
-  MERGE_CONFIG = _make(name, tags, project, True, prompt=not get('autostart'))
+  MERGE_CONFIG = Reconfigure.reconfigure()
   CONFIGS_UNVISITED = copy.deepcopy(MERGE_CONFIG.config)
 
 def add_client(client):
@@ -57,11 +31,7 @@ def add_client(client):
 
 def update_clients():
   for c in CLIENTS:
-    try:
-      c.config_update(get)
-    except:
-      if THROW_EXCEPTIONS:
-        raise
+    c.config_update(get)
 
 def get(*parts):
   config, unvisited = MERGE_CONFIG.config, CONFIGS_UNVISITED
@@ -115,4 +85,3 @@ def _save_atexit():
                               Join.join_file_names(files))
 
 Quit.register_atexit(_save_atexit)
-
