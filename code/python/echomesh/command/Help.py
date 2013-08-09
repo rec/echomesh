@@ -21,11 +21,11 @@ def _help(_, *parts):
   else:
     cmd, parts = parts[0], parts[1:]
     if not parts:
-      help_text = CommandRegistry.get_help(cmd)
+      help_text = CommandRegistry.help(cmd)
       LOGGER.info(help_text or ('No help text available for "%s"' % cmd))
     elif cmd == 'show':
       sub = parts[0]
-      help_text = Show.SHOW_REGISTRY.get_help(sub)
+      help_text = Show.SHOW_REGISTRY.help(sub)
       LOGGER.info('\nshow %s:', sub)
       LOGGER.info(help_text or ('No help text available for "show %s"' % sub))
     else:
