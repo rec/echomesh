@@ -126,8 +126,8 @@ def write(61,1357
 def _open_userfile(73,1660
 
 echomesh/color/Client.py,55
-def make_command(14,350
-def make_kill_command(28,714
+def make_command(14,355
+def make_kill_command(28,724
 
 echomesh/color/ColorConv.py,78
 def _prepare_colorarray(8,192
@@ -153,16 +153,16 @@ def sup(20,414
 def combine_to_bytearray(28,580
 
 echomesh/color/ExternalLightBank.py,281
-class ExternalLightBank(15,369
-  def __init__(16,405
-  def _before_thread_start(21,536
-  def _fail(25,657
-  def shutdown(31,773
-  def clear(38,936
-  def config_update(46,1108
-  def _after_thread_pause(70,2276
-  def _display_lights(81,2513
-def _split_long_strings(95,2852
+class ExternalLightBank(15,374
+  def __init__(16,410
+  def _before_thread_start(21,541
+  def _fail(25,662
+  def shutdown(31,778
+  def clear(38,941
+  def config_update(46,1113
+  def _after_thread_pause(70,2296
+  def _display_lights(81,2533
+def _split_long_strings(95,2872
 
 echomesh/color/GammaTable.py,70
 class GammaTable(11,220
@@ -187,8 +187,8 @@ class LightBank(14,364
   def remove_client(36,844
   def has_clients(43,983
   def single_loop(47,1063
-  def config_update(69,1680
-  def _display_lights(73,1795
+  def config_update(69,1689
+  def _display_lights(73,1804
 
 echomesh/color/LightsEnabled.py,177
 def _blacklist_line(9,219
@@ -256,7 +256,7 @@ def _fix_exception_message(30,901
 def usage(41,1163
 def _expand(49,1396
   def expand(54,1480
-def execute(73,2040
+def execute(72,1995
 
 echomesh/command/Context.py,21
 def contexts(11,231
@@ -310,19 +310,19 @@ def _info(26,730
 def addresses(34,991
 def aliases(37,1036
 def _all(44,1160
-def broadcast(51,1354
-def _config(55,1499
-def directories(58,1582
-def elements(61,1624
-def info(68,1802
-def names(71,1837
-def nodes(74,1874
-def sound(83,2108
-def transforms(86,2145
-def units(91,2309
-def _variables(94,2366
-def variables(101,2606
-def _show(255,7057
+def broadcast(51,1359
+def _config(55,1504
+def directories(58,1587
+def elements(61,1629
+def info(68,1807
+def names(71,1842
+def nodes(74,1879
+def sound(83,2113
+def transforms(86,2150
+def units(91,2314
+def _variables(94,2371
+def variables(101,2611
+def _show(255,7062
 
 echomesh/command/TransferCommand.py,87
 def transfer(20,465
@@ -362,11 +362,11 @@ echomesh/element/Image.py,43
 class Image(10,270
   def __init__(11,300
 
-echomesh/element/Load.py,94
-def register(16,476
-def _resolve_extensions(33,821
-def make_one(77,1877
-def make(100,2598
+echomesh/element/Load.py,93
+def register(15,427
+def _resolve_extensions(32,772
+def make_one(76,1828
+def make(99,2554
 
 echomesh/element/Loop.py,165
 class Loop(16,350
@@ -398,13 +398,13 @@ class Print(8,183
   def handle(22,571
 
 echomesh/element/Repeat.py,171
-class Repeat(9,281
-  def __init__(10,301
-  def _on_begin(18,754
-  def next_time(22,840
-  def loop_target(29,1030
-  def child_paused(37,1191
-  def _on_begin(40,1234
+class Repeat(9,286
+  def __init__(10,306
+  def _on_begin(18,774
+  def next_time(22,860
+  def loop_target(29,1050
+  def child_paused(37,1211
+  def _on_begin(40,1254
 
 echomesh/element/Root.py,160
 class Root(9,185
@@ -443,14 +443,14 @@ class Select(9,244
   def _on_run(29,843
 
 echomesh/element/Sequence.py,203
-class Sequence(17,478
-  def __init__(20,548
-  def _command_time(51,1594
-  def next_time(55,1727
-  def _on_begin(68,2070
-  def _on_run(74,2222
-  def loop_target(78,2318
-  def child_paused(86,2542
+class Sequence(18,530
+  def __init__(21,600
+  def _command_time(52,1665
+  def next_time(56,1798
+  def _on_begin(69,2141
+  def _on_run(75,2293
+  def loop_target(79,2389
+  def child_paused(87,2613
 
 echomesh/element/Speak.py,107
 class Speak(10,262
@@ -471,119 +471,119 @@ def bnf(8,228
   def pushUMinus(22,592
 
 echomesh/expression/Convert.py,53
-def convert_time(10,373
-def convert_number(31,1023
+def convert_time(14,362
+def convert_number(35,1012
 
 echomesh/expression/Envelope.py,206
-class Envelope(12,275
-  def __init__(15,358
-  def evaluate(42,1117
-  def is_constant(45,1191
-  def description(48,1260
-  def _set_constant(51,1342
-  def interpolate(56,1464
-def _check_times(84,2191
+class Envelope(11,237
+  def __init__(14,320
+  def evaluate(45,1207
+  def is_constant(48,1277
+  def description(51,1332
+  def _set_constant(54,1414
+  def interpolate(59,1555
+def _check_times(87,2282
 
-echomesh/expression/Evaluator.py,93
+echomesh/expression/Evaluator.py,70
 class Evaluator(13,186
   def __init__(14,211
-  def evaluate(18,308
-  def __call__(21,349
+  def evaluate(18,303
 
-echomesh/expression/Expression.py,95
-class Expression(6,164
-  def __init__(7,190
-  def is_constant(14,424
-  def evaluate(17,528
+echomesh/expression/Expression.py,42
+def expression(9,271
+def convert(21,597
 
 echomesh/expression/Functions.py,31
 def _function_register(17,520
 
+echomesh/expression/ListExpression.py,123
+class ListExpression(8,208
+  def __init__(9,238
+  def is_constant(20,574
+  def evaluate(23,629
+  def _evaluate(26,717
+
 echomesh/expression/Locator.py,24
 def get_variable(5,102
 
-echomesh/expression/RawExpression.py,121
+echomesh/expression/RawExpression.py,122
 class RawExpression(7,202
   def __init__(8,231
-  def is_constant(15,401
-  def evaluate(21,641
-  def __call__(24,703
+  def is_constant(16,437
+      def const(18,496
+  def evaluate(23,679
 
 echomesh/expression/ReplaceUnicodeFractions.py,38
-def replace_unicode_fractions(23,410
+def replace_unicode_fractions(25,416
 
-echomesh/expression/SplitNumbers.py,17
-def split(7,135
+echomesh/expression/SplitNumbers.py,16
+def split(5,96
 
 echomesh/expression/System.py,29
 def _system_register(10,192
 
-echomesh/expression/Transform.py,123
+echomesh/expression/Transform.py,335
 def inverse(15,352
 def identity(18,389
 def reverse(21,418
-def power(28,547
-def compose(81,2534
-def transform(86,2630
+def square(24,452
+def power(27,483
+  def power(28,497
+  def power_inverse(30,542
+def sine(34,632
+def arcsine(37,697
+def exp(40,764
+def log(43,821
+def compose(95,2670
+  def composed_function(99,2716
+  def composed_function_inverse(102,2766
+def transform(107,2881
 
 echomesh/expression/UnitConfig.py,91
-class _Client(11,253
-  def __init__(12,276
-  def get(16,349
-  def config_update(25,582
+class _Client(11,258
+  def __init__(12,281
+  def get(16,354
+  def config_update(25,592
 
-echomesh/expression/UnitExpression.py,192
-class UnitExpression(7,253
-  def __init__(8,283
-  def evaluate(25,844
-  def __call__(35,1062
-  def is_constant(38,1133
-def convert(42,1245
-def get_config(47,1398
-def get_table(51,1495
+echomesh/expression/UnitExpression.py,103
+class UnitExpression(12,384
+  def __init__(13,414
+  def evaluate(31,1039
+  def is_constant(42,1246
 
-echomesh/expression/Units.py,114
-def log_scale(9,132
-def make_log(12,209
-def make_scale(15,290
-def inverse_scale(18,343
-def list_units(33,870
+echomesh/expression/Units.py,192
+def log_scale(5,96
+def make_log(8,173
+  def log_unit(9,204
+def make_scale(13,283
+  def scale_unit(14,306
+def inverse_scale(18,369
+  def inverse_scale_unit(19,399
+def list_units(35,945
 
-echomesh/expression/Values.py,142
+echomesh/expression/Values.py,119
 class _Values(15,499
   def __init__(16,522
   def evaluate(21,682
-  def __call__(24,774
-  def is_constant(27,883
-  def _interpret(30,980
+  def is_constant(24,786
+  def _interpret(27,878
 
-echomesh/expression/Variable.py,409
-def variable(23,505
-class _Counter(34,851
-  def __init__(35,875
-  def is_constant(47,1363
-  def evaluate(50,1416
-  def __call__(53,1457
-def _counter(66,1839
-class _Envelope(70,1938
-  def __init__(71,1965
-  def evaluate(75,2076
-  def is_constant(78,2181
-  def __call__(81,2292
-class _Value(84,2363
-  def __init__(85,2385
-  def is_constant(89,2501
-  def evaluate(92,2600
-  def __call__(95,2696
+echomesh/expression/Variable.py,140
+def variable(25,610
+class _Counter(36,969
+  def __init__(37,993
+  def is_constant(49,1491
+  def evaluate(52,1544
+def _counter(65,1926
 
 echomesh/graphics/ImageSprite.py,170
-class ImageSprite(19,519
-  def __init__(22,564
-  def coords(64,2130
-  def repaint(69,2216
-  def _on_run(93,2854
-  def _add_sprite(97,2938
-  def _on_pause(100,3023
+class ImageSprite(19,510
+  def __init__(22,555
+  def coords(64,2170
+  def repaint(69,2256
+  def _on_run(93,2894
+  def _add_sprite(97,2978
+  def _on_pause(100,3063
 
 echomesh/graphics/Pi3dDisplay.py,146
 class Pi3dDisplay(13,332
@@ -632,12 +632,12 @@ class Receive(44,1090
   def old_receive(52,1285
 
 echomesh/network/ClientServer.py,149
-class ClientServer(15,381
-  def __init__(18,428
-  def config_update(26,643
-  def read_callback(61,1801
-  def kill(72,2088
-def instance(90,2353
+class ClientServer(15,386
+  def __init__(18,433
+  def config_update(26,648
+  def read_callback(61,1811
+  def kill(72,2098
+def instance(90,2363
 
 echomesh/network/DataSocket.py,95
 class DataSocket(14,365
@@ -654,15 +654,15 @@ class Peers(14,272
   def get_peers(49,1145
 
 echomesh/network/PeerSocket.py,223
-class PeerSocketBase(12,349
-  def __init__(13,387
-  def config_update(23,671
-  def send(36,1128
-  def _on_run(41,1239
-  def _make_socket(46,1353
-class PeerSocket(51,1525
-  def __init__(52,1559
-  def router(55,1666
+class PeerSocketBase(12,354
+  def __init__(13,392
+  def config_update(23,676
+  def send(36,1138
+  def _on_run(41,1249
+  def _make_socket(46,1363
+class PeerSocket(51,1535
+  def __init__(52,1569
+  def router(55,1676
 
 echomesh/network/SelectLoop.py,129
 class SelectLoop(13,241
@@ -717,41 +717,33 @@ class Server(17,422
   def __init__(18,443
   def _on_run(24,726
 
-echomesh/pattern/Maker.py,325
-class Maker(9,213
-  def __init__(10,234
-  def evaluate(16,458
-  def __call__(19,499
-  def is_constant(34,878
-def maker(37,972
-  def wrap(38,990
-    def wrapped(39,1005
-def choose(45,1170
-def concatenate(48,1259
-def inject(51,1348
-def insert(54,1427
-def reverse(58,1560
-def spread(61,1641
-def transpose(64,1729
+echomesh/pattern/Maker.py,151
+class Maker(8,169
+  def __init__(9,190
+  def evaluate(15,414
+  def is_constant(29,801
+def maker(32,895
+  def wrap(34,921
+    def wrapped(35,936
 
-echomesh/pattern/MakerFunctions.py,212
-def choose(11,236
-  def restrict(13,300
-def concatenate(23,619
-def inject(26,693
-  def _map(37,1025
-def insert(43,1162
-def transpose(65,1730
-def reverse(87,2343
-def _to_list(92,2456
-def spread(102,2665
+echomesh/pattern/MakerFunctions.py,213
+def choose(15,370
+  def restrict(17,434
+def concatenate(28,771
+def inject(32,852
+  def _map(43,1184
+def insert(50,1367
+def _to_list(72,1939
+def spread(83,2164
+def reverse(109,2971
+def transpose(115,3127
 
 echomesh/pattern/PatternDesc.py,150
-class _PatternDesc(15,368
-  def __str__(16,397
-def _make_pattern(20,509
-def make_patterns_for_element(33,971
-def make_table_and_patterns(39,1177
+class _PatternDesc(15,357
+  def __str__(16,386
+def _make_pattern(20,498
+def make_patterns_for_element(33,936
+def make_table_and_patterns(39,1142
 
 echomesh/remote/Remote.py,20
 def execute(11,257
@@ -834,10 +826,10 @@ class Osc(66,1668
 echomesh/sound/Play.py,66
 def _get_player(10,199
 def _set_player(26,605
-def play(43,1139
+def play(43,1161
 
 echomesh/sound/PlayerSetter.py,23
-def set_player(11,252
+def set_player(11,241
 
 echomesh/sound/PyaudioPlayer.py,294
 class PyaudioPlayer(27,622
@@ -920,21 +912,16 @@ class DefaultFile(5,100
   def expand(9,209
   def relpath(14,317
 
-echomesh/util/Importer.py,141
+echomesh/util/Importer.py,145
 def _split_module(6,190
-def import_path(18,471
-class FailedImport(25,627
-  def __init__(26,655
-  def __getattr__(29,714
-def imp(32,784
+def import_function(18,471
+class FailedImport(25,631
+  def __init__(26,659
+  def __getattr__(29,718
+def imp(32,788
 
 echomesh/util/ImportIf.py,15
 def imp(9,295
-
-echomesh/util/LazyRegistry.py,66
-class LazyRegistry(8,176
-  def __init__(9,206
-  def get(15,509
 
 echomesh/util/Log.py,192
 def _check_error_count(26,479
@@ -980,21 +967,23 @@ def register_atexit(13,222
 def request_quit(16,280
 def _atexit_quit(26,474
 
-echomesh/util/Registry.py,345
-class Registry(8,164
-  def __init__(9,188
-  def register(15,391
-  def register_all(28,926
-  def module(39,1286
-  def _get(46,1570
-  def get_or_none(50,1716
-  def get(55,1905
-  def get_key_and_value(58,1962
-  def get_key_and_value_or_none(62,2060
-  def get_help(70,2227
-  def keys(84,2603
-  def join_keys(87,2654
-  def dump(92,2821
+echomesh/util/registry/Registry.py,370
+class Entry(16,324
+  def __init__(17,345
+  def __str__(24,560
+  def load(29,733
+class Registry(45,1344
+  def __init__(46,1368
+  def register(54,1636
+  def register_all(71,2297
+  def entry(82,2657
+  def get(86,2807
+  def function(89,2862
+  def get_help(92,2935
+  def keys(107,3335
+  def join_keys(110,3386
+  def dump(116,3617
+def module_registry(121,3752
 
 echomesh/util/Reserver.py,147
 class Reserver(10,204
@@ -1044,13 +1033,14 @@ def run(9,165
 echomesh/util/TestSuperuser.py,27
 def test_superuser(15,211
 
-echomesh/util/thread/Keyboard.py,137
-class Keyboard(17,378
-  def __init__(18,425
-  def target(28,739
-  def _begin(33,830
-  def _input_loop(43,1043
-def keyboard(72,1872
+echomesh/util/thread/Keyboard.py,162
+class Keyboard(17,383
+  def __init__(18,430
+  def target(28,744
+  def _begin(33,835
+  def _input_loop(43,1048
+def keyboard(72,1877
+  def processor(73,1901
 
 echomesh/util/thread/Lock.py,154
 def print_traceback(9,158
@@ -1196,6 +1186,8 @@ test/echomesh/base/JoinTests.py,0
 echomesh/util/thread/__init__.py,0
 
 echomesh/util/string/__init__.py,0
+
+echomesh/util/registry/__init__.py,0
 
 echomesh/util/math/__init__.py,0
 

@@ -4,7 +4,7 @@ import collections
 import six
 
 from echomesh.expression import Expression
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 REGISTRY = Registry.Registry('pattern types')
 

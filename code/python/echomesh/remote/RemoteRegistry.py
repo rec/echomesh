@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 _REGISTRY = Registry.Registry('remote command')
 

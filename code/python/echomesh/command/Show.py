@@ -14,7 +14,7 @@ from echomesh.expression import Transform
 from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 LOGGER = Log.logger(__name__)
 

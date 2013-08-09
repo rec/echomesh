@@ -42,7 +42,6 @@ class Entry(object):
       self.see_also = getattr(mod, 'SEE_ALSO', None)
     return self
 
-
 class Registry(object):
   def __init__(self, name, case_insensitive=True, allow_prefixes=True,
                class_path=None):

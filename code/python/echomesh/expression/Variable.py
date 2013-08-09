@@ -14,7 +14,7 @@ from echomesh.expression.UnitExpression import UnitExpression
 from echomesh.expression import Units
 from echomesh.expression.Envelope import Envelope
 from echomesh.util import Log
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 from echomesh.util.math import Interval
 
 LOGGER = Log.logger(__name__)

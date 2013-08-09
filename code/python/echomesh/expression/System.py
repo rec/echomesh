@@ -5,7 +5,7 @@ import random
 import time
 
 from echomesh.sound import Level
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 def _system_register():
   register = Registry.Registry('System')

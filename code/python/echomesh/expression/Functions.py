@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import math
 
 from echomesh.base import Version
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 MATH_FUNCTIONS = [
   'acos', 'acosh', 'asin', 'asinh', 'atan', 'atanh', 'ceil', 'cos', 'cosh',

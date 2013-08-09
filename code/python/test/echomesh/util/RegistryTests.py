@@ -19,7 +19,7 @@ u'item3'
 
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Registry
+from echomesh.util.registry import Registry
 
 def registry_exception(registry, name):
   try:
