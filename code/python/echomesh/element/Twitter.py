@@ -23,7 +23,7 @@ class Twitter(Repeat):
     self.searches = [Search(s, self.callback, preload=preload) for s in search]
     self.handler = description.get('handler')
     if self.handler:
-      self.handler = Load.make_one(self, self.handler)
+      self.handler = Load.load_one_element(self, self.handler)
     self.remove_hashtags = description.get('remove_hashtags', True)
 
   def loop_target(self, t):

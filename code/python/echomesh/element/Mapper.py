@@ -14,10 +14,10 @@ class Mapper(Handler.Handler):
     self.source = description.get('source')
     self.mapping = description.get('mapping', {})
     handlers = description.get('handlers', [])
-    self.handlers = Load.make(self, handlers)
+    self.handlers = Load.load_elements(self, handlers)
 
     for key, element in six.iteritems(self.mapping):
-      self.mapping[key] = Load.make_one(self, element)
+      self.mapping[key] = Load.load_one_element(self, element)
 
   def handle(self, event):
     # TODO: this should go elsewhere.

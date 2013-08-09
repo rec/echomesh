@@ -25,7 +25,7 @@ class Element(MasterRunnable):
       from echomesh.element import Load
       # pylint: enable=R0401
 
-      self.elements = Load.make(self, elements)
+      self.elements = Load.load_elements(self, elements)
       if full_slave:
         self.add_slave(*self.elements)
       else:
