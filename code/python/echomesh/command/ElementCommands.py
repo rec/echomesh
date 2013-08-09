@@ -4,7 +4,7 @@ from echomesh.util import Log
 from echomesh.base import Join
 
 from echomesh.command import CommandRegistry
-from echomesh.remote import RemoteRegistry
+from echomesh.remote import REGISTRY as remote_registry
 
 LOGGER = Log.logger(__name__)
 
@@ -34,7 +34,7 @@ def _register():
     CommandRegistry.register(_local(command), command,
                              help_text=_HELP[command],
                              see_also=_SEE_ALSO[command])
-    RemoteRegistry.register(_remote(command), command)
+    remote_registry.register(_remote(command), command)
 
 _COMMANDS = ['begin', 'load', 'pause', 'reload', 'run', 'start', 'unload' ]
 
