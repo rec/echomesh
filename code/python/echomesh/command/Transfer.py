@@ -9,16 +9,16 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-TRANSFER_PROMPT =  """
+_TRANSFER_PROMPT =  """
 Are you sure you want to transfer all command files over to all echomesh nodes
 on this network, replacing whatever is there (y/N)?
 """
 
-TRANSFER_ALL_FILES = True
+_TRANSFER_ALL_FILES = True
 
 def transfer(echomesh_instance, *path):
   if not path:
-    LOGGER.info(TRANSFER_PROMPT)
+    LOGGER.info(_TRANSFER_PROMPT)
     if not raw_input().lower().startswith('y'):
       LOGGER.info('Transfer cancelled.')
       return
@@ -48,7 +48,7 @@ def _get_files_to_transfer(path):
       for root, _, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
-            if TRANSFER_ALL_FILES or Yaml.has_extension(ffs):
+            if _TRANSFER_ALL_FILES or Yaml.has_extension(ffs):
               files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
       LOGGER.vdebug('Transferring directory %s', p)
     else:
