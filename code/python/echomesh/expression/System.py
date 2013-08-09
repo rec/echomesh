@@ -5,17 +5,21 @@ import random
 import time
 
 from echomesh.sound import Level
-from echomesh.util.registry import Registry
+from echomesh.util.registry.Registry import Registry
+
 
 def _system_register():
-  register = Registry.Registry('System')
-  register.register_all(
-    e=[[math.e, True]],
-    level=[[Level.input_level, False]],
-    pi=[[math.pi, True]],
-    random=[[random.random, False]],
-    time=[[time.time, False]],
-    )
+  CONSTANTS = {
+    'e': [math.e, True],
+    'level': [Level.input_level, False],
+    'pi': [math.pi, True],
+    'random': [random.random, False],
+    'time': [time.time, False],
+    }
+
+  register = Registry('System')
+  for name, value in CONSTANTS.items():
+    register.register(value, function_name=name)
   return register
 
 SYSTEM = _system_register()
