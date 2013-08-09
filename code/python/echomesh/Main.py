@@ -64,10 +64,6 @@ def _main():
 
   Instance.main()
 
-  if Config.get('diagnostics', 'unused_configs'):
-    import yaml
-    print(yaml.safe_dump(Config.get_unvisited()))
-
 def main():
   try:
     _main()

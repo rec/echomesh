@@ -17,7 +17,7 @@ LOGGER = Log.logger(__name__)
 def save(_, *values):
   if values:
     SetConfig.set_config(_, *values)
-  files = Config.MERGE_CONFIG.save()
+  files = Config.save(False)
   if files:
     LOGGER.info('Configuration saved to %s.', Join.join_file_names(files))
   else:
