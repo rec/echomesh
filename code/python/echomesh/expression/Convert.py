@@ -3,8 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import re
 import six
 
-from echomesh.expression.Units import INFINITY
-
 INFINITY = float('inf')
 NAMES_FOR_INFINITY = set(('inf', 'infinite', 'infinity'))
 

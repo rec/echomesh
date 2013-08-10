@@ -3,15 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import math
 
 from echomesh.expression import Transform
-
-from unittest import TestCase
-
-EPSILON = 0.000001
+from echomesh.util.TestCase import TestCase
 
 class TransformTest(TestCase):
-  def assertNear(self, x, y):
-    self.assertTrue(abs(x - y) < EPSILON, '%s != %s' % (x, y))
-
   def assertTransform(self, tr):
     s, t = tr
     self.assertNear(s(0), 0)
