@@ -9,7 +9,7 @@ from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
 from echomesh.util import Log
-from echomesh.util.registry.Entry import Entry
+from echomesh.util.registry import Entry
 
 LOGGER = Log.logger(__name__)
 
@@ -30,7 +30,7 @@ class Registry(object):
 
     entry = self._registry.get(function_name, None)
     if not entry:
-      self._registry[function_name] = Entry(
+      self._registry[function_name] = Entry.Entry(
         function_name, function, help_text, see_also, self)
     else:
       if entry.function is not function:

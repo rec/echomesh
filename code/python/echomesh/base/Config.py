@@ -50,5 +50,3 @@ def save(log=True):
     files = MERGE_CONFIG.save()
     if log and files:
       print('Configuration automatically saved to', Join.join_file_names(files))
-
-Quit.register_atexit(save)

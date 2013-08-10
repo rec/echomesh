@@ -50,7 +50,12 @@ def _main():
     from echomesh.util import Log
     Log.logger(__name__).info('No permission to autostart')
     return
+  p()
 
+  from echomesh.base import Quit
+  p()
+
+  Quit.register_atexit(Config.save)
   p()
 
   from echomesh import Instance

@@ -18,6 +18,11 @@ COLOR_ADDRESSES = [
   ['light', 'visualizer', 'instrument', 'background'],
 ]
 
+
+
+
+
+
 def evaluate_config():
   config = copy.deepcopy(Config.MERGE_CONFIG.config)
   Setter.apply_function(config, Expression.convert, *UNIT_ADDRESSES)
