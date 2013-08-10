@@ -40,7 +40,7 @@ class _Values(object):
 
     if name == Names.FUNCTION:
       return (is_evaluating and
-              self.functions.get('.'.join(parts))(evaluator()))
+              self.functions.get('.'.join(parts))(evaluator.evaluate()))
 
     if name == Names.SYSTEM:
       func, is_constant = self.system.get('.'.join(parts))
