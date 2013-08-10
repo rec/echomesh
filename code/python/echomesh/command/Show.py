@@ -53,7 +53,7 @@ def broadcast(echomesh_instance):
   LOGGER.info('  Broadcast is %s\n', message)
 
 def _config(_):
-  LOGGER.info('\n' + Yaml.encode_one(Config.MERGE_CONFIG.config))
+  LOGGER.info('\n' + Yaml.encode_one(Config.get_config()))
 
 def directories(_):
   _info(Path.info())

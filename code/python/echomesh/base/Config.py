@@ -12,13 +12,16 @@ from echomesh.base import Join
 from echomesh.base import Quit
 from echomesh.base import Reconfigure
 
-MERGE_CONFIG = None
+_MERGE_CONFIG = None
 _CLIENTS = WeakSet()
 _NONE = object()
+_ARGS = []
 
-def reconfigure():
-  global MERGE_CONFIG, CONFIGS_UNVISITED
-  MERGE_CONFIG = Reconfigure.reconfigure()
+def reconfigure(args=None):
+  global _ARGS, _MERGE_CONFIG
+  if args:
+    _ARGS = args
+  _MERGE_CONFIG = Reconfigure.reconfigure(_ARGS)
 
 def add_client(client):
   if not client in _CLIENTS:
@@ -29,8 +32,13 @@ def update_clients():
   for c in _CLIENTS:
     c.config_update(get)
 
+def get_config():
+  if not _MERGE_CONFIG:
+    reconfigure()
+  return _MERGE_CONFIG.config
+
 def get(*parts):
-  config = MERGE_CONFIG.config
+  config = get_config()
   for part in parts:
     try:
       config = config[part]
@@ -42,11 +50,11 @@ def get(*parts):
   return config
 
 def assign(values):
-  return MERGE_CONFIG.assign(values)
+  return _MERGE_CONFIG.assign(values)
 
 # Automatically save any changed variables on exit.
 def save(log=True):
   if get('autosave'):
-    files = MERGE_CONFIG.save()
+    files = _MERGE_CONFIG.save()
     if log and files:
       print('Configuration automatically saved to', Join.join_file_names(files))

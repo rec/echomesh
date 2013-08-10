@@ -32,12 +32,13 @@ Examples:
 """
 
 class MergeConfig(object):
-  def __init__(self):
+  def __init__(self, args):
+    self.args = args
     self.read()
 
   def read(self):
     self._read_file_configs()
-    self.arg_config = self._assignment_to_config(sys.argv[1:], _ARGUMENT_ERROR)
+    self.arg_config = self._assignment_to_config(self.args, _ARGUMENT_ERROR)
     return self.recalculate()
 
   def recalculate(self):

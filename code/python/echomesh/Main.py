@@ -42,7 +42,7 @@ def _main():
   from echomesh.base import Config
   p()
 
-  Config.reconfigure()
+  Config.reconfigure(sys.argv[1:])
   p()
 
   if Config.get('autostart') and not Config.get('permission', 'autostart'):
