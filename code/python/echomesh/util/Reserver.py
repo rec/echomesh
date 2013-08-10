@@ -28,8 +28,7 @@ class Reserver(object):
     with self.lock:
       res = self._reserved_uniquely.intersection(items)
       if res:
-        print(res)
-        raise Exception('%s are already uniquely reserved.' % res)
+        raise Exception('%s are already uniquely reserved.' % sorted(res))
       for item in items:
         self._reserved[item] += 1
 
