@@ -9,7 +9,7 @@ from unittest import TestCase
 def evaluate(expression):
   return RawExpression(expression, None).evaluate()
 
-class TextExpression(TestCase):
+class ExpressionTest(TestCase):
   def assertEvaluate(self, expression, result):
     self.assertEqual(evaluate(expression), result)
 
