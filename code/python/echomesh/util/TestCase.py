@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import numpy
 import unittest
 
 class TestCase(unittest.TestCase):
@@ -9,6 +10,7 @@ class TestCase(unittest.TestCase):
     self.assertTrue(abs(x - y) < self.EPSILON, msg or ('%s != %s' % (x, y)))
 
   def assertArrayEquals(self, x, y):
+    x, y = numpy.array(x), numpy.array(y)
     self.assertEqual(x.shape, y.shape)
     columns, rows = x.shape
     for i in range(columns):
