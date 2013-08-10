@@ -1,24 +1,13 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-
-
 import numpy
 
 from echomesh.color import ColorSpread
 from echomesh.expression import Transform
 from echomesh.util.TestCase import TestCase
 
-
 class TestColorSpread(TestCase):
   EPSILON = 0.00000001
-
-  def assertArrayEquals(self, x, y):
-    self.assertEqual(x.shape, y.shape)
-    columns, rows = x.shape
-    for i in range(columns):
-      for j in range(rows):
-        msg = 'for [%d][%d], %s != %s' % (i, j, x[i][j], y[i][j])
-        self.assertNear(x[i][j], y[i][j], msg)
 
   def assertSpreadResult(self, *args, **kwds):
     spread = ColorSpread.color_spread(*args, **kwds)
