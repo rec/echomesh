@@ -26,8 +26,8 @@ def apply_dict(table, function, addresses):
       table[key] = function(table[key])
     else:
       for subkey, subaddresses in items:
-        recurse(table[key], subaddresses, subkey)
-  recurse(table, addresses, '')
+        recurse(table[key] if key else table, subaddresses, subkey)
+  recurse(table, addresses, None)
   return table
 
 def list_to_dict(*addresses):
