@@ -6,13 +6,16 @@ import copy
 from echomesh.base import Quit
 from echomesh.color import ColorTable
 from echomesh.expression import Expression
-from echomesh.light.LightBank import LightBank
+from echomesh.light.SpiLightBank import SpiLightBank
 from echomesh.network import ClientServer
 from echomesh.util import Log
+from echomesh.util.string import Split
 
 LOGGER = Log.logger(__name__)
 
-class ExternalLightBank(LightBank):
+_LONGEST_STRING = 3000
+
+class ExternalLightBank(SpiLightBank):
   def __init__(self):
     self.process = None
     self.failed = False
@@ -82,20 +85,12 @@ class ExternalLightBank(LightBank):
     with self.lock:
       if self.failed:
         return
-      data = _split_long_strings(base64.b64encode(self.bytes))
+      # Fix for https://github.com/rec/echomesh/issues/342.
+      data = Split.split_long_strings(base64.b64encode(self.bytes),
+                                      _LONGEST_STRING)
       try:
         ClientServer.instance().write(type='light', data=data)
       except:
         self._fail()
 
 
-# Fix for https://github.com/rec/echomesh/issues/342
-_LONGEST_STRING = 3000
-
-def _split_long_strings(s):
-  result = []
-  while len(s) > _LONGEST_STRING:
-    result.append(s[0:_LONGEST_STRING])
-    s = s[_LONGEST_STRING:]
-  result.append(s)
-  return result

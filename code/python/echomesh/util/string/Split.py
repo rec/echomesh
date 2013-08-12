@@ -37,3 +37,10 @@ def split_scores(scores):
 
   return pair_split(split_words(scores))
 
+def split_long_strings(s, length):
+  result = []
+  while len(s) > length:
+    result.append(s[0:length])
+    s = s[length:]
+  result.append(s)
+  return result

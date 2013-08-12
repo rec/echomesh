@@ -38,12 +38,20 @@ def _fix_blacklist():
   except Exception:
     LOGGER.error("Couldn't fix blacklist.")
 
+
+_SPEEDUP_ERROR = """
+Couldn't speed up SPI, please install py-spidev by typing.
+
+sudo apt-get install -y pyspidev
+
+at the command line.
+"""
 def _speedup():
   try:
     import spidev
     spi = spidev.SpiDev()
   except:
-    LOGGER.error("Couldn't speed up SPI, please install py-spidev.")
+    LOGGER.error(_SPEEDUP_ERROR)
   else:
     spi.open(0, 0)
     spi.max_speed_hz = 20000000

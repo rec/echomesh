@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
-from echomesh.light import LightsEnabled
-from echomesh.light.LightBank import LightBank
+from echomesh.light import SetupDebianSpiLights
+from echomesh.light.SpiLightBank import SpiLightBank
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -12,15 +12,20 @@ _LATCH = bytearray(0 for i in xrange(_LATCH_BYTE_COUNT))
 
 _INTERNAL_LATCH_BYTE_COUNT = 0
 
-class SpiLightBank(LightBank):
-  RGB = lambda r, g, b: (r, g, b)
-  GRB = lambda r, g, b: (g, r, b)
-  BRG = lambda r, g, b: (b, r, g)
+class SpiHardwareLightBank(SpiLightBank):
+  def RGB(r, g, b):
+    return r, g, b
+
+  def GRB(r, g, b):
+    return g, r, b
+
+  def BRG(r, g, b):
+    return b, r, g
 
   def __init__(self, count=None):
-    assert LightsEnabled.lights_enabled(), "Lighting is not enabled."
+    assert SetupDebianSpiLights.lights_enabled(), "Lighting is not enabled."
 
-    super(SpiLightBank, self).__init__(count=count)
+    super(SpiHardwareLightBank, self).__init__(count=count)
     order = Config.get('light', 'hardware', 'rgb_order')
     self.order = getattr(LightBank, order.upper(), None)
     if not self.order:
@@ -47,11 +52,11 @@ class SpiLightBank(LightBank):
       self._write(self._clear)
 
   def _before_thread_start(self):
-    super(SpiLightBank, self)._before_thread_start()
+    super(SpiHardwareLightBank, self)._before_thread_start()
     self._device = open('/dev/spidev0.0', 'wb')
 
   def _after_thread_pause(self):
-    super(SpiLightBank, self)._after_thread_pause()
+    super(SpiHardwareLightBank, self)._after_thread_pause()
     self._device.close()
     self._device = None
 

@@ -17,7 +17,7 @@ class LightBank(ThreadLoop):
     self.clients = set()
     self.lock = Lock.Lock()
     self.loops = 0
-    self.bytes = None
+    self.data = None
 
   def clear(self):
     pass
@@ -56,8 +56,7 @@ class LightBank(ThreadLoop):
     if not client_lights:
       return
 
-    Combiner.combine_to_bytearray(self.bytes, client_lights,
-                                  UnitConfig.get('light', 'brightness'))
+    self._fill_data(client_lights, UnitConfig.get('light', 'brightness'))
     if self.is_running:
       self._display_lights()
 
@@ -68,7 +67,13 @@ class LightBank(ThreadLoop):
 
   def config_update(self, get):
     self.count = get('light', 'count')
-    self.bytes = bytearray(3 * self.count)
+    self.data = self.make_data(self.count)
+
+  def _make_data(self, count):
+    pass
+
+  def _fill_data(self, client_lights, brightness):
+    pass
 
   def _display_lights(self):
     pass

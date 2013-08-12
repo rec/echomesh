@@ -2,6 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import itertools
 
+from six.moves import xrange
+
 USE_NUMPY = False
 
 def combine(combiner, *lighters):
