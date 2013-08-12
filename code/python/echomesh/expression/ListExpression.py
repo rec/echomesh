@@ -6,10 +6,10 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class ListExpression(object):
-  def __init__(self, expression, element):
+  def __init__(self, expressions, element):
     self.expressions = []
     self._is_constant = True
-    for e in self.expressions:
+    for e in expressions:
       expr = UnitExpression(e, element)
       self.expressions.append(expr)
       self._is_constant = self._is_constant and expr.is_constant()
@@ -24,4 +24,4 @@ class ListExpression(object):
     return self.value if self._is_constant else self._evaluate()
 
   def _evaluate(self):
-    return [e.evaluate() for e in self.expressions()]
+    return [e.evaluate() for e in self.expressions]

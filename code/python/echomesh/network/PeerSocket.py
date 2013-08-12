@@ -48,6 +48,9 @@ class PeerSocketBase(MasterRunnable):
     self.add_mutual_pause_slave(self.socket)
     self.socket.run()
 
+  def router(self):
+    pass
+
 class PeerSocket(PeerSocketBase):
   def __init__(self, instance, peers):
     super(PeerSocket, self).__init__(instance, peers, 'discovery')

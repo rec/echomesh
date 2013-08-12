@@ -84,7 +84,7 @@ def execute(instance, line):
     LOGGER.error()
     return
   except:
-    LOGGER.error("Didn't understand command %s\n%s" % (line, usage()),
+    LOGGER.error('Didn\'t understand command %s\n%s', line, usage(),
                  exc_info=False)
     return
 

@@ -25,7 +25,7 @@ class Send(BroadcastSocket):
   def _raw_send(self, res):
     try:
       self.socket.sendto(res, ('<broadcast>', self.port))
-    except Exceptionn as e:
+    except Exception as e:
       if not Quit.QUITTING:
         raise
 

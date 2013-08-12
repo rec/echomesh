@@ -25,11 +25,11 @@ def square(x):
   return x * x
 
 def power(n):
-  def power(x):
+  def pwr(x):
     return numpy.power(x, n)
-  def power_inverse(x):
+  def pwr_inverse(x):
     return numpy.power(x, 1.0 / n)
-  return power, power_inverse
+  return pwr, pwr_inverse
 
 def sine(x):
   return (1 + numpy.sin(numpy.pi * (x - 0.5))) / 2

@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.element import Element
 from echomesh.element.Loop import Loop
 from echomesh.expression import UnitConfig
 from echomesh.expression import Expression
@@ -36,7 +35,3 @@ class Repeat(Loop):
 
   def child_paused(self, child):
     pass
-
-  def _on_begin(self):
-    super(Repeat, self)._on_begin()
-    self.repeat_count = 0

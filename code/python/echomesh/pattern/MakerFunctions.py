@@ -5,9 +5,7 @@ import math
 import six
 
 from echomesh.color import ColorSpread
-from echomesh.color import ColorTable
 from echomesh.base import Config
-from echomesh.pattern import Maker
 from echomesh.pattern.Maker import maker
 from echomesh.pattern import PatternDesc
 
@@ -122,8 +120,8 @@ def transpose(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
 
   result = [None] * len(light_set)
   for i, light in enumerate(light_set):
-    my_x = i % x;
-    my_y = i // x;
+    my_x = i % x
+    my_y = i // x
     if reverse_x:
       my_x = x - my_x - 1
     if reverse_y:

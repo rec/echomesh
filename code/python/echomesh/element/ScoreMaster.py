@@ -13,7 +13,6 @@ from echomesh.util import Log
 from echomesh.util.string import Split
 from echomesh.util.string import UniqueName
 from echomesh.util.thread import MasterRunnable
-from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
@@ -70,7 +69,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
           else:
             getter(element)()
           full_names.append(full_name)
-        except Exception as e:
+        except Exception:
           LOGGER.error('', exc_info=0)
     return full_names
 

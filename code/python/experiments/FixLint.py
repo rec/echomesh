@@ -5,12 +5,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import re
 import sys
 
-MATCH_ERROR = re.compile(r'(\w\d{4}):\s*(\d+),(-?\d+):(.*)')
+MATCH_ERROR = re.compile(r'(\w:\s*\d+):\s*(\d+)\s*,\s*(-?\d+)\s*:(.*)')
 
 error_file = ''
 
 for line in sys.stdin:
-  if line.startswith('*************'):
+  if line.startswith('**********'):
     parts = line.split()
     if len(parts) == 3:
       error_file = '%s.py' % parts[2].replace('.', '/').replace(
@@ -21,6 +21,8 @@ for line in sys.stdin:
       code, line_number, column, error = match.groups()
       line = '%s:%s:%s: error: %s: %s'  % (
         error_file, line_number, column, code, error)
+    else:
+      line = '??? ' + line
 
   print(line)
 

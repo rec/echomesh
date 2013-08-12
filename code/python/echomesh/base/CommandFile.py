@@ -7,6 +7,9 @@ from echomesh.base import Path
 from echomesh.base import Platform
 from echomesh.base import Yaml
 
+COMMAND_PATH = None
+COMMAND_PATH_NAMES = None
+
 def clean(*path):
   return os.path.join(*path).split('/')
 

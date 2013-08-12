@@ -5,7 +5,6 @@ import time
 import six
 
 from echomesh.expression import Variable
-from echomesh.util.string import UniqueName
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 class Element(MasterRunnable):

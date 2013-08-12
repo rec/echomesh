@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import sys
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
@@ -44,7 +43,7 @@ class MergeConfig(object):
   def recalculate(self):
     self.config = None
     self.changed = {}
-    for f, configs in self.file_configs:
+    for _, configs in self.file_configs:
       self.config = Merge.merge(self.config, *configs)
       self.changed = Merge.merge(self.changed, *configs[2:])
 
@@ -78,13 +77,13 @@ class MergeConfig(object):
         configs[1] = Merge.merge(*configs[1:])
         while len(configs) > 2:
           configs.pop()
-        with open(f, 'r') as file:
-          data = file.read().split(Yaml.SEPARATOR)[0]
+        with open(f, 'r') as fo:
+          data = fo.read().split(Yaml.SEPARATOR)[0]
 
-        with open(f, 'wb') as file:
-          file.write(data)
-          file.write(Yaml.SEPARATOR)
-          file.write(Yaml.encode_one(configs[1]))
+        with open(f, 'wb') as fw:
+          fw.write(data)
+          fw.write(Yaml.SEPARATOR)
+          fw.write(Yaml.encode_one(configs[1]))
 
     self.arg_config = Merge.difference_strict(self.arg_config, self.changed)
     self.recalculate()
@@ -121,5 +120,5 @@ class MergeConfig(object):
       return config
 
     except Exception as e:
-      e.arg = arg
+      e.arg = '%s %s' % (error, arg)
       raise

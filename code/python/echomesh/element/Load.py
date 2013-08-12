@@ -1,7 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element import Error
-from echomesh.element import Element
 from echomesh.element import REGISTRY
 from echomesh.element.ResolveExtensions import resolve_extensions
 from echomesh.util.dict.Access import Access

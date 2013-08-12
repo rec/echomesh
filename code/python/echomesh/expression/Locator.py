@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import functools
-
 def get_variable(element, category, parts):
   if category == 'global':
     from echomesh.element import ScoreMaster

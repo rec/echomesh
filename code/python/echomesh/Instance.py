@@ -64,7 +64,8 @@ class Instance(MasterRunnable):
   def main(self):
     self.run()
     self.display.loop()
-    self.keyboard.thread and self.keyboard.thread.join()
+    if self.keyboard.thread:
+      self.keyboard.thread.join()
     time.sleep(0.1)  # Prevents crashes in shutdown.
 
   def start_mic(self):

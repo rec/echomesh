@@ -34,7 +34,7 @@ def get_config(_, *items):
       else:
         successes.append([i, value])
   else:
-    assignments = Config.MERGE_CONFIG.assignments().items()
+    assignments = Config.assignments().items()
     successes = [('.'.join(s), v) for s, v in assignments]
 
   if successes or failures:

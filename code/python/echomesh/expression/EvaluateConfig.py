@@ -20,6 +20,6 @@ COLOR_ADDRESSES = [
 
 def evaluate_config():
   config = copy.deepcopy(Config.get_config())
-  Setter.apply_function(config, Expression.convert, *UNIT_ADDRESSES)
-  Setter.apply_function(config, ColorTable.to_color, *COLOR_ADDRESSES)
+  Setter.apply_apply_list(config, Expression.convert, *UNIT_ADDRESSES)
+  Setter.apply_list(config, ColorTable.to_color, *COLOR_ADDRESSES)
   return config

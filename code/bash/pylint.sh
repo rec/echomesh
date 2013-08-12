@@ -2,9 +2,10 @@
 
 pushd /development/echomesh/code/python/
 
-pylint echomesh \
- --indent-string="  " \
- --include-ids=y \
+PYTHONPATH=/development/echomesh/code/python/ \
+epylint echomesh \
+ --rcfile=/development/echomesh/code/bash/pylint.rc\
+  --indent-string="  "\
  --disable=\
 C0103,\
 C0111,\
@@ -24,6 +25,8 @@ W0511,\
 W0603,\
 W0702,\
 W0703,\
-W0603\
- | \
- /development/echomesh/code/python/experiments/FixLint.py
+W0603,\
+attribute-defined-outside-init,\
+bare-except,\
+fix-me,\
+global-statement\

@@ -6,7 +6,6 @@ Represent a set of variables in an Element.
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
-import time
 
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
@@ -36,7 +35,6 @@ def variable(description, element):
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
                repeat=INFINITY, **kwds):
-    length = None if count is None else skip * count
     parts = [Expression.convert(x, element) for x in (count, begin, end, skip)]
     self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
 

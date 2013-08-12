@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import MakeEmptyProject
 from echomesh.base import Platform
 
+import getpass
 import os
 import os.path
 import sys

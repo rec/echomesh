@@ -1,10 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
+
 from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util import TestSuperuser
 
 LOGGER = Log.logger(__name__)
+
+BLACKLIST_FILE = '/etc/modprobe.d/raspi-blacklist.conf'
+BLACKLIST_TEMP = '/tmp/raspi-blacklist.conf'
 
 def _blacklist_line(line):
   return line.strip().startswith('blacklist spi')
@@ -14,7 +19,7 @@ def _is_blacklisted():
     with open(BLACKLIST_FILE, 'rb') as f:
       LOGGER.info('You are running the Raspian distribution, '
                   'blacklist file is here:')
-      LOGGER.info(' ', BLACKLIST_FILE)
+      LOGGER.info(BLACKLIST_FILE)
       return any(_blacklist_line(line) for line in f)
   except:
     LOGGER.warning('You are not running the Raspian distribution, '

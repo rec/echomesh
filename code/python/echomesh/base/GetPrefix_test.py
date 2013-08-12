@@ -1,6 +1,4 @@
-from __future__ import absolute_import, division, print_function, unicode_literals
-
-import math
+from __future__ import absolute_import, division, print_function, unicode_literals\
 
 from echomesh.base import GetPrefix
 from echomesh.util.TestCase import TestCase
@@ -28,7 +26,7 @@ class GetPrefixTest(TestCase):
     except Exception as e:
       self.assertEqual(str(e), '"o" is not valid.')
 
-  def test_no_prefix(self):
+  def test_no_prefix2(self):
     try:
       GetPrefix.get_prefix(TABLE, 'x', allow_prefixes=False)
     except Exception as e:

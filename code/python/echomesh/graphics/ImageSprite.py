@@ -44,7 +44,7 @@ class ImageSprite(Runnable):
         if env.is_constant():
           duration = max(duration, env.length)
       if duration is None:
-        duration = Units.INFINITY
+        duration = INFINITY
     else:
       self._duration = Expression.convert(duration)
 

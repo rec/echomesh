@@ -1,15 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import copy
-import getpass
-import os
-import six
-
 from compatibility.weakref import WeakSet
 
-from echomesh.base import Args
 from echomesh.base import Join
-from echomesh.base import Quit
 from echomesh.base import Reconfigure
 
 _MERGE_CONFIG = None
@@ -58,3 +51,14 @@ def save(log=True):
     files = _MERGE_CONFIG.save()
     if log and files:
       print('Configuration automatically saved to', Join.join_file_names(files))
+    return files
+
+def assignments():
+  return _MERGE_CONFIG.assignments()
+
+def has_changes():
+  return _MERGE_CONFIG.has_changes()
+
+def get_changes():
+  return _MERGE_CONFIG.get_changes()
+

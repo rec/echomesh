@@ -4,7 +4,6 @@ import os.path
 
 from echomesh.base import Config
 from echomesh.base import Path
-from echomesh.base import Yaml
 from echomesh.util import Log
 from echomesh.util.dict.PersistentDict import PersistentDict
 

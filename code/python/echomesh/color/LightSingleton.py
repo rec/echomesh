@@ -46,7 +46,8 @@ class LightSingleton(Runnable):
 
   def remove_client(self, client):
     with self.lock:
-      self.lights and self.lights.remove_client(client)
+      if self.lights:
+        self.lights.remove_client(client)
       self._stop_lights()
 
   def _make_lights(self):

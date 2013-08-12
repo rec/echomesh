@@ -1,8 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import threading
-import time
-
 from echomesh.base import Config
 from echomesh.color import LightsEnabled
 from echomesh.color.LightBank import LightBank
@@ -11,7 +8,7 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 _LATCH_BYTE_COUNT = 3
-_LATCH = bytearray(0 for i in xrange(LATCH_BYTE_COUNT))
+_LATCH = bytearray(0 for i in xrange(_LATCH_BYTE_COUNT))
 
 _INTERNAL_LATCH_BYTE_COUNT = 0
 
@@ -32,9 +29,10 @@ class SpiLightBank(LightBank):
 
   def _light_array(self):
     count = Config.get('light', 'count')
-    b = bytearray(x for i in xrange(count + _INTERNAL_LATCH_BYTE_COUNT))
-    for i in xrange(_INTERNAL_LATCH_BYTE_COUNT):
-      b[-1 - i] = 0
+    b = bytearray(0 for i in xrange(count + _INTERNAL_LATCH_BYTE_COUNT))
+    if False:  # TODO
+      for i in xrange(_INTERNAL_LATCH_BYTE_COUNT):
+        b[-1 - i] = 0
     return b
 
   def _write(self, lights):

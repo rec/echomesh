@@ -4,7 +4,6 @@ import six
 
 from echomesh.base import Config
 from echomesh.base import GetPrefix
-from echomesh.base import MergeConfig
 from echomesh.base import Yaml
 from echomesh.command import REGISTRY
 from echomesh.util import Log

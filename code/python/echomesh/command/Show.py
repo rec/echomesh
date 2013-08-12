@@ -35,9 +35,9 @@ def addresses(_):
   _info(Name.addresses())
 
 def aliases(*_):
-  aliases = Aliases.instance()
+  al = Aliases.instance()
   if aliases:
-    _info(aliases)
+    _info(al)
   else:
     LOGGER.info('  No aliases\n')
 
@@ -92,8 +92,8 @@ def units(_):
   LOGGER.info('%s\n', Units.list_units())
 
 def _variables(path, element, results):
-  variables = getattr(element, 'variables', {})
-  for k, v in six.iteritems(variables):
+  vars = getattr(element, 'variables', {})
+  for k, v in six.iteritems(vars):
     results.append([path + [k], v()])
   for e in element.elements:
     _variables(path + [e.name], e, results)

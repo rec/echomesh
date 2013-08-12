@@ -25,7 +25,7 @@ class ExternalLightBank(LightBank):
   def _fail(self):
     LOGGER.error()
     self.failed = True
-    if self.visualizer_closes_echomesh:
+    if self.closes_echomesh:
       exit(0)
 
   def shutdown(self):
@@ -50,7 +50,7 @@ class ExternalLightBank(LightBank):
     light['hardware']['period'] = Expression.convert(light['hardware']['period'])
     light['visualizer']['period'] = Expression.convert(light['visualizer']['period'])
     visualizer = light['visualizer']
-    self.visualizer_closes_echomesh = visualizer['visualizer_closes_echomesh']
+    self.closes_echomesh = visualizer['closes_echomesh']
     visualizer['background'] = ColorTable.to_color(visualizer['background'])
 
     dl = visualizer['instrument']
@@ -82,9 +82,9 @@ class ExternalLightBank(LightBank):
     with self.lock:
       if self.failed:
         return
-      bytes = _split_long_strings(base64.b64encode(self.bytes))
+      data = _split_long_strings(base64.b64encode(self.bytes))
       try:
-        ClientServer.instance().write(type='light', data=bytes)
+        ClientServer.instance().write(type='light', data=data)
       except:
         self._fail()
 

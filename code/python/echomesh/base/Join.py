@@ -18,5 +18,5 @@ def join_file_names(file_names):
   if len(file_names) == 1:
     return 'file %s' % file_names[0]
   else:
-    return 'files %s' % Join.join_words(file_names)
+    return 'files %s' % join_words(file_names)
 

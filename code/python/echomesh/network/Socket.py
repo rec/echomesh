@@ -93,11 +93,11 @@ class Socket(MasterRunnable):
     self.socket = None
 
 
-class Server(MasterRunnable):
-  def _start_socket(self):
-    self.socket.bind((self.hostname, self.bind_port))
-
-
-class Client(MasterRunnable):
-  def _start_socket(self):
-    self.socket.connect((self.hostname, self.port))
+# TODO: remove the next part?
+# class Server(MasterRunnable):
+#   def _start_socket(self):
+#     self.socket.bind((self.hostname, self.bind_port))
+#
+# class Client(MasterRunnable):
+#   def _start_socket(self):
+#     self.socket.connect((self.hostname, self.port))

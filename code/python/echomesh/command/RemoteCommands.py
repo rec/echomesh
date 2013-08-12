@@ -44,7 +44,7 @@ def _local(function, name):
 def _boot(echomesh_instance):
   _close_and_run(echomesh_instance, 'Rebooting', RESTART_CMD)
 
-def _exec(echomesh_instance):
+def _exec(_):
   result, code = Subprocess.run(cmd)
   if code:
     LOGGER.error('%s (%d)', result, code)
@@ -63,7 +63,7 @@ def _initialize(echomesh_instance):
   else:
     _quit(echomesh_instance)
 
-def _quit(echomesh_instance):
+def _quit(_):
   Quit.request_quit()
   return True
 

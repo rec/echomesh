@@ -16,6 +16,7 @@ class ClientServer(Server):
   INSTANCE = None
 
   def __init__(self):
+    super(ClientServer, self).__init__()
     LOGGER.debug('Creating ClientServer')
     ClientServer.INSTANCE = self
     self.process = None
@@ -48,7 +49,7 @@ class ClientServer(Server):
         args['stdout'] = subprocess.PIPE
 
       command = Client.make_command()
-      LOGGER.debug("About to start client process: '%s'" % command)
+      LOGGER.debug("About to start client process: '%s'", command)
       try:
         self.process = subprocess.Popen(command, **args)
       except:
@@ -79,7 +80,8 @@ class ClientServer(Server):
     except:
       pass
     try:
-      Subprocess.run(Client.KILL_COMMAND)
+      # Subprocess.run(Client.KILL_COMMAND)
+      pass
     except:
       pass
     try:

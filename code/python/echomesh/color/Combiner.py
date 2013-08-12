@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import itertools
 
-from echomesh.base import Config
-
 USE_NUMPY = False
 
 def combine(combiner, *lighters):
@@ -25,14 +23,14 @@ def sup(items):
         light[j] = max(light[j], item[j])
   return light
 
-def combine_to_bytearray(bytes, lighters, brightness):
-  for i in xrange(int(len(bytes) / 3)):
+def combine_to_bytearray(array, lighters, brightness):
+  for i in xrange(int(len(array) / 3)):
     for j in xrange(3):
       b = 0
       for light in lighters:
         if i < len(light) and light[i] is not None:
           b = max(b, light[i][j])
-      bytes[3 * i + j] = min(0xFF, int(0x100 * b * brightness))
+      array[3 * i + j] = min(0xFF, int(0x100 * b * brightness))
 
 
 # We could put HSV combiners in here.

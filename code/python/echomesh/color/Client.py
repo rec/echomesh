@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 
 from echomesh.base import Config
-from echomesh.base import Enum
 from echomesh.base import Path
 from echomesh.expression import Expression
 
@@ -26,4 +25,4 @@ def make_command():
   return parts
 
 def make_kill_command():
-  return [KILLALLL, CLIENT_NAME]
+  return [KILLALL, CLIENT_NAME]

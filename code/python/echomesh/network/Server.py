@@ -1,8 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import socket
 import time
-import SocketServer
 
 from six.moves import queue
 
@@ -17,8 +15,6 @@ LOGGER = Log.logger(__name__)
 
 LOG_ALL_DATA = not True
 
-MAX_QUEUE_SIZE = 16
-
 FILE = None
 
 def _write(text, flush=False):
@@ -30,7 +26,7 @@ def _write(text, flush=False):
     FILE.flush()
 
 class Server(ThreadRunnable):
-  def __init__(self, host, port, timeout, read_callback=None, max_queue_size=20,
+  def __init__(self, host, port, timeout, read_callback=None, max_queue_size=24,
                logging=False, allow_reuse_address=True, debug=False):
     LOGGER.debug('Creating Server')
     super(Server, self).__init__()
@@ -38,6 +34,7 @@ class Server(ThreadRunnable):
     self.queue = None
     self.config = []
     self.debug = debug
+    self.max_queue_size = max_queue_size
     self.bytes_written = 0
     self.next_target = 0
     self.packets = 0
@@ -63,7 +60,7 @@ class Server(ThreadRunnable):
       self.handler.wfile.flush()
     else:
       if not self.queue:
-        self.queue = queue.Queue(MAX_QUEUE_SIZE)
+        self.queue = queue.Queue(self.max_queue_size)
       self.queue.put(data)
 
   def _handle(self, handler):

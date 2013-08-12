@@ -20,7 +20,8 @@ class Envelope(object):
       raise Exception('Didn\'t understand envelope %s' % data)
 
     if len(self.times) == 1:
-      return self._set_constant(self.data[0])
+      self._set_constant(self.data[0])
+      return
 
     _check_times(self.times)
 

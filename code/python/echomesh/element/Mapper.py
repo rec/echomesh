@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import six
 
 from echomesh.base import Name
-from echomesh.element import Element
 from echomesh.element import Handler
 from echomesh.element import Load
 

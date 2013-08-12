@@ -2,8 +2,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import re
 
-from pyparsing import Literal, CaselessLiteral, Word, Group, Optional, \
-  ZeroOrMore, Forward, nums, alphas, Regex, ParseException
+from pyparsing import Literal, Word, Group, Optional, \
+  ZeroOrMore, Forward, nums, alphas, Regex
 
 def bnf(exprStack):
   """
@@ -16,17 +16,16 @@ def bnf(exprStack):
   term    :: factor [ multop factor ]*
   expr    :: term [ addop term ]*
   """
-  def pushFirst(strg, loc, toks):
+  def pushFirst(_, __, toks):
     exprStack.append(toks[0])
 
-  def pushUMinus(strg, loc, toks):
+  def pushUMinus(_, __, toks):
     for t in toks:
       if t == '-':
         exprStack.append('unary -')
       else:
         break
 
-  point = Literal('.')
   fnumber = Regex(r' [+-]? \d+ (:? \. \d* )? (:? [eE] [+-]? \d+)?', re.X)
   xnumber = Regex(r'0 [xX] [0-9 a-f A-F]+', re.X)
   ident = Word(alphas, alphas + nums + '_$.')

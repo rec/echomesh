@@ -18,7 +18,6 @@ def filename(name):
   if os.path.exists(name):
     return name
   if not has_extension(name):
-    _, extension = os.path.splitext(name)
     n = name + '.yml'
     if os.path.exists(n):
       return n
