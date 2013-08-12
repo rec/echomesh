@@ -7,7 +7,7 @@ import time
 from six.moves import xrange
 
 from echomesh.base import Config
-from echomesh.color.LightBank import LightBank
+from echomesh.light.LightBank import LightBank
 from echomesh.color import ColorTable
 from echomesh.util import Log
 from echomesh.util.thread import TkThreadRunner

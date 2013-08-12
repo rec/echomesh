@@ -5,13 +5,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.base import Config
-from echomesh.color import LightSingleton
+from echomesh.base import Quit
 from echomesh.element import ScoreMaster
 from echomesh.graphics import Pi3dDisplay
+from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.util import Log
-from echomesh.base import Quit
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)

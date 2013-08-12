@@ -13,9 +13,9 @@ LOGGER = Log.logger(__name__)
 MAIN_THREAD = threading.current_thread()
 
 _TYPE_MAP = {
-  'client': 'echomesh.color.ExternalLightBank',
-  'tk': 'echomesh.color.TkLightBank',
-  'spi': 'echomesh.color.SpiLightBank'
+  'client': 'echomesh.light.ExternalLightBank',
+  'tk': 'echomesh.light.TkLightBank',
+  'spi': 'echomesh.light.SpiLightBank'
   }
 
 class LightSingleton(Runnable):

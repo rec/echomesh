@@ -3,12 +3,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import base64
 import copy
 
+from echomesh.base import Quit
 from echomesh.color import ColorTable
-from echomesh.color.LightBank import LightBank
 from echomesh.expression import Expression
+from echomesh.light.LightBank import LightBank
 from echomesh.network import ClientServer
 from echomesh.util import Log
-from echomesh.base import Quit
 
 LOGGER = Log.logger(__name__)
 
