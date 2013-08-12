@@ -1,6 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import re
+import six
+
 WORD_SPLITTER = re.compile(r'[\s]+')
 
 def split_words(s):
@@ -22,11 +24,16 @@ def pair_split(items, split='as'):
   result.extend((s, None) for s in queue + parts)
   return result
 
+_SPLIT_ERROR = 'The start command needs an argument.'
+
 def split_scores(scores):
+  if isinstance(scores, (tuple, list)):
+    scores = ' '.join(scores)
+  else:
+    assert isinstance(scores, six.string_types), _SPLIT_ERROR
+  scores = scores.strip()
   if not scores:
     return []
 
-  if isinstance(scores, (tuple, list)):
-    scores = ' '.join(scores)
-  return  pair_split(split_words(scores))
+  return pair_split(split_words(scores))
 
