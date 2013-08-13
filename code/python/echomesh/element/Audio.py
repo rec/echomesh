@@ -16,6 +16,6 @@ class Audio(Element.Element):
       except:
         LOGGER.error()
     else:
-      LOGGER.debug('Audio disabled for %s', description.get('file', None))
+      LOGGER.info('Audio disabled for %s', description.get('file', None))
     description.clear_accessed()
 

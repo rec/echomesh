@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.base import Config
-from echomesh.color import Combiner
 from echomesh.expression import UnitConfig
 from echomesh.util import Log
 from echomesh.util.thread.ThreadLoop import ThreadLoop

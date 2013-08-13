@@ -18,11 +18,9 @@ def text_to_speech(text, tl='en'):
 
   """
   params = dict(PARAMS, q=text, tl=tl)
-  LOGGER.debug('About to request url=%s, params=%s', URL, params)
+  LOGGER.vdebug('About to request url=%s, params=%s', URL, params)
   r = requests.get(URL, params=params, headers=HEADERS)
   if not r.ok:
-    LOGGER.debug("%d: couldn't read URL %s for '%s'",
-                 r.status_code, r.url, text)
     raise Exception("%d: couldn't read URL %s for '%s'" %
                     (r.status_code, r.url, text))
 

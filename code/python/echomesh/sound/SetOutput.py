@@ -23,6 +23,6 @@ def set_output(output=None):
     if returncode:
       LOGGER.error("Couldn't open output %s\n%s", output, result)
     else:
-      LOGGER.debug('Set audio output to %s', output)
+      LOGGER.vdebug('Set audio output to %s', output)
     global OUTPUT_SET
     OUTPUT_SET = True
