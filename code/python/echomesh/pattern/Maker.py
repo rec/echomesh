@@ -2,8 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.util import Call
 from echomesh.pattern import PatternDesc
+from echomesh.util import Call
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 class Maker(object):
   def __init__(self, pattern_desc, function, *attributes):
@@ -11,8 +14,11 @@ class Maker(object):
     self.function = function
     self.table, self.patterns = PatternDesc.make_table_and_patterns(
       pattern_desc, attributes)
+    self.attributes = attributes
+    self.pattern_desc = pattern_desc
 
   def evaluate(self):
+    LOGGER.debug('evaluate', self.pattern_desc, self.attributes, limit=20)
     table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
       arg = [[p.evaluate() for p in self.patterns]]
@@ -28,6 +34,7 @@ class Maker(object):
 
   def is_constant(self):
     return all(v.is_constant() for v in six.itervalues(self.table))
+
 
 def maker(*a):
   args = a

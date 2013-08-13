@@ -10,7 +10,6 @@ import copy
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
 from echomesh.expression.UnitExpression import UnitExpression
-from echomesh.expression import Units
 from echomesh.expression.Envelope import Envelope
 from echomesh.util import Log
 from echomesh.util.registry import Registry
@@ -20,17 +19,6 @@ LOGGER = Log.logger(__name__)
 
 REGISTRY = Registry.Registry('variable classes')
 INFINITY = float('inf')
-
-def variable(description, element):
-  if isinstance(description, dict):
-    description = copy.copy(description)
-    vtype = description.pop('type', None)
-    if vtype:
-      return REGISTRY.function(vtype)(description, element)
-    else:
-      raise Exception('No type in variable, description="%s".' % description)
-  else:
-    return UnitExpression(description, element)
 
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
@@ -49,14 +37,12 @@ class _Counter(object):
     return self.count <= 1
 
   def evaluate(self):
-    LOGGER.debug('_Counter')
-
     if self.is_constant():
       return self.begin
 
     count = int(UnitConfig.get('speed') * self.element.elapsed_time() //
                 self.period)
-    if self.count != Units.INFINITY:
+    if self.count != INFINITY:
       repeat = count // self.count
       if repeat >= self.repeat:
         return self.end
@@ -71,3 +57,15 @@ REGISTRY.register_all(
   envelope=Envelope,
   value=UnitExpression,
   )
+
+def variable(description, element):
+  if isinstance(description, dict):
+    description = copy.copy(description)
+    vtype = description.pop('type', None)
+    if not vtype:
+      raise Exception('No type in variable, description="%s".' % description)
+    return REGISTRY.function(vtype)(description, element)
+
+  else:
+    return UnitExpression(description, element)
+

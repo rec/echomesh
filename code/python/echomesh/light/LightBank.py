@@ -60,9 +60,12 @@ class LightBank(ThreadLoop):
       self._display_lights()
 
     if self.is_running:
-      self._next_time += UnitConfig.get('light', 'visualizer', 'period')
+      period = UnitConfig.get('light', 'visualizer', 'period')
+      self._next_time += period
       # TODO: which period?
-      time.sleep(max(0, self._next_time - time.time()))
+      sleep_time = max(0, self._next_time - time.time())
+      if sleep_time:
+        time.sleep(sleep_time)
 
   def config_update(self, get):
     self.count = get('light', 'count')

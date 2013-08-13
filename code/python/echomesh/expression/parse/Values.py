@@ -58,7 +58,7 @@ class Function(ValueRoot):
     return Functions.FUNCTIONS.get('.'.join(parts))(value)
 
   def is_constant(self, parts, element):
-    return False  # TODO: it's inefficient that Functions are non-constant.
+    return True
 
 class Global(ValueRoot):
   def _get_element(self, element, parts):

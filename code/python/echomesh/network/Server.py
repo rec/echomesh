@@ -69,7 +69,7 @@ class Server(ThreadRunnable):
       self.handler = handler
       for c in self.config:
         self._write(c)
-    while True:
+    while self.queue:
       try:
         self._write(self.queue.get(False))
       except queue.Empty:
