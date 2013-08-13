@@ -46,14 +46,12 @@ class ExternalLightBank(SpiLightBank):
         except:
           self._fail()
 
-  def config_update(self, get):
-    super(ExternalLightBank, self).config_update(get)
+  def _fix_config(self, get):
     light = copy.deepcopy(get('light'))
     light['brightness'] = Expression.convert(light['brightness'])
     light['hardware']['period'] = Expression.convert(light['hardware']['period'])
     light['visualizer']['period'] = Expression.convert(light['visualizer']['period'])
     visualizer = light['visualizer']
-    self.closes_echomesh = visualizer['closes_echomesh']
     visualizer['background'] = ColorTable.to_color(visualizer['background'])
 
     dl = visualizer['instrument']
@@ -62,6 +60,13 @@ class ExternalLightBank(SpiLightBank):
 
     data = {'light': light, 'midi': get('midi')}
     config = {'type': 'config', 'data': data}
+
+    self.closes_echomesh = visualizer['closes_echomesh']  ## !
+    return config
+
+  def config_update(self, get):
+    super(ExternalLightBank, self).config_update(get)
+    config = self._fix_config(get)
 
     LOGGER.vdebug('The server connected to the client and is about to send a '
                   + 'configuration looking like this: %s', config)

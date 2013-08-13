@@ -13,7 +13,8 @@ class Pattern(Element.Element):
     self.pattern_name = description['pattern']
     self.maker = parent.pattern_makers[self.pattern_name]
     self.output = description.get('output', 'light')
-    if self.output == 'light':
+    self.is_light = (self.output == 'light')
+    if self.is_light:
       try:
         LightSingleton.add_owner()
       except:
@@ -21,22 +22,19 @@ class Pattern(Element.Element):
 
   def _on_unload(self):
     super(Pattern, self)._on_unload()
-    if self.output == 'light':
+    if self.is_light:
       LightSingleton.remove_owner()
-      LightSingleton.remove_client(self.maker)
 
   def class_name(self):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
+    LOGGER.debug('%s', self)
     super(Pattern, self)._on_run()
-    if self.output == 'light':
+    if self.is_light:
       LightSingleton.add_client(self.maker)
-
-  def _on_begin(self):
-    super(Pattern, self)._on_begin()
-    if not self.is_running and self.output == 'light':
-      LightSingleton.remove_client(self.maker)
 
   def _on_pause(self):
     super(Pattern, self)._on_pause()
+    if self.is_light:
+      LightSingleton.remove_client(self.maker)

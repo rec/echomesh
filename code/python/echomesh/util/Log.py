@@ -89,7 +89,7 @@ def _make_logger(logger, name):
     raw = kwds.pop('raw', None)
 
     if limit is not None or limit is not None:
-      if not _check_error_count(limit, every):
+      if _suppress_this_line(limit, every):
         return
 
     message, args = (args[0] if args else ''), args[1:]
@@ -100,34 +100,18 @@ def _make_logger(logger, name):
         kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
       if not _CONFIG.filename:
         message = 'ERROR: %s\n' % message
-    logger(message, *args, **kwds)
+    # print('!!!', name, message, args, kwds)
+    original_logger(message, *args, **kwds)
 
   setattr(logger, name, new_logger)
 
 def logger(name=None):
   assert name
-  log = logging.getLogger(name or 'echomesh')
-  original_error_logger = log.error
+  logger = logging.getLogger(name or 'echomesh')
 
-  def new_error_logger(*args, **kwds):
-    limit = kwds.pop('limit', None)
-    every = kwds.pop('every', None)
-    raw = kwds.pop('raw', None)
-
-    if _suppress_this_line(limit, every):
-      return
-
-    message, args = (args[0] if args else ''), args[1:]
-    exc_type, exc_value = sys.exc_info()[:2]
-    if exc_type and not raw:
-      message = '%s %s' % (exc_value, message)
-      kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
-    if not _CONFIG.filename:
-      message = 'ERROR: %s\n' % message
-    original_error_logger(message, *args, **kwds)
-
-  log.error = new_error_logger
-  return log
+  for name in 'vdebug', 'debug', 'error', 'warn', 'info':
+    _make_logger(logger, name)
+  return logger
 
 LOGGER = logger(__name__)
 LOGGER.debug('\nLog level is %s', _CONFIG.log_level)

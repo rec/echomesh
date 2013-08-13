@@ -43,7 +43,7 @@ class Server(ThreadRunnable):
     LOGGER.vdebug('About to open IP server %s:%s', host, port)
     self.server = ServerMaker.make_server(
       self._handle, host, port, timeout, logging, allow_reuse_address)
-    LOGGER.vdebug('Ip server opened')
+    LOGGER.vdebug('IP server opened')
     self.line_reader = LineReader(read_callback)
 
   def target(self):

@@ -31,13 +31,16 @@ class LightBank(ThreadLoop):
   def add_client(self, client):
     with self.lock:
       self.clients.add(client)
+    LOGGER.debug('add_client %s', client)
 
   def remove_client(self, client):
     with self.lock:
       try:
         self.clients.remove(client)
       except KeyError:
+        LOGGER.error('Removed client we didn\'t add %s', client)
         pass
+    LOGGER.debug('remove_client %s', client)
 
   def has_clients(self):
     with self.lock:
@@ -50,9 +53,10 @@ class LightBank(ThreadLoop):
         try:
           client_lights.append(client.evaluate())
         except:
-          LOGGER.error(limit=8)
+          LOGGER.error('oops', limit=8)
 
     if not client_lights:
+      LOGGER.debug('no lights')
       return
 
     self._fill_data(client_lights, UnitConfig.get('light', 'brightness'))
