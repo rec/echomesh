@@ -49,6 +49,8 @@ class _Counter(object):
     return self.count <= 1
 
   def evaluate(self):
+    LOGGER.debug('_Counter')
+
     if self.is_constant():
       return self.begin
 

@@ -17,7 +17,7 @@ VDEBUG = 5
 LOG_LEVEL = 'INFO'
 
 DEFAULT_FORMAT = '%(message)s'
-DEBUG_FORMAT = '%(message)s'
+DEBUG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 
 _LOG_SIGNATURE = 'util/Log.py'
