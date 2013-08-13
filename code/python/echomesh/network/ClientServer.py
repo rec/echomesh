@@ -16,7 +16,8 @@ class ClientServer(Server):
   INSTANCE = None
 
   def __init__(self):
-    super(ClientServer, self).__init__()
+    # TODO: the idea of not calling super.__init__ here is a hack - come up
+    # with a better way.
     LOGGER.debug('Creating ClientServer')
     ClientServer.INSTANCE = self
     self.process = None

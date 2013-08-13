@@ -41,7 +41,7 @@ def read(fname, file_type='', allow_empty=True):
       msg = 'in %s %s file %s.' % (state, file_type, fname)
     else:
       msg = 'in %s file %s.' % (state, fname)
-    add_exception_suffix(e, msg)
+    add_exception_suffix(msg)
     raise
 
   try:

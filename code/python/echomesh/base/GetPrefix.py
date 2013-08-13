@@ -24,8 +24,8 @@ def get_prefix(table, name, allow_prefixes=True):
     elif len(results) > 1:
       words = sorted(x[0] for x in results)
       cmds = Join.join_words(words)
-      raise PrefixException('"%s" matches more than one: %s.' % (name, cmds))
-  raise PrefixException('"%s" is not valid.' % (name))
+      raise PrefixException('"%s" matches more than one: %s' % (name, cmds))
+  raise PrefixException('"%s" is not valid' % (name))
 
 def get(table, name, allow_prefixes=True):
   try:

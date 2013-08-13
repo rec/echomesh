@@ -86,7 +86,7 @@ class ExternalLightBank(SpiLightBank):
       if self.failed:
         return
       # Fix for https://github.com/rec/echomesh/issues/342.
-      data = Split.split_long_strings(base64.b64encode(self.bytes),
+      data = Split.split_long_strings(base64.b64encode(self.data),
                                       _LONGEST_STRING)
       try:
         ClientServer.instance().write(type='light', data=data)

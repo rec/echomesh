@@ -5,6 +5,7 @@ from collections import namedtuple
 import six
 import sys
 
+from echomesh.base.AddExceptionSuffix import add_exception_suffix
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
@@ -51,8 +52,11 @@ class Registry(object):
       self.register(item, item_name, help_text, see_also)
 
   def entry(self, name):
-    return GetPrefix.get_prefix(self._registry, name,
-                                allow_prefixes=self.allow_prefixes)[1]
+    try:
+      return GetPrefix.get_prefix(self._registry, name,
+                                  allow_prefixes=self.allow_prefixes)[1]
+    except:
+      add_exception_suffix(' in registry "%s"' % self.name)
 
   def get(self, name):
     return self.function(name)

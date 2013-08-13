@@ -1,6 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-def add_exception_suffix(e, *suffixes):
-  # TODO: use traceback.
+import sys
+
+def add_exception_suffix(*suffixes):
+  e = sys.exc_info()[1]
   suffix = ' '.join(suffixes)
-  e.args = tuple(a + suffix for a in e.args)
+  print(dir(e))
+  e.args = tuple(a + suffix for a in getattr(e, 'args', ()))
+  raise

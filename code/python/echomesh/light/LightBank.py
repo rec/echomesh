@@ -67,7 +67,7 @@ class LightBank(ThreadLoop):
 
   def config_update(self, get):
     self.count = get('light', 'count')
-    self.data = self.make_data(self.count)
+    self.data = self._make_data(self.count)
 
   def _make_data(self, count):
     pass
