@@ -28,13 +28,14 @@ def variable(description, element):
     if vtype:
       return REGISTRY.function(vtype)(description, element)
     else:
-      raise Exception('No type in variable %s.' % description)
+      raise Exception('No type in variable, description="%s".' % description)
   else:
     return UnitExpression(description, element)
 
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
                repeat=INFINITY, **kwds):
+    LOGGER.debug('_Counter')
     parts = [Expression.convert(x, element) for x in (count, begin, end, skip)]
     self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
 
@@ -42,7 +43,7 @@ class _Counter(object):
     self.period = Expression.convert(period, element)
     self.repeat = repeat
     if kwds:
-      LOGGER.error('Unused keywords %s', kwds)
+      LOGGER.error('Unknown keywords "%s" for counter', kwds)
 
   def is_constant(self):
     return self.count <= 1

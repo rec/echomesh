@@ -1,6 +1,6 @@
 import operator
 
-from echomesh.expression import Values
+from echomesh.expression.parse import Values
 
 OPERATORS = {
   '+': operator.add,
@@ -15,15 +15,15 @@ class Evaluator(object):
     self.stack = stack[:]
     self.element = element
 
-  def evaluate(self):
+  def pop_and_evaluate(self):
     op = self.stack.pop()
 
     if op == 'unary -':
-      return -self.evaluate()
+      return -self.pop_and_evaluate()
 
     if op in OPERATORS:
-      op2 = self.evaluate()
-      op1 = self.evaluate()
+      op2 = self.pop_and_evaluate()
+      op1 = self.pop_and_evaluate()
       return OPERATORS[op](op1, op2)
 
     if op.startswith('0x') or op.startswith('0X'):
@@ -36,3 +36,4 @@ class Evaluator(object):
       return float(op)
 
     return int(op)
+

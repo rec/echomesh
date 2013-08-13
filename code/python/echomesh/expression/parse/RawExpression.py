@@ -1,8 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.expression import BNF
-from echomesh.expression import Evaluator
-from echomesh.expression import Values
+from echomesh.expression.parse import BNF
+from echomesh.expression.parse import Evaluator
+from echomesh.expression.parse import Values
 
 class RawExpression(object):
   def __init__(self, expression, element):
@@ -23,7 +23,7 @@ class RawExpression(object):
   def evaluate(self):
     if self.value is None or not self.is_constant():
       evaluator = Evaluator.Evaluator(self.stack, self.element)
-      self.value = evaluator.evaluate()
+      self.value = evaluator.pop_and_evaluate()
       assert not evaluator.stack
 
     return self.value

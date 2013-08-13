@@ -26,7 +26,7 @@ class Enum(object):
     return GetPrefix.get_prefix(self.__dict__, name.upper(),
                                 allow_prefixes=allow_prefixes)
 
-  def reverse(self, key):
+  def lookup(self, key):
     return self._reverse[key]
 
   def __iter__(self):

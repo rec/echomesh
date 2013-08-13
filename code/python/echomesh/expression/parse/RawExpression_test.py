@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-from echomesh.expression.RawExpression import RawExpression
+from echomesh.expression.parse.RawExpression import RawExpression
 
 from unittest import TestCase
 

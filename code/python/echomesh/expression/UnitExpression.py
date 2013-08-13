@@ -4,7 +4,7 @@ import re
 
 from echomesh.expression.ReplaceUnicodeFractions import replace_unicode_fractions
 from echomesh.expression import Convert
-from echomesh.expression import RawExpression
+from echomesh.expression.parse import RawExpression
 from echomesh.expression import Units
 
 _ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s | \) ) ) ( [a-z%]* ) \s* $', re.X)
