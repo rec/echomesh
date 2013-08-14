@@ -24,20 +24,20 @@ class GetPrefixTest(TestCase):
     try:
       GetPrefix.get_prefix(TABLE, 'o', allow_prefixes=False)
     except Exception as e:
-      self.assertEqual(str(e), '"o" is not valid.')
+      self.assertEqual(str(e), '"o" is not valid')
 
   def test_no_prefix2(self):
     try:
       GetPrefix.get_prefix(TABLE, 'x', allow_prefixes=False)
     except Exception as e:
-      self.assertEqual(str(e), '"x" is not valid.')
+      self.assertEqual(str(e), '"x" is not valid')
 
   def test_many_prefixes(self):
     try:
       GetPrefix.get_prefix(TABLE, 't')
     except Exception as e:
       self.assertEqual(str(e),
-                       '"t" matches more than one: three and two.')
+                       '"t" matches more than one: three and two')
 
   def test_assignment(self):
     GetPrefix.set_assignment('foo.bar.baz', 32, MASTER, self.slave)

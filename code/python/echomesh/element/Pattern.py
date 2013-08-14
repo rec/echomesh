@@ -29,7 +29,6 @@ class Pattern(Element.Element):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
-    LOGGER.debug('%s', self)
     super(Pattern, self)._on_run()
     if self.is_light:
       LightSingleton.add_client(self.maker)
