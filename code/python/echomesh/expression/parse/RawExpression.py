@@ -32,5 +32,8 @@ class RawExpression(object):
       self.value = evaluator.pop_and_evaluate()
       assert not evaluator.stack
 
-    LOGGER.vdebug('%s=%s', self.expression, self.value)
     return self.value
+
+  def __str__(self):
+    return 'RawExpression(%s)' % self.expression
+

@@ -31,7 +31,7 @@ class LightBank(ThreadLoop):
   def add_client(self, client):
     with self.lock:
       self.clients.add(client)
-    LOGGER.debug('add_client %s', client)
+    LOGGER.vdebug('add_client %s', client)
 
   def remove_client(self, client):
     with self.lock:
@@ -40,7 +40,7 @@ class LightBank(ThreadLoop):
       except KeyError:
         LOGGER.error('Removed client we didn\'t add %s', client)
         pass
-    LOGGER.debug('remove_client %s', client)
+    LOGGER.vdebug('remove_client %s', client)
 
   def has_clients(self):
     with self.lock:

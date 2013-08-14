@@ -32,7 +32,7 @@ class ValueRoot(object):
     return element.variables[variable]
 
   def evaluate(self, parts, evaluator, element):
-    return Call.call(self._get_function(parts, element))
+    return self._get_function(parts, element).evaluate()
 
   def is_constant(self, parts, element):
     return self._get_function(parts, element).is_constant()
@@ -68,6 +68,12 @@ class Global(ValueRoot):
 class Local(ValueRoot):
   def _get_element(self, parts, element):
     return element
+
+  def evaluate(self, parts, evaluator, element):
+    return super(Local, self).evaluate(parts, evaluator, element)
+
+  def is_constant(self, parts, element):
+    return super(Local, self).is_constant(parts, element)
 
 class Parent(ValueRoot):
   def _get_element(self, parts, element):

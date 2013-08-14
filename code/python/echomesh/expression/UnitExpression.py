@@ -34,7 +34,6 @@ class UnitExpression(object):
 
     val = self.expression.evaluate()
     if self.unit_converter:
-
       return self.unit_converter(val)
     else:
       return val
@@ -42,3 +41,5 @@ class UnitExpression(object):
   def is_constant(self):
     return not self.expression or self.expression.is_constant()
 
+  def __str__(self):
+    return 'UnitExpression(%s)' % (self.expression or self.value)
