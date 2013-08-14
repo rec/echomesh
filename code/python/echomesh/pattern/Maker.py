@@ -16,9 +16,10 @@ class Maker(object):
       pattern_desc, attributes)
     self.attributes = attributes
     self.pattern_desc = pattern_desc
+    # LOGGER.debug('evaluate %s %s', self.pattern_desc, self.attributes, limit=20)
 
   def evaluate(self):
-    LOGGER.debug('evaluate %s %s', self.pattern_desc, self.attributes, limit=20)
+    # LOGGER.debug('evaluate %s %s', self.pattern_desc, self.attributes)
     table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
       arg = [[p.evaluate() for p in self.patterns]]
@@ -33,10 +34,12 @@ class Maker(object):
       raise Exception('%s in %s' % (e, self.name))
 
   def is_constant(self):
-    return all(v.is_constant() for v in six.itervalues(self.table))
+    is_constant = all(v.is_constant() for v in six.itervalues(self.table))
+    LOGGER.vdebug('%s.is_constant: %s', self, is_constant)
+    return is_constant
 
   def __str__(self):
-    return 'Maker(pattern_desc=%s, function=%s, attributes=%s' % (
+    return 'Maker(pattern_desc=%s, function=%s, attributes=%s)' % (
       self.pattern_desc, self.function, self.attributes)
 
 def maker(*a):

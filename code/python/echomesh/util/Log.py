@@ -21,17 +21,17 @@ DEBUG_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 
 _LOG_SIGNATURE = 'util/Log.py'
-_ERROR_COUNTER = {}
+_LOG_COUNTER = {}
 
 def _suppress_this_line(limit, every):
   if limit is not None or every is not None:
     for line in traceback.format_stack():
       if _LOG_SIGNATURE not in line:
-        errors = _ERROR_COUNTER.get(line, 0)
-        if limit is not None or errors >= limit * (every or 1):
+        count = _LOG_COUNTER.get(line, 0)
+        if limit is not None and count >= limit * (every or 1):
           return True
-        _ERROR_COUNTER[line] = errors + 1
-        return every and (errors % every)
+        _LOG_COUNTER[line] = count + 1
+        return not (every and (count % every))
 
 def _add_level_vdebug():
   logging.addLevelName(VDEBUG, 'VDEBUG')
@@ -88,7 +88,7 @@ def _make_logger(logger, name):
     every = kwds.pop('every', None)
     raw = kwds.pop('raw', None)
 
-    if limit is not None or limit is not None:
+    if not (limit is None and every is None):
       if _suppress_this_line(limit, every):
         return
 
@@ -100,7 +100,6 @@ def _make_logger(logger, name):
         kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
       if not _CONFIG.filename:
         message = 'ERROR: %s\n' % message
-    # print('!!!', name, message, args, kwds)
     original_logger(message, *args, **kwds)
 
   setattr(logger, name, new_logger)

@@ -32,10 +32,10 @@ class ValueRoot(object):
     return element.variables[variable]
 
   def evaluate(self, parts, evaluator, element):
-    return Call.call(_get_function(parts, element))
+    return Call.call(self._get_function(parts, element))
 
   def is_constant(self, parts, element):
-    return _get_function(parts, element).is_constant()
+    return self._get_function(parts, element).is_constant()
 
   def _get_element(self, parts, element):
     pass
@@ -49,7 +49,7 @@ class Configuration(ValueRoot):
     return False  # TODO: it's inefficient that Configs are non-constant.
 
 class Element(ValueRoot):
-  def _get_element(self, element, parts):
+  def _get_element(self, parts, element):
     return element.get_root()
 
 class Function(ValueRoot):
@@ -61,16 +61,16 @@ class Function(ValueRoot):
     return True
 
 class Global(ValueRoot):
-  def _get_element(self, element, parts):
+  def _get_element(self, parts, element):
     from echomesh.element import ScoreMaster
     return ScoreMaster.INSTANCE.get_prefix(parts.pop(0))[1]
 
 class Local(ValueRoot):
-  def _get_element(self, element, parts):
+  def _get_element(self, parts, element):
     return element
 
 class Parent(ValueRoot):
-  def _get_element(self, element, parts):
+  def _get_element(self, parts, element):
     return element.parent
 
 class System(ValueRoot):

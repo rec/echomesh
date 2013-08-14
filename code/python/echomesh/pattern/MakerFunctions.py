@@ -20,7 +20,7 @@ def choose(light_sets, choose=None):
     zipped = itertools.izip_longest(*light_sets)
     return [vec[restrict(choose(i))] for i, vec in enumerate(zipped)]
   else:
-    return light_sets[restrict(choose)]
+    return light_sets[restrict(choose.evaluate())]
 
 @maker
 def concatenate(light_sets):

@@ -50,13 +50,9 @@ class LightBank(ThreadLoop):
     with self.lock:
       client_lights = []
       for client in self.clients:
-        try:
-          client_lights.append(client.evaluate())
-        except:
-          LOGGER.error('oops', limit=8)
+        client_lights.append(client.evaluate())
 
     if not client_lights:
-      LOGGER.debug('no lights')
       return
 
     self._fill_data(client_lights, UnitConfig.get('light', 'brightness'))
