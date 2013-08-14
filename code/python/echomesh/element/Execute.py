@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import subprocess
 
+from echomesh.base import Quit
 from echomesh.util import Log
 from echomesh.util import Subprocess
 from echomesh.element import Element
@@ -20,17 +21,20 @@ class Execute(Element.Element):
   def _on_run(self):
     super(Execute, self)._on_run()
     self.process = subprocess.Popen(command, _ARGS)
+    Quit.register_atexit(self.pause)
+
     result = popen.stdout.read()
     if not popen.returncode:
-      pass # Send out a message.
+      LOGGER.debug('Successful completion!')  # Send out a message.
     self.process = None
     self.pause()
 
   def _on_pause(self):
+    Quit.unregister_atexit(self.pause)
     super(Execute, self)._on_pause()
     if self.process:
-      self.process.kill()
+      try:
+        self.process.kill()
+      except:
+        pass
       self.process = None
-
-
-

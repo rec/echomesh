@@ -16,4 +16,5 @@ REGISTRY = _register(
   'Select',
   'Speak',
   'Twitter',
+  'Video',
 )

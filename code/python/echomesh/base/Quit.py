@@ -3,14 +3,20 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import atexit
 
 QUITTING = False
-HANDLERS = []
+HANDLERS = set()
 PRINT_EXCEPTIONS = not False
 _REGISTERED = False
 
 def register_atexit(handler):
-  HANDLERS.append(handler)
+  HANDLERS.add(handler)
   if not _REGISTERED:
     _register_quit()
+
+def unregister_atexit(handler):
+  try:
+    HANDLERS.remove(handler)
+  except ValueError:
+    pass
 
 def request_quit():
   global QUITTING
