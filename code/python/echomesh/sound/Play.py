@@ -22,24 +22,6 @@ def _get_player(player):
 
   raise Exception('Don\'t understand player %s' % player)
 
-
-def _set_player(player, element,
-               level=1, pan=0, loops=1, begin=0, end=INF, length=INF, **kwds):
-  player._element = element
-  player._file = kwds.pop('file')
-  player._filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(player._file)
-  if kwds:
-    LOGGER.error('Unused keywords %s', kwds)
-  player._passthrough = (level == 1 and pan == 0)
-
-  player._length = length
-  player._level = Expression.expression(level, element)
-  player._pan = Expression.expression(pan, element)
-  player._loops = loops
-  player._begin = begin
-  player._end = end
-
-
 def play(element, **kwds):
   if 'type' in kwds:
     del kwds['type']
