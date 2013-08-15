@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.expression.parse import Functions
-from echomesh.expression.parse import System
+import echomesh.expression.parse.System
 from echomesh.util import Call
 from echomesh.util.registry.Registry import Registry
 
@@ -81,13 +81,13 @@ class Parent(ValueRoot):
 
 class System(ValueRoot):
   def _get_system(self, parts):
-    return System.get('.'.join(parts))
+    return echomesh.expression.parse.System.get('.'.join(parts))
 
-  def is_constant(self, parts):
-    return self._get_system(parts).is_constant
-
-  def evaluate(self, parts):
+  def evaluate(self, parts, evaluator, element):
     return Call.call(self._get_system(parts).function)
+
+  def is_constant(self, parts, element):
+    return self._get_system(parts).is_constant
 
 _REGISTRY.register(Configuration(), 'configuration')
 _REGISTRY.register(Element(), 'element')
