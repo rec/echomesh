@@ -49,6 +49,7 @@ class _ArgParser(object):
     elif not ch.isspace():
       self.value = 'true'
       self.add_result()
+      return
 
     self.col += 1
 

@@ -78,3 +78,7 @@ class ArgsTest(TestCase):
     self.assertTest('extra="32 men" ac.de = .defeg. foo = [ bar, baz ]',
                     [['extra', '32 men'], ['ac.de', '.defeg.'],
                     ['foo', ['bar', 'baz']]])
+
+  def test_input_bug(self):
+    self.assertTest('debug net.timeout=2', [['debug', True], ['net.timeout', 2]])
+
