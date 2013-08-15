@@ -33,38 +33,18 @@ def get(table, name, allow_prefixes=True):
   except PrefixException:
     return None
 
-def accessor(
-    table, names, allow_prefixes=True, unmapped_names=None, create=False):
-  assert isinstance(table, dict)
-  path = []
+def set_assignment(address, value, master, slave, unmapped_names=None):
   unmapped = False
+  names = address.split('.')
   for i, name in enumerate(names):
-    is_last = i >= len(names) - 1
-    if create:
-      value = table.setdefault(name, None if is_last else {})
-    elif unmapped:
-      value = (table or {}).get(name, None)
+    if unmapped:
+      new_master = master.get(name, {})
     else:
-      name, value = get_prefix(table, name, allow_prefixes)
-    path.append(name)
-    if is_last:
-      return path, table, value
-    table = value
+      name, new_master = get_prefix(master, name)
+    if i == len(names) - 1:
+      slave[name] = value
+    else:
+      master = new_master
+      slave = slave.setdefault(name, {})
     if (not i) and unmapped_names and name in unmapped_names:
       unmapped = True
-
-def set_assignment(address, value, master_table, slave_table,
-                   allow_prefixes=True, unmapped_names=None, create=True):
-  names = accessor(
-    master_table, address.split('.'),
-    allow_prefixes=allow_prefixes, unmapped_names=unmapped_names,
-    create=create)[0]
-
-  for i, name in enumerate(names):
-    if i < len(names) - 1:
-      if create:
-        slave_table = slave_table.setdefault(name, {})
-      else:
-        slave_table = get_prefix(slave_table, name, allow_prefixes)
-    else:
-      slave_table[name] = value

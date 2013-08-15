@@ -44,8 +44,7 @@ class GetPrefixTest(TestCase):
     self.assertEqual(self.slave, {'foo': {'bar': {'baz': 32}}})
 
   def test_assignment_prefix(self):
-    GetPrefix.set_assignment('f.b.b', 19, MASTER, self.slave,
-                             allow_prefixes=True, create=False)
+    GetPrefix.set_assignment('f.b.b', 19, MASTER, self.slave)
     self.assertEqual(self.slave, {'foo': {'bar': {'baz': 19}}})
 
   def test_assignment_unmapped(self):
