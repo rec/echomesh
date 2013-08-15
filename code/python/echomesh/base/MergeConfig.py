@@ -1,10 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+from collections import namedtuple
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
 from echomesh.base import GetPrefix
+from echomesh.base import Leafs
 from echomesh.base import Merge
 from echomesh.base import Yaml
 
@@ -29,6 +31,8 @@ Examples:
   debug=true
   audio.input.enable=false light.enable=false
 """
+
+FileConfig = namedtuple('FileConfig', 'file base edits changes')
 
 class MergeConfig(object):
   def __init__(self, args):
@@ -91,7 +95,7 @@ class MergeConfig(object):
 
   def assignments(self, index=2):
     assigned = self.file_configs[index][1]
-    return (len(assigned) > 2 and GetPrefix.leafs(assigned[2])) or {}
+    return (len(assigned) > 2 and Leafs.leafs(assigned[2])) or {}
 
   def _read_file_configs(self):
     self.file_configs = []
@@ -117,9 +121,7 @@ class MergeConfig(object):
       split_args = Args.split(args)
       for address, value in split_args:
         GetPrefix.set_assignment(address, value, base_config, config,
-                                 unmapped_names=Merge.CONFIG_EXCEPTIONS,
-                                 allow_prefixes=True,
-                                 create=False)
+                                 unmapped_names=Merge.CONFIG_EXCEPTIONS)
       return config
 
     except Exception as e:

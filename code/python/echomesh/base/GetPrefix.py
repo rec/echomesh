@@ -33,7 +33,7 @@ def get(table, name, allow_prefixes=True):
   except PrefixException:
     return None
 
-def _accessor(
+def accessor(
     table, names, allow_prefixes=True, unmapped_names=None, create=False):
   assert isinstance(table, dict)
   path = []
@@ -53,36 +53,18 @@ def _accessor(
     if (not i) and unmapped_names and name in unmapped_names:
       unmapped = True
 
-def get_accessor(table, names, **kwds):
-  return _accessor(table, names, **kwds)[2]
+def set_assignment(address, value, master_table, slave_table,
+                   allow_prefixes=True, unmapped_names=None, create=True):
+  names = accessor(
+    master_table, address.split('.'),
+    allow_prefixes=allow_prefixes, unmapped_names=unmapped_names,
+    create=create)[0]
 
-def set_accessor(table, names, value, create=True, allow_prefixes=False):
-  assert isinstance(table, dict)
   for i, name in enumerate(names):
     if i < len(names) - 1:
       if create:
-        table = table.setdefault(name, {})
+        slave_table = slave_table.setdefault(name, {})
       else:
-        table = get_prefix(table, name, allow_prefixes)
+        slave_table = get_prefix(slave_table, name, allow_prefixes)
     else:
-      table[name] = value
-
-def set_assignment(address, value, master_table, slave_table,
-                    allow_prefixes=True, unmapped_names=None, create=True):
-  assert isinstance(master_table, dict)
-  assert isinstance(slave_table, dict)
-  names = _accessor(master_table, address.split('.'),
-                   allow_prefixes, unmapped_names)[0]
-  set_accessor(
-    slave_table, names, value, allow_prefixes=allow_prefixes, create=create)
-
-def leafs(table):
-  values = {}
-  def recurse(item, path):
-    if isinstance(item, dict):
-      for key, value in six.iteritems(item):
-        recurse(value, path + (key,))
-    else:
-      values[path] = item
-  recurse(table, ())
-  return values
+      slave_table[name] = value
