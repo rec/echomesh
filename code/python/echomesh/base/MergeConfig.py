@@ -109,16 +109,16 @@ class MergeConfig(object):
       self.file_configs.append([f, configs])
 
   def _assignment_to_config(self, args, error):
-    arg = ' '.join(args)
+    args = ' '.join(args)
     config = {}
     base_config = self.file_configs[0][1][0]
     assert isinstance(base_config, dict)
     try:
-      for address, value in Args.split(arg):
+      for address, value in Args.split(args):
         GetPrefix.set_assignment(address, value, base_config, config,
                                  unmapped_names=Merge.CONFIG_EXCEPTIONS)
       return config
 
     except Exception as e:
-      e.arg = '%s %s' % (error, arg)
+      e.arg = '%s %s' % (error, args)
       raise
