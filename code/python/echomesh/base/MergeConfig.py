@@ -114,9 +114,12 @@ class MergeConfig(object):
     base_config = self.file_configs[0][1][0]
     assert isinstance(base_config, dict)
     try:
-      for address, value in Args.split(args):
+      split_args = Args.split(args)
+      for address, value in split_args:
         GetPrefix.set_assignment(address, value, base_config, config,
-                                 unmapped_names=Merge.CONFIG_EXCEPTIONS)
+                                 unmapped_names=Merge.CONFIG_EXCEPTIONS,
+                                 allow_prefixes=True,
+                                 create=False)
       return config
 
     except Exception as e:

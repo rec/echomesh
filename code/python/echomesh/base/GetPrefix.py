@@ -33,8 +33,8 @@ def get(table, name, allow_prefixes=True):
   except PrefixException:
     return None
 
-def accessor(table, names,
-             allow_prefixes=True, unmapped_names=None, create=False):
+def _accessor(
+    table, names, allow_prefixes=True, unmapped_names=None, create=False):
   assert isinstance(table, dict)
   path = []
   unmapped = False
@@ -54,7 +54,7 @@ def accessor(table, names,
       unmapped = True
 
 def get_accessor(table, names, **kwds):
-  return accessor(table, names, **kwds)[2]
+  return _accessor(table, names, **kwds)[2]
 
 def set_accessor(table, names, value, create=True, allow_prefixes=False):
   assert isinstance(table, dict)
@@ -68,12 +68,13 @@ def set_accessor(table, names, value, create=True, allow_prefixes=False):
       table[name] = value
 
 def set_assignment(address, value, master_table, slave_table,
-                    allow_prefixes=True, unmapped_names=None):
+                    allow_prefixes=True, unmapped_names=None, create=True):
   assert isinstance(master_table, dict)
   assert isinstance(slave_table, dict)
-  names = accessor(master_table, address.split('.'),
+  names = _accessor(master_table, address.split('.'),
                    allow_prefixes, unmapped_names)[0]
-  set_accessor(slave_table, names, value)
+  set_accessor(
+    slave_table, names, value, allow_prefixes=allow_prefixes, create=create)
 
 def leafs(table):
   values = {}
@@ -84,15 +85,4 @@ def leafs(table):
     else:
       values[path] = item
   recurse(table, ())
-  return values
-
-def leafs_parent(table):
-  values = []
-  def recurse(item, parent, path):
-    if isinstance(item, dict):
-      for key, value in six.iteritems(item):
-        recurse(value, item, path + [key])
-    else:
-      values.append((path, value, parent))
-  recurse(table, None, [])
   return values
