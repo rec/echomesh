@@ -16,7 +16,10 @@ _ARGS = {'stdin': subprocess.PIPE,
 class Execute(Element.Element):
   def __init__(self, parent, description):
     super(Execute, self).__init__(parent, description)
-    self.command_line = [description['binary']] + description.get('args', [])
+    args = description.get('args', [])
+    if not isinstance(args, list):
+      args = [args]
+    self.command_line = [description['binary']] + args
 
   def _on_run(self):
     super(Execute, self)._on_run()
