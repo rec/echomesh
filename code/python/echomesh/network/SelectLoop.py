@@ -2,18 +2,24 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import select
 
+from echomesh.base import Config
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
 BUFFER_SIZE = 1024
-TIMEOUT = 0.100
+TIMEOUT = 2.0
 
 class SelectLoop(ThreadLoop.ThreadLoop):
   def __init__(self, *sockets):
     super(SelectLoop, self).__init__(name='SelectLoop')
     self.sockets = dict((s.socket, s) for s in sockets)
+    Config.add_client(self)
+
+  def config_update(self, get):
+    self.timeout = get('network', 'timeout')
+    LOGGER.debug('timeout=%s', self.timeout)
 
   def single_loop(self):
     try:

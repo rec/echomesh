@@ -24,11 +24,12 @@ class RegistryTest(TestCase):
     try:
       self.registry.get('fo')
     except Exception as e:
-      self.assertEqual(str(e), '"fo" matches more than one: foo and fot.')
+      self.assertEqual(
+        str(e), '"fo" matches more than one: foo and fot in registry "test"')
 
   def test_no_prefixes(self):
     self.registry.allow_prefixes = False
     try:
       self.registry.get('fo')
     except Exception as e:
-      self.assertEqual(str(e), '"fo" is not valid.')
+      self.assertEqual(str(e), '"fo" is not valid in registry "test"')

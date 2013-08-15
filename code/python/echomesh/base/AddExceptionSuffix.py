@@ -5,6 +5,5 @@ import sys
 def add_exception_suffix(*suffixes):
   e = sys.exc_info()[1]
   suffix = ' '.join(suffixes)
-  print(dir(e))
   e.args = tuple(a + suffix for a in getattr(e, 'args', ()))
   raise

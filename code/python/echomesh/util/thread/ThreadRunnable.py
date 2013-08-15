@@ -10,6 +10,7 @@ LOGGER = Log.logger(__name__)
 class ThreadRunnable(MasterRunnable):
   def __init__(self, target=None, name=None, report_error=False,
                is_daemon=True):
+    LOGGER.debug('ThreadRunnable=%s', self.__class__)
     super(ThreadRunnable, self).__init__()
     self.name = name or repr(self)
     self._target = target or self.target
