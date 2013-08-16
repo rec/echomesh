@@ -54,9 +54,9 @@ class DataSocket(MasterRunnable):
     self.receive_thread = ThreadLoop.ThreadLoop(single_loop=receive,
                                                 name='DataSocket.receive')
     self.receive_thread.run()
+    self.send = self.send_socket.queue.put
+
     self.add_slave(self.select_loop, self.send_thread, self.receive_thread,
                    self.receive_socket, self.send_socket)
 
 
-  def send(self, data):
-    self.send_socket.queue.put(data)

@@ -38,7 +38,7 @@ class ClientServer(Server):
         allow_reuse_address=config['allow_reuse_address'],
         debug=config['debug'],
         read_callback=self.read_callback,
-        timeout=Expression.convert(get('network', 'timeout')),
+        timeout=Expression.convert(config['timeout']),
         )
       self.start()
 

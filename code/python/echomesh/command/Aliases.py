@@ -18,9 +18,6 @@ class Aliases(object):
   INSTANCE = None
   DICT = None
 
-  def __init__(self):
-    Config.add_client(self)
-
   def config_update(self, get):
     if get('aliases', 'save_with_project'):
       filename = os.path.join(Path.PROJECT_PATH, ALIAS_FILE_NAME)
@@ -34,5 +31,6 @@ class Aliases(object):
 def instance():
   if not Aliases.INSTANCE:
     Aliases.INSTANCE = Aliases()
+    Config.add_client(Aliases.INSTANCE)
 
   return Aliases.DICT
