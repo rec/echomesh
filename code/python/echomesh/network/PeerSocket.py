@@ -26,8 +26,8 @@ class PeerSocketBase(MasterRunnable):
 
   def config_update(self, get):
     new_port = get('network', self.config_name, 'port')
-    timeout_name = 'network', self.config_name, 'timeout'
-    timeout = get(*timeout_name)
+    timeout_name = 'network', 'timeout'
+    timeout = Expression.convert(get(*timeout_name))
     self.port, old_port = new_port, self.port
     try:
       self.timeout = Expression.convert(timeout)

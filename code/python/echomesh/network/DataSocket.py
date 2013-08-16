@@ -57,6 +57,5 @@ class DataSocket(MasterRunnable):
     self.add_slave(self.select_loop, self.send_thread, self.receive_thread,
                    self.receive_socket, self.send_socket)
 
-
   def send(self, data):
     self.send_socket.queue.put(data)
