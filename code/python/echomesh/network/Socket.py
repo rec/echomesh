@@ -7,6 +7,7 @@ from six.moves import queue
 
 from echomesh.base import Config
 from echomesh.base import Yaml
+from echomesh.expression import Expression
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util import Log
 
@@ -30,7 +31,7 @@ class Socket(MasterRunnable):
     Config.add_client(self)
 
   def config_update(self, get):
-    self.timeout = get('network', 'timeout')
+    self.timeout = Expression.convert(get('network', 'timeout'))
 
   def receive(self):
     if not self.is_running:
