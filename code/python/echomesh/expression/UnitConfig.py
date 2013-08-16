@@ -12,9 +12,9 @@ class _Client(object):
   def __init__(self):
     self.clients = {}
     self.lock = Lock.Lock()
+    Config.add_client(self)
 
   def get(self, *path):
-    Config.add_client(self)
     with self.lock:
       value = self.clients.get(path)
       if not value:
