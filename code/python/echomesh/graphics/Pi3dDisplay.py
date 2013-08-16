@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
-from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
@@ -55,8 +54,8 @@ class Pi3dDisplay(Runnable.Runnable):
     while self.is_running:
       if self.display:
         if self.display.loop_running():
-          TkThreadRunner.execute_queue()
+          pass
         else:
           self.pause()
       else:
-        TkThreadRunner.execute_queue(self.timeout)
+        pass
