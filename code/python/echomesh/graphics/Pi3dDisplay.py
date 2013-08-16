@@ -1,18 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import time
+
 from echomesh.base import Config
+from echomesh.expression import Expression
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
 from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
 
-DEFAULT_TIMEOUT = 0.2
-
 class Pi3dDisplay(Runnable.Runnable):
   def __init__(self):
     super(Pi3dDisplay, self).__init__()
-    self.timeout = DEFAULT_TIMEOUT
+    self.timeout = Expression.convert(Config.get('network', 'timeout'))
     if not Config.get('load_module', 'pi3d'):
       self.display = None
       return
@@ -51,6 +52,8 @@ class Pi3dDisplay(Runnable.Runnable):
       self.display.stop()
 
   def loop(self):
+    if False and not self.display:
+      return
     while self.is_running:
       if self.display:
         if self.display.loop_running():
@@ -59,3 +62,5 @@ class Pi3dDisplay(Runnable.Runnable):
           self.pause()
       else:
         pass
+      # print('!!!!', self.timeout)
+      # time.sleep(self.timeout)
