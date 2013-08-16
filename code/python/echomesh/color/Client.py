@@ -17,7 +17,7 @@ def make_command():
   parts.append(config['binary'] or COMMAND)
   parts.append(config['host_name'])
   parts.append(str(config['port']))
-  timeout = Expression.convert(Config.get('network', 'timeout'))
+  timeout = Expression.convert(get('network', 'timeout'))
   parts.append(str(timeout))
   parts.append(str(config['buffer_size']))
   parts.append(str(config['debug']))
