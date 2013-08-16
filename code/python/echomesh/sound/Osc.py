@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import OSC
 
 from echomesh.base import Config
+from echomesh.expression import Expression
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
@@ -10,6 +11,9 @@ from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 LOGGER = Log.logger(__name__)
 
 class OscClient(ThreadRunnable):
+  def __init__(self):
+    Config.add_client(self)
+
   def config_update(self, get):
     port = get('osc', 'client', 'port')
     host = get('osc', 'client', 'host')
@@ -50,7 +54,7 @@ class OscServer(ThreadRunnable):
       self.server = None
     self.port = port
     self.server = OSC.OSCServer(('', port), None, port)
-    self.server.socket.settimeout(get('osc', 'server', 'timeout'))
+    self.server.socket.settimeout(Expression.convert(get('network', 'timeout')))
 
   def target(self):
     while self.is_running:
