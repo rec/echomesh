@@ -93,9 +93,9 @@ def _make_logger(logger, name):
         return
 
     message, args = (args[0] if args else ''), args[1:]
-    if is_error:
+    if is_error and not raw:
       exc_type, exc_value = sys.exc_info()[:2]
-      if exc_type and not raw:
+      if exc_type:
         message = '%s %s' % (exc_value, message)
         kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
       if not _CONFIG.filename:

@@ -6,8 +6,12 @@ from echomesh.expression import Expression
 from echomesh.network import DataSocket
 from echomesh.remote import Remote
 from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 USE_YAML_SOCKET = True
+DEFAULT_TIMEOUT = 0.1
 
 class PeerSocketBase(MasterRunnable):
   def __init__(self, instance, peers, config_name):
@@ -22,9 +26,20 @@ class PeerSocketBase(MasterRunnable):
 
   def config_update(self, get):
     new_port = get('network', self.config_name, 'port')
-    timeout = get('network', self.config_name, 'timeout')
+    timeout_name = 'network', self.config_name, 'timeout'
+    timeout = get(*timeout_name)
     self.port, old_port = new_port, self.port
-    self.timeout = Expression.convert(timeout)
+    try:
+      self.timeout = Expression.convert(timeout)
+    except:
+      timeout_name = '.'.join(timeout_name)
+      LOGGER.error(
+        '\nCouldn\'t evaluate value "%s" in "%s=%s"',
+        timeout, timeout_name, timeout, raw=True)
+      LOGGER.error(
+        'Timeout defaults to %s=%s.', timeout_name, DEFAULT_TIMEOUT, raw=True)
+      self.timeout = DEFAULT_TIMEOUT
+
     if self.is_running and self.socket:
       if self.port == old_port:
         self.socket.timeout = self.timeout

@@ -119,11 +119,18 @@ class MergeConfig(object):
     assert isinstance(base_config, dict)
     try:
       split_args = Args.split(args)
-      for address, value in split_args:
-        GetPrefix.set_assignment(address, value, base_config, config,
-                                 unmapped_names=Merge.CONFIG_EXCEPTIONS)
-      return config
-
     except Exception as e:
       e.arg = '%s %s' % (error, args)
       raise
+
+    for addr, value in split_args:
+      try:
+        GetPrefix.set_assignment(addr, value, base_config, config,
+                                 unmapped_names=Merge.CONFIG_EXCEPTIONS)
+      except GetPrefix.PrefixException:
+        raise Exception('Can\'t understand configuration address "%s"' % addr)
+      except Exception:
+        raise Exception('Can\'t understand configuration value "%s" in %s=%s' %
+                        (value, addr, value))
+    return config
+
