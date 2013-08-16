@@ -18,7 +18,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
     Config.add_client(self)
 
   def config_update(self, get):
-    self.timeout = get('network', 'discovery', 'timeout')
+    self.timeout = get('network', 'timeout')
     LOGGER.debug('timeout=%s', self.timeout)
 
   def single_loop(self):

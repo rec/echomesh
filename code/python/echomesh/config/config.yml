@@ -172,11 +172,11 @@ network:
     pipe_stdout: true
     port: 1239
     start: true
-    timeout: 100ms
 
   discovery:
     port: 1238
-    timeout: 100ms
+
+  timeout: 100ms
 
 # The git section sets the user, project name and server for a git repository
 # connected to the echomesh project.  Please note that you'll still have to
