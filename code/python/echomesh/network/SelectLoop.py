@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import select
 
 from echomesh.base import Config
-from echomesh.expression import Expression
 from echomesh.util import Log
 from echomesh.util.thread import ThreadLoop
 
@@ -19,7 +18,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
     Config.add_client(self)
 
   def config_update(self, get):
-    self.timeout = Expression.convert(get('network', 'timeout'))
+    self.timeout = get('network', 'timeout')
     LOGGER.debug('timeout=%s', self.timeout)
 
   def single_loop(self):

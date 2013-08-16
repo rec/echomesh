@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.base import Config
 from echomesh.expression.Envelope import Envelope
 from echomesh.expression.ListExpression import ListExpression
 from echomesh.expression.UnitExpression import UnitExpression
@@ -23,4 +22,3 @@ def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
   return UnitExpression(number, element, assume_minutes).evaluate()
-

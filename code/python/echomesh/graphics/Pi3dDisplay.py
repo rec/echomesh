@@ -1,11 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import time
-
 from echomesh.base import Config
-from echomesh.expression import Expression
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
+from echomesh.util.thread import TkThreadRunner
 from echomesh.util.thread import Runnable
 
 pi3d = ImportIf.imp('pi3d')
@@ -41,7 +39,6 @@ class Pi3dDisplay(Runnable.Runnable):
   def config_update(self, get):
     if self.display:
       self.display.frames_per_second = get('pi3d', 'frames_per_second')
-    self.timeout = Expression.convert(get('network', 'timeout'))
 
   def _on_run(self):
     super(Pi3dDisplay, self)._on_run()
@@ -57,8 +54,9 @@ class Pi3dDisplay(Runnable.Runnable):
   def loop(self):
     while self.is_running:
       if self.display:
-        if not self.display.loop_running():
+        if self.display.loop_running():
+          TkThreadRunner.execute_queue()
+        else:
           self.pause()
       else:
-        time.sleep(self.timeout)
-
+        TkThreadRunner.execute_queue(self.timeout)
