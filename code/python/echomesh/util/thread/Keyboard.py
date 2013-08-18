@@ -7,17 +7,18 @@ from echomesh.base import Config
 from echomesh.command import Command
 from echomesh.expression import Expression
 from echomesh.util import Log
-from echomesh.util.thread import ThreadRunnable
+from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 
 LOGGER = Log.logger(__name__)
 
 MESSAGE = """Type help for a list of commands.
 """
 
-class Keyboard(ThreadRunnable.ThreadRunnable):
+class Keyboard(MasterRunnable):
   def __init__(self, sleep, message, processor,
                prompt='echomesh', output=sys.stdout):
-    super(Keyboard, self).__init__(name='Keyboard')
+    super(Keyboard, self).__init__()
     self.sleep = sleep
     self.message = message
     self.processor = processor
@@ -25,7 +26,7 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     self.output = output
     self.alert_mode = False
 
-  def target(self):
+  def run_loop(self):
     self._begin()
     while self.is_running:
       self._input_loop()
@@ -69,12 +70,20 @@ class Keyboard(ThreadRunnable.ThreadRunnable):
     elif self.processor(buff.strip()):
       self.pause()
 
-def keyboard(echomesh):
+
+def keyboard(instance, new_thread=True):
   def processor(line):
     try:
-      return Command.execute(echomesh, line)
+      return Command.execute(instance, line)
     except:
       LOGGER.error('Error processing command line.')
 
   sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
-  return Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+  keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+  if new_thread:
+    runnable = ThreadRunnable(target=keyboard.run_loop)
+    runnable.add_mutual_pause_slave(keyboard)
+    return runnable
+
+  return keyboard
+
