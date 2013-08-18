@@ -2,22 +2,18 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
+from pi3d import Display
+
 from echomesh.base import Config
 from echomesh.expression import Expression
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
 from echomesh.util.thread import Runnable
 
-pi3d = ImportIf.imp('pi3d')
-
 class Pi3dDisplay(Runnable.Runnable):
   def __init__(self):
     super(Pi3dDisplay, self).__init__()
     self.timeout = Expression.convert(Config.get('network', 'timeout'))
-    if not Config.get('load_module', 'pi3d'):
-      self.display = None
-      return
-
     keywords = {}
 
     background = Config.get('pi3d', 'background')
@@ -32,7 +28,7 @@ class Pi3dDisplay(Runnable.Runnable):
     for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
       keywords[k] = Config.get('pi3d', k)
 
-    self.display = pi3d.Display.create(**keywords)
+    self.display = Display.create(**keywords)
     Config.add_client(self)
     Shader.SHADER()  # Make sure that the shader is created in the main thread!
 
@@ -42,25 +38,14 @@ class Pi3dDisplay(Runnable.Runnable):
 
   def _on_run(self):
     super(Pi3dDisplay, self)._on_run()
-    if self.display:
-      self.display.first_time = True
-      self.display.is_running = True
+    self.display.first_time = True
+    self.display.is_running = True
 
   def _on_pause(self):
     super(Pi3dDisplay, self)._on_pause()
-    if self.display:
-      self.display.stop()
+    self.display.stop()
 
   def loop(self):
-    if False and not self.display:
-      return
     while self.is_running:
-      if self.display:
-        if self.display.loop_running():
-          pass
-        else:
-          self.pause()
-      else:
-        pass
-      # print('!!!!', self.timeout)
-      # time.sleep(self.timeout)
+      if not self.display.loop_running():
+        self.pause()
