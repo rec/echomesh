@@ -7,7 +7,7 @@ import time
 from echomesh.base import Config
 from echomesh.base import Quit
 from echomesh.element import ScoreMaster
-from echomesh.graphics import Display
+from echomesh.graphics import Pi3dDisplay
 from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
@@ -24,7 +24,7 @@ class Instance(MasterRunnable):
     self.peers = Peers.Peers(self)
     self.socket = PeerSocket.PeerSocket(self, self.peers)
 
-    self.display = Display.display()
+    self.display = Pi3dDisplay.Pi3dDisplay()
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
@@ -63,14 +63,10 @@ class Instance(MasterRunnable):
 
   def main(self):
     self.run()
-    if self.display:
-      self.display.loop()
-    else:
-      pass
+    self.display.loop()
     if self.keyboard.thread:
       self.keyboard.thread.join()
-    time.sleep(0.1)
-    # Prevents crashes if we startup and immediately shut down.
+    time.sleep(0.1)  # Prevents crashes in shutdown.
 
   def start_mic(self):
     if not self.mic:

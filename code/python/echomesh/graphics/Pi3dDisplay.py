@@ -1,12 +1,14 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from pi3d import Display
+import time
 
 from echomesh.base import Config
 from echomesh.expression import Expression
 from echomesh.graphics import Shader
 from echomesh.util import ImportIf
 from echomesh.util.thread import Runnable
+
+pi3d = ImportIf.imp('pi3d')
 
 class Pi3dDisplay(Runnable.Runnable):
   def __init__(self):
@@ -30,9 +32,8 @@ class Pi3dDisplay(Runnable.Runnable):
     for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
       keywords[k] = Config.get('pi3d', k)
 
-    self.display = Display.create(**keywords)
+    self.display = pi3d.Display.create(**keywords)
     Config.add_client(self)
-
     Shader.SHADER()  # Make sure that the shader is created in the main thread!
 
   def config_update(self, get):
@@ -51,6 +52,8 @@ class Pi3dDisplay(Runnable.Runnable):
       self.display.stop()
 
   def loop(self):
+    if False and not self.display:
+      return
     while self.is_running:
       if self.display:
         if self.display.loop_running():
@@ -58,8 +61,6 @@ class Pi3dDisplay(Runnable.Runnable):
         else:
           self.pause()
       else:
-        import time
-        time.sleep(0.001)
         pass
       # print('!!!!', self.timeout)
       # time.sleep(self.timeout)
