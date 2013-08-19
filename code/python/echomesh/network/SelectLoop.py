@@ -20,7 +20,7 @@ class SelectLoop(ThreadLoop.ThreadLoop):
 
   def config_update(self, get):
     self.timeout = Expression.convert(get('network', 'timeout'))
-    LOGGER.debug('timeout=%s', self.timeout)
+    LOGGER.vdebug('timeout=%s', self.timeout)
 
   def single_loop(self):
     try:

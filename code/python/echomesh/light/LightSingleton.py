@@ -39,9 +39,8 @@ class LightSingleton(Runnable):
     self._stop_lights()
 
   def add_client(self, client):
-    with self.lock:
-      self._make_lights()
-      self.lights.add_client(client)
+    self.lights.add_client(client)
+    self._make_lights()
 
   def remove_client(self, client):
     with self.lock:
@@ -50,15 +49,19 @@ class LightSingleton(Runnable):
       self._stop_lights()
 
   def _make_lights(self):
-    if not self.lights:
+    with self.lock:
+      if self.lights:
+        return
       classpath = _TYPE_MAP[Config.get('light', 'visualizer', 'type')]
       self.lights = Importer.imp(classpath, defer_failure=False)()
-      self.lights.start()
+    self.lights.start()
 
   def _stop_lights(self):
-    if self.lights and not (self.lights.has_clients() or self.owner_count > 0):
-      self.lights.pause()
-      self.lights = None
+    with self.lock:
+      if not self.lights or self.lights.has_clients() or self.owner_count > 0:
+        return
+      lights, self.lights = self.lights, None
+    lights.pause()
 
 _SINGLETON = LightSingleton()
 add_client = _SINGLETON.add_client

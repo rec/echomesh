@@ -26,7 +26,7 @@ class Keyboard(MasterRunnable):
     self.output = output
     self.alert_mode = False
 
-  def run_loop(self):
+  def loop(self):
     self._begin()
     while self.is_running:
       self._input_loop()
@@ -81,7 +81,7 @@ def keyboard(instance, new_thread=True):
   sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
   keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
   if new_thread:
-    runnable = ThreadRunnable(target=keyboard.run_loop)
+    runnable = ThreadRunnable(target=keyboard.loop)
     runnable.add_mutual_pause_slave(keyboard)
     return runnable
 

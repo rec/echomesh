@@ -2,6 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
+
 class ThreadLoop(ThreadRunnable):
   def __init__(self, single_loop=None, name=None, report_error=False,
                is_daemon=True):

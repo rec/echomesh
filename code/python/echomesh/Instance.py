@@ -74,7 +74,7 @@ class Instance(MasterRunnable):
       self.keyboard.loop()
     else:
       while self.is_running:
-        pass
+        time.sleep(0.1)
     time.sleep(0.1)  # Prevents crashes in shutdown.
 
   def start_mic(self):

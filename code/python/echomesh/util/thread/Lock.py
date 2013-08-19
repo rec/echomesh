@@ -3,12 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import threading
 import traceback
 
-DEBUG = not True
+FAKE = not True
+DEBUG = FAKE or not True
 SUSPICIOUS_LOCK = -1
-
-def print_traceback():
-  for line in traceback.format_stack():
-    print(line.strip())
 
 class _Locker(object):
   INDEX = 0
@@ -18,24 +15,40 @@ class _Locker(object):
     self.index = _Locker.INDEX
     _Locker.INDEX += 1
     print('--- Creating lock %d ---' % self.index)
-    print_traceback()
+    self.tb()
 
   def __enter__(self):
     print('entering lock', self.index)
-    if self.index == SUSPICIOUS_LOCK:
-      print_traceback()
+    self.tb()
     self.lock.__enter__()
     print('entered lock', self.index)
+
+  def tb(self):
+    if self.index == SUSPICIOUS_LOCK:
+      for line in traceback.format_stack():
+        print(line.strip())
 
   def __exit__(self, exc_type, exc_value, traceback):
     print('exiting lock', self.index)
     self.lock.__exit__(exc_type, exc_value, traceback)
     print('exited lock', self.index)
 
-def Lock():
-  lock = threading.Lock()
+class _FakeLock(object):
+  def __enter__(self):
+    pass
+
+  def __exit__(self, exc_type, exc_value, traceback):
+    pass
+
+
+def Lock(fake=False):
+  if True:
+    return _FakeLock()
+  lock = threading.RLock()
   return _Locker(lock) if DEBUG else lock
 
-def RLock():
+def RLock(fake=False):
+  if fake:
+    return _FakeLock()
   lock = threading.RLock()
   return _Locker(lock) if DEBUG else lock

@@ -16,10 +16,8 @@ class Maker(object):
       pattern_desc, attributes)
     self.attributes = attributes
     self.pattern_desc = pattern_desc
-    # LOGGER.debug('evaluate %s %s', self.pattern_desc, self.attributes, limit=20)
 
   def evaluate(self):
-    # LOGGER.debug('evaluate %s %s', self.pattern_desc, self.attributes)
     table = dict((k, Call.call(v)) for k, v in six.iteritems(self.table))
     if self.patterns:
       arg = [[p.evaluate() for p in self.patterns]]

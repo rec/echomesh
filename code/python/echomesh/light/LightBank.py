@@ -11,10 +11,10 @@ from echomesh.util.thread import Lock
 LOGGER = Log.logger(__name__)
 
 class LightBank(ThreadLoop):
-  def __init__(self, is_daemon=True):
-    super(LightBank, self).__init__(is_daemon=is_daemon)
+  def __init__(self, is_daemon=True, name='LightBank'):
+    super(LightBank, self).__init__(is_daemon=is_daemon, name=name)
     self.clients = set()
-    self.lock = Lock.Lock()
+    self.lock = Lock.Lock(fake=True)
     self.loops = 0
     self.data = None
 
@@ -27,6 +27,10 @@ class LightBank(ThreadLoop):
 
   def _after_thread_pause(self):
     self.clear()
+
+  def pause(self):
+    LOGGER.vdebug('LightBank.pause')
+    super(LightBank, self).pause()
 
   def add_client(self, client):
     with self.lock:
@@ -58,6 +62,7 @@ class LightBank(ThreadLoop):
     self._fill_data(client_lights, UnitConfig.get('light', 'brightness'))
     if self.is_running:
       self._display_lights()
+      LOGGER.vdebug('single_loop lights')
 
     if self.is_running:
       period = UnitConfig.get('light', 'visualizer', 'period')

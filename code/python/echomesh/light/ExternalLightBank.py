@@ -65,6 +65,7 @@ class ExternalLightBank(SpiLightBank):
     return config
 
   def config_update(self, get):
+    LOGGER.vdebug('config update')
     super(ExternalLightBank, self).config_update(get)
     config = self._fix_config(get)
 
@@ -97,5 +98,3 @@ class ExternalLightBank(SpiLightBank):
         ClientServer.instance().write(type='light', data=data)
       except:
         self._fail()
-
-
