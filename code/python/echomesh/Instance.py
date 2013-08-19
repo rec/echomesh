@@ -16,7 +16,7 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-KEYBOARD_IN_THREAD = True
+USE_KEYBOARD_THREAD = False
 
 class Instance(MasterRunnable):
   def __init__(self):
@@ -30,8 +30,8 @@ class Instance(MasterRunnable):
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
-      self.keyboard = Keyboard.keyboard(self,
-                                        KEYBOARD_IN_THREAD or self.display)
+      self.keyboard = Keyboard.keyboard(
+        self, USE_KEYBOARD_THREAD or self.display)
 
     osc_client = Config.get('osc', 'client', 'enable')
     osc_server = Config.get('osc', 'server', 'enable')
@@ -44,6 +44,7 @@ class Instance(MasterRunnable):
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.mic = None
+    self.timeout = Config.get('network', 'timeout')
     Quit.register_atexit(self.pause)
 
   def _on_pause(self):
@@ -70,12 +71,13 @@ class Instance(MasterRunnable):
       self.display.loop()
       if self.keyboard.thread:
         self.keyboard.thread.join()
-    elif not KEYBOARD_IN_THREAD and self.keyboard:
+    elif not USE_KEYBOARD_THREAD and self.keyboard:
       self.keyboard.loop()
     else:
       while self.is_running:
-        time.sleep(0.1)
-    time.sleep(0.1)  # Prevents crashes in shutdown.
+        time.sleep(self.timeout)
+    time.sleep(self.timeout)
+    # Prevents crashes if you start and stop echomesh very fast.
 
   def start_mic(self):
     if not self.mic:
