@@ -73,7 +73,6 @@ struct Config {
 };
 
 typedef uint8 ColorBytes[3];
-typedef std::vector<ColorBytes> ColorByteBank;
 typedef std::vector<Colour> ColorList;
 typedef std::vector<uint8> ByteList;
 

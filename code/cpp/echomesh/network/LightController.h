@@ -26,7 +26,6 @@ class LightController {
   FILE* file_;
   bool compressed_;
   ColorList colors_;
-  ColorByteBank bytes_;
   ByteList colorBytes_;
   Config config_;
   ColorBytes rgbOrder_;
