@@ -73,11 +73,10 @@ class Registry(object):
       load and entry.load()
       if (not command_only) or entry.function:
         words.append(key)
+    return Join.join_words(words)
 
   def keys(self):
     return self._registry.keys()
-
-    return Join.join_words(words)
 
   def dump(self, printer=print, load=True):
     for k, v in six.iteritems(self._registry):
