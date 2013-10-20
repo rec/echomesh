@@ -27,6 +27,8 @@ apt-get install \
  python-httplib2 \
  python-pip \
  python-pyaudio \
+ python-numpy \
+ python3-numpy \
  python2.7-dev \
  python3-dev \
  python3-pip \
@@ -42,8 +44,8 @@ echo &&\
 echo &&\
 echo "----------------------" &&\
 \
-pip install Pillow &&\
-pip-3.2 install Pillow &&\
+python2 -m pip install Pillow &&\
+python3 -m pip install Pillow &&\
 \
 \
 echo "----------------------" &&\
