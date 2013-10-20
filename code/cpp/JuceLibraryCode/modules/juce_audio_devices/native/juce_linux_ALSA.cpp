@@ -1199,7 +1199,7 @@ private:
     static String hintToString (const void* hints, const char* type)
     {
         char* const hint = snd_device_name_get_hint (hints, type);
-        const String s (hint);
+        const String s (CharPointer_UTF8(hint));
         ::free (hint);
         return s;
     }
