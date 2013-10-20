@@ -18,8 +18,8 @@ class Player {
   PlaybackAudioSource* source() { return &source_; }
 
  private:
-  AudioSourcePlayer player_;
   PlaybackAudioSource source_;
+  AudioSourcePlayer player_;
   AudioDeviceManager manager_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Player);
