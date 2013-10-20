@@ -1,6 +1,6 @@
-#network:
-#  client:
-#    binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Release/echomesh-client.app/Contents/MacOS/echomesh-client
+network:
+  client:
+    binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Release/echomesh-client.app/Contents/MacOS/echomesh-client
 
 midi:
   input:

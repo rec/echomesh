@@ -22,6 +22,7 @@ class LightReader : public ReadThread {
   LightReader(LightingWindow* window, const String& commandLine,
               PlaybackAudioSource* source);
   virtual ~LightReader();
+  void initialize();
 
  private:
   void config();
@@ -29,6 +30,9 @@ class LightReader : public ReadThread {
   ScopedPointer<AudioController> audioController_;
   ScopedPointer<LightController> lightController_;
   ScopedPointer<MidiController> midiController_;
+
+  LightingWindow* const lightingWindow_;
+  String const commandLine_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };

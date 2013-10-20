@@ -15,6 +15,7 @@ class Echomesh  : public JUCEApplication {
 
     readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
                                             player_.source());
+    readThread_->initialize();
     readThread_->startThread();
   }
 
