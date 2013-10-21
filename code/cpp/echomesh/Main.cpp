@@ -11,6 +11,8 @@ class Echomesh  : public JUCEApplication {
   bool moreThanOneInstanceAllowed()       { return false; }
 
   void initialise(const String& commandLine) {
+    signal(SIGPIPE, SIG_IGN);
+
     lightingWindow_ = new echomesh::LightingWindow;
 
     readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
