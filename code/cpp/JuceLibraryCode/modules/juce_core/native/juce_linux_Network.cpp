@@ -230,7 +230,7 @@ private:
         setsockopt (socketHandle, SOL_SOCKET, SO_RCVBUF, (char*) &receiveBufferSize, sizeof (receiveBufferSize));
         setsockopt (socketHandle, SOL_SOCKET, SO_KEEPALIVE, 0, 0);
 
-      #if JUCE_MAC
+      #if 1 && JUCE_MAC
         setsockopt (socketHandle, SOL_SOCKET, SO_NOSIGPIPE, 0, 0);
       #endif
 
