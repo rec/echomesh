@@ -46,8 +46,7 @@ def _make(path, value):
       MakeDirs.makedirs(path)
       _print_path(path)
     if is_dict:
-      import six
-      for k, v in six.iteritems(value):
+      for k, v in value.items():
         _make(os.path.join(path, k), v)
   elif exists:
     print('Not overwriting existing', path)
