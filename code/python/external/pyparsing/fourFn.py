@@ -116,7 +116,7 @@ def run_test():
             results = BNF().parseString( s, parseAll=True )
             val = evaluateStack( exprStack[:] )
         except ParseException as e:
-            print s, "failed parse:", str(pe)
+            print s, "failed parse:", str(e)
         except Exception as e:
             print s, "failed eval:", str(e)
         else:
