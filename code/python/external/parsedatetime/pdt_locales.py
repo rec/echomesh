@@ -31,10 +31,10 @@ class pdtLocale_base(object):
     """
     default values for Locales
     """
-    locale_keys = [ 'MonthOffsets', 'Months', 'WeekdayOffsets', 'Weekdays', 
-                    'dateFormats', 'dateSep', 'dayOffsets', 'dp_order', 
-                    'localeID', 'meridian', 'Modifiers', 're_sources', 're_values', 
-                    'shortMonths', 'shortWeekdays', 'timeFormats', 'timeSep', 'units', 
+    locale_keys = [ 'MonthOffsets', 'Months', 'WeekdayOffsets', 'Weekdays',
+                    'dateFormats', 'dateSep', 'dayOffsets', 'dp_order',
+                    'localeID', 'meridian', 'Modifiers', 're_sources', 're_values',
+                    'shortMonths', 'shortWeekdays', 'timeFormats', 'timeSep', 'units',
                     'uses24', 'usesMeridian' ]
 
     def __init__(self):
@@ -195,7 +195,7 @@ class pdtLocale_icu(pdtLocale_base):
             s = self.timeFormats['short']
 
             self.usesMeridian = 'a' in s
-            slef.uses24       = 'H' in s
+            self.uses24       = 'H' in s
 
               # '11:45 AM' or '11:45'
             s = o.format(datetime.datetime(2003, 10, 30, 11, 45))
