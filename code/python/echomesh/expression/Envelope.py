@@ -28,8 +28,8 @@ class Envelope(object):
     self.loops = kwds.get('loops', 1)
     self.last_time = self.times[-1]
 
-    from echomesh.expression import Expression
     length = kwds.get('length', self.last_time * self.loops)
+    from echomesh.expression import Expression
     self.length = Expression.convert(length, self.element)
 
     if self.length > 0:
@@ -54,6 +54,7 @@ class Envelope(object):
 
   def _set_constant(self, value):
     self._is_constant = True
+    from echomesh.expression import Expression
     self.value = Expression.convert(value, self.element)
     self.length = 0
 
