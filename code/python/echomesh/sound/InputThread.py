@@ -39,7 +39,7 @@ class InputThread(ThreadLoop):
         if 'Invalid sample rate' not in str(e):
           raise
     else:
-      raise Exception("Couldn't open audio device named %s." % name)
+      raise Exception("Couldn't open audio device named %s." % device_index)
 
   def single_loop(self):
     try:
