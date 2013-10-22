@@ -8,7 +8,7 @@ LOGGER = Log.logger(__name__)
 DEFAULT_PLAYER = '/usr/bin/omxplayer'
 
 class Video(Execute):
-  def __init__(self, description):
+  def __init__(self, parent, description):
     if 'binary' not in description:
       description['binary'] = DEFAULT_PLAYER
     super(Video, self).__init__(parent, description)
