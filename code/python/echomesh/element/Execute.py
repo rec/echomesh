@@ -23,11 +23,11 @@ class Execute(Element.Element):
 
   def _on_run(self):
     super(Execute, self)._on_run()
-    self.process = subprocess.Popen(command, _ARGS)
+    self.process = subprocess.Popen(self.command_line, _ARGS)
     Quit.register_atexit(self.pause)
 
-    result = popen.stdout.read()
-    if not popen.returncode:
+    result = self.process.stdout.read()
+    if not self.process.returncode:
       LOGGER.debug('Successful completion!')  # Send out a message.
     self.process = None
     self.pause()
