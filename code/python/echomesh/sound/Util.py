@@ -50,4 +50,4 @@ def to_numpy(frames, dtype, sample_width, channels):
   if channels == 1:
     return numpy.vstack((frames, numpy.array(frames)))
   else:
-    return Util.uninterleave(frames)
+    return uninterleave(frames)
