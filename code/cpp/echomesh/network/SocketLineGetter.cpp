@@ -55,6 +55,7 @@ void SocketLineGetter::writeSocket(const char* data, int size) {
 void SocketLineGetter::tryToConnect() {
   for (int attempts = 0; !connected_; ++attempts) {
     check(not desc_.tries or attempts <= desc_.tries, "Failed to connect");
+    check(desc_.port, "No port assigned.");
     connected_ = socket_.connect(desc_.server, desc_.port, desc_.retryTimeout);
   }
 }

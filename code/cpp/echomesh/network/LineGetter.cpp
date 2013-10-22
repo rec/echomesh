@@ -7,7 +7,7 @@ namespace echomesh {
 
 LineGetter* makeLineGetter(const String& command) {
   StringArray parts;
-  parts.addTokens(command, false);
+  // parts.addTokens(command, false);
   SocketDescription desc;
   desc.server = (parts.size() > 0) ? parts[0] : String("localhost");
   desc.port = (parts.size() > 1) ? parts[1].getIntValue() : 1239;
@@ -16,6 +16,11 @@ LineGetter* makeLineGetter(const String& command) {
   desc.debug = (parts.size() <= 4) or parts[4].toLowerCase() == "true";
   desc.tries = 0;
   desc.retryTimeout = 1000;
+
+  if (not desc.port) {
+    log("No port in LineGetter");
+    throw Exception("No port in LineGetter");
+  }
 
   return new SocketLineGetter(desc);
 }

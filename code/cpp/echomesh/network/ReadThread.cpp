@@ -27,9 +27,11 @@ ReadThread::~ReadThread() {
 
 void ReadThread::run() {
   string s, str;
+  log("starting read thread");
   while (not (threadShouldExit() or lineGetter_->eof())) {
     try {
       s = lineGetter_->getLine();
+      log("line: " + s + "\n");
       if (s.find("---")) {  // If we don't find a separator.
         accum_.add(String(s.data(), s.size()));
         continue;

@@ -4,15 +4,15 @@
 
 class Echomesh  : public JUCEApplication {
  public:
-  Echomesh() {}
+  Echomesh() {
+    echomesh::log("Starting echomesh.");
+  }
 
   const String getApplicationName()       { return ProjectInfo::projectName; }
   const String getApplicationVersion()    { return ProjectInfo::versionString; }
   bool moreThanOneInstanceAllowed()       { return false; }
 
   void initialise(const String& commandLine) {
-    signal(SIGPIPE, SIG_IGN);
-
     lightingWindow_ = new echomesh::LightingWindow;
 
     readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
