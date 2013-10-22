@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_FV8ZQO__
-#define __APPHEADERFILE_FV8ZQO__
+#ifndef __APPHEADERFILE_XEYPDN__
+#define __APPHEADERFILE_XEYPDN__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -37,9 +37,9 @@
 
 namespace ProjectInfo
 {
-    const char* const  projectName    = "test";
+    const char* const  projectName    = "echomesh-client";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_FV8ZQO__
+#endif   // __APPHEADERFILE_XEYPDN__
