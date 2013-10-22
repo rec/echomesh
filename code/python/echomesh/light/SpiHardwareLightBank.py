@@ -27,7 +27,7 @@ class SpiHardwareLightBank(SpiLightBank):
 
     super(SpiHardwareLightBank, self).__init__(count=count)
     order = Config.get('light', 'hardware', 'rgb_order')
-    self.order = getattr(LightBank, order.upper(), None)
+    self.order = getattr(SpiHardwareLightBank, order.upper(), None)
     if not self.order:
       LOGGER.error("Didn't understand order %s", order)
     self._clear, self._bank = self._light_array(), self._light_array()
