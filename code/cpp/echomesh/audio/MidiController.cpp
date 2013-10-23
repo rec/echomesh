@@ -11,7 +11,7 @@ namespace echomesh {
 
 using namespace std;
 
-MidiController::MidiController(Node* node)
+MidiController::MidiController(const Node& node)
   : node_(node),
     midiInput_(new ConfigMidiInput(this)),
     midiOutput_(new ConfigMidiOutput) {
@@ -53,12 +53,12 @@ static MidiMessage makeMidiMessage(const Node& data) {
 }
 
 void MidiController::midi() {
-  midiOutput_->sendMessageNow(makeMidiMessage((*node_)["data"]));
+  midiOutput_->sendMessageNow(makeMidiMessage(node_["data"]));
 }
 
 void MidiController::config() {
   Config config;
-  (*node_)["data"] >> config;
+  node_["data"] >> config;
   midiInput_->setConfig(config.midi.input);
   midiOutput_->setConfig(config.midi.output);
 }
