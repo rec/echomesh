@@ -25,7 +25,7 @@ uint8 LATCH[LATCH_BYTE_COUNT] = {0};
 
 #endif
 
-LightController::LightController(LightingWindow* wind, Node* node)
+LightController::LightController(LightingWindow* wind, const Node& node)
     : lightingWindow_(wind),
       node_(node),
 #if 0 && JUCE_LINUX
@@ -56,7 +56,7 @@ void LightController::enforceSizes() {
 }
 
 void LightController::config() {
-  const Node& data = (*node_)["data"];
+  const Node& data = node_["data"];
   data >> config_;
   enforceSizes();
 
@@ -109,7 +109,7 @@ void LightController::displayLights() {
 void LightController::light() {
   compressed_ = true;
   string lights;
-  const Node& lightNode = (*node_)["data"];
+  const Node& lightNode = node_["data"];
   if (lightNode.size() == 1) {
     lightNode[0] >> lights;
   } else {

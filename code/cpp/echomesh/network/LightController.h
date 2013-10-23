@@ -9,7 +9,7 @@ class LightingWindow;
 
 class LightController {
  public:
-  LightController(LightingWindow*, Node*);
+  LightController(LightingWindow*, const Node&);
   virtual ~LightController();
 
   void clear();
@@ -21,7 +21,7 @@ class LightController {
   uint8 getLedColor(float color) const;
 
   LightingWindow* const lightingWindow_;
-  Node* const node_;
+  const Node& node_;
 
   FILE* file_;
   bool compressed_;
