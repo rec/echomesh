@@ -12,7 +12,7 @@ class SampleAudioSource;
 
 class AudioController {
  public:
-  AudioController(Node*, PlaybackAudioSource*);
+  AudioController(const Node&, PlaybackAudioSource*);
   virtual ~AudioController() {}
 
   void audio();
@@ -22,7 +22,7 @@ class AudioController {
   typedef std::map<Hash, SampleAudioSource*> Sources;
 
   Sources sources_;
-  Node* node_;
+  const Node& node_;
   PlaybackAudioSource* playbackAudioSource_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioController);

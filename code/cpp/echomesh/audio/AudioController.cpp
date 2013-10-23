@@ -16,12 +16,12 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(Node* node, PlaybackAudioSource* source)
+AudioController::AudioController(const Node& node, PlaybackAudioSource* source)
     : node_(node), playbackAudioSource_(source) {
 }
 
 void AudioController::audio() {
-  const Node& data = (*node_)["data"];
+  const Node& data = node_["data"];
   string type;
   Hash hash;
   data["type"] >> type;
