@@ -3,8 +3,12 @@
 
 namespace echomesh {
 
-void foo();
+    class Foo{
 
+       public:
+            void bar();
+
+    };
 }
 
 #endif  // __TINY__H

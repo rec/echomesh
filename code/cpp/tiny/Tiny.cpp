@@ -1,9 +1,7 @@
 #include "Tiny.h"
 
-namespace echomesh {
+using namespace echomesh;
 
-void foo() {
-  // Do nothing.
-}
-
+void Foo::bar(){
+    //Do Nothing
 }
