@@ -44,14 +44,14 @@ def inject(light_sets, mapping, length):
 
   return [_map(i) for i in range(max(int(length), 0))]
 
-@maker('begin', 'length', 'rollover', 'skip')
+@maker('offset', 'length', 'rollover', 'skip')
 def insert(light_sets, target=None, offset=None, length=None, rollover=True,
            skip=None):
   assert len(light_sets) == 1
   light_set = light_sets[0]
 
   skip = int(skip or 1)
-  offset = int(offset or 0)
+  offset = int((offset and offset.evaluate()) or 0)
   if length is None:
     length = Config.get('light', 'count') if target is None else len(target)
 

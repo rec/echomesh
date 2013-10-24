@@ -60,8 +60,8 @@ LightReader::LightReader(LightingWindow* wind, const String& commandLine,
       audioController_(new AudioController(node_, source)),
       lightController_(new LightController(wind, node_)),
       midiController_(new MidiController(node_)),
-      lightingWindow_(wind),
-      commandLine_(commandLine) {
+      lightingWindow_(wind) /*,
+      commandLine_(commandLine) */{
 }
 
 void LightReader::initialize() {
