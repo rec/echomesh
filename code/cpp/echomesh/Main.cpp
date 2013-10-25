@@ -15,6 +15,7 @@ class Echomesh  : public JUCEApplication {
   void initialise(const String& commandLine) {
     lightingWindow_ = new echomesh::LightingWindow;
 
+    echomesh::log("commandLine: " + commandLine);
     readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
                                             player_.source());
     readThread_->initialize();

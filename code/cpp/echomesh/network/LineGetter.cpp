@@ -14,7 +14,7 @@ LineGetter* makeLineGetter(const String& command) {
   desc.port = (parts.size() > 1) ? parts[1].getIntValue() : 1239;
   desc.timeout = 1000 * ((parts.size() > 2) ? parts[2].getFloatValue() : 1.0);
   desc.bufferSize = (parts.size() > 3) ? parts[3].getIntValue() : 4096;
-  desc.debug = (parts.size() <= 4) or parts[4].toLowerCase() == "true";
+  desc.debug = not ((parts.size() <= 4) and parts[4].toLowerCase() != "true");
   desc.tries = 0;
   desc.retryTimeout = 1000;
 

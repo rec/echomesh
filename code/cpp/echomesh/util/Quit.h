@@ -12,6 +12,7 @@ struct QuitMessage : public CallbackMessage {
 };
 
 inline void quit() {
+  log("Quit requested");
   (new QuitMessage)->post();
 }
 

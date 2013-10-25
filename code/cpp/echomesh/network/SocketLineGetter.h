@@ -29,6 +29,10 @@ class SocketLineGetter : public LineGetter {
 
   void writeSocket(const char*, int);
   virtual bool debug() const { return desc_.debug; }
+  virtual void requestQuit() {
+    ScopedLock l(lock_);
+    quitRequested_ = true;
+  }
 
  private:
   string readSocket();
@@ -41,6 +45,8 @@ class SocketLineGetter : public LineGetter {
   const SocketDescription desc_;
   bool connected_;
   bool eof_;
+  bool quitRequested_;
+  CriticalSection lock_;
 
   ScopedPointer<LineQueue> lineQueue_;
 

@@ -22,6 +22,7 @@ ReadThread::ReadThread(const String& commandLine)
 }
 
 ReadThread::~ReadThread() {
+  lineGetter_->requestQuit();
   stopThread(1000);
   rec::stl::deleteMapPointers(&messageMap_);
 }
@@ -32,13 +33,19 @@ void ReadThread::run() {
   while (not (threadShouldExit() or lineGetter_->eof())) {
     try {
       s = lineGetter_->getLine();
-      log("line: " + s + "\n");
+
+      if (threadShouldExit())
+        break;
+
       if (s.find("---")) {  // If we don't find a separator.
         accum_.add(String(s.data(), s.size()));
         continue;
       }
 
-      parse(accum_.joinIntoString("").toStdString());
+      String yaml = accum_.joinIntoString("").trim();
+      if (not yaml.length())
+        continue;
+      parse(yaml.toStdString());
       accum_.clear();
     } catch (YAML::Exception& e) {
       log(string("Yaml parsing error: ") + e.what() + (" in:\n" + str));
@@ -53,12 +60,8 @@ void ReadThread::run() {
 
 void ReadThread::parse(const string& str) {
   ScopedLock l(lock_);
-  if (lineGetter_->debug()) {
-    if (false)
-      log(str, false);
-    else
-      log("ReadThread::parse");
-  }
+  if (lineGetter_->debug())
+    log(str, false);
 
   istringstream s(str);
   YAML::Parser parser(s);

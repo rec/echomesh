@@ -13,7 +13,11 @@ const bool logAllSocketData = not true;
 static SocketLineGetter* INSTANCE = NULL;
 
 SocketLineGetter::SocketLineGetter(const SocketDescription& desc)
-    : buffer_(desc.bufferSize), desc_(desc), connected_(false), eof_(false),
+    : buffer_(desc.bufferSize),
+      desc_(desc),
+      connected_(false),
+      eof_(false),
+      quitRequested_(false),
       lineQueue_(new LineQueue) {
   INSTANCE = this;
 }
@@ -45,13 +49,18 @@ void SocketLineGetter::writeSocket(const char* data, int size) {
   string s(data, size);
   s += YAML_SEPARATOR;
 
+  log("SocketLineGetter::tryToConnect write");
   tryToConnect();
   if (socket_.write(s.data(), s.size()) < 0)
     log("ERROR attempting to communicate with the master.");
 }
 
 void SocketLineGetter::tryToConnect() {
-  log("SocketLineGetter::tryToConnect " + desc_.server);
+  if (connected_)
+    return;
+
+  log("SocketLineGetter::tryToConnect " + desc_.server +
+      ":" + String(desc_.port));
   check(desc_.port, "No port assigned.");
   for (int attempts = 0; !connected_; ++attempts) {
     check(not desc_.tries or attempts <= desc_.tries, "Failed to connect");
@@ -61,21 +70,22 @@ void SocketLineGetter::tryToConnect() {
 }
 
 string SocketLineGetter::readSocket() {
-  log("starting to readSocket");
   tryToConnect();
-  log("entering readSocket loop");
   while (true) {
-    check(socket_.isConnected(), "StreamingSocket: Socket disconnected.");
+    if (not socket_.isConnected())
+      return "";
 
-    log("waiting until ready");
+    {
+      ScopedLock l(lock_);
+      if (quitRequested_)
+        return "";
+    }
     int isReady = socket_.waitUntilReady(true, desc_.timeout);
     if (not isReady)
       continue;
 
     check(isReady >= 0, "StreamingSocket wait error");
     check(socket_.isConnected(), "Socket was ready, then disconnected.");
-
-    log("SocketLineGetter::readSocket ready");
 
     int read = socket_.read(&buffer_.front(), buffer_.size(), false);
 
