@@ -18,7 +18,7 @@ class ClientServer(Server):
   def __init__(self):
     # TODO: the idea of not calling super.__init__ here is a hack - come up
     # with a better way.
-    LOGGER.vdebug('Creating ClientServer')
+    LOGGER.debug('Creating ClientServer')
     ClientServer.INSTANCE = self
     self.process = None
     self.constructed = False
@@ -50,15 +50,15 @@ class ClientServer(Server):
         args['stdout'] = subprocess.PIPE
 
       command = Client.make_command()
-      LOGGER.vdebug("About to start client process: '%s'", command)
+      LOGGER.debug("About to start client process: '%s'", command)
       try:
         self.process = subprocess.Popen(command, **args)
       except:
         LOGGER.error("Couldn't start the subprocess with command '%s'", command)
       else:
-        LOGGER.vdebug('Client process started!')
+        LOGGER.debug('Client process started!')
     elif self.process:
-      LOGGER.vdebug('Not starting client: the configuration said not to.')
+      LOGGER.debug('Not starting client: the configuration said not to.')
 
   def read_callback(self, data):
     t = data.get('type')
@@ -72,6 +72,11 @@ class ClientServer(Server):
       Config.assign(['light.visualizer.top_left=%s' % data['top_left']])
 
   def kill(self):
+    try:
+      self.write(type='quit')
+    except:
+      pass
+
     try:
       self.process.terminate()
     except:
