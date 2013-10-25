@@ -6,6 +6,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
+LOGGING = True
+
 class LoggingServer(SocketServer.TCPServer):
   def close_request(self, request):
     LOGGER.info('Closing request %s', request)
@@ -33,7 +35,7 @@ class LoggingServer(SocketServer.TCPServer):
 
 
 def make_server(callback, host, port, timeout, logging, allow_reuse_address):
-  maker = LoggingServer if logging else SocketServer.TCPServer
+  maker = LoggingServer if (logging or LOGGING) else SocketServer.TCPServer
   class Handler(SocketServer.StreamRequestHandler):
     def handle(self):
       callback(self)

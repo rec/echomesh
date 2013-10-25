@@ -28,7 +28,7 @@ def _write(text, flush=False):
 class Server(ThreadRunnable):
   def __init__(self, host, port, timeout, read_callback=None, max_queue_size=24,
                logging=False, allow_reuse_address=True, debug=False):
-    LOGGER.vdebug('Creating Server')
+    LOGGER.debug('Creating Server')
     super(Server, self).__init__()
     self.timeout = timeout
     self.queue = None
@@ -40,10 +40,10 @@ class Server(ThreadRunnable):
     self.packets = 0
     self.lock = Lock.Lock()
     self.handler = None
-    LOGGER.vdebug('About to open IP server %s:%s', host, port)
+    LOGGER.debug('About to open IP server %s:%s', host, port)
     self.server = ServerMaker.make_server(
       self._handle, host, port, timeout, logging, allow_reuse_address)
-    LOGGER.vdebug('IP server opened')
+    LOGGER.debug('IP server opened')
     self.line_reader = LineReader(read_callback)
 
   def target(self):
@@ -64,7 +64,7 @@ class Server(ThreadRunnable):
       self.queue.put(data)
 
   def _handle(self, handler):
-    LOGGER.vdebug('IP connection has started up.')
+    LOGGER.debug('IP connection has started up.')
     with self.lock:
       self.handler = handler
       for c in self.config:
@@ -74,7 +74,7 @@ class Server(ThreadRunnable):
         self._write(self.queue.get(False))
       except queue.Empty:
         break
-    LOGGER.vdebug('configuration has been sent.')
+    LOGGER.debug('configuration has been sent.')
 
     while self.is_running:
       with self.lock:

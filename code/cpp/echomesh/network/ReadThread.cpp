@@ -22,6 +22,7 @@ ReadThread::ReadThread(const String& commandLine)
 }
 
 ReadThread::~ReadThread() {
+  stopThread(1000);
   rec::stl::deleteMapPointers(&messageMap_);
 }
 
@@ -46,13 +47,18 @@ void ReadThread::run() {
       break;
     }
   }
+  log("quitting");
   ::echomesh::quit();
 }
 
 void ReadThread::parse(const string& str) {
   ScopedLock l(lock_);
-  if (lineGetter_->debug())
-    log(str, false);
+  if (lineGetter_->debug()) {
+    if (false)
+      log(str, false);
+    else
+      log("ReadThread::parse");
+  }
 
   istringstream s(str);
   YAML::Parser parser(s);
