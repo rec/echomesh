@@ -1,33 +1,29 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
 
-#ifndef __JUCE_VALUETREE_JUCEHEADER__
-#define __JUCE_VALUETREE_JUCEHEADER__
-
-#include "juce_Value.h"
-#include "../undomanager/juce_UndoManager.h"
+#ifndef JUCE_VALUETREE_H_INCLUDED
+#define JUCE_VALUETREE_H_INCLUDED
 
 
 //==============================================================================
@@ -83,16 +79,16 @@ public:
         Like an XmlElement, each ValueTree node has a type, which you can access with
         getType() and hasType().
     */
-    explicit ValueTree (const Identifier type);
+    explicit ValueTree (Identifier type);
 
     /** Creates a reference to another ValueTree. */
-    ValueTree (const ValueTree& other);
+    ValueTree (const ValueTree&);
 
     /** Makes this object reference another node. */
-    ValueTree& operator= (const ValueTree& other);
+    ValueTree& operator= (const ValueTree&);
 
    #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
-    ValueTree (ValueTree&& other) noexcept;
+    ValueTree (ValueTree&&) noexcept;
    #endif
 
     /** Destructor. */
@@ -102,13 +98,13 @@ public:
         Note that this isn't a value comparison - two independently-created trees which
         contain identical data are not considered equal.
     */
-    bool operator== (const ValueTree& other) const noexcept;
+    bool operator== (const ValueTree&) const noexcept;
 
     /** Returns true if this and the other node refer to different underlying structures.
         Note that this isn't a value comparison - two independently-created trees which
         contain identical data are not considered equal.
     */
-    bool operator!= (const ValueTree& other) const noexcept;
+    bool operator!= (const ValueTree&) const noexcept;
 
     /** Performs a deep comparison between the properties and children of two trees.
         If all the properties and children of the two trees are the same (recursively), this
@@ -116,7 +112,7 @@ public:
         The normal operator==() only checks whether two trees refer to the same shared data
         structure, so use this method if you need to do a proper value comparison.
     */
-    bool isEquivalentTo (const ValueTree& other) const;
+    bool isEquivalentTo (const ValueTree&) const;
 
     //==============================================================================
     /** Returns true if this node refers to some valid data.
@@ -496,7 +492,7 @@ public:
 
 private:
     //==============================================================================
-    class SharedObject;
+    JUCE_PUBLIC_IN_DLL_BUILD (class SharedObject)
     friend class SharedObject;
 
     ReferenceCountedObjectPtr<SharedObject> object;
@@ -524,4 +520,4 @@ private:
 };
 
 
-#endif   // __JUCE_VALUETREE_JUCEHEADER__
+#endif   // JUCE_VALUETREE_H_INCLUDED

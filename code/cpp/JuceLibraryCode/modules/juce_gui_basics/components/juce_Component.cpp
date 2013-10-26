@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -174,6 +173,63 @@ private:
     JUCE_DECLARE_NON_COPYABLE (MouseListenerList)
 };
 
+//==============================================================================
+struct ScalingHelpers
+{
+    template <typename PointOrRect>
+    static PointOrRect unscaledScreenPosToScaled (float scale, PointOrRect pos) noexcept
+    {
+        return scale != 1.0f ? pos / scale : pos;
+    }
+
+    template <typename PointOrRect>
+    static PointOrRect scaledScreenPosToUnscaled (float scale, PointOrRect pos) noexcept
+    {
+        return scale != 1.0f ? pos * scale : pos;
+    }
+
+    // For these, we need to avoid getSmallestIntegerContainer being used, which causes
+    // judder when moving windows
+    static Rectangle<int> unscaledScreenPosToScaled (float scale, const Rectangle<int>& pos) noexcept
+    {
+        return scale != 1.0f ? Rectangle<int> (roundToInt (pos.getX() / scale),
+                                               roundToInt (pos.getY() / scale),
+                                               roundToInt (pos.getWidth() / scale),
+                                               roundToInt (pos.getHeight() / scale)) : pos;
+    }
+
+    static Rectangle<int> scaledScreenPosToUnscaled (float scale, Rectangle<int>& pos) noexcept
+    {
+        return scale != 1.0f ? Rectangle<int> (roundToInt (pos.getX() * scale),
+                                               roundToInt (pos.getY() * scale),
+                                               roundToInt (pos.getWidth() * scale),
+                                               roundToInt (pos.getHeight() * scale)) : pos;
+    }
+
+    template <typename PointOrRect>
+    static PointOrRect unscaledScreenPosToScaled (PointOrRect pos) noexcept
+    {
+        return unscaledScreenPosToScaled (Desktop::getInstance().getGlobalScaleFactor(), pos);
+    }
+
+    template <typename PointOrRect>
+    static PointOrRect scaledScreenPosToUnscaled (PointOrRect pos) noexcept
+    {
+        return scaledScreenPosToUnscaled (Desktop::getInstance().getGlobalScaleFactor(), pos);
+    }
+
+    template <typename PointOrRect>
+    static PointOrRect unscaledScreenPosToScaled (const Component& comp, PointOrRect pos) noexcept
+    {
+        return unscaledScreenPosToScaled (comp.getDesktopScaleFactor(), pos);
+    }
+
+    template <typename PointOrRect>
+    static PointOrRect scaledScreenPosToUnscaled (const Component& comp, PointOrRect pos) noexcept
+    {
+        return scaledScreenPosToUnscaled (comp.getDesktopScaleFactor(), pos);
+    }
+};
 
 //==============================================================================
 struct Component::ComponentHelpers
@@ -185,56 +241,106 @@ struct Component::ComponentHelpers
     }
    #endif
 
-    static Identifier getColourPropertyId (const int colourId)
+    static Identifier getColourPropertyId (int colourId)
     {
-        String s;
-        s.preallocateBytes (32);
-        s << "jcclr_" << String::toHexString (colourId);
-        return s;
+        char reversedHex[32];
+        char* t = reversedHex;
+
+        for (unsigned int v = (unsigned int) colourId;;)
+        {
+            *t++ = "0123456789abcdef" [(int) (v & 15)];
+            v >>= 4;
+
+            if (v == 0)
+                break;
+        }
+
+        char destBuffer[32];
+        char* dest = destBuffer;
+        memcpy (dest, "jcclr_", 6);
+        dest += 6;
+
+        while (t > reversedHex)
+            *dest++ = *--t;
+
+        *dest++ = 0;
+        return destBuffer;
     }
 
     //==============================================================================
     static inline bool hitTest (Component& comp, Point<int> localPoint)
     {
         return isPositiveAndBelow (localPoint.x, comp.getWidth())
-                 && isPositiveAndBelow (localPoint.y, comp.getHeight())
-                 && comp.hitTest (localPoint.x, localPoint.y);
+            && isPositiveAndBelow (localPoint.y, comp.getHeight())
+            && comp.hitTest (localPoint.x, localPoint.y);
     }
 
-    static Point<int> convertFromParentSpace (const Component& comp, Point<int> pointInParentSpace)
+    // converts an unscaled position within a peer to the local position within that peer's component
+    template <typename PointOrRect>
+    static PointOrRect rawPeerPositionToLocal (const Component& comp, PointOrRect pos) noexcept
     {
-        if (comp.affineTransform == nullptr)
-            return pointInParentSpace - comp.getPosition();
+        if (comp.isTransformed())
+            pos = pos.transformedBy (comp.getTransform().inverted());
 
-        return pointInParentSpace.toFloat().transformedBy (comp.affineTransform->inverted()).toInt() - comp.getPosition();
+        return ScalingHelpers::unscaledScreenPosToScaled (comp, pos);
     }
 
-    static Rectangle<int> convertFromParentSpace (const Component& comp, const Rectangle<int>& areaInParentSpace)
+    // converts a position within a peer's component to the unscaled position within the peer
+    template <typename PointOrRect>
+    static PointOrRect localPositionToRawPeerPos (const Component& comp, PointOrRect pos) noexcept
     {
-        if (comp.affineTransform == nullptr)
-            return areaInParentSpace - comp.getPosition();
+        if (comp.isTransformed())
+            pos = pos.transformedBy (comp.getTransform());
 
-        return areaInParentSpace.toFloat().transformed (comp.affineTransform->inverted()).getSmallestIntegerContainer() - comp.getPosition();
+        return ScalingHelpers::scaledScreenPosToUnscaled (comp, pos);
     }
 
-    static Point<int> convertToParentSpace (const Component& comp, Point<int> pointInLocalSpace)
+    template <typename PointOrRect>
+    static PointOrRect convertFromParentSpace (const Component& comp, PointOrRect pointInParentSpace)
     {
-        if (comp.affineTransform == nullptr)
-            return pointInLocalSpace + comp.getPosition();
+        if (comp.affineTransform != nullptr)
+            pointInParentSpace = pointInParentSpace.transformedBy (comp.affineTransform->inverted());
 
-        return (pointInLocalSpace + comp.getPosition()).toFloat().transformedBy (*comp.affineTransform).toInt();
+        if (comp.isOnDesktop())
+        {
+            if (ComponentPeer* peer = comp.getPeer())
+                pointInParentSpace = ScalingHelpers::unscaledScreenPosToScaled
+                                        (comp, peer->globalToLocal (ScalingHelpers::scaledScreenPosToUnscaled (pointInParentSpace)));
+            else
+                jassertfalse;
+        }
+        else
+        {
+            pointInParentSpace -= comp.getPosition();
+        }
+
+        return pointInParentSpace;
     }
 
-    static Rectangle<int> convertToParentSpace (const Component& comp, const Rectangle<int>& areaInLocalSpace)
+    template <typename PointOrRect>
+    static PointOrRect convertToParentSpace (const Component& comp, PointOrRect pointInLocalSpace)
     {
-        if (comp.affineTransform == nullptr)
-            return areaInLocalSpace + comp.getPosition();
+        if (comp.isOnDesktop())
+        {
+            if (ComponentPeer* peer = comp.getPeer())
+                pointInLocalSpace = ScalingHelpers::unscaledScreenPosToScaled
+                                        (peer->localToGlobal (ScalingHelpers::scaledScreenPosToUnscaled (comp, pointInLocalSpace)));
+            else
+                jassertfalse;
+        }
+        else
+        {
+            pointInLocalSpace += comp.getPosition();
+        }
 
-        return (areaInLocalSpace + comp.getPosition()).toFloat().transformed (*comp.affineTransform).getSmallestIntegerContainer();
+        if (comp.affineTransform != nullptr)
+            pointInLocalSpace = pointInLocalSpace.transformedBy (*comp.affineTransform);
+
+        return pointInLocalSpace;
     }
 
-    template <typename Type>
-    static Type convertFromDistantParentSpace (const Component* parent, const Component& target, const Type& coordInParent)
+    template <typename PointOrRect>
+    static PointOrRect convertFromDistantParentSpace (const Component* parent, const Component& target, const PointOrRect& coordInParent)
     {
         const Component* const directParent = target.getParentComponent();
         jassert (directParent != nullptr);
@@ -245,8 +351,8 @@ struct Component::ComponentHelpers
         return convertFromParentSpace (target, convertFromDistantParentSpace (parent, *directParent, coordInParent));
     }
 
-    template <typename Type>
-    static Type convertCoordinate (const Component* target, const Component* source, Type p)
+    template <typename PointOrRect>
+    static PointOrRect convertCoordinate (const Component* target, const Component* source, PointOrRect p)
     {
         while (source != nullptr)
         {
@@ -256,16 +362,8 @@ struct Component::ComponentHelpers
             if (source->isParentOf (target))
                 return convertFromDistantParentSpace (source, *target, p);
 
-            if (source->isOnDesktop())
-            {
-                p = source->getPeer()->localToGlobal (p);
-                source = nullptr;
-            }
-            else
-            {
-                p = convertToParentSpace (*source, p);
-                source = source->getParentComponent();
-            }
+            p = convertToParentSpace (*source, p);
+            source = source->getParentComponent();
         }
 
         jassert (source == nullptr);
@@ -274,10 +372,7 @@ struct Component::ComponentHelpers
 
         const Component* const topLevelComp = target->getTopLevelComponent();
 
-        if (topLevelComp->isOnDesktop())
-            p = topLevelComp->getPeer()->globalToLocal (p);
-        else
-            p = convertFromParentSpace (*topLevelComp, p);
+        p = convertFromParentSpace (*topLevelComp, p);
 
         if (topLevelComp == target)
             return p;
@@ -327,7 +422,7 @@ struct Component::ComponentHelpers
         return nothingChanged;
     }
 
-    static void subtractObscuredRegions (const Component& comp, RectangleList& result,
+    static void subtractObscuredRegions (const Component& comp, RectangleList<int>& result,
                                          Point<int> delta, const Rectangle<int>& clipRect,
                                          const Component* const compToAvoid)
     {
@@ -584,7 +679,7 @@ void Component::addToDesktop (int styleWanted, void* nativeWindowToAttachTo)
             Desktop::getInstance().addDesktopComponent (this);
 
             bounds.setPosition (topLeft);
-            peer->setBounds (bounds, false);
+            peer->updateBounds();
 
             if (oldRenderingEngine >= 0)
                 peer->setCurrentRenderingEngine (oldRenderingEngine);
@@ -665,6 +760,8 @@ void Component::userTriedToCloseWindow()
 
 void Component::minimisationStateChanged (bool) {}
 
+float Component::getDesktopScaleFactor() const  { return Desktop::getInstance().getGlobalScaleFactor(); }
+
 //==============================================================================
 void Component::setOpaque (const bool shouldBeOpaque)
 {
@@ -689,16 +786,21 @@ bool Component::isOpaque() const noexcept
 class StandardCachedComponentImage  : public CachedComponentImage
 {
 public:
-    StandardCachedComponentImage (Component& c) noexcept : owner (c) {}
+    StandardCachedComponentImage (Component& c) noexcept : owner (c), scale (1.0f) {}
 
-    void paint (Graphics& g)
+    void paint (Graphics& g) override
     {
-        const Rectangle<int> bounds (owner.getLocalBounds());
+        scale = g.getInternalContext().getPhysicalPixelScaleFactor();
+        const Rectangle<int> compBounds (owner.getLocalBounds());
+        const Rectangle<int> imageBounds (compBounds * scale);
 
-        if (image.isNull() || image.getBounds() != bounds)
+        if (image.isNull() || image.getBounds() != imageBounds)
         {
-            image = Image (owner.isOpaque() ? Image::RGB : Image::ARGB,
-                           jmax (1, bounds.getWidth()), jmax (1, bounds.getHeight()), ! owner.isOpaque());
+            image = Image (owner.isOpaque() ? Image::RGB
+                                            : Image::ARGB,
+                           jmax (1, imageBounds.getWidth()),
+                           jmax (1, imageBounds.getHeight()),
+                           ! owner.isOpaque());
 
             validArea.clear();
         }
@@ -715,28 +817,31 @@ public:
                 if (! owner.isOpaque())
                 {
                     lg.setFill (Colours::transparentBlack);
-                    lg.fillRect (bounds, true);
+                    lg.fillRect (imageBounds, true);
                     lg.setFill (Colours::black);
                 }
 
+                lg.addTransform (AffineTransform::scale (scale));
                 owner.paintEntireComponent (imG, true);
             }
         }
 
-        validArea = bounds;
+        validArea = imageBounds;
 
         g.setColour (Colours::black.withAlpha (owner.getAlpha()));
-        g.drawImageAt (image, 0, 0);
+        g.drawImageTransformed (image, AffineTransform::scale (compBounds.getWidth()  / (float) imageBounds.getWidth(),
+                                                               compBounds.getHeight() / (float) imageBounds.getHeight()), false);
     }
 
-    void invalidateAll()                            { validArea.clear(); }
-    void invalidate (const Rectangle<int>& area)    { validArea.subtract (area); }
-    void releaseResources()                         { image = Image::null; }
+    bool invalidateAll() override                            { validArea.clear(); return true; }
+    bool invalidate (const Rectangle<int>& area) override    { validArea.subtract (area * scale); return true; }
+    void releaseResources() override                         { image = Image::null; }
 
 private:
     Image image;
-    RectangleList validArea;
+    RectangleList<int> validArea;
     Component& owner;
+    float scale;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StandardCachedComponentImage)
 };
@@ -1050,7 +1155,7 @@ void Component::setBounds (const int x, const int y, int w, int h)
 
         if (flags.hasHeavyweightPeerFlag)
             if (ComponentPeer* const peer = getPeer())
-                peer->setBounds (getBounds(), false);
+                peer->updateBounds();
 
         sendMovedResizedMessages (wasMoved, wasResized);
     }
@@ -1168,7 +1273,7 @@ void Component::setBoundsInset (const BorderSize<int>& borders)
 }
 
 void Component::setBoundsToFit (int x, int y, int width, int height,
-                                const Justification& justification,
+                                Justification justification,
                                 const bool onlyReduceInSize)
 {
     // it's no good calling this method unless both the component and
@@ -1209,11 +1314,6 @@ void Component::setBoundsToFit (int x, int y, int width, int height,
 }
 
 //==============================================================================
-bool Component::isTransformed() const noexcept
-{
-    return affineTransform != nullptr;
-}
-
 void Component::setTransform (const AffineTransform& newTransform)
 {
     // If you pass in a transform with no inverse, the component will have no dimensions,
@@ -1245,6 +1345,11 @@ void Component::setTransform (const AffineTransform& newTransform)
         repaint();
         sendMovedResizedMessages (false, false);
     }
+}
+
+bool Component::isTransformed() const noexcept
+{
+    return affineTransform != nullptr;
 }
 
 AffineTransform Component::getTransform() const
@@ -1296,7 +1401,7 @@ bool Component::contains (Point<int> point)
 
         if (flags.hasHeavyweightPeerFlag)
             if (const ComponentPeer* const peer = getPeer())
-                return peer->contains (point, true);
+                return peer->contains (ComponentHelpers::localPositionToRawPeerPos (*this, point), true);
     }
 
     return false;
@@ -1489,7 +1594,7 @@ int Component::getIndexOfChildComponent (const Component* const child) const noe
     return childComponentList.indexOf (const_cast <Component*> (child));
 }
 
-Component* Component::findChildWithID (const String& targetID) const noexcept
+Component* Component::findChildWithID (StringRef targetID) const noexcept
 {
     for (int i = childComponentList.size(); --i >= 0;)
     {
@@ -1639,7 +1744,7 @@ void Component::exitModalState (const int returnValue)
                 ExitModalStateMessage (Component* const c, const int res)
                     : target (c), result (res)   {}
 
-                void messageCallback()
+                void messageCallback() override
                 {
                     if (target.get() != nullptr) // (get() required for VS2003 bug)
                         target->exitModalState (result);
@@ -1779,12 +1884,9 @@ void Component::internalRepaintUnchecked (const Rectangle<int>& area, const bool
     if (flags.visibleFlag)
     {
         if (cachedImage != nullptr)
-        {
-            if (isEntireComponent)
-                cachedImage->invalidateAll();
-            else
-                cachedImage->invalidate (area);
-        }
+            if (! (isEntireComponent ? cachedImage->invalidateAll()
+                                     : cachedImage->invalidate (area)))
+                return;
 
         if (flags.hasHeavyweightPeerFlag)
         {
@@ -1793,7 +1895,14 @@ void Component::internalRepaintUnchecked (const Rectangle<int>& area, const bool
             CHECK_MESSAGE_MANAGER_IS_LOCKED
 
             if (ComponentPeer* const peer = getPeer())
-                peer->repaint (area);
+            {
+                // Tweak the scaling so that the component's integer size exactly aligns with the peer's scaled size
+                const Rectangle<int> peerBounds (peer->getBounds());
+                const Rectangle<int> scaled (area * Point<float> (peerBounds.getWidth()  / (float) getWidth(),
+                                                                  peerBounds.getHeight() / (float) getHeight()));
+
+                peer->repaint (affineTransform != nullptr ? scaled.transformedBy (*affineTransform) : scaled);
+            }
         }
         else
         {
@@ -1806,9 +1915,9 @@ void Component::internalRepaintUnchecked (const Rectangle<int>& area, const bool
 //==============================================================================
 void Component::paint (Graphics&)
 {
-    // all painting is done in the subclasses
-
-    jassert (! isOpaque()); // if your component's opaque, you've gotta paint it!
+    // if your component is marked as opaque, you must implement a paint
+    // method and ensure that its entire area is completely painted.
+    jassert (getBounds().isEmpty() || ! isOpaque());
 }
 
 void Component::paintOverChildren (Graphics&)
@@ -1819,7 +1928,7 @@ void Component::paintOverChildren (Graphics&)
 //==============================================================================
 void Component::paintWithinParentContext (Graphics& g)
 {
-    g.setOrigin (getX(), getY());
+    g.setOrigin (getPosition());
 
     if (cachedImage != nullptr)
         cachedImage->paint (g);
@@ -1906,10 +2015,12 @@ void Component::paintEntireComponent (Graphics& g, const bool ignoreAlphaLevel)
 
     if (effect != nullptr)
     {
-        const float scale = g.getInternalContext().getTargetDeviceScaleFactor();
+        const float scale = g.getInternalContext().getPhysicalPixelScaleFactor();
+
+        const Rectangle<int> scaledBounds (getLocalBounds() * scale);
 
         Image effectImage (flags.opaqueFlag ? Image::RGB : Image::ARGB,
-                           (int) (scale * getWidth()), (int) (scale * getHeight()), ! flags.opaqueFlag);
+                           scaledBounds.getWidth(), scaledBounds.getHeight(), ! flags.opaqueFlag);
         {
             Graphics g2 (effectImage);
             g2.addTransform (AffineTransform::scale (scale));
@@ -1961,7 +2072,7 @@ Image Component::createComponentSnapshot (const Rectangle<int>& areaToGrab,
                           r.getWidth(), r.getHeight(), true);
 
     Graphics imageContext (componentImage);
-    imageContext.setOrigin (-r.getX(), -r.getY());
+    imageContext.setOrigin (-r.getPosition());
     paintEntireComponent (imageContext, true);
 
     return componentImage;
@@ -2102,10 +2213,10 @@ Rectangle<int> Component::getLocalBounds() const noexcept
 Rectangle<int> Component::getBoundsInParent() const noexcept
 {
     return affineTransform == nullptr ? bounds
-                                      : bounds.toFloat().transformed (*affineTransform).getSmallestIntegerContainer();
+                                      : bounds.transformedBy (*affineTransform);
 }
 
-void Component::getVisibleArea (RectangleList& result, const bool includeSiblings) const
+void Component::getVisibleArea (RectangleList<int>& result, const bool includeSiblings) const
 {
     result.clear();
     const Rectangle<int> unclipped (ComponentHelpers::getUnclippedArea (*this));
@@ -2197,7 +2308,7 @@ void Component::postCommandMessage (const int commandId)
         CustomCommandMessage (Component* const c, const int command)
             : target (c), commandId (command) {}
 
-        void messageCallback()
+        void messageCallback() override
         {
             if (target.get() != nullptr)  // (get() required for VS2003 bug)
                 target->handleCommandMessage (commandId);
@@ -2245,7 +2356,7 @@ void Component::removeMouseListener (MouseListener* const listenerToRemove)
 }
 
 //==============================================================================
-void Component::internalMouseEnter (MouseInputSource& source, Point<int> relativePos, Time time)
+void Component::internalMouseEnter (MouseInputSource source, Point<int> relativePos, Time time)
 {
     if (isCurrentlyBlockedByAnotherModalComponent())
     {
@@ -2271,7 +2382,7 @@ void Component::internalMouseEnter (MouseInputSource& source, Point<int> relativ
     MouseListenerList::sendMouseEvent (*this, checker, &MouseListener::mouseEnter, me);
 }
 
-void Component::internalMouseExit (MouseInputSource& source, Point<int> relativePos, Time time)
+void Component::internalMouseExit (MouseInputSource source, Point<int> relativePos, Time time)
 {
     if (flags.repaintOnMouseActivityFlag)
         repaint();
@@ -2291,7 +2402,7 @@ void Component::internalMouseExit (MouseInputSource& source, Point<int> relative
     MouseListenerList::sendMouseEvent (*this, checker, &MouseListener::mouseExit, me);
 }
 
-void Component::internalMouseDown (MouseInputSource& source, Point<int> relativePos, Time time)
+void Component::internalMouseDown (MouseInputSource source, Point<int> relativePos, Time time)
 {
     Desktop& desktop = Desktop::getInstance();
     BailOutChecker checker (this);
@@ -2355,7 +2466,7 @@ void Component::internalMouseDown (MouseInputSource& source, Point<int> relative
     MouseListenerList::sendMouseEvent (*this, checker, &MouseListener::mouseDown, me);
 }
 
-void Component::internalMouseUp (MouseInputSource& source, Point<int> relativePos,
+void Component::internalMouseUp (MouseInputSource source, Point<int> relativePos,
                                  Time time, const ModifierKeys oldModifiers)
 {
     if (flags.mouseDownWasBlocked && isCurrentlyBlockedByAnotherModalComponent())
@@ -2398,7 +2509,7 @@ void Component::internalMouseUp (MouseInputSource& source, Point<int> relativePo
     }
 }
 
-void Component::internalMouseDrag (MouseInputSource& source, Point<int> relativePos, Time time)
+void Component::internalMouseDrag (MouseInputSource source, Point<int> relativePos, Time time)
 {
     if (! isCurrentlyBlockedByAnotherModalComponent())
     {
@@ -2421,7 +2532,7 @@ void Component::internalMouseDrag (MouseInputSource& source, Point<int> relative
     }
 }
 
-void Component::internalMouseMove (MouseInputSource& source, Point<int> relativePos, Time time)
+void Component::internalMouseMove (MouseInputSource source, Point<int> relativePos, Time time)
 {
     Desktop& desktop = Desktop::getInstance();
 
@@ -2447,7 +2558,7 @@ void Component::internalMouseMove (MouseInputSource& source, Point<int> relative
     }
 }
 
-void Component::internalMouseWheel (MouseInputSource& source, Point<int> relativePos,
+void Component::internalMouseWheel (MouseInputSource source, Point<int> relativePos,
                                     Time time, const MouseWheelDetails& wheel)
 {
     Desktop& desktop = Desktop::getInstance();
@@ -2475,7 +2586,7 @@ void Component::internalMouseWheel (MouseInputSource& source, Point<int> relativ
     }
 }
 
-void Component::internalMagnifyGesture (MouseInputSource& source, Point<int> relativePos,
+void Component::internalMagnifyGesture (MouseInputSource source, Point<int> relativePos,
                                         Time time, float amount)
 {
     if (! isCurrentlyBlockedByAnotherModalComponent())
@@ -2489,7 +2600,7 @@ void Component::internalMagnifyGesture (MouseInputSource& source, Point<int> rel
 
 void Component::sendFakeMouseMove() const
 {
-    MouseInputSource& mainMouse = Desktop::getInstance().getMainMouseSource();
+    MouseInputSource mainMouse = Desktop::getInstance().getMainMouseSource();
 
     if (! mainMouse.isDragging())
         mainMouse.triggerFakeMove();
@@ -2755,6 +2866,12 @@ Component* JUCE_CALLTYPE Component::getCurrentlyFocusedComponent() noexcept
     return currentlyFocusedComponent;
 }
 
+void JUCE_CALLTYPE Component::unfocusAllComponents()
+{
+    if (Component* c = getCurrentlyFocusedComponent())
+        c->giveAwayFocus (true);
+}
+
 void Component::giveAwayFocus (const bool sendFocusLossEvent)
 {
     Component* const componentLosingFocus = currentlyFocusedComponent;
@@ -2812,16 +2929,15 @@ void Component::sendEnablementChangeMessage()
 //==============================================================================
 bool Component::isMouseOver (const bool includeChildren) const
 {
-    const Desktop& desktop = Desktop::getInstance();
+    const Array<MouseInputSource>& mouseSources = Desktop::getInstance().getMouseSources();
 
-    for (int i = desktop.getNumMouseSources(); --i >= 0;)
+    for (MouseInputSource* mi = mouseSources.begin(), * const e = mouseSources.end(); mi != e; ++mi)
     {
-        const MouseInputSource* const mi = desktop.getMouseSource(i);
-
         Component* const c = mi->getComponentUnderMouse();
 
         if ((c == this || (includeChildren && isParentOf (c)))
-              && c->reallyContains (c->getLocalPoint (nullptr, mi->getScreenPosition()), false))
+              && c->reallyContains (c->getLocalPoint (nullptr, mi->getScreenPosition()), false)
+              && (mi->isMouse() || mi->isDragging()))
             return true;
     }
 
@@ -2830,25 +2946,22 @@ bool Component::isMouseOver (const bool includeChildren) const
 
 bool Component::isMouseButtonDown() const
 {
-    const Desktop& desktop = Desktop::getInstance();
+    const Array<MouseInputSource>& mouseSources = Desktop::getInstance().getMouseSources();
 
-    for (int i = desktop.getNumMouseSources(); --i >= 0;)
-    {
-        const MouseInputSource* const mi = desktop.getMouseSource(i);
-
+    for (MouseInputSource* mi = mouseSources.begin(), * const e = mouseSources.end(); mi != e; ++mi)
         if (mi->isDragging() && mi->getComponentUnderMouse() == this)
             return true;
-    }
 
     return false;
 }
 
 bool Component::isMouseOverOrDragging() const
 {
-    const Desktop& desktop = Desktop::getInstance();
+    const Array<MouseInputSource>& mouseSources = Desktop::getInstance().getMouseSources();
 
-    for (int i = desktop.getNumMouseSources(); --i >= 0;)
-        if (desktop.getMouseSource(i)->getComponentUnderMouse() == this)
+    for (MouseInputSource* mi = mouseSources.begin(), * const e = mouseSources.end(); mi != e; ++mi)
+        if (mi->getComponentUnderMouse() == this
+              && (mi->isMouse() || mi->isDragging()))
             return true;
 
     return false;

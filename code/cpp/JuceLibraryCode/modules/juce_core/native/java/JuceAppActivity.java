@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-10 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -42,6 +41,7 @@ import android.graphics.*;
 import android.opengl.*;
 import android.text.ClipboardManager;
 import android.text.InputType;
+import android.util.DisplayMetrics;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,6 +50,7 @@ import java.net.URL;
 import java.net.HttpURLConnection;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+import android.media.AudioManager;
 import android.media.MediaScannerConnection;
 import android.media.MediaScannerConnection.MediaScannerConnectionClient;
 
@@ -69,6 +70,8 @@ public final class JuceAppActivity   extends Activity
 
         viewHolder = new ViewHolder (this);
         setContentView (viewHolder);
+
+        setVolumeControlStream (AudioManager.STREAM_MUSIC);
     }
 
     @Override
@@ -117,7 +120,7 @@ public final class JuceAppActivity   extends Activity
     private native void quitApp();
     private native void suspendApp();
     private native void resumeApp();
-    private native void setScreenSize (int screenWidth, int screenHeight);
+    private native void setScreenSize (int screenWidth, int screenHeight, int dpi);
 
     //==============================================================================
     public native void deliverMessage (long value);
@@ -139,9 +142,9 @@ public final class JuceAppActivity   extends Activity
     //==============================================================================
     private ViewHolder viewHolder;
 
-    public final ComponentPeerView createNewView (boolean opaque)
+    public final ComponentPeerView createNewView (boolean opaque, long host)
     {
-        ComponentPeerView v = new ComponentPeerView (this, opaque);
+        ComponentPeerView v = new ComponentPeerView (this, opaque, host);
         viewHolder.addView (v);
         return v;
     }
@@ -165,7 +168,7 @@ public final class JuceAppActivity   extends Activity
 
         protected final void onLayout (boolean changed, int left, int top, int right, int bottom)
         {
-            setScreenSize (getWidth(), getHeight());
+            setScreenSize (getWidth(), getHeight(), getDPI());
 
             if (isFirstResize)
             {
@@ -195,6 +198,13 @@ public final class JuceAppActivity   extends Activity
                     ((ComponentPeerView) v).onResume();
              }
          }
+
+        private final int getDPI()
+        {
+            DisplayMetrics metrics = new DisplayMetrics();
+            getWindowManager().getDefaultDisplay().getMetrics (metrics);
+            return metrics.densityDpi;
+        }
 
         private boolean isFirstResize = true;
     }
@@ -302,9 +312,10 @@ public final class JuceAppActivity   extends Activity
     public final class ComponentPeerView extends ViewGroup
                                          implements View.OnFocusChangeListener
     {
-        public ComponentPeerView (Context context, boolean opaque_)
+        public ComponentPeerView (Context context, boolean opaque_, long host)
         {
             super (context);
+            this.host = host;
             setWillNotDraw (false);
             opaque = opaque_;
 
@@ -315,13 +326,12 @@ public final class JuceAppActivity   extends Activity
         }
 
         //==============================================================================
-        private native void handlePaint (Canvas canvas);
+        private native void handlePaint (long host, Canvas canvas);
 
         @Override
-        public void draw (Canvas canvas)
+        public void onDraw (Canvas canvas)
         {
-            super.draw (canvas);
-            handlePaint (canvas);
+            handlePaint (host, canvas);
         }
 
         @Override
@@ -331,11 +341,12 @@ public final class JuceAppActivity   extends Activity
         }
 
         private boolean opaque;
+        private long host;
 
         //==============================================================================
-        private native void handleMouseDown (int index, float x, float y, long time);
-        private native void handleMouseDrag (int index, float x, float y, long time);
-        private native void handleMouseUp   (int index, float x, float y, long time);
+        private native void handleMouseDown (long host, int index, float x, float y, long time);
+        private native void handleMouseDrag (long host, int index, float x, float y, long time);
+        private native void handleMouseUp   (long host, int index, float x, float y, long time);
 
         @Override
         public boolean onTouchEvent (MotionEvent event)
@@ -346,19 +357,19 @@ public final class JuceAppActivity   extends Activity
             switch (action & MotionEvent.ACTION_MASK)
             {
                 case MotionEvent.ACTION_DOWN:
-                    handleMouseDown (event.getPointerId(0), event.getX(), event.getY(), time);
+                    handleMouseDown (host, event.getPointerId(0), event.getX(), event.getY(), time);
                     return true;
 
                 case MotionEvent.ACTION_CANCEL:
                 case MotionEvent.ACTION_UP:
-                    handleMouseUp (event.getPointerId(0), event.getX(), event.getY(), time);
+                    handleMouseUp (host, event.getPointerId(0), event.getX(), event.getY(), time);
                     return true;
 
                 case MotionEvent.ACTION_MOVE:
                 {
                     int n = event.getPointerCount();
                     for (int i = 0; i < n; ++i)
-                        handleMouseDrag (event.getPointerId(i), event.getX(i), event.getY(i), time);
+                        handleMouseDrag (host, event.getPointerId(i), event.getX(i), event.getY(i), time);
 
                     return true;
                 }
@@ -366,14 +377,14 @@ public final class JuceAppActivity   extends Activity
                 case MotionEvent.ACTION_POINTER_UP:
                 {
                     int i = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                    handleMouseUp (event.getPointerId(i), event.getX(i), event.getY(i), time);
+                    handleMouseUp (host, event.getPointerId(i), event.getX(i), event.getY(i), time);
                     return true;
                 }
 
                 case MotionEvent.ACTION_POINTER_DOWN:
                 {
                     int i = (action & MotionEvent.ACTION_POINTER_INDEX_MASK) >> MotionEvent.ACTION_POINTER_INDEX_SHIFT;
-                    handleMouseDown (event.getPointerId(i), event.getX(i), event.getY(i), time);
+                    handleMouseDown (host, event.getPointerId(i), event.getX(i), event.getY(i), time);
                     return true;
                 }
 
@@ -385,8 +396,8 @@ public final class JuceAppActivity   extends Activity
         }
 
         //==============================================================================
-        private native void handleKeyDown (int keycode, int textchar);
-        private native void handleKeyUp (int keycode, int textchar);
+        private native void handleKeyDown (long host, int keycode, int textchar);
+        private native void handleKeyUp (long host, int keycode, int textchar);
 
         public void showKeyboard (boolean shouldShow)
         {
@@ -404,14 +415,23 @@ public final class JuceAppActivity   extends Activity
         @Override
         public boolean onKeyDown (int keyCode, KeyEvent event)
         {
-            handleKeyDown (keyCode, event.getUnicodeChar());
+            switch (keyCode)
+            {
+                case KeyEvent.KEYCODE_VOLUME_UP:
+                case KeyEvent.KEYCODE_VOLUME_DOWN:
+                    return super.onKeyDown (keyCode, event);
+
+                default: break;
+            }
+
+            handleKeyDown (host, keyCode, event.getUnicodeChar());
             return true;
         }
 
         @Override
         public boolean onKeyUp (int keyCode, KeyEvent event)
         {
-            handleKeyUp (keyCode, event.getUnicodeChar());
+            handleKeyUp (host, keyCode, event.getUnicodeChar());
             return true;
         }
 
@@ -435,7 +455,7 @@ public final class JuceAppActivity   extends Activity
         protected void onSizeChanged (int w, int h, int oldw, int oldh)
         {
             super.onSizeChanged (w, h, oldw, oldh);
-            viewSizeChanged();
+            viewSizeChanged (host);
         }
 
         @Override
@@ -445,16 +465,16 @@ public final class JuceAppActivity   extends Activity
                 requestTransparentRegion (getChildAt (i));
         }
 
-        private native void viewSizeChanged();
+        private native void viewSizeChanged (long host);
 
         @Override
         public void onFocusChange (View v, boolean hasFocus)
         {
             if (v == this)
-                focusChanged (hasFocus);
+                focusChanged (host, hasFocus);
         }
 
-        private native void focusChanged (boolean hasFocus);
+        private native void focusChanged (long host, boolean hasFocus);
 
         public void setViewName (String newName)    {}
 

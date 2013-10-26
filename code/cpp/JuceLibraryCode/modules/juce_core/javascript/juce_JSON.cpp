@@ -1,24 +1,27 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the juce_core module of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission to use, copy, modify, and/or distribute this software for any purpose with
+   or without fee is hereby granted, provided that the above copyright notice and this
+   permission notice appear in all copies.
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD
+   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN
+   NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+   IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+   CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   ------------------------------------------------------------------------------
 
-  ------------------------------------------------------------------------------
+   NOTE! This permissive ISC license applies ONLY to files within the juce_core module!
+   All other JUCE modules are covered by a dual GPL/commercial license, so if you are
+   using any other modules, be sure to check that you also comply with their license.
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   For more details, visit www.juce.com
 
   ==============================================================================
 */
@@ -40,6 +43,63 @@ public:
         return createFail ("Expected '{' or '['", &t);
     }
 
+    static Result parseString (const juce_wchar quoteChar, String::CharPointerType& t, var& result)
+    {
+        MemoryOutputStream buffer (256);
+
+        for (;;)
+        {
+            juce_wchar c = t.getAndAdvance();
+
+            if (c == quoteChar)
+                break;
+
+            if (c == '\\')
+            {
+                c = t.getAndAdvance();
+
+                switch (c)
+                {
+                    case '"':
+                    case '\'':
+                    case '\\':
+                    case '/':  break;
+
+                    case 'a':  c = '\a'; break;
+                    case 'b':  c = '\b'; break;
+                    case 'f':  c = '\f'; break;
+                    case 'n':  c = '\n'; break;
+                    case 'r':  c = '\r'; break;
+                    case 't':  c = '\t'; break;
+
+                    case 'u':
+                    {
+                        c = 0;
+
+                        for (int i = 4; --i >= 0;)
+                        {
+                            const int digitValue = CharacterFunctions::getHexDigitValue (t.getAndAdvance());
+                            if (digitValue < 0)
+                                return createFail ("Syntax error in unicode escape sequence");
+
+                            c = (juce_wchar) ((c << 4) + digitValue);
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            if (c == 0)
+                return createFail ("Unexpected end-of-input in string constant");
+
+            buffer.appendUTF8Char (c);
+        }
+
+        result = buffer.toUTF8();
+        return Result::ok();
+    }
+
 private:
     static Result parseAny (String::CharPointerType& t, var& result)
     {
@@ -50,7 +110,8 @@ private:
         {
             case '{':    t = t2; return parseObject (t, result);
             case '[':    t = t2; return parseArray  (t, result);
-            case '"':    t = t2; return parseString (t, result);
+            case '"':    t = t2; return parseString ('"',  t, result);
+            case '\'':   t = t2; return parseString ('\'', t, result);
 
             case '-':
                 t2 = t2.findEndOfWhitespace();
@@ -177,7 +238,7 @@ private:
             if (c == '"')
             {
                 var propertyNameVar;
-                Result r (parseString (t, propertyNameVar));
+                Result r (parseString ('"', t, propertyNameVar));
 
                 if (r.failed())
                     return r;
@@ -261,61 +322,6 @@ private:
 
         return Result::ok();
     }
-
-    static Result parseString (String::CharPointerType& t, var& result)
-    {
-        MemoryOutputStream buffer (256);
-
-        for (;;)
-        {
-            juce_wchar c = t.getAndAdvance();
-
-            if (c == '"')
-                break;
-
-            if (c == '\\')
-            {
-                c = t.getAndAdvance();
-
-                switch (c)
-                {
-                    case '"':
-                    case '\\':
-                    case '/':  break;
-
-                    case 'b':  c = '\b'; break;
-                    case 'f':  c = '\f'; break;
-                    case 'n':  c = '\n'; break;
-                    case 'r':  c = '\r'; break;
-                    case 't':  c = '\t'; break;
-
-                    case 'u':
-                    {
-                        c = 0;
-
-                        for (int i = 4; --i >= 0;)
-                        {
-                            const int digitValue = CharacterFunctions::getHexDigitValue (t.getAndAdvance());
-                            if (digitValue < 0)
-                                return createFail ("Syntax error in unicode escape sequence");
-
-                            c = (juce_wchar) ((c << 4) + digitValue);
-                        }
-
-                        break;
-                    }
-                }
-            }
-
-            if (c == 0)
-                return createFail ("Unexpected end-of-input in string constant");
-
-            buffer.appendUTF8Char (c);
-        }
-
-        result = buffer.toString();
-        return Result::ok();
-    }
 };
 
 //==============================================================================
@@ -327,11 +333,17 @@ public:
     {
         if (v.isString())
         {
+            out << '"';
             writeString (out, v.toString().getCharPointer());
+            out << '"';
         }
         else if (v.isVoid())
         {
             out << "null";
+        }
+        else if (v.isUndefined())
+        {
+            out << "undefined";
         }
         else if (v.isBool())
         {
@@ -343,8 +355,8 @@ public:
         }
         else if (v.isObject())
         {
-            if (DynamicObject* const object = v.getDynamicObject())
-                writeObject (out, *object, indentLevel, allOnOneLine);
+            if (DynamicObject* object = v.getDynamicObject())
+                object->writeAsJSON (out, indentLevel, allOnOneLine);
             else
                 jassertfalse; // Only DynamicObjects can be converted to JSON!
         }
@@ -357,9 +369,6 @@ public:
         }
     }
 
-private:
-    enum { indentSize = 2 };
-
     static void writeEscapedChar (OutputStream& out, const unsigned short value)
     {
         out << "\\u" << String::toHexString ((int) value).paddedLeft ('0', 4);
@@ -367,18 +376,17 @@ private:
 
     static void writeString (OutputStream& out, String::CharPointerType t)
     {
-        out << '"';
-
         for (;;)
         {
             const juce_wchar c (t.getAndAdvance());
 
             switch (c)
             {
-                case 0:  out << '"'; return;
+                case 0:  return;
 
                 case '\"':  out << "\\\""; break;
                 case '\\':  out << "\\\\"; break;
+                case '\a':  out << "\\a";  break;
                 case '\b':  out << "\\b";  break;
                 case '\f':  out << "\\f";  break;
                 case '\t':  out << "\\t";  break;
@@ -421,34 +429,38 @@ private:
                             const int indentLevel, const bool allOnOneLine)
     {
         out << '[';
-        if (! allOnOneLine)
-            out << newLine;
 
-        for (int i = 0; i < array.size(); ++i)
+        if (array.size() > 0)
         {
             if (! allOnOneLine)
-                writeSpaces (out, indentLevel + indentSize);
-
-            write (out, array.getReference(i), indentLevel + indentSize, allOnOneLine);
-
-            if (i < array.size() - 1)
-            {
-                if (allOnOneLine)
-                    out << ", ";
-                else
-                    out << ',' << newLine;
-            }
-            else if (! allOnOneLine)
                 out << newLine;
-        }
 
-        if (! allOnOneLine)
-            writeSpaces (out, indentLevel);
+            for (int i = 0; i < array.size(); ++i)
+            {
+                if (! allOnOneLine)
+                    writeSpaces (out, indentLevel + indentSize);
+
+                write (out, array.getReference(i), indentLevel + indentSize, allOnOneLine);
+
+                if (i < array.size() - 1)
+                {
+                    if (allOnOneLine)
+                        out << ", ";
+                    else
+                        out << ',' << newLine;
+                }
+                else if (! allOnOneLine)
+                    out << newLine;
+            }
+
+            if (! allOnOneLine)
+                writeSpaces (out, indentLevel);
+        }
 
         out << ']';
     }
 
-    static void writeObject (OutputStream& out, DynamicObject& object,
+/*    static void writeObject (OutputStream& out, DynamicObject& object,
                              const int indentLevel, const bool allOnOneLine)
     {
         NamedValueSet& props = object.getProperties();
@@ -469,8 +481,9 @@ private:
             if (! allOnOneLine)
                 writeSpaces (out, indentLevel + indentSize);
 
+            out << '"';
             writeString (out, v->name);
-            out << ": ";
+            out << "\": ";
             write (out, v->value, indentLevel + indentSize, allOnOneLine);
 
             if (v->nextListItem.get() != nullptr)
@@ -490,7 +503,9 @@ private:
             writeSpaces (out, indentLevel);
 
         out << '}';
-    }
+    }*/
+
+    enum { indentSize = 2 };
 };
 
 //==============================================================================
@@ -523,12 +538,29 @@ String JSON::toString (const var& data, const bool allOnOneLine)
 {
     MemoryOutputStream mo (1024);
     JSONFormatter::write (mo, data, 0, allOnOneLine);
-    return mo.toString();
+    return mo.toUTF8();
 }
 
 void JSON::writeToStream (OutputStream& output, const var& data, const bool allOnOneLine)
 {
     JSONFormatter::write (output, data, 0, allOnOneLine);
+}
+
+String JSON::escapeString (StringRef s)
+{
+    MemoryOutputStream mo;
+    JSONFormatter::writeString (mo, s.text);
+    return mo.toString();
+}
+
+Result JSON::parseQuotedString (String::CharPointerType& t, var& result)
+{
+    const juce_wchar quote = t.getAndAdvance();
+
+    if (quote == '"' || quote == '\'')
+        return JSONParser::parseString (quote, t, result);
+
+    return Result::fail ("Not a quoted string!");
 }
 
 //==============================================================================
@@ -613,8 +645,7 @@ public:
     void runTest()
     {
         beginTest ("JSON");
-        Random r;
-        r.setSeedRandomly();
+        Random r = getRandom();
 
         expect (JSON::parse (String::empty) == var::null);
         expect (JSON::parse ("{}").isObject());

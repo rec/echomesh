@@ -1,24 +1,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission is granted to use this software under the terms of either:
+   a) the GPL v2 (or any later version)
+   b) the Affero GPL v3
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   Details of these licenses can be found at: www.gnu.org/licenses
 
    JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
    A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-  ------------------------------------------------------------------------------
+   ------------------------------------------------------------------------------
 
    To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -420,8 +419,8 @@ bool juce_OpenQuickTimeMovieFromStream (InputStream* input, Movie& movie, Handle
         // different types to get QT to try. (We should really be a bit smarter here by
         // working out in advance which one the stream contains, rather than just trying
         // each one)
-        const char* const suffixesToTry[] = { "\04.mov", "\04.mp3",
-                                              "\04.avi", "\04.m4a" };
+        static const char* const suffixesToTry[] = { "\04.mov", "\04.mp3",
+                                                     "\04.avi", "\04.m4a" };
 
         for (int i = 0; i < numElementsInArray (suffixesToTry) && ! ok; ++i)
         {
@@ -470,7 +469,7 @@ void QuickTimeMovieComponent::goToStart()
 }
 
 void QuickTimeMovieComponent::setBoundsWithCorrectAspectRatio (const Rectangle<int>& spaceToFitWithin,
-                                                               const RectanglePlacement& placement)
+                                                               RectanglePlacement placement)
 {
     int normalWidth, normalHeight;
     getMovieNormalSize (normalWidth, normalHeight);

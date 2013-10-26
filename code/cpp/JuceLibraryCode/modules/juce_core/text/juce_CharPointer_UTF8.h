@@ -1,30 +1,33 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library - "Jules' Utility Class Extensions"
-   Copyright 2004-11 by Raw Material Software Ltd.
+   This file is part of the juce_core module of the JUCE library.
+   Copyright (c) 2013 - Raw Material Software Ltd.
 
-  ------------------------------------------------------------------------------
+   Permission to use, copy, modify, and/or distribute this software for any purpose with
+   or without fee is hereby granted, provided that the above copyright notice and this
+   permission notice appear in all copies.
 
-   JUCE can be redistributed and/or modified under the terms of the GNU General
-   Public License (Version 2), as published by the Free Software Foundation.
-   A copy of the license is included in the JUCE distribution, or can be found
-   online at www.gnu.org/licenses.
+   THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD
+   TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN
+   NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL
+   DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER
+   IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN
+   CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+   ------------------------------------------------------------------------------
 
-  ------------------------------------------------------------------------------
+   NOTE! This permissive ISC license applies ONLY to files within the juce_core module!
+   All other JUCE modules are covered by a dual GPL/commercial license, so if you are
+   using any other modules, be sure to check that you also comply with their license.
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.rawmaterialsoftware.com/juce for more information.
+   For more details, visit www.juce.com
 
   ==============================================================================
 */
 
-#ifndef __JUCE_CHARPOINTER_UTF8_JUCEHEADER__
-#define __JUCE_CHARPOINTER_UTF8_JUCEHEADER__
+#ifndef JUCE_CHARPOINTER_UTF8_H_INCLUDED
+#define JUCE_CHARPOINTER_UTF8_H_INCLUDED
 
 //==============================================================================
 /**
@@ -115,6 +118,7 @@ public:
     /** Moves this pointer along to the next character in the string. */
     CharPointer_UTF8& operator++() noexcept
     {
+        jassert (*data != 0); // trying to advance past the end of the string?
         const signed char n = (signed char) *data++;
 
         if (n < 0)
@@ -547,7 +551,7 @@ public:
         return CharPointer_UTF8 (reinterpret_cast <Atomic<CharType*>&> (data).exchange (newValue.data));
     }
 
-    /** These values are the byte-order-mark (BOM) values for a UTF-8 stream. */
+    /** These values are the byte-order mark (BOM) values for a UTF-8 stream. */
     enum
     {
         byteOrderMark1 = 0xef,
@@ -555,8 +559,21 @@ public:
         byteOrderMark3 = 0xbf
     };
 
+    /** Returns true if the first three bytes in this pointer are the UTF8 byte-order mark (BOM).
+        The pointer must not be null, and must point to at least 3 valid bytes.
+    */
+    static bool isByteOrderMark (const void* possibleByteOrder) noexcept
+    {
+        jassert (possibleByteOrder != nullptr);
+        const uint8* const c = static_cast<const uint8*> (possibleByteOrder);
+
+        return c[0] == (uint8) byteOrderMark1
+            && c[1] == (uint8) byteOrderMark2
+            && c[2] == (uint8) byteOrderMark3;
+    }
+
 private:
     CharType* data;
 };
 
-#endif   // __JUCE_CHARPOINTER_UTF8_JUCEHEADER__
+#endif   // JUCE_CHARPOINTER_UTF8_H_INCLUDED
