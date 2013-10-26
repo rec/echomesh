@@ -162,7 +162,6 @@
     <ClCompile Include="..\..\echomesh\audio\EnvelopeValuePlayer.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\GetReader.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\MidiController.cpp"/>
-    <ClCompile Include="..\..\echomesh\audio\PlaybackAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\audio\SampleAudioSource.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Config.cpp"/>
     <ClCompile Include="..\..\echomesh\base\Log.cpp"/>
@@ -1295,7 +1294,6 @@
     <ClInclude Include="..\..\echomesh\audio\EnvelopeValuePlayer.h"/>
     <ClInclude Include="..\..\echomesh\audio\GetReader.h"/>
     <ClInclude Include="..\..\echomesh\audio\MidiController.h"/>
-    <ClInclude Include="..\..\echomesh\audio\PlaybackAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\audio\Player.h"/>
     <ClInclude Include="..\..\echomesh\audio\SampleAudioSource.h"/>
     <ClInclude Include="..\..\echomesh\base\ArraySize.h"/>

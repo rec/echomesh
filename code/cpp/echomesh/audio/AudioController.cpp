@@ -6,7 +6,6 @@
 #include "yaml-cpp/yaml.h"
 
 #include "echomesh/audio/AudioController.h"
-#include "echomesh/audio/PlaybackAudioSource.h"
 #include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
@@ -16,8 +15,8 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(const Node& node, PlaybackAudioSource* source)
-    : node_(node), playbackAudioSource_(source) {
+AudioController::AudioController(const Node& node, MixerAudioSource* source)
+    : node_(node), mixerAudioSource_(source) {
 }
 
 void AudioController::audio() {
@@ -35,9 +34,9 @@ void AudioController::audio() {
       return;
     }
     source = new SampleAudioSource(data);
-    playbackAudioSource_->addSource(source);
+    mixerAudioSource_->addInputSource(source, true);
     return;
-  }
+   }
 
   if (not source) {
     log("No source?? " + type);
@@ -52,7 +51,7 @@ void AudioController::audio() {
     source->pause();
   } else if (type == "unload") {
     sources_.erase(hash);
-    playbackAudioSource_->removeSource(source);
+    mixerAudioSource_->removeInputSource(source);
   }
 }
 

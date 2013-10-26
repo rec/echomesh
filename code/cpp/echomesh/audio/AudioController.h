@@ -3,16 +3,15 @@
 
 #include <map>
 
-#include "echomesh/base/Echomesh.h"
+#include "echomesh/base/Config.h"
 
 namespace echomesh {
 
-class PlaybackAudioSource;
 class SampleAudioSource;
 
 class AudioController {
  public:
-  AudioController(const Node&, PlaybackAudioSource*);
+  AudioController(const Node&, MixerAudioSource*);
   virtual ~AudioController() {}
 
   void audio();
@@ -23,7 +22,7 @@ class AudioController {
 
   Sources sources_;
   const Node& node_;
-  PlaybackAudioSource* playbackAudioSource_;
+  MixerAudioSource* mixerAudioSource_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };

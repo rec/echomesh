@@ -82,7 +82,6 @@ OBJECTS := \
   $(OBJDIR)/EnvelopeValuePlayer_308b601.o \
   $(OBJDIR)/GetReader_4ae00cf8.o \
   $(OBJDIR)/MidiController_f87aad08.o \
-  $(OBJDIR)/PlaybackAudioSource_260be0b5.o \
   $(OBJDIR)/SampleAudioSource_602b6bc6.o \
   $(OBJDIR)/Config_4a6afa38.o \
   $(OBJDIR)/Log_edbe3e58.o \
@@ -298,11 +297,6 @@ $(OBJDIR)/GetReader_4ae00cf8.o: ../../echomesh/audio/GetReader.cpp
 $(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling MidiController.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/PlaybackAudioSource_260be0b5.o: ../../echomesh/audio/PlaybackAudioSource.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling PlaybackAudioSource.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/SampleAudioSource_602b6bc6.o: ../../echomesh/audio/SampleAudioSource.cpp

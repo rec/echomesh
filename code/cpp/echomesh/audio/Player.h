@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH_PLAYER__
 #define __ECHOMESH_PLAYER__
 
-#include "echomesh/audio/PlaybackAudioSource.h"
+#include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
 
@@ -15,10 +15,10 @@ class Player {
     manager_.addAudioCallback(&player_);
   }
 
-  PlaybackAudioSource* source() { return &source_; }
+  MixerAudioSource* source() { return &source_; }
 
  private:
-  PlaybackAudioSource source_;
+  MixerAudioSource source_;
   AudioSourcePlayer player_;
   AudioDeviceManager manager_;
 
