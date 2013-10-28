@@ -18,7 +18,7 @@ class MidiController;
 
 class LightReader : public ReadThread {
  public:
-  LightReader(LightingWindow*, const String& commandLine, MixerAudioSource*);
+  LightReader(LightingWindow*, MixerAudioSource*);
   virtual ~LightReader();
   void initialize();
 

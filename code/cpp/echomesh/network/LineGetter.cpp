@@ -7,7 +7,7 @@ namespace echomesh {
 
 LineGetter* makeLineGetter(const String& command) {
   StringArray parts;
-  // parts.addTokens(command, false);
+  parts.addTokens(command, false);
   SocketDescription desc;
   // desc.server = (parts.size() > 0) ? parts[0] : String("localhost");
   desc.server = (parts.size() > 0) ? parts[0] : String("127.0.0.1");

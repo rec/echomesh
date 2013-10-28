@@ -16,9 +16,9 @@ namespace echomesh {
 
 using namespace std;
 
-ReadThread::ReadThread(const String& commandLine)
+ReadThread::ReadThread()
     : Thread("ReadThread"),
-      lineGetter_(makeLineGetter(commandLine)) {
+      lineGetter_(makeLineGetter("")) {
 }
 
 ReadThread::~ReadThread() {

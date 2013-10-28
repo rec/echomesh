@@ -16,7 +16,7 @@ class ReadThread;
 
 class ReadThread : public Thread {
  public:
-  ReadThread(const String& commandLine);
+  ReadThread();
   virtual ~ReadThread();
   virtual void run();
 

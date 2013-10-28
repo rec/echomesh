@@ -18,7 +18,7 @@ struct Echomesh::Impl {
     player_->initialize();
     lightingWindow_ = new LightingWindow;
 
-    readThread_ = new LightReader(lightingWindow_, "", player_->source());
+    readThread_ = new LightReader(lightingWindow_, player_->source());
     readThread_->initialize();
     readThread_->startThread();
   }
