@@ -1,28 +1,24 @@
 #ifndef __ECHOMESH_ECHOMESH__
 #define __ECHOMESH_ECHOMESH__
 
-#include "echomesh/base/Echomesh.h"
+#include "JuceLibraryCode/JuceHeader.h"
 
 namespace echomesh {
 
-class LightingWindow;
-class LightReader;
-class Player;
-
 class Echomesh {
  public:
-  Echomesh() {}
+  Echomesh();
   ~Echomesh();
 
   void initialise();
   void shutdown();
 
- private:
-  ScopedPointer<LightingWindow> lightingWindow_;
-  ScopedPointer<LightReader> readThread_;
-  ScopedPointer<Player> player_;
+  class Impl;
 
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(Echomesh);
+ private:
+  ScopedPointer<Impl> impl_;
+
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Echomesh);
 };
 
 }  // namespace echomesh

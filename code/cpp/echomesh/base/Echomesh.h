@@ -27,7 +27,8 @@ using rec::SampleRate;
 namespace YAML { class Node; }
 
 namespace rec { namespace util { namespace thread { namespace callback {
-class Callback; } } } }
+class Callback;
+}}}}
 
 namespace echomesh {
 

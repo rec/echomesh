@@ -6,21 +6,41 @@
 
 namespace echomesh {
 
+struct Echomesh::Impl {
+  ScopedPointer<LightingWindow> lightingWindow_;
+  ScopedPointer<LightReader> readThread_;
+  ScopedPointer<Player> player_;
+
+  void initialize() {
+    log("Starting echomesh.");
+
+    player_ = new Player;
+    player_->initialize();
+    lightingWindow_ = new LightingWindow;
+
+    readThread_ = new LightReader(lightingWindow_, "", player_->source());
+    readThread_->initialize();
+    readThread_->startThread();
+  }
+
+  void shutdown() {
+    lightingWindow_ = nullptr;
+    close_log();
+  }
+};
+
+Echomesh::Echomesh() {
+  impl_ = new Impl;
+}
+
 Echomesh::~Echomesh() {}
 
 void Echomesh::initialise() {
-  player_ = new Player;
-  player_->initialize();
-  lightingWindow_ = new LightingWindow;
-
-  readThread_ = new LightReader(lightingWindow_, "", player_->source());
-  readThread_->initialize();
-  readThread_->startThread();
+  impl_->initialize();
 }
 
 void Echomesh::shutdown() {
-  lightingWindow_ = nullptr;
-  close_log();
+  impl_->shutdown();
 }
 
 }  // namespace echomesh

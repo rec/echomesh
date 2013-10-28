@@ -1,43 +1,23 @@
-#include "echomesh/audio/Player.h"
-#include "echomesh/component/LightingWindow.h"
-#include "echomesh/network/LightReader.h"
+#include "echomesh/Echomesh.h"
 
-class Echomesh  : public JUCEApplication {
+class Main  : public JUCEApplication {
  public:
-  Echomesh() {
-    echomesh::log("Starting echomesh.");
-  }
+  Main() {}
+
+  void initialise(const String&) { echomesh_.initialise(); }
+  void shutdown() { echomesh_.shutdown(); }
 
   const String getApplicationName()       { return ProjectInfo::projectName; }
   const String getApplicationVersion()    { return ProjectInfo::versionString; }
   bool moreThanOneInstanceAllowed()       { return false; }
 
-  void initialise(const String& commandLine) {
-    player_ = new echomesh::Player;
-    player_->initialize();
-    lightingWindow_ = new echomesh::LightingWindow;
-
-    echomesh::log("commandLine: " + commandLine);
-    readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
-                                            player_->source());
-    readThread_->initialize();
-    readThread_->startThread();
-  }
-
-  void shutdown() {
-    lightingWindow_ = nullptr;
-    echomesh::close_log();
-  }
-
   void anotherInstanceStarted(const String& commandLine) {}
 
  private:
-  ScopedPointer<echomesh::LightingWindow> lightingWindow_;
-  ScopedPointer<echomesh::LightReader> readThread_;
-  ScopedPointer<echomesh::Player> player_;
+  echomesh::Echomesh echomesh_;
 
  private:
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Echomesh)
+  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Main)
 };
 
-START_JUCE_APPLICATION(Echomesh)
+START_JUCE_APPLICATION(Main)
