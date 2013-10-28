@@ -54,15 +54,13 @@ static const string DEFAULT_CONFIG =
   "---\n"
 ;
 
-LightReader::LightReader(LightingWindow* wind, MixerAudioSource* source)
-    : audioController_(new AudioController(node_, source)),
-      lightController_(new LightController(wind, node_)),
-      midiController_(new MidiController(node_)),
-      lightingWindow_(wind) /*,
-      commandLine_(commandLine) */{
-}
+LightReader::LightReader() {}
 
-void LightReader::initialize() {
+void LightReader::initialize(LightingWindow* wind, MixerAudioSource* source) {
+  audioController_ = new AudioController(node_, source);
+  lightController_ = new LightController(wind, node_);
+  midiController_ = new MidiController(node_);
+
   addHandler("audio", methodCallback(audioController_.get(),
                                      &AudioController::audio));
   addHandler("clear", methodCallback(lightController_.get(),
@@ -74,10 +72,9 @@ void LightReader::initialize() {
                                     &MidiController::midi));
   addHandler("quit", functionCB(::echomesh::quit));
 
-  if (commandLine_.isEmpty()) {
-    lightingWindow_->setRunningInTest();
-    parse(DEFAULT_CONFIG);
-  }
+  wind->setRunningInTest();
+  parse(DEFAULT_CONFIG);
+  startThread();
 }
 
 LightReader::~LightReader() {

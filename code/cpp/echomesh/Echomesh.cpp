@@ -7,24 +7,17 @@
 namespace echomesh {
 
 struct Echomesh::Impl {
-  ScopedPointer<LightingWindow> lightingWindow_;
-  ScopedPointer<LightReader> readThread_;
-  ScopedPointer<Player> player_;
+  LightingWindow lightingWindow_;
+  LightReader readThread_;
+  Player player_;
 
   void initialize() {
     log("Starting echomesh.");
-
-    player_ = new Player;
-    player_->initialize();
-    lightingWindow_ = new LightingWindow;
-
-    readThread_ = new LightReader(lightingWindow_, player_->source());
-    readThread_->initialize();
-    readThread_->startThread();
+    player_.initialize();
+    readThread_.initialize(&lightingWindow_, player_.source());
   }
 
   void shutdown() {
-    lightingWindow_ = nullptr;
     close_log();
   }
 };

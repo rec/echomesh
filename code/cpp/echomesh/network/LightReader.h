@@ -18,9 +18,9 @@ class MidiController;
 
 class LightReader : public ReadThread {
  public:
-  LightReader(LightingWindow*, MixerAudioSource*);
+  LightReader();
   virtual ~LightReader();
-  void initialize();
+  void initialize(LightingWindow*, MixerAudioSource*);
 
  private:
   void config();
@@ -29,12 +29,8 @@ class LightReader : public ReadThread {
   ScopedPointer<LightController> lightController_;
   ScopedPointer<MidiController> midiController_;
 
-  LightingWindow* const lightingWindow_;
-  String const commandLine_;
-
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };
-
 
 }  // namespace echomesh
 
