@@ -56,8 +56,8 @@ static const string DEFAULT_CONFIG =
 
 LightReader::LightReader() {}
 
-void LightReader::initialize(LightingWindow* wind, MixerAudioSource* source) {
-  audioController_ = new AudioController(node_, source);
+void LightReader::initialize(LightingWindow* wind) {
+  audioController_ = new AudioController(node_);
   lightController_ = new LightController(wind, node_);
   midiController_ = new MidiController(node_);
 
@@ -82,6 +82,11 @@ LightReader::~LightReader() {
   fclose(file_);
 #endif
 }
+
+AudioSource* LightReader::source() {
+  return audioController_->source();
+}
+
 
 void LightReader::config() {
   log("The client got the config message, and is configuring its parts.");

@@ -15,8 +15,7 @@ namespace echomesh {
 
 using namespace std;
 
-AudioController::AudioController(const Node& node, MixerAudioSource* source)
-    : node_(node), mixerAudioSource_(source) {
+AudioController::AudioController(const Node& node) : node_(node) {
 }
 
 void AudioController::audio() {
@@ -34,7 +33,7 @@ void AudioController::audio() {
       return;
     }
     source = new SampleAudioSource(data);
-    mixerAudioSource_->addInputSource(source, true);
+    mixerAudioSource_.addInputSource(source, true);
     return;
    }
 
@@ -55,7 +54,7 @@ void AudioController::audio() {
 
   } else if (type == "unload") {
     sources_.erase(hash);
-    mixerAudioSource_->removeInputSource(source);
+    mixerAudioSource_.removeInputSource(source);
   }
 }
 

@@ -9,18 +9,15 @@ class Player {
  public:
   Player() {}
 
-  void initialize() {
+  void initialize(AudioSource* source = NULL) {
     String err = manager_.initialise(1, 2, NULL, true);
     if (err.length())
       log(String("Couldn't initialize audio::Device, error ") + err);
-    player_.setSource(&source_);
+    player_.setSource(source);
     manager_.addAudioCallback(&player_);
   }
 
-  MixerAudioSource* source() { return &source_; }
-
  private:
-  MixerAudioSource source_;
   AudioSourcePlayer player_;
   AudioDeviceManager manager_;
 

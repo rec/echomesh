@@ -13,8 +13,8 @@ struct Echomesh::Impl {
 
   void initialize() {
     log("Starting echomesh.");
-    player_.initialize();
-    lightReader_.initialize(&lightingWindow_, player_.source());
+    lightReader_.initialize(&lightingWindow_);
+    player_.initialize(lightReader_.source());
   }
 
   void shutdown() {

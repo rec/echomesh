@@ -20,7 +20,9 @@ class LightReader : public ReadThread {
  public:
   LightReader();
   virtual ~LightReader();
-  void initialize(LightingWindow*, MixerAudioSource*);
+  void initialize(LightingWindow*);
+
+  AudioSource* source();
 
  private:
   void config();

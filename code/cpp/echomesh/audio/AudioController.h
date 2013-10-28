@@ -11,10 +11,11 @@ class SampleAudioSource;
 
 class AudioController {
  public:
-  AudioController(const Node&, MixerAudioSource*);
+  explicit AudioController(const Node&);
   virtual ~AudioController() {}
 
   void audio();
+  AudioSource* source() { return &mixerAudioSource_; }
 
  private:
   typedef uint64 Hash;
@@ -22,7 +23,7 @@ class AudioController {
 
   Sources sources_;
   const Node& node_;
-  MixerAudioSource* mixerAudioSource_;
+  MixerAudioSource mixerAudioSource_;
 
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };
