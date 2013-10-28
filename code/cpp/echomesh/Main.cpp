@@ -13,11 +13,13 @@ class Echomesh  : public JUCEApplication {
   bool moreThanOneInstanceAllowed()       { return false; }
 
   void initialise(const String& commandLine) {
+    player_ = new echomesh::Player;
+    player_->initialize();
     lightingWindow_ = new echomesh::LightingWindow;
 
     echomesh::log("commandLine: " + commandLine);
     readThread_ = new echomesh::LightReader(lightingWindow_, commandLine,
-                                            player_.source());
+                                            player_->source());
     readThread_->initialize();
     readThread_->startThread();
   }
@@ -32,7 +34,7 @@ class Echomesh  : public JUCEApplication {
  private:
   ScopedPointer<echomesh::LightingWindow> lightingWindow_;
   ScopedPointer<echomesh::LightReader> readThread_;
-  echomesh::Player player_;
+  ScopedPointer<echomesh::Player> player_;
 
  private:
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Echomesh)

@@ -40,15 +40,19 @@ void AudioController::audio() {
 
   if (not source) {
     log("No source?? " + type);
+
   } else if (type == "run") {
     log("run");
     source->run();
+
   } else if (type == "begin") {
     log("begin");
     source->begin();
+
   } else if (type == "pause") {
     log("pause");
     source->pause();
+
   } else if (type == "unload") {
     sources_.erase(hash);
     mixerAudioSource_->removeInputSource(source);

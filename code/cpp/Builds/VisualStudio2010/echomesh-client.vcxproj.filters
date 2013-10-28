@@ -466,6 +466,9 @@
     <ClCompile Include="..\..\echomesh\component\LightingWindow.cpp">
       <Filter>echomesh-client\echomesh\component</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\echomesh\Echomesh.cpp">
+      <Filter>echomesh-client\echomesh</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\echomesh\Main.cpp">
       <Filter>echomesh-client\echomesh</Filter>
     </ClCompile>
@@ -1811,6 +1814,9 @@
     </ClInclude>
     <ClInclude Include="..\..\echomesh\component\LightingWindow.h">
       <Filter>echomesh-client\echomesh\component</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\echomesh\Echomesh.h">
+      <Filter>echomesh-client\echomesh</Filter>
     </ClInclude>
     <ClInclude Include="..\..\echomesh\network\LightController.h">
       <Filter>echomesh-client\echomesh\network</Filter>

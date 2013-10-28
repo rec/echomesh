@@ -59,6 +59,7 @@
 		E60FACFC83103C3AAD826C48 = { isa = PBXBuildFile; fileRef = D751E90BBB7CA5830BAE90BC; };
 		72508A69E10C7D0855BCC35A = { isa = PBXBuildFile; fileRef = 6145AC903FD545F24B53F366; };
 		9EE698BCF01882C66A0DD433 = { isa = PBXBuildFile; fileRef = E326E8F45F9F28B0FA3A8934; };
+		95729BD395A3C29EE4CDA010 = { isa = PBXBuildFile; fileRef = 9AFFDDC20A1E5C4733EE872E; };
 		AADC33FC886CCFE9036FCBBB = { isa = PBXBuildFile; fileRef = C62B4604DE4FD5771976655A; };
 		30200E7C2E28ABC84EDDE13A = { isa = PBXBuildFile; fileRef = 554FB8823237DF1E981EC600; };
 		96CEA2E9F55905DE1A7214C6 = { isa = PBXBuildFile; fileRef = 24E63E16EC76E02BB9136591; };
@@ -709,6 +710,7 @@
 		99CF3690DB5648912144CBB3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DragAndDropTarget.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_DragAndDropTarget.h"; sourceTree = "SOURCE_ROOT"; };
 		99EA40AB52499B7B61F2D19F = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_AudioTransportSource.cpp"; path = "../../JuceLibraryCode/modules/juce_audio_devices/sources/juce_AudioTransportSource.cpp"; sourceTree = "SOURCE_ROOT"; };
 		9A8C0EE7EADC61A029B3A2F4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_SystemStats.cpp"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_win32_SystemStats.cpp"; sourceTree = "SOURCE_ROOT"; };
+		9AFFDDC20A1E5C4733EE872E = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Echomesh.cpp; path = ../../echomesh/Echomesh.cpp; sourceTree = "SOURCE_ROOT"; };
 		9B0A969376FABE717D64B1AC = { isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		9B66CFBC250D1D33EF9C3871 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_FileChooser.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileChooser.cpp"; sourceTree = "SOURCE_ROOT"; };
 		9B6C464945975376409D886B = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = "juce_mac_SystemStats.mm"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_mac_SystemStats.mm"; sourceTree = "SOURCE_ROOT"; };
@@ -978,6 +980,7 @@
 		E26F25E46988F97E69FA6B72 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_Primes.cpp"; path = "../../JuceLibraryCode/modules/juce_cryptography/encryption/juce_Primes.cpp"; sourceTree = "SOURCE_ROOT"; };
 		E27D3EC4249E4CF7A3DD784F = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_IPAddress.h"; path = "../../JuceLibraryCode/modules/juce_core/network/juce_IPAddress.h"; sourceTree = "SOURCE_ROOT"; };
 		E326E8F45F9F28B0FA3A8934 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = LightingWindow.cpp; path = ../../echomesh/component/LightingWindow.cpp; sourceTree = "SOURCE_ROOT"; };
+		E35DDF0C1C42D66BE8C9BED2 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Echomesh.h; path = ../../echomesh/Echomesh.h; sourceTree = "SOURCE_ROOT"; };
 		E3856D4E05D6D5ADE163CE6C = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DrawableShape.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/drawables/juce_DrawableShape.h"; sourceTree = "SOURCE_ROOT"; };
 		E3A90EEB6EB19A9B43129911 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_SplashScreen.h"; path = "../../JuceLibraryCode/modules/juce_gui_extra/misc/juce_SplashScreen.h"; sourceTree = "SOURCE_ROOT"; };
 		E42733AC053666908EF8048D = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_Threads.cpp"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_linux_Threads.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -1193,6 +1196,8 @@
 				10996868F2A167BF1C239A88,
 				C8AFAF87B51186AA3112675E,
 				AAB956C9F4EEC35B737DE235,
+				9AFFDDC20A1E5C4733EE872E,
+				E35DDF0C1C42D66BE8C9BED2,
 				C62B4604DE4FD5771976655A,
 				4DD990906F61C6C8025450DD,
 				FFC532A41347DF910C57ECE2 ); name = echomesh; sourceTree = "<group>"; };
@@ -2440,6 +2445,7 @@
 				E60FACFC83103C3AAD826C48,
 				72508A69E10C7D0855BCC35A,
 				9EE698BCF01882C66A0DD433,
+				95729BD395A3C29EE4CDA010,
 				AADC33FC886CCFE9036FCBBB,
 				30200E7C2E28ABC84EDDE13A,
 				96CEA2E9F55905DE1A7214C6,

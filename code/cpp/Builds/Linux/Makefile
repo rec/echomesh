@@ -88,6 +88,7 @@ OBJECTS := \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
+  $(OBJDIR)/Echomesh_ddd28324.o \
   $(OBJDIR)/Main_ed86ae4b.o \
   $(OBJDIR)/LightController_57a59429.o \
   $(OBJDIR)/LightReader_649349d0.o \
@@ -327,6 +328,11 @@ $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightingWindow.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Echomesh_ddd28324.o: ../../echomesh/Echomesh.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Echomesh.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Main_ed86ae4b.o: ../../echomesh/Main.cpp

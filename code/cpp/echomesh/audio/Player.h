@@ -7,7 +7,9 @@ namespace echomesh {
 
 class Player {
  public:
-  Player() {
+  Player() {}
+
+  void initialize() {
     String err = manager_.initialise(1, 2, NULL, true);
     if (err.length())
       log(String("Couldn't initialize audio::Device, error ") + err);

@@ -121,6 +121,8 @@
         <FILE id="HtpVhP" name="LightingWindow.h" compile="0" resource="0"
               file="echomesh/component/LightingWindow.h"/>
       </GROUP>
+      <FILE id="Dm7YMK" name="Echomesh.cpp" compile="1" resource="0" file="echomesh/Echomesh.cpp"/>
+      <FILE id="BB916r" name="Echomesh.h" compile="0" resource="0" file="echomesh/Echomesh.h"/>
       <FILE id="uxNyBJ" name="Main.cpp" compile="1" resource="0" file="echomesh/Main.cpp"/>
       <GROUP id="{A4A5BE07-484F-1A8C-F20B-3F50BEBC138A}" name="network">
         <FILE id="BbSew1" name="LightController.cpp" compile="1" resource="0"
