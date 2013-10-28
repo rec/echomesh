@@ -8,13 +8,13 @@ namespace echomesh {
 
 struct Echomesh::Impl {
   LightingWindow lightingWindow_;
-  LightReader readThread_;
+  LightReader lightReader_;
   Player player_;
 
   void initialize() {
     log("Starting echomesh.");
     player_.initialize();
-    readThread_.initialize(&lightingWindow_, player_.source());
+    lightReader_.initialize(&lightingWindow_, player_.source());
   }
 
   void shutdown() {
