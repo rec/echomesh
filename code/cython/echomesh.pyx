@@ -9,7 +9,7 @@ cdef extern from "Tiny.h" namespace "echomesh":
 cdef class PyFoo:
     cdef Foo *thisptr
 
-    def __init__(self):
+    def __cinit__(self):
         self.thisptr = new Foo()
 
     def bar(self):
