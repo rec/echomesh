@@ -5,10 +5,16 @@ from collections import namedtuple
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
+from echomesh.base import DeepCopy
 from echomesh.base import GetPrefix
 from echomesh.base import Leafs
 from echomesh.base import Merge
 from echomesh.base import Yaml
+
+USE_SYSTEM_DEEPCOPY = False
+
+deepcopy = copy.deepcopy if USE_SYSTEM_DEEPCOPY else DeepCopy.deepcopy
+
 
 _ARGUMENT_ERROR = """
 ERROR: Didn't understand arguments to echomesh: "%s".
@@ -51,7 +57,7 @@ class MergeConfig(object):
       self.config = Merge.merge(self.config, *configs)
       self.changed = Merge.merge(self.changed, *configs[2:])
 
-    arg = copy.deepcopy(self.arg_config)
+    arg = deepcopy(self.arg_config)
     clean_arg = Merge.difference_strict(arg, self.changed)
     self.config = Merge.merge_for_config(self.config, clean_arg)
 
@@ -107,7 +113,7 @@ class MergeConfig(object):
         if base_config:
           base_config = Merge.merge_for_config(base_config, c)
         else:
-          base_config = copy.deepcopy(c)
+          base_config = deepcopy(c)
       while len(configs) < 3:
         configs.append({})
       self.file_configs.append([f, configs])

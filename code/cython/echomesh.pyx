@@ -1,7 +1,7 @@
 # distutils: language = c++
-# distutils: sources = Tiny.cpp
+# distutils: sources = Source/Tiny.cpp
 
-cdef extern from "Tiny.h" namespace "echomesh":
+cdef extern from "Source/Tiny.h" namespace "echomesh":
     cdef cppclass Foo:
         void bar()
 
