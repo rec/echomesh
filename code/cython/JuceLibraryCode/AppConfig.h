@@ -11,8 +11,8 @@
 
 */
 
-#ifndef __JUCE_APPCONFIG_G6KCEM__
-#define __JUCE_APPCONFIG_G6KCEM__
+#ifndef __JUCE_APPCONFIG_LM5YH4__
+#define __JUCE_APPCONFIG_LM5YH4__
 
 //==============================================================================
 // [BEGIN_USER_CODE_SECTION]
@@ -185,4 +185,4 @@
 #endif
 
 
-#endif  // __JUCE_APPCONFIG_G6KCEM__
+#endif  // __JUCE_APPCONFIG_LM5YH4__

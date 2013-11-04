@@ -1,7 +1,10 @@
 #include "Tiny.h"
 
+#include "JuceHeader.h"
+
 using namespace echomesh;
 
 void Foo::bar(){
-    //Do Nothing
+  juce::String s;
+  s = "hello, world!";
 }

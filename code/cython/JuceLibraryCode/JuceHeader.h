@@ -10,8 +10,8 @@
 
 */
 
-#ifndef __APPHEADERFILE_G6KCEM__
-#define __APPHEADERFILE_G6KCEM__
+#ifndef __APPHEADERFILE_LM5YH4__
+#define __APPHEADERFILE_LM5YH4__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
@@ -36,9 +36,9 @@
 
 namespace ProjectInfo
 {
-    const char* const  projectName    = "tiny";
+    const char* const  projectName    = "echomesh";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_G6KCEM__
+#endif   // __APPHEADERFILE_LM5YH4__

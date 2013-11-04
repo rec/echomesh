@@ -1,53 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="G6kcem" name="tiny" projectType="library" version="1.0.0"
-              bundleIdentifier="com.yourcompany.tiny" includeBinaryInAppConfig="1"
+<JUCERPROJECT id="lm5Yh4" name="echomesh" projectType="library" version="1.0.0"
+              bundleIdentifier="com.yourcompany.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0">
-  <MAINGROUP id="qIHDwF" name="tiny">
-    <FILE id="IVFZ7J" name="Tiny.cpp" compile="1" resource="0" file="Tiny.cpp"/>
-    <FILE id="xHrlfR" name="Tiny.h" compile="0" resource="0" file="Tiny.h"/>
-    <GROUP id="{B5E6264A-A88B-F082-51BC-2CA7A03C3F44}" name="Source"/>
+  <MAINGROUP id="Z5EcKk" name="echomesh">
+    <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="1" optimisation="1" targetName="tiny"/>
-        <CONFIGURATION name="Release" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
-                       isDebug="0" optimisation="2" targetName="tiny"/>
+        <CONFIGURATION name="Debug" osxSDK="10.6 SDK" osxCompatibility="10.6 SDK" osxArchitecture="32BitUniversal"
+                       isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags="VALID_ARCHS=i386"/>
+        <CONFIGURATION name="Release" osxSDK="10.6 SDK" osxCompatibility="10.6 SDK"
+                       osxArchitecture="32BitUniversal" isDebug="0" optimisation="2"
+                       targetName="echomesh" customXcodeFlags="VALID_ARCHS=i386"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
-        <MODULEPATH id="juce_core" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_events" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_graphics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_data_structures" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_basics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_gui_extra" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_cryptography" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_basics" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_devices" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_formats" path="../../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../../JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <VS2012 targetFolder="Builds/VisualStudio2012">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="1" optimisation="1" targetName="tiny"/>
-        <CONFIGURATION name="Release" winWarningLevel="4" generateManifest="1" winArchitecture="32-bit"
-                       isDebug="0" optimisation="2" targetName="tiny"/>
-      </CONFIGURATIONS>
-    </VS2012>
-    <LINUX_MAKE targetFolder="Builds/Linux">
-      <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="tiny"/>
-        <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="tiny"/>
-      </CONFIGURATIONS>
-    </LINUX_MAKE>
   </EXPORTFORMATS>
   <MODULES>
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
