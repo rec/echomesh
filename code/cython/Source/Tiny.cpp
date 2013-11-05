@@ -4,7 +4,8 @@
 
 using namespace echomesh;
 
-void Foo::bar(){
-  juce::String s;
-  s = "hello, world!";
+void TinyWindow::show(){
+}
+
+void TinyWindow::show(){
 }

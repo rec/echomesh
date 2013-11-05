@@ -3,12 +3,13 @@
 
 namespace echomesh {
 
-    class Foo{
+class TinyWindow {
+ public:
+  TinyWindow();
+  void show();
+  void hide();
+};
 
-       public:
-            void bar();
-
-    };
 }
 
 #endif  // __TINY__H
