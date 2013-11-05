@@ -3,9 +3,8 @@
 
 namespace echomesh {
 
-class TinyWindow {
+class Tiny {
  public:
-  TinyWindow();
   void show();
   void hide();
 };
