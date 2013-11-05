@@ -5,12 +5,11 @@ import os
 from distutils.core import setup, Command, Extension
 from Cython.Build import cythonize
 
-lib = Extension('echomesh',
-                ['echomesh.pyx'],
-                library_dirs=['/development/echomesh/code/cython/Builds/MacOSX/build/Debug'],
-                libraries=['echomesh'],
-#                extra_compile_args=['-arch i386'],
-#                extra_link_args=['-arch i386'],
+lib = Extension(
+  'echomesh',
+  ['echomesh.pyx'],
+  library_dirs=['/development/echomesh/code/cython/Builds/MacOSX/build/Debug'],
+  libraries=['echomesh'],
   )
 
 class CleanCommand(Command):
