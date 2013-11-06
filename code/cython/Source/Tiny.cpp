@@ -15,9 +15,14 @@ class TinyWindow : public DocumentWindow {
   TinyWindow() : DocumentWindow("echomesh lighting simulator",
                                 Colours::lightgrey,
                                 DocumentWindow::allButtons) {
-    setUsingNativeTitleBar(true);
+    cout << "first\n";
+    // setUsingNativeTitleBar(true);
+    cout << "second\n";
     setSize(200, 200);
+    cout << "third\n";
     toFront(true);
+    setVisible(true);
+    cout << "fourth\n";
   }
 
   void closeButtonPressed() {
@@ -30,6 +35,7 @@ ScopedPointer<TinyWindow> tinyWindow;
 }  // namespace
 
 void Tiny::show() {
+  cout << "zeroth\n";
   tinyWindow = new TinyWindow;
 }
 

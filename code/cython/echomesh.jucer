@@ -4,16 +4,19 @@
               bundleIdentifier="com.yourcompany.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0">
   <MAINGROUP id="Z5EcKk" name="echomesh">
-    <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
+    <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source">
+      <FILE id="LEBSna" name="Empty.cpp" compile="1" resource="0" file="Source/Empty.cpp"/>
+    </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
-                       isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""/>
+                       isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""
+                       cppLibType="libc++"/>
         <CONFIGURATION name="Release" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
-                       customXcodeFlags=""/>
+                       customXcodeFlags="" cppLibType="libc++"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>
