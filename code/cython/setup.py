@@ -10,9 +10,6 @@ from distutils.core import setup, Command, Extension
 from Cython.Build import cythonize
 from Cython.Distutils import extension
 
-import Cython.Build
-print(help(Cython.Build))
-
 DEBUG = True
 
 PLATFORM = platform.system().lower()
