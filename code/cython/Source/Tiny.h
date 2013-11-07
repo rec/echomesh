@@ -9,6 +9,6 @@ class Tiny {
   void hide();
 };
 
-}
+}  // namespace echomesh
 
 #endif  // __TINY__H
