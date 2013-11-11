@@ -8,7 +8,9 @@ import platform
 
 from distutils.core import setup, Command, Extension
 from Cython.Build import cythonize
-from Cython.Distutils import extension
+from Cython.Distutils import build_ext, extension
+from Cython.Compiler import Options
+
 
 DEBUG = True
 
@@ -20,7 +22,11 @@ IS_WINDOWS = (PLATFORM == 'windows')
 
 assert IS_LINUX or IS_MAC or IS_WINDOWS
 
-EXTRA_ARGS = {'cython_gdb': True} if DEBUG else {}
+DEBUG_ARGS = {
+  'cython_gdb': True,
+  'pyrex_gdb': True,
+  }
+EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
 if IS_MAC:
   EXTRA_COMPILE_ARGS = ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
@@ -48,8 +54,7 @@ lib = extension.Extension(
   libraries=['echomesh'],
   extra_compile_args=EXTRA_COMPILE_ARGS,
   extra_link_args=EXTRA_LINK_ARGS,
-  cython_gdb=True)
-#  **EXTRA_ARGS)
+  **EXTRA_ARGS)
 
 class CleanCommand(Command):
   description = "custom clean command that forcefully removes dist/build directories"
@@ -62,14 +67,15 @@ class CleanCommand(Command):
 
   def run(self):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
-    os.system('rm -Rf %s.so ./build ./dist' % LIBRARY)
+    os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % LIBRARY)
 
 
 setup(
   name='Echomesh',
-#  ext_modules=[lib],
-#  ext_modules=cythonize([lib]),
-#  ext_modules=cythonize([lib], **EXTRA_ARGS),
-  ext_modules=cythonize([lib], cython_gdb=True),
-  cmdclass={'clean': CleanCommand},
+  cmdclass={'build_ext': build_ext,
+            'clean': CleanCommand},
+  ext_modules=cythonize(
+    [lib],
+    annotate=True,
+    **EXTRA_ARGS),
   )
