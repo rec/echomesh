@@ -20,10 +20,11 @@ class Execute(Element.Element):
     if not isinstance(args, list):
       args = [args]
     self.command_line = [description['binary']] + args
+    LOGGER.debug('Command Line: %s' % self.command_line)
 
   def _on_run(self):
     super(Execute, self)._on_run()
-    self.process = subprocess.Popen(self.command_line, _ARGS)
+    self.process = subprocess.Popen(self.command_line, stdout=subprocess.PIPE)
     Quit.register_atexit(self.pause)
 
     result = self.process.stdout.read()
