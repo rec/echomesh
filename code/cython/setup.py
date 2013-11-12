@@ -51,7 +51,7 @@ lib = extension.Extension(
   LIBRARY,
   ['echomesh.pyx'],
   library_dirs=[LIB_DIR],
-  libraries=['echomesh'],
+  libraries=['echomesh', 'pthread'],
   extra_compile_args=EXTRA_COMPILE_ARGS,
   extra_link_args=EXTRA_LINK_ARGS,
   **EXTRA_ARGS)

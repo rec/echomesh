@@ -5,6 +5,8 @@ from echomesh.util.thread.Runnable import Runnable
 from echomesh.base import Quit
 
 class MasterRunnable(Runnable):
+  """A Runnable that controls a list of other runnables.
+  """
   def __init__(self):
     super(MasterRunnable, self).__init__()
     self.runnables = LockedList()
@@ -12,6 +14,8 @@ class MasterRunnable(Runnable):
     self.joinables = LockedList()
 
   def add_slave(self, *slaves):
+    """Adds one or more slaves - Runnables that run, pause and join
+    when this one does."""
     self.runnables.add(*slaves)
     self.pausables.add(*slaves)
     self.joinables.add(*slaves)
