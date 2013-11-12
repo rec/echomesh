@@ -11,8 +11,7 @@ from Cython.Build import cythonize
 from Cython.Distutils import build_ext, extension
 from Cython.Compiler import Options
 
-
-DEBUG = True
+DEBUG = not True
 
 PLATFORM = platform.system().lower()
 
@@ -30,17 +29,17 @@ EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
 if IS_MAC:
   EXTRA_COMPILE_ARGS = ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                        '-IJuceLibraryCode'.split(' '))
-  EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit'.split(' ')
+                        '-IJuceLibraryCode'.split())
+  EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit'.split()
 
   if DEBUG:
-    EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split(' ')
+    EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
     LIBRARY = 'echomesh-debug'
     LIB_DIR = '/development/echomesh/code/cython/Builds/MacOSX/build/Debug'
 
   else:
-    EXTRA_COMPILE_ARGS += ('-O2'.split(0))
+    EXTRA_COMPILE_ARGS += ('-O2'.split())
     LIBRARY = 'echomesh'
     LIB_DIR = '/development/echomesh/code/cython/Builds/MacOSX/build/Release'
 

@@ -1,6 +1,7 @@
 #include "Tiny.h"
 
 #include "JuceHeader.h"
+#include "Initialize.h"
 
 using namespace echomesh;
 using namespace juce;
@@ -36,11 +37,14 @@ ScopedPointer<TinyWindow> tinyWindow;
 
 void Tiny::show() {
   cout << "zeroth\n";
+  initializeJuce();
+  cout << "0.5\n";
   tinyWindow = new TinyWindow;
 }
 
 void Tiny::hide() {
   tinyWindow = NULL;
+  shutdownJuce();
 }
 
 }  // namespace echomesh

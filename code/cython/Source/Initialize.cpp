@@ -4,7 +4,7 @@ namespace echomesh {
 
 namespace {
 
-class EchomeshApplicationBase : public juce::JUCEApplicationBase {
+class ApplicationBase : public juce::JUCEApplicationBase {
   virtual const String getApplicationName() { return "echomesh"; }
 
   virtual const String getApplicationVersion() { return "0.0"; }
@@ -26,6 +26,8 @@ const char* ARGV[] = {"echomesh"};
 juce::JUCEApplicationBase* juce_CreateApplication() {
   return new EchomeshApplicationBase();
 }
+
+class Application
 
 }  // namespace
 

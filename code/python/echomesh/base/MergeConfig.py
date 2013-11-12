@@ -5,7 +5,6 @@ from collections import namedtuple
 
 from echomesh.base import Args
 from echomesh.base import CommandFile
-from echomesh.base import DeepCopy
 from echomesh.base import GetPrefix
 from echomesh.base import Leafs
 from echomesh.base import Merge
