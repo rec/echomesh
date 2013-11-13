@@ -2,19 +2,19 @@
 # distutils: sources = Source/Tiny.cpp
 
 cdef extern from "Source/Tiny.h" namespace "echomesh":
-    cdef cppclass Tiny:
-        void show()
-        void hide()
+  cdef cppclass Tiny:
+    void show()
+    void hide()
 
 
 cdef class TinyWindow:
-    cdef Tiny *thisptr
+  cdef Tiny *thisptr
 
-    def __cinit__(self):
-        self.thisptr = new Tiny()
+  def __cinit__(self):
+    self.thisptr = new Tiny()
 
-    def hide(self):
-        self.thisptr.hide()
+  def hide(self):
+    self.thisptr.hide()
 
-    def show(self):
-        self.thisptr.show()
+  def show(self):
+    self.thisptr.show()

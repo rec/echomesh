@@ -1,4 +1,5 @@
 #include "Initialize.h"
+#include "Tiny.h"
 
 namespace echomesh {
 
@@ -9,8 +10,12 @@ class ApplicationBase : public juce::JUCEApplicationBase {
 
   virtual const String getApplicationVersion() { return "0.0"; }
   virtual bool moreThanOneInstanceAllowed() { return false; }
-  virtual void initialise (const String& commandLineParameters) {}
-  virtual void shutdown() {}
+  virtual void initialise (const String& commandLineParameters) {
+    tiny_.show();
+  }
+  virtual void shutdown() {
+    tiny_.hide();
+  }
   virtual void anotherInstanceStarted (const String& commandLine) {}
   virtual void systemRequestedQuit() {}
   virtual void suspended() {}
@@ -19,21 +24,33 @@ class ApplicationBase : public juce::JUCEApplicationBase {
                                    const String& sourceFilename,
                                    int lineNumber) {
   }
+
+  Tiny tiny_;
 };
 
 const char* ARGV[] = {"echomesh"};
 
 juce::JUCEApplicationBase* juce_CreateApplication() {
-  return new EchomeshApplicationBase();
+  return new ApplicationBase();
 }
 
-class Application
+class ApplicationThread : public Thread {
+ public:
+  ApplicationThread() : Thread("ApplicationThread") {}
+
+  virtual void run() {
+    juce::JUCEApplicationBase::main(1, ARGV);
+  }
+};
+
+ScopedPointer<ApplicationThread> thread;
 
 }  // namespace
 
 void initializeJuce() {
   juce::JUCEApplicationBase::createInstance = &juce_CreateApplication;
-   juce::JUCEApplicationBase::main(1, ARGV);
+  thread = new ApplicationThread;
+  thread->startThread();
 }
 
 void shutdownJuce() {
