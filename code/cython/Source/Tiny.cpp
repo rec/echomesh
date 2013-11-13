@@ -37,7 +37,6 @@ ScopedPointer<TinyWindow> tinyWindow;
 
 void Tiny::show() {
   cout << "zeroth\n";
-  echomesh::startEchomesh();
   cout << "0.5\n";
   tinyWindow = new TinyWindow;
 }

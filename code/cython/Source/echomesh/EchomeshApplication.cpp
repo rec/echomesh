@@ -14,7 +14,7 @@ class ApplicationBase : public juce::JUCEApplicationBase {
   virtual void shutdown() {}
   virtual void anotherInstanceStarted(const String&) {}
   virtual void systemRequestedQuit() {
-    stopEchomesh();
+    stopApplication();
   }
   virtual void suspended() {}
   virtual void resumed() {}
@@ -31,12 +31,12 @@ juce::JUCEApplicationBase* juce_CreateApplication() {
 
 }  // namespace
 
-void startEchomesh() {
+void startApplication() {
   juce::JUCEApplicationBase::createInstance = &juce_CreateApplication;
   juce::JUCEApplicationBase::main(1, ARGV);
 }
 
-void stopEchomesh() {
+void stopApplication() {
   juce::JUCEApplicationBase::quit();
 }
 

@@ -3,8 +3,8 @@
 
 namespace echomesh {
 
-void startEchomesh();
-void stopEchomesh();
+void startApplication();
+void stopApplication();
 
 }  // namespace echomesh
 

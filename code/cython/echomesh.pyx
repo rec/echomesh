@@ -6,6 +6,15 @@ cdef extern from "Source/Tiny.h" namespace "echomesh":
     void show()
     void hide()
 
+cdef extern from "Source/echomesh/EchomeshApplication.h" namespace "echomesh":
+  void startApplication()
+  void stopApplication()
+
+def start_application():
+  startApplication()
+
+def stop_application():
+  stopApplication()
 
 cdef class TinyWindow:
   cdef Tiny *thisptr
