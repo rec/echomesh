@@ -5,7 +5,12 @@
               jucerVersion="3.1.0">
   <MAINGROUP id="Z5EcKk" name="echomesh">
     <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source">
-      <FILE id="LEBSna" name="Initialize.cpp" compile="1" resource="0" file="Source/Initialize.cpp"/>
+      <GROUP id="{3BFA4C6A-01DE-1C43-CA84-8022AD9E7CF4}" name="echomesh">
+        <FILE id="afLllr" name="EchomeshApplication.cpp" compile="1" resource="0"
+              file="Source/echomesh/EchomeshApplication.cpp"/>
+        <FILE id="fivKlm" name="EchomeshApplication.h" compile="0" resource="0"
+              file="Source/echomesh/EchomeshApplication.h"/>
+      </GROUP>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
@@ -13,10 +18,10 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
                        isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""
-                       cppLibType="libc++"/>
+                       cppLibType="libc++" headerPath="../../Source"/>
         <CONFIGURATION name="Release" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
-                       customXcodeFlags="" cppLibType="libc++"/>
+                       customXcodeFlags="" cppLibType="libc++" headerPath="../../Source"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>
