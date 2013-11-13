@@ -10,14 +10,20 @@ from echomesh.util import Subprocess
 
 LOGGER = Log.logger(__name__)
 
-GIT_BINARY = Platform.IS_MAC and '/usr/local/git/bin/git' or '/usr/bin/git'
+BINARY = {
+  Platform.DEBIAN: '/usr/bin/git',
+  Platform.MAC: '/usr/local/git/bin/git',
+  Platform.UBUNTU: '/usr/bin/git',
+}
+
+
 GIT_LOG = ['log', '-n1', '--abbrev=40']
 GIT_DIRECTORY = '.'
 
 def run_git_command(command, config=None, cwd=None, log_commands=False):
-  binary = GIT_BINARY
-  if config and ('git_binary' in config['git']):
-    binary = config['git']['binary']
+  binary = BINARY.get(Platform.PLATFORM)
+  if config:
+    binary = config['git']['binary'] or binary
   cwd = cwd or GIT_DIRECTORY
   assert not log_commands
   if log_commands:

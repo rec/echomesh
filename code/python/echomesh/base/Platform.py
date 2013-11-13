@@ -5,7 +5,16 @@ import platform
 PLATFORM = platform.system().lower()
 
 IS_LINUX = (PLATFORM == 'linux')
-IS_MAC = (PLATFORM == 'darwin')
-IS_WINDOWS = (PLATFORM == 'windows')
 
-assert IS_LINUX or IS_MAC or IS_WINDOWS
+if IS_LINUX:
+  PLATFORM = platform.linux_distribution()[0].lower()
+
+DEBIAN = 'debian'
+MAC = 'darwin'
+UBUNTU = 'ubuntu'
+WINDOWS = 'windows'
+
+LEGAL_PLATFORMS = DEBIAN, MAC, UBUNTU, WINDOWS
+
+assert PLATFORM in LEGAL_PLATFORMS, "Don't understand platform %s" % PLATFORM
+

@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# Obsolete, given we're playing in C++.
+
 import threading
 
 from echomesh.base import Config
@@ -10,14 +12,16 @@ from echomesh.util import Subprocess
 
 LOGGER = Log.logger(__name__)
 
+BINARY = {
+  Platform.DEBIAN: '/usr/bin/mpg123',
+  Platform.MAC: '/usr/bin/afplay',
+  Platform.UBUNTU: '/usr/bin/mpg123',
+}
+
 def play(filename, run_in_thread=True):
   filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(filename)
-  binary = Config.get('audio', 'output', 'aplay_binary')
-  if not binary:
-    if Platform.IS_LINUX:
-      binary = '/usr/bin/mpg123'
-    elif Platform.IS_MAC:
-      binary = '/usr/bin/afplay'
+  binary = (Config.get('audio', 'output', 'aplay_binary') or
+            BINARY.get(Platform.PLATFORM))
 
   if not binary:
     LOGGER.error("Couldn't locate binary for platform %s", Platform.PLATFORM)
