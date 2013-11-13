@@ -2,32 +2,23 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element.Execute import Execute
 from echomesh.util import Log
-from echomesh.base.Platform import IS_LINUX, IS_MAC, IS_WINDOWS, DISTRIBUTION
-
+from echomesh.base import Platform
 LOGGER = Log.logger(__name__)
 
-if IS_LINUX:
-    if DISTRIBUTION is 'ubuntu':
+if Platform.IS_LINUX:
+    if Platform.IS_UBUNTU:
         DEFAULT_PLAYER = '/usr/bin/cvlc'
-    if DISTRIBUTION is 'debian':
+        EXTRA_ARGS = ['--fullscreen', '--overlay', '--key-leave-fullscreen', "",
+                      '--video-on-top', '--play-and-stop']
+    if Platform.IS_DEBIAN:
         DEFAULT_PLAYER = '/usr/bin/omxplayer'
+        EXTRA_ARGS = []
 
 class Video(Execute):
   def __init__(self, parent, description):
     if 'binary' not in description:
       description['binary'] = DEFAULT_PLAYER
     super(Video, self).__init__(parent, description)
-
-    if IS_LINUX:
-        if DISTRIBUTION is 'ubuntu':
-            args = description.get('args', [])
-            self.command_line = [description['binary'], '--fullscreen', '--overlay',
-                                 '--key-leave-fullscreen', "", '--video-on-top', '--play-and-stop', '%s' % args]
-        if DISTRIBUTION is 'debian':
-            args = description.get('args', [])
-            self.command_line = [description['binary'], '%s' % args]
-
-    else:
-        args = description.get('args', [])
-        self.command_line = [description['binary'], '%s' % args]
-
+    args = description.get('args', [])
+    self.command_line = [description['binary']] + EXTRA_ARGS + [args]
+    print(self.command_line)
