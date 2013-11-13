@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import platform
 
 PLATFORM = platform.system().lower()
+DISTRIBUTION = platform.linux_distribution()[0].lower()
 
 IS_LINUX = (PLATFORM == 'linux')
 IS_MAC = (PLATFORM == 'darwin')
