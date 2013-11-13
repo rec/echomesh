@@ -22,6 +22,7 @@ FILE_FORMAT = '%(asctime)s %(levelname)s: %(name)s: %(message)s'
 
 _LOG_SIGNATURE = 'util/Log.py'
 _LOG_COUNTER = {}
+_STREAM = None
 
 def _suppress_this_line(limit, every):
   if limit is not None or every is not None:
@@ -66,17 +67,22 @@ class _ConfigClient(object):
       DEBUG_FORMAT if self.debug
       else DEFAULT_FORMAT)
 
+    if _STREAM:
+      self.kwds[u'stream'] = _STREAM
+
     self.kwds = dict((str(k), v) for k, v in six.iteritems(self.kwds))
     logging.basicConfig(**self.kwds)
 
 
 _CONFIG = _ConfigClient()
-try:
-  from echomesh.base import Config
-except:
-  _CONFIG.config_update(None)
-else:
-  Config.add_client(_CONFIG)
+
+def _reconfigure():
+  try:
+    from echomesh.base import Config
+  except:
+    _CONFIG.config_update(None)
+  else:
+    Config.add_client(_CONFIG)
 
 
 def _make_logger(logger, name):
@@ -112,6 +118,11 @@ def logger(name=None):
     _make_logger(logger, name)
   return logger
 
+def set_stream(stream):
+  global _STREAM
+  _STREAM = stream
+  _reconfigure()
+
+_reconfigure()
 LOGGER = logger(__name__)
 LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
-
