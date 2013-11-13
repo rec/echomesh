@@ -119,6 +119,8 @@ def logger(name=None):
   return logger
 
 def set_stream(stream):
+  """Set a stream to which all logging is redirected."""
+  assert hasattr(stream, 'write'), 'Streams need to have a write method'
   global _STREAM
   _STREAM = stream
   _reconfigure()
