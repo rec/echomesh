@@ -21,4 +21,3 @@ class Video(Execute):
     super(Video, self).__init__(parent, description)
     args = description.get('args', [])
     self.command_line = [description['binary']] + EXTRA_ARGS + [args]
-    print(self.command_line)
