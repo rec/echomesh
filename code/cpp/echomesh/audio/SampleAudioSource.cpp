@@ -56,7 +56,6 @@ void SampleAudioSource::run() {
 void SampleAudioSource::begin() {
   ScopedLock l(lock_);
   currentTime_ = 0;
-  levelIndex_ = panIndex_ = 0;
   if (source_)
     source_->setNextReadPosition(0);
 }

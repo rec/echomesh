@@ -28,8 +28,6 @@ class SampleAudioSource : public AudioSource {
   Playback playback_;
   SampleTime currentTime_;
   SampleTime length_;
-  SampleTime levelIndex_;
-  SampleTime panIndex_;
   ScopedPointer<PositionableAudioSource> source_;
   bool isRunning_;
 

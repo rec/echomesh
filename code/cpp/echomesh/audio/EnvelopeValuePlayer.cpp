@@ -10,19 +10,24 @@ EnvelopeValuePlayer::EnvelopeValuePlayer(const EnvelopeValue& ev)
     throw Exception("Received an envelope with less than two points.");
 }
 
+
+void EnvelopeValuePlayer::jumpTo(SampleTime time) {
+  // TODO
+}
+
 void EnvelopeValuePlayer::begin() {
-  loopCount_ = index_ = 0;
+  loopCount_ = segmentIndex_ = 0;
 
   float value = isConstant_ ? envelopeValue_.value : points().front().value;
   point_ = Envelope::Point(0, value);
 }
 
-// The following statements are always true when getSegments begins or ends:
+// The following conditions are always true between calls to getSegments:
 //
-//   index_ < points().length - 1
+//   segmentIndex_ < points().length - 1
 //   point_.time < length_
-//   point_.time >= envelope.points[index_].time
-//   point_.time < envelope.points[index_ + 1].time
+//   point_.time >= envelope.points[segmentIndex_].time
+//   point_.time < envelope.points[segmentIndex_ + 1].time
 
 typedef EnvelopeValuePlayer::SegmentList SegmentList;
 
@@ -40,7 +45,7 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
       result.push_back(seg);
       break;
     }
-    const Point* previous = &points()[index_];
+    const Point* previous = &points()[segmentIndex_];
     const Point* next = previous + 1;
 
     bool forward = not (reverse and loopCount_ % 2);
@@ -52,12 +57,12 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     if (remains <= numSamples) {
       // Move to a different index.
       if (forward) {
-        if (++index_ >= points().size() - 1) {
+        if (++segmentIndex_ >= points().size() - 1) {
           loopCount_++;
           rollover = not (loopsDone() or reverse);
         }
       } else {
-        if (--index_ < 0) {
+        if (--segmentIndex_ < 0) {
           loopCount_++;
         }
       }
@@ -78,7 +83,7 @@ SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
     result.push_back(seg);
 
     if (rollover) {
-      index_ = 0;
+      segmentIndex_ = 0;
       point_ = Point(0, points().front().value);
       seg.second.value = point_.value;
     }

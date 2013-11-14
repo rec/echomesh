@@ -7,14 +7,16 @@ cdef extern from "Source/Tiny.h" namespace "echomesh":
     void hide()
 
 cdef extern from "Source/echomesh/EchomeshApplication.h" namespace "echomesh":
-  void startApplication()
+  ctypedef void (*Callback)(void *user_data)
+  void startApplication(Callback cb, void* user_data)
   void stopApplication()
 
-def start_application():
-  startApplication()
+def start_application(f):
+  startApplication(callback, <void*>f)
 
 def stop_application():
   stopApplication()
+
 
 cdef class TinyWindow:
   cdef Tiny *thisptr
@@ -27,3 +29,7 @@ cdef class TinyWindow:
 
   def show(self):
     self.thisptr.show()
+
+cdef void callback(void* f):
+  (<object>f)()
+

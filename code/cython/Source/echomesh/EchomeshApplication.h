@@ -3,7 +3,9 @@
 
 namespace echomesh {
 
-void startApplication();
+typedef void (*AppCallback)(void *userData);
+
+void startApplication(AppCallback cb, void* userData);
 void stopApplication();
 
 }  // namespace echomesh

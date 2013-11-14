@@ -11,7 +11,7 @@ class EnvelopeValuePlayer {
   typedef vector<Segment> SegmentList;
 
   EnvelopeValuePlayer(const EnvelopeValue&);
-  bool isConstant() const { return envelopeValue_.isConstant; }
+  bool isConstant() const { return isConstant_; }
 
   const Envelope::Point point() const { return point_; }
   float value() const { return point_.value; }
@@ -20,9 +20,11 @@ class EnvelopeValuePlayer {
   }
 
   void begin();
+  void jumpTo(SampleTime);
 
-  // Only call this if isConstant is false.
-  SegmentList getSegments(SampleTime);
+  // Continue to play this envelope for "time", and return a list of segments
+  // generated.  This is only legal to call if isConstant is false.
+  SegmentList getSegments(SampleTime time);
 
  private:
   bool loopsDone() const { return loops_ and loopCount_ >= loops_; }
@@ -32,7 +34,7 @@ class EnvelopeValuePlayer {
   const int loops_;
 
   Envelope::Point point_;
-  int index_;
+  int segmentIndex_;
   int loopCount_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EnvelopeValuePlayer);
