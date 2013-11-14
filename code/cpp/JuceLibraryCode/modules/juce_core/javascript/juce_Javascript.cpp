@@ -56,6 +56,11 @@ namespace TokenTypes
     JUCE_DECLARE_JS_TOKEN (identifier, "$identifier")
 }
 
+#if JUCE_MSVC
+ #pragma warning (push)
+ #pragma warning (disable: 4702)
+#endif
+
 //==============================================================================
 struct JavascriptEngine::RootObject   : public DynamicObject
 {
@@ -83,15 +88,6 @@ struct JavascriptEngine::RootObject   : public DynamicObject
     {
         ExpressionTreeBuilder tb (code);
         return ExpPtr (tb.parseExpression())->getResult (Scope (nullptr, this, this));
-    }
-
-    var invoke (Identifier function, const var::NativeFunctionArgs& args)
-    {
-        if (const var* m = getProperties().getVarPointer (function))
-            if (FunctionObject* fo = dynamic_cast<FunctionObject*> (m->getObject()))
-                return fo->invoke (Scope (nullptr, this, this), args);
-
-        return var::undefined();
     }
 
     //==============================================================================
@@ -184,6 +180,32 @@ struct JavascriptEngine::RootObject   : public DynamicObject
 
             return parent != nullptr ? parent->findSymbolInParentScopes (name)
                                      : var::undefined();
+        }
+
+        bool findAndInvokeMethod (Identifier function, const var::NativeFunctionArgs& args, var& result) const
+        {
+            const NamedValueSet& props = scope->getProperties();
+
+            DynamicObject* target = args.thisObject.getDynamicObject();
+
+            if (target == nullptr || target == scope)
+            {
+                if (const var* m = props.getVarPointer (function))
+                {
+                    if (FunctionObject* fo = dynamic_cast<FunctionObject*> (m->getObject()))
+                    {
+                        result = fo->invoke (*this, args);
+                        return true;
+                    }
+                }
+            }
+
+            for (int i = 0; i < props.size(); ++i)
+                if (DynamicObject* o = props.getValueAt (i).getDynamicObject())
+                    if (Scope (this, root, o).findAndInvokeMethod (function, args, result))
+                        return true;
+
+            return false;
         }
 
         void checkTimeOut (const CodeLocation& location) const
@@ -651,14 +673,13 @@ struct JavascriptEngine::RootObject   : public DynamicObject
 
         var getResult (const Scope& s) const override
         {
-            var function (object->getResult (s));
-
             if (DotOperator* dot = dynamic_cast<DotOperator*> (object.get()))
             {
                 var thisObject (dot->parent->getResult (s));
                 return invokeFunction (s, s.findFunctionCall (location, thisObject, dot->child), thisObject);
             }
 
+            var function (object->getResult (s));
             return invokeFunction (s, function, var (s.scope));
         }
 
@@ -758,7 +779,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
 
         void writeAsJSON (OutputStream& out, int /*indentLevel*/, bool /*allOnOneLine*/) override
         {
-            out << "function" << functionCode;
+            out << "function " << functionCode;
         }
 
         var invoke (const Scope& s, const var::NativeFunctionArgs& args) const
@@ -768,9 +789,9 @@ struct JavascriptEngine::RootObject   : public DynamicObject
             static const Identifier thisIdent ("this");
             functionRoot->setProperty (thisIdent, args.thisObject);
 
-            const int numArgs = jmin (parameters.size(), args.numArguments);
-            for (int i = 0; i < numArgs; ++i)
-                functionRoot->setProperty (parameters.getReference(i), args.arguments[i]);
+            for (int i = 0; i < parameters.size(); ++i)
+                functionRoot->setProperty (parameters.getReference(i),
+                                           i < args.numArguments ? args.arguments[i] : var::undefined());
 
             var result;
             body->perform (Scope (&s, s.root, functionRoot), &result);
@@ -853,8 +874,8 @@ struct JavascriptEngine::RootObject   : public DynamicObject
 
         bool matchToken (TokenType name, const size_t len) noexcept
         {
-            if (p.compareUpTo (String::CharPointerType (name), len) != 0) return false;
-            p += len;  return true;
+            if (p.compareUpTo (CharPointer_ASCII (name), (int) len) != 0) return false;
+            p += (int) len;  return true;
         }
 
         void skipWhitespaceAndComments()
@@ -1211,6 +1232,9 @@ struct JavascriptEngine::RootObject   : public DynamicObject
                 return parseSuffixes (s.release());
             }
 
+            if (matchIf (TokenTypes::plusplus))   return parsePostIncDec<AdditionOp> (input);
+            if (matchIf (TokenTypes::minusminus)) return parsePostIncDec<SubtractionOp> (input);
+
             return input.release();
         }
 
@@ -1339,8 +1363,6 @@ struct JavascriptEngine::RootObject   : public DynamicObject
             {
                 if (matchIf (TokenTypes::plus))            { ExpPtr b (parseMultiplyDivide()); a = new AdditionOp    (location, a, b); }
                 else if (matchIf (TokenTypes::minus))      { ExpPtr b (parseMultiplyDivide()); a = new SubtractionOp (location, a, b); }
-                else if (matchIf (TokenTypes::plusplus))   a = parsePostIncDec<AdditionOp> (a);
-                else if (matchIf (TokenTypes::minusminus)) a = parsePostIncDec<SubtractionOp> (a);
                 else break;
             }
 
@@ -1429,7 +1451,7 @@ struct JavascriptEngine::RootObject   : public DynamicObject
         }
 
         static Identifier getClassName()   { static const Identifier i ("Object"); return i; }
-        static var dump  (Args a)          { DBG (JSON::toString (a.thisObject)); return var::undefined(); }
+        static var dump  (Args a)          { DBG (JSON::toString (a.thisObject)); (void) a; return var::undefined(); }
         static var clone (Args a)          { return a.thisObject.clone(); }
     };
 
@@ -1668,16 +1690,22 @@ var JavascriptEngine::evaluate (const String& code, Result* result)
 
 var JavascriptEngine::callFunction (Identifier function, const var::NativeFunctionArgs& args, Result* result)
 {
+    var returnVal (var::undefined());
+
     try
     {
         prepareTimeout();
         if (result != nullptr) *result = Result::ok();
-        return root->invoke (function, args);
+        RootObject::Scope (nullptr, root, root).findAndInvokeMethod (function, args, returnVal);
     }
     catch (String& error)
     {
         if (result != nullptr) *result = Result::fail (error);
     }
 
-    return var::undefined();
+    return returnVal;
 }
+
+#if JUCE_MSVC
+ #pragma warning (pop)
+#endif

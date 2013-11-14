@@ -148,7 +148,7 @@ void Button::setToggleState (const bool shouldBeOn, const NotificationType notif
 
         if (lastToggleState)
         {
-            turnOffOtherButtonsInGroup (notification);
+            turnOffOtherButtonsInGroup (dontSendNotification);
 
             if (deletionWatcher == nullptr)
                 return;
@@ -308,9 +308,17 @@ void Button::triggerClick()
 void Button::internalClickCallback (const ModifierKeys& modifiers)
 {
     if (clickTogglesState)
-        setToggleState (radioGroupId != 0 || ! lastToggleState, sendNotification);
-    else
-        sendClickMessage (modifiers);
+    {
+        const bool shouldBeOn = (radioGroupId != 0 || ! lastToggleState);
+
+        if (shouldBeOn != getToggleState())
+        {
+            setToggleState (shouldBeOn, sendNotification);
+            return;
+        }
+    }
+
+    sendClickMessage (modifiers);
 }
 
 void Button::flashButtonState()
