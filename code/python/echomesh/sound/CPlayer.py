@@ -12,7 +12,7 @@ class CPlayer(Runnable):
     super(CPlayer, self).__init__()
     PlayerSetter.evaluated_player(
       self, element, level=level, pan=pan, loops=loops, length=length, **kwds)
-    player = AudioPlayer()
+    player = AudioPlayer(self)
     self._on_run = player.run
     self._on_stop = player.stop
     self._on_stop = player.pause
