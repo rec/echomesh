@@ -3,37 +3,22 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.network import ClientServer
 from echomesh.sound import PlayerSetter
 from echomesh.util import Log
-from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.util.thread.Runnable import Runnable
 
 LOGGER = Log.logger(__name__)
 
 _ENVELOPE_ERROR = "ClientPlayer.%s must either be constant or an envelope."
 _INF = float('inf')
 
-def _fix(player, name):
-  part = getattr(player, name)
-  is_constant = part.is_constant()
-  result = {'is_constant': is_constant}
-  if is_constant:
-    result['value'] = part.evaluate()
-  elif part.envelope:
-    result['envelope'] = part.envelope.description()
-  else:
-    raise Exception(_ENVELOPE_ERROR % name)
-  setattr(player, name, result)
-
-
-class ClientPlayer(MasterRunnable):
+class ClientPlayer(Runnable):
   _FIELDS = ['begin', 'end', 'filename', 'passthrough', 'level', 'pan',
              'length', 'loops']
 
   def __init__(self, element, level=1, pan=0, loops=1, length=_INF, **kwds):
     ClientServer.instance()
     super(ClientPlayer, self).__init__()
-    PlayerSetter.set_player(self, element, level=level, pan=pan, loops=loops,
-                            length=length, **kwds)
-    _fix(self, '_level')
-    _fix(self, '_pan')
+    PlayerSetter.evaluated_player(
+      self, element, level=level, pan=pan, loops=loops, length=length, **kwds)
 
     data = dict((f, getattr(self, '_' + f)) for f in ClientPlayer._FIELDS)
     self._write(type='construct', **data)

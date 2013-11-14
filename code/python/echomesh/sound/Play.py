@@ -20,6 +20,10 @@ def _get_player(player):
     from echomesh.sound import ClientPlayer
     return ClientPlayer.ClientPlayer
 
+  if player == 'cython':
+    from echomesh.sound import CPlayer
+    return CPlayer.CPlayer
+
   raise Exception('Don\'t understand player %s' % player)
 
 def play(element, **kwds):
