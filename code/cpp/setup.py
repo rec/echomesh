@@ -22,7 +22,7 @@ IS_WINDOWS = (PLATFORM == 'windows')
 assert IS_LINUX or IS_MAC or IS_WINDOWS
 
 MODULE_NAME = 'cechomesh_debug' if DEBUG else 'cechomesh'
-PYX_FILES = ['echomesh.pyx', 'audio.pyx']
+PYX_FILES = ['cechomesh.pyx']
 LIBRARIES = ['echomesh', 'pthread']
 
 DEBUG_ARGS = {
@@ -35,7 +35,7 @@ EXTRA_COMPILE_ARGS = ['-I.']
 if IS_MAC:
   EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
                          '-IJuceLibraryCode -O0'.split())
-  EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit'.split()
+  EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
 
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
@@ -72,7 +72,7 @@ class CleanCommand(Command):
     os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
 
 setup(
-  name='Echomesh',
+  name='CEchomesh',
   cmdclass={'build_ext': build_ext,
             'clean': CleanCommand},
   ext_modules=cythonize(
