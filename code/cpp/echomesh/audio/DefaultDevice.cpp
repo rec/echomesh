@@ -1,6 +1,7 @@
 #include "echomesh/audio/DefaultDevice.h"
 
 namespace echomesh {
+namespace audio {
 
 namespace {
 
@@ -35,4 +36,5 @@ const string& defaultInputDevice() {
   return DEVICE;
 }
 
+}  // namespace audio
 }  // namespace echomesh
