@@ -34,6 +34,6 @@ class SampleAudioSource : public AudioSource {
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };
 
-#endif  // __ECHOMESH_SAMPLEAUDIOSOURCE__
 }  // namespace echomesh
 
+#endif  // __ECHOMESH_SAMPLEAUDIOSOURCE__
