@@ -17,6 +17,11 @@ def start_application(f):
 def stop_application():
   stopApplication()
 
+cdef void callback(void* f):
+  (<object>f)()
+
+
+# cdef class AudioPlayer
 
 cdef class TinyWindow:
   cdef Tiny *thisptr
@@ -29,7 +34,4 @@ cdef class TinyWindow:
 
   def show(self):
     self.thisptr.show()
-
-cdef void callback(void* f):
-  (<object>f)()
 

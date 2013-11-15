@@ -21,6 +21,10 @@ IS_WINDOWS = (PLATFORM == 'windows')
 
 assert IS_LINUX or IS_MAC or IS_WINDOWS
 
+MODULE_NAME = 'cechomesh_debug' if DEBUG else 'cechomesh'
+PYX_FILES = ['echomesh.pyx', 'audio.pyx']
+LIBRARIES = ['echomesh', 'pthread']
+
 DEBUG_ARGS = {
   'cython_gdb': True,
   'pyrex_gdb': True,
@@ -29,28 +33,26 @@ EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
 if IS_MAC:
   EXTRA_COMPILE_ARGS = ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                        '-IJuceLibraryCode'.split())
+                        '-IJuceLibraryCode -O0'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit'.split()
 
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
-    LIBRARY = 'echomesh-debug'
-    LIB_DIR = '/development/echomesh/code/cython/Builds/MacOSX/build/Debug'
+    LIB_DIRS = ['/development/echomesh/code/cython/Builds/MacOSX/build/Debug']
 
   else:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
-    LIBRARY = 'echomesh'
-    LIB_DIR = '/development/echomesh/code/cython/Builds/MacOSX/build/Release'
+    LIB_DIRS = ['/development/echomesh/code/cython/Builds/MacOSX/build/Release']
 
 else:
   raise Exception("Don't understand platform %s." % platform)
 
 lib = extension.Extension(
-  LIBRARY,
-  ['echomesh.pyx'],
-  library_dirs=[LIB_DIR],
-  libraries=['echomesh', 'pthread'],
+  MODULE_NAME,
+  PYX_FILES,
+  library_dirs=LIB_DIRS,
+  libraries=LIBRARIES,
   extra_compile_args=EXTRA_COMPILE_ARGS,
   extra_link_args=EXTRA_LINK_ARGS,
   **EXTRA_ARGS)
@@ -66,8 +68,7 @@ class CleanCommand(Command):
 
   def run(self):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
-    os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % LIBRARY)
-
+    os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
 
 setup(
   name='Echomesh',
@@ -75,6 +76,5 @@ setup(
             'clean': CleanCommand},
   ext_modules=cythonize(
     [lib],
-    annotate=True,
     **EXTRA_ARGS),
   )
