@@ -4,6 +4,216 @@
               bundleIdentifier="com.yourcompany.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0">
   <MAINGROUP id="Z5EcKk" name="echomesh">
+    <GROUP id="{1D89258C-4BCE-66C8-1D54-3E4EC0E10DEA}" name="base64">
+      <FILE id="jK6G3O" name="base64.cpp" compile="1" resource="0" file="../cpp/base64/base64.cpp"/>
+      <FILE id="wjCpDs" name="base64.h" compile="0" resource="0" file="../cpp/base64/base64.h"/>
+    </GROUP>
+    <GROUP id="{D12243E0-81CC-491C-1FEB-655FFC7DD30E}" name="echomesh">
+      <GROUP id="{9CC2E7D9-6C6A-9A7D-4E72-3105C7A5187D}" name="audio">
+        <FILE id="Z6wPF2" name="AudioController.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/AudioController.cpp"/>
+        <FILE id="HGXW7Q" name="AudioController.h" compile="0" resource="0"
+              file="../cpp/echomesh/audio/AudioController.h"/>
+        <FILE id="K6zVLK" name="DefaultDevice.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/DefaultDevice.cpp"/>
+        <FILE id="hbfQ3C" name="DefaultDevice.h" compile="0" resource="0" file="../cpp/echomesh/audio/DefaultDevice.h"/>
+        <FILE id="xgR65M" name="Envelope.cpp" compile="1" resource="0" file="../cpp/echomesh/audio/Envelope.cpp"/>
+        <FILE id="vbo8pN" name="Envelope.h" compile="0" resource="0" file="../cpp/echomesh/audio/Envelope.h"/>
+        <FILE id="wL6CSh" name="EnvelopeValuePlayer.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/EnvelopeValuePlayer.cpp"/>
+        <FILE id="HCG25r" name="EnvelopeValuePlayer.h" compile="0" resource="0"
+              file="../cpp/echomesh/audio/EnvelopeValuePlayer.h"/>
+        <FILE id="uoQFqn" name="GetReader.cpp" compile="1" resource="0" file="../cpp/echomesh/audio/GetReader.cpp"/>
+        <FILE id="ySBCqW" name="GetReader.h" compile="0" resource="0" file="../cpp/echomesh/audio/GetReader.h"/>
+        <FILE id="uzaZfD" name="MidiController.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/MidiController.cpp"/>
+        <FILE id="ghA7Zk" name="MidiController.h" compile="0" resource="0"
+              file="../cpp/echomesh/audio/MidiController.h"/>
+        <FILE id="FMRuyW" name="Player.h" compile="0" resource="0" file="../cpp/echomesh/audio/Player.h"/>
+        <FILE id="nMx3QM" name="SampleAudioSource.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/SampleAudioSource.cpp"/>
+        <FILE id="nImeHl" name="SampleAudioSource.h" compile="0" resource="0"
+              file="../cpp/echomesh/audio/SampleAudioSource.h"/>
+      </GROUP>
+      <GROUP id="{3C4FBC92-E200-D9EF-AEDD-3C3938F7814F}" name="base">
+        <FILE id="IAhuN5" name="ArraySize.h" compile="0" resource="0" file="../cpp/echomesh/base/ArraySize.h"/>
+        <FILE id="msa5cc" name="Config.cpp" compile="1" resource="0" file="../cpp/echomesh/base/Config.cpp"/>
+        <FILE id="zivfw7" name="Config.h" compile="0" resource="0" file="../cpp/echomesh/base/Config.h"/>
+        <FILE id="FnBRuc" name="Disallow.h" compile="0" resource="0" file="../cpp/echomesh/base/Disallow.h"/>
+        <FILE id="KEIchB" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/base/Echomesh.h"/>
+        <FILE id="acdE9F" name="Log.cpp" compile="1" resource="0" file="../cpp/echomesh/base/Log.cpp"/>
+        <FILE id="xMV8Ja" name="Log.h" compile="0" resource="0" file="../cpp/echomesh/base/Log.h"/>
+        <FILE id="Ti9cJ6" name="Runnable.h" compile="0" resource="0" file="../cpp/echomesh/base/Runnable.h"/>
+      </GROUP>
+      <GROUP id="{FEE735BA-5738-1145-8191-A33B1EAB942B}" name="component">
+        <FILE id="zHH5n2" name="InstrumentComponent.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/component/InstrumentComponent.cpp"/>
+        <FILE id="Dfsw2Q" name="InstrumentComponent.h" compile="0" resource="0"
+              file="../cpp/echomesh/component/InstrumentComponent.h"/>
+        <FILE id="Hy7b0X" name="InstrumentGrid.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/component/InstrumentGrid.cpp"/>
+        <FILE id="NOuh7j" name="InstrumentGrid.h" compile="0" resource="0"
+              file="../cpp/echomesh/component/InstrumentGrid.h"/>
+        <FILE id="IJhZjK" name="LightingWindow.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/component/LightingWindow.cpp"/>
+        <FILE id="aMGRno" name="LightingWindow.h" compile="0" resource="0"
+              file="../cpp/echomesh/component/LightingWindow.h"/>
+      </GROUP>
+      <FILE id="CsvuAD" name="Echomesh.cpp" compile="1" resource="0" file="../cpp/echomesh/Echomesh.cpp"/>
+      <FILE id="ZcUUY0" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/Echomesh.h"/>
+      <FILE id="IA2wce" name="Main.cpp" compile="1" resource="0" file="../cpp/echomesh/Main.cpp"/>
+      <GROUP id="{B85C8A48-98D4-485F-2CAA-3F21415DF78B}" name="network">
+        <FILE id="RXdNqE" name="LightController.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/network/LightController.cpp"/>
+        <FILE id="H2Jq64" name="LightController.h" compile="0" resource="0"
+              file="../cpp/echomesh/network/LightController.h"/>
+        <FILE id="ThjsKT" name="LightReader.cpp" compile="1" resource="0" file="../cpp/echomesh/network/LightReader.cpp"/>
+        <FILE id="BEgmyC" name="LightReader.h" compile="0" resource="0" file="../cpp/echomesh/network/LightReader.h"/>
+        <FILE id="SOeAZl" name="LineGetter.cpp" compile="1" resource="0" file="../cpp/echomesh/network/LineGetter.cpp"/>
+        <FILE id="HquJRb" name="LineGetter.h" compile="0" resource="0" file="../cpp/echomesh/network/LineGetter.h"/>
+        <FILE id="CLSsVt" name="LineQueue.h" compile="0" resource="0" file="../cpp/echomesh/network/LineQueue.h"/>
+        <FILE id="W5eiOA" name="ReadThread.cpp" compile="1" resource="0" file="../cpp/echomesh/network/ReadThread.cpp"/>
+        <FILE id="r8feCI" name="ReadThread.h" compile="0" resource="0" file="../cpp/echomesh/network/ReadThread.h"/>
+        <FILE id="crWROQ" name="SocketLineGetter.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/network/SocketLineGetter.cpp"/>
+        <FILE id="veTTe9" name="SocketLineGetter.h" compile="0" resource="0"
+              file="../cpp/echomesh/network/SocketLineGetter.h"/>
+      </GROUP>
+      <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
+        <FILE id="uc8zMT" name="FastTrig.cpp" compile="1" resource="0" file="../cpp/echomesh/util/FastTrig.cpp"/>
+        <FILE id="zHpRoU" name="FastTrig.h" compile="0" resource="0" file="../cpp/echomesh/util/FastTrig.h"/>
+        <FILE id="mMb4m3" name="GetDevice.cpp" compile="1" resource="0" file="../cpp/echomesh/util/GetDevice.cpp"/>
+        <FILE id="prJ20Q" name="GetDevice.h" compile="0" resource="0" file="../cpp/echomesh/util/GetDevice.h"/>
+        <FILE id="syC61X" name="Quit.h" compile="0" resource="0" file="../cpp/echomesh/util/Quit.h"/>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{3B8A994B-B9E8-3E76-1A2A-42FF84661992}" name="rec">
+      <GROUP id="{97EFF98A-335E-4891-BAC4-99026E468CD2}" name="audio">
+        <GROUP id="{687859E9-4E7A-6509-71D1-87A8BFB4BC0A}" name="format">
+          <FILE id="KsR1px" name="Manager.cpp" compile="1" resource="0" file="../cpp/rec/audio/format/Manager.cpp"/>
+          <FILE id="VD0bzZ" name="Manager.h" compile="0" resource="0" file="../cpp/rec/audio/format/Manager.h"/>
+          <FILE id="iPtlZO" name="RegisterFormats.cpp" compile="1" resource="0"
+                file="../cpp/rec/audio/format/RegisterFormats.cpp"/>
+          <FILE id="CcYCvv" name="RegisterFormats.h" compile="0" resource="0"
+                file="../cpp/rec/audio/format/RegisterFormats.h"/>
+        </GROUP>
+        <FILE id="uLJ0qN" name="OutputSampleRate.cpp" compile="1" resource="0"
+              file="../cpp/rec/audio/OutputSampleRate.cpp"/>
+        <FILE id="QEXGIL" name="OutputSampleRate.h" compile="0" resource="0"
+              file="../cpp/rec/audio/OutputSampleRate.h"/>
+      </GROUP>
+      <GROUP id="{15677F58-D562-3E02-8D5A-D8E021D11AB6}" name="base">
+        <FILE id="igFhQu" name="ArraySize.h" compile="0" resource="0" file="../cpp/rec/base/ArraySize.h"/>
+        <FILE id="xcMYXk" name="base.h" compile="0" resource="0" file="../cpp/rec/base/base.h"/>
+        <FILE id="Iu3NX0" name="BaseNoJuce.h" compile="0" resource="0" file="../cpp/rec/base/BaseNoJuce.h"/>
+        <FILE id="AyEPp1" name="basictypes.h" compile="0" resource="0" file="../cpp/rec/base/basictypes.h"/>
+        <FILE id="jeg30k" name="build_config.h" compile="0" resource="0" file="../cpp/rec/base/build_config.h"/>
+        <FILE id="wG4uhc" name="Cast.h" compile="0" resource="0" file="../cpp/rec/base/Cast.h"/>
+        <FILE id="gZjTgP" name="CompileAssert.h" compile="0" resource="0" file="../cpp/rec/base/CompileAssert.h"/>
+        <FILE id="xWKVI6" name="disallow.h" compile="0" resource="0" file="../cpp/rec/base/disallow.h"/>
+        <FILE id="GPJJuw" name="port.h" compile="0" resource="0" file="../cpp/rec/base/port.h"/>
+        <FILE id="XzVOr7" name="ptr.h" compile="0" resource="0" file="../cpp/rec/base/ptr.h"/>
+        <FILE id="kjVMpu" name="RealTime.h" compile="0" resource="0" file="../cpp/rec/base/RealTime.h"/>
+        <FILE id="QwkV2I" name="SampleRate.h" compile="0" resource="0" file="../cpp/rec/base/SampleRate.h"/>
+        <FILE id="ZIJW4u" name="SampleTime.h" compile="0" resource="0" file="../cpp/rec/base/SampleTime.h"/>
+        <FILE id="urLWd0" name="scoped_array.h" compile="0" resource="0" file="../cpp/rec/base/scoped_array.h"/>
+        <FILE id="aFRoSy" name="string_piece.h" compile="0" resource="0" file="../cpp/rec/base/string_piece.h"/>
+        <FILE id="BZ11tB" name="types.h" compile="0" resource="0" file="../cpp/rec/base/types.h"/>
+      </GROUP>
+      <GROUP id="{E0709725-AFFE-1671-BADE-088AC4D89811}" name="util">
+        <FILE id="CbalRB" name="Deletable.h" compile="0" resource="0" file="../cpp/rec/util/Deletable.h"/>
+        <FILE id="FfWyDG" name="HasLock.h" compile="0" resource="0" file="../cpp/rec/util/HasLock.h"/>
+        <FILE id="SSDh81" name="Listener.h" compile="0" resource="0" file="../cpp/rec/util/Listener.h"/>
+        <FILE id="DlCfZX" name="STL.h" compile="0" resource="0" file="../cpp/rec/util/STL.h"/>
+        <GROUP id="{32FDB42F-FE0F-AD19-33DD-65C7735C28D5}" name="thread">
+          <FILE id="WKw6jH" name="CallAsync.h" compile="0" resource="0" file="../cpp/rec/util/thread/CallAsync.h"/>
+          <FILE id="Q9kXSf" name="Callback.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback.h"/>
+          <FILE id="UF1nMm" name="Callback0.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback0.h"/>
+          <FILE id="j86H9q" name="Callback1.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback1.h"/>
+          <FILE id="yPGpdH" name="Callback2.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback2.h"/>
+          <FILE id="EH0AFv" name="Callback3.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback3.h"/>
+          <FILE id="vVqWEo" name="Callback4.h" compile="0" resource="0" file="../cpp/rec/util/thread/Callback4.h"/>
+          <FILE id="jK2hBz" name="FunctionCallback.h" compile="0" resource="0"
+                file="../cpp/rec/util/thread/FunctionCallback.h"/>
+          <FILE id="m4XCSJ" name="LockedCallback.h" compile="0" resource="0"
+                file="../cpp/rec/util/thread/LockedCallback.h"/>
+          <FILE id="ZHsceS" name="MakeCallback.h" compile="0" resource="0" file="../cpp/rec/util/thread/MakeCallback.h"/>
+          <FILE id="pHrcQb" name="MakeThread.h" compile="0" resource="0" file="../cpp/rec/util/thread/MakeThread.h"/>
+          <FILE id="siFBSV" name="ModalCallback.h" compile="0" resource="0" file="../cpp/rec/util/thread/ModalCallback.h"/>
+          <FILE id="N5CmQM" name="Pointer.h" compile="0" resource="0" file="../cpp/rec/util/thread/Pointer.h"/>
+          <FILE id="cETTMF" name="Result.h" compile="0" resource="0" file="../cpp/rec/util/thread/Result.h"/>
+          <FILE id="GcDj0a" name="Trash.cpp" compile="1" resource="0" file="../cpp/rec/util/thread/Trash.cpp"/>
+          <FILE id="QKw72w" name="Trash.h" compile="0" resource="0" file="../cpp/rec/util/thread/Trash.h"/>
+        </GROUP>
+      </GROUP>
+    </GROUP>
+    <GROUP id="{081EE6DA-D9F8-F494-1117-D34C15A56AC0}" name="yaml-cpp-src">
+      <FILE id="F41R57" name="aliasmanager.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/aliasmanager.cpp"/>
+      <FILE id="ROGOhY" name="binary.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/binary.cpp"/>
+      <FILE id="LPPZ5q" name="collectionstack.h" compile="0" resource="0"
+            file="../cpp/yaml-cpp-src/collectionstack.h"/>
+      <GROUP id="{114271F7-DD6A-BD3A-D540-1AE3C5855FF0}" name="contrib">
+        <FILE id="odLnwQ" name="graphbuilder.cpp" compile="1" resource="0"
+              file="../cpp/yaml-cpp-src/contrib/graphbuilder.cpp"/>
+        <FILE id="S6u6Ba" name="graphbuilderadapter.cpp" compile="1" resource="0"
+              file="../cpp/yaml-cpp-src/contrib/graphbuilderadapter.cpp"/>
+        <FILE id="dz2COU" name="graphbuilderadapter.h" compile="0" resource="0"
+              file="../cpp/yaml-cpp-src/contrib/graphbuilderadapter.h"/>
+      </GROUP>
+      <FILE id="QW2Jh4" name="conversion.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/conversion.cpp"/>
+      <FILE id="YCgLOe" name="directives.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/directives.cpp"/>
+      <FILE id="JGn9aZ" name="directives.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/directives.h"/>
+      <FILE id="JaueKD" name="emitfromevents.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/emitfromevents.cpp"/>
+      <FILE id="mKzYAB" name="emitter.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/emitter.cpp"/>
+      <FILE id="kPEoaq" name="emitterstate.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/emitterstate.cpp"/>
+      <FILE id="FEDyCi" name="emitterstate.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/emitterstate.h"/>
+      <FILE id="MEoFOH" name="emitterutils.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/emitterutils.cpp"/>
+      <FILE id="zUJUCU" name="emitterutils.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/emitterutils.h"/>
+      <FILE id="hRc0h3" name="exp.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/exp.cpp"/>
+      <FILE id="AbnPab" name="exp.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/exp.h"/>
+      <FILE id="viImqm" name="indentation.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/indentation.h"/>
+      <FILE id="V8QypR" name="iterator.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/iterator.cpp"/>
+      <FILE id="CtdMbT" name="iterpriv.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/iterpriv.h"/>
+      <FILE id="L6b7XN" name="node.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/node.cpp"/>
+      <FILE id="lGN0GR" name="nodebuilder.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/nodebuilder.cpp"/>
+      <FILE id="A0YgTF" name="nodebuilder.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/nodebuilder.h"/>
+      <FILE id="GL2lJF" name="nodeownership.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/nodeownership.cpp"/>
+      <FILE id="g3piT4" name="nodeownership.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/nodeownership.h"/>
+      <FILE id="PkD3Kc" name="null.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/null.cpp"/>
+      <FILE id="bqZqJo" name="ostream.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/ostream.cpp"/>
+      <FILE id="C8fpY8" name="parser.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/parser.cpp"/>
+      <FILE id="wCj9vo" name="ptr_stack.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/ptr_stack.h"/>
+      <FILE id="HkGQqG" name="ptr_vector.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/ptr_vector.h"/>
+      <FILE id="TtvNKh" name="regex.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/regex.cpp"/>
+      <FILE id="cFoJx2" name="regex.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/regex.h"/>
+      <FILE id="di9ocf" name="regeximpl.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/regeximpl.h"/>
+      <FILE id="enzRQ4" name="scanner.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scanner.cpp"/>
+      <FILE id="PtNIa9" name="scanner.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scanner.h"/>
+      <FILE id="XfLl2t" name="scanscalar.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scanscalar.cpp"/>
+      <FILE id="ww6LcW" name="scanscalar.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scanscalar.h"/>
+      <FILE id="MA9grC" name="scantag.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scantag.cpp"/>
+      <FILE id="wfmoNI" name="scantag.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scantag.h"/>
+      <FILE id="cETY3b" name="scantoken.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scantoken.cpp"/>
+      <FILE id="NsgvxG" name="setting.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/setting.h"/>
+      <FILE id="DMbgV4" name="simplekey.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/simplekey.cpp"/>
+      <FILE id="bL6jYk" name="singledocparser.cpp" compile="1" resource="0"
+            file="../cpp/yaml-cpp-src/singledocparser.cpp"/>
+      <FILE id="kKQuLw" name="singledocparser.h" compile="0" resource="0"
+            file="../cpp/yaml-cpp-src/singledocparser.h"/>
+      <FILE id="sQNZNd" name="stream.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/stream.cpp"/>
+      <FILE id="W56XtB" name="stream.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/stream.h"/>
+      <FILE id="fza0fO" name="streamcharsource.h" compile="0" resource="0"
+            file="../cpp/yaml-cpp-src/streamcharsource.h"/>
+      <FILE id="rZgby9" name="stringsource.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/stringsource.h"/>
+      <FILE id="D2GZYB" name="tag.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/tag.cpp"/>
+      <FILE id="GPBwGj" name="tag.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/tag.h"/>
+      <FILE id="W2Cr9Q" name="token.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/token.h"/>
+    </GROUP>
     <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source">
       <GROUP id="{3BFA4C6A-01DE-1C43-CA84-8022AD9E7CF4}" name="echomesh">
         <FILE id="afLllr" name="EchomeshApplication.cpp" compile="1" resource="0"
@@ -18,10 +228,10 @@
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
                        isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""
-                       cppLibType="libc++" headerPath="../../Source"/>
+                       cppLibType="libc++" headerPath="../../Source;../../../cpp"/>
         <CONFIGURATION name="Release" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
-                       customXcodeFlags="" cppLibType="libc++" headerPath="../../Source"/>
+                       cppLibType="libc++" headerPath="../../Source;../../../cpp"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>
