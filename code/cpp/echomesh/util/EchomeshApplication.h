@@ -1,6 +1,8 @@
 #ifndef __ECHOMESH_ECHOMESHAPPLICATION__
 #define __ECHOMESH_ECHOMESHAPPLICATION__
 
+#include "echomesh/base/Echomesh.h"
+
 namespace echomesh {
 
 typedef void (*AppCallback)(void *userData);

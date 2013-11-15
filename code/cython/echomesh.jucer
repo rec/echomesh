@@ -80,6 +80,10 @@
               file="../cpp/echomesh/network/SocketLineGetter.h"/>
       </GROUP>
       <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
+        <FILE id="IalUji" name="EchomeshApplication.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/util/EchomeshApplication.cpp"/>
+        <FILE id="Ai3ypy" name="EchomeshApplication.h" compile="0" resource="0"
+              file="../cpp/echomesh/util/EchomeshApplication.h"/>
         <FILE id="uc8zMT" name="FastTrig.cpp" compile="1" resource="0" file="../cpp/echomesh/util/FastTrig.cpp"/>
         <FILE id="zHpRoU" name="FastTrig.h" compile="0" resource="0" file="../cpp/echomesh/util/FastTrig.h"/>
         <FILE id="mMb4m3" name="GetDevice.cpp" compile="1" resource="0" file="../cpp/echomesh/util/GetDevice.cpp"/>
@@ -214,14 +218,7 @@
       <FILE id="GPBwGj" name="tag.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/tag.h"/>
       <FILE id="W2Cr9Q" name="token.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/token.h"/>
     </GROUP>
-    <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source">
-      <GROUP id="{3BFA4C6A-01DE-1C43-CA84-8022AD9E7CF4}" name="echomesh">
-        <FILE id="afLllr" name="EchomeshApplication.cpp" compile="1" resource="0"
-              file="Source/echomesh/EchomeshApplication.cpp"/>
-        <FILE id="fivKlm" name="EchomeshApplication.h" compile="0" resource="0"
-              file="Source/echomesh/EchomeshApplication.h"/>
-      </GROUP>
-    </GROUP>
+    <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

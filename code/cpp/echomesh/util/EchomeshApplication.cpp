@@ -1,6 +1,4 @@
-#include "JuceHeader.h"
-
-#include "echomesh/EchomeshApplication.h"
+#include "echomesh/util/EchomeshApplication.h"
 
 namespace echomesh {
 

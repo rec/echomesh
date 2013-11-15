@@ -2,3 +2,4 @@
 *.so
 build/
 Builds/MacOSX/echomesh.xcodeproj/xcuserdata/
+Builds/MacOSX/echomesh.xcodeproj/project.xcworkspace/xcuserdata/
