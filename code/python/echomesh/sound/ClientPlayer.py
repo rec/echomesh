@@ -17,7 +17,7 @@ class ClientPlayer(Runnable):
   def __init__(self, element, level=1, pan=0, loops=1, length=_INF, **kwds):
     ClientServer.instance()
     super(ClientPlayer, self).__init__()
-    PlayerSetter.evaluated_player(
+    PlayerSetter.evaluate_player(
       self, element, level=level, pan=pan, loops=loops, length=length, **kwds)
 
     data = dict((f, getattr(self, '_' + f)) for f in ClientPlayer._FIELDS)

@@ -36,7 +36,7 @@ def _evaluate_player(player, name):
     raise Exception(_ENVELOPE_ERROR % name)
   setattr(player, name, result)
 
-def evaluated_player(player, element, **kwds):
+def evaluate_player(player, element, **kwds):
   set_player(player, element, **kwds)
   _evaluate_player(player, '_level')
   _evaluate_player(player, '_pan')
