@@ -1,12 +1,12 @@
 # distutils: language = c++
-# distutils: sources = Source/Tiny.cpp
+# distutils: sources = Tiny.cpp
 
-cdef extern from "Source/Tiny.h" namespace "echomesh":
+cdef extern from "Tiny.h" namespace "echomesh":
   cdef cppclass Tiny:
     void show()
     void hide()
 
-cdef extern from "Source/echomesh/EchomeshApplication.h" namespace "echomesh":
+cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
   ctypedef void (*Callback)(void *user_data)
   void startApplication(Callback cb, void* user_data)
   void stopApplication()

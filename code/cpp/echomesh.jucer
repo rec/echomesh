@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <JUCERPROJECT id="lm5Yh4" name="echomesh" projectType="library" version="1.0.0"
-              bundleIdentifier="com.yourcompany.echomesh" includeBinaryInAppConfig="1"
+              bundleIdentifier="org.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0">
   <MAINGROUP id="Z5EcKk" name="echomesh">
     <GROUP id="{1D89258C-4BCE-66C8-1D54-3E4EC0E10DEA}" name="base64">
@@ -221,14 +221,14 @@
     <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../..">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
                        isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""
-                       cppLibType="libc++" headerPath="../../Source;../../../cpp"/>
+                       cppLibType="libc++"/>
         <CONFIGURATION name="Release" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
-                       cppLibType="libc++" headerPath="../../Source;../../../cpp"/>
+                       cppLibType="libc++"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>

@@ -1,3 +1,6 @@
-*.bin
-
+*.cpp
+*.so
+build/
+Builds/MacOSX/echomesh.xcodeproj/xcuserdata/
+Builds/MacOSX/echomesh.xcodeproj/project.xcworkspace/xcuserdata/
 Builds/MacOSX/echomesh-client.xcodeproj/xcuserdata/

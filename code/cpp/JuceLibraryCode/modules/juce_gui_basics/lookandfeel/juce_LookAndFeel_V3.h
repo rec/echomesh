@@ -47,8 +47,6 @@ public:
     bool areLinesDrawnForTreeView (TreeView&) override;
     int getTreeViewIndentSize (TreeView&) override;
 
-    Button* createDocumentWindowButton (int buttonType) override;
-
     void drawComboBox (Graphics&, int width, int height, bool isButtonDown,
                        int buttonX, int buttonY, int buttonW, int buttonH, ComboBox& box) override;
 

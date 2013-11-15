@@ -10,15 +10,14 @@
 
 */
 
-#ifndef __APPHEADERFILE_XEYPDN__
-#define __APPHEADERFILE_XEYPDN__
+#ifndef __APPHEADERFILE_LM5YH4__
+#define __APPHEADERFILE_LM5YH4__
 
 #include "AppConfig.h"
 #include "modules/juce_audio_basics/juce_audio_basics.h"
 #include "modules/juce_audio_devices/juce_audio_devices.h"
 #include "modules/juce_audio_formats/juce_audio_formats.h"
 #include "modules/juce_audio_processors/juce_audio_processors.h"
-#include "modules/juce_audio_utils/juce_audio_utils.h"
 #include "modules/juce_core/juce_core.h"
 #include "modules/juce_cryptography/juce_cryptography.h"
 #include "modules/juce_data_structures/juce_data_structures.h"
@@ -37,9 +36,9 @@
 
 namespace ProjectInfo
 {
-    const char* const  projectName    = "echomesh-client";
+    const char* const  projectName    = "echomesh";
     const char* const  versionString  = "1.0.0";
     const int          versionNumber  = 0x10000;
 }
 
-#endif   // __APPHEADERFILE_XEYPDN__
+#endif   // __APPHEADERFILE_LM5YH4__

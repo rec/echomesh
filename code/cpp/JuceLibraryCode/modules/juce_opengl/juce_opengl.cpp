@@ -76,6 +76,7 @@ namespace juce
 {
 
 //==============================================================================
+#include "native/juce_MissingGLDefinitions.h"
 #include "native/juce_OpenGLExtensions.h"
 
 void OpenGLExtensionFunctions::initialise()
@@ -96,7 +97,7 @@ void OpenGLExtensionFunctions::initialise()
 
 #if JUCE_OPENGL_ES
  #define JUCE_DECLARE_GL_FUNCTION(name, returnType, params, callparams) \
-    returnType OpenGLExtensionFunctions::name params { return ::name callparams; }
+    inline returnType OpenGLExtensionFunctions::name params { return ::name callparams; }
 
  JUCE_GL_EXTENSION_FUNCTIONS (JUCE_DECLARE_GL_FUNCTION, JUCE_DECLARE_GL_FUNCTION)
  #undef JUCE_DECLARE_GL_FUNCTION

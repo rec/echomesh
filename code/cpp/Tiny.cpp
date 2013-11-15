@@ -1,7 +1,7 @@
 #include "Tiny.h"
 
 #include "JuceHeader.h"
-#include "echomesh/EchomeshApplication.h"
+#include "echomesh/util/EchomeshApplication.h"
 
 using namespace echomesh;
 using namespace juce;

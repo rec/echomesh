@@ -149,9 +149,6 @@ public:
         @see TooltipClient
     */
     virtual String getTooltipForRow (int row);
-
-    /** You can override this to return a custom mouse cursor for each row. */
-    virtual MouseCursor getMouseCursorForRow (int row);
 };
 
 

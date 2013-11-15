@@ -31,19 +31,20 @@ DEBUG_ARGS = {
   }
 EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
+EXTRA_COMPILE_ARGS = ['-I.']
 if IS_MAC:
-  EXTRA_COMPILE_ARGS = ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                        '-IJuceLibraryCode -O0'.split())
+  EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
+                         '-IJuceLibraryCode -O0'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit'.split()
 
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
-    LIB_DIRS = ['/development/echomesh/code/cython/Builds/MacOSX/build/Debug']
+    LIB_DIRS = ['/development/echomesh/code/cpp/Builds/MacOSX/build/Debug']
 
   else:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
-    LIB_DIRS = ['/development/echomesh/code/cython/Builds/MacOSX/build/Release']
+    LIB_DIRS = ['/development/echomesh/code/cpp/Builds/MacOSX/build/Release']
 
 else:
   raise Exception("Don't understand platform %s." % platform)
@@ -78,3 +79,5 @@ setup(
     [lib],
     **EXTRA_ARGS),
   )
+
+# Typical use: python setup.py build_ext --inplace
