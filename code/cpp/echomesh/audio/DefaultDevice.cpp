@@ -25,13 +25,13 @@ string defaultDevice(bool isOutput) {
 
 }  // namespace
 
-const string& defaultOutputDevice() {
+string defaultOutputDevice() {
   static const string DEVICE = defaultDevice(true);
   return DEVICE;
 }
 
 
-const string& defaultInputDevice() {
+string defaultInputDevice() {
   static const string DEVICE = defaultDevice(false);
   return DEVICE;
 }

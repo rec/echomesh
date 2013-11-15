@@ -7,10 +7,10 @@ cdef extern from "echomesh/audio/DefaultDevice.h" namespace "echomesh::audio":
   string defaultInputDevice()
 
 def default_output_device():
-  return defaultOutputDevice();
+  return defaultOutputDevice()
 
 def default_input_device():
-  return defaultInputDevice();
+  return defaultInputDevice()
 
 cdef class AudioPlayer:
   def __cinit__(self, player):

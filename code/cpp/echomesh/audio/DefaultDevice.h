@@ -6,8 +6,8 @@
 namespace echomesh {
 namespace audio {
 
-const string& defaultOutputDevice();
-const string& defaultInputDevice();
+string defaultOutputDevice();
+string defaultInputDevice();
 
 }  // namespace audio
 }  // namespace echomesh

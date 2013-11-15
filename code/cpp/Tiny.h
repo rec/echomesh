@@ -1,6 +1,8 @@
 #ifndef __TINY__H
 #define __TINY__H
 
+#include <string>
+
 namespace echomesh {
 
 class Tiny {

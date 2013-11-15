@@ -3,6 +3,8 @@ cdef extern from "Tiny.h" namespace "echomesh":
     void show()
     void hide()
 
+  string tinyTest()
+
 # cdef class AudioPlayer
 
 cdef class TinyWindow:
@@ -16,5 +18,4 @@ cdef class TinyWindow:
 
   def show(self):
     self.thisptr.show()
-
 

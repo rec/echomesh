@@ -34,7 +34,7 @@ EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 EXTRA_COMPILE_ARGS = ['-I.']
 if IS_MAC:
   EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                         '-IJuceLibraryCode -O0'.split())
+                         '-stdlib=libc++ -IJuceLibraryCode -O0'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
 
   if DEBUG:
