@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>F84A3C28-153A-4E68-8952-7F62E13A3718</string>
+	<key>IDESourceControlProjectName</key>
+	<string>echomesh-client</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>255B3CFA-B0B5-4F8E-A1CE-640FE0D1B32C</key>
+		<string>ssh://github.com/rec/echomesh.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>code/cpp/Builds/MacOSX/echomesh-client.xcodeproj/project.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>255B3CFA-B0B5-4F8E-A1CE-640FE0D1B32C</key>
+		<string>../../../../../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/rec/echomesh.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>255B3CFA-B0B5-4F8E-A1CE-640FE0D1B32C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>255B3CFA-B0B5-4F8E-A1CE-640FE0D1B32C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>echomesh</string>
+		</dict>
+	</array>
+</dict>
+</plist>
