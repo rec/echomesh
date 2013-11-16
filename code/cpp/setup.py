@@ -3,13 +3,11 @@
 ## Run python setup.py build_ext to build echomesh.so
 
 import os
-
 import platform
 
-from distutils.core import setup, Command, Extension
+from distutils.core import setup, Command
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext, extension
-from Cython.Compiler import Options
 
 DEBUG = not True
 
@@ -49,6 +47,7 @@ if IS_MAC:
 else:
   raise Exception("Don't understand platform %s." % platform)
 
+
 class CleanCommand(Command):
   description = "custom clean command that forcefully removes dist/build directories"
   user_options = []
@@ -62,6 +61,13 @@ class CleanCommand(Command):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
     os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
 
+class BuildCommand(build_ext):
+  description = "Default build command."
+
+  def initialize_options(self):
+    self.inplace = True
+
+
 echomesh_extension = extension.Extension(
   MODULE_NAME,
   PYX_FILES,
@@ -73,10 +79,13 @@ echomesh_extension = extension.Extension(
 
 setup(
   name='Echomesh',
+
   cmdclass={
     'build_ext': build_ext,
-    'clean': CleanCommand},
-  ext_modules=cythonize(
+    'clean': CleanCommand,
+    },
+
+    ext_modules=cythonize(
     [echomesh_extension],
     **EXTRA_ARGS),
   )
