@@ -1,23 +1,29 @@
 #!/usr/bin/env python
 
-## Run python setup.py build_ext to build echomesh.so
-
 import os
+import os.path
 import platform
+import shutil
+import sys
+
+if 'build_ext' in sys.argv:
+  sys.argv.insert(sys.argv.index('build_ext') + 1, '--inplace')
 
 from distutils.core import setup, Command
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext, extension
 
+ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(
+  os.path.abspath(__file__))))
+ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
+
+sys.path.append(ECHOMESH_PATH)
+
+from echomesh.base import Platform
+
+
+
 DEBUG = not True
-
-PLATFORM = platform.system().lower()
-
-IS_LINUX = (PLATFORM == 'linux')
-IS_MAC = (PLATFORM == 'darwin')
-IS_WINDOWS = (PLATFORM == 'windows')
-
-assert IS_LINUX or IS_MAC or IS_WINDOWS
 
 MODULE_NAME = 'cechomesh_debug' if DEBUG else 'cechomesh'
 PYX_FILES = ['cechomesh.pyx']
@@ -30,7 +36,8 @@ DEBUG_ARGS = {
 EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
 EXTRA_COMPILE_ARGS = ['-I.']
-if IS_MAC:
+
+if Platform.PLATFORM == Platform.MAC:
   EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
                          '-stdlib=libc++ -IJuceLibraryCode -O0'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
@@ -49,7 +56,7 @@ else:
 
 
 class CleanCommand(Command):
-  description = "custom clean command that forcefully removes dist/build directories"
+  description = 'Complete clean command'
   user_options = []
   def initialize_options(self):
     self.cwd = None
@@ -61,11 +68,19 @@ class CleanCommand(Command):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
     os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
 
-class BuildCommand(build_ext):
-  description = "Default build command."
 
+class InstallCommand(Command):
+  description = 'Install library in bin directory.'
+  user_options = []
   def initialize_options(self):
-    self.inplace = True
+    pass
+
+  def finalize_options(self):
+    pass
+
+  def run(self):
+    bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
+    shutil.move('%s.so' % MODULE_NAME, bin_dir)
 
 
 echomesh_extension = extension.Extension(
@@ -83,6 +98,7 @@ setup(
   cmdclass={
     'build_ext': build_ext,
     'clean': CleanCommand,
+    'install': InstallCommand,
     },
 
     ext_modules=cythonize(
@@ -90,4 +106,3 @@ setup(
     **EXTRA_ARGS),
   )
 
-# Typical use: python setup.py build_ext --inplace
