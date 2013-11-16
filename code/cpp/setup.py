@@ -80,7 +80,7 @@ class InstallCommand(Command):
 
   def run(self):
     bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
-    shutil.move('%s.so' % MODULE_NAME, bin_dir)
+    shutil.copy('%s.so' % MODULE_NAME, bin_dir)
 
 
 echomesh_extension = extension.Extension(

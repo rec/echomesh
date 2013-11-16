@@ -11,6 +11,10 @@ double defaultOutputSampleRate();
 string defaultInputDevice();
 string defaultOutputDevice();
 
+unique_ptr<AudioDeviceManager> outputManager(const string& name = "",
+                                             int channels = 2,
+                                             double sampleRate = 0.0);
+
 }  // namespace audio
 }  // namespace echomesh
 

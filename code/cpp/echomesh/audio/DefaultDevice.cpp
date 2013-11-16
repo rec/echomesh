@@ -47,5 +47,19 @@ double defaultOutputSampleRate() {
   return defaultInputSetup().sampleRate;
 }
 
+unique_ptr<AudioDeviceManager> outputManager(const string& name,
+                                            int channels,
+                                            double sampleRate) {
+  unique_ptr<AudioDeviceManager> manager(new AudioDeviceManager);
+  String result = manager->initialise(0, channels, nullptr, false, name);
+  if (result.length()) {
+    std::cerr << "Error opening device " << name << ": "
+              << result.toStdString();
+    manager = nullptr;
+  }
+
+  return std::move(manager);
+}
+
 }  // namespace audio
 }  // namespace echomesh

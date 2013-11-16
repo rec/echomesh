@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #include <iostream>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,7 @@
 
 using std::string;
 using std::vector;
+using std::unique_ptr;
 
 using rec::RealTime;
 using rec::SampleTime;
