@@ -40,23 +40,14 @@ if IS_MAC:
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
-    LIB_DIRS = ['/development/echomesh/code/cpp/Builds/MacOSX/build/Debug']
+    LIB_DIRS = ['Builds/MacOSX/build/Debug']
 
   else:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
-    LIB_DIRS = ['/development/echomesh/code/cpp/Builds/MacOSX/build/Release']
+    LIB_DIRS = ['Builds/MacOSX/build/Release']
 
 else:
   raise Exception("Don't understand platform %s." % platform)
-
-lib = extension.Extension(
-  MODULE_NAME,
-  PYX_FILES,
-  library_dirs=LIB_DIRS,
-  libraries=LIBRARIES,
-  extra_compile_args=EXTRA_COMPILE_ARGS,
-  extra_link_args=EXTRA_LINK_ARGS,
-  **EXTRA_ARGS)
 
 class CleanCommand(Command):
   description = "custom clean command that forcefully removes dist/build directories"
@@ -71,12 +62,22 @@ class CleanCommand(Command):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
     os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
 
+echomesh_extension = extension.Extension(
+  MODULE_NAME,
+  PYX_FILES,
+  library_dirs=LIB_DIRS,
+  libraries=LIBRARIES,
+  extra_compile_args=EXTRA_COMPILE_ARGS,
+  extra_link_args=EXTRA_LINK_ARGS,
+  **EXTRA_ARGS)
+
 setup(
-  name='CEchomesh',
-  cmdclass={'build_ext': build_ext,
-            'clean': CleanCommand},
+  name='Echomesh',
+  cmdclass={
+    'build_ext': build_ext,
+    'clean': CleanCommand},
   ext_modules=cythonize(
-    [lib],
+    [echomesh_extension],
     **EXTRA_ARGS),
   )
 

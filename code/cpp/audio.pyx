@@ -6,6 +6,17 @@ cdef extern from "echomesh/audio/DefaultDevice.h" namespace "echomesh::audio":
   string defaultOutputDevice()
   string defaultInputDevice()
 
+cdef extern from "JuceHeader.h" namespace "juce":
+  cdef cppclass String:
+    string toStdString()
+
+cdef extern from "JuceHeader.h" namespace "juce::AudioDeviceManager":
+  cdef struct AudioDeviceSetup:
+    String outputDeviceName
+    String inputDeviceName
+    double sampleRate
+    int bufferSize
+
 def default_output_device():
   return defaultOutputDevice()
 

@@ -5,35 +5,38 @@ namespace audio {
 
 namespace {
 
-string defaultDevice(bool isOutput) {
+typedef AudioDeviceManager::AudioDeviceSetup AudioDeviceSetup;
+
+AudioDeviceSetup defaultDeviceSetup(bool isOutput) {
   AudioDeviceManager manager;
   String result = manager.initialise(
       isOutput ? 0 : 2,
       isOutput ? 2 : 0,
       nullptr,
       true);
-  if (result.isEmpty()) {
-    AudioDeviceManager::AudioDeviceSetup setup;
-    manager.getAudioDeviceSetup(setup);
-    result = isOutput ? setup.outputDeviceName : setup.inputDeviceName;
-  } else {
-    result = "ERROR: " + result;
-  }
+  AudioDeviceSetup setup;
+  manager.getAudioDeviceSetup(setup);
+  return setup;
+}
 
-  return result.toStdString();
+const AudioDeviceSetup& defaultInputSetup() {
+  static const AudioDeviceSetup SETUP = defaultDeviceSetup(false);
+  return SETUP;
+}
+
+const AudioDeviceSetup& defaultOutputSetup() {
+  static const AudioDeviceSetup SETUP = defaultDeviceSetup(true);
+  return SETUP;
 }
 
 }  // namespace
 
 string defaultOutputDevice() {
-  static const string DEVICE = defaultDevice(true);
-  return DEVICE;
+  return defaultOutputSetup().outputDeviceName.toStdString();
 }
 
-
 string defaultInputDevice() {
-  static const string DEVICE = defaultDevice(false);
-  return DEVICE;
+  return defaultInputSetup().inputDeviceName.toStdString();
 }
 
 }  // namespace audio
