@@ -39,5 +39,13 @@ string defaultInputDevice() {
   return defaultInputSetup().inputDeviceName.toStdString();
 }
 
+double defaultInputSampleRate() {
+  return defaultInputSetup().sampleRate;
+}
+
+double defaultOutputSampleRate() {
+  return defaultInputSetup().sampleRate;
+}
+
 }  // namespace audio
 }  // namespace echomesh

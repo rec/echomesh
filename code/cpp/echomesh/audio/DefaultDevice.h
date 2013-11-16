@@ -6,8 +6,10 @@
 namespace echomesh {
 namespace audio {
 
-string defaultOutputDevice();
+double defaultInputSampleRate();
+double defaultOutputSampleRate();
 string defaultInputDevice();
+string defaultOutputDevice();
 
 }  // namespace audio
 }  // namespace echomesh
