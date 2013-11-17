@@ -1,3 +1,5 @@
+#include <unordered_map>
+
 #include "echomesh/audio/DefaultDevice.h"
 
 namespace echomesh {
@@ -29,6 +31,15 @@ const AudioDeviceSetup& defaultOutputSetup() {
   return SETUP;
 }
 
+struct Device {
+  unique_ptr<AudioDeviceManager> manager_;
+  int referenceCount_;
+};
+
+typedef std::unordered_map<string, Device> DeviceTable;
+
+static DeviceTable DEVICE_TABLE;
+
 }  // namespace
 
 string defaultOutputDevice() {
@@ -47,18 +58,36 @@ double defaultOutputSampleRate() {
   return defaultInputSetup().sampleRate;
 }
 
-unique_ptr<AudioDeviceManager> outputManager(const string& name,
-                                            int channels,
-                                            double sampleRate) {
-  unique_ptr<AudioDeviceManager> manager(new AudioDeviceManager);
-  String result = manager->initialise(0, channels, nullptr, false, name);
-  if (result.length()) {
-    std::cerr << "Error opening device " << name << ": "
-              << result.toStdString();
-    manager = nullptr;
+AudioDeviceManager* cachedOutputManager(const string& name, int channels) {
+  string n = name.empty() ? defaultOutputDevice() : name;
+  auto i = DEVICE_TABLE.find(n);
+  if (i == DEVICE_TABLE.end()) {
+    Device device;
+    device.referenceCount_ = 1;
+    device.manager_ = make_unique<AudioDeviceManager>();
+    String result = device.manager_->initialise(0, channels, nullptr, false, n);
+    if (result.length()) {
+      std::cerr << "Error opening device " << name << ": "
+                << result.toStdString();
+      return nullptr;
+    }
+    DEVICE_TABLE[name] = std::move(device);
+    return device.manager_.get();
   }
 
-  return std::move(manager);
+  i->second.referenceCount_++;
+  return i->second.manager_.get();
+}
+
+void dereferenceOutputManager(AudioDeviceManager* manager) {
+  AudioDeviceManager::AudioDeviceSetup setup;
+  manager->getAudioDeviceSetup(setup);
+  string name = setup.outputDeviceName.toStdString();
+  auto i = DEVICE_TABLE.find(name);
+  if (i == DEVICE_TABLE.end())
+    std::cerr << "Couldn't find device " << name;
+  else if (not --i->second.referenceCount_)
+    DEVICE_TABLE.erase(i);
 }
 
 }  // namespace audio
