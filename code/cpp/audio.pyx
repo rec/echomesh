@@ -16,7 +16,6 @@ cdef class AudioSource:
   def __cinit__(self, string filename, int loops,
                 long long begin, long long end, long long length,
                 string device, int channels):
-    print('initializing')
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels)
 

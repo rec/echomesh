@@ -2,7 +2,7 @@
 
 <JUCERPROJECT id="lm5Yh4" name="echomesh" projectType="library" version="1.0.0"
               bundleIdentifier="org.echomesh" includeBinaryInAppConfig="1"
-              jucerVersion="3.1.0">
+              jucerVersion="3.1.0" defines=" JUCE_DISABLE_JUCE_VERSION_PRINTING=1">
   <MAINGROUP id="Z5EcKk" name="echomesh">
     <GROUP id="{1D89258C-4BCE-66C8-1D54-3E4EC0E10DEA}" name="base64">
       <FILE id="jK6G3O" name="base64.cpp" compile="1" resource="0" file="../cpp/base64/base64.cpp"/>

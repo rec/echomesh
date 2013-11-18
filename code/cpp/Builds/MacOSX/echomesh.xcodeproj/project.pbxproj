@@ -2129,6 +2129,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 				"_DEBUG=1",
 				"DEBUG=1",
+				"JUCE_DISABLE_JUCE_VERSION_PRINTING=1",
 				"JUCER_XCODE_MAC_F6D2F4CF=1"); }; name = Debug; };
 		4D878DA245FE4362DF68E428 = { isa = XCBuildConfiguration; buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -2153,6 +2154,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 				"_NDEBUG=1",
 				"NDEBUG=1",
+				"JUCE_DISABLE_JUCE_VERSION_PRINTING=1",
 				"JUCER_XCODE_MAC_F6D2F4CF=1"); }; name = Release; };
 		39BAD73600A982A8B25EF391 = { isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;

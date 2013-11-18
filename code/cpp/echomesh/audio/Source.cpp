@@ -9,11 +9,11 @@ Source::Source(const string& filename, int loops,
                const string& device, int channels)
     : SampleAudioSource(filename, loops, begin, end, length),
       player_(AudioPlayer::getPlayer(device, channels))  {
-  std::cerr << "Source::Source\n";
   player_->addInputSource(this);
 }
 
 Source::~Source() {
+  DLOG(INFO) << "Removing the source.";
   player_->removeInputSource(this);
 }
 

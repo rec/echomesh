@@ -47,17 +47,12 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   SampleTime overrun(currentTime_ - length_);
   if (overrun < 0) {
     source_->getNextAudioBlock(buf);
-    float max, min;
-    buf.buffer->findMinMax(0, buf.startSample, buf.numSamples, min, max);
-    DLOG(INFO) << "!! " << min << ", " << max;
     return;
   }
 
   AudioSourceChannelInfo b = buf;
   b.numSamples -= overrun;
-  DLOG(INFO) << "prepare to get next audio block!!";
   source_->getNextAudioBlock(b);
-  DLOG(INFO) << "got next audio block!!";
   b.startSample += b.numSamples;
   b.numSamples = overrun;
   b.clearActiveBufferRegion();
@@ -66,7 +61,6 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
 
 void SampleAudioSource::run() {
   ScopedLock l(lock_);
-  std::cerr << "running!!\n";
   isRunning_ = true;
 }
 

@@ -11,7 +11,9 @@ namespace audio {
 class AudioPlayer {
  public:
   static AudioPlayer* getPlayer(const string& name, int channels);
-  ~AudioPlayer() {}
+  ~AudioPlayer() {
+    DLOG(INFO) << "deleting";
+  }
 
   void addInputSource(AudioSource*);
   void removeInputSource(AudioSource*);

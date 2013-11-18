@@ -42,6 +42,7 @@ void AudioPlayer::removeInputSource(AudioSource* source) {
   mixer_.removeInputSource(source);
   if (not --sourceCount_)
     PLAYERS.erase(name_);
+  DLOG(INFO) << sourceCount_;
 }
 
 
