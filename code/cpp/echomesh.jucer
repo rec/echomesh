@@ -238,12 +238,9 @@
         <MODULEPATH id="juce_gui_basics" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_cryptography" path="../../../JUCE/modules"/>
-        <MODULEPATH id="juce_video" path="../../../JUCE/modules"/>
-        <MODULEPATH id="juce_opengl" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_basics" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_devices" path="../../../JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="../../../JUCE/modules"/>
-        <MODULEPATH id="juce_audio_processors" path="../../../JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -251,7 +248,6 @@
     <MODULES id="juce_audio_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_audio_devices" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_audio_formats" showAllCode="1" useLocalCopy="1"/>
-    <MODULES id="juce_audio_processors" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_core" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_cryptography" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_data_structures" showAllCode="1" useLocalCopy="1"/>
@@ -259,8 +255,6 @@
     <MODULES id="juce_graphics" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_gui_basics" showAllCode="1" useLocalCopy="1"/>
     <MODULES id="juce_gui_extra" showAllCode="1" useLocalCopy="1"/>
-    <MODULES id="juce_opengl" showAllCode="1" useLocalCopy="1"/>
-    <MODULES id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <JUCEOPTIONS/>
 </JUCERPROJECT>
