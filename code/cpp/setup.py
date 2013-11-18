@@ -21,11 +21,9 @@ sys.path.append(ECHOMESH_PATH)
 
 from echomesh.base import Platform
 
+DEBUG = True
 
-
-DEBUG = not True
-
-MODULE_NAME = 'cechomesh_debug' if DEBUG else 'cechomesh'
+MODULE_NAME = 'cechomesh_debug' if (DEBUG and False) else 'cechomesh'
 PYX_FILES = ['cechomesh.pyx']
 LIBRARIES = ['echomesh', 'pthread']
 
@@ -39,7 +37,7 @@ EXTRA_COMPILE_ARGS = ['-I.']
 
 if Platform.PLATFORM == Platform.MAC:
   EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                         '-stdlib=libc++ -IJuceLibraryCode -O0'.split())
+                         '-stdlib=libc++ -IJuceLibraryCode'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
 
   if DEBUG:

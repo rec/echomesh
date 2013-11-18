@@ -1,0 +1,325 @@
+libglog_la-vlog_is_on.lo: src/vlog_is_on.cc src/utilities.h \
+  src/base/mutex.h src/config.h /usr/include/pthread.h \
+  /usr/include/_types.h /usr/include/sys/_types.h \
+  /usr/include/sys/cdefs.h /usr/include/sys/_symbol_aliasing.h \
+  /usr/include/sys/_posix_availability.h /usr/include/machine/_types.h \
+  /usr/include/i386/_types.h /usr/include/pthread_impl.h \
+  /usr/include/sched.h /usr/include/time.h /usr/include/_structs.h \
+  /usr/include/sys/_structs.h /usr/include/Availability.h \
+  /usr/include/AvailabilityInternal.h /usr/include/assert.h \
+  /usr/include/stdlib.h /usr/include/sys/wait.h \
+  /usr/include/sys/signal.h /usr/include/sys/appleapiopts.h \
+  /usr/include/machine/signal.h /usr/include/i386/signal.h \
+  /usr/include/i386/_structs.h /usr/include/machine/_structs.h \
+  /usr/include/mach/i386/_structs.h /usr/include/sys/resource.h \
+  /usr/include/machine/endian.h /usr/include/i386/endian.h \
+  /usr/include/sys/_endian.h /usr/include/libkern/_OSByteOrder.h \
+  /usr/include/libkern/i386/_OSByteOrder.h /usr/include/alloca.h \
+  /usr/include/machine/types.h /usr/include/i386/types.h \
+  /usr/bin/../lib/c++/v1/string /usr/bin/../lib/c++/v1/__config \
+  /usr/bin/../lib/c++/v1/iosfwd /usr/include/wchar.h \
+  /usr/bin/../lib/clang/5.0/include/stdarg.h /usr/include/stdio.h \
+  /usr/include/_wctype.h /usr/include/ctype.h /usr/include/runetype.h \
+  /usr/bin/../lib/c++/v1/cstring /usr/include/string.h \
+  /usr/include/strings.h /usr/bin/../lib/c++/v1/cstdio \
+  /usr/bin/../lib/c++/v1/cwchar /usr/bin/../lib/c++/v1/cwctype \
+  /usr/bin/../lib/c++/v1/cctype /usr/include/wctype.h \
+  /usr/bin/../lib/c++/v1/algorithm \
+  /usr/bin/../lib/c++/v1/initializer_list /usr/bin/../lib/c++/v1/cstddef \
+  /usr/bin/../lib/clang/5.0/include/stddef.h \
+  /usr/bin/../lib/c++/v1/type_traits /usr/bin/../lib/c++/v1/utility \
+  /usr/bin/../lib/c++/v1/__tuple /usr/bin/../lib/c++/v1/memory \
+  /usr/bin/../lib/c++/v1/typeinfo /usr/bin/../lib/c++/v1/exception \
+  /usr/bin/../lib/c++/v1/cstdint \
+  /usr/bin/../lib/clang/5.0/include/stdint.h /usr/include/stdint.h \
+  /usr/bin/../lib/c++/v1/new /usr/bin/../lib/c++/v1/limits \
+  /usr/bin/../lib/c++/v1/__undef_min_max /usr/bin/../lib/c++/v1/iterator \
+  /usr/bin/../lib/c++/v1/__functional_base /usr/bin/../lib/c++/v1/tuple \
+  /usr/bin/../lib/c++/v1/atomic /usr/bin/../lib/c++/v1/stdexcept \
+  src/glog/logging.h /usr/include/errno.h /usr/include/sys/errno.h \
+  /usr/bin/../lib/c++/v1/ostream /usr/bin/../lib/c++/v1/ios \
+  /usr/bin/../lib/c++/v1/__locale /usr/bin/../lib/c++/v1/mutex \
+  /usr/bin/../lib/c++/v1/__mutex_base /usr/bin/../lib/c++/v1/chrono \
+  /usr/bin/../lib/c++/v1/ctime /usr/bin/../lib/c++/v1/ratio \
+  /usr/bin/../lib/c++/v1/climits \
+  /usr/bin/../lib/clang/5.0/include/limits.h /usr/include/limits.h \
+  /usr/include/machine/limits.h /usr/include/i386/limits.h \
+  /usr/include/i386/_limits.h /usr/include/sys/syslimits.h \
+  /usr/bin/../lib/c++/v1/system_error /usr/bin/../lib/c++/v1/cerrno \
+  /usr/bin/../lib/c++/v1/functional /usr/include/locale.h \
+  /usr/include/_locale.h /usr/include/xlocale.h /usr/include/_xlocale.h \
+  /usr/include/xlocale/_ctype.h /usr/include/xlocale/__wctype.h \
+  /usr/include/xlocale/_stdio.h /usr/include/xlocale/_stdlib.h \
+  /usr/include/xlocale/_string.h /usr/include/xlocale/_time.h \
+  /usr/include/xlocale/_wchar.h /usr/include/xlocale/_wctype.h \
+  /usr/bin/../lib/c++/v1/streambuf /usr/bin/../lib/c++/v1/locale \
+  /usr/bin/../lib/c++/v1/cstdlib /usr/include/nl_types.h \
+  /usr/include/sys/types.h /usr/bin/../lib/c++/v1/bitset \
+  /usr/bin/../lib/c++/v1/__bit_reference /usr/bin/../lib/c++/v1/sstream \
+  /usr/bin/../lib/c++/v1/istream /usr/include/unistd.h \
+  /usr/include/sys/unistd.h /usr/include/sys/select.h \
+  /usr/include/sys/_select.h /usr/bin/../lib/c++/v1/vector \
+  /usr/bin/../lib/c++/v1/__split_buffer /usr/include/inttypes.h \
+  /usr/include/xlocale/_inttypes.h src/glog/log_severity.h \
+  src/glog/vlog_is_on.h src/base/commandlineflags.h \
+  src/glog/raw_logging.h src/base/googleinit.h
+
+src/utilities.h:
+
+src/base/mutex.h:
+
+src/config.h:
+
+/usr/include/pthread.h:
+
+/usr/include/_types.h:
+
+/usr/include/sys/_types.h:
+
+/usr/include/sys/cdefs.h:
+
+/usr/include/sys/_symbol_aliasing.h:
+
+/usr/include/sys/_posix_availability.h:
+
+/usr/include/machine/_types.h:
+
+/usr/include/i386/_types.h:
+
+/usr/include/pthread_impl.h:
+
+/usr/include/sched.h:
+
+/usr/include/time.h:
+
+/usr/include/_structs.h:
+
+/usr/include/sys/_structs.h:
+
+/usr/include/Availability.h:
+
+/usr/include/AvailabilityInternal.h:
+
+/usr/include/assert.h:
+
+/usr/include/stdlib.h:
+
+/usr/include/sys/wait.h:
+
+/usr/include/sys/signal.h:
+
+/usr/include/sys/appleapiopts.h:
+
+/usr/include/machine/signal.h:
+
+/usr/include/i386/signal.h:
+
+/usr/include/i386/_structs.h:
+
+/usr/include/machine/_structs.h:
+
+/usr/include/mach/i386/_structs.h:
+
+/usr/include/sys/resource.h:
+
+/usr/include/machine/endian.h:
+
+/usr/include/i386/endian.h:
+
+/usr/include/sys/_endian.h:
+
+/usr/include/libkern/_OSByteOrder.h:
+
+/usr/include/libkern/i386/_OSByteOrder.h:
+
+/usr/include/alloca.h:
+
+/usr/include/machine/types.h:
+
+/usr/include/i386/types.h:
+
+/usr/bin/../lib/c++/v1/string:
+
+/usr/bin/../lib/c++/v1/__config:
+
+/usr/bin/../lib/c++/v1/iosfwd:
+
+/usr/include/wchar.h:
+
+/usr/bin/../lib/clang/5.0/include/stdarg.h:
+
+/usr/include/stdio.h:
+
+/usr/include/_wctype.h:
+
+/usr/include/ctype.h:
+
+/usr/include/runetype.h:
+
+/usr/bin/../lib/c++/v1/cstring:
+
+/usr/include/string.h:
+
+/usr/include/strings.h:
+
+/usr/bin/../lib/c++/v1/cstdio:
+
+/usr/bin/../lib/c++/v1/cwchar:
+
+/usr/bin/../lib/c++/v1/cwctype:
+
+/usr/bin/../lib/c++/v1/cctype:
+
+/usr/include/wctype.h:
+
+/usr/bin/../lib/c++/v1/algorithm:
+
+/usr/bin/../lib/c++/v1/initializer_list:
+
+/usr/bin/../lib/c++/v1/cstddef:
+
+/usr/bin/../lib/clang/5.0/include/stddef.h:
+
+/usr/bin/../lib/c++/v1/type_traits:
+
+/usr/bin/../lib/c++/v1/utility:
+
+/usr/bin/../lib/c++/v1/__tuple:
+
+/usr/bin/../lib/c++/v1/memory:
+
+/usr/bin/../lib/c++/v1/typeinfo:
+
+/usr/bin/../lib/c++/v1/exception:
+
+/usr/bin/../lib/c++/v1/cstdint:
+
+/usr/bin/../lib/clang/5.0/include/stdint.h:
+
+/usr/include/stdint.h:
+
+/usr/bin/../lib/c++/v1/new:
+
+/usr/bin/../lib/c++/v1/limits:
+
+/usr/bin/../lib/c++/v1/__undef_min_max:
+
+/usr/bin/../lib/c++/v1/iterator:
+
+/usr/bin/../lib/c++/v1/__functional_base:
+
+/usr/bin/../lib/c++/v1/tuple:
+
+/usr/bin/../lib/c++/v1/atomic:
+
+/usr/bin/../lib/c++/v1/stdexcept:
+
+src/glog/logging.h:
+
+/usr/include/errno.h:
+
+/usr/include/sys/errno.h:
+
+/usr/bin/../lib/c++/v1/ostream:
+
+/usr/bin/../lib/c++/v1/ios:
+
+/usr/bin/../lib/c++/v1/__locale:
+
+/usr/bin/../lib/c++/v1/mutex:
+
+/usr/bin/../lib/c++/v1/__mutex_base:
+
+/usr/bin/../lib/c++/v1/chrono:
+
+/usr/bin/../lib/c++/v1/ctime:
+
+/usr/bin/../lib/c++/v1/ratio:
+
+/usr/bin/../lib/c++/v1/climits:
+
+/usr/bin/../lib/clang/5.0/include/limits.h:
+
+/usr/include/limits.h:
+
+/usr/include/machine/limits.h:
+
+/usr/include/i386/limits.h:
+
+/usr/include/i386/_limits.h:
+
+/usr/include/sys/syslimits.h:
+
+/usr/bin/../lib/c++/v1/system_error:
+
+/usr/bin/../lib/c++/v1/cerrno:
+
+/usr/bin/../lib/c++/v1/functional:
+
+/usr/include/locale.h:
+
+/usr/include/_locale.h:
+
+/usr/include/xlocale.h:
+
+/usr/include/_xlocale.h:
+
+/usr/include/xlocale/_ctype.h:
+
+/usr/include/xlocale/__wctype.h:
+
+/usr/include/xlocale/_stdio.h:
+
+/usr/include/xlocale/_stdlib.h:
+
+/usr/include/xlocale/_string.h:
+
+/usr/include/xlocale/_time.h:
+
+/usr/include/xlocale/_wchar.h:
+
+/usr/include/xlocale/_wctype.h:
+
+/usr/bin/../lib/c++/v1/streambuf:
+
+/usr/bin/../lib/c++/v1/locale:
+
+/usr/bin/../lib/c++/v1/cstdlib:
+
+/usr/include/nl_types.h:
+
+/usr/include/sys/types.h:
+
+/usr/bin/../lib/c++/v1/bitset:
+
+/usr/bin/../lib/c++/v1/__bit_reference:
+
+/usr/bin/../lib/c++/v1/sstream:
+
+/usr/bin/../lib/c++/v1/istream:
+
+/usr/include/unistd.h:
+
+/usr/include/sys/unistd.h:
+
+/usr/include/sys/select.h:
+
+/usr/include/sys/_select.h:
+
+/usr/bin/../lib/c++/v1/vector:
+
+/usr/bin/../lib/c++/v1/__split_buffer:
+
+/usr/include/inttypes.h:
+
+/usr/include/xlocale/_inttypes.h:
+
+src/glog/log_severity.h:
+
+src/glog/vlog_is_on.h:
+
+src/base/commandlineflags.h:
+
+src/glog/raw_logging.h:
+
+src/base/googleinit.h:

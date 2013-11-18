@@ -1,12 +1,22 @@
+#!/usr/bin/env python
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import echomesh
+import cechomesh
 
-WINDOW = None
+source = cechomesh.AudioSource('/Volumes/Zog/Documents/iTunes/Music/Albert Ayler/New Grass/heart love.mp3', 1, 0, -1, -1, "", 2)
+source.begin()
+source.run()
 
-def callback():
-  global WINDOW
-  WINDOW = echomesh.TinyWindow()
-  WINDOW.show()
+while True:
+  pass
 
-echomesh.start_application(callback)
+if False:
+  WINDOW = None
+
+  def callback():
+    global WINDOW
+    WINDOW = echomesh.TinyWindow()
+    WINDOW.show()
+
+  echomesh.start_application(callback)

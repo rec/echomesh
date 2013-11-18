@@ -225,7 +225,8 @@
     <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../..">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../.. -I../../build/include"
+               externalLibraries="glog" extraLinkerFlags="-L../../build/lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
                        isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""

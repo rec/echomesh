@@ -2107,7 +2107,7 @@
 				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../JuceLibraryCode/modules $(inherited)";
 				GCC_OPTIMIZATION_LEVEL = 0;
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CPLUSPLUSFLAGS = "-I../..";
+				OTHER_CPLUSPLUSFLAGS = "-I../.. -I../../build/include";
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				SDKROOT = macosx10.7;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -2118,6 +2118,7 @@
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_CXX_LIBRARY = "libc++";
 				COMBINE_HIDPI_IMAGES = YES;
+				OTHER_LDFLAGS = "-L../../build/lib -lglog";
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2129,7 +2130,7 @@
 				HEADER_SEARCH_PATHS = "../../JuceLibraryCode ../../JuceLibraryCode/modules $(inherited)";
 				GCC_OPTIMIZATION_LEVEL = s;
 				INFOPLIST_FILE = Info.plist;
-				OTHER_CPLUSPLUSFLAGS = "-I../..";
+				OTHER_CPLUSPLUSFLAGS = "-I../.. -I../../build/include";
 				CONFIGURATION_BUILD_DIR = "$(PROJECT_DIR)/build/$(CONFIGURATION)";
 				SDKROOT = macosx10.7;
 				MACOSX_DEPLOYMENT_TARGET = 10.7;
@@ -2140,6 +2141,7 @@
 				CLANG_LINK_OBJC_RUNTIME = NO;
 				CLANG_CXX_LIBRARY = "libc++";
 				COMBINE_HIDPI_IMAGES = YES;
+				OTHER_LDFLAGS = "-L../../build/lib -lglog";
 				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
 				DEAD_CODE_STRIPPING = YES;

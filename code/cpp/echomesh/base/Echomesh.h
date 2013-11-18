@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+#include <glog/logging.h>
+
 #include "JuceLibraryCode/JuceHeader.h"
 #include "echomesh/base/Disallow.h"
 #include "echomesh/base/Log.h"
