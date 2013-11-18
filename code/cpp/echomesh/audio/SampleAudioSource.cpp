@@ -13,9 +13,14 @@ SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
 void SampleAudioSource::init(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length) {
+  std::cerr << "init!!\n";
   source_.reset(getReader(filename, begin, end));
-  if (source_)
-    length_ = jmin(SampleTime(source_->getTotalLength() * loops), length);
+  std::cerr << "source created!!\n";
+  if (source_) {
+    length_ = SampleTime(source_->getTotalLength() * loops);
+    if (length_ >= 0)
+      length_ = jmin(length_, length);
+  }
 }
 
 SampleAudioSource::~SampleAudioSource() {}
