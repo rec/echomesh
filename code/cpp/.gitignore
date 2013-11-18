@@ -1,4 +1,7 @@
-*.cpp
+# *.cpp
+
+# How to ignore the outputs from cython so they aren't checked in?
+
 *.so
 build/
 Builds/MacOSX/echomesh.xcodeproj/xcuserdata/
