@@ -4,12 +4,19 @@
 namespace echomesh {
 
 SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
-  node >> playback_;
-  source_ = getReader(playback_.filename, playback_.begin, playback_.end);
-  if (source_) {
-    length_ = jmin(SampleTime(source_->getTotalLength() * playback_.loops),
-                   playback_.length);
-  }
+  Playback playback;
+  node >> playback;
+
+  init(playback.filename, playback.begin, playback.end, playback.loops, playback_.length);
+
+}
+
+void SampleAudioSource::init(
+    const String& filename, SampleTime begin, SampleTime end,
+    int loops, SampleTime length) {
+  source_.reset(getReader(filename, begin, end));
+  if (source_)
+    length_ = jmin(SampleTime(source_->getTotalLength() * loops), length);
 }
 
 SampleAudioSource::~SampleAudioSource() {}

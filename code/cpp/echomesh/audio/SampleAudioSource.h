@@ -8,7 +8,12 @@ namespace echomesh {
 
 class SampleAudioSource : public AudioSource {
  public:
-  SampleAudioSource(const Node&);
+  explicit SampleAudioSource(const Node&);
+  SampleAudioSource(const String& filename, SampleTime begin, SampleTime end,
+                    int loops, SampleTime length) {
+    init(filename, begin, end, loops, length);
+  }
+
   virtual ~SampleAudioSource();
 
   virtual void prepareToPlay(int samplesPerBlockExpected,
@@ -23,12 +28,15 @@ class SampleAudioSource : public AudioSource {
   void unload();
 
  private:
+  void init(const String& filename, SampleTime begin, SampleTime end,
+            int loops, SampleTime length);
+
   CriticalSection lock_;
 
   Playback playback_;
   SampleTime currentTime_;
   SampleTime length_;
-  ScopedPointer<PositionableAudioSource> source_;
+  unique_ptr<PositionableAudioSource> source_;
   bool isRunning_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
