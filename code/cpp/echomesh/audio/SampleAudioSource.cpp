@@ -7,7 +7,7 @@ SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
   Playback playback;
   node >> playback;
 
-  init(playback.filename, playback.begin, playback.end, playback.loops, playback_.length);
+  init(playback.filename, playback.begin, playback.end, playback.loops, playback.length);
 
 }
 

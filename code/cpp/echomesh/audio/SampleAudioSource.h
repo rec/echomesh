@@ -33,7 +33,6 @@ class SampleAudioSource : public AudioSource {
 
   CriticalSection lock_;
 
-  Playback playback_;
   SampleTime currentTime_;
   SampleTime length_;
   unique_ptr<PositionableAudioSource> source_;
