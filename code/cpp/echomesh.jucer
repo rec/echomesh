@@ -10,6 +10,8 @@
     </GROUP>
     <GROUP id="{D12243E0-81CC-491C-1FEB-655FFC7DD30E}" name="echomesh">
       <GROUP id="{9CC2E7D9-6C6A-9A7D-4E72-3105C7A5187D}" name="audio">
+        <FILE id="kNQLkH" name="AudioPlayer.cpp" compile="1" resource="0" file="echomesh/audio/AudioPlayer.cpp"/>
+        <FILE id="oBl5qw" name="AudioPlayer.h" compile="0" resource="0" file="echomesh/audio/AudioPlayer.h"/>
         <FILE id="Z6wPF2" name="AudioController.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/AudioController.cpp"/>
         <FILE id="HGXW7Q" name="AudioController.h" compile="0" resource="0"

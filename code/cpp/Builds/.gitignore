@@ -1,3 +1,6 @@
 MacOSX/build/
+Linux/build/
+VisualStudio2010/build/
+VisualStudio2012/build/
 MacOSX/echomesh-client.xcodeproj/tom.*
 MacOSX/test.xcodeproj/tom.*
