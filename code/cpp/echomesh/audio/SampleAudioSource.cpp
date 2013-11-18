@@ -7,13 +7,12 @@ SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
   Playback playback;
   node >> playback;
 
-  init(playback.filename, playback.begin, playback.end, playback.loops, playback.length);
-
+  init(playback.filename, playback.loops, playback.begin, playback.end, playback.length);
 }
 
 void SampleAudioSource::init(
-    const String& filename, SampleTime begin, SampleTime end,
-    int loops, SampleTime length) {
+    const String& filename, int loops,
+    SampleTime begin, SampleTime end, SampleTime length) {
   source_.reset(getReader(filename, begin, end));
   if (source_)
     length_ = jmin(SampleTime(source_->getTotalLength() * loops), length);

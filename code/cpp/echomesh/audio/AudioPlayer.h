@@ -11,11 +11,12 @@ namespace audio {
 class AudioPlayer {
  public:
   static AudioPlayer* getPlayer(const string& name, int channels);
-
   ~AudioPlayer() {}
 
+  void addInputSource(AudioSource*);
+  void removeInputSource(AudioSource*);
+
   const String& error() const { return error_; }
-  MixerAudioSource* source() { return &mixer_; }
 
  private:
   AudioPlayer(const string& name, int channels);
@@ -27,6 +28,8 @@ class AudioPlayer {
   AudioSourcePlayer player_;
   AudioDeviceManager manager_;
   MixerAudioSource mixer_;
+
+  int sourceCount_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(AudioPlayer);
 };

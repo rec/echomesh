@@ -36,6 +36,8 @@
               file="../cpp/echomesh/audio/SampleAudioSource.cpp"/>
         <FILE id="nImeHl" name="SampleAudioSource.h" compile="0" resource="0"
               file="../cpp/echomesh/audio/SampleAudioSource.h"/>
+        <FILE id="IMYEp9" name="Source.cpp" compile="1" resource="0" file="echomesh/audio/Source.cpp"/>
+        <FILE id="AjC2q5" name="Source.h" compile="0" resource="0" file="echomesh/audio/Source.h"/>
       </GROUP>
       <GROUP id="{3C4FBC92-E200-D9EF-AEDD-3C3938F7814F}" name="base">
         <FILE id="IAhuN5" name="ArraySize.h" compile="0" resource="0" file="../cpp/echomesh/base/ArraySize.h"/>

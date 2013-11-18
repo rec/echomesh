@@ -9,9 +9,9 @@ namespace echomesh {
 class SampleAudioSource : public AudioSource {
  public:
   explicit SampleAudioSource(const Node&);
-  SampleAudioSource(const String& filename, SampleTime begin, SampleTime end,
-                    int loops, SampleTime length) {
-    init(filename, begin, end, loops, length);
+  SampleAudioSource(const String& filename, int loops,
+                    SampleTime begin, SampleTime end, SampleTime length) {
+    init(filename, loops, begin, end, length);
   }
 
   virtual ~SampleAudioSource();
@@ -28,8 +28,8 @@ class SampleAudioSource : public AudioSource {
   void unload();
 
  private:
-  void init(const String& filename, SampleTime begin, SampleTime end,
-            int loops, SampleTime length);
+  void init(const String& filename, int loops,
+            SampleTime begin, SampleTime end, SampleTime length);
 
   CriticalSection lock_;
 
