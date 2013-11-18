@@ -25,7 +25,7 @@ DEBUG = True
 
 MODULE_NAME = 'cechomesh_debug' if (DEBUG and False) else 'cechomesh'
 PYX_FILES = ['cechomesh.pyx']
-LIBRARIES = ['echomesh', 'pthread']
+LIBRARIES = ['echomesh', 'pthread', 'glog']
 
 DEBUG_ARGS = {
   'cython_gdb': True,
@@ -33,21 +33,23 @@ DEBUG_ARGS = {
   }
 EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
-EXTRA_COMPILE_ARGS = ['-I.']
+EXTRA_COMPILE_ARGS = (
+  '-I. -x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
+  '-stdlib=libc++ -IJuceLibraryCode -Ibuild/include').split()
+
+LIB_DIRS = ['build/lib']
 
 if Platform.PLATFORM == Platform.MAC:
-  EXTRA_COMPILE_ARGS += ('-x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-                         '-stdlib=libc++ -IJuceLibraryCode'.split())
   EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
 
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
-    LIB_DIRS = ['Builds/MacOSX/build/Debug']
+    LIB_DIRS += ['Builds/MacOSX/build/Debug']
 
   else:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
-    LIB_DIRS = ['Builds/MacOSX/build/Release']
+    LIB_DIRS += ['Builds/MacOSX/build/Release']
 
 else:
   raise Exception("Don't understand platform %s." % platform)
@@ -64,7 +66,7 @@ class CleanCommand(Command):
 
   def run(self):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
-    os.system('rm -Rf %s.so ./build ./dist echomesh.cpp' % MODULE_NAME)
+    os.system('rm -Rf %s.so ./build/temp* ./dist echomesh.cpp' % MODULE_NAME)
 
 
 class InstallCommand(Command):

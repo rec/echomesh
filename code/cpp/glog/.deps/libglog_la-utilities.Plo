@@ -64,8 +64,8 @@ libglog_la-utilities.lo: src/utilities.cc src/utilities.h \
   src/glog/vlog_is_on.h /usr/include/signal.h /usr/include/sys/time.h \
   /usr/include/sys/syscall.h /usr/include/syslog.h \
   /usr/include/sys/syslog.h src/base/googleinit.h src/stacktrace.h \
-  src/symbolize.h src/base/commandlineflags.h src/stacktrace_x86-inl.h \
-  /usr/include/sys/mman.h
+  src/symbolize.h src/base/commandlineflags.h \
+  src/stacktrace_generic-inl.h /usr/include/execinfo.h
 
 src/utilities.h:
 
@@ -339,6 +339,6 @@ src/symbolize.h:
 
 src/base/commandlineflags.h:
 
-src/stacktrace_x86-inl.h:
+src/stacktrace_generic-inl.h:
 
-/usr/include/sys/mman.h:
+/usr/include/execinfo.h:

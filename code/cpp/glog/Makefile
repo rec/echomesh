@@ -43,8 +43,8 @@ host_triplet = i386-apple-darwin12.5.0
 am__append_1 = -Wall -Wwrite-strings -Woverloaded-virtual -Wno-sign-compare
 
 # These are x86-specific, having to do with frame-pointers
-##am__append_2 = -fno-omit-frame-pointer
-#am__append_3 = -DNO_FRAME_POINTER
+#am__append_2 = -fno-omit-frame-pointer
+am__append_3 = -DNO_FRAME_POINTER
 #am__append_4 = -fno-rtti
 TESTS = logging_unittest$(EXEEXT) demangle_unittest$(EXEEXT) \
 	stacktrace_unittest$(EXEEXT) symbolize_unittest$(EXEEXT) \
@@ -344,7 +344,7 @@ CPPFLAGS =
 CXX = clang++
 CXXCPP = clang++ -E
 CXXDEPMODE = depmode=gcc3
-CXXFLAGS = -arch i386 -O2 -std=c++11 -stdlib=libc++
+CXXFLAGS = -arch x86_64 -O2 -std=c++11 -stdlib=libc++
 CYGPATH_W = echo
 DEFS = -DHAVE_CONFIG_H
 DEPDIR = .deps
@@ -1556,8 +1556,8 @@ uninstall-am: uninstall-dist_docDATA uninstall-glogincludeHEADERS \
 	uninstall-libLTLIBRARIES uninstall-nodist_glogincludeHEADERS \
 	uninstall-pkgconfigDATA
 
-#  # TODO(csilvers): check if -fomit-frame-pointer might be in $(CXXFLAGS),
-#  #                 before setting this.
+  # TODO(csilvers): check if -fomit-frame-pointer might be in $(CXXFLAGS),
+  #                 before setting this.
 logging_striplog_test_sh: logging_striptest0 logging_striptest2 logging_striptest10
 	$(top_srcdir)/src/logging_striplog_test.sh
 demangle_unittest_sh: demangle_unittest

@@ -1,5 +1,6 @@
 #include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/audio/GetReader.h"
+#include "echomesh/util/InitLog.h"
 
 namespace echomesh {
 
@@ -16,9 +17,10 @@ void SampleAudioSource::init(
   source_.reset(getReader(filename, begin, end));
   if (source_) {
     length_ = SampleTime(source_->getTotalLength() * loops);
-    if (length_ >= 0)
+    if (length >= 0)
       length_ = jmin(length_, length);
   }
+  initLog();
 }
 
 SampleAudioSource::~SampleAudioSource() {}
