@@ -7,9 +7,7 @@ namespace {
 struct Initializer {
   Initializer() {
     google::InitGoogleLogging(name());
-#if JUCE_DEBUG && JUCE_MAC
     FLAGS_logtostderr = true;
-#endif
   }
 
   const char* name() const { return "echomesh"; }
