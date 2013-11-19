@@ -21,6 +21,7 @@ PositionableAudioSource* getReader(const String& name,
   if (not reader.get()) {
     LOG(ERROR) << "Can't read file " << name.toStdString();
     std::cerr <<  "Can't read file " << name.toStdString() << "\n";
+    throw new Exception(("Can't read file " + name).toStdString());
     return nullptr;
   }
   if (end < 0)
