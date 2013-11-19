@@ -10,17 +10,23 @@ AudioFormatManager* makeManager() {
   return manager;
 }
 
-ScopedPointer<AudioFormatManager> MANAGER(makeManager());
+unique_ptr<AudioFormatManager> MANAGER(makeManager());
 
 }  // namespace
 
 PositionableAudioSource* getReader(const String& name,
                                    SampleTime begin, SampleTime end) {
-  ScopedPointer<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
+  unique_ptr<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
+
+  if (not reader.get()) {
+    LOG(ERROR) << "Can't read file " << name.toStdString();
+    return nullptr;
+  }
   if (end < 0)
     end = reader->lengthInSamples;
   if (begin or end < reader->lengthInSamples)
-    reader = new AudioSubsectionReader(reader.release(), begin, end, true);
+    reader.reset(new AudioSubsectionReader(
+        reader.release(), begin, end, true));
   return new AudioFormatReaderSource(reader.release(), true);
 }
 
