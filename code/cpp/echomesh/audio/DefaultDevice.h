@@ -14,6 +14,9 @@ string defaultOutputDevice();
 AudioDeviceManager* cachedOutputManager(const string& name, int channels);
 void dereferenceOutputManager(AudioDeviceManager*);
 
+string test1();
+const char* test2();
+
 }  // namespace audio
 }  // namespace echomesh
 
