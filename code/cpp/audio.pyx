@@ -19,11 +19,11 @@ cdef class AudioSource:
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels)
 
-  def __dealloc__(self): del self.thisptr
-  def run(self): self.thisptr.run()
-  def begin(self): self.thisptr.begin()
-  def pause(self): self.thisptr.pause()
-  def unload(self): self.thisptr.unload()
+  def __dealloc__(self):  del self.thisptr
+  def run(self):          self.thisptr.run()
+  def begin(self):        self.thisptr.begin()
+  def pause(self):        self.thisptr.pause()
+  def unload(self):       self.thisptr.unload()
 
 cdef extern from "echomesh/audio/DefaultDevice.h" namespace "echomesh::audio":
   double defaultInputSampleRate()

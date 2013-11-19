@@ -13,8 +13,10 @@ Source::Source(const string& filename, int loops,
 }
 
 Source::~Source() {
-  DLOG(INFO) << "Removing the source.";
-  player_->removeInputSource(this);
+  pause();
+  unload();
+  if (player_->removeInputSource(this))
+    AudioPlayer::removePlayer(player_);
 }
 
 }  // namespace audio

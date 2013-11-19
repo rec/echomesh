@@ -14,11 +14,16 @@ AudioPlayer::AudioPlayer(const string& name, int channels)
       sourceCount_(0) {
   error_ = manager_.initialise(0, channels, nullptr, false, name);
   if (error_.length()) {
-    std::cerr << ("Error: " + error_ + "\n").toStdString();
+    LOG(ERROR) << error_.toStdString();
   } else {
     player_.setSource(&mixer_);
     manager_.addAudioCallback(&player_);
   }
+}
+
+AudioPlayer::~AudioPlayer() {
+  manager_.removeAudioCallback(&player_);
+  player_.setSource(nullptr);
 }
 
 AudioPlayer* AudioPlayer::getPlayer(const string& name, int channels) {
@@ -27,7 +32,7 @@ AudioPlayer* AudioPlayer::getPlayer(const string& name, int channels) {
   if (i != PLAYERS.end())
     return i->second.get();
 
-  unique_ptr<AudioPlayer> player(new AudioPlayer(name, channels));
+  unique_ptr<AudioPlayer> player(new AudioPlayer(n, channels));
   AudioPlayer* p = player.get();
   PLAYERS.insert(i, std::make_pair(n, std::move(player)));
   return p;
@@ -38,13 +43,22 @@ void AudioPlayer::addInputSource(AudioSource* source) {
   ++sourceCount_;
 }
 
-void AudioPlayer::removeInputSource(AudioSource* source) {
+bool AudioPlayer::removeInputSource(AudioSource* source) {
   mixer_.removeInputSource(source);
-  if (not --sourceCount_)
-    PLAYERS.erase(name_);
-  DLOG(INFO) << sourceCount_;
+  if (true)
+    return not --sourceCount_;
+
+  if (not --sourceCount_) {
+    if (not PLAYERS.erase(name_))
+      LOG(DFATAL) << "Didn't erase Player " << name_;
+  }
 }
 
+void AudioPlayer::removePlayer(AudioPlayer* player) {
+  string name = player->name_;
+  if (not PLAYERS.erase(name))
+    LOG(DFATAL) << "Didn't erase Player " << name;
+}
 
 }  // namespace audio
 }  // namespace echomesh

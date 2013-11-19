@@ -11,7 +11,6 @@ class SampleAudioSource : public AudioSource {
   explicit SampleAudioSource(const Node&);
   SampleAudioSource(const String& filename, int loops,
                     SampleTime begin, SampleTime end, SampleTime length) {
-    std::cerr << "SampleAudioSource\n";
     init(filename, loops, begin, end, length);
   }
 

@@ -11,14 +11,14 @@ namespace audio {
 class AudioPlayer {
  public:
   static AudioPlayer* getPlayer(const string& name, int channels);
-  ~AudioPlayer() {
-    DLOG(INFO) << "deleting";
-  }
+  static void removePlayer(AudioPlayer*);
+  ~AudioPlayer();
 
   void addInputSource(AudioSource*);
-  void removeInputSource(AudioSource*);
+  bool removeInputSource(AudioSource*);
 
   const String& error() const { return error_; }
+  const string& name() const { return name_; }
 
  private:
   AudioPlayer(const string& name, int channels);

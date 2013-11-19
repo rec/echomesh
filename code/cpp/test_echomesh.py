@@ -9,7 +9,7 @@ source = cechomesh.AudioSource('/Volumes/Zog/Documents/iTunes/Music/Albert Ayler
 source.begin()
 source.run()
 
-time.sleep(10)
+time.sleep(3)
 
 del source
 
