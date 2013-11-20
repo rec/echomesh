@@ -32,6 +32,9 @@ struct Envelope {
 
 inline Envelope* newEnvelope() { return new Envelope; }
 inline void deleteEnvelope(Envelope* env) { delete env; }
+inline void addPoint(Envelope* env, long long time, float value) {
+  env->points.push_back(EnvelopePoint(time, value));
+}
 
 // Normalize an envelope so that the first segment always starts at zero,
 // and the last segment always is at least as long as length.

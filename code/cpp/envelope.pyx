@@ -11,6 +11,7 @@ cdef extern from "rec/base/SampleTime.h" namespace "rec":
 
 cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
   cdef struct EnvelopePoint:
+    EnvelopePoint(SampleTime time, float value)
     SampleTime time
     float value
 
@@ -27,16 +28,24 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
   cdef void normalizeEnvelope(Envelope*)
   cdef Envelope* newEnvelope()
   cdef void deleteEnvelope(Envelope*)
+  cdef void addPoint(Envelope* env, long long time, float value)
 
 cdef class PyEnvelope:
-  cdef Envelope* thisptr
+  cdef Envelope* envelope
+
   def __cinit__(self, env):
-    self.thisptr = newEnvelope()  # new Envelope()
-    is_constant = env.is_constant()
-    self.thisptr.isConstant = is_constant
-    if is_constant:
-      self.thisptr.value = env.value
+    newEnv = newEnvelope()  # new Envelope()
+    self.envelope = newEnv
+    newEnv.isConstant = env.is_constant
+    newEnv.length = SampleTime(env.length)
+    if newEnv.isConstant:
+      newEnv.value = env.value
+    else:
+      newEnv.reverse = env.reverse
+      newEnv.loops = env.loops
+      for t, d in zip(env.times, env.data):
+        addPoint(newEnv, t, d)
 
   def __dealloc__(self):
-    deleteEnvelope(self.thisptr)  # del self.thisptr
+    deleteEnvelope(self.envelope)  # del self.envelope
 
