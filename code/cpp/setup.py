@@ -51,6 +51,19 @@ if Platform.PLATFORM == Platform.MAC:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
     LIB_DIRS += ['Builds/MacOSX/build/Release']
 
+elif Platform.PLATFORM == Platform.UBUNTU:
+    EXTRA_LINK_ARGS = ('-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
+                      '-ldl -lfreetype -lpthread -lrt -lglog').split()
+
+    if DEBUG:
+        EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
+        EXTRA_LINK_ARGS += ['-g']
+        LIB_DIRS += ['Builds/Ubuntu/build']
+
+    else:
+        EXTRA_COMPILE_ARGS += ('-02'.split())
+        LIB_DIRS += ['Builds/Ubuntu/build/Release']
+
 else:
   raise Exception("Don't understand platform %s." % platform)
 
