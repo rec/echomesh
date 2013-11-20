@@ -9,11 +9,13 @@ from echomesh.expression import Expression
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util.thread.ThreadRunnable import ThreadRunnable
+import npyscreen, curses
 
 LOGGER = Log.logger(__name__)
 
 MESSAGE = """Type help for a list of commands.
 """
+USE_CURSES = Config.get('control_program', 'use_curses')
 
 class Keyboard(MasterRunnable):
   def __init__(self, sleep, message, processor,
@@ -70,19 +72,62 @@ class Keyboard(MasterRunnable):
     elif self.processor(buff.strip()):
       self.pause()
 
+if USE_CURSES:
+  def keyboard(instand, new_thread=True):
+    return TestApp().run()
 
-def keyboard(instance, new_thread=True):
-  def processor(line):
-    try:
-      return Command.execute(instance, line)
-    except:
-      LOGGER.error('Error processing command line.')
+else:
 
-  sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
-  keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
-  if new_thread:
-    runnable = ThreadRunnable(target=keyboard.loop)
-    runnable.add_mutual_pause_slave(keyboard)
-    return runnable
+  def keyboard(instance, new_thread=True):
+    def processor(line):
+      try:
+        return Command.execute(instance, line)
+      except:
+        LOGGER.error('Error processing command line.')
 
-  return keyboard
+    sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
+    keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+    if new_thread:
+      runnable = ThreadRunnable(target=keyboard.loop)
+      runnable.add_mutual_pause_slave(keyboard)
+      return runnable
+
+    return keyboard
+
+class TestApp(npyscreen.NPSAppManaged):
+  def onStart(self):
+    self.addForm("MAIN", MainForm, name='Welcome to Echomesh!')
+
+class MainForm(npyscreen.ActionFormWithMenus):
+  def create(self):
+    self.add(npyscreen.TitleText, name="Text:", value="Click cancel to quit application")
+
+     # The menus are created here.
+    self.m1 = self.add_menu(name="Main Menu", shortcut="^M")
+    self.m1.addItemsFromList([
+        ("Just Beep",   self.whenJustBeep, "e"),
+        ("Exit Application", self.exit_application, "X"),
+    ])
+
+    self.m2 = self.add_menu(name="Another Menu", shortcut="b")
+    self.m2.addItemsFromList([
+        ("Just Beep",   self.whenJustBeep),
+    ])
+
+    self.m3 = self.m2.addNewSubmenu("A sub menu", "^F")
+    self.m3.addItemsFromList([
+        ("Just Beep",   self.whenJustBeep),
+    ])
+
+  def whenJustBeep(self):
+    curses.beep()
+
+  def exit_application(self):
+    curses.beep()
+    sys.exit(0)
+
+  def on_ok(self):
+    self.exit_application()
+
+  def on_cancel(self):
+    self.exit_application()
