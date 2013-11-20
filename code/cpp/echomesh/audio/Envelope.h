@@ -30,6 +30,8 @@ struct Envelope {
   float value;
 };
 
+inline Envelope* newEnvelope() { return new Envelope; }
+inline void deleteEnvelope(Envelope* env) { delete env; }
 
 // Normalize an envelope so that the first segment always starts at zero,
 // and the last segment always is at least as long as length.

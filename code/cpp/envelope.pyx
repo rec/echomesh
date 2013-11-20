@@ -25,3 +25,18 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
     float value
 
   cdef void normalizeEnvelope(Envelope*)
+  cdef Envelope* newEnvelope()
+  cdef void deleteEnvelope(Envelope*)
+
+cdef class PyEnvelope:
+  cdef Envelope* thisptr
+  def __cinit__(self, env):
+    self.thisptr = newEnvelope()  # new Envelope()
+    is_constant = env.is_constant()
+    self.thisptr.isConstant = is_constant
+    if is_constant:
+      self.thisptr.value = env.value
+
+  def __dealloc__(self):
+    deleteEnvelope(self.thisptr)  # del self.thisptr
+
