@@ -11,7 +11,7 @@ class EnvelopeValuePlayer {
   typedef vector<Segment> SegmentList;
 
   EnvelopeValuePlayer(const EnvelopeValue&);
-  bool isConstant() const { return isConstant_; }
+  bool isConstant() const { return envelopeValue_.isConstant; }
 
   const Envelope::Point point() const { return point_; }
   float value() const { return point_.value; }
@@ -30,7 +30,6 @@ class EnvelopeValuePlayer {
   bool loopsDone() const { return loops_ and loopCount_ >= loops_; }
 
   const EnvelopeValue& envelopeValue_;
-  const bool isConstant_;
   const int loops_;
 
   Envelope::Point point_;

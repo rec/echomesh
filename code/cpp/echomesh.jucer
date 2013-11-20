@@ -31,6 +31,9 @@
               file="../cpp/echomesh/audio/MidiController.cpp"/>
         <FILE id="ghA7Zk" name="MidiController.h" compile="0" resource="0"
               file="../cpp/echomesh/audio/MidiController.h"/>
+        <FILE id="mQ94yA" name="PanGainPlayer.cpp" compile="1" resource="0"
+              file="echomesh/audio/PanGainPlayer.cpp"/>
+        <FILE id="feDipc" name="PanGainPlayer.h" compile="0" resource="0" file="echomesh/audio/PanGainPlayer.h"/>
         <FILE id="FMRuyW" name="Player.h" compile="0" resource="0" file="../cpp/echomesh/audio/Player.h"/>
         <FILE id="nMx3QM" name="SampleAudioSource.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/SampleAudioSource.cpp"/>

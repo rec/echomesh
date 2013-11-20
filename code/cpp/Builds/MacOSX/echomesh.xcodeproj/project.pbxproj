@@ -15,6 +15,7 @@
 		8C1FA332DF09805E967507FE = { isa = PBXBuildFile; fileRef = BB08BDA654DAFA99B3FD1715; };
 		B3667DCC6364B09D2247F424 = { isa = PBXBuildFile; fileRef = 5FC27F82666E719E41C6C533; };
 		0FBE2029D29EE59BC5517E73 = { isa = PBXBuildFile; fileRef = A787DD5C80C50E616B1AE5E8; };
+		48B9E449E4C33A1EFF4409FE = { isa = PBXBuildFile; fileRef = 63149E8F948AAFF3B1295AA7; };
 		13463BD44F97BE4FD9628F9F = { isa = PBXBuildFile; fileRef = 9F877B35AC393A6E4976191A; };
 		7B5C8955348D4545E95D8E20 = { isa = PBXBuildFile; fileRef = E6CE9A9E84662CB828DC2527; };
 		0FF8C9B5A7052CA8636FBC15 = { isa = PBXBuildFile; fileRef = AD5FE2A9FAEBE9ABAAE4074F; };
@@ -119,6 +120,7 @@
 		09F3EAAA654F152BE0304D35 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_FileTreeComponent.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileTreeComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
 		0A42C76814C526C9674BD132 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ToggleButton.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/buttons/juce_ToggleButton.cpp"; sourceTree = "SOURCE_ROOT"; };
 		0A5B4F1BCD9F6585830DF2D2 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_TreeView.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_TreeView.cpp"; sourceTree = "SOURCE_ROOT"; };
+		0AE9CBA46FF0D5723BB4272A = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PanGainPlayer.h; path = ../../echomesh/audio/PanGainPlayer.h; sourceTree = "SOURCE_ROOT"; };
 		0B5A5438F8F56F7358CD5687 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ModifierKeys.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/keyboard/juce_ModifierKeys.h"; sourceTree = "SOURCE_ROOT"; };
 		0BB3E00754B81E8F03837DCC = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Typeface.h"; path = "../../JuceLibraryCode/modules/juce_graphics/fonts/juce_Typeface.h"; sourceTree = "SOURCE_ROOT"; };
 		0BD43A5DC86849B1F8A56101 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_TableHeaderComponent.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_TableHeaderComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -414,6 +416,7 @@
 		61F218327E373286F592AD44 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_DragAndDrop.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/native/juce_win32_DragAndDrop.cpp"; sourceTree = "SOURCE_ROOT"; };
 		62D0E029394C92A920493056 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ResizableEdgeComponent.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ResizableEdgeComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
 		62F637DD8C4D322B3C368151 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ImagePreviewComponent.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_ImagePreviewComponent.cpp"; sourceTree = "SOURCE_ROOT"; };
+		63149E8F948AAFF3B1295AA7 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PanGainPlayer.cpp; path = ../../echomesh/audio/PanGainPlayer.cpp; sourceTree = "SOURCE_ROOT"; };
 		63220669F029EAACF28560DB = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_DropShadower.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/misc/juce_DropShadower.h"; sourceTree = "SOURCE_ROOT"; };
 		6374C36EC66311355CE8E06D = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_XmlDocument.cpp"; path = "../../JuceLibraryCode/modules/juce_core/xml/juce_XmlDocument.cpp"; sourceTree = "SOURCE_ROOT"; };
 		6386999340F233C98139F5C2 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_win32_Messaging.cpp"; path = "../../JuceLibraryCode/modules/juce_events/native/juce_win32_Messaging.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -1005,6 +1008,8 @@
 				3E25E3B7AAFEACA26FFDF193,
 				A787DD5C80C50E616B1AE5E8,
 				E237BEBF5C342EBF322FE7E6,
+				63149E8F948AAFF3B1295AA7,
+				0AE9CBA46FF0D5723BB4272A,
 				28525F78E289CE07D8965C17,
 				9F877B35AC393A6E4976191A,
 				E0DD72DA31649A7F8BBCEC82,
@@ -2203,6 +2208,7 @@
 				8C1FA332DF09805E967507FE,
 				B3667DCC6364B09D2247F424,
 				0FBE2029D29EE59BC5517E73,
+				48B9E449E4C33A1EFF4409FE,
 				13463BD44F97BE4FD9628F9F,
 				7B5C8955348D4545E95D8E20,
 				0FF8C9B5A7052CA8636FBC15,

@@ -2,9 +2,10 @@
 #define __ECHOMESH_SAMPLEAUDIOSOURCE__
 
 #include "echomesh/base/Echomesh.h"
-#include "echomesh/audio/Envelope.h"
+#include "echomesh/audio/PanGainPlayer.h"
 
 namespace echomesh {
+namespace audio {
 
 class SampleAudioSource : public AudioSource {
  public:
@@ -41,9 +42,14 @@ class SampleAudioSource : public AudioSource {
   bool isRunning_;
   string error_;
 
+  EnvelopeValue gain_, pan_;
+
+  unique_ptr<PanGainPlayer> panGainPlayer_;
+
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_SAMPLEAUDIOSOURCE__

@@ -1,14 +1,18 @@
+#include <math.h>
+
 #include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/audio/GetReader.h"
 #include "echomesh/util/InitLog.h"
 
 namespace echomesh {
+namespace audio {
 
 SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
   Playback playback;
   node >> playback;
 
-  init(playback.filename, playback.loops, playback.begin, playback.end, playback.length);
+  init(playback.filename, playback.loops,
+       playback.begin, playback.end, playback.length);
 }
 
 void SampleAudioSource::init(
@@ -25,6 +29,8 @@ void SampleAudioSource::init(
         "File doesn't exist: ";
     error_ = (error + filename).toStdString();
   }
+  gain_.isConstant = pan_.isConstant = true;
+  panGainPlayer_ = make_unique<PanGainPlayer>(gain_, pan_, true);
 }
 
 SampleAudioSource::~SampleAudioSource() {}
@@ -51,12 +57,14 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   SampleTime overrun(currentTime_ - length_);
   if (overrun < 0) {
     source_->getNextAudioBlock(buf);
+    panGainPlayer_->apply(buf);
     return;
   }
 
   AudioSourceChannelInfo b = buf;
   b.numSamples -= overrun;
   source_->getNextAudioBlock(b);
+  panGainPlayer_->apply(b);
   b.startSample += b.numSamples;
   b.numSamples = overrun;
   b.clearActiveBufferRegion();
@@ -70,6 +78,8 @@ void SampleAudioSource::run() {
 
 void SampleAudioSource::begin() {
   ScopedLock l(lock_);
+  panGainPlayer_->begin();
+
   currentTime_ = 0;
   if (source_)
     source_->setNextReadPosition(0);
@@ -87,5 +97,6 @@ void SampleAudioSource::unload() {
   isRunning_ = false;
 }
 
+}  // namespace audio
 }  // namespace echomesh
 

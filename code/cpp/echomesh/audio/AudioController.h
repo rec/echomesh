@@ -7,7 +7,7 @@
 
 namespace echomesh {
 
-class SampleAudioSource;
+namespace audio { class SampleAudioSource; }
 
 class AudioController {
  public:
@@ -19,7 +19,7 @@ class AudioController {
 
  private:
   typedef uint64 Hash;
-  typedef std::map<Hash, SampleAudioSource*> Sources;
+  typedef std::map<Hash, audio::SampleAudioSource*> Sources;
 
   Sources sources_;
   const Node& node_;

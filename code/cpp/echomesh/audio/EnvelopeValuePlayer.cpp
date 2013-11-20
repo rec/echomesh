@@ -4,9 +4,8 @@ namespace echomesh {
 
 EnvelopeValuePlayer::EnvelopeValuePlayer(const EnvelopeValue& ev)
     : envelopeValue_(ev),
-      isConstant_(ev.isConstant),
       loops_(envelopeValue_.envelope.loops) {
-  if (not isConstant_ and points().size() < 2)
+  if (not envelopeValue_.isConstant and points().size() < 2)
     throw Exception("Received an envelope with less than two points.");
 }
 
@@ -18,7 +17,8 @@ void EnvelopeValuePlayer::jumpTo(SampleTime time) {
 void EnvelopeValuePlayer::begin() {
   loopCount_ = segmentIndex_ = 0;
 
-  float value = isConstant_ ? envelopeValue_.value : points().front().value;
+  float value = envelopeValue_.isConstant ? envelopeValue_.value :
+      points().front().value;
   point_ = Envelope::Point(0, value);
 }
 

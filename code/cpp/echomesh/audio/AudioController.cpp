@@ -24,7 +24,7 @@ void AudioController::audio() {
   Hash hash;
   data["type"] >> type;
   data["hash"] >> hash;
-  SampleAudioSource*& source = sources_[hash];
+  audio::SampleAudioSource*& source = sources_[hash];
 
   log("Receiving " + type);
   if (type == "construct") {
@@ -32,7 +32,7 @@ void AudioController::audio() {
       log("Warning: already created a source for hash " + String(hash));
       return;
     }
-    source = new SampleAudioSource(data);
+    source = new audio::SampleAudioSource(data);
     mixerAudioSource_.addInputSource(source, true);
     return;
    }
