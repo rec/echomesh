@@ -45,7 +45,8 @@ cdef class PyEnvelope:
       newEnv.loops = env.loops
       for t, d in zip(env.times, env.data):
         addPoint(newEnv, t, d)
+    normalizeEnvelope(newEnv)
 
   def __dealloc__(self):
     deleteEnvelope(self.envelope)  # del self.envelope
-
+    self.envelope = NULL
