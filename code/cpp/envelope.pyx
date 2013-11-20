@@ -1,5 +1,6 @@
 # distutils: language = c++
 
+from libcpp cimport bool
 from libcpp.vector cimport vector
 
 cdef extern from "rec/base/SampleTime.h" namespace "rec":
@@ -13,4 +14,14 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
     SampleTime time
     float value
 
-  cdef vector[EnvelopePoint] EnvelopePointList
+  ctypedef vector[EnvelopePoint] EnvelopePointList
+
+  cdef struct Envelope:
+    SampleTime length
+    int loops
+    EnvelopePointList points
+    bool reverse
+    bool isConstant
+    float value
+
+  cdef void normalizeEnvelope(Envelope*)
