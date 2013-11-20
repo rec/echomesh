@@ -127,7 +127,8 @@ audio:
 # Do we get and process commands from the keyboard?
 # Set this to "false" for autostart jobs.
 # TODO: this needs to be rethought and perhaps re-integrated with autostart.
-control_program: true
+control_program:
+  use_curses: true
 
 delay_before_keyboard_activates: 0.5 seconds
 
