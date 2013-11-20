@@ -1,20 +1,20 @@
-#include "echomesh/audio/EnvelopeValuePlayer.h"
+#include "echomesh/audio/EnvelopePlayer.h"
 
 namespace echomesh {
 
-EnvelopeValuePlayer::EnvelopeValuePlayer(const EnvelopeValue& ev)
+EnvelopePlayer::EnvelopePlayer(const Envelope& ev)
     : envelopeValue_(ev),
-      loops_(envelopeValue_.envelope.loops) {
+      loops_(envelopeValue_.loops) {
   if (not envelopeValue_.isConstant and points().size() < 2)
     throw Exception("Received an envelope with less than two points.");
 }
 
 
-void EnvelopeValuePlayer::jumpTo(SampleTime time) {
+void EnvelopePlayer::jumpTo(SampleTime time) {
   // TODO
 }
 
-void EnvelopeValuePlayer::begin() {
+void EnvelopePlayer::begin() {
   loopCount_ = segmentIndex_ = 0;
 
   float value = envelopeValue_.isConstant ? envelopeValue_.value :
@@ -29,15 +29,15 @@ void EnvelopeValuePlayer::begin() {
 //   point_.time >= envelope.points[segmentIndex_].time
 //   point_.time < envelope.points[segmentIndex_ + 1].time
 
-typedef EnvelopeValuePlayer::SegmentList SegmentList;
+typedef EnvelopePlayer::SegmentList SegmentList;
 
-SegmentList EnvelopeValuePlayer::getSegments(SampleTime numSamples) {
+SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
   typedef Envelope::Point Point;
 
   SegmentList result;
   Point start(0, point_.value);
   Segment seg(start, start);
-  bool reverse = envelopeValue_.envelope.reverse;
+  bool reverse = envelopeValue_.reverse;
 
   while (numSamples > 0) {
     if (loopsDone()) {

@@ -227,7 +227,8 @@
     <MODULE id="juce_video" showAllCode="1" useLocalCopy="1"/>
   </MODULES>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../.." extraDefs="">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../.. -I../../build/include"
+               externalLibraries="glog" extraLinkerFlags="-L../../build/lib">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" osxSDK="default" osxCompatibility="default" osxArchitecture="default"
                        isDebug="1" optimisation="1" targetName="echomesh-client"/>

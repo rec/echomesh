@@ -32,7 +32,7 @@ void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
   if (passthrough_)
     return;
 
-  typedef EnvelopeValuePlayer::SegmentList SegmentList;
+  typedef EnvelopePlayer::SegmentList SegmentList;
   if (gainPlayer_.isConstant()) {
     float value = gainPlayer_.value();
     if (not near(value, 1.0f))

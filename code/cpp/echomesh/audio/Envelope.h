@@ -21,6 +21,8 @@ struct Envelope {
   int loops;
   PointList points;
   bool reverse;
+  bool isConstant;
+  float value;
 };
 
 inline Envelope::Point operator-(const Envelope::Point& x,
@@ -33,24 +35,17 @@ inline Envelope::Point operator-(const Envelope::Point& x,
 // and the last segment always is at least as long as length.
 void normalizeEnvelope(Envelope*);
 
-struct EnvelopeValue {
-  bool isConstant;
-  Envelope envelope;
-  float value;
-};
-
 struct Playback {
   SampleTime begin, end;
   string filename;
   rec::SampleTime length;
-  EnvelopeValue level;
+  Envelope level;
   int loops;
-  EnvelopeValue pan;
+  Envelope pan;
   bool passthrough;
 };
 
 void operator>>(const Node&, Envelope&);
-void operator>>(const Node&, EnvelopeValue&);
 void operator>>(const Node&, Playback&);
 
 }  // namespace echomesh

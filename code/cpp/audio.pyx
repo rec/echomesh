@@ -4,7 +4,9 @@ from libcpp.string cimport string
 
 cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
   cdef cppclass Source:
-    Source(string, int, long long, long long, long long, string, int) except +
+    Source(string filename, int loops,
+           long long begin, long long end, long long length,
+           string device, int channels) except +
     void run()
     void begin()
     void pause()

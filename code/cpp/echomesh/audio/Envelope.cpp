@@ -15,8 +15,17 @@ void normalizeEnvelope(Envelope* envelope) {
 }
 
 void operator>>(const Node& node, Envelope& env) {
-  const Node& values = node["data"];
-  const Node& times = node["times"];
+  node["is_constant"] >> env.isConstant;
+  if (env.isConstant) {
+    node["value"] >> env.value;
+    return;
+  }
+
+  const Node& subnode = node["envelope"];
+
+
+  const Node& values = subnode["data"];
+  const Node& times = subnode["times"];
 
   int size = jmin(values.size(), times.size());
   env.points.resize(size);
@@ -26,18 +35,10 @@ void operator>>(const Node& node, Envelope& env) {
     values[i] >> env.points[i].value;
   }
 
-  node["length"] >> env.length;
-  node["loops"] >> env.loops;
-  node["reverse"] >> env.reverse;
+  subnode["length"] >> env.length;
+  subnode["loops"] >> env.loops;
+  subnode["reverse"] >> env.reverse;
   normalizeEnvelope(&env);
-}
-
-void operator>>(const Node& node, EnvelopeValue& value) {
-  node["is_constant"] >> value.isConstant;
-  if (value.isConstant)
-    node["value"] >> value.value;
-  else
-    node["envelope"] >> value.envelope;
 }
 
 void operator>>(const Node& node, Playback& playback) {

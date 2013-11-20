@@ -21,10 +21,10 @@
         <FILE id="hbfQ3C" name="DefaultDevice.h" compile="0" resource="0" file="../cpp/echomesh/audio/DefaultDevice.h"/>
         <FILE id="xgR65M" name="Envelope.cpp" compile="1" resource="0" file="../cpp/echomesh/audio/Envelope.cpp"/>
         <FILE id="vbo8pN" name="Envelope.h" compile="0" resource="0" file="../cpp/echomesh/audio/Envelope.h"/>
-        <FILE id="wL6CSh" name="EnvelopeValuePlayer.cpp" compile="1" resource="0"
-              file="../cpp/echomesh/audio/EnvelopeValuePlayer.cpp"/>
-        <FILE id="HCG25r" name="EnvelopeValuePlayer.h" compile="0" resource="0"
-              file="../cpp/echomesh/audio/EnvelopeValuePlayer.h"/>
+        <FILE id="wL6CSh" name="EnvelopePlayer.cpp" compile="1" resource="0"
+              file="../cpp/echomesh/audio/EnvelopePlayer.cpp"/>
+        <FILE id="HCG25r" name="EnvelopePlayer.h" compile="0" resource="0"
+              file="../cpp/echomesh/audio/EnvelopePlayer.h"/>
         <FILE id="uoQFqn" name="GetReader.cpp" compile="1" resource="0" file="../cpp/echomesh/audio/GetReader.cpp"/>
         <FILE id="ySBCqW" name="GetReader.h" compile="0" resource="0" file="../cpp/echomesh/audio/GetReader.h"/>
         <FILE id="uzaZfD" name="MidiController.cpp" compile="1" resource="0"

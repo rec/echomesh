@@ -2,15 +2,14 @@
 #define __ECHOMESH_AUDIO_PANGAINPLAYER__
 
 #include "echomesh/audio/Envelope.h"
-#include "echomesh/audio/EnvelopeValuePlayer.h"
+#include "echomesh/audio/EnvelopePlayer.h"
 
 namespace echomesh {
 namespace audio {
 
 class PanGainPlayer {
  public:
-  PanGainPlayer(const EnvelopeValue& gain, const EnvelopeValue& pan,
-                bool passthrough)
+  PanGainPlayer(const Envelope& gain, const Envelope& pan, bool passthrough)
       : gainPlayer_(gain), panPlayer_(pan), passthrough_(passthrough) {
   }
 
@@ -18,7 +17,7 @@ class PanGainPlayer {
   void begin();
 
  private:
-  EnvelopeValuePlayer gainPlayer_, panPlayer_;
+  EnvelopePlayer gainPlayer_, panPlayer_;
   bool passthrough_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(PanGainPlayer);

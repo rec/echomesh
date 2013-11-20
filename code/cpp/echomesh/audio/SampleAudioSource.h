@@ -42,7 +42,7 @@ class SampleAudioSource : public AudioSource {
   bool isRunning_;
   string error_;
 
-  EnvelopeValue gain_, pan_;
+  Envelope gain_, pan_;
 
   unique_ptr<PanGainPlayer> panGainPlayer_;
 
