@@ -8,15 +8,15 @@ namespace audio {
 
 class EnvelopePlayer {
  public:
-  typedef std::pair<Envelope::Point, Envelope::Point> Segment;
+  typedef std::pair<EnvelopePoint, EnvelopePoint> Segment;
   typedef vector<Segment> SegmentList;
 
   EnvelopePlayer(const Envelope&);
   bool isConstant() const { return envelopeValue_.isConstant; }
 
-  const Envelope::Point point() const { return point_; }
+  const EnvelopePoint point() const { return point_; }
   float value() const { return point_.value; }
-  const Envelope::PointList& points() const { return envelopeValue_.points; }
+  const EnvelopePointList& points() const { return envelopeValue_.points; }
 
   void begin();
   void jumpTo(SampleTime);
@@ -31,7 +31,7 @@ class EnvelopePlayer {
   const Envelope& envelopeValue_;
   const int loops_;
 
-  Envelope::Point point_;
+  EnvelopePoint point_;
   int segmentIndex_;
   int loopCount_;
 

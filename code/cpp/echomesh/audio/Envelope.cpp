@@ -5,12 +5,12 @@ namespace echomesh {
 namespace audio {
 
 void normalizeEnvelope(Envelope* envelope) {
-  Envelope::PointList& points = envelope->points;
+  EnvelopePointList& points = envelope->points;
   if (points.front().time > 0)
-    points.insert(points.begin(), Envelope::Point(0, points.front().value));
+    points.insert(points.begin(), EnvelopePoint(0, points.front().value));
 
   if (points.back().time < envelope->length)
-    points.push_back(Envelope::Point(envelope->length, points.back().value));
+    points.push_back(EnvelopePoint(envelope->length, points.back().value));
   else if (not envelope->length)
     envelope->length = points.back().time;
 }

@@ -20,7 +20,7 @@ void EnvelopePlayer::begin() {
 
   float value = envelopeValue_.isConstant ? envelopeValue_.value :
       points().front().value;
-  point_ = Envelope::Point(0, value);
+  point_ = EnvelopePoint(0, value);
 }
 
 // The following conditions are always true between calls to getSegments:
@@ -33,21 +33,19 @@ void EnvelopePlayer::begin() {
 typedef EnvelopePlayer::SegmentList SegmentList;
 
 SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
-  typedef Envelope::Point Point;
-
   SegmentList result;
-  Point start(0, point_.value);
+  EnvelopePoint start(0, point_.value);
   Segment seg(start, start);
   bool reverse = envelopeValue_.reverse;
 
   while (numSamples > 0) {
     if (loopsDone()) {
-      seg.second = Point(seg.first.time + numSamples, point_.value);
+      seg.second = EnvelopePoint(seg.first.time + numSamples, point_.value);
       result.push_back(seg);
       break;
     }
-    const Point* previous = &points()[segmentIndex_];
-    const Point* next = previous + 1;
+    const EnvelopePoint* previous = &points()[segmentIndex_];
+    const EnvelopePoint* next = previous + 1;
 
     bool forward = not (reverse and loopCount_ % 2);
     int directionMult = forward ? 1 : -1;
@@ -69,7 +67,7 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
       }
     }
 
-    Point delta = *next - *previous;
+    EnvelopePoint delta = *next - *previous;
     float slope = delta.value / delta.time;
 
     SampleTime t = jmin(remains, numSamples);
@@ -85,7 +83,7 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
 
     if (rollover) {
       segmentIndex_ = 0;
-      point_ = Point(0, points().front().value);
+      point_ = EnvelopePoint(0, points().front().value);
       seg.second.value = point_.value;
     }
     seg.first = seg.second;

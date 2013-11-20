@@ -6,30 +6,29 @@
 namespace echomesh {
 namespace audio {
 
+struct EnvelopePoint {
+  EnvelopePoint() {}
+  EnvelopePoint(SampleTime t, float v) : time(t), value(v) {}
+
+  SampleTime time;
+  float value;
+};
+
+inline EnvelopePoint operator-(const EnvelopePoint& x,
+                               const EnvelopePoint& y) {
+  return EnvelopePoint(x.time - y.time, x.value - y.value);
+}
+
+typedef vector<EnvelopePoint> EnvelopePointList;
+
 struct Envelope {
-  struct Point {
-    Point() {}
-    Point(SampleTime t, float v) : time(t), value(v) {}
-
-    SampleTime time;
-    float value;
-    String toString() const { return String(time) + "=" + String(value); }
-  };
-
-  typedef vector<Point> PointList;
-
   SampleTime length;
   int loops;
-  PointList points;
+  EnvelopePointList points;
   bool reverse;
   bool isConstant;
   float value;
 };
-
-inline Envelope::Point operator-(const Envelope::Point& x,
-                                 const Envelope::Point& y) {
-  return Envelope::Point(x.time - y.time, x.value - y.value);
-}
 
 
 // Normalize an envelope so that the first segment always starts at zero,

@@ -4,4 +4,5 @@
 
 include "application.pyx"
 include "audio.pyx"
+include "envelope.pyx"
 include "tiny.pyx"
