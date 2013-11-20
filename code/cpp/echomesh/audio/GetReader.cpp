@@ -19,7 +19,7 @@ PositionableAudioSource* getReader(const String& name,
   unique_ptr<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
 
   if (not reader.get()) {
-    LOG(ERROR) << "Can't read file " << name.toStdString();
+    DLOG(ERROR) << "Can't read file " << name.toStdString();
     return nullptr;
   }
   if (end < 0)

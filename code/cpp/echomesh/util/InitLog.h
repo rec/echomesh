@@ -5,7 +5,7 @@
 
 namespace echomesh {
 
-const char* initLog();
+void initLog();
 
 }  // namespace echomesh
 

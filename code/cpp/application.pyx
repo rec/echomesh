@@ -12,4 +12,9 @@ def stop_application():
 cdef void callback(void* f):
   (<object>f)()
 
+cdef extern from "echomesh/util/InitLog.h" namespace "echomesh":
+  void initLog()
+
+def init_log():
+  initLog()
 

@@ -58,37 +58,5 @@ double defaultOutputSampleRate() {
   return defaultInputSetup().sampleRate;
 }
 
-AudioDeviceManager* cachedOutputManager(const string& name, int channels) {
-  string n = name.empty() ? defaultOutputDevice() : name;
-  auto i = DEVICE_TABLE.find(n);
-  if (i == DEVICE_TABLE.end()) {
-    Device device;
-    device.referenceCount_ = 1;
-    device.manager_ = make_unique<AudioDeviceManager>();
-    String result = device.manager_->initialise(0, channels, nullptr, false, n);
-    if (result.length()) {
-      std::cerr << "Error opening device " << name << ": "
-                << result.toStdString();
-      return nullptr;
-    }
-    DEVICE_TABLE[name] = std::move(device);
-    return device.manager_.get();
-  }
-
-  i->second.referenceCount_++;
-  return i->second.manager_.get();
-}
-
-void dereferenceOutputManager(AudioDeviceManager* manager) {
-  AudioDeviceManager::AudioDeviceSetup setup;
-  manager->getAudioDeviceSetup(setup);
-  string name = setup.outputDeviceName.toStdString();
-  auto i = DEVICE_TABLE.find(name);
-  if (i == DEVICE_TABLE.end())
-    std::cerr << "Couldn't find device " << name;
-  else if (not --i->second.referenceCount_)
-    DEVICE_TABLE.erase(i);
-}
-
 }  // namespace audio
 }  // namespace echomesh

@@ -4,20 +4,16 @@ namespace echomesh {
 
 namespace {
 
-struct Initializer {
-  Initializer() {
-    google::InitGoogleLogging(name());
-    FLAGS_logtostderr = true;
-  }
-
-  const char* name() const { return "echomesh"; }
-};
+bool initialized = false;
 
 }  // namespace
 
-const char* initLog() {
-  static Initializer initializer;
-  return initializer.name();
+void initLog() {
+  if (not initialized) {
+    initialized = true;
+    google::InitGoogleLogging("echomesh");
+    FLAGS_logtostderr = true;
+  }
 }
 
 }  // namespace echomesh

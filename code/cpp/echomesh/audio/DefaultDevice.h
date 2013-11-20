@@ -11,9 +11,6 @@ double defaultOutputSampleRate();
 string defaultInputDevice();
 string defaultOutputDevice();
 
-AudioDeviceManager* cachedOutputManager(const string& name, int channels);
-void dereferenceOutputManager(AudioDeviceManager*);
-
 }  // namespace audio
 }  // namespace echomesh
 

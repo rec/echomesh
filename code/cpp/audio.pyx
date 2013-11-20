@@ -9,6 +9,7 @@ cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
     void begin()
     void pause()
     void unload()
+    string error()
 
 cdef class AudioSource:
   cdef Source *thisptr
@@ -18,6 +19,11 @@ cdef class AudioSource:
                 string device, int channels):
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels)
+    error = self.thisptr.error()
+    if self.thisptr.error().size():
+      del self.thisptr
+      self.thisptr = NULL
+      raise Exception(error)
 
   def __dealloc__(self):  del self.thisptr
   def run(self):          self.thisptr.run()

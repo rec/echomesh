@@ -22,6 +22,8 @@ class SampleAudioSource : public AudioSource {
   virtual void releaseResources();
   virtual void getNextAudioBlock(const AudioSourceChannelInfo&);
 
+  const string& error() const { return error_; }
+
   void run();
   void begin();
   void pause();
@@ -37,6 +39,7 @@ class SampleAudioSource : public AudioSource {
   SampleTime length_;
   unique_ptr<PositionableAudioSource> source_;
   bool isRunning_;
+  string error_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };

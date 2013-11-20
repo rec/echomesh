@@ -19,8 +19,12 @@ void SampleAudioSource::init(
     length_ = SampleTime(source_->getTotalLength() * loops);
     if (length >= 0)
       length_ = jmin(length_, length);
+  } else {
+    const char* error = File(filename).exists() ?
+        "Don't understand file format for " :
+        "File doesn't exist: ";
+    error_ = (error + filename).toStdString();
   }
-  initLog();
 }
 
 SampleAudioSource::~SampleAudioSource() {}

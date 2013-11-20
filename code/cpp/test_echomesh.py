@@ -6,6 +6,8 @@ import cechomesh
 import sys
 import time
 
+cechomesh.init_log()
+
 DEFAULT_FILE = (
   '/Volumes/Zog/Documents/iTunes/Music/Albert Ayler/New Grass/heart love.mp3')
 
@@ -16,9 +18,6 @@ source.begin()
 source.run()
 
 time.sleep(3)
-
-del source
-
 
 if False:
   WINDOW = None
