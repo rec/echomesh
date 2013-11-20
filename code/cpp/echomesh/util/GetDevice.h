@@ -23,6 +23,8 @@ class CallbackWrapper : public CallbackMessage {
   DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CallbackWrapper);
 };
 
+namespace audio {
+
 template <typename DeviceClass>
 class ConfigMidi : public CallbackMessage {
  public:
@@ -52,7 +54,6 @@ class ConfigMidi : public CallbackMessage {
   DISALLOW_COPY_ASSIGN_AND_LEAKS(ConfigMidi);
 };
 
-
 class ConfigMidiInput : public ConfigMidi<MidiInput> {
  public:
   explicit ConfigMidiInput(MidiInputCallback* cb) : callback_(cb) {}
@@ -79,6 +80,7 @@ class ConfigMidiOutput : public ConfigMidi<MidiOutput> {
   DISALLOW_COPY_ASSIGN_AND_LEAKS(ConfigMidiOutput);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_GET_DEVICE__

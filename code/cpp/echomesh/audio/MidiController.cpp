@@ -8,6 +8,7 @@
 #include "echomesh/util/GetDevice.h"
 
 namespace echomesh {
+namespace audio {
 
 using namespace std;
 
@@ -63,4 +64,5 @@ void MidiController::config() {
   midiOutput_->setConfig(config.midi.output);
 }
 
+}  // namespace audio
 }  // namespace echomesh

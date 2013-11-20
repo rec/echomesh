@@ -2,6 +2,7 @@
 #include "echomesh/base/Config.h"
 
 namespace echomesh {
+namespace audio {
 
 namespace {
 
@@ -92,4 +93,5 @@ void ConfigMidiOutput::sendMessageNow(const MidiMessage& msg) {
     device_->sendMessageNow(msg);
 }
 
+}  // namespace audio
 }  // namespace echomesh

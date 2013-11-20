@@ -4,6 +4,7 @@
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+namespace audio {
 
 class Player {
  public:
@@ -24,6 +25,7 @@ class Player {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Player);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_PLAYER__

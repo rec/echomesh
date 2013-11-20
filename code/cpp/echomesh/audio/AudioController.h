@@ -6,8 +6,9 @@
 #include "echomesh/base/Config.h"
 
 namespace echomesh {
+namespace audio {
 
-namespace audio { class SampleAudioSource; }
+class SampleAudioSource;
 
 class AudioController {
  public:
@@ -28,6 +29,7 @@ class AudioController {
   DISALLOW_COPY_AND_ASSIGN(AudioController);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_AUDIO_CONTROLLER__

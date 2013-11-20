@@ -1,6 +1,7 @@
 #include "echomesh/audio/GetReader.h"
 
 namespace echomesh {
+namespace audio {
 
 namespace {
 
@@ -30,4 +31,5 @@ PositionableAudioSource* getReader(const String& name,
   return new AudioFormatReaderSource(reader.release(), true);
 }
 
+}  // namespace audio
 }  // namespace echomesh

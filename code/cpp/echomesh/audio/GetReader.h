@@ -4,10 +4,12 @@
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+namespace audio {
 
 PositionableAudioSource* getReader(const String&,
                                    SampleTime begin, SampleTime end);
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_GETREADER__

@@ -12,6 +12,7 @@
 #include "rec/util/STL.h"
 
 namespace echomesh {
+namespace audio {
 
 using namespace std;
 
@@ -58,4 +59,5 @@ void AudioController::audio() {
   }
 }
 
+}  // namespace audio
 }  // namespace echomesh

@@ -11,10 +11,13 @@
 
 namespace echomesh {
 
+namespace audio {
 class AudioController;
+class MidiController;
+}
+
 class LightingWindow;
 class LightController;
-class MidiController;
 
 class LightReader : public ReadThread {
  public:
@@ -27,9 +30,9 @@ class LightReader : public ReadThread {
  private:
   void config();
 
-  ScopedPointer<AudioController> audioController_;
+  ScopedPointer<audio::AudioController> audioController_;
   ScopedPointer<LightController> lightController_;
-  ScopedPointer<MidiController> midiController_;
+  ScopedPointer<audio::MidiController> midiController_;
 
   DISALLOW_COPY_AND_ASSIGN(LightReader);
 };

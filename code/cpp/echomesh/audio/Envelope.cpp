@@ -2,6 +2,7 @@
 #include "echomesh/audio/Envelope.h"
 
 namespace echomesh {
+namespace audio {
 
 void normalizeEnvelope(Envelope* envelope) {
   Envelope::PointList& points = envelope->points;
@@ -15,6 +16,7 @@ void normalizeEnvelope(Envelope* envelope) {
 }
 
 void operator>>(const Node& node, Envelope& env) {
+#ifdef ECHOMESH_CLIENT
   node["is_constant"] >> env.isConstant;
   if (env.isConstant) {
     node["value"] >> env.value;
@@ -39,9 +41,11 @@ void operator>>(const Node& node, Envelope& env) {
   subnode["loops"] >> env.loops;
   subnode["reverse"] >> env.reverse;
   normalizeEnvelope(&env);
+#endif
 }
 
 void operator>>(const Node& node, Playback& playback) {
+#ifdef ECHOMESH_CLIENT
   node["begin"] >> playback.begin;
   node["end"] >> playback.end;
   node["filename"] >> playback.filename;
@@ -50,6 +54,8 @@ void operator>>(const Node& node, Playback& playback) {
   node["loops"] >> playback.loops;
   node["pan"] >> playback.pan;
   node["passthrough"] >> playback.passthrough;
+#endif
 }
 
+}  // namespace audio
 }  // namespace echomesh

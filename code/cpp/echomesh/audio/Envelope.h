@@ -1,9 +1,10 @@
 #ifndef __ECHOMESH_ENVELOPE__
 #define __ECHOMESH_ENVELOPE__
 
-#include "echomesh/base/Echomesh.h"
+#include "echomesh/base/Config.h"
 
 namespace echomesh {
+namespace audio {
 
 struct Envelope {
   struct Point {
@@ -48,6 +49,7 @@ struct Playback {
 void operator>>(const Node&, Envelope&);
 void operator>>(const Node&, Playback&);
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_ENVELOPE__

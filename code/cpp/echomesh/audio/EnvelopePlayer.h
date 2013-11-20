@@ -4,6 +4,7 @@
 #include "echomesh/audio/Envelope.h"
 
 namespace echomesh {
+namespace audio {
 
 class EnvelopePlayer {
  public:
@@ -37,6 +38,7 @@ class EnvelopePlayer {
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(EnvelopePlayer);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_ENVELOPEVALUEPLAYER__

@@ -6,6 +6,7 @@
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+namespace audio {
 
 class ConfigMidiInput;
 class ConfigMidiOutput;
@@ -27,6 +28,7 @@ class MidiController : public MidiInputCallback {
   DISALLOW_COPY_AND_ASSIGN(MidiController);
 };
 
+}  // namespace audio
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_MIDI_CONTROLLER__

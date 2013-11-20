@@ -1,6 +1,7 @@
 #include "echomesh/audio/EnvelopePlayer.h"
 
 namespace echomesh {
+namespace audio {
 
 EnvelopePlayer::EnvelopePlayer(const Envelope& ev)
     : envelopeValue_(ev),
@@ -93,4 +94,5 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
   return result;
 }
 
+}  // namespace audio
 }  // namespace echomesh

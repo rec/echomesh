@@ -17,6 +17,7 @@ namespace echomesh {
 
 using namespace std;
 using namespace rec::util::thread;
+using namespace echomesh::audio;
 
 static const string DEFAULT_CONFIG =
   "data:\n"

@@ -9,7 +9,7 @@ namespace echomesh {
 struct Echomesh::Impl {
   LightingWindow lightingWindow_;
   LightReader lightReader_;
-  Player player_;
+  audio::Player player_;
 
   void initialize() {
     log("Starting echomesh.");
