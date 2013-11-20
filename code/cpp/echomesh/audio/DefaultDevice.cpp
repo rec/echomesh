@@ -90,13 +90,5 @@ void dereferenceOutputManager(AudioDeviceManager* manager) {
     DEVICE_TABLE.erase(i);
 }
 
-string test1() {
-  return "hello, Tylor!";
-}
-
-const char* test2() {
-  return "hello, Tylor!";
-}
-
 }  // namespace audio
 }  // namespace echomesh

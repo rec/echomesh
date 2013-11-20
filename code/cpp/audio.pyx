@@ -41,9 +41,3 @@ def default_input_device():
 
 def default_output_sample_rate():
   return defaultOutputSampleRate()
-
-def test_1():
-  return test1()
-
-def test_2():
-  return test2()
