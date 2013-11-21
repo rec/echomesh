@@ -17,7 +17,7 @@ DEFAULT_FILE = (
 
 f = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FILE
 
-source = cechomesh.AudioSource(f, 1, 0, -1, -1, "", 2)
+source = cechomesh.AudioSource(f, 1, 0, -1, -1, "", 2, None, None)
 source.begin()
 source.run()
 

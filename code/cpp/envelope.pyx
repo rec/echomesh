@@ -32,6 +32,8 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
 
 
 cdef Envelope* makeEnvelope(env):
+  if not env:
+    return NULL
   newEnv = newEnvelope()  # new Envelope()
   newEnv.isConstant = env.is_constant
   newEnv.length = SampleTime(env.length)

@@ -32,8 +32,10 @@ PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan,
 }
 
 void PanGainPlayer::begin() {
-  gainPlayer_->begin();
-  panPlayer_->begin();
+  if (gainPlayer_.get())
+    gainPlayer_->begin();
+  if (panPlayer_.get())
+    panPlayer_->begin();
 }
 
 void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
