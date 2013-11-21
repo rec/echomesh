@@ -115,6 +115,7 @@ audio:
     # There are three types of player:
     #
     #   aplay:    Use the external aplay program to play sound files.
+    #   cython:   Play sounds using the Cythonized code.
     #   client:   Play sounds from the external C++ client.
     #   pyaudio:  Play sounds internally with Python.
     #
@@ -122,7 +123,7 @@ audio:
     # client supports everything but isn't yet implemented.
     # pyaudio supports volume and pan envelopes but not mp3s.
 
-    player: pyaudio
+    player: cython
 
 # Do we get and process commands from the keyboard?
 # Set this to "false" for autostart jobs.
