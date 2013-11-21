@@ -1,12 +1,14 @@
 # distutils: language = c++
 
+include "envelope.pyx"
+
 from libcpp.string cimport string
 
 cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
   cdef cppclass Source:
     Source(string filename, int loops,
            long long begin, long long end, long long length,
-           string device, int channels) except +
+           string device, int channels, Envelope* gain, Envelope* pan) except +
     void run()
     void begin()
     void pause()
@@ -18,9 +20,10 @@ cdef class AudioSource:
 
   def __cinit__(self, string filename, int loops,
                 long long begin, long long end, long long length,
-                string device, int channels):
+                string device, int channels, gain, pan):
     self.thisptr = new Source(filename, loops, begin, end, length,
-                              device, channels)
+                              device, channels,
+                              makeEnvelope(gain), makeEnvelope(pan))
     error = self.thisptr.error()
     if self.thisptr.error().size():
       del self.thisptr

@@ -12,7 +12,8 @@ class Source : public SampleAudioSource {
  public:
   Source(const string& filename, int loops,
          long long begin, long long end, long long length,
-         const string& device, int channels);
+         const string& device, int channels,
+         Envelope* gain, Envelope* pan);
 
   ~Source();
 

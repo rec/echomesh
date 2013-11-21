@@ -7,13 +7,23 @@
 namespace echomesh {
 namespace audio {
 
-SampleAudioSource::SampleAudioSource(const Node& node) : length_(0) {
+SampleAudioSource::SampleAudioSource(const Node& node) :
+    length_(0), gain_(), pan_() {
   Playback playback;
   node >> playback;
 
   init(playback.filename, playback.loops,
        playback.begin, playback.end, playback.length);
 }
+
+SampleAudioSource::SampleAudioSource(const String& filename, int loops,
+                  SampleTime begin, SampleTime end, SampleTime length,
+                  Envelope* gain, Envelope* pan)
+    : gain_(gain),
+      pan_(pan) {
+  init(filename, loops, begin, end, length);
+}
+
 
 void SampleAudioSource::init(
     const String& filename, int loops,
@@ -29,8 +39,7 @@ void SampleAudioSource::init(
         "File doesn't exist: ";
     error_ = (error + filename).toStdString();
   }
-  gain_.isConstant = pan_.isConstant = true;
-  panGainPlayer_ = make_unique<PanGainPlayer>(gain_, pan_, true);
+  panGainPlayer_ = make_unique<PanGainPlayer>(*gain_, *pan_, true);
 }
 
 SampleAudioSource::~SampleAudioSource() {}

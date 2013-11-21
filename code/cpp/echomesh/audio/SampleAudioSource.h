@@ -10,10 +10,10 @@ namespace audio {
 class SampleAudioSource : public AudioSource {
  public:
   explicit SampleAudioSource(const Node&);
+
   SampleAudioSource(const String& filename, int loops,
-                    SampleTime begin, SampleTime end, SampleTime length) {
-    init(filename, loops, begin, end, length);
-  }
+                    SampleTime begin, SampleTime end, SampleTime length,
+                    Envelope* gain, Envelope* pan);
 
   virtual ~SampleAudioSource();
 
@@ -42,7 +42,7 @@ class SampleAudioSource : public AudioSource {
   bool isRunning_;
   string error_;
 
-  Envelope gain_, pan_;
+  unique_ptr<Envelope> gain_, pan_;
 
   unique_ptr<PanGainPlayer> panGainPlayer_;
 

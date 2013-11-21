@@ -30,23 +30,17 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
   cdef void deleteEnvelope(Envelope*)
   cdef void addPoint(Envelope* env, long long time, float value)
 
-cdef class PyEnvelope:
-  cdef Envelope* envelope
 
-  def __cinit__(self, env):
-    newEnv = newEnvelope()  # new Envelope()
-    self.envelope = newEnv
-    newEnv.isConstant = env.is_constant
-    newEnv.length = SampleTime(env.length)
-    if newEnv.isConstant:
-      newEnv.value = env.value
-    else:
-      newEnv.reverse = env.reverse
-      newEnv.loops = env.loops
-      for t, d in zip(env.times, env.data):
-        addPoint(newEnv, t, d)
-    normalizeEnvelope(newEnv)
-
-  def __dealloc__(self):
-    deleteEnvelope(self.envelope)  # del self.envelope
-    self.envelope = NULL
+cdef Envelope* makeEnvelope(env):
+  newEnv = newEnvelope()  # new Envelope()
+  newEnv.isConstant = env.is_constant
+  newEnv.length = SampleTime(env.length)
+  if newEnv.isConstant:
+    newEnv.value = env.value
+  else:
+    newEnv.reverse = env.reverse
+    newEnv.loops = env.loops
+    for t, d in zip(env.times, env.data):
+      addPoint(newEnv, t, d)
+  normalizeEnvelope(newEnv)
+  return newEnv
