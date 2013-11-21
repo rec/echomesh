@@ -6,10 +6,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-INF = float('inf')
-
 def set_player(player, element,
-               level=1, pan=0, loops=1, begin=0, end=INF, length=INF, **kwds):
+               level=1, pan=0, loops=1, begin=0, end=-1, length=-1, **kwds):
   player._element = element
   player._file = kwds.pop('file')
   player._filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(player._file)

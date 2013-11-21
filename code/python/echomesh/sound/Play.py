@@ -5,8 +5,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-INF = float('inf')
-
 def _get_player(player):
   if player == 'aplay':
     from echomesh.sound import AplayPlayer

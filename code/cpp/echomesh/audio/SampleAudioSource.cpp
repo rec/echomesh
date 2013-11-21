@@ -16,9 +16,10 @@ SampleAudioSource::SampleAudioSource(const Node& node) :
        playback.begin, playback.end, playback.length, nullptr, nullptr);
 }
 
-SampleAudioSource::SampleAudioSource(const String& filename, int loops,
-                  SampleTime begin, SampleTime end, SampleTime length,
-                  Envelope* gain, Envelope* pan)
+SampleAudioSource::SampleAudioSource(
+    const String& filename, int loops,
+    SampleTime begin, SampleTime end, SampleTime length,
+    Envelope* gain, Envelope* pan)
     : gain_(gain),
       pan_(pan) {
   init(filename, loops, begin, end, length, gain, pan);

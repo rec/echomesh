@@ -59,9 +59,9 @@ def directories(_):
   _info(Path.info())
 
 def elements(echomesh_instance):
-  inf = echomesh_instance.score_master.info()
-  if inf:
-    _info(inf)
+  info = echomesh_instance.score_master.info()
+  if info:
+    _info(info)
   else:
     LOGGER.info('  No elements have been loaded into memory.\n')
 
