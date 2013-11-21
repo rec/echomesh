@@ -9,15 +9,16 @@ namespace audio {
 
 class PanGainPlayer {
  public:
-  PanGainPlayer(const Envelope& gain, const Envelope& pan, bool passthrough)
-      : gainPlayer_(gain), panPlayer_(pan), passthrough_(passthrough) {
-  }
+  PanGainPlayer(Envelope* gain, Envelope* pan, bool passthrough);
 
   void apply(const AudioSourceChannelInfo&);
   void begin();
 
  private:
-  EnvelopePlayer gainPlayer_, panPlayer_;
+  void applyGain(const AudioSourceChannelInfo&);
+  void applyPan(const AudioSourceChannelInfo&);
+
+  unique_ptr<EnvelopePlayer> gainPlayer_, panPlayer_;
   bool passthrough_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(PanGainPlayer);

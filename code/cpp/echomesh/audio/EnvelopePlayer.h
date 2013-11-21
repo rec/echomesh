@@ -11,12 +11,12 @@ class EnvelopePlayer {
   typedef std::pair<EnvelopePoint, EnvelopePoint> Segment;
   typedef vector<Segment> SegmentList;
 
-  EnvelopePlayer(const Envelope&);
-  bool isConstant() const { return envelopeValue_.isConstant; }
+  explicit EnvelopePlayer(Envelope*);
+  bool isConstant() const { return envelope_->isConstant; }
 
   const EnvelopePoint point() const { return point_; }
   float value() const { return point_.value; }
-  const EnvelopePointList& points() const { return envelopeValue_.points; }
+  const EnvelopePointList& points() const { return envelope_->points; }
 
   void begin();
   void jumpTo(SampleTime);
@@ -28,7 +28,7 @@ class EnvelopePlayer {
  private:
   bool loopsDone() const { return loops_ and loopCount_ >= loops_; }
 
-  const Envelope& envelopeValue_;
+  unique_ptr<Envelope> envelope_;
   const int loops_;
 
   EnvelopePoint point_;

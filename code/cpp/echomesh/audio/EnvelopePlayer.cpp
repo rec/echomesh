@@ -3,10 +3,10 @@
 namespace echomesh {
 namespace audio {
 
-EnvelopePlayer::EnvelopePlayer(const Envelope& ev)
-    : envelopeValue_(ev),
-      loops_(envelopeValue_.loops) {
-  if (not envelopeValue_.isConstant and points().size() < 2)
+EnvelopePlayer::EnvelopePlayer(Envelope* ev)
+    : envelope_(ev),
+      loops_(envelope_->loops) {
+  if (not isConstant() and points().size() < 2)
     throw Exception("Received an envelope with less than two points.");
 }
 
@@ -18,9 +18,8 @@ void EnvelopePlayer::jumpTo(SampleTime time) {
 void EnvelopePlayer::begin() {
   loopCount_ = segmentIndex_ = 0;
 
-  float value = envelopeValue_.isConstant ? envelopeValue_.value :
-      points().front().value;
-  point_ = EnvelopePoint(0, value);
+  float v = isConstant() ? value() : points().front().value;
+  point_ = EnvelopePoint(0, v);
 }
 
 // The following conditions are always true between calls to getSegments:
@@ -36,7 +35,7 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
   SegmentList result;
   EnvelopePoint start(0, point_.value);
   Segment seg(start, start);
-  bool reverse = envelopeValue_.reverse;
+  bool reverse = envelope_->reverse;
 
   while (numSamples > 0) {
     if (loopsDone()) {

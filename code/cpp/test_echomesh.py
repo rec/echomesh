@@ -3,8 +3,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import cechomesh
+import os.path
 import sys
 import time
+
+ECHOMESH_PYTHON = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'echomesh')
+sys.path.insert(1, ECHOMESH_PYTHON)
 
 cechomesh.init_log()
 

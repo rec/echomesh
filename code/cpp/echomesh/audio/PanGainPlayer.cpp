@@ -22,39 +22,59 @@ static Pan computePan(float p) {
 
 }  // namespace
 
+PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan,
+                             bool passthrough)
+    : passthrough_(passthrough) {
+  if (gain)
+    gainPlayer_ = make_unique<EnvelopePlayer>(gain);
+  if (pan)
+    panPlayer_ = make_unique<EnvelopePlayer>(pan);
+}
+
 void PanGainPlayer::begin() {
-  gainPlayer_.begin();
-  panPlayer_.begin();
+  gainPlayer_->begin();
+  panPlayer_->begin();
 }
 
 void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
-  auto buf = info.buffer;
-  if (passthrough_)
+  if (not passthrough_) {
+    applyGain(info);
+    applyPan(info);
+  }
+}
+
+void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
+  if (not gainPlayer_.get())
     return;
 
   typedef EnvelopePlayer::SegmentList SegmentList;
-  if (gainPlayer_.isConstant()) {
-    float value = gainPlayer_.value();
+  if (gainPlayer_->isConstant()) {
+    float value = gainPlayer_->value();
     if (not near(value, 1.0f))
-      buf->applyGain(info.startSample, info.numSamples, value);
+      info.buffer->applyGain(info.startSample, info.numSamples, value);
   } else {
-    auto gains = gainPlayer_.getSegments(info.numSamples);
+    auto gains = gainPlayer_->getSegments(info.numSamples);
     for (auto& g: gains) {
-      buf->applyGainRamp(g.first.time, g.second.time - g.first.time,
+      info.buffer->applyGainRamp(g.first.time, g.second.time - g.first.time,
                          g.first.value, g.second.value);
     }
   }
+}
 
-  if (panPlayer_.isConstant()) {
-    float value = panPlayer_.value();
+void PanGainPlayer::applyPan(const AudioSourceChannelInfo& info) {
+  if (not panPlayer_.get())
+    return;
+
+  if (panPlayer_->isConstant()) {
+    float value = panPlayer_->value();
     if (not near(value, 0.0f)) {
       Pan pan = computePan(value);
-      buf->applyGain(0, info.startSample, info.numSamples, pan.first);
-      buf->applyGain(1, info.startSample, info.numSamples, pan.second);
+      info.buffer->applyGain(0, info.startSample, info.numSamples, pan.first);
+      info.buffer->applyGain(1, info.startSample, info.numSamples, pan.second);
     }
   } else {
-    float** channels = buf->getArrayOfChannels();
-    auto pans = panPlayer_.getSegments(info.numSamples);
+    float** channels = info.buffer->getArrayOfChannels();
+    auto pans = panPlayer_->getSegments(info.numSamples);
     for (auto& p: pans) {
       SampleTime dt = p.second.time - p.first.time;
       float dv = p.second.value - p.first.value;

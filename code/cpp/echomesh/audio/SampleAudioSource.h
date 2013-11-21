@@ -32,7 +32,8 @@ class SampleAudioSource : public AudioSource {
 
  private:
   void init(const String& filename, int loops,
-            SampleTime begin, SampleTime end, SampleTime length);
+            SampleTime begin, SampleTime end, SampleTime length,
+            Envelope* gain, Envelope* pan);
 
   CriticalSection lock_;
 

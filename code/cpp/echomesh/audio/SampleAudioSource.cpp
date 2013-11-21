@@ -13,7 +13,7 @@ SampleAudioSource::SampleAudioSource(const Node& node) :
   node >> playback;
 
   init(playback.filename, playback.loops,
-       playback.begin, playback.end, playback.length);
+       playback.begin, playback.end, playback.length, nullptr, nullptr);
 }
 
 SampleAudioSource::SampleAudioSource(const String& filename, int loops,
@@ -21,13 +21,14 @@ SampleAudioSource::SampleAudioSource(const String& filename, int loops,
                   Envelope* gain, Envelope* pan)
     : gain_(gain),
       pan_(pan) {
-  init(filename, loops, begin, end, length);
+  init(filename, loops, begin, end, length, gain, pan);
 }
 
 
 void SampleAudioSource::init(
     const String& filename, int loops,
-    SampleTime begin, SampleTime end, SampleTime length) {
+    SampleTime begin, SampleTime end, SampleTime length,
+    Envelope* gain, Envelope* pan) {
   source_.reset(getReader(filename, begin, end));
   if (source_) {
     length_ = SampleTime(source_->getTotalLength() * loops);
@@ -39,7 +40,7 @@ void SampleAudioSource::init(
         "File doesn't exist: ";
     error_ = (error + filename).toStdString();
   }
-  panGainPlayer_ = make_unique<PanGainPlayer>(*gain_, *pan_, true);
+  panGainPlayer_ = make_unique<PanGainPlayer>(gain, pan, true);
 }
 
 SampleAudioSource::~SampleAudioSource() {}
