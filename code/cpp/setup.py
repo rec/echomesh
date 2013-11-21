@@ -93,7 +93,9 @@ class InstallCommand(Command):
 
   def run(self):
     bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
-    shutil.copy('%s.so' % MODULE_NAME, bin_dir)
+    module = '%s.so' % MODULE_NAME
+    print('Copying %s to %s' % (module, bin_dir))
+    shutil.copy(module, bin_dir)
 
 
 echomesh_extension = extension.Extension(
