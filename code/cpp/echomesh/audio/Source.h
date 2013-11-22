@@ -2,6 +2,7 @@
 #define __ECHOMESH_SOURCE__
 
 #include "echomesh/audio/SampleAudioSource.h"
+#include "echomesh/util/AppCallback.h"
 
 namespace echomesh {
 namespace audio {
@@ -13,7 +14,8 @@ class Source : public SampleAudioSource {
   Source(const string& filename, int loops,
          long long begin, long long end, long long length,
          const string& device, int channels,
-         Envelope* gain, Envelope* pan);
+         Envelope* gain, Envelope* pan, AppCallback callback,
+         void* callbackData);
 
   ~Source();
 

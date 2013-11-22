@@ -1,8 +1,8 @@
 #ifndef __ECHOMESH_SAMPLEAUDIOSOURCE__
 #define __ECHOMESH_SAMPLEAUDIOSOURCE__
 
-#include "echomesh/base/Echomesh.h"
 #include "echomesh/audio/PanGainPlayer.h"
+#include "echomesh/util/AppCallback.h"
 
 namespace echomesh {
 namespace audio {
@@ -13,7 +13,8 @@ class SampleAudioSource : public AudioSource {
 
   SampleAudioSource(const String& filename, int loops,
                     SampleTime begin, SampleTime end, SampleTime length,
-                    Envelope* gain, Envelope* pan);
+                    Envelope* gain, Envelope* pan, AppCallback callback,
+                    void* callbackData);
 
   virtual ~SampleAudioSource();
 
@@ -44,8 +45,9 @@ class SampleAudioSource : public AudioSource {
   string error_;
 
   unique_ptr<Envelope> gain_, pan_;
-
   unique_ptr<PanGainPlayer> panGainPlayer_;
+  AppCallback const callback_;
+  void* const callbackData_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);
 };

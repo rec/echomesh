@@ -8,7 +8,7 @@ namespace echomesh {
 namespace audio {
 
 SampleAudioSource::SampleAudioSource(const Node& node) :
-    length_(0), gain_(), pan_() {
+    length_(0), gain_(), pan_(), callback_(nullptr), callbackData_(nullptr) {
   Playback playback;
   node >> playback;
 
@@ -19,9 +19,12 @@ SampleAudioSource::SampleAudioSource(const Node& node) :
 SampleAudioSource::SampleAudioSource(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,
-    Envelope* gain, Envelope* pan)
+    Envelope* gain, Envelope* pan,
+    AppCallback callback, void* callbackData)
     : gain_(gain),
-      pan_(pan) {
+      pan_(pan),
+      callback_(callback),
+      callbackData_(callbackData) {
   init(filename, loops, begin, end, length, gain, pan);
 }
 
@@ -80,6 +83,9 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   b.numSamples = overrun;
   b.clearActiveBufferRegion();
   isRunning_ = false;
+  if (false)
+    callback_(callbackData_);
+  // Warning - perhaps we should do this in another thread?
 }
 
 void SampleAudioSource::run() {

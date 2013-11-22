@@ -7,8 +7,10 @@ namespace audio {
 Source::Source(const string& filename, int loops,
                long long begin, long long end, long long length,
                const string& device, int channels,
-               Envelope* gain, Envelope* pan)
-    : SampleAudioSource(filename, loops, begin, end, length, gain, pan),
+               Envelope* gain, Envelope* pan,
+               AppCallback callback, void* callbackData)
+    : SampleAudioSource(filename, loops, begin, end, length, gain, pan,
+                        callback, callbackData),
       player_(AudioPlayer::getPlayer(device, channels))  {
   player_->addInputSource(this);
 }

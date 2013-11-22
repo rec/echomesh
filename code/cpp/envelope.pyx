@@ -38,7 +38,7 @@ cdef Envelope* makeEnvelope(env):
   newEnv.isConstant = env['is_constant']
 
   if newEnv.isConstant:
-    newEnv.value = env.value
+    newEnv.value = env['value']
     newEnv.length = SampleTime(-1)
   else:
     ed = env['envelope']
