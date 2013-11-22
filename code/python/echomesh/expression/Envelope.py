@@ -12,7 +12,6 @@ class Envelope(object):
   _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
 
   def __init__(self, data, element=None):
-    LOGGER.debug('%s', data)
     self.element = element
 
     kwds, numeric = SplitNumbers.split(data)

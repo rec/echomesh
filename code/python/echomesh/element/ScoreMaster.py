@@ -131,6 +131,13 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     except:
       pass
 
+  def unload(self):
+    super(ScoreMaster, self).unload()
+    try:
+      self.perform_element('unload', [])
+    except:
+      pass
+
   def _load_elements(self, names):
     return self._load_raw_elements(Split.split_scores(names))
 

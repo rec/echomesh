@@ -33,5 +33,4 @@ class CPlayer(MasterRunnable):
 
   def unload(self):
     super(CPlayer, self).unload()
-    LOGGER.debug('unload')
     self.player.unload()
