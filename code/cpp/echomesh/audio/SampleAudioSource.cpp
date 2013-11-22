@@ -25,7 +25,6 @@ SampleAudioSource::SampleAudioSource(
       pan_(pan),
       callback_(callback),
       callbackData_(callbackData) {
-  callback_(callbackData_);
   init(filename, loops, begin, end, length, gain, pan);
 }
 

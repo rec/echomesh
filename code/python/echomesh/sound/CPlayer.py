@@ -22,7 +22,7 @@ class CPlayer(MasterRunnable):
     self.test2 = self.test
     self.player = cechomesh.AudioSource(
       self._filename, self._loops, self._begin, self._end,
-      self._length, "", 2, self._level, self._pan, test)
+      self._length, "", 2, self._level, self._pan, self.pause)
 
   def __del__(self):
     super(CPlayer, self).__del__()
