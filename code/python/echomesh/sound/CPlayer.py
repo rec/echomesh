@@ -9,10 +9,6 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-
-def test():
-  print('test!')
-
 class CPlayer(MasterRunnable):
   def __init__(self, element, level=1, pan=0, loops=1, length=-1, **kwds):
     super(CPlayer, self).__init__()
@@ -36,9 +32,6 @@ class CPlayer(MasterRunnable):
 
   def _on_pause(self):
     return self.player.pause()
-
-  def test(self):
-    print('test2!!')
 
   def unload(self):
     super(CPlayer, self).unload()
