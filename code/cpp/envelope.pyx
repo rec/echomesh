@@ -10,14 +10,14 @@ cdef extern from "rec/base/SampleTime.h" namespace "rec":
 
 
 cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
-  cdef struct EnvelopePoint:
+  cdef cppclass EnvelopePoint:
     EnvelopePoint(SampleTime time, float value)
     SampleTime time
     float value
 
   ctypedef vector[EnvelopePoint] EnvelopePointList
 
-  cdef struct Envelope:
+  cdef cppclass Envelope:
     SampleTime length
     int loops
     EnvelopePointList points
@@ -26,15 +26,13 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
     float value
 
   cdef void normalizeEnvelope(Envelope*)
-  cdef Envelope* newEnvelope()
-  cdef void deleteEnvelope(Envelope*)
   cdef void addPoint(Envelope* env, long long time, float value)
 
 
 cdef Envelope* makeEnvelope(env):
   if not env:
     return NULL
-  newEnv = newEnvelope()  # new Envelope()
+  newEnv = new Envelope()
   newEnv.isConstant = env['is_constant']
 
   if newEnv.isConstant:

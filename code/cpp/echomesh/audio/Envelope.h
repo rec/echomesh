@@ -30,8 +30,6 @@ struct Envelope {
   float value;
 };
 
-inline Envelope* newEnvelope() { return new Envelope; }
-inline void deleteEnvelope(Envelope* env) { delete env; }
 inline void addPoint(Envelope* env, long long time, float value) {
   env->points.push_back(EnvelopePoint(time, value));
 }
