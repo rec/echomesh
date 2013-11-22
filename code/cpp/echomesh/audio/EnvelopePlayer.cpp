@@ -18,7 +18,7 @@ void EnvelopePlayer::jumpTo(SampleTime time) {
 void EnvelopePlayer::begin() {
   loopCount_ = segmentIndex_ = 0;
 
-  float v = isConstant() ? value() : points().front().value;
+  float v = isConstant() ? envelope_->value : points().front().value;
   point_ = EnvelopePoint(0, v);
 }
 

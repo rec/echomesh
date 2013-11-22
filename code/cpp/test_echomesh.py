@@ -14,30 +14,32 @@ sys.path.insert(1, ECHOMESH_PYTHON)
 
 print(sys.path)
 
+TEST_WINDOW = True
 
-from echomesh.expression.Envelope import Envelope
-
-cechomesh.init_log()
-
-DEFAULT_FILE = (
-  '/Volumes/Zog/Documents/iTunes/Music/Albert Ayler/New Grass/heart love.mp3')
-
-f = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FILE
-
-gain = Envelope({0: 1.0, 2: 0, 4: 1})
-
-source = cechomesh.AudioSource(f, 1, 0, -1, -1, "", 2, None, None)
-source.begin()
-source.run()
-
-time.sleep(3)
-
-if False:
+if TEST_WINDOW:
   WINDOW = None
 
   def callback():
     global WINDOW
-    WINDOW = echomesh.TinyWindow()
+    WINDOW = cechomesh.TinyWindow()
     WINDOW.show()
 
-  echomesh.start_application(callback)
+  cechomesh.start_application(callback)
+
+else:
+  from echomesh.expression.Envelope import Envelope
+
+  cechomesh.init_log()
+
+  DEFAULT_FILE = (
+    '/Volumes/Zog/Documents/iTunes/Music/Albert Ayler/New Grass/heart love.mp3')
+
+  f = sys.argv[1] if len(sys.argv) > 1 else DEFAULT_FILE
+
+  gain = Envelope({0: 1.0, 2: 0, 4: 1})
+
+  source = cechomesh.AudioSource(f, 1, 0, -1, -1, "", 2, None, None)
+  source.begin()
+  source.run()
+
+time.sleep(3)

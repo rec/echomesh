@@ -25,6 +25,7 @@ SampleAudioSource::SampleAudioSource(
       pan_(pan),
       callback_(callback),
       callbackData_(callbackData) {
+  callback_(callbackData_);
   init(filename, loops, begin, end, length, gain, pan);
 }
 
@@ -44,7 +45,7 @@ void SampleAudioSource::init(
         "File doesn't exist: ";
     error_ = (error + filename).toStdString();
   }
-  panGainPlayer_ = make_unique<PanGainPlayer>(gain, pan, true);
+  panGainPlayer_ = make_unique<PanGainPlayer>(gain, pan);
 }
 
 SampleAudioSource::~SampleAudioSource() {}
@@ -83,7 +84,7 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   b.numSamples = overrun;
   b.clearActiveBufferRegion();
   isRunning_ = false;
-  if (false)
+  if (not false)
     callback_(callbackData_);
   // Warning - perhaps we should do this in another thread?
 }

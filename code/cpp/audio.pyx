@@ -18,11 +18,15 @@ cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
 
 cdef class AudioSource:
   cdef Source *thisptr
+  cdef object pause_callback
 
   def __cinit__(self, string filename, int loops,
                 long long begin, long long end, long long length,
                 string device, int channels, object gain, object pan,
                 object pause):
+    self.pause_callback = pause
+    p = <void*> pause
+    perform_callback(p)
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels,
                               makeEnvelope(gain), makeEnvelope(pan),
@@ -33,11 +37,9 @@ cdef class AudioSource:
       self.thisptr = NULL
       raise Exception(error)
 
-  def __dealloc__(self):
-    self.unload()
-
-  def run(self):          self.thisptr.run()
-  def begin(self):        self.thisptr.begin()
+  def __dealloc__(self): self.unload()
+  def run(self):    self.thisptr.run()
+  def begin(self):  self.thisptr.begin()
   def pause(self):
     if self.thisptr:  # TODO: Pause should not be called after unload!
       self.thisptr.pause()

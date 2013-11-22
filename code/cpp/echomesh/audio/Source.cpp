@@ -12,6 +12,7 @@ Source::Source(const string& filename, int loops,
     : SampleAudioSource(filename, loops, begin, end, length, gain, pan,
                         callback, callbackData),
       player_(AudioPlayer::getPlayer(device, channels))  {
+  callback(callbackData);
   player_->addInputSource(this);
 }
 

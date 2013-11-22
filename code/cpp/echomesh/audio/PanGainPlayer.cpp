@@ -22,16 +22,26 @@ static Pan computePan(float p) {
 
 }  // namespace
 
-PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan,
-                             bool passthrough)
-    : passthrough_(passthrough) {
-  if (gain)
-    gainPlayer_ = make_unique<EnvelopePlayer>(gain);
-  if (pan)
-    panPlayer_ = make_unique<EnvelopePlayer>(pan);
+PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan) {
+  if (gain) {
+    LOG(INFO) << gain->value;
+    if (gain->isConstant and near(gain->value, 1.0f))
+      delete gain;
+    else
+      gainPlayer_ = make_unique<EnvelopePlayer>(gain);
+  }
+
+  if (pan) {
+    LOG(INFO) << pan->value;
+    if (pan->isConstant and near(pan->value, 0.0f))
+      delete pan;
+    else
+      panPlayer_ = make_unique<EnvelopePlayer>(pan);
+  }
 }
 
 void PanGainPlayer::begin() {
+  LOG(INFO) << "begin";
   if (gainPlayer_.get())
     gainPlayer_->begin();
   if (panPlayer_.get())
@@ -39,26 +49,24 @@ void PanGainPlayer::begin() {
 }
 
 void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
-  if (not passthrough_) {
+  LOG_FIRST_N(INFO, 8) << "apply";
+  if (gainPlayer_.get())
     applyGain(info);
+  if (panPlayer_.get())
     applyPan(info);
-  }
 }
 
 void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
-  if (not gainPlayer_.get())
-    return;
-
   typedef EnvelopePlayer::SegmentList SegmentList;
   if (gainPlayer_->isConstant()) {
     float value = gainPlayer_->value();
-    if (not near(value, 1.0f))
-      info.buffer->applyGain(info.startSample, info.numSamples, value);
+    LOG_FIRST_N(INFO, 8) << value;
+    info.buffer->applyGain(info.startSample, info.numSamples, value);
   } else {
     auto gains = gainPlayer_->getSegments(info.numSamples);
     for (auto& g: gains) {
       info.buffer->applyGainRamp(g.first.time, g.second.time - g.first.time,
-                         g.first.value, g.second.value);
+                                 g.first.value, g.second.value);
     }
   }
 }
@@ -68,12 +76,9 @@ void PanGainPlayer::applyPan(const AudioSourceChannelInfo& info) {
     return;
 
   if (panPlayer_->isConstant()) {
-    float value = panPlayer_->value();
-    if (not near(value, 0.0f)) {
-      Pan pan = computePan(value);
-      info.buffer->applyGain(0, info.startSample, info.numSamples, pan.first);
-      info.buffer->applyGain(1, info.startSample, info.numSamples, pan.second);
-    }
+    Pan pan = computePan(panPlayer_->value());
+    info.buffer->applyGain(0, info.startSample, info.numSamples, pan.first);
+    info.buffer->applyGain(1, info.startSample, info.numSamples, pan.second);
   } else {
     float** channels = info.buffer->getArrayOfChannels();
     auto pans = panPlayer_->getSegments(info.numSamples);
