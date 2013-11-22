@@ -35,14 +35,17 @@ cdef Envelope* makeEnvelope(env):
   if not env:
     return NULL
   newEnv = newEnvelope()  # new Envelope()
-  newEnv.isConstant = env.is_constant
-  newEnv.length = SampleTime(env.length)
+  newEnv.isConstant = env['is_constant']
+
   if newEnv.isConstant:
     newEnv.value = env.value
+    newEnv.length = SampleTime(-1)
   else:
-    newEnv.reverse = env.reverse
-    newEnv.loops = env.loops
-    for t, d in zip(env.times, env.data):
+    ed = env['envelope']
+    newEnv.length = SampleTime(ed['length'])
+    newEnv.reverse = ed['reverse']
+    newEnv.loops = ed['loops']
+    for t, d in zip(ed['times'], ed['data']):
       addPoint(newEnv, t, d)
   normalizeEnvelope(newEnv)
   return newEnv

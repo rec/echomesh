@@ -30,7 +30,9 @@ cdef class AudioSource:
       self.thisptr = NULL
       raise Exception(error)
 
-  def __dealloc__(self):  del self.thisptr
+  def __dealloc__(self):
+    print('deallocating')
+    del self.thisptr
   def run(self):          self.thisptr.run()
   def begin(self):        self.thisptr.begin()
   def pause(self):        self.thisptr.pause()

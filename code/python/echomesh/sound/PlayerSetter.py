@@ -26,12 +26,11 @@ def _evaluate_player(player, name):
   part = getattr(player, name)
   is_constant = part.is_constant()
   result = {'is_constant': is_constant}
+
   if is_constant:
     result['value'] = part.evaluate()
-  elif part.envelope:
-    result['envelope'] = part.envelope.description()
   else:
-    raise Exception(_ENVELOPE_ERROR % name)
+    result['envelope'] = part.description()
   setattr(player, name, result)
 
 def evaluate_player(player, element, **kwds):
