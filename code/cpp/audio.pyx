@@ -26,11 +26,11 @@ cdef class AudioSource:
                 object pause):
     self.pause_callback = pause
     p = <void*> pause
-    perform_callback(p)
+    perform_callback_gil(p)
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels,
                               makeEnvelope(gain), makeEnvelope(pan),
-                              perform_callback, <void*> pause)
+                              perform_callback_gil, <void*> pause)
     error = self.thisptr.error()
     if self.thisptr.error().size():
       del self.thisptr
