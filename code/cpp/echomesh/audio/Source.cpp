@@ -17,7 +17,6 @@ Source::Source(const string& filename, int loops,
 
 Source::~Source() {
   pause();
-  unload();
   if (player_->removeInputSource(this))
     AudioPlayer::removePlayer(player_);
 }

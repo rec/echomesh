@@ -29,7 +29,6 @@ class SampleAudioSource : public AudioSource {
   void run();
   void begin();
   void pause();
-  void unload();
 
  private:
   void init(const String& filename, int loops,
@@ -44,7 +43,8 @@ class SampleAudioSource : public AudioSource {
   bool isRunning_;
   string error_;
 
-  unique_ptr<Envelope> gain_, pan_;
+  Envelope* gain_;
+  Envelope* pan_;
   unique_ptr<PanGainPlayer> panGainPlayer_;
   AppCallback const callback_;
   void* const callbackData_;

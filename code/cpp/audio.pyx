@@ -34,12 +34,18 @@ cdef class AudioSource:
       raise Exception(error)
 
   def __dealloc__(self):
-    print('deallocating')
-    del self.thisptr
+    self.unload()
+
   def run(self):          self.thisptr.run()
   def begin(self):        self.thisptr.begin()
-  def pause(self):        self.thisptr.pause()
-  def unload(self):       self.thisptr.unload()
+  def pause(self):
+    if self.thisptr:  # TODO: Pause should not be called after unload!
+      self.thisptr.pause()
+
+  def unload(self):
+    t = self.thisptr
+    del t
+    self.thisptr = NULL
 
 cdef extern from "echomesh/audio/DefaultDevice.h" namespace "echomesh::audio":
   double defaultInputSampleRate()

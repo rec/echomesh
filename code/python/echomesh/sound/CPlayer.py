@@ -18,6 +18,10 @@ class CPlayer(MasterRunnable):
       self._filename, self._loops, self._begin, self._end,
       self._length, "", 2, self._level, self._pan, self.pause)
 
+  def __del__(self):
+    super(CPlayer, self).__del__()
+    self.unload()
+
   def _on_begin(self):
     return self.player.begin()
 
@@ -28,5 +32,6 @@ class CPlayer(MasterRunnable):
     return self.player.pause()
 
   def unload(self):
+    super(CPlayer, self).unload()
+    LOGGER.debug('unload')
     self.player.unload()
-    del self.player

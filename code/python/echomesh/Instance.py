@@ -45,7 +45,12 @@ class Instance(MasterRunnable):
     self.set_broadcasting(False)
     self.mic = None
     self.timeout = Config.get('network', 'timeout')
-    Quit.register_atexit(self.pause)
+
+    def do_quit():
+      self.pause()
+      self.unload()
+
+    Quit.register_atexit(do_quit)
 
   def _on_pause(self):
     super(Instance, self)._on_pause()

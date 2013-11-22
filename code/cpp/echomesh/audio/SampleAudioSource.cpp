@@ -107,13 +107,6 @@ void SampleAudioSource::pause() {
   isRunning_ = false;
 }
 
-void SampleAudioSource::unload() {
-  ScopedLock l(lock_);
-  releaseResources();
-  source_ = NULL;
-  isRunning_ = false;
-}
-
 }  // namespace audio
 }  // namespace echomesh
 
