@@ -41,7 +41,6 @@ PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan) {
 }
 
 void PanGainPlayer::begin() {
-  LOG(INFO) << "begin";
   if (gainPlayer_.get())
     gainPlayer_->begin();
   if (panPlayer_.get())
@@ -49,7 +48,6 @@ void PanGainPlayer::begin() {
 }
 
 void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
-  LOG_FIRST_N(INFO, 8) << "apply";
   if (gainPlayer_.get())
     applyGain(info);
   if (panPlayer_.get())
