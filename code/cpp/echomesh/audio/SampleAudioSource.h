@@ -14,7 +14,7 @@ class SampleAudioSource : public AudioSource {
   SampleAudioSource(const String& filename, int loops,
                     SampleTime begin, SampleTime end, SampleTime length,
                     Envelope* gain, Envelope* pan, AppCallback callback,
-                    void* callbackData);
+                    void* callbackData, float sampleRate, int channels);
 
   virtual ~SampleAudioSource();
 
@@ -33,7 +33,7 @@ class SampleAudioSource : public AudioSource {
  private:
   void init(const String& filename, int loops,
             SampleTime begin, SampleTime end, SampleTime length,
-            Envelope* gain, Envelope* pan);
+            Envelope* gain, Envelope* pan, float sampleRate, int channels);
 
   CriticalSection lock_;
 

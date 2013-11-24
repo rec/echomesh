@@ -13,27 +13,28 @@ SampleAudioSource::SampleAudioSource(const Node& node) :
   node >> playback;
 
   init(playback.filename, playback.loops,
-       playback.begin, playback.end, playback.length, nullptr, nullptr);
+       playback.begin, playback.end, playback.length, nullptr, nullptr,
+       44100.0, 2);
 }
 
 SampleAudioSource::SampleAudioSource(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,
     Envelope* gain, Envelope* pan,
-    AppCallback callback, void* callbackData)
+    AppCallback callback, void* callbackData, float sampleRate, int channels)
     : gain_(gain),
       pan_(pan),
       callback_(callback),
       callbackData_(callbackData) {
-  init(filename, loops, begin, end, length, gain, pan);
+  init(filename, loops, begin, end, length, gain, pan, sampleRate, channels);
 }
 
 
 void SampleAudioSource::init(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,
-    Envelope* gain, Envelope* pan) {
-  source_ = getReader(filename, begin, end);
+    Envelope* gain, Envelope* pan, float sampleRate, int channels) {
+  source_ = getReader(filename, begin, end, sampleRate, channels);
   if (source_) {
     length_ = SampleTime(source_->getTotalLength() * loops);
     if (length >= 0)

@@ -35,6 +35,10 @@
               file="echomesh/audio/PanGainPlayer.cpp"/>
         <FILE id="feDipc" name="PanGainPlayer.h" compile="0" resource="0" file="echomesh/audio/PanGainPlayer.h"/>
         <FILE id="FMRuyW" name="Player.h" compile="0" resource="0" file="../cpp/echomesh/audio/Player.h"/>
+        <FILE id="dmDPo6" name="ResamplingPositionableAudioSource.cpp" compile="1"
+              resource="0" file="echomesh/audio/ResamplingPositionableAudioSource.cpp"/>
+        <FILE id="iJ2Jgq" name="ResamplingPositionableAudioSource.h" compile="0"
+              resource="0" file="echomesh/audio/ResamplingPositionableAudioSource.h"/>
         <FILE id="nMx3QM" name="SampleAudioSource.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/SampleAudioSource.cpp"/>
         <FILE id="nImeHl" name="SampleAudioSource.h" compile="0" resource="0"

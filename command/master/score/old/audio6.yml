@@ -5,8 +5,8 @@ loops:  3  # Doesn't work?
 # Level doesn't have to be a single number - it can be an *envelope*, which is a
 # list of times and levels.
 
-level:
-  0:00:   -40db
-  0:01:   -20db
-  0:02:   -5 db
-  0:03:   -40dB
+# level:
+#   0:00:   -40db
+#   0:01:   -20db
+#   0:02:   -5 db
+#   0:03:   -40dB

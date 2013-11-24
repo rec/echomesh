@@ -8,9 +8,10 @@ Source::Source(const string& filename, int loops,
                long long begin, long long end, long long length,
                const string& device, int channels,
                Envelope* gain, Envelope* pan,
-               AppCallback callback, void* callbackData)
+               AppCallback callback, void* callbackData,
+               float sampleRate)
     : SampleAudioSource(filename, loops, begin, end, length, gain, pan,
-                        callback, callbackData),
+                        callback, callbackData, sampleRate, channels),
       player_(AudioPlayer::getPlayer(device, channels))  {
   callback(callbackData);
   player_->addInputSource(this);

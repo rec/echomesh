@@ -9,7 +9,7 @@ cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
     Source(string filename, int loops,
            long long begin, long long end, long long length,
            string device, int channels, Envelope* gain, Envelope* pan,
-           Callback cb, void* callbackData) except +
+           Callback cb, void* callbackData, float sampleRate) except +
     void run()
     void begin()
     void pause()
@@ -23,12 +23,13 @@ cdef class AudioSource:
   def __cinit__(self, string filename, int loops,
                 long long begin, long long end, long long length,
                 string device, int channels, object gain, object pan,
-                object callback):
+                object callback, float sampleRate):
     self.callback = callback
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels,
                               makeEnvelope(gain), makeEnvelope(pan),
-                              perform_callback_gil, <void*> callback)
+                              perform_callback_gil, <void*> callback,
+                              sampleRate)
     error = self.thisptr.error()
     if self.thisptr.error().size():
       del self.thisptr
