@@ -6,8 +6,8 @@
 namespace echomesh {
 namespace audio {
 
-PositionableAudioSource* getReader(const String&,
-                                   SampleTime begin, SampleTime end);
+unique_ptr<PositionableAudioSource> getReader(
+    const String&, SampleTime begin, SampleTime end);
 
 }  // namespace audio
 }  // namespace echomesh

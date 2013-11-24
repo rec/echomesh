@@ -1,5 +1,5 @@
 type:   audio
-file:   long-saw.wav
+file:   hello-there-world.mp3
 loops:  3  # Doesn't work?
 
 # Level doesn't have to be a single number - it can be an *envelope*, which is a

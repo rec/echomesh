@@ -15,8 +15,8 @@ unique_ptr<AudioFormatManager> MANAGER(makeManager());
 
 }  // namespace
 
-PositionableAudioSource* getReader(const String& name,
-                                   SampleTime begin, SampleTime end) {
+unique_ptr<PositionableAudioSource> getReader(
+    const String& name, SampleTime begin, SampleTime end) {
   unique_ptr<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
 
   if (not reader.get()) {
@@ -28,7 +28,10 @@ PositionableAudioSource* getReader(const String& name,
   if (begin or end < reader->lengthInSamples)
     reader.reset(new AudioSubsectionReader(
         reader.release(), begin, end, true));
-  return new AudioFormatReaderSource(reader.release(), true);
+  unique_ptr<PositionableAudioSource> source(
+      new AudioFormatReaderSource(reader.release(), true));
+  source->setLooping(true);
+  return source;
 }
 
 }  // namespace audio

@@ -57,12 +57,13 @@ void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
 void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
   if (gainPlayer_->isConstant()) {
     float value = gainPlayer_->value();
-    LOG_FIRST_N(INFO, 8) << value;
     info.buffer->applyGain(info.startSample, info.numSamples, value);
 
   } else {
     auto gains = gainPlayer_->getSegments(info.numSamples);
     for (auto& g: gains) {
+      DLOG(INFO) << g.first.time << ", " << g.first.value << ", "
+                 << g.second.time << ", " << g.first.value << ", ";
       info.buffer->applyGainRamp(g.first.time, g.second.time - g.first.time,
                                  g.first.value, g.second.value);
     }

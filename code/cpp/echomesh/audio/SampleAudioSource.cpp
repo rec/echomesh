@@ -33,7 +33,7 @@ void SampleAudioSource::init(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,
     Envelope* gain, Envelope* pan) {
-  source_.reset(getReader(filename, begin, end));
+  source_ = getReader(filename, begin, end);
   if (source_) {
     length_ = SampleTime(source_->getTotalLength() * loops);
     if (length >= 0)
@@ -83,9 +83,8 @@ void SampleAudioSource::getNextAudioBlock(const AudioSourceChannelInfo& buf) {
   b.numSamples = overrun;
   b.clearActiveBufferRegion();
   isRunning_ = false;
-  if (not false)
-    callback_(callbackData_);
-  // Warning - perhaps we should do this in another thread?
+  callback_(callbackData_);
+  // Might block - perhaps we should do this in another thread?
 }
 
 void SampleAudioSource::run() {
