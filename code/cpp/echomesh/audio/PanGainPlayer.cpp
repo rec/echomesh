@@ -24,7 +24,6 @@ static Pan computePan(float p) {
 
 PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan) {
   if (gain) {
-    LOG(INFO) << gain->value;
     if (gain->isConstant and near(gain->value, 1.0f))
       delete gain;
     else
@@ -32,7 +31,6 @@ PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan) {
   }
 
   if (pan) {
-    LOG(INFO) << pan->value;
     if (pan->isConstant and near(pan->value, 0.0f))
       delete pan;
     else
@@ -43,6 +41,7 @@ PanGainPlayer::PanGainPlayer(Envelope* gain, Envelope* pan) {
 void PanGainPlayer::begin() {
   if (gainPlayer_.get())
     gainPlayer_->begin();
+
   if (panPlayer_.get())
     panPlayer_->begin();
 }
@@ -50,16 +49,17 @@ void PanGainPlayer::begin() {
 void PanGainPlayer::apply(const AudioSourceChannelInfo& info) {
   if (gainPlayer_.get())
     applyGain(info);
+
   if (panPlayer_.get())
     applyPan(info);
 }
 
 void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
-  typedef EnvelopePlayer::SegmentList SegmentList;
   if (gainPlayer_->isConstant()) {
     float value = gainPlayer_->value();
     LOG_FIRST_N(INFO, 8) << value;
     info.buffer->applyGain(info.startSample, info.numSamples, value);
+
   } else {
     auto gains = gainPlayer_->getSegments(info.numSamples);
     for (auto& g: gains) {
@@ -70,16 +70,15 @@ void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
 }
 
 void PanGainPlayer::applyPan(const AudioSourceChannelInfo& info) {
-  if (not panPlayer_.get())
-    return;
-
   if (panPlayer_->isConstant()) {
     Pan pan = computePan(panPlayer_->value());
     info.buffer->applyGain(0, info.startSample, info.numSamples, pan.first);
     info.buffer->applyGain(1, info.startSample, info.numSamples, pan.second);
+
   } else {
     float** channels = info.buffer->getArrayOfChannels();
     auto pans = panPlayer_->getSegments(info.numSamples);
+
     for (auto& p: pans) {
       SampleTime dt = p.second.time - p.first.time;
       float dv = p.second.value - p.first.value;

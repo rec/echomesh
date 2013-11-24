@@ -6,7 +6,7 @@ loops:  3  # Doesn't work?
 # list of times and levels.
 
 level:
-  0:00:   0db
-  0:01:   -2db
+  0:00:   -40db
+  0:01:   -20db
   0:02:   -5 db
   0:03:   -40dB
