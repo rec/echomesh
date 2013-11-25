@@ -12,7 +12,8 @@ class ApplicationBase : public juce::JUCEApplicationBase {
   virtual const String getApplicationVersion() { return "0.0"; }
   virtual bool moreThanOneInstanceAllowed() { return false; }
   virtual void initialise(const String&) {
-    CALLBACK(USER_DATA);
+    if (CALLBACK and USER_DATA)
+      CALLBACK(USER_DATA);
   }
   virtual void shutdown() {}
   virtual void anotherInstanceStarted(const String&) {}

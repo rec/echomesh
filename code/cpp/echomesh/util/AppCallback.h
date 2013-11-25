@@ -5,7 +5,8 @@
 
 namespace echomesh {
 
-typedef void (*AppCallback)(void *userData);
+typedef void (*AppCallback)(void *callback);
+typedef void (*StringCallback)(void *callback, string data);
 
 }  // namespace echomesh
 
