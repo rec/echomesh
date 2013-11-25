@@ -1,12 +1,12 @@
 type:   audio
 file:   hello-there-world.mp3
-loops:  3  # Doesn't work?
+loops:  10  # Doesn't work?
 
 # Level doesn't have to be a single number - it can be an *envelope*, which is a
 # list of times and levels.
 
-# level:
-#   0:00:   -40db
-#   0:01:   -20db
-#   0:02:   -5 db
-#   0:03:   -40dB
+level:
+  0:00:   -40db
+  0:02:   -20db
+  0:04:   -5 db
+  0:06:   0dB

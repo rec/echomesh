@@ -17,6 +17,7 @@ def set_player(player, element,
 
   player._length = length
   player._level = Expression.expression(level, element)
+  LOGGER.debug('%s\n%s', level, player._level)
   player._pan = Expression.expression(pan, element)
   player._loops = loops
   player._begin = begin

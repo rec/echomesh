@@ -29,7 +29,7 @@ cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
   cdef void addPoint(Envelope* env, long long time, float value)
 
 
-cdef Envelope* makeEnvelope(env):
+cdef Envelope* makeEnvelope(env, sampleRate):
   if not env:
     return NULL
   newEnv = new Envelope()
@@ -40,10 +40,10 @@ cdef Envelope* makeEnvelope(env):
     newEnv.length = SampleTime(-1)
   else:
     ed = env['envelope']
-    newEnv.length = SampleTime(ed['length'])
+    newEnv.length = SampleTime(sampleRate * ed['length'])
     newEnv.reverse = ed['reverse']
     newEnv.loops = ed['loops']
     for t, d in zip(ed['times'], ed['data']):
-      addPoint(newEnv, t, d)
+      addPoint(newEnv, sampleRate * t, d)
   normalizeEnvelope(newEnv)
   return newEnv

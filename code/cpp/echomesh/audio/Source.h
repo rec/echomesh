@@ -12,7 +12,7 @@ class AudioPlayer;
 class Source : public SampleAudioSource {
  public:
   Source(const string& filename, int loops,
-         long long begin, long long end, long long length,
+         double begin, double end, double length,
          const string& device, int channels,
          Envelope* gain, Envelope* pan, AppCallback callback,
          void* callbackData, float sampleRate);

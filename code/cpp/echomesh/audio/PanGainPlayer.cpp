@@ -62,8 +62,6 @@ void PanGainPlayer::applyGain(const AudioSourceChannelInfo& info) {
   } else {
     auto gains = gainPlayer_->getSegments(info.numSamples);
     for (auto& g: gains) {
-      DLOG(INFO) << g.first.time << ", " << g.first.value << ", "
-                 << g.second.time << ", " << g.first.value << ", ";
       info.buffer->applyGainRamp(g.first.time, g.second.time - g.first.time,
                                  g.first.value, g.second.value);
     }

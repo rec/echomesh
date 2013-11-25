@@ -7,7 +7,7 @@ from libcpp.string cimport string
 cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
   cdef cppclass Source:
     Source(string filename, int loops,
-           long long begin, long long end, long long length,
+           double begin, double end, double length,
            string device, int channels, Envelope* gain, Envelope* pan,
            Callback cb, void* callbackData, float sampleRate) except +
     void run()
@@ -21,13 +21,14 @@ cdef class AudioSource:
   cdef object callback
 
   def __cinit__(self, string filename, int loops,
-                long long begin, long long end, long long length,
+                double begin, double end, double length,
                 string device, int channels, object gain, object pan,
                 object callback, float sampleRate):
     self.callback = callback
     self.thisptr = new Source(filename, loops, begin, end, length,
                               device, channels,
-                              makeEnvelope(gain), makeEnvelope(pan),
+                              makeEnvelope(gain, sampleRate),
+                              makeEnvelope(pan, sampleRate),
                               perform_callback_gil, <void*> callback,
                               sampleRate)
     error = self.thisptr.error()

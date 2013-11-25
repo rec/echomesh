@@ -1,24 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import six
+from math import log
 
-def log_scale(value, scale, exponent):
-  return exponent ** (value / scale)
-
-def make_log(scale, exponent):
-  def log_unit(x):
-    return log_scale(x, scale, exponent)
-  return log_unit
+def make_log(scale, base):
+  return lambda x: base ** (x / scale), lambda x: scale * log(x) / log(base)
 
 def make_scale(scale):
-  def scale_unit(x):
-    return x * scale
-  return scale_unit
+  return lambda x: x * scale, lambda x: x / scale
 
 def inverse_scale(scale=1.0):
-  def inverse_scale_unit(x):
-    return 1.0 / (scale * x)
-  return inverse_scale_unit
+  return lambda x: 1.0 / (scale * x), lambda x: (1.0 * scale) / x
 
 UNITS_SOURCE = {
   ('%', 'percent'): make_scale(1 / 100),
@@ -33,13 +24,14 @@ UNITS_SOURCE = {
 }
 
 def list_units(separator='  '):
-  keys = six.iterkeys(UNITS_SOURCE)
+  keys = UNITS_SOURCE.keys()
   return separator + ('\n' + separator).join((', '.join(k) for k in keys))
 
 UNITS = {}
+INVERSE_UNITS = {}
 
-for _keys, _v in six.iteritems(UNITS_SOURCE):
+for _keys, _v in UNITS_SOURCE.items():
   for _k in _keys:
-    UNITS[_k] = _v
+    UNITS[_k], INVERSE_UNITS[_k] = _v
 
 INFINITY = float('inf')
