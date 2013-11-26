@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import six
 import sys
 
 from echomesh.base import Config
@@ -24,7 +23,7 @@ class _Client(object):
 
   def config_update(self, get):
     with self.lock:
-      for path in six.iterkeys(self.clients):
+      for path in self.clients.keys():
         self.clients[path] = Expression.convert(Config.get(*path))
 
 _CLIENT = _Client()

@@ -16,4 +16,3 @@ def display():
   if use_visualizer:
     from echomesh.graphics.CDisplay import CDisplay
     return CDisplay()
-

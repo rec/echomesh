@@ -5,7 +5,10 @@ cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
   void stopApplication()
 
 def start_application(f):
-  startApplication(perform_callback, <void*>f)
+  if f:
+    startApplication(perform_callback, <void*>f)
+  else:
+    startApplication(NULL, NULL)
 
 def stop_application():
   stopApplication()
@@ -18,4 +21,7 @@ def init_log():
   initLog()
 
 def set_logger(level, callback):
-  setLogger(level, perform_string_callback_gil, <void*> callback)
+  if callback:
+    setLogger(level, perform_string_callback_gil, <void*> callback)
+  else:
+    setLogger(level, NULL, NULL)

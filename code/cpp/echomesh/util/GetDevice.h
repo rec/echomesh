@@ -6,6 +6,7 @@
 #include "echomesh/base/Config.h"
 
 namespace echomesh {
+namespace audio {
 
 bool equals(const OneMidiConfig&, const OneMidiConfig&);
 
@@ -22,8 +23,6 @@ class CallbackWrapper : public CallbackMessage {
 
   DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CallbackWrapper);
 };
-
-namespace audio {
 
 template <typename DeviceClass>
 class ConfigMidi : public CallbackMessage {

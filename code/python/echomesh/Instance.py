@@ -11,6 +11,7 @@ from echomesh.graphics import Display
 from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
+from echomesh.util import CLog
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
@@ -22,6 +23,7 @@ class Instance(MasterRunnable):
   def __init__(self):
     super(Instance, self).__init__()
 
+    CLog.initialize()
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)
     self.socket = PeerSocket.PeerSocket(self, self.peers)
@@ -71,7 +73,11 @@ class Instance(MasterRunnable):
     return self.score_master.handle(event)
 
   def main(self):
-    self.run()
+    if hasattr(self.display, 'callback'):
+      self.display.callback = self.run
+      self.display.run()
+    else:
+      self.run()
     if self.display:
       self.display.loop()
       if self.keyboard.thread:
@@ -100,5 +106,7 @@ class Instance(MasterRunnable):
       self.remove_slave(self.mic)
       self.mic = None
 
+
 INSTANCE = Instance()
 main = INSTANCE.main
+

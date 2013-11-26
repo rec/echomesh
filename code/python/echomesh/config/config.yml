@@ -208,7 +208,7 @@ light:
     hide_on_no_clients: true
     show_at_startup: true
     show: true
-    type: client
+    type: cython
     period: 10ms
     closes_echomesh: false
 
@@ -275,6 +275,9 @@ logging:
   # This filters out the levels of logging.  At the default "info" level,
   # you'll everything except debugging information.
   level: info
+
+  # Do we redirect cechomesh's glog logging to Python?
+  redirect_glog: true
 
 midi:
   input:

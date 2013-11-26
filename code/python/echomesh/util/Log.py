@@ -128,3 +128,4 @@ def set_stream(stream):
 _reconfigure()
 LOGGER = logger(__name__)
 LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
+

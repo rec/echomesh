@@ -11,4 +11,3 @@ cdef void perform_callback_gil(void* f) with gil:
 
 cdef void perform_string_callback_gil(void* f, string s) with gil:
   (<object>f)(s)
-

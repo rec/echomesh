@@ -44,6 +44,7 @@ void startApplication(AppCallback cb, void* userData) {
 }
 
 void stopApplication() {
+  DLOG(INFO) << "Quitting juce";
   juce::JUCEApplicationBase::quit();
 }
 

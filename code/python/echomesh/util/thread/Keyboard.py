@@ -12,6 +12,8 @@ from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 
 LOGGER = Log.logger(__name__)
 
+USE_RAW_INPUT = not True
+
 MESSAGE = """Type help for a list of commands.
 """
 
@@ -27,11 +29,11 @@ class Keyboard(MasterRunnable):
     self.alert_mode = False
 
   def loop(self):
-    self._begin()
+    self.run()
     while self.is_running:
       self._input_loop()
 
-  def _begin(self):
+  def _on_begin(self):
     self.output.write('\n')
     self.output.flush()
     if self.sleep:
@@ -53,12 +55,16 @@ class Keyboard(MasterRunnable):
         self.output.write(self.prompt)
       else:
         self.output.write(' ' * len(self.prompt))
-      self.output.write('!' if self.alert_mode else ':')
+      self.output.write('!' if self.alert_mode else ':!!!')
       self.output.write(' ')
+      # self.output.write('?!?!??!')
       self.output.flush()
 
-      data = sys.stdin.readline()
+      #self.output.write('!! reading keyboard !!')
+      #self.output.flush()
+      data = raw_input() if USE_RAW_INPUT else sys.stdin.readline()
       buff += data
+      print('read', buff)
 
       brackets += (data.count('[') - data.count(']'))
       braces += (data.count('{') - data.count('}'))

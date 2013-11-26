@@ -47,7 +47,9 @@ void initLog() {
 }
 
 void setLogger(int logLevel, StringCallback caller, void* callback) {
-  google::base::SetLogger(logLevel, new PythonLogger(caller, callback));
+  google::base::Logger* logger = (caller and callback) ?
+      new PythonLogger(caller, callback) : nullptr;
+  google::base::SetLogger(logLevel, logger);
 }
 
 }  // namespace echomesh

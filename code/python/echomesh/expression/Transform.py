@@ -1,9 +1,16 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import numpy
-
+from echomesh.base import Config
 from echomesh.util.registry import Registry
 from echomesh.util import Log
+
+if Config.get('load_module', 'numpy'):
+  import numpy as math
+  pow = math.power
+else:
+  import math
+  pow = math.pow
+
 
 LOGGER = Log.logger(__name__)
 
@@ -26,25 +33,25 @@ def square(x):
 
 def power(n):
   def pwr(x):
-    return numpy.power(x, n)
+    return pow(x, n)
   def pwr_inverse(x):
-    return numpy.power(x, 1.0 / n)
+    return pow(x, 1.0 / n)
   return pwr, pwr_inverse
 
 def sine(x):
-  return (1 + numpy.sin(numpy.pi * (x - 0.5))) / 2
+  return (1 + math.sin(math.pi * (x - 0.5))) / 2
 
 def arcsine(x):
-  return 0.5 + numpy.arcsin(2 * x - 1) / numpy.pi
+  return 0.5 + math.arcsin(2 * x - 1) / math.pi
 
 def exp(x):
-  return (numpy.exp(x) - 1) / (numpy.e - 1)
+  return (math.exp(x) - 1) / (math.e - 1)
 
 def log(x):
-  return numpy.log((numpy.e - 1) * x + 1)
+  return math.log((math.e - 1) * x + 1)
 
 IDENTITY = identity, identity
-SQUARE = square, numpy.sqrt
+SQUARE = square, math.sqrt
 REVERSE = reverse, reverse
 SINE = sine, arcsine
 EXP = exp, log
