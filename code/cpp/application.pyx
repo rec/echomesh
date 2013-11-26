@@ -1,7 +1,7 @@
 include "callback.pyx"
 
 cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
-  void startApplication(Callback cb, void* user_data)
+  void startApplication(VoidCaller cb, void* user_data)
   void stopApplication()
 
 def start_application(f):
@@ -15,7 +15,7 @@ def stop_application():
 
 cdef extern from "echomesh/util/InitLog.h" namespace "echomesh":
   void initLog()
-  void setLogger(int logLevel, StringCallback caller, void* callback)
+  void setLogger(int logLevel, StringCaller caller, void* callback)
 
 def init_log():
   initLog()

@@ -7,62 +7,60 @@ namespace echomesh {
 static const int TOP_TWEAK = 5;
 static const int LEFT_TWEAK = 5;
 
-InstrumentGrid::InstrumentGrid() {
+InstrumentGrid::InstrumentGrid()
+    : isUnclipped_(false), labelStartsAtZero_(false) {
   setSize(64, 64);
 }
 
-InstrumentGrid::~InstrumentGrid() {
-  rec::stl::deletePointers(&instruments_);
-}
+InstrumentGrid::~InstrumentGrid() {}
 
 void InstrumentGrid::setConfig(const LightConfig& config) {
-  config_ = config;
+  ScopedLock l(lock_);
 
-  getParentComponent()->setVisible(true or config_.visualizer.show);
+  background_ = config.visualizer.background;
 
-  if (not config_.visualizer.show)
-    return;
+  getParentComponent()->setVisible(true); // Fix this.
+  setPaintingIsUnclipped(config.visualizer.instrument.paintUnclipped);
 
-  int oldCount = instruments_.size();
+  setLightCount(config.count);
+  setLayout(config.visualizer.layout, config.visualizer.instrument.size,
+            config.visualizer.padding, config.visualizer.instrument.padding,
+            config.visualizer.instrument.labelPadding);
+}
 
-  for (int i = config_.count; i < oldCount; ++i) {
-    removeChildComponent(instruments_[i]);
-    delete instruments_[i];
-  }
-  instruments_.resize(config_.count);
-  for (int i = oldCount; i < config_.count; ++i) {
-    instruments_[i] = new InstrumentComponent;
-    addAndMakeVisible(instruments_[i]);
-  }
+void InstrumentGrid::setLayout(
+    const Point& lay, const Point& size, const Point& padding,
+    const Point& instrumentPadding, const Point& labelPadding) {
+  ScopedLock l(lock_);
+  padding_ = padding;
+  size_ = size;
+  layout_ = lay;
+  instrumentPadding_ = instrumentPadding;
+  labelPadding_ = labelPadding;
+  layout();
+}
 
-  const Instrument& instrument = config_.visualizer.instrument;
-  int delta = instrument.labelStartsAtZero ? 0 : 1;
-  for (int i = 0; i < instruments_.size(); ++i) {
-    InstrumentComponent* inst = instruments_[i];
-    inst->setPaintingIsUnclipped(config_.visualizer.instrument.paintUnclipped);
-    inst->configure(String(i + delta), instrument);
-  }
+void InstrumentGrid::layout() {
+  int left = padding_.x;
+  int top = padding_.y;
+  int columns = layout_.x;
+  int rows = layout_.y;
 
-  int top = config_.visualizer.padding.y;
-  int left = config_.visualizer.padding.x;
-  int columns = config_.visualizer.layout.x;
-  int rows = config_.visualizer.layout.y;
-
-  int w = instrument.size.x + instrument.padding.x;
-  int h = instrument.size.y + instrument.padding.y;
-  int index = 0;
-  for (int y = 0; y < rows and index < instruments_.size(); ++y) {
-    for (int x = 0; x < columns and index < instruments_.size(); ++x) {
-      instruments_[index++]->setBounds(left + x * w, top + y * h,
-                                       instrument.size.x, instrument.size.y);
+  int w = size_.x + instrumentPadding_.x;
+  int h = size_.y + instrumentPadding_.y;
+  int i = 0;
+  for (int y = 0; y < rows and i < instruments_.size(); ++y) {
+    for (int x = 0; x < columns and i < instruments_.size(); ++x) {
+      auto& instr = instruments_[i++];
+      instr->setLabelPadding(labelPadding_.x, labelPadding_.y);
+      instr->setBounds(left + x * w, top + y * h, size_.x, size_.y);
     }
   }
 
-  int screenWidth = left + w * columns + config_.visualizer.padding.x,
-    screenHeight = top + h * rows + config_.visualizer.padding.y;
+  int screenWidth = left + w * columns + padding_.x,
+    screenHeight = top + h * rows + padding_.y;
 
   setSize(screenWidth, screenHeight);
-  repaint();
 }
 
 void InstrumentGrid::setLights(const ColorList& lights) {
@@ -72,7 +70,50 @@ void InstrumentGrid::setLights(const ColorList& lights) {
 }
 
 void InstrumentGrid::paint(Graphics& g) {
-  g.fillAll(config_.visualizer.background);
+  g.fillAll(background_);
+}
+
+void InstrumentGrid::setPaintingIsUnclipped(bool isUnclipped) {
+  ScopedLock l(lock_);
+  if (isUnclipped != isUnclipped_) {
+    isUnclipped_ = isUnclipped;
+    for (auto& i: instruments_)
+      i->setPaintingIsUnclipped(isUnclipped);
+  }
+}
+
+void InstrumentGrid::setLabelStartsAtZero(bool startsAtZero) {
+  ScopedLock l(lock_);
+  if (startsAtZero != labelStartsAtZero_) {
+    labelStartsAtZero_ = startsAtZero;
+    int delta = labelStartsAtZero_ ? 0 : 1;
+    for (int i = 0; i < instruments_.size(); ++i)
+      instruments_[i]->setLabel(String(i + delta));
+  }
+}
+
+void InstrumentGrid::setLightCount(int count) {
+  ScopedLock l(lock_);
+  int oldCount = instruments_.size();
+
+  if (count == oldCount)
+    return;
+
+  int delta = labelStartsAtZero_ ? 0 : 1;
+  instruments_.resize(count);
+  for (int i = oldCount; i < count; ++i) {
+    auto inst = new InstrumentComponent;
+    instruments_[i].reset(inst);
+    inst->setPaintingIsUnclipped(isUnclipped_);
+    inst->setLabelPadding(labelPadding_.x, labelPadding_.y);
+    inst->setLabel(String(i + delta));
+    addAndMakeVisible(inst);
+  }
+}
+
+void InstrumentGrid::setBackground(const Colour& c) {
+  ScopedLock l(lock_);
+  background_ = c;
 }
 
 }  // namespace echomesh

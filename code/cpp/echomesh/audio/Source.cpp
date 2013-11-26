@@ -8,7 +8,7 @@ Source::Source(const string& filename, int loops,
                double begin, double end, double length,
                const string& device, int channels,
                Envelope* gain, Envelope* pan,
-               AppCallback callback, void* callbackData,
+               VoidCaller callback, void* callbackData,
                float sampleRate)
     : SampleAudioSource(filename, loops,
                         SampleTime(begin, sampleRate),

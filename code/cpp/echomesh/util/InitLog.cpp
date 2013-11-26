@@ -8,7 +8,7 @@ bool initialized = false;
 
 class PythonLogger : public google::base::Logger {
  public:
-  PythonLogger(StringCallback caller, void* callback)
+  PythonLogger(StringCaller caller, void* callback)
       : caller_(caller), callback_(callback) {
   }
 
@@ -30,7 +30,7 @@ class PythonLogger : public google::base::Logger {
   virtual uint32 LogSize() { return logSize_; }
 
  private:
-  StringCallback const caller_;
+  StringCaller const caller_;
   void* const callback_;
   uint32 logSize_;
 };
@@ -46,7 +46,7 @@ void initLog() {
   }
 }
 
-void setLogger(int logLevel, StringCallback caller, void* callback) {
+void setLogger(int logLevel, StringCaller caller, void* callback) {
   google::base::Logger* logger = (caller and callback) ?
       new PythonLogger(caller, callback) : nullptr;
   google::base::SetLogger(logLevel, logger);

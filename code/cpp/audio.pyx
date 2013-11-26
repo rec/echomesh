@@ -9,7 +9,7 @@ cdef extern from "echomesh/audio/Source.h" namespace "echomesh::audio":
     Source(string filename, int loops,
            double begin, double end, double length,
            string device, int channels, Envelope* gain, Envelope* pan,
-           Callback cb, void* callbackData, float sampleRate) except +
+           VoidCaller cb, void* callbackData, float sampleRate) except +
     void run()
     void begin()
     void pause()

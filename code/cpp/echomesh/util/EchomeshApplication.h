@@ -5,8 +5,12 @@
 
 namespace echomesh {
 
-void startApplication(AppCallback cb, void* userData);
+void startApplication(VoidCaller, void*);
 void stopApplication();
+void cprint(const string&);
+void cflush();
+void readConsole(StringCaller, void*);
+void setConsolePrompt(const string&);
 
 }  // namespace echomesh
 

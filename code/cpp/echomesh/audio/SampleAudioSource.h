@@ -13,7 +13,7 @@ class SampleAudioSource : public AudioSource {
 
   SampleAudioSource(const String& filename, int loops,
                     SampleTime begin, SampleTime end, SampleTime length,
-                    Envelope* gain, Envelope* pan, AppCallback callback,
+                    Envelope* gain, Envelope* pan, VoidCaller callback,
                     void* callbackData, float sampleRate, int channels);
 
   virtual ~SampleAudioSource();
@@ -46,7 +46,7 @@ class SampleAudioSource : public AudioSource {
   Envelope* gain_;
   Envelope* pan_;
   unique_ptr<PanGainPlayer> panGainPlayer_;
-  AppCallback const callback_;
+  VoidCaller const callback_;
   void* const callbackData_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(SampleAudioSource);

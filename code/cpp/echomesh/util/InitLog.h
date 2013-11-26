@@ -6,7 +6,7 @@
 namespace echomesh {
 
 void initLog();
-void setLogger(int logLevel, StringCallback, void* callback);
+void setLogger(int logLevel, StringCaller, void* callback);
 
 }  // namespace echomesh
 

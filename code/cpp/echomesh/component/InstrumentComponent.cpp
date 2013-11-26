@@ -6,10 +6,12 @@ InstrumentComponent::InstrumentComponent()
     : color_(Colours::black), labelColor_(Colours::white) {
 }
 
-void InstrumentComponent::configure(const String& label,
-                                    const Instrument& config) {
+void InstrumentComponent::configure(
+    const String& label, const Instrument& config) {
   ScopedLock l(lock_);
-  config_ = config;
+  setShape(config.isRect);
+  setLabelPadding(config.labelPadding.x, config.labelPadding.y);
+  setShowLabel(config.label);
   label_ = label;
 }
 
@@ -24,7 +26,6 @@ void InstrumentComponent::setColor(const Colour& c) {
   uint8 g = color_.getGreen();
   uint8 b = color_.getBlue();
   labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
-  repaint();
 }
 
 void InstrumentComponent::paint(Graphics& g) {
@@ -37,18 +38,38 @@ void InstrumentComponent::paint(Graphics& g) {
 
   g.setColour(back);
   Rectangle<int> b = getLocalBounds();
-  if (config_.isRect)
+  if (isRect_)
     // g.fillRect(b.getX(), b.getY(), b.getWidth() + 1, b.getHeight() + 1);
     g.fillRect(b);
   else
     g.fillEllipse(b.getX(), b.getY(), b.getWidth(), b.getHeight());
 
-  if (config_.label) {
-    b.reduce(config_.labelPadding.x / 2, config_.labelPadding.y / 2);
+  if (showLabel_) {
+    b.reduce(labelPaddingX_ / 2, labelPaddingY_ / 2);
     g.setColour(label);
     g.drawFittedText(label_, b, Justification::centred, 1);
   }
 }
 
-}  // namespace echomesh
+void InstrumentComponent::setShape(bool isRect) {
+  ScopedLock l(lock_);
+  isRect_ = isRect;
+}
 
+void InstrumentComponent::setLabelPadding(int x, int y) {
+  ScopedLock l(lock_);
+  labelPaddingX_ = x;
+  labelPaddingY_ = y;
+}
+
+void InstrumentComponent::setShowLabel(bool show) {
+  ScopedLock l(lock_);
+  showLabel_ = show;
+}
+
+void InstrumentComponent::setLabel(const String& label) {
+  ScopedLock l(lock_);
+  label_ = label;
+}
+
+}  // namespace echomesh

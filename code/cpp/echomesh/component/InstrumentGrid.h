@@ -16,10 +16,30 @@ class InstrumentGrid : public Component {
   void setConfig(const LightConfig&);
   void setLights(const ColorList&);
   void paint(Graphics&);
+  void setPaintingIsUnclipped(bool);
+  void setLightCount(int);
+  void setLabelStartsAtZero(bool);
+  void setBackground(const Colour&);
+  void setLayout(const Point& layout, const Point& size, const Point& padding,
+                 const Point& instrumentPadding, const Point& labelPadding);
 
  private:
-  LightConfig config_;
-  vector<InstrumentComponent*> instruments_;
+  void layout();
+
+  vector<unique_ptr<InstrumentComponent>> instruments_;
+
+  bool isUnclipped_;
+  bool labelStartsAtZero_;
+  CriticalSection lock_;
+  Colour background_;
+  int columns_;
+  int rows_;
+
+  Point layout_;
+  Point size_;
+  Point padding_;
+  Point instrumentPadding_;
+  Point labelPadding_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentGrid)
 };

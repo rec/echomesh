@@ -20,8 +20,7 @@ SampleAudioSource::SampleAudioSource(const Node& node) :
 SampleAudioSource::SampleAudioSource(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,
-    Envelope* gain, Envelope* pan,
-    AppCallback callback, void* callbackData, float sampleRate, int channels)
+    Envelope* gain, Envelope* pan, VoidCaller callback, void* callbackData, float sampleRate, int channels)
     : gain_(gain),
       pan_(pan),
       callback_(callback),

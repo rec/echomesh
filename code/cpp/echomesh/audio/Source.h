@@ -14,7 +14,7 @@ class Source : public SampleAudioSource {
   Source(const string& filename, int loops,
          double begin, double end, double length,
          const string& device, int channels,
-         Envelope* gain, Envelope* pan, AppCallback callback,
+         Envelope* gain, Envelope* pan, VoidCaller callback,
          void* callbackData, float sampleRate);
 
   ~Source();
