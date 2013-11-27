@@ -7,8 +7,8 @@ namespace echomesh {
 
 void startApplication(VoidCaller, void*);
 void stopApplication();
-void write(const string&);
-void flush();
+void writeConsole(const string&);
+void flushConsole();
 void readConsole(StringCaller, void*);
 
 }  // namespace echomesh

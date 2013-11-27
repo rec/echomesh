@@ -32,8 +32,8 @@ class Instance(MasterRunnable):
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
-      new_thread = USE_KEYBOARD_THREAD or self.display
-      self.keyboard = Keyboard.keyboard(self, new_thread=new_thread)
+      args = {'new_thread': USE_KEYBOARD_THREAD or self.display}
+      self.keyboard = Keyboard.keyboard(self, **args)
 
     osc_client = Config.get('osc', 'client', 'enable')
     osc_server = Config.get('osc', 'server', 'enable')

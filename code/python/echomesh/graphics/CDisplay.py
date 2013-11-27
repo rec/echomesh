@@ -22,4 +22,4 @@ class CDisplay(Runnable):
     cechomesh.start_application(self.callback)
 
   def add_console_callback(self, callback):
-
+    cechomesh.readConsole(

@@ -5,8 +5,8 @@ from libcpp.string cimport string
 cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
   void startApplication(VoidCaller cb, void* user_data)
   void stopApplication()
-  void write(string)
-  void flush()
+  void writeConsole(string)
+  void flushConsole()
   void readConsole(StringCaller, void*)
 
 def start_application(f):
@@ -18,15 +18,12 @@ def start_application(f):
 def stop_application():
   stopApplication()
 
-cdef extern from "echomesh/util/InitLog.h" namespace "echomesh":
-  void initLog()
-  void setLogger(int logLevel, StringCaller caller, void* callback)
+def write(s):
+  writeConsole(s)
 
-def init_log():
-  initLog()
+def flush():
+  flushConsole()
 
-def set_logger(level, callback):
-  if callback:
-    setLogger(level, perform_string_callback_gil, <void*> callback)
-  else:
-    setLogger(level, NULL, NULL)
+def add_read_callback(callback):
+  readConsole(perform_string_callback, <void*> callback)
+

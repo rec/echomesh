@@ -71,11 +71,11 @@ void stopApplication() {
   juce::JUCEApplicationBase::quit();
 }
 
-void write(const string& data) {
+void writeConsole(const string& data) {
   std::cout << data;
 }
 
-void flush() {
+void flushConsole() {
   std::cout.flush();
 }
 

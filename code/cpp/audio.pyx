@@ -29,7 +29,7 @@ cdef class AudioSource:
                               device, channels,
                               makeEnvelope(gain, sampleRate),
                               makeEnvelope(pan, sampleRate),
-                              perform_callback_gil, <void*> callback,
+                              perform_callback, <void*> callback,
                               sampleRate)
     error = self.thisptr.error()
     if self.thisptr.error().size():
