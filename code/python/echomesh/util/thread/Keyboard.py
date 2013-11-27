@@ -19,14 +19,14 @@ MESSAGE = """Type help for a list of commands.
 
 class Keyboard(MasterRunnable):
   def __init__(self, sleep, message, processor,
-               prompt='echomesh', stdout=sys.stdout, reader=sys.stdin.readline,
+               writer=sys.stdout, reader=sys.stdin.readline, prompt='echomesh',
                timeout=0.5):
     super(Keyboard, self).__init__()
     self.sleep = sleep
     self.message = message
     self.processor = processor
     self.prompt = prompt
-    self.stdout = stdout
+    self.writer = writer
     self.alert_mode = False
     if reader:
       self.read = reader
@@ -46,14 +46,14 @@ class Keyboard(MasterRunnable):
       self._input_loop()
 
   def _on_begin(self):
-    self.stdout.write('\n')
-    self.stdout.flush()
+    self.writer.write('\n')
+    self.writer.flush()
     if self.sleep:
       time.sleep(self.sleep)
       self.sleep = 0
     if self.message:
-      self.stdout.write(self.message)
-      self.stdout.flush()
+      self.writer.write(self.message)
+      self.writer.flush()
       self.message = ''
 
   def _init_loop(self):
@@ -81,12 +81,12 @@ class Keyboard(MasterRunnable):
   def _prompt(self):
     if self.first_time:
       self.first_time = False
-      self.stdout.write(self.prompt)
+      self.writer.write(self.prompt)
     else:
-      self.stdout.write(' ' * len(self.prompt))
-    self.stdout.write('!' if self.alert_mode else ':')
-    self.stdout.write(' ')
-    self.stdout.flush()
+      self.writer.write(' ' * len(self.prompt))
+    self.writer.write('!' if self.alert_mode else ':')
+    self.writer.write(' ')
+    self.writer.flush()
 
   def receive_data(self, data):
     self.buff += data
@@ -95,7 +95,8 @@ class Keyboard(MasterRunnable):
     self.braces += (data.count('{') - data.count('}'))
 
 
-def keyboard(instance, new_thread=True):
+def keyboard(
+    instance, writer=sys.stdout, reader=sys.stdin.readline, new_thread=True):
   def processor(line):
     try:
       return Command.execute(instance, line)
@@ -103,7 +104,8 @@ def keyboard(instance, new_thread=True):
       LOGGER.error('Error processing command line.')
 
   sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
-  keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor)
+  keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor,
+                      writer=writer, reader=reader)
   if new_thread:
     runnable = ThreadRunnable(target=keyboard.loop)
     runnable.add_mutual_pause_slave(keyboard)
