@@ -28,7 +28,6 @@ class Keyboard(MasterRunnable):
     self.sysout = sysout
     self.alert_mode = False
     self.stdin = sys.stdin
-    self.partial_line = False
 
   def loop(self):
     self.run()
@@ -46,14 +45,14 @@ class Keyboard(MasterRunnable):
       self.message = ''
 
   def _input_loop(self):
-    buff = ''
-    first_time = True
-    brackets, braces = 0, 0
-    while first_time or brackets > 0 or braces > 0:
+    self.buff = ''
+    self.first_time = True
+    self.brackets, self.braces = 0, 0
+    while self.first_time or self.brackets > 0 or self.braces > 0:
       # Keep accepting new lines as long as we have a surplus of open
-      # brackets or braces.
-      if first_time:
-        first_time = False
+      # self.brackets or self.braces.
+      if self.first_time:
+        self.first_time = False
         self.sysout.write(self.prompt)
       else:
         self.sysout.write(' ' * len(self.prompt))
@@ -62,16 +61,16 @@ class Keyboard(MasterRunnable):
       self.sysout.flush()
 
       data = raw_input() if USE_RAW_INPUT else self.stdin.readline()
-      buff += data
+      self.buff += data
 
-      brackets += (data.count('[') - data.count(']'))
-      braces += (data.count('{') - data.count('}'))
+      self.brackets += (data.count('[') - data.count(']'))
+      self.braces += (data.count('{') - data.count('}'))
 
-    if brackets < 0:
+    if self.brackets < 0:
       LOGGER.error('Too many ]')
-    elif braces < 0:
+    elif self.braces < 0:
       LOGGER.error('Too many }')
-    elif self.processor(buff.strip()):
+    elif self.processor(self.buff.strip()):
       self.pause()
 
 
