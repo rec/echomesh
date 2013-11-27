@@ -18,9 +18,8 @@ MESSAGE = """Type help for a list of commands.
 """
 
 class Keyboard(MasterRunnable):
-  def __init__(self, sleep, message, processor,
-               writer=sys.stdout, reader=sys.stdin.readline, prompt='echomesh',
-               timeout=0.5):
+  def __init__(self, sleep, message, processor, writer, reader,
+               prompt='echomesh', timeout=0.1):
     super(Keyboard, self).__init__()
     self.sleep = sleep
     self.message = message
@@ -28,6 +27,7 @@ class Keyboard(MasterRunnable):
     self.prompt = prompt
     self.writer = writer
     self.alert_mode = False
+    self.timeout = timeout
     if reader:
       self.read = reader
     else:
@@ -36,7 +36,7 @@ class Keyboard(MasterRunnable):
   def read(self):
     while self.is_running:
       try:
-        return self.queue.get(timeout=timeout)
+        return self.queue.get(timeout=self.timeout)
       except queue.Empty:
         pass
 
@@ -64,7 +64,7 @@ class Keyboard(MasterRunnable):
   def _input_loop(self):
     self._init_loop()
 
-    while self.first_time or self.brackets > 0 or self.braces > 0:
+    while (not self.buff) or self.brackets > 0 or self.braces > 0:
       # Keep accepting new lines as long as we have a surplus of open
       # self.brackets or self.braces.
 
@@ -89,11 +89,13 @@ class Keyboard(MasterRunnable):
     self.writer.flush()
 
   def receive_data(self, data):
+    LOGGER.debug('receiving data %s', data)
+    if not data:
+      return
     self.buff += data
 
     self.brackets += (data.count('[') - data.count(']'))
     self.braces += (data.count('{') - data.count('}'))
-
 
 def keyboard(
     instance, writer=sys.stdout, reader=sys.stdin.readline, new_thread=True):
@@ -109,6 +111,6 @@ def keyboard(
   if new_thread:
     runnable = ThreadRunnable(target=keyboard.loop)
     runnable.add_mutual_pause_slave(keyboard)
-    return runnable
+    return keyboard, runnable
 
-  return keyboard
+  return keyboard, keyboard

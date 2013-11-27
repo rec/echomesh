@@ -19,6 +19,9 @@ LOGGER = Log.logger(__name__)
 
 USE_KEYBOARD_THREAD = False
 
+def test_str(s):
+  LOGGER.info('test_str %s', s)
+
 class Instance(MasterRunnable):
   def __init__(self):
     super(Instance, self).__init__()
@@ -32,16 +35,9 @@ class Instance(MasterRunnable):
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
-      args = {'new_thread': USE_KEYBOARD_THREAD or self.display}
-      is_cechomesh = hasattr(self.display, 'write')
-      if is_cechomesh:
-        args[reader] = None
-        args[writer] = self.display
-      self.keyboard = Keyboard.keyboard(self, **args)
-      if is_cechomesh:
-        # We have to store the callback to avoid it being garbage collected.
-        self.keyboard_callback = self.display.queue.put
-        self.display.add_read_callback(self.keyboard_callback)
+      args = {}
+      keyboard, self.keyboard = Keyboard.keyboard(
+        self, new_thread=USE_KEYBOARD_THREAD or self.display)
 
     osc_client = Config.get('osc', 'client', 'enable')
     osc_server = Config.get('osc', 'server', 'enable')
@@ -61,6 +57,10 @@ class Instance(MasterRunnable):
       self.unload()
 
     Quit.register_atexit(do_quit)
+
+  def keyboard_callback(self, s):
+    self.keyboard_queue.put(s)
+    LOGGER.info('...received %s', s)
 
   def _on_pause(self):
     super(Instance, self)._on_pause()
@@ -82,10 +82,8 @@ class Instance(MasterRunnable):
 
   def main(self):
     if hasattr(self.display, 'callback'):
-      self.display.callback = self.run
       self.display.run()
-    else:
-      self.run()
+    self.run()
     if self.display:
       self.display.loop()
       if self.keyboard.thread:

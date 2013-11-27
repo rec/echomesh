@@ -4,29 +4,14 @@ namespace echomesh {
 
 namespace {
 
-class KeyboardThread : public Thread {
- public:
-  KeyboardThread(StringCaller caller, void* callback)
-      : Thread("keyboard"), caller_(caller), callback_(callback) {
-  }
-
-  virtual void run() {
-    string data;
-    std::cin >> data;
-    caller_(callback_, data);
-  }
-
- private:
-  StringCaller const caller_;
-  void* const callback_;
-
-  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(KeyboardThread);
-};
-
-unique_ptr<KeyboardThread> KEYBOARD_THREAD;
-
 VoidCaller CALLBACK;
 void* USER_DATA;
+
+class Quitter : public CallbackMessage {
+  virtual void messageCallback() {
+    JUCEApplicationBase::quit();
+  }
+};
 
 class ApplicationBase : public juce::JUCEApplicationBase {
  public:
@@ -37,9 +22,7 @@ class ApplicationBase : public juce::JUCEApplicationBase {
     if (CALLBACK and USER_DATA)
       CALLBACK(USER_DATA);
   }
-  virtual void shutdown() {
-    KEYBOARD_THREAD->stopThread(1000);
-  }
+  virtual void shutdown() {}
   virtual void anotherInstanceStarted(const String&) {}
   virtual void systemRequestedQuit() {
     stopApplication();
@@ -68,20 +51,7 @@ void startApplication(VoidCaller cb, void* userData) {
 
 void stopApplication() {
   DLOG(INFO) << "Quitting juce";
-  juce::JUCEApplicationBase::quit();
-}
-
-void writeConsole(const string& data) {
-  std::cout << data;
-}
-
-void flushConsole() {
-  std::cout.flush();
-}
-
-void readConsole(StringCaller caller, void* callback) {
-  KEYBOARD_THREAD = make_unique<KeyboardThread>(caller, callback);
-  KEYBOARD_THREAD->startThread();
+  (new Quitter)->post();
 }
 
 }  // namespace echomesh
