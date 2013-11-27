@@ -208,7 +208,7 @@ light:
     hide_on_no_clients: true
     show_at_startup: true
     show: true
-    type: cython
+    type: client
     period: 10ms
     closes_echomesh: false
 

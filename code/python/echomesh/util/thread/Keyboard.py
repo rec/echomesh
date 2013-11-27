@@ -19,14 +19,16 @@ MESSAGE = """Type help for a list of commands.
 
 class Keyboard(MasterRunnable):
   def __init__(self, sleep, message, processor,
-               prompt='echomesh', output=sys.stdout):
+               prompt='echomesh', sysout=sys.stdout, stdin=sys.stdin):
     super(Keyboard, self).__init__()
     self.sleep = sleep
     self.message = message
     self.processor = processor
     self.prompt = prompt
-    self.output = output
+    self.sysout = sysout
     self.alert_mode = False
+    self.stdin = sys.stdin
+    self.partial_line = False
 
   def loop(self):
     self.run()
@@ -34,8 +36,8 @@ class Keyboard(MasterRunnable):
       self._input_loop()
 
   def _on_begin(self):
-    self.output.write('\n')
-    self.output.flush()
+    self.sysout.write('\n')
+    self.sysout.flush()
     if self.sleep:
       time.sleep(self.sleep)
       self.sleep = 0
@@ -52,19 +54,15 @@ class Keyboard(MasterRunnable):
       # brackets or braces.
       if first_time:
         first_time = False
-        self.output.write(self.prompt)
+        self.sysout.write(self.prompt)
       else:
-        self.output.write(' ' * len(self.prompt))
-      self.output.write('!' if self.alert_mode else ':!!!')
-      self.output.write(' ')
-      # self.output.write('?!?!??!')
-      self.output.flush()
+        self.sysout.write(' ' * len(self.prompt))
+      self.sysout.write('!' if self.alert_mode else ':')
+      self.sysout.write(' ')
+      self.sysout.flush()
 
-      #self.output.write('!! reading keyboard !!')
-      #self.output.flush()
-      data = raw_input() if USE_RAW_INPUT else sys.stdin.readline()
+      data = raw_input() if USE_RAW_INPUT else self.stdin.readline()
       buff += data
-      print('read', buff)
 
       brackets += (data.count('[') - data.count(']'))
       braces += (data.count('{') - data.count('}'))

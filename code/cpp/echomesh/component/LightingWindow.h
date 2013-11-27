@@ -7,6 +7,8 @@
 
 namespace echomesh {
 
+class InstrumentGrid;
+
 class LightingWindow : public DocumentWindow {
  public:
   LightingWindow();
@@ -15,11 +17,12 @@ class LightingWindow : public DocumentWindow {
   void setConfig(const LightConfig& config);
   void closeButtonPressed();
   void setRunningInTest() { runningInTest_ = true; }
+  InstrumentGrid* grid() { return instrumentGrid_; }
 
   virtual void moved();
 
  private:
-  echomesh::InstrumentGrid* instrumentGrid_;
+  InstrumentGrid* instrumentGrid_;
   bool initialized_;
   bool runningInTest_;
 
