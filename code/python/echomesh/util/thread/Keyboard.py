@@ -3,6 +3,8 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import sys
 import time
 
+from six.moves import queue
+
 from echomesh.base import Config
 from echomesh.command import Command
 from echomesh.expression import Expression
@@ -17,15 +19,26 @@ MESSAGE = """Type help for a list of commands.
 
 class Keyboard(MasterRunnable):
   def __init__(self, sleep, message, processor,
-               prompt='echomesh', sysout=sys.stdout, stdin=sys.stdin):
+               prompt='echomesh', stdout=sys.stdout, reader=sys.stdin.readline,
+               timeout=0.5):
     super(Keyboard, self).__init__()
     self.sleep = sleep
     self.message = message
     self.processor = processor
     self.prompt = prompt
-    self.sysout = sysout
+    self.stdout = stdout
     self.alert_mode = False
-    self.stdin = sys.stdin
+    if reader:
+      self.read = reader
+    else:
+      self.queue = queue.Queue()
+
+  def read(self):
+    while self.is_running:
+      try:
+        return self.queue.get(timeout=timeout)
+      except queue.Empty:
+        pass
 
   def loop(self):
     self.run()
@@ -33,13 +46,14 @@ class Keyboard(MasterRunnable):
       self._input_loop()
 
   def _on_begin(self):
-    self.sysout.write('\n')
-    self.sysout.flush()
+    self.stdout.write('\n')
+    self.stdout.flush()
     if self.sleep:
       time.sleep(self.sleep)
       self.sleep = 0
     if self.message:
-      print(self.message)
+      self.stdout.write(self.message)
+      self.stdout.flush()
       self.message = ''
 
   def _init_loop(self):
@@ -55,7 +69,7 @@ class Keyboard(MasterRunnable):
       # self.brackets or self.braces.
 
       self._prompt()
-      self.receive_data(self.stdin.readline())
+      self.receive_data(self.read())
 
     if self.brackets < 0:
       LOGGER.error('Too many ]')
@@ -67,12 +81,12 @@ class Keyboard(MasterRunnable):
   def _prompt(self):
     if self.first_time:
       self.first_time = False
-      self.sysout.write(self.prompt)
+      self.stdout.write(self.prompt)
     else:
-      self.sysout.write(' ' * len(self.prompt))
-    self.sysout.write('!' if self.alert_mode else ':')
-    self.sysout.write(' ')
-    self.sysout.flush()
+      self.stdout.write(' ' * len(self.prompt))
+    self.stdout.write('!' if self.alert_mode else ':')
+    self.stdout.write(' ')
+    self.stdout.flush()
 
   def receive_data(self, data):
     self.buff += data
