@@ -24,6 +24,5 @@ def write(s):
 def flush():
   flushConsole()
 
-def add_read_callback(callback):
+def add_console_callback(callback):
   readConsole(perform_string_callback, <void*> callback)
-

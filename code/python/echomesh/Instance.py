@@ -33,7 +33,15 @@ class Instance(MasterRunnable):
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
       args = {'new_thread': USE_KEYBOARD_THREAD or self.display}
+      is_cechomesh = hasattr(self.display, 'write')
+      if is_cechomesh:
+        args[reader] = None
+        args[writer] = self.display
       self.keyboard = Keyboard.keyboard(self, **args)
+      if is_cechomesh:
+        # We have to store the callback to avoid it being garbage collected.
+        self.keyboard_callback = self.display.queue.put
+        self.display.add_read_callback(self.keyboard_callback)
 
     osc_client = Config.get('osc', 'client', 'enable')
     osc_server = Config.get('osc', 'server', 'enable')
