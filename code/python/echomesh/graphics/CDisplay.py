@@ -4,7 +4,10 @@ import time
 
 import cechomesh
 
+from echomesh.util import Log
 from echomesh.util.thread.Runnable import Runnable
+
+LOGGER = Log.logger(__name__)
 
 class CDisplay(Runnable):
   def __init__(self, callback=None):
@@ -15,5 +18,8 @@ class CDisplay(Runnable):
     cechomesh.stop_application()
 
   def loop(self):
-    print('starting cechomesh')
+    LOGGER.debug('starting cechomesh')
     cechomesh.start_application(self.callback)
+
+  def add_console_callback(self, callback):
+

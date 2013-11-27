@@ -1,8 +1,13 @@
 include "callback.pyx"
 
+from libcpp.string cimport string
+
 cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
   void startApplication(VoidCaller cb, void* user_data)
   void stopApplication()
+  void write(string)
+  void flush()
+  void readConsole(StringCaller, void*)
 
 def start_application(f):
   if f:

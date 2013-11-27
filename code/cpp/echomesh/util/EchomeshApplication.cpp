@@ -11,12 +11,9 @@ class KeyboardThread : public Thread {
   }
 
   virtual void run() {
-    std::cout << "Input data: ";
-    std::cout.flush();
     string data;
     std::cin >> data;
-    std::cout << "\ndata: " << data << "\n";
-    std::cout.flush();
+    caller_(callback_, data);
   }
 
  private:
@@ -26,7 +23,7 @@ class KeyboardThread : public Thread {
   DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(KeyboardThread);
 };
 
-unique_ptr<Thread> KEYBOARD_THREAD;
+unique_ptr<KeyboardThread> KEYBOARD_THREAD;
 
 VoidCaller CALLBACK;
 void* USER_DATA;
@@ -74,19 +71,17 @@ void stopApplication() {
   juce::JUCEApplicationBase::quit();
 }
 
-void cprint(const string& data) {
+void write(const string& data) {
   std::cout << data;
 }
 
-void cflush() {
+void flush() {
   std::cout.flush();
 }
 
 void readConsole(StringCaller caller, void* callback) {
+  KEYBOARD_THREAD = make_unique<KeyboardThread>(caller, callback);
+  KEYBOARD_THREAD->startThread();
 }
-
-void setConsolePrompt(const string&) {
-}
-
 
 }  // namespace echomesh
