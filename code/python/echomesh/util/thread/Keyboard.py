@@ -42,35 +42,43 @@ class Keyboard(MasterRunnable):
       print(self.message)
       self.message = ''
 
-  def _input_loop(self):
+  def _init_loop(self):
     self.buff = ''
     self.first_time = True
     self.brackets, self.braces = 0, 0
+
+  def _input_loop(self):
+    self._init_loop()
+
     while self.first_time or self.brackets > 0 or self.braces > 0:
       # Keep accepting new lines as long as we have a surplus of open
       # self.brackets or self.braces.
-      if self.first_time:
-        self.first_time = False
-        self.sysout.write(self.prompt)
-      else:
-        self.sysout.write(' ' * len(self.prompt))
-      self.sysout.write('!' if self.alert_mode else ':')
-      self.sysout.write(' ')
-      self.sysout.flush()
 
-      data = self.stdin.readline()
-      self.buff += data
-
-      self.brackets += (data.count('[') - data.count(']'))
-      self.braces += (data.count('{') - data.count('}'))
+      self._prompt()
+      self.receive_data(self.stdin.readline())
 
     if self.brackets < 0:
       LOGGER.error('Too many ]')
     elif self.braces < 0:
       LOGGER.error('Too many }')
-    elif not (self.brackets or self.braces):
-      if self.processor(self.buff.strip()):
-        self.pause()
+    elif self.processor(self.buff.strip()):
+      self.pause()
+
+  def _prompt(self):
+    if self.first_time:
+      self.first_time = False
+      self.sysout.write(self.prompt)
+    else:
+      self.sysout.write(' ' * len(self.prompt))
+    self.sysout.write('!' if self.alert_mode else ':')
+    self.sysout.write(' ')
+    self.sysout.flush()
+
+  def receive_data(self, data):
+    self.buff += data
+
+    self.brackets += (data.count('[') - data.count(']'))
+    self.braces += (data.count('{') - data.count('}'))
 
 
 def keyboard(instance, new_thread=True):
