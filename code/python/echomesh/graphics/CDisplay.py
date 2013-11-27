@@ -18,15 +18,4 @@ class CDisplay(Runnable):
     cechomesh.stop_application()
 
   def loop(self):
-    LOGGER.debug('starting cechomesh')
     cechomesh.start_application(self.callback)
-
-  def add_console_callback(self, callback):
-    if False:
-      cechomesh.add_console_callback(callback)
-
-  def write(self, s):
-    cechomesh.write(s)
-
-  def flush(self):
-    cechomesh.flush()

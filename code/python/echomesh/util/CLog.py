@@ -19,5 +19,6 @@ class _Redirector(object):
         cechomesh.set_logger(i, self.redirecting and getattr(LOGGER, level))
 
 def initialize():
+  cechomesh.init_log()
   Config.add_client(_Redirector())
 

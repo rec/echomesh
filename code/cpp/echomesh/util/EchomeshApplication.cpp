@@ -50,7 +50,7 @@ void startApplication(VoidCaller cb, void* userData) {
 }
 
 void stopApplication() {
-  DLOG(INFO) << "Quitting juce";
+  // DLOG(INFO) << "Quitting juce";
   (new Quitter)->post();
 }
 

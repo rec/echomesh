@@ -39,11 +39,9 @@ class PythonLogger : public google::base::Logger {
 }  // namespace
 
 void initLog() {
-  if (not initialized) {
-    initialized = true;
-    google::InitGoogleLogging("echomesh");
-    FLAGS_logtostderr = true;
-  }
+  initialized = true;
+  google::InitGoogleLogging("echomesh");
+  FLAGS_logtostderr = true;
 }
 
 void setLogger(int logLevel, StringCaller caller, void* callback) {
