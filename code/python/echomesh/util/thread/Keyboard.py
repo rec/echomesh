@@ -12,8 +12,6 @@ from echomesh.util.thread.ThreadRunnable import ThreadRunnable
 
 LOGGER = Log.logger(__name__)
 
-USE_RAW_INPUT = not True
-
 MESSAGE = """Type help for a list of commands.
 """
 
@@ -60,7 +58,7 @@ class Keyboard(MasterRunnable):
       self.sysout.write(' ')
       self.sysout.flush()
 
-      data = raw_input() if USE_RAW_INPUT else self.stdin.readline()
+      data = self.stdin.readline()
       self.buff += data
 
       self.brackets += (data.count('[') - data.count(']'))
@@ -70,8 +68,9 @@ class Keyboard(MasterRunnable):
       LOGGER.error('Too many ]')
     elif self.braces < 0:
       LOGGER.error('Too many }')
-    elif self.processor(self.buff.strip()):
-      self.pause()
+    elif not (self.brackets or self.braces):
+      if self.processor(self.buff.strip()):
+        self.pause()
 
 
 def keyboard(instance, new_thread=True):
