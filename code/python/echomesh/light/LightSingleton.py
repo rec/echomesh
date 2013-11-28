@@ -14,8 +14,8 @@ MAIN_THREAD = threading.current_thread()
 
 _TYPE_MAP = {
   'client': 'echomesh.light.ExternalLightBank',
-  'cython': 'echomesh.light.SpiLightBank',
-#'cython': 'echomesh.light.CLightBank',
+#  'cython': 'echomesh.light.SpiLightBank',
+  'cython': 'echomesh.light.CLightBank',
   'spi': 'echomesh.light.SpiLightBank'
   }
 
