@@ -13,12 +13,18 @@ ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 # preference to any you might have installed in your system path.
 
 CODE_PATH = os.path.abspath(sys.path[0])
-EXTERNAL_CODE_PATH = os.path.join(CODE_PATH, 'external')
+
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
-BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
 PROJECT_PATH = None
 COMMAND_PATH = None
 ASSET_PATH = None
+
+EXTERNAL_CODE_PATH = os.path.join(CODE_PATH, 'external')
+PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
+  EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
+BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
+
+PATHS = PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, BINARY_PATH
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'command', 'log'
 
@@ -65,12 +71,13 @@ def info():
     'Code path': CODE_PATH,
     'Command path': COMMAND_PATH,
     'External code path': EXTERNAL_CODE_PATH,
+    'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,
     'echomesh path': ECHOMESH_PATH,
     }
 
 def fix_sys_path():
-  for path in EXTERNAL_CODE_PATH, BINARY_PATH:
+  for path in reversed(PATHS):
     if path not in sys.path:
       if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
         sys.path.insert(1, path)
