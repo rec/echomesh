@@ -12,13 +12,10 @@ LightingWindow::LightingWindow()
     instrumentGrid_(new echomesh::InstrumentGrid),
     initialized_(false),
     runningInTest_(false) {
+  MessageManagerLock l;
   setContentOwned(instrumentGrid_, true);
   centreWithSize(getWidth(), getHeight());
   setUsingNativeTitleBar(true);
-}
-
-void LightingWindow::setLights(const ColorList& cl) {
-  instrumentGrid_->setLights(cl);
 }
 
 void LightingWindow::setConfig(const LightConfig& config) {

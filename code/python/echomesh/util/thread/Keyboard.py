@@ -89,13 +89,11 @@ class Keyboard(MasterRunnable):
     self.writer.flush()
 
   def receive_data(self, data):
-    LOGGER.debug('receiving data %s', data)
-    if not data:
-      return
-    self.buff += data
+    if data:
+      self.buff += data
 
-    self.brackets += (data.count('[') - data.count(']'))
-    self.braces += (data.count('{') - data.count('}'))
+      self.brackets += (data.count('[') - data.count(']'))
+      self.braces += (data.count('{') - data.count('}'))
 
 def keyboard(
     instance, writer=sys.stdout, reader=sys.stdin.readline, new_thread=True):

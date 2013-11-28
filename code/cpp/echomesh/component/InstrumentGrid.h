@@ -15,15 +15,17 @@ class InstrumentGrid : public Component {
 
   void setConfig(const LightConfig&);
   void setLights(const ColorList&);
-  void setLights(const char*) {}
-  void paint(Graphics&);
+  void setLights(const char*);
   void setPaintingIsUnclipped(bool);
   void setLightCount(int);
+  int getLightCount() const;
   void setLabelStartsAtZero(bool);
+  void setShowLabel(bool);
   void setBackground(const Colour&);
   void setLayout(const Point& layout, const Point& size, const Point& padding,
                  const Point& instrumentPadding, const Point& labelPadding);
 
+  void paint(Graphics&);
   void doRepaint() {
     MessageManagerLock l;
     repaint();
@@ -36,7 +38,7 @@ class InstrumentGrid : public Component {
 
   bool isUnclipped_;
   bool labelStartsAtZero_;
-  CriticalSection lock_;
+  bool showLabel_;
   Colour background_;
   int columns_;
   int rows_;
@@ -46,6 +48,8 @@ class InstrumentGrid : public Component {
   Point padding_;
   Point instrumentPadding_;
   Point labelPadding_;
+
+  CriticalSection lock_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentGrid)
 };

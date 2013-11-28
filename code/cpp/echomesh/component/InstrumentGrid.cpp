@@ -8,7 +8,17 @@ static const int TOP_TWEAK = 5;
 static const int LEFT_TWEAK = 5;
 
 InstrumentGrid::InstrumentGrid()
-    : isUnclipped_(false), labelStartsAtZero_(false) {
+    : isUnclipped_(false),
+      labelStartsAtZero_(false),
+      showLabel_(false),
+      background_(Colours::white),
+      columns_(16),
+      rows_(16),
+      layout_(16, 16),
+      size_(16, 16),
+      padding_(5, 5),
+      instrumentPadding_(2, 2),
+      labelPadding_(2, 2) {
   setSize(64, 64);
 }
 
@@ -31,7 +41,8 @@ void InstrumentGrid::setConfig(const LightConfig& config) {
 void InstrumentGrid::setLayout(
     const Point& lay, const Point& size, const Point& padding,
     const Point& instrumentPadding, const Point& labelPadding) {
-  ScopedLock l(lock_);
+  MessageManagerLock l;
+
   padding_ = padding;
   size_ = size;
   layout_ = lay;
@@ -54,6 +65,7 @@ void InstrumentGrid::layout() {
       auto& instr = instruments_[i++];
       instr->setLabelPadding(labelPadding_.x, labelPadding_.y);
       instr->setBounds(left + x * w, top + y * h, size_.x, size_.y);
+      instr->setShowLabel(showLabel_);
     }
   }
 
@@ -74,7 +86,7 @@ void InstrumentGrid::paint(Graphics& g) {
 }
 
 void InstrumentGrid::setPaintingIsUnclipped(bool isUnclipped) {
-  ScopedLock l(lock_);
+  MessageManagerLock l;
   if (isUnclipped != isUnclipped_) {
     isUnclipped_ = isUnclipped;
     for (auto& i: instruments_)
@@ -83,7 +95,7 @@ void InstrumentGrid::setPaintingIsUnclipped(bool isUnclipped) {
 }
 
 void InstrumentGrid::setLabelStartsAtZero(bool startsAtZero) {
-  ScopedLock l(lock_);
+  MessageManagerLock l;
   if (startsAtZero != labelStartsAtZero_) {
     labelStartsAtZero_ = startsAtZero;
     int delta = labelStartsAtZero_ ? 0 : 1;
@@ -93,7 +105,7 @@ void InstrumentGrid::setLabelStartsAtZero(bool startsAtZero) {
 }
 
 void InstrumentGrid::setLightCount(int count) {
-  ScopedLock l(lock_);
+  MessageManagerLock l;
   int oldCount = instruments_.size();
 
   if (count == oldCount)
@@ -112,8 +124,31 @@ void InstrumentGrid::setLightCount(int count) {
 }
 
 void InstrumentGrid::setBackground(const Colour& c) {
-  ScopedLock l(lock_);
+  MessageManagerLock l;
   background_ = c;
+}
+
+void InstrumentGrid::setShowLabel(bool showLabel) {
+  MessageManagerLock l;
+  if (showLabel != showLabel_) {
+    showLabel_ = showLabel;
+    for (auto& i: instruments_)
+      i->setShowLabel(showLabel);
+  }
+}
+
+int InstrumentGrid::getLightCount() const {
+  MessageManagerLock l;
+  return instruments_.size();
+}
+
+void InstrumentGrid::setLights(const char* lights) {
+  MessageManagerLock l;
+
+  for (int i = 0; i < instruments_.size(); ++i) {
+    Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
+    instruments_[i]->setColor(color);
+  }
 }
 
 }  // namespace echomesh
