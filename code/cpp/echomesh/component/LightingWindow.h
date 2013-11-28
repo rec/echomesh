@@ -13,7 +13,7 @@ class LightingWindow : public DocumentWindow {
  public:
   LightingWindow();
 
-  void setLights(const ColorList& cl);
+  void setLights(const ColorList& cl) { grid()->setLights(cl); }
   void setConfig(const LightConfig& config);
   void closeButtonPressed();
   void setRunningInTest() { runningInTest_ = true; }

@@ -4,5 +4,6 @@
 
 include "application.pyx"
 include "audio.pyx"
+include "lights.pyx"
 include "log.pyx"
 include "tiny.pyx"

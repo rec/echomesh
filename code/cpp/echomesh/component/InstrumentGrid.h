@@ -6,7 +6,7 @@
 
 namespace echomesh {
 
-class LightConfig;
+struct LightConfig;
 
 class InstrumentGrid : public Component {
  public:
@@ -15,6 +15,7 @@ class InstrumentGrid : public Component {
 
   void setConfig(const LightConfig&);
   void setLights(const ColorList&);
+  void setLights(const char*) {}
   void paint(Graphics&);
   void setPaintingIsUnclipped(bool);
   void setLightCount(int);
@@ -22,6 +23,11 @@ class InstrumentGrid : public Component {
   void setBackground(const Colour&);
   void setLayout(const Point& layout, const Point& size, const Point& padding,
                  const Point& instrumentPadding, const Point& labelPadding);
+
+  void doRepaint() {
+    MessageManagerLock l;
+    repaint();
+  }
 
  private:
   void layout();
