@@ -13,6 +13,8 @@ class Quitter : public CallbackMessage {
   }
 };
 
+bool STARTED = false;
+
 class ApplicationBase : public juce::JUCEApplicationBase {
  public:
   virtual const String getApplicationName() { return "echomesh"; }
@@ -47,11 +49,17 @@ void startApplication(VoidCaller cb, void* userData) {
   USER_DATA = userData;
   juce::JUCEApplicationBase::createInstance = &juce_CreateApplication;
   juce::JUCEApplicationBase::main(1, ARGV);
+  DLOG(INFO) << "Initializing Juce";
+  STARTED = true;
 }
 
 void stopApplication() {
-  // DLOG(INFO) << "Quitting juce";
+  DLOG(INFO) << "Quitting juce";
   (new Quitter)->post();
+}
+
+bool isStarted() {
+  return STARTED;
 }
 
 }  // namespace echomesh

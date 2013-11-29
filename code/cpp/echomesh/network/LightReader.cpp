@@ -73,7 +73,6 @@ void LightReader::initialize(LightingWindow* wind) {
                                     &MidiController::midi));
   addHandler("quit", functionCB(::echomesh::quit));
 
-  wind->setRunningInTest();
   parse(DEFAULT_CONFIG);
   startThread();
 }

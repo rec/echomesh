@@ -10,9 +10,7 @@ LightingWindow::LightingWindow()
                    Colours::lightgrey,
                    DocumentWindow::allButtons),
     instrumentGrid_(new echomesh::InstrumentGrid),
-    initialized_(false),
     runningInTest_(false) {
-  MessageManagerLock l;
   setContentOwned(instrumentGrid_, true);
   centreWithSize(getWidth(), getHeight());
   setUsingNativeTitleBar(true);
@@ -23,7 +21,6 @@ void LightingWindow::setConfig(const LightConfig& config) {
   setTopLeftPosition(config.visualizer.topLeft.x, config.visualizer.topLeft.y);
   instrumentGrid_->setConfig(config);
   toFront(true);
-  initialized_ = true;
 }
 
 void LightingWindow::closeButtonPressed() {
@@ -43,7 +40,7 @@ void LightingWindow::closeButtonPressed() {
 }
 
 void LightingWindow::moved() {
-  if (initialized_) {
+  if (false) {
     if (SocketLineGetter* getter = SocketLineGetter::instance()) {
       YAML::Emitter out;
 
@@ -59,6 +56,16 @@ void LightingWindow::moved() {
       getter->writeSocket(out.c_str(), out.size());
     }
   }
+}
+
+LightingWindow* makeLightingWindow() {
+  unique_ptr<LightingWindow> window = make_unique<LightingWindow>();
+  MessageManagerLock l;
+
+  window->toFront(true);
+  window->setVisible(true);
+  DLOG(INFO) << "Finished initializing the lighting window.";
+  return window.release();
 }
 
 }  // namespace echomesh
