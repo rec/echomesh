@@ -5,7 +5,7 @@ from echomesh.base import Config
 _ERROR = """\
 You can't use both pi3d and the C++ visualizer at the same time."""
 
-def display():
+def display(callback):
   use_pi3d = Config.get('load_module', 'pi3d')
   use_visualizer = Config.get('light', 'visualizer', 'type') == 'cython'
   assert not (use_pi3d and use_visualizer), _ERROR
@@ -15,4 +15,4 @@ def display():
 
   if use_visualizer:
     from echomesh.graphics.CDisplay import CDisplay
-    return CDisplay()
+    return CDisplay(callback)

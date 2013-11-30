@@ -5,16 +5,7 @@
 
 namespace echomesh {
 
-struct QuitMessage : public CallbackMessage {
-  virtual void messageCallback() {
-    JUCEApplication::quit();
-  };
-};
-
-inline void quit() {
-  log("Quit requested");
-  (new QuitMessage)->post();
-}
+void quit();
 
 }  // namespace echomesh
 

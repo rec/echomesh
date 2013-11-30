@@ -30,8 +30,10 @@ class Instance(MasterRunnable):
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)
     self.socket = PeerSocket.PeerSocket(self, self.peers)
+    self.callback = self.after_server_starts
 
-    self.display = Display.display()
+    self.display = Display.display(self.callback)
+    self.is_cechomesh = hasattr(self.display, 'callback')
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
@@ -60,11 +62,10 @@ class Instance(MasterRunnable):
 
   def keyboard_callback(self, s):
     self.keyboard_queue.put(s)
-    LOGGER.info('...received %s', s)
 
   def _on_pause(self):
-    super(Instance, self)._on_pause()
     LightSingleton.stop()
+    super(Instance, self)._on_pause()
 
   def broadcasting(self):
     return self._broadcasting
@@ -80,21 +81,31 @@ class Instance(MasterRunnable):
   def handle(self, event):
     return self.score_master.handle(event)
 
+  def display_loop(self):
+    self.display.loop()
+    if self.keyboard.thread:
+      self.keyboard.thread.join()
+
   def main(self):
-    if hasattr(self.display, 'callback'):
-      self.display.run()
+    if self.is_cechomesh:
+      self.display_loop()
+    else:
+      self.after_server_starts()
+    time.sleep(self.timeout)
+    # Prevents crashes if you start and stop echomesh very fast.
+
+  def after_server_starts(self):
     self.run()
+    if self.is_cechomesh:
+      return
+
     if self.display:
-      self.display.loop()
-      if self.keyboard.thread:
-        self.keyboard.thread.join()
+      self.display_loop()
     elif not USE_KEYBOARD_THREAD and self.keyboard:
       self.keyboard.loop()
     else:
       while self.is_running:
         time.sleep(self.timeout)
-    time.sleep(self.timeout)
-    # Prevents crashes if you start and stop echomesh very fast.
 
   def start_mic(self):
     if not self.mic:

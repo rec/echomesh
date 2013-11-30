@@ -6,7 +6,6 @@
 namespace echomesh {
 
 void startApplication(VoidCaller, void*);
-void stopApplication();
 bool isStarted();
 
 }  // namespace echomesh

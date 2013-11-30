@@ -13,6 +13,7 @@ class CDisplay(Runnable):
   def __init__(self, callback=None):
     super(CDisplay, self).__init__()
     self.callback = callback
+    self.is_running = True
 
   def _on_pause(self):
     cechomesh.stop_application()

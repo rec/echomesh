@@ -35,6 +35,7 @@
 		654FD978B3DB7E163383531C = { isa = PBXBuildFile; fileRef = C685B3AB8F83BD2C60721226; };
 		386B9826388761FA236254F5 = { isa = PBXBuildFile; fileRef = DD5A8BA2E5B9279EDF04A3AF; };
 		3A414E397B8B8D95B1F3E1E3 = { isa = PBXBuildFile; fileRef = F4C064DCDE7B36D1C27BCACE; };
+		CA21C4B59918F6009017D0FE = { isa = PBXBuildFile; fileRef = 02D389067DAB6BA7F3C1B5DB; };
 		509781D6B0A39CE75C3D07F5 = { isa = PBXBuildFile; fileRef = FC65C946C87AC3130160481A; };
 		4A889C35C8FF4ABFC42C32EA = { isa = PBXBuildFile; fileRef = 0EFE6BC79D8704623798EE97; };
 		12DB4D9ACFD215AE398C82EB = { isa = PBXBuildFile; fileRef = 33A80FDDE38BE9EF58411C9C; };
@@ -86,6 +87,7 @@
 		01B8CA4104F1A4F15FC01810 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Value.h"; path = "../../JuceLibraryCode/modules/juce_data_structures/values/juce_Value.h"; sourceTree = "SOURCE_ROOT"; };
 		022124C33FC9C3E27382420F = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_SelectedItemSet.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_SelectedItemSet.h"; sourceTree = "SOURCE_ROOT"; };
 		02C4F8FD8FB53709C517B09F = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Log.cpp; path = ../../echomesh/base/Log.cpp; sourceTree = "SOURCE_ROOT"; };
+		02D389067DAB6BA7F3C1B5DB = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Quit.cpp; path = ../../echomesh/util/Quit.cpp; sourceTree = "SOURCE_ROOT"; };
 		033F79DFA3E5210D106D92AA = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_UndoManager.cpp"; path = "../../JuceLibraryCode/modules/juce_data_structures/undomanager/juce_UndoManager.cpp"; sourceTree = "SOURCE_ROOT"; };
 		034C9294CD780FE8D78C5254 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ResizableBorderComponent.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ResizableBorderComponent.h"; sourceTree = "SOURCE_ROOT"; };
 		03BD0E8BFDC6D852206B82EB = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MidiInput.h"; path = "../../JuceLibraryCode/modules/juce_audio_devices/midi_io/juce_MidiInput.h"; sourceTree = "SOURCE_ROOT"; };
@@ -1057,6 +1059,7 @@
 				B7A046052443A50238BE4675,
 				F4C064DCDE7B36D1C27BCACE,
 				CFDE6139FC2A2E6B2CE017A7,
+				02D389067DAB6BA7F3C1B5DB,
 				3585B517EC84B0B7C82C4869 ); name = util; sourceTree = "<group>"; };
 		D9A6B97E5C488634FA641A9C = { isa = PBXGroup; children = (
 				68AD8F213C10791DBA2A1A97,
@@ -2233,6 +2236,7 @@
 				654FD978B3DB7E163383531C,
 				386B9826388761FA236254F5,
 				3A414E397B8B8D95B1F3E1E3,
+				CA21C4B59918F6009017D0FE,
 				509781D6B0A39CE75C3D07F5,
 				4A889C35C8FF4ABFC42C32EA,
 				12DB4D9ACFD215AE398C82EB,

@@ -28,6 +28,8 @@ class LightingWindow : public DocumentWindow {
 };
 
 LightingWindow* makeLightingWindow();
+void deleteLightingWindow(LightingWindow*);
+
 
 }  // namespace echomesh
 

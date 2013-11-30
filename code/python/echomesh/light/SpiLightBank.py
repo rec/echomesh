@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.base import Config
 from echomesh.color import Combiner
 from echomesh.light.LightBank import LightBank
-from echomesh.util import Log
 
 class SpiLightBank(LightBank):
   def _make_data(self, count):

@@ -1,4 +1,5 @@
 #include "echomesh/util/EchomeshApplication.h"
+#include "echomesh/util/Quit.h"
 
 namespace echomesh {
 
@@ -7,12 +8,7 @@ namespace {
 VoidCaller CALLBACK;
 void* USER_DATA;
 
-class Quitter : public CallbackMessage {
-  virtual void messageCallback() {
-    JUCEApplicationBase::quit();
-  }
-};
-
+CriticalSection LOCK;
 bool STARTED = false;
 
 class ApplicationBase : public juce::JUCEApplicationBase {
@@ -27,7 +23,7 @@ class ApplicationBase : public juce::JUCEApplicationBase {
   virtual void shutdown() {}
   virtual void anotherInstanceStarted(const String&) {}
   virtual void systemRequestedQuit() {
-    stopApplication();
+    ::echomesh::quit();
   }
   virtual void suspended() {}
   virtual void resumed() {}
@@ -45,20 +41,19 @@ juce::JUCEApplicationBase* juce_CreateApplication() {
 }  // namespace
 
 void startApplication(VoidCaller cb, void* userData) {
+  {
+    ScopedLock l(LOCK);
+    STARTED = true;
+  }
   CALLBACK = cb;
   USER_DATA = userData;
   juce::JUCEApplicationBase::createInstance = &juce_CreateApplication;
-  juce::JUCEApplicationBase::main(1, ARGV);
   DLOG(INFO) << "Initializing Juce";
-  STARTED = true;
-}
-
-void stopApplication() {
-  DLOG(INFO) << "Quitting juce";
-  (new Quitter)->post();
+  juce::JUCEApplicationBase::main(1, ARGV);
 }
 
 bool isStarted() {
+  ScopedLock l(LOCK);
   return STARTED;
 }
 

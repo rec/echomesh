@@ -68,5 +68,27 @@ LightingWindow* makeLightingWindow() {
   return window.release();
 }
 
+namespace {
+
+class Closer : public CallbackMessage {
+ public:
+  explicit Closer(LightingWindow* window) : window_(window) {}
+
+  virtual void messageCallback() {
+    delete window_;
+    DLOG(INFO) << "finished the deletion of the lighting window.";
+  }
+
+ private:
+  LightingWindow* const window_;
+};
+
+
+}  // namespace
+
+void deleteLightingWindow(LightingWindow* window) {
+  (new Closer(window))->post();
+}
+
 }  // namespace echomesh
 
