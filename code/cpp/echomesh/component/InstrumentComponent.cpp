@@ -26,6 +26,7 @@ void InstrumentComponent::setColor(const Colour& c) {
   uint8 g = color_.getGreen();
   uint8 b = color_.getBlue();
   labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
+  repaint();
 }
 
 void InstrumentComponent::paint(Graphics& g) {

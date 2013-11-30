@@ -20,6 +20,8 @@ InstrumentGrid::InstrumentGrid()
       instrumentPadding_(2, 2),
       labelPadding_(2, 2) {
   setSize(64, 64);
+  MessageManagerLock l;
+  layout();
 }
 
 InstrumentGrid::~InstrumentGrid() {}

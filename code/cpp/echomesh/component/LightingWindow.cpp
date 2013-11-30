@@ -1,7 +1,6 @@
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/Quit.h"
-#include "rec/util/thread/CallAsync.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
 namespace echomesh {
@@ -65,7 +64,8 @@ LightingWindow* makeLightingWindow() {
 
   window->toFront(true);
   window->setVisible(true);
-  DLOG(INFO) << "Finished initializing the lighting window.";
+  // window->grid()->setLightCount(256);
+  // DLOG(INFO) << "Finished initializing the lighting window.";
   return window.release();
 }
 
