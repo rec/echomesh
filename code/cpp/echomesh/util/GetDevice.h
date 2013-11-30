@@ -4,6 +4,7 @@
 #include <queue>
 
 #include "echomesh/base/Config.h"
+#include "echomesh/util/RunOnMessageThread.h"
 
 namespace echomesh {
 namespace audio {
@@ -34,7 +35,8 @@ class ConfigMidi : public CallbackMessage {
     if (not (configAssigned_ and equals(config_, config))) {
       configAssigned_ = true;
       config_ = config;
-      (new CallbackWrapper(this))->post();
+
+      runOnMessageThread(&ConfigMidi<DeviceClass>::messageCallback, this);
     }
   }
 

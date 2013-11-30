@@ -2,6 +2,7 @@
 #include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/Quit.h"
 #include "rec/util/thread/CallAsync.h"
+#include "echomesh/util/RunOnMessageThread.h"
 
 namespace echomesh {
 
@@ -68,26 +69,8 @@ LightingWindow* makeLightingWindow() {
   return window.release();
 }
 
-namespace {
-
-class Closer : public CallbackMessage {
- public:
-  explicit Closer(LightingWindow* window) : window_(window) {}
-
-  virtual void messageCallback() {
-    delete window_;
-    DLOG(INFO) << "finished the deletion of the lighting window.";
-  }
-
- private:
-  LightingWindow* const window_;
-};
-
-
-}  // namespace
-
 void deleteLightingWindow(LightingWindow* window) {
-  (new Closer(window))->post();
+  runOnMessageThread(&LightingWindow::~LightingWindow, window);
 }
 
 }  // namespace echomesh
