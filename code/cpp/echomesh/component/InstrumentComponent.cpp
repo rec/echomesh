@@ -39,8 +39,11 @@ void InstrumentComponent::paint(Graphics& g) {
 
   g.setColour(back);
   Rectangle<int> b = getLocalBounds();
+
+  DLOG(INFO) << b.toString();
+  DCHECK(false) << b.toString();
+
   if (isRect_)
-    // g.fillRect(b.getX(), b.getY(), b.getWidth() + 1, b.getHeight() + 1);
     g.fillRect(b);
   else
     g.fillEllipse(b.getX(), b.getY(), b.getWidth(), b.getHeight());

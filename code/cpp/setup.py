@@ -2,16 +2,13 @@
 
 import os
 import os.path
-import platform
 import shutil
 import sys
 
 if 'build_ext' in sys.argv:
-  sys.argv.insert(sys.argv.index('build_ext') + 1, '--inplace')
-
-from distutils.core import setup, Command
-from Cython.Build import cythonize
-from Cython.Distutils import build_ext, extension
+  index = sys.argv.index('build_ext') + 1
+  if sys.argv[index] != '--inplace':
+    sys.argv.insert(index, '--inplace')
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(
   os.path.abspath(__file__))))
@@ -19,11 +16,21 @@ ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
 
 sys.path.append(ECHOMESH_PATH)
 
+import Config
+
+from distutils.core import setup, Command
+from Cython.Build import cythonize
+from Cython.Distutils import build_ext, extension
+
+
 from echomesh.base import Platform
 
 DEBUG = True
 
-MODULE_NAME = 'cechomesh_debug' if (DEBUG and False) else 'cechomesh'
+CONFIG = Config.Config(DEBUG)
+
+MODULE_NAME = 'cechomesh'
+LIBRARY_NAME = '%s.so' % MODULE_NAME
 PYX_FILES = ['cechomesh.pyx']
 LIBRARIES = ['echomesh', 'pthread', 'glog']
 
@@ -45,28 +52,29 @@ if Platform.PLATFORM == Platform.MAC:
   if DEBUG:
     EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
     EXTRA_LINK_ARGS += ['-g']
-    LIB_DIRS += ['Builds/MacOSX/build/Debug']
+    ECHOMESH_LIB = 'Builds/MacOSX/build/Debug'
 
   else:
     EXTRA_COMPILE_ARGS += ('-O2'.split())
-    LIB_DIRS += ['Builds/MacOSX/build/Release']
+    ECHOMESH_LIB = 'Builds/MacOSX/build/Release'
 
 elif Platform.PLATFORM == Platform.UBUNTU:
-    EXTRA_LINK_ARGS = ('-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
-                      '-ldl -lfreetype -lpthread -lrt -lglog').split()
+  EXTRA_LINK_ARGS = ('-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
+                     '-ldl -lfreetype -lpthread -lrt -lglog').split()
 
-    if DEBUG:
-        EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
-        EXTRA_LINK_ARGS += ['-g']
-        LIB_DIRS += ['Builds/Ubuntu/build']
+  if DEBUG:
+    EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
+    EXTRA_LINK_ARGS += ['-g']
+    ECHOMESH_LIB = 'Builds/Ubuntu/build'
 
-    else:
-        EXTRA_COMPILE_ARGS += ('-02'.split())
-        LIB_DIRS += ['Builds/Ubuntu/build/Release']
+  else:
+    EXTRA_COMPILE_ARGS += ('-02'.split())
+    ECHOMESH_LIB = 'Builds/Ubuntu/build/Release'
 
 else:
   raise Exception("Don't understand platform %s." % platform)
 
+LIB_DIRS.append(ECHOMESH_LIB)
 
 class CleanCommand(Command):
   description = 'Complete clean command'
