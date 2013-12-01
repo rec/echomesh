@@ -43,37 +43,7 @@ EXTRA_COMPILE_ARGS = (
   '-I. -x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
   '-stdlib=libc++ -IJuceLibraryCode -Ibuild/include').split()
 
-LIB_DIRS = ['build/lib']
-
-if Platform.PLATFORM == Platform.MAC:
-  EXTRA_LINK_ARGS = '-framework Cocoa -framework WebKit -framework CoreMidi'.split()
-
-  if DEBUG:
-    EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
-    EXTRA_LINK_ARGS += ['-g']
-    ECHOMESH_LIB = 'Builds/MacOSX/build/Debug'
-
-  else:
-    EXTRA_COMPILE_ARGS += ('-O2'.split())
-    ECHOMESH_LIB = 'Builds/MacOSX/build/Release'
-
-elif Platform.PLATFORM == Platform.UBUNTU:
-  EXTRA_LINK_ARGS = ('-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
-                     '-ldl -lfreetype -lpthread -lrt -lglog').split()
-
-  if DEBUG:
-    EXTRA_COMPILE_ARGS += ('-O0 -g -D_DEBUG=1 -DDEBUG=1').split()
-    EXTRA_LINK_ARGS += ['-g']
-    ECHOMESH_LIB = 'Builds/Ubuntu/build'
-
-  else:
-    EXTRA_COMPILE_ARGS += ('-02'.split())
-    ECHOMESH_LIB = 'Builds/Ubuntu/build/Release'
-
-else:
-  raise Exception("Don't understand platform %s." % platform)
-
-LIB_DIRS.append(CONFIG.echomesh_lib)
+LIB_DIRS = ['build/lib', CONFIG.echomesh_lib]
 
 class CleanCommand(Command):
   description = 'Complete clean command'
