@@ -1,17 +1,26 @@
 from __future__ import absolute_import, division, print_function
 
 import os.path
+import sys
+
+DEBUG = True
+
+ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(
+  os.path.abspath(__file__))))
+ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
+
+sys.path.append(ECHOMESH_PATH)
 
 from echomesh.base import Platform
 
 class Config(object):
-  def __init__(self, debug, echomesh_base):
+  def __init__(self):
     self.module_name = 'cechomesh'
     self.library_name = '%s.so' % self.module_name
     self.pyx_files = ['cechomesh.pyx']
     self.libraries = ['echomesh', 'pthread', 'glog']
 
-    if debug:
+    if DEBUG:
       self.extra_args = {'cython_gdb': True, 'pyrex_gdb': True}
     else:
       self.extra_args = {}
@@ -23,7 +32,7 @@ class Config(object):
     if Platform.PLATFORM == Platform.MAC:
       extra_link_args = '-framework Cocoa -framework WebKit -framework CoreMidi'
 
-      if debug:
+      if DEBUG:
         extra_compile_args += ' -O0 -g -D_DEBUG=1 -DDEBUG=1'
         extra_link_args += ' -g'
         self.echomesh_lib = 'Builds/MacOSX/build/Debug'
@@ -37,7 +46,7 @@ class Config(object):
         '-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
         '-ldl -lfreetype -lpthread -lrt -lglog')
 
-      if debug:
+      if DEBUG:
         extra_compile_args += ' -O0 -g -D_DEBUG=1 -DDEBUG=1'
         extra_link_args += ' -g'
         self.echomesh_lib = 'Builds/Ubuntu/build'
@@ -48,5 +57,7 @@ class Config(object):
 
     self.extra_compile_args = extra_compile_args.split()
     self.extra_link_args = extra_link_args.split()
-    self.bin_dir = os.path.join(echomesh_base, 'bin', Platform.PLATFORM)
+    self.bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
     self.lib_dirs = ['build/lib', self.echomesh_lib]
+
+CONFIG = Config()

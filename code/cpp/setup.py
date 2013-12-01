@@ -1,9 +1,8 @@
-from __future__ import absolute_import, division, print_function
-
 #!/usr/bin/env python
 
+from __future__ import absolute_import, division, print_function, unicode_literals
+
 import os
-import os.path
 import shutil
 import sys
 
@@ -12,36 +11,12 @@ if 'build_ext' in sys.argv:
   if sys.argv[index] != '--inplace':
     sys.argv.insert(index, '--inplace')
 
-ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(
-  os.path.abspath(__file__))))
-ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
-
-sys.path.append(ECHOMESH_PATH)
-
-import Config
+from Config import CONFIG
 
 from distutils.core import setup, Command
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext, extension
 
-from echomesh.base import Platform
-
-DEBUG = True
-
-CONFIG = Config.Config(DEBUG, ECHOMESH_BASE)
-
-MODULE_NAME = 'cechomesh'
-LIBRARY_NAME = '%s.so' % MODULE_NAME
-PYX_FILES = ['cechomesh.pyx']
-LIBRARIES = ['echomesh', 'pthread', 'glog']
-
-DEBUG_ARGS = {
-  'cython_gdb': True,
-  'pyrex_gdb': True,
-  }
-EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
-
-LIB_DIRS = ['build/lib', CONFIG.echomesh_lib]
 
 class CleanCommand(Command):
   description = 'Complete clean command'
@@ -72,7 +47,6 @@ class InstallCommand(Command):
     shutil.copy(CONFIG.library_name, CONFIG.bin_dir)
 
 
-print(type(CONFIG.module_name))
 echomesh_extension = extension.Extension(
   CONFIG.module_name,
   CONFIG.pyx_files,
