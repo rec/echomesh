@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function
 import os.path
 import sys
 
+from Cython.Build import cythonize
 from Cython.Distutils import extension
 
 DEBUG = True
@@ -14,15 +15,16 @@ from echomesh.base import Platform
 
 class Config(object):
   def __init__(self):
+    self.debug = DEBUG
     self.module_name = 'cechomesh'
     self.library_name = '%s.so' % self.module_name
     pyx_files = ['cechomesh.pyx']
     libraries = ['echomesh', 'pthread', 'glog']
 
     if DEBUG:
-      self.extra_args = {'cython_gdb': True, 'pyrex_gdb': True}
+      extra_args = {'cython_gdb': True, 'pyrex_gdb': True}
     else:
-      self.extra_args = {}
+      extra_args = {}
 
     extra_compile_args = (
       '-I. -x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
@@ -59,14 +61,16 @@ class Config(object):
     self.bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
     lib_dirs = ['build/lib', echomesh_lib]
 
-    self.extension = extension.Extension(
+    ext = extension.Extension(
       self.module_name,
       pyx_files,
       library_dirs=lib_dirs,
       libraries=libraries,
       extra_compile_args=extra_compile_args,
       extra_link_args=extra_link_args,
-      **self.extra_args)
+      **extra_args)
+
+    self.modules = cythonize([ext], **extra_args)
 
 
 CONFIG = Config()
