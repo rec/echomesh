@@ -1,9 +1,11 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os.path
+
 from echomesh.base import Platform
 
 class Config(object):
-  def __init__(self, debug):
+  def __init__(self, debug, echomesh_base):
     extra_compile_args = (
       '-I. -x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
       '-stdlib=libc++ -IJuceLibraryCode -Ibuild/include')
@@ -36,3 +38,4 @@ class Config(object):
 
     self.extra_compile_args = extra_compile_args.split()
     self.extra_link_args = extra_link_args.split()
+    self.bin_dir = os.path.join(echomesh_base, 'bin', Platform.PLATFORM)

@@ -22,12 +22,11 @@ from distutils.core import setup, Command
 from Cython.Build import cythonize
 from Cython.Distutils import build_ext, extension
 
-
 from echomesh.base import Platform
 
 DEBUG = True
 
-CONFIG = Config.Config(DEBUG)
+CONFIG = Config.Config(DEBUG, ECHOMESH_BASE)
 
 MODULE_NAME = 'cechomesh'
 LIBRARY_NAME = '%s.so' % MODULE_NAME
@@ -74,7 +73,7 @@ elif Platform.PLATFORM == Platform.UBUNTU:
 else:
   raise Exception("Don't understand platform %s." % platform)
 
-LIB_DIRS.append(ECHOMESH_LIB)
+LIB_DIRS.append(CONFIG.echomesh_lib)
 
 class CleanCommand(Command):
   description = 'Complete clean command'
@@ -102,8 +101,8 @@ class InstallCommand(Command):
   def run(self):
     bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
     module = '%s.so' % MODULE_NAME
-    print('Copying %s to %s' % (module, bin_dir))
-    shutil.copy(module, bin_dir)
+    print('Copying %s to %s' % (module, CONFIG.bin_dir))
+    shutil.copy(module, CONFIG.bin_dir)
 
 
 echomesh_extension = extension.Extension(
@@ -111,8 +110,8 @@ echomesh_extension = extension.Extension(
   PYX_FILES,
   library_dirs=LIB_DIRS,
   libraries=LIBRARIES,
-  extra_compile_args=EXTRA_COMPILE_ARGS,
-  extra_link_args=EXTRA_LINK_ARGS,
+  extra_compile_args=CONFIG.extra_compile_args,
+  extra_link_args=CONFIG.extra_link_args,
   **EXTRA_ARGS)
 
 setup(
