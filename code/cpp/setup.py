@@ -39,10 +39,6 @@ DEBUG_ARGS = {
   }
 EXTRA_ARGS = DEBUG_ARGS if DEBUG else {}
 
-EXTRA_COMPILE_ARGS = (
-  '-I. -x c++ -arch x86_64 -fmessage-length=0 -std=c++11 '
-  '-stdlib=libc++ -IJuceLibraryCode -Ibuild/include').split()
-
 LIB_DIRS = ['build/lib', CONFIG.echomesh_lib]
 
 class CleanCommand(Command):
@@ -69,10 +65,8 @@ class InstallCommand(Command):
     pass
 
   def run(self):
-    bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
-    module = '%s.so' % MODULE_NAME
-    print('Copying %s to %s' % (module, CONFIG.bin_dir))
-    shutil.copy(module, CONFIG.bin_dir)
+    print('Copying %s to %s' % (LIBRARY_NAME, CONFIG.bin_dir))
+    shutil.copy(LIBRARY_NAME, CONFIG.bin_dir)
 
 
 echomesh_extension = extension.Extension(
