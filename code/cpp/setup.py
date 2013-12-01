@@ -1,3 +1,5 @@
+from __future__ import absolute_import, division, print_function
+
 #!/usr/bin/env python
 
 import os
@@ -52,7 +54,8 @@ class CleanCommand(Command):
 
   def run(self):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
-    os.system('rm -Rf %s.so ./build/temp* ./dist echomesh.cpp' % MODULE_NAME)
+    os.system('rm -Rf %s.so ./build/temp* ./dist echomesh.cpp' %
+              CONFIG.module_name)
 
 
 class InstallCommand(Command):
@@ -65,18 +68,19 @@ class InstallCommand(Command):
     pass
 
   def run(self):
-    print('Copying %s to %s' % (LIBRARY_NAME, CONFIG.bin_dir))
-    shutil.copy(LIBRARY_NAME, CONFIG.bin_dir)
+    print('Copying %s to %s' % (CONFIG.library_name, CONFIG.bin_dir))
+    shutil.copy(CONFIG.library_name, CONFIG.bin_dir)
 
 
+print(type(CONFIG.module_name))
 echomesh_extension = extension.Extension(
-  MODULE_NAME,
-  PYX_FILES,
-  library_dirs=LIB_DIRS,
-  libraries=LIBRARIES,
+  CONFIG.module_name,
+  CONFIG.pyx_files,
+  library_dirs=CONFIG.lib_dirs,
+  libraries=CONFIG.libraries,
   extra_compile_args=CONFIG.extra_compile_args,
   extra_link_args=CONFIG.extra_link_args,
-  **EXTRA_ARGS)
+  **CONFIG.extra_args)
 
 setup(
   name='Echomesh',
@@ -87,8 +91,6 @@ setup(
     'install': InstallCommand,
     },
 
-    ext_modules=cythonize(
-    [echomesh_extension],
-    **EXTRA_ARGS),
+    ext_modules=cythonize([echomesh_extension], **CONFIG.extra_args),
   )
 
