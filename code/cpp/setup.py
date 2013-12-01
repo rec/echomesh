@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Typical command:
+#   setup.py library build_ext install
+
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import os
@@ -21,7 +24,9 @@ ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
 
 sys.path.append(ECHOMESH_PATH)
 
-from echomesh.build import CONFIG, Clean, Install, Library
+from echomesh.build import clean_older, CONFIG, Clean, Install, Library
+
+clean_older()
 
 setup(
   name='Echomesh',

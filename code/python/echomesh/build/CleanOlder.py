@@ -5,7 +5,10 @@ import os
 from echomesh.build.BuildConfig import CONFIG
 
 def _is_newer(f1, f2):
-  return os.stat(f1).st_mtime > os.stat(f2).st_mtime
+  try:
+    return os.stat(f1).st_mtime > os.stat(f2).st_mtime
+  except:
+    return False
 
 def clean_older():
   if _is_newer(CONFIG.c_library, CONFIG.library_name):
