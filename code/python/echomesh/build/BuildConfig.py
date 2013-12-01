@@ -16,8 +16,8 @@ class Config(object):
   def __init__(self):
     self.module_name = 'cechomesh'
     self.library_name = '%s.so' % self.module_name
-    self.pyx_files = ['cechomesh.pyx']
-    self.libraries = ['echomesh', 'pthread', 'glog']
+    pyx_files = ['cechomesh.pyx']
+    libraries = ['echomesh', 'pthread', 'glog']
 
     if DEBUG:
       self.extra_args = {'cython_gdb': True, 'pyrex_gdb': True}
@@ -34,11 +34,11 @@ class Config(object):
       if DEBUG:
         extra_compile_args += ' -O0 -g -D_DEBUG=1 -DDEBUG=1'
         extra_link_args += ' -g'
-        self.echomesh_lib = 'Builds/MacOSX/build/Debug'
+        echomesh_lib = 'Builds/MacOSX/build/Debug'
 
       else:
         extra_compile_args += ' -O2'
-        self.echomesh_lib = 'Builds/MacOSX/build/Release'
+        echomesh_lib = 'Builds/MacOSX/build/Release'
 
     elif Platform.PLATFORM == Platform.UBUNTU:
       extra_link_args = (
@@ -48,24 +48,24 @@ class Config(object):
       if DEBUG:
         extra_compile_args += ' -O0 -g -D_DEBUG=1 -DDEBUG=1'
         extra_link_args += ' -g'
-        self.echomesh_lib = 'Builds/Ubuntu/build'
+        echomesh_lib = 'Builds/Ubuntu/build'
 
       else:
         extra_compile_args += ' -02'
-        self.echomesh_lib = 'Builds/Ubuntu/build/Release'
+        echomesh_lib = 'Builds/Ubuntu/build/Release'
 
-    self.extra_compile_args = extra_compile_args.split()
-    self.extra_link_args = extra_link_args.split()
+    extra_compile_args = extra_compile_args.split()
+    extra_link_args = extra_link_args.split()
     self.bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
-    self.lib_dirs = ['build/lib', self.echomesh_lib]
+    lib_dirs = ['build/lib', echomesh_lib]
 
     self.extension = extension.Extension(
       self.module_name,
-      self.pyx_files,
-      library_dirs=self.lib_dirs,
-      libraries=self.libraries,
-      extra_compile_args=self.extra_compile_args,
-      extra_link_args=self.extra_link_args,
+      pyx_files,
+      library_dirs=lib_dirs,
+      libraries=libraries,
+      extra_compile_args=extra_compile_args,
+      extra_link_args=extra_link_args,
       **self.extra_args)
 
 
