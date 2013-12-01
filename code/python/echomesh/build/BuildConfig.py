@@ -7,6 +7,7 @@ from Cython.Build import cythonize
 from Cython.Distutils import extension
 
 DEBUG = True
+VERBOSE = True
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
   os.path.abspath(__file__)))))
@@ -16,6 +17,7 @@ from echomesh.base import Platform
 class Config(object):
   def __init__(self):
     self.debug = DEBUG
+    self.verbose = VERBOSE
     self.module_name = 'cechomesh'
     self.library_name = '%s.so' % self.module_name
     pyx_files = ['cechomesh.pyx']
@@ -71,6 +73,7 @@ class Config(object):
       **extra_args)
 
     self.modules = cythonize([ext], **extra_args)
+    self.c_library = os.path.join(echomesh_lib, 'libechomesh.a')
 
 
 CONFIG = Config()

@@ -5,6 +5,7 @@ import os
 from distutils.core import Command
 from echomesh.base import Platform
 from echomesh.build.BuildConfig import CONFIG
+from echomesh.build.CleanOlder import clean_older
 
 COMMANDS = {
   'darwin': ('xcodebuild -project Builds/MacOSX/echomesh.xcodeproj '
@@ -25,7 +26,10 @@ class Library(Command):
     if command:
       config = 'debug' if CONFIG.debug else 'release'
       command = command.format(config=config, Config=config.capitalize())
-      print('Building library with command\n', '  ', command)
+      if CONFIG.verbose:
+        print('Building library with command\n', '  ', command)
       if os.system(command):
         raise Exception('Library command failed')
-
+      clean_older()
+    else:
+      raise Exception('No Library command for platform %s.' % Platform.PLATFORM)

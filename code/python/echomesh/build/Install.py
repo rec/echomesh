@@ -15,6 +15,7 @@ class Install(Command):
     pass
 
   def run(self):
-    print('Copying %s to %s' % (CONFIG.library_name, CONFIG.bin_dir))
     shutil.copy(CONFIG.library_name, CONFIG.bin_dir)
+    if CONFIG.verbose:
+      print('Copied %s to %s' % (CONFIG.library_name, CONFIG.bin_dir))
 
