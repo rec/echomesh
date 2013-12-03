@@ -1,6 +1,7 @@
 #include "rec/util/STL.h"
 #include "echomesh/base/Config.h"
 #include "echomesh/component/InstrumentGrid.h"
+#include "echomesh/util/RunOnMessageThread.h"
 
 namespace echomesh {
 
@@ -113,6 +114,8 @@ void InstrumentGrid::setLightCount(int count) {
   if (count == oldCount)
     return;
 
+  cache_.resize(3 * count);
+
   int delta = labelStartsAtZero_ ? 0 : 1;
   instruments_.resize(count);
   for (int i = oldCount; i < count; ++i) {
@@ -123,6 +126,7 @@ void InstrumentGrid::setLightCount(int count) {
     inst->setLabel(String(i + delta));
     addAndMakeVisible(inst);
   }
+  layout();
 }
 
 void InstrumentGrid::setBackground(const Colour& c) {
@@ -144,11 +148,21 @@ int InstrumentGrid::getLightCount() const {
   return instruments_.size();
 }
 
-void InstrumentGrid::setLights(const char* lights) {
-  MessageManagerLock l;
+bool RUN_ON_MESSAGE_THREAD = true;
 
+void InstrumentGrid::setLights(const char* lights) {
+  cache_.assign(lights, cache_.size());
+  if (RUN_ON_MESSAGE_THREAD) {
+    runOnMessageThread(&InstrumentGrid::doSetLights, this);
+  } else {
+    MessageManagerLock l;
+    doSetLights();
+  }
+}
+
+void InstrumentGrid::doSetLights() {
   for (int i = 0; i < instruments_.size(); ++i) {
-    Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
+    Colour color(cache_[3 * i], cache_[3 * i + 1], cache_[3 * i + 2]);
     instruments_[i]->setColor(color);
   }
 }

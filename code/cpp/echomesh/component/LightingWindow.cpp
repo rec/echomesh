@@ -23,6 +23,8 @@ void LightingWindow::setConfig(const LightConfig& config) {
   toFront(true);
 }
 
+LightingWindow::~LightingWindow() {}
+
 void LightingWindow::closeButtonPressed() {
   if (runningInTest_) {
     quit();
@@ -64,8 +66,7 @@ LightingWindow* makeLightingWindow() {
 
   window->toFront(true);
   window->setVisible(true);
-  // window->grid()->setLightCount(256);
-  // DLOG(INFO) << "Finished initializing the lighting window.";
+  window->grid()->setLightCount(256);
   return window.release();
 }
 
@@ -74,4 +75,3 @@ void deleteLightingWindow(LightingWindow* window) {
 }
 
 }  // namespace echomesh
-

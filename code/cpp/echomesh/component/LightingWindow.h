@@ -12,6 +12,7 @@ class InstrumentGrid;
 class LightingWindow : public DocumentWindow {
  public:
   LightingWindow();
+  ~LightingWindow();
 
   void setLights(const ColorList& cl) { grid()->setLights(cl); }
   void setConfig(const LightConfig& config);

@@ -55,6 +55,7 @@ class Instance(MasterRunnable):
     self.timeout = Config.get('network', 'timeout')
 
     def do_quit():
+      LightSingleton.pause()
       self.pause()
       self.unload()
 
@@ -62,10 +63,6 @@ class Instance(MasterRunnable):
 
   def keyboard_callback(self, s):
     self.keyboard_queue.put(s)
-
-  def _on_pause(self):
-    LightSingleton.stop()
-    super(Instance, self)._on_pause()
 
   def broadcasting(self):
     return self._broadcasting

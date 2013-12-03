@@ -33,6 +33,7 @@ class InstrumentGrid : public Component {
 
  private:
   void layout();
+  void doSetLights();
 
   vector<unique_ptr<InstrumentComponent>> instruments_;
 
@@ -50,6 +51,8 @@ class InstrumentGrid : public Component {
   Point labelPadding_;
 
   CriticalSection lock_;
+
+  string cache_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentGrid)
 };

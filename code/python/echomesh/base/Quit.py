@@ -31,6 +31,7 @@ def request_quit():
 def _register_quit():
   global _REGISTERED
   _REGISTERED = True
+
   def atexit_quit():
     if QUITTING:
       reason = 'at your request'

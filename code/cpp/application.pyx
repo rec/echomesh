@@ -8,8 +8,7 @@ cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
   bool isStarted()
 
 cdef extern from "echomesh/util/Quit.h" namespace "echomesh":
-  void quit()
-
+  void quit() nogil
 
 def start_application(f):
   if f:

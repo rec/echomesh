@@ -21,11 +21,7 @@ class CLightBank(SpiLightBank):
     self.lighting_window = cechomesh.PyLightingWindow()
 
   def _on_pause(self):
-    LOGGER.debug('about to close the lighting window!')
     self.lighting_window.close()
-
-  def config_update(self, get):
-    super(CLightBank, self).config_update(get)
 
   def _display_lights(self):
     self.lighting_window.set_lights(self.data)

@@ -3,7 +3,7 @@
 namespace echomesh {
 
 InstrumentComponent::InstrumentComponent()
-    : color_(Colours::black), labelColor_(Colours::white) {
+    : color_(Colours::black), labelColor_(Colours::white), isRect_(false) {
 }
 
 void InstrumentComponent::configure(
@@ -39,9 +39,6 @@ void InstrumentComponent::paint(Graphics& g) {
 
   g.setColour(back);
   Rectangle<int> b = getLocalBounds();
-
-  DLOG(INFO) << b.toString();
-  DCHECK(false) << b.toString();
 
   if (isRect_)
     g.fillRect(b);

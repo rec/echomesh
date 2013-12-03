@@ -209,7 +209,7 @@ light:
     show_at_startup: true
     show: true
     type: cython
-    period: 10ms
+    period: 100ms
     closes_echomesh: false
 
     background: white

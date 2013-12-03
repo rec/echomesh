@@ -14,7 +14,6 @@ MAIN_THREAD = threading.current_thread()
 
 _TYPE_MAP = {
   'client': 'echomesh.light.ExternalLightBank',
-#  'cython': 'echomesh.light.SpiLightBank',
   'cython': 'echomesh.light.CLightBank',
   'spi': 'echomesh.light.SpiLightBank'
   }
@@ -70,4 +69,4 @@ add_client = _SINGLETON.add_client
 remove_client = _SINGLETON.remove_client
 add_owner = _SINGLETON.add_owner
 remove_owner = _SINGLETON.remove_owner
-stop = _SINGLETON.pause
+pause = _SINGLETON.pause

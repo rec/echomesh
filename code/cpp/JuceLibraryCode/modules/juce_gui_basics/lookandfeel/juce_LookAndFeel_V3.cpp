@@ -220,7 +220,16 @@ void LookAndFeel_V3::drawTabButton (TabBarButton& button, Graphics& g, bool isMo
     if (o != TabbedButtonBar::TabsAtLeft)     g.fillRect (r.removeFromRight (1));
 
     const float alpha = button.isEnabled() ? ((isMouseOver || isMouseDown) ? 1.0f : 0.8f) : 0.3f;
-    const Colour col (bkg.contrasting().withMultipliedAlpha (alpha));
+
+    Colour col (bkg.contrasting().withMultipliedAlpha (alpha));
+
+    if (TabbedButtonBar* bar = button.findParentComponentOfClass<TabbedButtonBar>())
+    {
+        if (button.isFrontTab() && bar->isColourSpecified (TabbedButtonBar::frontTextColourId))
+            col = bar->findColour (TabbedButtonBar::frontTextColourId);
+        else if (bar->isColourSpecified (TabbedButtonBar::tabTextColourId))
+            col = bar->findColour (TabbedButtonBar::tabTextColourId);
+    }
 
     const Rectangle<float> area (button.getTextArea().toFloat());
 
@@ -373,17 +382,29 @@ void LookAndFeel_V3::drawLinearSlider (Graphics& g, int x, int y, int width, int
 
     if (style == Slider::LinearBar || style == Slider::LinearBarVertical)
     {
+        const float fx = (float) x, fy = (float) y, fw = (float) width, fh = (float) height;
+
         Path p;
 
         if (style == Slider::LinearBarVertical)
-            p.addRectangle ((float) x, sliderPos, (float) width, (height - sliderPos));
+            p.addRectangle (fx, sliderPos, fw, 1.0f + fh - sliderPos);
         else
-            p.addRectangle ((float) x, (float) y, (sliderPos - x), (float) height);
+            p.addRectangle (fx, fy, sliderPos - fx, fh);
 
-        drawButtonShape (g, p, slider.findColour (Slider::thumbColourId)
+        Colour baseColour (slider.findColour (Slider::thumbColourId)
                                 .withMultipliedSaturation (slider.isEnabled() ? 1.0f : 0.5f)
-                                .withMultipliedAlpha (0.8f),
-                         (float) height);
+                                .withMultipliedAlpha (0.8f));
+
+        g.setGradientFill (ColourGradient (baseColour.brighter (0.08f), 0.0f, 0.0f,
+                                           baseColour.darker (0.08f), 0.0f, (float) height, false));
+        g.fillPath (p);
+
+        g.setColour (baseColour.darker (0.2f));
+
+        if (style == Slider::LinearBarVertical)
+            g.fillRect (fx, sliderPos, fw, 1.0f);
+        else
+            g.fillRect (sliderPos, fy, 1.0f, fh);
     }
     else
     {
@@ -495,4 +516,91 @@ void LookAndFeel_V3::drawKeymapChangeButton (Graphics& g, int width, int height,
         g.setColour (textColour.withAlpha (0.4f));
         g.drawRect (0, 0, width, height);
     }
+}
+
+
+class LookAndFeel_V3_DocumentWindowButton   : public Button
+{
+public:
+    LookAndFeel_V3_DocumentWindowButton (const String& name, Colour c, const Path& normal, const Path& toggled)
+        : Button (name), colour (c), normalShape (normal), toggledShape (toggled)
+    {
+    }
+
+    void paintButton (Graphics& g, bool isMouseOverButton, bool isButtonDown) override
+    {
+        Colour background (Colours::grey);
+
+        if (ResizableWindow* rw = findParentComponentOfClass<ResizableWindow>())
+            background = rw->getBackgroundColour();
+
+        const float cx = getWidth() * 0.5f, cy = getHeight() * 0.5f;
+        const float diam = jmin (cx, cy) * (isButtonDown ? 0.60f : 0.65f);
+
+        g.setColour (background);
+        g.fillEllipse (cx - diam, cy - diam, diam * 2.0f, diam * 2.0f);
+
+        Colour c (background.contrasting (colour, 0.6f));
+
+        if (! isEnabled())
+            c = c.withAlpha (0.6f);
+        else if (isMouseOverButton)
+            c = c.brighter();
+
+        g.setColour (c);
+        g.drawEllipse (cx - diam, cy - diam, diam * 2.0f, diam * 2.0f, diam * 0.2f);
+
+        Path& p = getToggleState() ? toggledShape : normalShape;
+
+        float scale = 0.55f;
+        g.fillPath (p, p.getTransformToScaleToFit (cx - diam * scale, cy - diam * scale,
+                                                   diam * 2.0f * scale, diam * 2.0f * scale, true));
+    }
+
+private:
+    Colour colour;
+    Path normalShape, toggledShape;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (LookAndFeel_V3_DocumentWindowButton)
+};
+
+Button* LookAndFeel_V3::createDocumentWindowButton (int buttonType)
+{
+    Path shape;
+    const float crossThickness = 0.25f;
+
+    if (buttonType == DocumentWindow::closeButton)
+    {
+        shape.addLineSegment (Line<float> (0.0f, 0.0f, 1.0f, 1.0f), crossThickness * 1.4f);
+        shape.addLineSegment (Line<float> (1.0f, 0.0f, 0.0f, 1.0f), crossThickness * 1.4f);
+
+        return new LookAndFeel_V3_DocumentWindowButton ("close", Colour (0xffdd1100), shape, shape);
+    }
+
+    if (buttonType == DocumentWindow::minimiseButton)
+    {
+        shape.addLineSegment (Line<float> (0.0f, 0.5f, 1.0f, 0.5f), crossThickness);
+
+        return new LookAndFeel_V3_DocumentWindowButton ("minimise", Colour (0xffaa8811), shape, shape);
+    }
+
+    if (buttonType == DocumentWindow::maximiseButton)
+    {
+        shape.addLineSegment (Line<float> (0.5f, 0.0f, 0.5f, 1.0f), crossThickness);
+        shape.addLineSegment (Line<float> (0.0f, 0.5f, 1.0f, 0.5f), crossThickness);
+
+        Path fullscreenShape;
+        fullscreenShape.startNewSubPath (45.0f, 100.0f);
+        fullscreenShape.lineTo (0.0f, 100.0f);
+        fullscreenShape.lineTo (0.0f, 0.0f);
+        fullscreenShape.lineTo (100.0f, 0.0f);
+        fullscreenShape.lineTo (100.0f, 45.0f);
+        fullscreenShape.addRectangle (45.0f, 45.0f, 100.0f, 100.0f);
+        PathStrokeType (30.0f).createStrokedPath (fullscreenShape, fullscreenShape);
+
+        return new LookAndFeel_V3_DocumentWindowButton ("maximise", Colour (0xff119911), shape, fullscreenShape);
+    }
+
+    jassertfalse;
+    return nullptr;
 }

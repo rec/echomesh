@@ -10,7 +10,7 @@ DEBUG = True
 VERBOSE = True
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-  os.path.abspath(__file__)))))
+  os.path.dirname(os.path.abspath(__file__))))))
 
 from echomesh.base import Platform
 
