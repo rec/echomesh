@@ -4,10 +4,6 @@
               bundleIdentifier="org.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0" defines=" JUCE_DISABLE_JUCE_VERSION_PRINTING=1">
   <MAINGROUP id="Z5EcKk" name="echomesh">
-    <GROUP id="{1D89258C-4BCE-66C8-1D54-3E4EC0E10DEA}" name="base64">
-      <FILE id="jK6G3O" name="base64.cpp" compile="1" resource="0" file="../cpp/base64/base64.cpp"/>
-      <FILE id="wjCpDs" name="base64.h" compile="0" resource="0" file="../cpp/base64/base64.h"/>
-    </GROUP>
     <GROUP id="{D12243E0-81CC-491C-1FEB-655FFC7DD30E}" name="echomesh">
       <GROUP id="{9CC2E7D9-6C6A-9A7D-4E72-3105C7A5187D}" name="audio">
         <FILE id="kNQLkH" name="AudioPlayer.cpp" compile="1" resource="0" file="echomesh/audio/AudioPlayer.cpp"/>
@@ -138,73 +134,6 @@
           <FILE id="QKw72w" name="Trash.h" compile="0" resource="0" file="../cpp/rec/util/thread/Trash.h"/>
         </GROUP>
       </GROUP>
-    </GROUP>
-    <GROUP id="{081EE6DA-D9F8-F494-1117-D34C15A56AC0}" name="yaml-cpp-src">
-      <FILE id="F41R57" name="aliasmanager.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/aliasmanager.cpp"/>
-      <FILE id="ROGOhY" name="binary.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/binary.cpp"/>
-      <FILE id="LPPZ5q" name="collectionstack.h" compile="0" resource="0"
-            file="../cpp/yaml-cpp-src/collectionstack.h"/>
-      <GROUP id="{114271F7-DD6A-BD3A-D540-1AE3C5855FF0}" name="contrib">
-        <FILE id="odLnwQ" name="graphbuilder.cpp" compile="1" resource="0"
-              file="../cpp/yaml-cpp-src/contrib/graphbuilder.cpp"/>
-        <FILE id="S6u6Ba" name="graphbuilderadapter.cpp" compile="1" resource="0"
-              file="../cpp/yaml-cpp-src/contrib/graphbuilderadapter.cpp"/>
-        <FILE id="dz2COU" name="graphbuilderadapter.h" compile="0" resource="0"
-              file="../cpp/yaml-cpp-src/contrib/graphbuilderadapter.h"/>
-      </GROUP>
-      <FILE id="QW2Jh4" name="conversion.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/conversion.cpp"/>
-      <FILE id="YCgLOe" name="directives.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/directives.cpp"/>
-      <FILE id="JGn9aZ" name="directives.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/directives.h"/>
-      <FILE id="JaueKD" name="emitfromevents.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/emitfromevents.cpp"/>
-      <FILE id="mKzYAB" name="emitter.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/emitter.cpp"/>
-      <FILE id="kPEoaq" name="emitterstate.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/emitterstate.cpp"/>
-      <FILE id="FEDyCi" name="emitterstate.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/emitterstate.h"/>
-      <FILE id="MEoFOH" name="emitterutils.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/emitterutils.cpp"/>
-      <FILE id="zUJUCU" name="emitterutils.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/emitterutils.h"/>
-      <FILE id="hRc0h3" name="exp.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/exp.cpp"/>
-      <FILE id="AbnPab" name="exp.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/exp.h"/>
-      <FILE id="viImqm" name="indentation.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/indentation.h"/>
-      <FILE id="V8QypR" name="iterator.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/iterator.cpp"/>
-      <FILE id="CtdMbT" name="iterpriv.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/iterpriv.h"/>
-      <FILE id="L6b7XN" name="node.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/node.cpp"/>
-      <FILE id="lGN0GR" name="nodebuilder.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/nodebuilder.cpp"/>
-      <FILE id="A0YgTF" name="nodebuilder.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/nodebuilder.h"/>
-      <FILE id="GL2lJF" name="nodeownership.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/nodeownership.cpp"/>
-      <FILE id="g3piT4" name="nodeownership.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/nodeownership.h"/>
-      <FILE id="PkD3Kc" name="null.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/null.cpp"/>
-      <FILE id="bqZqJo" name="ostream.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/ostream.cpp"/>
-      <FILE id="C8fpY8" name="parser.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/parser.cpp"/>
-      <FILE id="wCj9vo" name="ptr_stack.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/ptr_stack.h"/>
-      <FILE id="HkGQqG" name="ptr_vector.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/ptr_vector.h"/>
-      <FILE id="TtvNKh" name="regex.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/regex.cpp"/>
-      <FILE id="cFoJx2" name="regex.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/regex.h"/>
-      <FILE id="di9ocf" name="regeximpl.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/regeximpl.h"/>
-      <FILE id="enzRQ4" name="scanner.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scanner.cpp"/>
-      <FILE id="PtNIa9" name="scanner.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scanner.h"/>
-      <FILE id="XfLl2t" name="scanscalar.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scanscalar.cpp"/>
-      <FILE id="ww6LcW" name="scanscalar.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scanscalar.h"/>
-      <FILE id="MA9grC" name="scantag.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scantag.cpp"/>
-      <FILE id="wfmoNI" name="scantag.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/scantag.h"/>
-      <FILE id="cETY3b" name="scantoken.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/scantoken.cpp"/>
-      <FILE id="NsgvxG" name="setting.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/setting.h"/>
-      <FILE id="DMbgV4" name="simplekey.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/simplekey.cpp"/>
-      <FILE id="bL6jYk" name="singledocparser.cpp" compile="1" resource="0"
-            file="../cpp/yaml-cpp-src/singledocparser.cpp"/>
-      <FILE id="kKQuLw" name="singledocparser.h" compile="0" resource="0"
-            file="../cpp/yaml-cpp-src/singledocparser.h"/>
-      <FILE id="sQNZNd" name="stream.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/stream.cpp"/>
-      <FILE id="W56XtB" name="stream.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/stream.h"/>
-      <FILE id="fza0fO" name="streamcharsource.h" compile="0" resource="0"
-            file="../cpp/yaml-cpp-src/streamcharsource.h"/>
-      <FILE id="rZgby9" name="stringsource.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/stringsource.h"/>
-      <FILE id="D2GZYB" name="tag.cpp" compile="1" resource="0" file="../cpp/yaml-cpp-src/tag.cpp"/>
-      <FILE id="GPBwGj" name="tag.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/tag.h"/>
-      <FILE id="W2Cr9Q" name="token.h" compile="0" resource="0" file="../cpp/yaml-cpp-src/token.h"/>
     </GROUP>
     <GROUP id="{E1EA0B3F-992D-DCBB-7CA1-E011F99F9A99}" name="Source"/>
   </MAINGROUP>

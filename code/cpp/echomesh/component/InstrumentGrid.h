@@ -14,7 +14,7 @@ class InstrumentGrid : public Component {
   virtual ~InstrumentGrid();
 
   void setLights(const ColorList&);
-  void setLights(const char*);
+  void setLights(const unsigned char*);
   void setPaintingIsUnclipped(bool);
   void setLightCount(int);
   int getLightCount() const;
@@ -27,7 +27,9 @@ class InstrumentGrid : public Component {
   void paint(Graphics&);
   void doRepaint() {
     MessageManagerLock l;
-    repaint();
+    JUCE_AUTORELEASEPOOL {
+      repaint();
+    }
   }
 
  private:
@@ -51,7 +53,7 @@ class InstrumentGrid : public Component {
 
   CriticalSection lock_;
 
-  string cache_;
+  vector<unsigned char> cache_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(InstrumentGrid)
 };

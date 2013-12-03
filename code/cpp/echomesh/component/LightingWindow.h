@@ -1,7 +1,6 @@
 #ifndef __ECHOMESH_LIGHTING_WINDOW__
 #define __ECHOMESH_LIGHTING_WINDOW__
 
-#include "yaml-cpp/yaml.h"
 #include "echomesh/component/InstrumentGrid.h"
 
 namespace echomesh {
