@@ -70,9 +70,6 @@
         <FILE id="aMGRno" name="LightingWindow.h" compile="0" resource="0"
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
-      <FILE id="CsvuAD" name="Echomesh.cpp" compile="1" resource="0" file="../cpp/echomesh/Echomesh.cpp"/>
-      <FILE id="ZcUUY0" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/Echomesh.h"/>
-      <FILE id="IA2wce" name="Main.cpp" compile="1" resource="0" file="../cpp/echomesh/Main.cpp"/>
       <GROUP id="{B85C8A48-98D4-485F-2CAA-3F21415DF78B}" name="network">
         <FILE id="RXdNqE" name="LightController.cpp" compile="1" resource="0"
               file="../cpp/echomesh/network/LightController.cpp"/>

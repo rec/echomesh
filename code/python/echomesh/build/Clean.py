@@ -4,6 +4,7 @@ import os
 
 from distutils.core import Command
 from echomesh.build.BuildConfig import CONFIG
+from echomesh.build.Execute import execute, execute_command
 
 class Clean(Command):
   description = 'Complete clean command'
@@ -16,6 +17,7 @@ class Clean(Command):
 
   def run(self):
     assert os.getcwd() == self.cwd, 'Must be in package root: %s' % self.cwd
-    os.system('rm -Rf %s.so ./build/temp* ./dist echomesh.cpp' %
+    execute('rm -Rf %s.so ./build/temp* ./dist echomesh.cpp' %
               CONFIG.module_name)
+    execute_command('clean')
 
