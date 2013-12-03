@@ -7,7 +7,6 @@
 
 #include "echomesh/audio/AudioController.h"
 #include "echomesh/audio/SampleAudioSource.h"
-#include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 #include "rec/util/STL.h"
 

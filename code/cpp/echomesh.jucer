@@ -70,23 +70,6 @@
         <FILE id="aMGRno" name="LightingWindow.h" compile="0" resource="0"
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
-      <GROUP id="{B85C8A48-98D4-485F-2CAA-3F21415DF78B}" name="network">
-        <FILE id="RXdNqE" name="LightController.cpp" compile="1" resource="0"
-              file="../cpp/echomesh/network/LightController.cpp"/>
-        <FILE id="H2Jq64" name="LightController.h" compile="0" resource="0"
-              file="../cpp/echomesh/network/LightController.h"/>
-        <FILE id="ThjsKT" name="LightReader.cpp" compile="1" resource="0" file="../cpp/echomesh/network/LightReader.cpp"/>
-        <FILE id="BEgmyC" name="LightReader.h" compile="0" resource="0" file="../cpp/echomesh/network/LightReader.h"/>
-        <FILE id="SOeAZl" name="LineGetter.cpp" compile="1" resource="0" file="../cpp/echomesh/network/LineGetter.cpp"/>
-        <FILE id="HquJRb" name="LineGetter.h" compile="0" resource="0" file="../cpp/echomesh/network/LineGetter.h"/>
-        <FILE id="CLSsVt" name="LineQueue.h" compile="0" resource="0" file="../cpp/echomesh/network/LineQueue.h"/>
-        <FILE id="W5eiOA" name="ReadThread.cpp" compile="1" resource="0" file="../cpp/echomesh/network/ReadThread.cpp"/>
-        <FILE id="r8feCI" name="ReadThread.h" compile="0" resource="0" file="../cpp/echomesh/network/ReadThread.h"/>
-        <FILE id="crWROQ" name="SocketLineGetter.cpp" compile="1" resource="0"
-              file="../cpp/echomesh/network/SocketLineGetter.cpp"/>
-        <FILE id="veTTe9" name="SocketLineGetter.h" compile="0" resource="0"
-              file="../cpp/echomesh/network/SocketLineGetter.h"/>
-      </GROUP>
       <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
         <FILE id="NclU6P" name="InitLog.cpp" compile="1" resource="0" file="echomesh/util/InitLog.cpp"/>
         <FILE id="UrM8ro" name="InitLog.h" compile="0" resource="0" file="echomesh/util/InitLog.h"/>

@@ -1,5 +1,4 @@
 #include "echomesh/component/LightingWindow.h"
-#include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/Quit.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
@@ -29,19 +28,17 @@ void LightingWindow::closeButtonPressed() {
   if (runningInTest_) {
     quit();
 
-  } else if (SocketLineGetter* getter = SocketLineGetter::instance()) {
-    YAML::Emitter out;
-
+  } else {
+#if 0
     out << YAML::BeginMap
         << YAML::Key << "type"
         << YAML::Value << "hide"
-        << YAML::EndMap;
-
-    getter->writeSocket(out.c_str(), out.size());
+#endif
   }
 }
 
 void LightingWindow::moved() {
+#if 0
   if (false) {
     if (SocketLineGetter* getter = SocketLineGetter::instance()) {
       YAML::Emitter out;
@@ -58,6 +55,7 @@ void LightingWindow::moved() {
       getter->writeSocket(out.c_str(), out.size());
     }
   }
+#endif
 }
 
 LightingWindow* makeLightingWindow() {

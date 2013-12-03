@@ -48,7 +48,6 @@ void startApplication(VoidCaller cb, void* userData) {
   CALLBACK = cb;
   USER_DATA = userData;
   juce::JUCEApplicationBase::createInstance = &juce_CreateApplication;
-  DLOG(INFO) << "Initializing Juce";
   juce::JUCEApplicationBase::main(1, ARGV);
 }
 

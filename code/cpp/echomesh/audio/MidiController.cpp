@@ -4,7 +4,6 @@
 #include <string>
 
 #include "echomesh/audio/MidiController.h"
-#include "echomesh/network/SocketLineGetter.h"
 #include "echomesh/util/GetDevice.h"
 
 namespace echomesh {
@@ -22,9 +21,7 @@ MidiController::~MidiController() {}
 
 void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
   log("Incoming MIDI message");
-  if (SocketLineGetter* getter = SocketLineGetter::instance()) {
-    YAML::Emitter out;
-
+#if 0
     out << YAML::BeginMap
         << YAML::Key << "type"
         << YAML::Value << "midi"
@@ -35,11 +32,7 @@ void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& ms
     const uint8* data = msg.getRawData();
     for (int i = 0; i < size; ++i)
       out << static_cast<int>(data[i]);
-
-    out << YAML::EndSeq << YAML::EndMap;
-
-    getter->writeSocket(out.c_str(), out.size());
-  }
+#endif
 }
 
 static MidiMessage makeMidiMessage(const Node& data) {
