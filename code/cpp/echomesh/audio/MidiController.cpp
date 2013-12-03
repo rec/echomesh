@@ -11,10 +11,12 @@ namespace audio {
 
 using namespace std;
 
-MidiController::MidiController(const Node& node)
-  : node_(node),
-    midiInput_(new ConfigMidiInput(this)),
-    midiOutput_(new ConfigMidiOutput) {
+MidiController::MidiController()
+#if 0
+  : midiInput_(new ConfigMidiInput(this)),
+    midiOutput_(new ConfigMidiOutput)
+#endif
+{
 }
 
 MidiController::~MidiController() {}
@@ -35,6 +37,7 @@ void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& ms
 #endif
 }
 
+#if 0
 static MidiMessage makeMidiMessage(const Node& data) {
   int size = data.size();
   int b;
@@ -50,12 +53,7 @@ void MidiController::midi() {
   midiOutput_->sendMessageNow(makeMidiMessage(node_["data"]));
 }
 
-void MidiController::config() {
-  Config config;
-  node_["data"] >> config;
-  midiInput_->setConfig(config.midi.input);
-  midiOutput_->setConfig(config.midi.output);
-}
+#endif
 
 }  // namespace audio
 }  // namespace echomesh

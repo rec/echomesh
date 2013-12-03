@@ -12,10 +12,6 @@
       <GROUP id="{9CC2E7D9-6C6A-9A7D-4E72-3105C7A5187D}" name="audio">
         <FILE id="kNQLkH" name="AudioPlayer.cpp" compile="1" resource="0" file="echomesh/audio/AudioPlayer.cpp"/>
         <FILE id="oBl5qw" name="AudioPlayer.h" compile="0" resource="0" file="echomesh/audio/AudioPlayer.h"/>
-        <FILE id="Z6wPF2" name="AudioController.cpp" compile="1" resource="0"
-              file="../cpp/echomesh/audio/AudioController.cpp"/>
-        <FILE id="HGXW7Q" name="AudioController.h" compile="0" resource="0"
-              file="../cpp/echomesh/audio/AudioController.h"/>
         <FILE id="K6zVLK" name="DefaultDevice.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/DefaultDevice.cpp"/>
         <FILE id="hbfQ3C" name="DefaultDevice.h" compile="0" resource="0" file="../cpp/echomesh/audio/DefaultDevice.h"/>
@@ -48,8 +44,6 @@
       </GROUP>
       <GROUP id="{3C4FBC92-E200-D9EF-AEDD-3C3938F7814F}" name="base">
         <FILE id="IAhuN5" name="ArraySize.h" compile="0" resource="0" file="../cpp/echomesh/base/ArraySize.h"/>
-        <FILE id="msa5cc" name="Config.cpp" compile="1" resource="0" file="../cpp/echomesh/base/Config.cpp"/>
-        <FILE id="zivfw7" name="Config.h" compile="0" resource="0" file="../cpp/echomesh/base/Config.h"/>
         <FILE id="FnBRuc" name="Disallow.h" compile="0" resource="0" file="../cpp/echomesh/base/Disallow.h"/>
         <FILE id="KEIchB" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/base/Echomesh.h"/>
         <FILE id="acdE9F" name="Log.cpp" compile="1" resource="0" file="../cpp/echomesh/base/Log.cpp"/>

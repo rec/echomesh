@@ -1,5 +1,5 @@
+#if 0
 #include "echomesh/util/GetDevice.h"
-#include "echomesh/base/Config.h"
 
 namespace echomesh {
 namespace audio {
@@ -95,3 +95,4 @@ void ConfigMidiOutput::sendMessageNow(const MidiMessage& msg) {
 
 }  // namespace audio
 }  // namespace echomesh
+#endif

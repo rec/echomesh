@@ -2,7 +2,6 @@
 #define __ECHOMESH_LIGHTING_WINDOW__
 
 #include "yaml-cpp/yaml.h"
-#include "echomesh/base/Config.h"
 #include "echomesh/component/InstrumentGrid.h"
 
 namespace echomesh {
@@ -15,7 +14,6 @@ class LightingWindow : public DocumentWindow {
   ~LightingWindow();
 
   void setLights(const ColorList& cl) { grid()->setLights(cl); }
-  void setConfig(const LightConfig& config);
   void closeButtonPressed();
   InstrumentGrid* grid() { return instrumentGrid_; }
 

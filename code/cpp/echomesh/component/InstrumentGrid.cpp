@@ -1,5 +1,4 @@
 #include "rec/util/STL.h"
-#include "echomesh/base/Config.h"
 #include "echomesh/component/InstrumentGrid.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
@@ -26,20 +25,6 @@ InstrumentGrid::InstrumentGrid()
 }
 
 InstrumentGrid::~InstrumentGrid() {}
-
-void InstrumentGrid::setConfig(const LightConfig& config) {
-  ScopedLock l(lock_);
-
-  background_ = config.visualizer.background;
-
-  getParentComponent()->setVisible(true); // Fix this.
-  setPaintingIsUnclipped(config.visualizer.instrument.paintUnclipped);
-
-  setLightCount(config.count);
-  setLayout(config.visualizer.layout, config.visualizer.instrument.size,
-            config.visualizer.padding, config.visualizer.instrument.padding,
-            config.visualizer.instrument.labelPadding);
-}
 
 void InstrumentGrid::setLayout(
     const Point& lay, const Point& size, const Point& padding,

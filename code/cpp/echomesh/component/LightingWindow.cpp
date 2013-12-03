@@ -15,13 +15,6 @@ LightingWindow::LightingWindow()
   setUsingNativeTitleBar(true);
 }
 
-void LightingWindow::setConfig(const LightConfig& config) {
-  MessageManagerLock l;
-  setTopLeftPosition(config.visualizer.topLeft.x, config.visualizer.topLeft.y);
-  instrumentGrid_->setConfig(config);
-  toFront(true);
-}
-
 LightingWindow::~LightingWindow() {}
 
 void LightingWindow::closeButtonPressed() {

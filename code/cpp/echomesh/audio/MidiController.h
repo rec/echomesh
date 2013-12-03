@@ -13,7 +13,7 @@ class ConfigMidiOutput;
 
 class MidiController : public MidiInputCallback {
  public:
-  MidiController(const Node&);
+  MidiController();
   virtual ~MidiController();
   virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
 
@@ -21,9 +21,10 @@ class MidiController : public MidiInputCallback {
   void midi();
 
  private:
-  const Node& node_;
+#if 0
   ScopedPointer<ConfigMidiInput> midiInput_;
   ScopedPointer<ConfigMidiOutput> midiOutput_;
+#endif
 
   DISALLOW_COPY_AND_ASSIGN(MidiController);
 };

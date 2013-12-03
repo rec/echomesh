@@ -13,7 +13,6 @@ class InstrumentGrid : public Component {
   InstrumentGrid();
   virtual ~InstrumentGrid();
 
-  void setConfig(const LightConfig&);
   void setLights(const ColorList&);
   void setLights(const char*);
   void setPaintingIsUnclipped(bool);

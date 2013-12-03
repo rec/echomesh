@@ -4,7 +4,7 @@ from libcpp cimport bool
 cdef extern from "Python.h":
    char* PyByteArray_AsString(object bytearray) except NULL
 
-cdef extern from "echomesh/base/Config.h" namespace "echomesh":
+cdef extern from "echomesh/base/Echomesh.h" namespace "echomesh":
   cdef cppclass Point:
     Point(int x, int y)
 

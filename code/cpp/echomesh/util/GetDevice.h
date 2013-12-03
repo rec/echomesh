@@ -1,9 +1,10 @@
 #ifndef __ECHOMESH_GET_DEVICE__
 #define __ECHOMESH_GET_DEVICE__
 
+#if 0
+
 #include <queue>
 
-#include "echomesh/base/Config.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
 namespace echomesh {
@@ -83,5 +84,7 @@ class ConfigMidiOutput : public ConfigMidi<MidiOutput> {
 
 }  // namespace audio
 }  // namespace echomesh
+
+#endif
 
 #endif  // __ECHOMESH_GET_DEVICE__

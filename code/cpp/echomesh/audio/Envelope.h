@@ -1,7 +1,7 @@
 #ifndef __ECHOMESH_ENVELOPE__
 #define __ECHOMESH_ENVELOPE__
 
-#include "echomesh/base/Config.h"
+#include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
 namespace audio {
@@ -47,9 +47,6 @@ struct Playback {
   Envelope pan;
   bool passthrough;
 };
-
-void operator>>(const Node&, Envelope&);
-void operator>>(const Node&, Playback&);
 
 }  // namespace audio
 }  // namespace echomesh

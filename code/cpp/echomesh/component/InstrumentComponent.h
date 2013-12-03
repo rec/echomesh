@@ -2,7 +2,6 @@
 #define __ECHOMESH_INSTRUMENT_COMPONENT__
 
 #include "echomesh/base/Echomesh.h"
-#include "echomesh/base/Config.h"
 
 namespace echomesh {
 
@@ -10,8 +9,6 @@ class InstrumentComponent : public Component {
  public:
   InstrumentComponent();
   ~InstrumentComponent() {}
-
-  void configure(const String& label, const Instrument&);
 
   void setColor(const Colour&);
   virtual void paint(Graphics&);

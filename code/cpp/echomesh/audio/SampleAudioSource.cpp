@@ -7,16 +7,6 @@
 namespace echomesh {
 namespace audio {
 
-SampleAudioSource::SampleAudioSource(const Node& node) :
-    length_(0), gain_(), pan_(), callback_(nullptr), callbackData_(nullptr) {
-  Playback playback;
-  node >> playback;
-
-  init(playback.filename, playback.loops,
-       playback.begin, playback.end, playback.length, nullptr, nullptr,
-       44100.0, 2);
-}
-
 SampleAudioSource::SampleAudioSource(
     const String& filename, int loops,
     SampleTime begin, SampleTime end, SampleTime length,

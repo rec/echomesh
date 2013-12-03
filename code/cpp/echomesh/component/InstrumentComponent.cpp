@@ -6,15 +6,6 @@ InstrumentComponent::InstrumentComponent()
     : color_(Colours::black), labelColor_(Colours::white), isRect_(false) {
 }
 
-void InstrumentComponent::configure(
-    const String& label, const Instrument& config) {
-  ScopedLock l(lock_);
-  setShape(config.isRect);
-  setLabelPadding(config.labelPadding.x, config.labelPadding.y);
-  setShowLabel(config.label);
-  label_ = label;
-}
-
 void InstrumentComponent::setColor(const Colour& c) {
   ScopedLock l(lock_);
   if (c == color_)

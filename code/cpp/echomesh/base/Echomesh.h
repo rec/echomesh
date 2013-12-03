@@ -28,8 +28,6 @@ using rec::SampleRate;
 // http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
 #define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
 
-namespace YAML { class Node; }
-
 namespace rec { namespace util { namespace thread { namespace callback {
 class Callback;
 }}}}
@@ -37,7 +35,6 @@ class Callback;
 namespace echomesh {
 
 typedef rec::util::thread::callback::Callback Callback;
-typedef YAML::Node Node;
 
 class Exception : public std::exception {
  public:
@@ -48,6 +45,17 @@ class Exception : public std::exception {
 
  private:
   const String message_;
+};
+
+typedef uint8 ColorBytes[3];
+typedef std::vector<Colour> ColorList;
+typedef std::vector<uint8> ByteList;
+
+struct Point {
+  Point() {}
+  Point(int x_, int y_) : x(x_), y(y_) {}
+  int x;
+  int y;
 };
 
 }  // namespace echomesh

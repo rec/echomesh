@@ -9,8 +9,6 @@ namespace audio {
 
 class SampleAudioSource : public AudioSource {
  public:
-  explicit SampleAudioSource(const Node&);
-
   SampleAudioSource(const String& filename, int loops,
                     SampleTime begin, SampleTime end, SampleTime length,
                     Envelope* gain, Envelope* pan, VoidCaller callback,
