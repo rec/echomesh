@@ -3,5 +3,5 @@
 
 include "application.pyx"
 include "audio.pyx"
-include "lights.pyx"
+include "echomesh/component/LightingWindow.pyx"
 include "log.pyx"

@@ -1,6 +1,4 @@
-# *.cpp
-
-# How to ignore the outputs from cython so they aren't checked in?
+cechomesh.cpp
 
 *.so
 build/
