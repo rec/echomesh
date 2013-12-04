@@ -1,6 +1,7 @@
 # distutils: language = c++
 
-include "envelope.pyx"
+include "echomesh/util/AppCallback.pyx"
+include "echomesh/audio/Envelope.pyx"
 
 from libcpp.string cimport string
 
@@ -48,20 +49,3 @@ cdef class AudioSource:
     t = self.thisptr
     del t
     self.thisptr = NULL
-
-cdef extern from "echomesh/audio/DefaultDevice.h" namespace "echomesh::audio":
-  double defaultInputSampleRate()
-  double defaultOutputSampleRate()
-  string defaultOutputDevice()
-  string defaultInputDevice()
-  string test1()
-  string test2()
-
-def default_output_device():
-  return defaultOutputDevice()
-
-def default_input_device():
-  return defaultInputDevice()
-
-def default_output_sample_rate():
-  return defaultOutputSampleRate()

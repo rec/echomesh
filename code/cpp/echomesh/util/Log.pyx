@@ -1,3 +1,5 @@
+# include "echomesh/util/AppCallback.pyx"
+
 cdef extern from "echomesh/util/InitLog.h" namespace "echomesh":
   void initLog()
   void setLogger(int logLevel, StringCaller caller, void* callback)

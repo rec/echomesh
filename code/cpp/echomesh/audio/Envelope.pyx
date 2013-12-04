@@ -1,12 +1,7 @@
-# distutils: language = c++
+include "rec/base/SampleTime.pyx"
 
 from libcpp cimport bool
 from libcpp.vector cimport vector
-
-cdef extern from "rec/base/SampleTime.h" namespace "rec":
-  cdef cppclass SampleTime:
-    SampleTime(long long)
-    long long get()
 
 
 cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
