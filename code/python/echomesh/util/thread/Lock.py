@@ -42,7 +42,7 @@ class _FakeLock(object):
 
 
 def Lock(fake=False):
-  if True:
+  if fake:
     return _FakeLock()
   lock = threading.RLock()
   return _Locker(lock) if DEBUG else lock

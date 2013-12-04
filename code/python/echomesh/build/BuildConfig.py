@@ -6,7 +6,7 @@ import sys
 from Cython.Build import cythonize
 from Cython.Distutils import extension
 
-DEBUG = True
+DEBUG = not True
 VERBOSE = True
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
