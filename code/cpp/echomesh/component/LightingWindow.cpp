@@ -52,9 +52,8 @@ void LightingWindow::moved() {
 }
 
 LightingWindow* makeLightingWindow() {
-  unique_ptr<LightingWindow> window = make_unique<LightingWindow>();
   MessageManagerLock l;
-
+  unique_ptr<LightingWindow> window = make_unique<LightingWindow>();
   window->toFront(true);
   window->setVisible(true);
   window->grid()->setLightCount(256);
