@@ -37,8 +37,9 @@ class Maker(object):
     return is_constant
 
   def __str__(self):
-    return 'Maker(pattern_desc=%s, function=%s, attributes=%s)' % (
-      self.pattern_desc, self.function, self.attributes)
+    return 'Maker(pattern_desc=%s, function=%s)' % (
+      self.pattern_desc,
+      getattr(self.function, '__name__', 'anonymous'))
 
 def maker(*a):
   args = a

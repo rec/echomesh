@@ -53,8 +53,16 @@ class LightBank(ThreadLoop):
   def single_loop(self):
     with self.lock:
       client_lights = []
+      failed_clients = set()
       for client in self.clients:
-        client_lights.append(client.evaluate())
+        try:
+          client_lights.append(client.evaluate())
+
+        except:
+          LOGGER.error('in client %s', client)
+          failed_clients.add(client)
+      for c in failed_clients:
+         self.clients.remove(c)
 
     if not client_lights:
       return
