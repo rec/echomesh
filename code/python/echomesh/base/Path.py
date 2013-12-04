@@ -23,8 +23,10 @@ EXTERNAL_CODE_PATH = os.path.join(CODE_PATH, 'external')
 PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
   EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
 BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
+COMPATIBILITY_PATH = os.path.join(CODE_PATH, 'compatibility')
 
-PATHS = PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, BINARY_PATH
+PATHS = (PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, BINARY_PATH,
+         COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'command', 'log'
 
@@ -70,6 +72,7 @@ def info():
     'Asset path': ASSET_PATH,
     'Code path': CODE_PATH,
     'Command path': COMMAND_PATH,
+    'Compatibility path': COMPATIBILITY_PATH,
     'External code path': EXTERNAL_CODE_PATH,
     'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,
