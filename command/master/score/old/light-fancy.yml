@@ -8,7 +8,7 @@ variables:
 patterns:
   one:
     type: insert
-    begin: local.loop / 2 + 32
+    offset: local.loop / 2 + 32
 
     pattern:
       type: spread
@@ -17,7 +17,7 @@ patterns:
 
   two:
     type: insert
-    begin: local.loop / 4
+    offset: local.loop / 4
     skip: 4
     pattern:
       type: spread
@@ -28,7 +28,7 @@ patterns:
     type: transpose
     pattern:
       type: insert
-      begin: config.light.count - local.loop
+      offset: config.light.count - local.loop
       pattern:
         type: spread
         colors: [burnt sienna, cadmium yellow]

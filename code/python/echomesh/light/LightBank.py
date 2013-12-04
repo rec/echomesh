@@ -13,8 +13,8 @@ LOGGER = Log.logger(__name__)
 class LightBank(ThreadLoop):
   def __init__(self, is_daemon=True, name='LightBank'):
     super(LightBank, self).__init__(is_daemon=is_daemon, name=name)
-    self.clients = set()
-    self.lock = Lock.Lock(fake=True)
+    self._clients = set()
+    self.lock = Lock.Lock()
     self.loops = 0
     self.data = None
 
@@ -34,13 +34,13 @@ class LightBank(ThreadLoop):
 
   def add_client(self, client):
     with self.lock:
-      self.clients.add(client)
+      self._clients.add(client)
     LOGGER.vdebug('add_client %s', client)
 
   def remove_client(self, client):
     with self.lock:
       try:
-        self.clients.remove(client)
+        self._clients.remove(client)
       except KeyError:
         LOGGER.error('Removed client we didn\'t add %s', client)
         pass
@@ -48,13 +48,13 @@ class LightBank(ThreadLoop):
 
   def has_clients(self):
     with self.lock:
-      return not not self.clients
+      return not not self._clients
 
   def single_loop(self):
     with self.lock:
       client_lights = []
       failed_clients = set()
-      for client in self.clients:
+      for client in self._clients:
         try:
           client_lights.append(client.evaluate())
 
@@ -62,7 +62,7 @@ class LightBank(ThreadLoop):
           LOGGER.error('in client %s', client)
           failed_clients.add(client)
       for c in failed_clients:
-         self.clients.remove(c)
+         self._clients.remove(c)
 
     if not client_lights:
       return

@@ -12,8 +12,7 @@ patterns:
     offset: local.loop + 32
     pattern:
       type: spread
-      begin: red
-      end: white
+      colors: red, white
       steps: 8
 
 elements:

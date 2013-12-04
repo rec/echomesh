@@ -11,7 +11,7 @@ patterns:
 
   two:
     type: insert
-    begin: local.steps
+    offset: local.steps
     pattern:
       type: spread
       colors: [red, yellow]

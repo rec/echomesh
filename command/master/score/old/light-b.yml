@@ -10,7 +10,7 @@ patterns:
     type: transpose
     pattern:
       type: insert
-      begin: config.light.count - local.loop
+      offset: config.light.count - local.loop
       pattern:
         type: spread
         colors: [burnt sienna, cadmium yellow]

@@ -5,8 +5,7 @@ patterns:
     type: insert
     pattern:
       type: spread
-      begin: blue
-      end: white
+      colors: blue, white
       steps: 32
 
   one:
@@ -14,8 +13,7 @@ patterns:
     offset: 32
     pattern:
       type: spread
-      begin: white
-      end: red
+      colors: white, red
       steps: 32
 
 elements:
@@ -24,7 +22,7 @@ elements:
     type: pattern
     pattern: two
   -
-    begin: 2
+    offset: 2
     end: infinite
     type: pattern
     pattern: one

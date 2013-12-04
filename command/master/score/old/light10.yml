@@ -3,17 +3,15 @@ type: sequence
 patterns:
   one:
     type: spread
-    begin: black
-    end: red
+    colors: black, red
     steps: config.light.count / 2
 
   two:
     type: insert
-    begin: config.light.count / 2
+    offset: config.light.count / 2
     pattern:
       type: spread
-      begin: red
-      end: white
+      colors: red, white
       steps: config.light.count / 2
 
 elements:
