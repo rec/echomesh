@@ -12,8 +12,10 @@ class Player {
 
   void initialize(AudioSource* source = NULL) {
     String err = manager_.initialise(1, 2, NULL, true);
-    if (err.length())
-      log(String("Couldn't initialize audio::Device, error ") + err);
+    if (err.length()) {
+      DLOG(INFO) << "Couldn't initialize audio::Device, error "
+                 <<  err.toStdString();
+    }
     player_.setSource(source);
     manager_.addAudioCallback(&player_);
   }

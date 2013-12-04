@@ -9,7 +9,6 @@ namespace {
 template <typename DeviceClass>
 int getDeviceIndex(const String& name, int index) {
   StringArray names = DeviceClass::getDevices();
-  log(names.joinIntoString(", "));
   if (index >= 0) {
     index = jmin(index, names.size() - 1);
   } else {
@@ -54,7 +53,7 @@ class CallbackContainer : public MidiInputCallback {
 
   virtual void handleIncomingMidiMessage(MidiInput* source,
                                          const MidiMessage& message) {
-    log("FIRST handleIncomingMidiMessage");
+    // log("FIRST handleIncomingMidiMessage");
     if (callback_)
       callback_->handleIncomingMidiMessage(source, message);
   }

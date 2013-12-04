@@ -22,14 +22,8 @@ MidiController::MidiController()
 MidiController::~MidiController() {}
 
 void MidiController::handleIncomingMidiMessage(MidiInput*, const MidiMessage& msg) {
-  log("Incoming MIDI message");
+  DLOG(INFO) << ("Incoming MIDI message");
 #if 0
-    out << YAML::BeginMap
-        << YAML::Key << "type"
-        << YAML::Value << "midi"
-        << YAML::Key << "data"
-        << YAML::Value << YAML::BeginSeq;
-
     int size = msg.getRawDataSize();
     const uint8* data = msg.getRawData();
     for (int i = 0; i < size; ++i)

@@ -11,7 +11,6 @@
 
 #include "JuceLibraryCode/JuceHeader.h"
 #include "echomesh/base/Disallow.h"
-#include "echomesh/base/Log.h"
 #include "echomesh/base/make_unique.h"
 #include "rec/base/RealTime.h"
 #include "rec/base/SampleTime.h"

@@ -42,8 +42,6 @@
         <FILE id="IAhuN5" name="ArraySize.h" compile="0" resource="0" file="../cpp/echomesh/base/ArraySize.h"/>
         <FILE id="FnBRuc" name="Disallow.h" compile="0" resource="0" file="../cpp/echomesh/base/Disallow.h"/>
         <FILE id="KEIchB" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/base/Echomesh.h"/>
-        <FILE id="acdE9F" name="Log.cpp" compile="1" resource="0" file="../cpp/echomesh/base/Log.cpp"/>
-        <FILE id="xMV8Ja" name="Log.h" compile="0" resource="0" file="../cpp/echomesh/base/Log.h"/>
         <FILE id="Ti9cJ6" name="Runnable.h" compile="0" resource="0" file="../cpp/echomesh/base/Runnable.h"/>
       </GROUP>
       <GROUP id="{FEE735BA-5738-1145-8191-A33B1EAB942B}" name="component">
