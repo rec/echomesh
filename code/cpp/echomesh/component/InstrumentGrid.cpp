@@ -133,23 +133,10 @@ int InstrumentGrid::getLightCount() const {
   return instruments_.size();
 }
 
-bool RUN_ON_MESSAGE_THREAD = not true;
-
-void InstrumentGrid::setLights(const unsigned char* lights) {
-  for (int i = 0; i < cache_.size(); ++i)
-    cache_[i] = lights[i];
-
-  if (RUN_ON_MESSAGE_THREAD) {
-    runOnMessageThread(&InstrumentGrid::doSetLights, this);
-  } else {
-    MessageManagerLock l;
-    doSetLights();
-  }
-}
-
-void InstrumentGrid::doSetLights() {
+void InstrumentGrid::setLights(const char* lights) {
+  MessageManagerLock l;
   for (int i = 0; i < instruments_.size(); ++i) {
-    Colour color(cache_[3 * i], cache_[3 * i + 1], cache_[3 * i + 2]);
+    Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
     instruments_[i]->setColor(color);
   }
 }
