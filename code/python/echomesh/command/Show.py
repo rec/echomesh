@@ -256,16 +256,14 @@ def _show(echomesh_instance, *parts):
   if not parts:
     LOGGER.info('\n' + SHOW_USAGE)
   else:
-    for name in parts:
-      try:
-        function = SHOW_REGISTRY.function(name)
-      except:
-        function = None
-      if function:
-        function(echomesh_instance)
-      else:
-        raise Exception("Didn't understand command 'show %s'. \n\n%s" %
-                        (name, SHOW_USAGE))
+    name = parts[0]
+    try:
+      function = SHOW_REGISTRY.function(name)
+    except:
+      raise Exception("Didn't understand command 'show %s'. \n\n%s" %
+                      (' '.join(parts), SHOW_USAGE))
+
+    function(echomesh_instance, *parts[1:])
 
 SHOW_HELP = """
 "show" displays information about the current echomesh instance.

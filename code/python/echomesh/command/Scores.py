@@ -24,12 +24,13 @@ def _time(t):
 
 #                 file   bytes a   m   c
 ELEMENT_FORMAT = '  %-28s %5s %9s %9s %9s'
+INDENT = '  '
 
-def _scores(path, resolve=False, context='all', recursive=False):
-  printed = False
+def _scores(path, resolve=False, context='all', recursive=False,
+            indent='', printed=False, top_level=True):
   if context == 'all':
-    for s in Context.CONTEXTS:
-      printed = _scores(path, resolve, s, recursive) or printed
+    for c in Context.CONTEXTS:
+      printed = _scores(path, resolve, c, recursive, indent) or printed
   else:
     context = Context.resolve(context)
     pathdir = os.path.join(Path.COMMAND_PATH, context, 'score', path)
@@ -43,17 +44,25 @@ def _scores(path, resolve=False, context='all', recursive=False):
         if not printed_this_time:
           printed_this_time = True
           if not printed:
-            LOGGER.info(ELEMENT_FORMAT, 'File name', ' Bytes', 'Accessed',
+            LOGGER.info(indent + ELEMENT_FORMAT, 'File name', ' Bytes', 'Accessed',
                          'Modified', 'Created')
             printed = True
-          else:
+          elif top_level:
             LOGGER.info('\n')
-          LOGGER.info('    %s/%s:', context, path)
+          if top_level:
+            LOGGER.info('    %s/%s:', context, path)
         if is_dir:
+          if recursive:
+            LOGGER.info('')
           LOGGER.info('      %s/', f)
+          if recursive:
+            _scores(os.path.join(path, f), resolve, context, recursive,
+                    indent + INDENT, printed=True, top_level=False)
+            LOGGER.info('')
+
         else:
           stat = os.stat(joined_f)
-          LOGGER.info(ELEMENT_FORMAT,
+          LOGGER.info(indent + ELEMENT_FORMAT,
                        '    ' + f, SizeName.size_name(stat.st_size),
                        _time(stat.st_atime),
                        _time(stat.st_mtime),
