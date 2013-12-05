@@ -51,6 +51,20 @@ void LightingWindow::moved() {
 #endif
 }
 
+void LightingWindow::saveSnapshotToFile(const string& name) {
+  File file(name);
+  if (ImageFileFormat* format =
+      ImageFileFormat::findImageFormatForFileExtension(file)) {
+    Image image = createComponentSnapshot(getBounds());
+    FileOutputStream stream(file);
+    if (not format->writeImageToStream(image, stream))
+      DLOG(FATAL) << "Unable to write to filename " << name;
+  } else {
+    DLOG(FATAL) << "Don't understand filename " << name;
+  }
+}
+
+
 LightingWindow* makeLightingWindow() {
   MessageManagerLock l;
   unique_ptr<LightingWindow> window = make_unique<LightingWindow>();

@@ -15,6 +15,7 @@ class LightingWindow : public DocumentWindow {
   void setLights(const ColorList& cl) { grid()->setLights(cl); }
   void closeButtonPressed();
   InstrumentGrid* grid() { return instrumentGrid_; }
+  void saveSnapshotToFile(const string&);
 
   virtual void moved();
 
