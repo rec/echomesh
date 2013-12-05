@@ -1,6 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from weakref import WeakSet
+try:
+  from weakref import WeakSet
+
+except:
+  from weakrefset import WeakSet
 
 from echomesh.base import Join
 from echomesh.base import Reconfigure
