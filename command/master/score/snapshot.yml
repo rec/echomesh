@@ -1,0 +1,6 @@
+type: repeat
+period: 1/2 second
+repeat: 2
+elements:
+  type: snapshot
+  file: /tmp/file

@@ -50,6 +50,9 @@ class Element(MasterRunnable):
 
   def _on_run(self):
     super(Element, self)._on_run()
+    self._reset_time()
+
+  def _reset_time(self):
     self.start_time = time.time() - self.pause_time
 
   def _on_pause(self):

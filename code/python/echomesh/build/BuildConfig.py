@@ -6,7 +6,12 @@ import sys
 from Cython.Build import cythonize
 from Cython.Distutils import extension
 
-DEBUG = not True
+_DEBUG_FLAG = '--debug'
+
+DEBUG = _DEBUG_FLAG in sys.argv
+if DEBUG:
+  sys.argv.remove(_DEBUG_FLAG)
+
 VERBOSE = True
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(

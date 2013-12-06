@@ -14,6 +14,7 @@ REGISTRY = _register(
   'Schedule',
   'Sequence',
   'Select',
+  'Snapshot',
   'Speak',
   'Twitter',
   'Video',

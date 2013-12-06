@@ -12,21 +12,22 @@ ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 # If this is True, you want Echomesh to use its own external packages in
 # preference to any you might have installed in your system path.
 
-CODE_PATH = os.path.abspath(sys.path[0])
+PYTHON_PATH = os.path.abspath(sys.path[0])
 
-ECHOMESH_PATH = os.path.dirname(os.path.dirname(CODE_PATH))
+ECHOMESH_PATH = os.path.dirname(os.path.dirname(PYTHON_PATH))
 PROJECT_PATH = None
 COMMAND_PATH = None
 ASSET_PATH = None
 
-EXTERNAL_CODE_PATH = os.path.join(CODE_PATH, 'external')
+EXTERNAL_CODE_PATH = os.path.join(PYTHON_PATH, 'external')
 PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
   EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
 BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
-COMPATIBILITY_PATH = os.path.join(CODE_PATH, 'compatibility')
+CPP_BUILD_PATH = os.path.join(ECHOMESH_PATH, 'code', 'cpp')
+COMPATIBILITY_PATH = os.path.join(PYTHON_PATH, 'compatibility')
 
-PATHS = (PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, BINARY_PATH,
-         COMPATIBILITY_PATH)
+PATHS = (PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, CPP_BUILD_PATH,
+         BINARY_PATH, COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'command', 'log'
 
@@ -70,9 +71,10 @@ set_project_path()
 def info():
   return {
     'Asset path': ASSET_PATH,
-    'Code path': CODE_PATH,
+    'Code path': PYTHON_PATH,
     'Command path': COMMAND_PATH,
     'Compatibility path': COMPATIBILITY_PATH,
+    'C++ build path': CPP_BUILD_PATH,
     'External code path': EXTERNAL_CODE_PATH,
     'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,

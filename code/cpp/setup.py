@@ -14,7 +14,7 @@ from Cython.Distutils import build_ext
 
 if 'build_ext' in sys.argv:
   index = sys.argv.index('build_ext') + 1
-  if sys.argv[index] != '--inplace':
+  if index >= len(sys.argv) or sys.argv[index] != '--inplace':
     sys.argv.insert(index, '--inplace')
 
 

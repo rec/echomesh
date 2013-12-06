@@ -20,6 +20,9 @@ class CLightBank(SpiLightBank):
     assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
 
+  def snapshot(self, filename):
+    self.lighting_window.save_snapshot_to_file(filename)
+
   def _on_pause(self):
     self.lighting_window.close()
 

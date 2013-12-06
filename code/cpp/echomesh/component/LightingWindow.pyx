@@ -1,5 +1,6 @@
 from libcpp.string cimport string
 from libcpp cimport bool
+from libcpp.string cimport string
 
 include "echomesh/component/InstrumentGrid.pyx"
 
@@ -10,6 +11,7 @@ cdef extern from "Python.h":
 cdef extern from "echomesh/component/LightingWindow.h" namespace "echomesh":
   cdef cppclass LightingWindow:
     InstrumentGrid* grid()
+    void saveSnapshotToFile(string)
 
   LightingWindow* makeLightingWindow()
   void deleteLightingWindow(LightingWindow*) nogil
@@ -33,3 +35,6 @@ cdef class PyLightingWindow:
 
   def set_light_count(self, int count):
     self.thisptr.grid().setLightCount(count)
+
+  def save_snapshot_to_file(self, object filename):
+    self.thisptr.saveSnapshotToFile(filename)

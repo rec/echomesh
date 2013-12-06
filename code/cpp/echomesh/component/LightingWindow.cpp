@@ -55,7 +55,7 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
   File file(name);
   if (ImageFileFormat* format =
       ImageFileFormat::findImageFormatForFileExtension(file)) {
-    Image image = createComponentSnapshot(getBounds());
+    Image image = createComponentSnapshot(getLocalBounds());
     FileOutputStream stream(file);
     if (not format->writeImageToStream(image, stream))
       DLOG(FATAL) << "Unable to write to filename " << name;

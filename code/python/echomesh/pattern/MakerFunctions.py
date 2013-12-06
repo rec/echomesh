@@ -110,7 +110,7 @@ def reverse(light_sets):
   return reversed(light_set)
 
 @maker('x', 'y', 'reverse_x', 'reverse_y')
-def transpose(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
+def mirror(light_sets, x=None, y=None, reverse_x=False, reverse_y=False):
   assert len(light_sets) == 1
   light_set = light_sets[0]
   if not (x and y):
@@ -137,6 +137,6 @@ _REGISTRY.register(choose, 'choose')
 _REGISTRY.register(concatenate, 'concatenate')
 _REGISTRY.register(inject, 'inject')
 _REGISTRY.register(insert, 'insert')
+_REGISTRY.register(mirror, 'mirror')
 _REGISTRY.register(reverse, 'reverse')
 _REGISTRY.register(spread, 'spread')
-_REGISTRY.register(transpose, 'transpose')

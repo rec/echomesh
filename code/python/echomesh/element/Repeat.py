@@ -6,8 +6,9 @@ from echomesh.expression import Expression
 from echomesh.util.math import Poisson
 
 class Repeat(Loop):
-  def __init__(self, parent, description, name='Repeat', **kwds):
-    super(Repeat, self).__init__(parent, description, name, **kwds)
+  def __init__(self, parent, description, name='Repeat', delay=0, **kwds):
+    delay = Expression.convert(description.get('delay', delay))
+    super(Repeat, self).__init__(parent, description, name, delay=delay, **kwds)
     self.random_delay = Expression.convert(description.get('random_delay', 0))
     self.period = Expression.convert(description.get('period', 0))
     self.repeat = Expression.convert(description.get('repeat', 'infinite'))

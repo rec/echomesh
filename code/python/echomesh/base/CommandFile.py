@@ -16,7 +16,7 @@ def clean(*path):
 def _command_file(*path):
   path = clean(*path)
   if path[0] == 'default':
-    return os.path.join(Path.CODE_PATH, 'echomesh', 'config', *path[1:])
+    return os.path.join(Path.PYTHON_PATH, 'echomesh', 'config', *path[1:])
   else:
     return os.path.join(Path.PROJECT_PATH, 'command', *path)
 

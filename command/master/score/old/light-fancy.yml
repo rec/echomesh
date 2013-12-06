@@ -25,7 +25,7 @@ patterns:
       steps: 16
 
   three:
-    type: transpose
+    type: mirror
     pattern:
       type: insert
       offset: config.light.count - local.loop

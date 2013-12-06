@@ -36,7 +36,6 @@ class MasterRunnable(Runnable):
         c.pausables.add(self)
 
   def run(self):
-    was_running = self.is_running
     super(MasterRunnable, self).run()
     self.runnables.foreach('run')
 

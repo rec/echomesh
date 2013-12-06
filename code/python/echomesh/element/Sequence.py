@@ -6,7 +6,6 @@ import time
 from echomesh.element import Loop
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.expression import Units
 from echomesh.pattern import MakerFunctions
 from echomesh.pattern import PatternDesc
 from echomesh.util import Log
@@ -27,7 +26,7 @@ class Sequence(Loop.Loop):
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
     self.loops = Expression.convert(desc.get('loops', 1))
-    self.duration = Expression.convert(desc.get('duration', Units.INFINITY))
+    self.duration = Expression.convert(desc.get('duration', 'infinity'))
     self.sequence = []
     self.paused_children = set()
 

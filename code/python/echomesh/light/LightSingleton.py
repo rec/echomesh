@@ -30,6 +30,10 @@ class LightSingleton(Runnable):
       self.lights.pause()
       self.lights = None
 
+  def snapshot(self, filename):
+    if hasattr(self.lights, 'snapshot'):
+      self.lights.snapshot(filename)
+
   def add_owner(self):
     self.owner_count += 1
     self._make_lights()
@@ -64,8 +68,10 @@ class LightSingleton(Runnable):
     lights.pause()
 
 _SINGLETON = LightSingleton()
+
 add_client = _SINGLETON.add_client
 remove_client = _SINGLETON.remove_client
 add_owner = _SINGLETON.add_owner
 remove_owner = _SINGLETON.remove_owner
 pause = _SINGLETON.pause
+snapshot = _SINGLETON.snapshot

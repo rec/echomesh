@@ -23,3 +23,6 @@ def not_accessed(logger, element, not_accessed_items, element_type):
       err = _NOT_ACCESSED_ERROR
     logger.error(err, element_type, score, Join.join_words(not_accessed_items))
 
+
+class UnknownElement(Exception):
+  pass

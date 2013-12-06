@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.element import Error
 from echomesh.element import REGISTRY
 from echomesh.element.ResolveExtensions import resolve_extensions
+from echomesh.base.GetPrefix import PrefixException
 from echomesh.util.dict.Access import Access
 from echomesh.util import Log
 
@@ -14,7 +15,11 @@ def load_one_element(parent, description):
   if not t:
     raise Exception('No type field in element %s' % description)
 
-  element = REGISTRY.function(t)(parent, description)
+  try:
+    element = REGISTRY.function(t)(parent, description)
+  except PrefixException:
+    raise Error.UnknownElement('There is no element type named "%s".' % t)
+
   Error.not_accessed(LOGGER, element, description.not_accessed(), t)
   return element
 
