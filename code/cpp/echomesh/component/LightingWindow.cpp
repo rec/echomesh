@@ -74,8 +74,12 @@ LightingWindow* makeLightingWindow() {
   return window.release();
 }
 
+static void deleteWindow(LightingWindow* window) {
+  delete window;
+}
+
 void deleteLightingWindow(LightingWindow* window) {
-  runOnMessageThread(&LightingWindow::~LightingWindow, window);
+  runOnMessageThread(deleteWindow, window);
 }
 
 }  // namespace echomesh
