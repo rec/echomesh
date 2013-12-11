@@ -8,8 +8,7 @@ LightingWindow::LightingWindow()
   : DocumentWindow("echomesh lighting simulator",
                    Colours::lightgrey,
                    DocumentWindow::allButtons),
-    instrumentGrid_(new echomesh::InstrumentGrid),
-    runningInTest_(false) {
+    instrumentGrid_(new echomesh::InstrumentGrid) {
   setContentOwned(instrumentGrid_, true);
   centreWithSize(getWidth(), getHeight());
   setUsingNativeTitleBar(true);
@@ -17,45 +16,10 @@ LightingWindow::LightingWindow()
 
 LightingWindow::~LightingWindow() {}
 
-void LightingWindow::closeButtonPressed() {
-  if (runningInTest_) {
-    quit();
-
-  } else {
-#if 0
-    out << YAML::BeginMap
-        << YAML::Key << "type"
-        << YAML::Value << "hide"
-#endif
-  }
-}
-
-void LightingWindow::moved() {
-#if 0
-  if (false) {
-    if (SocketLineGetter* getter = SocketLineGetter::instance()) {
-      YAML::Emitter out;
-
-      out << YAML::BeginMap
-          << YAML::Key << "type"
-          << YAML::Value << "move"
-          << YAML::Key << "top_left"
-          << YAML::Value << YAML::BeginSeq
-          << getX() << getY() - getTitleBarHeight()
-          << YAML::EndSeq
-          << YAML::EndMap;
-
-      getter->writeSocket(out.c_str(), out.size());
-    }
-  }
-#endif
-}
-
 void LightingWindow::saveSnapshotToFile(const string& name) {
   File file(name);
-  if (ImageFileFormat* format =
-      ImageFileFormat::findImageFormatForFileExtension(file)) {
-    Image image = createComponentSnapshot(getLocalBounds());
+  if (auto format = ImageFileFormat::findImageFormatForFileExtension(file)) {
+    auto image = createComponentSnapshot(getLocalBounds());
     FileOutputStream stream(file);
     if (not format->writeImageToStream(image, stream))
       DLOG(FATAL) << "Unable to write to filename " << name;
@@ -67,7 +31,7 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
 
 LightingWindow* makeLightingWindow() {
   MessageManagerLock l;
-  unique_ptr<LightingWindow> window = make_unique<LightingWindow>();
+  auto window = make_unique<LightingWindow>();
   window->toFront(true);
   window->setVisible(true);
   window->grid()->setLightCount(256);

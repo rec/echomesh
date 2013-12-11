@@ -13,15 +13,14 @@ class LightingWindow : public DocumentWindow {
   ~LightingWindow();
 
   void setLights(const ColorList& cl) { grid()->setLights(cl); }
-  void closeButtonPressed();
   InstrumentGrid* grid() { return instrumentGrid_; }
   void saveSnapshotToFile(const string&);
 
-  virtual void moved();
+  void closeButtonPressed() {}
+  virtual void moved() {}
 
  private:
   InstrumentGrid* instrumentGrid_;
-  bool runningInTest_;
 
   JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LightingWindow)
 };

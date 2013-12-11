@@ -12,10 +12,10 @@ void InstrumentComponent::setColor(const Colour& c) {
     return;
 
   color_ = c;
-  static const int GREY = (3 * 0xFF) / 2;
-  uint8 r = color_.getRed();
-  uint8 g = color_.getGreen();
-  uint8 b = color_.getBlue();
+  static const auto GREY = (3 * 0xFF) / 2;
+  auto r = color_.getRed();
+  auto g = color_.getGreen();
+  auto b = color_.getBlue();
   labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
   JUCE_AUTORELEASEPOOL {
     repaint();
