@@ -39,13 +39,13 @@ class Config(object):
 
     if DEBUG:
       extra_compile_args += ' -O0 -g -D_DEBUG=1 -DDEBUG=1'
-      extra_link_args += ' -g'
+      extra_link_args = ' -g'
 
     else:
       extra_compile_args += ' -O2'
 
     if Platform.PLATFORM == Platform.MAC:
-      extra_link_args = '-framework Cocoa -framework WebKit -framework CoreMidi'
+      extra_link_args += '-framework Cocoa -framework WebKit -framework CoreMidi'
       extra_compile_args += ' -stdlib=libc++ -arch x86_64  -x c++'
 
       if DEBUG:
@@ -55,7 +55,7 @@ class Config(object):
         echomesh_lib = 'Builds/MacOSX/build/Release'
 
     elif Platform.PLATFORM == Platform.UBUNTU:
-      extra_link_args = (
+      extra_link_args += (
         '-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
         '-ldl -lfreetype -lrt')
       extra_compile_args += ' -stdlib=libc++ -arch x86_64  -x c++'
@@ -67,7 +67,7 @@ class Config(object):
         echomesh_lib = 'Builds/Linux/build'
 
     elif Platform.PLATFORM == Platform.DEBIAN:
-      extra_link_args = (
+      extra_link_args += (
         '-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
         '-ldl -lfreetype -lrt')
 
