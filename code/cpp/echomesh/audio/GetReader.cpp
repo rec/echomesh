@@ -32,13 +32,13 @@ unique_ptr<PositionableAudioSource> getReader(
   if (begin or end < reader->lengthInSamples)
     reader.reset(new AudioSubsectionReader(reader.release(), begin, end, true));
 
-  float inputSampleRate = reader->sampleRate;
+  auto inputSampleRate = reader->sampleRate;
   unique_ptr<PositionableAudioSource> source(
       new AudioFormatReaderSource(reader.release(), true));
   source->setLooping(true);
 
   if (static_cast<int>(sampleRate) != static_cast<int>(inputSampleRate)) {
-    double ratio = inputSampleRate / sampleRate;
+    auto ratio = inputSampleRate / sampleRate;
     source.reset(new ResamplingPositionableAudioSource(
         source.release(), true, ratio, channels));
   }

@@ -7,7 +7,7 @@ void normalizeEnvelope(Envelope* envelope) {
   if (not envelope || envelope->points.empty())
     return;
 
-  EnvelopePointList& points = envelope->points;
+  auto points = envelope->points;
 
   if (points.front().time > 0)
     points.insert(points.begin(), EnvelopePoint(0, points.front().value));

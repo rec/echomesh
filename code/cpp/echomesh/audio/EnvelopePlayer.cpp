@@ -43,15 +43,15 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
       result.push_back(seg);
       break;
     }
-    const EnvelopePoint* previous = &points()[segmentIndex_];
-    const EnvelopePoint* next = previous + 1;
+    auto previous = &points()[segmentIndex_];
+    auto next = previous + 1;
 
-    bool forward = not (reverse and loopCount_ % 2);
-    int directionMult = forward ? 1 : -1;
-    SampleTime now = point_.time;
-    SampleTime remains = forward ? (next->time - now) : (now - previous->time);
+    auto forward = not (reverse and loopCount_ % 2);
+    auto directionMult = forward ? 1 : -1;
+    auto now = point_.time;
+    auto remains = forward ? (next->time - now) : (now - previous->time);
 
-    bool rollover = false;
+    auto rollover = false;
     if (remains <= numSamples) {
       // Move to a different index.
       if (forward) {
@@ -66,13 +66,13 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
       }
     }
 
-    EnvelopePoint delta = *next - *previous;
-    float slope = delta.value / delta.time;
+    auto delta = *next - *previous;
+    auto slope = delta.value / delta.time;
 
-    SampleTime t = jmin(remains, numSamples);
+    auto t = jmin(remains, numSamples);
     numSamples -= t;
-    SampleTime dt = directionMult * t;
-    float dv = slope * dt;
+    auto dt = directionMult * t;
+    auto dv = slope * dt;
     point_.time += dt;
     point_.value += dv;
 

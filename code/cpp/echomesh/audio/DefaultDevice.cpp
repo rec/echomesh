@@ -11,7 +11,7 @@ typedef AudioDeviceManager::AudioDeviceSetup AudioDeviceSetup;
 
 AudioDeviceSetup defaultDeviceSetup(bool isOutput) {
   AudioDeviceManager manager;
-  String result = manager.initialise(
+  auto result = manager.initialise(
       isOutput ? 0 : 2,
       isOutput ? 2 : 0,
       nullptr,
@@ -22,12 +22,12 @@ AudioDeviceSetup defaultDeviceSetup(bool isOutput) {
 }
 
 const AudioDeviceSetup& defaultInputSetup() {
-  static const AudioDeviceSetup SETUP = defaultDeviceSetup(false);
+  static const auto SETUP = defaultDeviceSetup(false);
   return SETUP;
 }
 
 const AudioDeviceSetup& defaultOutputSetup() {
-  static const AudioDeviceSetup SETUP = defaultDeviceSetup(true);
+  static const auto SETUP = defaultDeviceSetup(true);
   return SETUP;
 }
 

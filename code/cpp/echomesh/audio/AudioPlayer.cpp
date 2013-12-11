@@ -27,13 +27,13 @@ AudioPlayer::~AudioPlayer() {
 }
 
 AudioPlayer* AudioPlayer::getPlayer(const string& name, int channels) {
-  string n = name.empty() ? defaultOutputDevice() : name;
+  auto n = name.empty() ? defaultOutputDevice() : name;
   auto i = PLAYERS.find(n);
   if (i != PLAYERS.end())
     return i->second.get();
 
   unique_ptr<AudioPlayer> player(new AudioPlayer(n, channels));
-  AudioPlayer* p = player.get();
+  auto* p = player.get();
   PLAYERS.insert(i, std::make_pair(n, std::move(player)));
   return p;
 }
@@ -55,7 +55,7 @@ bool AudioPlayer::removeInputSource(AudioSource* source) {
 }
 
 void AudioPlayer::removePlayer(AudioPlayer* player) {
-  string name = player->name_;
+  auto name = string{player->name_};
   if (not PLAYERS.erase(name))
     LOG(DFATAL) << "Didn't erase Player " << name;
 }
