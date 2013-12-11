@@ -361,8 +361,8 @@ void AudioDeviceManager::getAudioDeviceSetup (AudioDeviceSetup& setup)
 void AudioDeviceManager::deleteCurrentDevice()
 {
     currentAudioDevice = nullptr;
-    currentSetup.inputDeviceName = String::empty;
-    currentSetup.outputDeviceName = String::empty;
+    currentSetup.inputDeviceName.clear();
+    currentSetup.outputDeviceName.clear();
 }
 
 void AudioDeviceManager::setCurrentAudioDeviceType (const String& type,
@@ -408,15 +408,15 @@ String AudioDeviceManager::setAudioDeviceSetup (const AudioDeviceSetup& newSetup
     jassert (&newSetup != &currentSetup);    // this will have no effect
 
     if (newSetup == currentSetup && currentAudioDevice != nullptr)
-        return String::empty;
+        return String();
 
     if (! (newSetup == currentSetup))
         sendChangeMessage();
 
     stopDevice();
 
-    const String newInputDeviceName (numInputChansNeeded == 0 ? String::empty : newSetup.inputDeviceName);
-    const String newOutputDeviceName (numOutputChansNeeded == 0 ? String::empty : newSetup.outputDeviceName);
+    const String newInputDeviceName  (numInputChansNeeded  == 0 ? String() : newSetup.inputDeviceName);
+    const String newOutputDeviceName (numOutputChansNeeded == 0 ? String() : newSetup.outputDeviceName);
 
     String error;
     AudioIODeviceType* type = getCurrentDeviceTypeObject();
@@ -428,7 +428,7 @@ String AudioDeviceManager::setAudioDeviceSetup (const AudioDeviceSetup& newSetup
         if (treatAsChosenDevice)
             updateXml();
 
-        return String::empty;
+        return String();
     }
 
     if (currentSetup.inputDeviceName != newInputDeviceName

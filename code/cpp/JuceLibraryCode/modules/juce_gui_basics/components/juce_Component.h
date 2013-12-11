@@ -178,7 +178,7 @@ public:
         object that it is using. Otherwise, it will return the window of
         its top-level parent component.
 
-        This may return 0 if there isn't a desktop component.
+        This may return nullptr if there isn't a desktop component.
 
         @see addToDesktop, isOnDesktop
     */
@@ -2121,7 +2121,7 @@ public:
         const ComponentType* operator->() const noexcept    { return getComponent(); }
 
         /** If the component is valid, this deletes it and sets this pointer to null. */
-        void deleteAndZero()                                { delete getComponent(); jassert (getComponent() == nullptr); }
+        void deleteAndZero()                                { delete getComponent(); }
 
         bool operator== (ComponentType* component) const noexcept   { return weakRef == component; }
         bool operator!= (ComponentType* component) const noexcept   { return weakRef != component; }

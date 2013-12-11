@@ -8,7 +8,7 @@ namespace {
 
 template <typename DeviceClass>
 int getDeviceIndex(const String& name, int index) {
-  StringArray names = DeviceClass::getDevices();
+  auto names = DeviceClass::getDevices();
   if (index >= 0) {
     index = jmin(index, names.size() - 1);
   } else {
@@ -38,12 +38,12 @@ int getDeviceIndex(const OneMidiConfig& config) {
 
 MidiInput* openMidiInput(const OneMidiConfig& config,
                          MidiInputCallback* callback) {
-  int index = getDeviceIndex<MidiInput>(config);
+  auto index = getDeviceIndex<MidiInput>(config);
   return index >= 0 ? MidiInput::openDevice(index, callback) : NULL;
 }
 
 MidiOutput* openMidiOutput(const OneMidiConfig& config) {
-  int index = getDeviceIndex<MidiOutput>(config);
+  auto index = getDeviceIndex<MidiOutput>(config);
   return index >= 0 ? MidiOutput::openDevice(index) : NULL;
 }
 
@@ -77,10 +77,11 @@ bool equals(const OneMidiConfig& x, const OneMidiConfig& y) {
 }
 
 MidiInput* ConfigMidiInput::newDevice() {
-  MidiInput* input = openMidiInput(config_, new CallbackContainer(callback_));
-  if (input)
+  if (auto input = openMidiInput(config_, new CallbackContainer(callback_))) {
     input->start();
-  return input;
+    return input;
+  }
+  return nullptr;
 }
 
 MidiOutput* ConfigMidiOutput::newDevice() {

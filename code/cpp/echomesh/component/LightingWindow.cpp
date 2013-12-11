@@ -28,13 +28,14 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
   }
 }
 
-
 LightingWindow* makeLightingWindow() {
   MessageManagerLock l;
+
   auto window = make_unique<LightingWindow>();
   window->toFront(true);
   window->setVisible(true);
   window->grid()->setLightCount(256);
+
   return window.release();
 }
 
