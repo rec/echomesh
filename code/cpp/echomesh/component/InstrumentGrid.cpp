@@ -40,16 +40,16 @@ void InstrumentGrid::setLayout(
 }
 
 void InstrumentGrid::layout() {
-  int left = padding_.x;
-  int top = padding_.y;
-  int columns = layout_.x;
-  int rows = layout_.y;
+  auto left = padding_.x;
+  auto top = padding_.y;
+  auto columns = layout_.x;
+  auto rows = layout_.y;
 
-  int w = size_.x + instrumentPadding_.x;
-  int h = size_.y + instrumentPadding_.y;
-  int i = 0;
-  for (int y = 0; y < rows and i < instruments_.size(); ++y) {
-    for (int x = 0; x < columns and i < instruments_.size(); ++x) {
+  auto w = size_.x + instrumentPadding_.x;
+  auto h = size_.y + instrumentPadding_.y;
+  auto i = 0;
+  for (auto y = 0; y < rows and i < instruments_.size(); ++y) {
+    for (auto x = 0; x < columns and i < instruments_.size(); ++x) {
       auto& instr = instruments_[i++];
       instr->setLabelPadding(labelPadding_.x, labelPadding_.y);
       instr->setBounds(left + x * w, top + y * h, size_.x, size_.y);
@@ -57,7 +57,7 @@ void InstrumentGrid::layout() {
     }
   }
 
-  int screenWidth = left + w * columns + padding_.x,
+  auto screenWidth = left + w * columns + padding_.x,
     screenHeight = top + h * rows + padding_.y;
 
   setSize(screenWidth, screenHeight);
@@ -65,7 +65,7 @@ void InstrumentGrid::layout() {
 
 void InstrumentGrid::setLights(const ColorList& lights) {
   MessageManagerLock l;
-  for (int i = 0; i < lights.size(); ++i)
+  for (auto i = 0; i < lights.size(); ++i)
     instruments_[i]->setColor(lights[i]);
 }
 
@@ -86,30 +86,30 @@ void InstrumentGrid::setLabelStartsAtZero(bool startsAtZero) {
   MessageManagerLock l;
   if (startsAtZero != labelStartsAtZero_) {
     labelStartsAtZero_ = startsAtZero;
-    int delta = labelStartsAtZero_ ? 0 : 1;
-    for (int i = 0; i < instruments_.size(); ++i)
+    auto delta = labelStartsAtZero_ ? 0 : 1;
+    for (auto i = 0; i < instruments_.size(); ++i)
       instruments_[i]->setLabel(String(i + delta));
   }
 }
 
 void InstrumentGrid::setLightCount(int count) {
   MessageManagerLock l;
-  int oldCount = instruments_.size();
+  auto oldCount = instruments_.size();
 
   if (count == oldCount)
     return;
 
   cache_.resize(3 * count);
 
-  int delta = labelStartsAtZero_ ? 0 : 1;
+  auto delta = labelStartsAtZero_ ? 0 : 1;
   instruments_.resize(count);
-  for (int i = oldCount; i < count; ++i) {
-    auto inst = new InstrumentComponent;
-    instruments_[i].reset(inst);
+  for (auto i = oldCount; i < count; ++i) {
+    auto inst = make_unique<InstrumentComponent>();
     inst->setPaintingIsUnclipped(isUnclipped_);
     inst->setLabelPadding(labelPadding_.x, labelPadding_.y);
-    inst->setLabel(String(i + delta));
-    addAndMakeVisible(inst);
+    inst->setLabel(String(uint32(i + delta)));
+    addAndMakeVisible(inst.get());
+    instruments_[i] = std::move(inst);
   }
   layout();
 }
@@ -135,7 +135,7 @@ int InstrumentGrid::getLightCount() const {
 
 void InstrumentGrid::setLights(const char* lights) {
   MessageManagerLock l;
-  for (int i = 0; i < instruments_.size(); ++i) {
+  for (auto i = 0; i < instruments_.size(); ++i) {
     Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
     instruments_[i]->setColor(color);
   }

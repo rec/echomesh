@@ -24,16 +24,21 @@ using rec::RealTime;
 using rec::SampleTime;
 using rec::SampleRate;
 
-// http://www.parashift.com/c++-faq/macro-for-ptr-to-memfn.html
-#define CALL_MEMBER_FN(object, ptrToMember)  ((object).*(ptrToMember))
+#ifdef MAKE_SIGNED
 
-namespace rec { namespace util { namespace thread { namespace callback {
-class Callback;
-}}}}
+template <class T>
+typename std::make_signed<T>::type as_signed(T t) {
+  return std::make_signed<T>::type(t);
+}
+
+template <class T>
+typename std::make_unsigned<T>::type as_unsigned(T t) {
+  return std::make_unsigned<T>::type(t);
+}
+
+#endif
 
 namespace echomesh {
-
-typedef rec::util::thread::callback::Callback Callback;
 
 class Exception : public std::exception {
  public:
