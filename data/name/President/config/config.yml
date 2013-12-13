@@ -1,0 +1,3 @@
+control_program: true
+start: marek.yml
+autostart: false

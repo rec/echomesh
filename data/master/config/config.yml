@@ -1,0 +1,5 @@
+network:
+  client:
+    start: true
+    allow_reuse_address: true
+#    binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Debug/echomesh-client.app/Contents/MacOS/echomesh-client
