@@ -103,10 +103,11 @@ EMPTY_PROJECT = {
 
   'data': {
     'master': {
-      'config.yml':  _CONFIG,
-      'score': {
-        'sample-score.yml': _SCORE,
-      },
+      'bank': None,
+      'config': { 'config.yml':  _CONFIG, },
+      'pattern': None,
+      'scene': None,
+      'score': { 'sample-score.yml': _SCORE, },
     },
 
     'name': {}

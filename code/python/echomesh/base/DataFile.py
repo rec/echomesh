@@ -24,28 +24,31 @@ DATA_PATH = None
 def compute_command_path():
   global DATA_PATH, DATA_PATH_NAMES
   DATA_PATH = (['name/' + Name.NAME] +
-                  [('tag/' + t) for t in Name.TAGS] +
-                  ['platform/' + Platform.PLATFORM,
-                   'master',
-                   _command_file('default/platform/%s' % Platform.PLATFORM),
-                   _command_file('default')])
+               [('tag/' + t) for t in Name.TAGS] +
+               ['platform/' + Platform.PLATFORM,
+                'master',
+                _command_file('default/platform/%s' % Platform.PLATFORM),
+                _command_file('default')])
 
   DATA_PATH_NAMES = (['name'] +  # TODO: fix?
-                        [('tag/' + t) for t in Name.TAGS] +
-                        ['platform/' + Platform.PLATFORM,
-                         'master',
-                         'default/platform/%s' % Platform.PLATFORM,
-                         'default'])
+                     [('tag/' + t) for t in Name.TAGS] +
+                     ['platform/' + Platform.PLATFORM,
+                      'master',
+                      'default/platform/%s' % Platform.PLATFORM,
+                      'default'])
 
 compute_command_path()
 
 def named_paths():
   return zip(DATA_PATH_NAMES, DATA_PATH)
 
-def expand(*path):
+def _expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
   path = clean(*path)
   return [os.path.join('data', i, *path) for i in DATA_PATH]
+
+def expand_config():
+  return _expand('config', 'config.yml')[:-2] + _expand('config.yml')[-2:]
 
 def resolve(*path):
   x = expand(*path)
@@ -71,7 +74,7 @@ def base_file(*path):
   return _command_file('master', *path)
 
 def config_file(scope='default'):
-  return _command_file(scope, 'config.yml')
-
-def read_config(scope='default'):
-  return Yaml.read(config_file(scope))
+  if scope.startswith('default'):
+    return _command_file(scope, 'config', 'config.yml')
+  else:
+    return _command_file(scope, 'config.yml')

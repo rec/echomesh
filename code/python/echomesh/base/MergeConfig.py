@@ -101,7 +101,7 @@ class MergeConfig(object):
     self.file_configs = []
     base_config = None
 
-    for f in reversed(DataFile.expand('config.yml')):
+    for f in reversed(DataFile.expand_config()):
       configs = Yaml.read(f, 'config')
       for c in configs:
         if base_config:
