@@ -33,7 +33,7 @@ def make_empty_project(path):
   print()
   ep = copy.deepcopy(EMPTY_PROJECT)
   name_text = _NAME % Name.NAME
-  ep['command']['name'][Name.NAME] = {'config.yml': name_text, 'score': None}
+  ep['data']['name'][Name.NAME] = {'config.yml': name_text, 'score': None}
   _make(path, ep)
   print(_CLOSING_MESSAGE)
 
@@ -77,7 +77,7 @@ _README = """\
 This is an empty echomesh directory.
 
 Put your sound or image files in asset/image or asset/audio.
-Put your configurations in command/master/config.yml
+Put your configurations in data/master/config.yml
 """
 
 _NAME = """\
@@ -101,7 +101,7 @@ EMPTY_PROJECT = {
 
   'cache': None,
 
-  'command': {
+  'data': {
     'master': {
       'config.yml':  _CONFIG,
       'score': {

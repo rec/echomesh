@@ -4,7 +4,7 @@ import copy
 from collections import namedtuple
 
 from echomesh.base import Args
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.base import GetPrefix
 from echomesh.base import Leafs
 from echomesh.base import Merge
@@ -101,7 +101,7 @@ class MergeConfig(object):
     self.file_configs = []
     base_config = None
 
-    for f in reversed(CommandFile.expand('config.yml')):
+    for f in reversed(DataFile.expand('config.yml')):
       configs = Yaml.read(f, 'config')
       for c in configs:
         if base_config:

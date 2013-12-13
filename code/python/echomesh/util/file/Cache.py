@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 import re
 
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.base import MakeDirs
 from echomesh.base import Merge
 from echomesh.base import Yaml
@@ -20,7 +20,7 @@ class Cache(object):
     else:
       self.suffix = '.' + suffix
 
-    name_file = CommandFile.clean('cache', name)
+    name_file = DataFile.clean('cache', name)
     self.cachedir = os.path.abspath(os.path.join(*name_file))
     MakeDirs.makedirs(self.cachedir)
     self.manifest_file = os.path.join(self.cachedir, MANIFEST_NAME)

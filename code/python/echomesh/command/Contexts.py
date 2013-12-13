@@ -2,13 +2,13 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
 def contexts(_):
-  parts = CommandFile.named_paths()
+  parts = DataFile.named_paths()
   con = ('  %s:\n    %s' % (x, os.path.abspath(y)) for x, y in parts)
   LOGGER.info('%s\n', '\n'.join(con))
 

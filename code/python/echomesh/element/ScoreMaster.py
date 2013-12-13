@@ -4,7 +4,7 @@ import operator
 import os.path
 import six
 
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.base import Config
 from echomesh.base import GetPrefix
 from echomesh.base import Yaml
@@ -150,10 +150,10 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 def _make_elements(score_names, table):
   result = {}
   for score_file, name in score_names:
-    resolved_file = CommandFile.resolve('score', score_file)
+    resolved_file = DataFile.resolve('score', score_file)
     if not resolved_file:
       LOGGER.error('No such score file: "%s".',
-                   CommandFile.base_file('score', score_file))
+                   DataFile.base_file('score', score_file))
       continue
     elements = Yaml.read(resolved_file)
     description = {'elements': elements, 'type': 'score'}

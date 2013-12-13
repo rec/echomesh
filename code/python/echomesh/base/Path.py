@@ -16,7 +16,7 @@ PYTHON_PATH = os.path.abspath(sys.path[0])
 
 ECHOMESH_PATH = os.path.dirname(os.path.dirname(PYTHON_PATH))
 PROJECT_PATH = None
-COMMAND_PATH = None
+DATA_PATH = None
 ASSET_PATH = None
 
 EXTERNAL_CODE_PATH = os.path.join(PYTHON_PATH, 'external')
@@ -29,7 +29,7 @@ COMPATIBILITY_PATH = os.path.join(PYTHON_PATH, 'compatibility')
 PATHS = (PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, CPP_BUILD_PATH,
          BINARY_PATH, COMPATIBILITY_PATH)
 
-_REQUIRED_DIRECTORIES = 'asset', 'cache', 'command', 'log'
+_REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
 
 def _possible_project(path):
   for d in _REQUIRED_DIRECTORIES:
@@ -41,7 +41,7 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
   original_path = os.path.abspath(os.path.expanduser(project_path or os.curdir))
   path = original_path
 
-  global PROJECT_PATH, COMMAND_PATH, ASSET_PATH
+  global PROJECT_PATH, DATA_PATH, ASSET_PATH
   while not _possible_project(path):
     p = os.path.dirname(path)
     if p != path:
@@ -61,7 +61,7 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
     break
 
   PROJECT_PATH = path
-  COMMAND_PATH = os.path.join(path, 'command')
+  DATA_PATH = os.path.join(path, 'data')
   ASSET_PATH = os.path.join(path, 'asset')
   os.chdir(path)
   return True
@@ -72,9 +72,9 @@ def info():
   return {
     'Asset path': ASSET_PATH,
     'Code path': PYTHON_PATH,
-    'Command path': COMMAND_PATH,
     'Compatibility path': COMPATIBILITY_PATH,
     'C++ build path': CPP_BUILD_PATH,
+    'Data path': DATA_PATH,
     'External code path': EXTERNAL_CODE_PATH,
     'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,

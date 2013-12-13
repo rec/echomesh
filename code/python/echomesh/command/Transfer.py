@@ -39,7 +39,7 @@ def _get_files_to_transfer(path):
   directories = set()
 
   for p in path:
-    f = os.path.join(Path.COMMAND_PATH, p)
+    f = os.path.join(Path.DATA_PATH, p)
     if not os.path.exists(f):
       raise Exception("Command file %s doesn't exist.", f)
     walk = os.walk(f)
@@ -49,7 +49,7 @@ def _get_files_to_transfer(path):
         if not root.startswith('.'):
           for ffs in fs:
             if _TRANSFER_ALL_FILES or Yaml.has_extension(ffs):
-              files.add(os.path.join(Path.COMMAND_PATH, root, ffs))
+              files.add(os.path.join(Path.DATA_PATH, root, ffs))
       LOGGER.vdebug('Transferring directory %s', p)
     else:
       LOGGER.vdebug('Transferring file %s', p)

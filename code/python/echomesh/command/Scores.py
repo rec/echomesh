@@ -33,7 +33,7 @@ def _scores(path, resolve=False, context='all', recursive=False,
       printed = _scores(path, resolve, c, recursive, indent) or printed
   else:
     context = Context.resolve(context)
-    pathdir = os.path.join(Path.COMMAND_PATH, context, 'score', path)
+    pathdir = os.path.join(Path.DATA_PATH, context, 'score', path)
     if os.path.isdir(pathdir):
       printed_this_time = False
       for f in sorted(os.listdir(pathdir)):

@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.base import MergeConfig
 from echomesh.base import Name
 from echomesh.base import Path
@@ -10,7 +10,7 @@ def _make(name, tags, project, show_error, args):
   Name.set_tags(tags)
   Path.set_project_path(project_path=project, show_error=show_error)
 
-  CommandFile.compute_command_path()
+  DataFile.compute_command_path()
   return MergeConfig.MergeConfig(args)
 
 def reconfigure(args):

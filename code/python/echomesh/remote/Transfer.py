@@ -12,7 +12,7 @@ from echomesh.base import MakeDirs
 from echomesh.base import Path
 
 def transfer(_, **data):
-  backup_directory = os.path.join(Path.COMMAND_PATH, '.echomesh-xfer')
+  backup_directory = os.path.join(Path.DATA_PATH, '.echomesh-xfer')
 
   try:
     shutil.rmtree(backup_directory)
@@ -21,15 +21,15 @@ def transfer(_, **data):
 
   directories = data.get('directories', [])
   if '' in directories:
-    directories = os.listdir(Path.COMMAND_PATH)
+    directories = os.listdir(Path.DATA_PATH)
 
   for directory in directories:
     parent = os.path.dirname(os.path.join(backup_directory, directory))
     MakeDirs.parent_makedirs(parent)
-    shutil.move(os.path.join(Path.COMMAND_PATH, directory), parent)
+    shutil.move(os.path.join(Path.DATA_PATH, directory), parent)
 
   for f, value in six.iteritems(data.get('files')):
-    fname = os.path.join(Path.COMMAND_PATH, f)
+    fname = os.path.join(Path.DATA_PATH, f)
     MakeDirs.parent_makedirs(fname)
     with open(fname, 'w') as o:
       o.write(value['contents'])

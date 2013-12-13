@@ -4,7 +4,7 @@ import json
 import twitter
 import urllib
 
-from echomesh.base import CommandFile
+from echomesh.base import DataFile
 from echomesh.util.string import Truncate
 
 TWITTER_SIZE = 140
@@ -15,7 +15,7 @@ def _get_api():
   global API
   if not API:
     try:
-      auth = CommandFile.load('auth.yml')[0]
+      auth = DataFile.load('auth.yml')[0]
     except:
       raise Exception('Couldn\'t get twitter authorization')
     else:
