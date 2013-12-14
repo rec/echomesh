@@ -15,8 +15,8 @@ class _PatternDesc(_Parent):
     return 'pattern "%s" in element "%s"' % (
       self.name, self.element.class_name())
 
-def _make_pattern(desc, is_top_level):
-  type_value = desc.description.pop('type', None)
+def _make_pattern(pd, is_top_level):
+  type_value = pd.description.pop('type', None)
   if not type_value:
     raise Exception('No pattern type found')
   try:
@@ -25,9 +25,9 @@ def _make_pattern(desc, is_top_level):
     raise Exception('Didn\'t understand pattern type="%s"' % type_value)
 
   if not is_top_level:
-    desc = _PatternDesc(desc.element, desc.description,
-                        desc.name + ':%s' % entry.name)
-  return entry.function(desc)
+    pd = _PatternDesc(pd.element, pd.description,
+                      pd.name + ':%s' % entry.name)
+  return entry.function(pd)
 
 def make_patterns_for_element(element, description):
   result = {}
