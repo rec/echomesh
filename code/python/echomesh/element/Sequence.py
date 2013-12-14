@@ -6,7 +6,6 @@ import time
 from echomesh.element import Loop
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.pattern import MakerFunctions
 from echomesh.pattern import PatternDesc
 from echomesh.util import Log
 

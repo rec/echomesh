@@ -51,7 +51,7 @@ def expand_config():
   return _expand('config', 'config.yml')[:-2] + _expand('config.yml')[-2:]
 
 def resolve(*path):
-  x = expand(*path)
+  x = _expand(*path)
   for f in x:
     try:
       return Yaml.filename(f)

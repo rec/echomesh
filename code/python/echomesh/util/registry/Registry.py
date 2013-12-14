@@ -2,7 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from collections import namedtuple
 
-import six
 import sys
 
 from echomesh.base.AddExceptionSuffix import add_exception_suffix
@@ -41,7 +40,7 @@ class Registry(object):
                      self.name)
 
   def register_all(self, **kwds):
-    for item_name, item in six.iteritems(kwds):
+    for item_name, item in kwds.items():
       help_text, see_also = None, None
       if isinstance(item, (list, tuple)):
         if len(item) > 1:
@@ -53,8 +52,10 @@ class Registry(object):
 
   def entry(self, name):
     try:
-      return GetPrefix.get_prefix(self._registry, name,
-                                  allow_prefixes=self.allow_prefixes)[1]
+      entry = GetPrefix.get_prefix(
+        self._registry, name, allow_prefixes=self.allow_prefixes)[1]
+      entry.resolve_function()
+      return entry
     except:
       add_exception_suffix(' in registry "%s"' % self.name)
 
@@ -62,15 +63,15 @@ class Registry(object):
     return self.function(name)
 
   def function(self, name):
-    return self.entry(name).load().function
+    return self.entry(name).function
 
   def get_help(self, name):
-    return self.entry(name).load().help()
+    return self._entry(name).help()
 
   def join_keys(self, command_only=True, load=True):
     words = []
-    for key, entry in six.iteritems(self._registry):
-      load and entry.load()
+    for key, entry in self._registry.items():
+      load and entry.resolve_function()
       if (not command_only) or entry.function:
         words.append(key)
     return Join.join_words(words)
@@ -79,6 +80,6 @@ class Registry(object):
     return self._registry.keys()
 
   def dump(self, printer=print, load=True):
-    for k, v in six.iteritems(self._registry):
-      load and v.load()
+    for k, v in self._registry.items():
+      load and v.resolve_function()
       printer(k, v)

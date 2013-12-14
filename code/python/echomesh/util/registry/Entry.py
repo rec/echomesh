@@ -18,11 +18,12 @@ class Entry(object):
       'RegistryEntry(name=%s, function=%s, help_text=%s, see_also=%s)' %
       (self.name, self.function, self.help_text, self.see_also))
 
-  def load(self):
+  def resolve_function(self):
     if isinstance(self.function, six.string_types):
       class_path = '%s.%s' % (self.registry.class_path, self.function)
       mod = importlib.import_module(class_path)
       name = self.function.lower()
+      f = self.function
       self.function = (getattr(mod, 'FUNCTION', None) or
                        getattr(mod, name, None) or
                        getattr(mod, self.function, None))
@@ -30,7 +31,6 @@ class Entry(object):
 
       self.help_text = getattr(mod, 'HELP', None)
       self.see_also = getattr(mod, 'SEE_ALSO', None)
-    return self
 
   def help(self):
     help = self.help_text

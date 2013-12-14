@@ -1,12 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import collections
-import six
 
+from echomesh.base import GetPrefix
 from echomesh.expression import Expression
-from echomesh.util.registry import Registry
-
-REGISTRY = Registry.Registry('pattern types')
+from echomesh.pattern import REGISTRY
 
 RAISE_ORIGINAL_EXCEPTION = not False
 
@@ -20,10 +18,11 @@ class _PatternDesc(_Parent):
 def _make_pattern(desc, is_top_level):
   type_value = desc.description.pop('type', None)
   if not type_value:
-    raise Exception('No type value found')
-  entry = REGISTRY.entry(type_value)
-  if not entry:
-    raise Exception('Didn\'t understand type="%s"' % type_value)
+    raise Exception('No pattern type found')
+  try:
+    entry = REGISTRY.entry(type_value)
+  except GetPrefix.PrefixException:
+    raise Exception('Didn\'t understand pattern type="%s"' % type_value)
 
   if not is_top_level:
     desc = _PatternDesc(desc.element, desc.description,
@@ -32,7 +31,7 @@ def _make_pattern(desc, is_top_level):
 
 def make_patterns_for_element(element, description):
   result = {}
-  for name, desc in six.iteritems(description):
+  for name, desc in description.items():
     result[name] = _make_pattern(_PatternDesc(element, desc, name), True)
   return result
 
@@ -44,7 +43,7 @@ def make_table_and_patterns(pattern_desc, attributes):
   pd = pattern_desc
 
   try:
-    for k, v in six.iteritems(desc):
+    for k, v in desc.items():
       if not k.startswith('pattern'):
         if k in attributes:
           v = Expression.expression(v, pattern_desc.element)
