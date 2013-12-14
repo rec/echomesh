@@ -36,16 +36,16 @@ def make_patterns_for_element(element, description):
   return result
 
 def make_table_and_patterns(pattern_desc, attributes):
+  pd = pattern_desc
   table = {}
   patterns = []
 
-  desc = pattern_desc.description
-  pd = pattern_desc
+  desc = pd.description
 
   for k, v in desc.items():
     if not k.startswith('pattern'):
       if k in attributes:
-        v = Expression.expression(v, pattern_desc.element)
+        v = Expression.expression(v, pd.element)
       table[k] = v
 
   pats = desc.get('patterns') or desc.get('pattern') or []
@@ -53,8 +53,7 @@ def make_table_and_patterns(pattern_desc, attributes):
     pats = [pats]
 
   for p in pats:
-    pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
-    pattern = _make_pattern(pd, False)
+    pattern = _make_pattern(_PatternDesc(pd.element, p, pd.name), False)
     if pattern:
       patterns.append(pattern)
 
