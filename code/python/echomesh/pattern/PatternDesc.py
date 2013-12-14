@@ -42,26 +42,20 @@ def make_table_and_patterns(pattern_desc, attributes):
   desc = pattern_desc.description
   pd = pattern_desc
 
-  try:
-    for k, v in desc.items():
-      if not k.startswith('pattern'):
-        if k in attributes:
-          v = Expression.expression(v, pattern_desc.element)
-        table[k] = v
+  for k, v in desc.items():
+    if not k.startswith('pattern'):
+      if k in attributes:
+        v = Expression.expression(v, pattern_desc.element)
+      table[k] = v
 
-    pats = desc.get('patterns') or desc.get('pattern') or []
-    if type(pats) is not list:
-      pats = [pats]
+  pats = desc.get('patterns') or desc.get('pattern') or []
+  if type(pats) is not list:
+    pats = [pats]
 
-    for p in pats:
-      pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
-      pattern = _make_pattern(pd, False)
-      if pattern:
-        patterns.append(pattern)
-  except Exception as e:
-    if RAISE_ORIGINAL_EXCEPTION:
-      raise
-    else:
-      raise Exception('%s in %s' % (e, pd))
+  for p in pats:
+    pd = _PatternDesc(pattern_desc.element, p, pattern_desc.name)
+    pattern = _make_pattern(pd, False)
+    if pattern:
+      patterns.append(pattern)
 
   return table, patterns
