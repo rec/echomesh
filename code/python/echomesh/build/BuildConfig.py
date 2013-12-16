@@ -65,14 +65,10 @@ class Config(object):
 
     elif Platform.PLATFORM == Platform.DEBIAN:
       extra_link_args += (
-        '-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
+        '-L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
         '-ldl -lfreetype -lrt ')
 
-      if DEBUG:
-        echomesh_lib = 'Builds/Linux/build/Debug'
-
-      else:
-        echomesh_lib = 'Builds/Linux/build'
+      echomesh_lib = 'Builds/Linux/build'
 
     else:
       raise Exception("Don't understand platform %s" % Platform.PLATFORM)

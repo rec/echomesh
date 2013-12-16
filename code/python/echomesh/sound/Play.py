@@ -10,10 +10,6 @@ def _get_player(player):
     from echomesh.sound import AplayPlayer
     return AplayPlayer.AplayPlayer
 
-  if player == 'client':
-    from echomesh.sound import ClientPlayer
-    return ClientPlayer.ClientPlayer
-
   if player == 'cython':
     from echomesh.sound import CPlayer
     return CPlayer.CPlayer
