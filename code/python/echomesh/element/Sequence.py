@@ -17,7 +17,8 @@ class Sequence(Loop.Loop):
   def __init__(self, parent, desc):
     times = []
     for e in desc.get('elements', []):
-      times.append([Expression.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
+      times.append([Expression.convert(e.pop(a, None))
+                    for a in Sequence.ATTRIBUTES])
 
     self.elements = []
     self.pattern_makers = PatternDesc.make_patterns_for_element(

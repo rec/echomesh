@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import collections
 
+from echomesh.base import DataFile
 from echomesh.base import GetPrefix
 from echomesh.expression import Expression
 from echomesh.pattern import REGISTRY
@@ -31,7 +32,6 @@ def _make_pattern(element, desc, name, is_top_level):
                       pd.name + ':%s' % entry.name)
   return entry.function(pd)
 
-
 def make_patterns_for_element(element, description):
   result = {}
   for name, desc in description.items():
@@ -56,3 +56,7 @@ def make_table_and_patterns(pattern_desc, attributes):
     pats = [pats]
 
   return table, [_make_pattern(pd.element, p, pd.name, False) for p in pats]
+
+def make_pattern_from_file(element, name):
+  desc = DataFile.load('pattern', name)[0]
+  return _make_pattern(element, desc, name, True)

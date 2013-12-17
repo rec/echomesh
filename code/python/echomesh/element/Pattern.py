@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.light import LightSingleton
+from echomesh.pattern import PatternDesc
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -12,7 +13,8 @@ class Pattern(Element.Element):
 
     assert parent.__class__.__name__ == 'Sequence'
     self.pattern_name = description['pattern']
-    self.maker = parent.pattern_makers[self.pattern_name]
+    self.maker = parent.pattern_makers.get(self.pattern_name) or (
+      PatternDesc.make_pattern_from_file(parent, self.pattern_name))
     self.output = description.get('output', 'light')
     self.is_light = (self.output == 'light')
 
