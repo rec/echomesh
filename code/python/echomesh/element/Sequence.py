@@ -11,8 +11,6 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-GET_PATTERNS_BEFORE = not not True
-
 class Sequence(Loop.Loop):
   ATTRIBUTES = 'begin', 'end', 'duration'
 
@@ -22,16 +20,11 @@ class Sequence(Loop.Loop):
       times.append([Expression.convert(e.pop(a, None)) for a in Sequence.ATTRIBUTES])
 
     self.elements = []
-    if GET_PATTERNS_BEFORE:
-      self.pattern_makers = PatternDesc.make_patterns_for_element(
-        self, desc.get('patterns', {}))
+    self.pattern_makers = PatternDesc.make_patterns_for_element(
+      self, desc.get('patterns', {}))
 
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
-
-    if not GET_PATTERNS_BEFORE:
-      self.pattern_makers = PatternDesc.make_patterns_for_element(
-        self, desc.get('patterns', {}))
 
     self.loops = Expression.convert(desc.get('loops', 1))
     self.duration = Expression.convert(desc.get('duration', 'infinity'))
