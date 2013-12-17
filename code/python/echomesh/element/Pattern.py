@@ -15,8 +15,8 @@ class Pattern(Element.Element):
     self.pattern_name = description['pattern']
     self.maker = parent.pattern_makers.get(self.pattern_name) or (
       PatternDesc.make_pattern_from_file(parent, self.pattern_name))
-    self.output = description.get('output', 'light')
-    self.is_light = (self.output == 'light')
+    self.bank = description.get('bank', 'light')
+    self.is_light = (self.bank == 'light')
 
     LightSingleton.add_owner()
 

@@ -38,15 +38,15 @@ elements:
   -
     type: pattern
     pattern: one
-    output: light
+    bank: light
 
   -
     type: pattern
     pattern: two
-    output: light
+    bank: light
 
   -
     type: pattern
     pattern: three
-    output: light
+    bank: light
 
