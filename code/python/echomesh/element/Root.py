@@ -43,3 +43,4 @@ class Root(Element.Element):
       handlers = self.handlers.get(event_type) or []
       for handler in handlers:
         handler.handle(event)
+

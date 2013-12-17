@@ -1,22 +1,18 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import operator
-import os.path
 import six
 
-from echomesh.base import DataFile
 from echomesh.base import Config
 from echomesh.base import GetPrefix
 from echomesh.base import Yaml
-from echomesh.element import Root
+from echomesh.element import MakeRoot
 from echomesh.util import Log
 from echomesh.util.string import Split
-from echomesh.util.string import UniqueName
 from echomesh.util.thread import MasterRunnable
 from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
-_NEW_STYLE_CALLS = True
 
 EMPTY_IMPLIES_EVERYTHING = set(['begin', 'pause', 'reload', 'run', 'start',
                                 'unload'])
@@ -143,32 +139,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
   def _load_raw_elements(self, score_names):
     with self.lock:
-      elements = _make_elements(score_names, self.elements)
+      elements = MakeRoot.make_root(score_names, self.elements)
       self.elements.update(elements)
       return elements.keys()
 
-def _make_elements(score_names, table):
-  result = {}
-  for score_file, name in score_names:
-    resolved_file = DataFile.resolve('score', score_file)
-    if not resolved_file:
-      LOGGER.error('No such score file: "%s".',
-                   DataFile.base_file('score', score_file))
-      continue
-    elements = Yaml.read(resolved_file)
-    description = {'elements': elements, 'type': 'score'}
-    parts = resolved_file.split('/')
-    final_file = '/'.join([parts[1]] + parts[3:])
-
-    try:
-      element = Root.Root(description, final_file)
-    except Exception:
-      LOGGER.error("\nError when reading score file %s", score_file)
-      continue
-
-    name = os.path.splitext(name or score_file)[0]
-    name = UniqueName.unique_name(name, table)
-    result[name] = element
-    element.name = name
-
-  return result
