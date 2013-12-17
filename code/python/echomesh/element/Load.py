@@ -20,6 +20,8 @@ def load_one_element(parent, description):
   except PrefixException:
     raise Error.UnknownElement('There is no element type named "%s".' % t)
 
+  # element.add_elements()
+
   Error.not_accessed(LOGGER, element, description.not_accessed(), t)
   return element
 

@@ -17,6 +17,7 @@ class Element(MasterRunnable):
     self.load_time = time.time()
     self.name = name or description['type']
     self.pause_time = 0
+    self.full_slave = full_slave
 
     self.variables = {}
     for key in self.description.keys():
@@ -24,14 +25,13 @@ class Element(MasterRunnable):
         items = list(six.iteritems(self.description[key]))
         self.variables = dict((k, Variable.variable(v, self)) for k, v in items)
         break
+    self.add_elements()
 
-    self._add_elements(full_slave)
-
-  def _add_elements(self, full_slave):
+  def add_elements(self):
     elements = self.description.get('elements', None)
     if elements:
       self.elements = Load.load_elements(self, elements)
-      if full_slave:
+      if self.full_slave:
         self.add_slave(*self.elements)
       else:
         self.add_pause_only_slave(*self.elements)
