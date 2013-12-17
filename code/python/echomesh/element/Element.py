@@ -4,26 +4,22 @@ import datetime
 import time
 import six
 
+from echomesh.element import Load
 from echomesh.expression import Variable
 from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 class Element(MasterRunnable):
   def __init__(self, parent, description, full_slave=True, name=None):
+    super(Element, self).__init__()
+
     self.parent = parent
     self.description = description
     self.load_time = time.time()
     self.name = name or description['type']
     self.pause_time = 0
 
-    super(Element, self).__init__()
-
     elements = description.get('elements', None)
     if elements:
-      # This has to be local to avoid an infinite loop...
-      # pylint: disable=R0401
-      from echomesh.element import Load
-      # pylint: enable=R0401
-
       self.elements = Load.load_elements(self, elements)
       if full_slave:
         self.add_slave(*self.elements)

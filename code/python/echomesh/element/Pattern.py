@@ -9,11 +9,13 @@ LOGGER = Log.logger(__name__)
 class Pattern(Element.Element):
   def __init__(self, parent, description):
     super(Pattern, self).__init__(parent, description)
+
     assert parent.__class__.__name__ == 'Sequence'
     self.pattern_name = description['pattern']
     self.maker = parent.pattern_makers[self.pattern_name]
     self.output = description.get('output', 'light')
     self.is_light = (self.output == 'light')
+
     LightSingleton.add_owner()
 
   def _on_unload(self):

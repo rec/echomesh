@@ -23,7 +23,6 @@ INFINITY = float('inf')
 class _Counter(object):
   def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
                repeat=INFINITY, **kwds):
-    LOGGER.vdebug('_Counter')
     parts = [Expression.convert(x, element) for x in (count, begin, end, skip)]
     self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
 
