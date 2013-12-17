@@ -18,7 +18,17 @@ class Element(MasterRunnable):
     self.name = name or description['type']
     self.pause_time = 0
 
-    elements = description.get('elements', None)
+    self.variables = {}
+    for key in self.description.keys():
+      if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
+        items = list(six.iteritems(self.description[key]))
+        self.variables = dict((k, Variable.variable(v, self)) for k, v in items)
+        break
+
+    self._add_elements(full_slave)
+
+  def _add_elements(self, full_slave):
+    elements = self.description.get('elements', None)
     if elements:
       self.elements = Load.load_elements(self, elements)
       if full_slave:
@@ -29,13 +39,6 @@ class Element(MasterRunnable):
       self.elements = []
 
     self.element_table = dict((e.name, e) for e in reversed(self.elements))
-    self.variables = {}
-
-    for key in description.keys():
-      if len(key) > 2 and ((key == 'vars') or 'variables'.startswith(key)):
-        items = list(six.iteritems(description[key]))
-        self.variables = dict((k, Variable.variable(v, self)) for k, v in items)
-        break
 
   def _on_begin(self):
     super(Element, self)._on_begin()

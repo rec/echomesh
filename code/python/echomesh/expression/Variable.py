@@ -59,13 +59,13 @@ REGISTRY.register_all(
   )
 
 def variable(description, element):
-  if isinstance(description, dict):
-    description = copy.copy(description)
-    vtype = description.pop('type', None)
-    if not vtype:
-      raise Exception('No type in variable, description="%s".' % description)
-    return REGISTRY.function(vtype)(description, element)
-
-  else:
+  if not isinstance(description, dict):
     return UnitExpression(description, element)
+
+  description = copy.copy(description)
+  vtype = description.pop('type', None)
+  if not vtype:
+    raise Exception('No type in variable, description="%s".' % description)
+  return REGISTRY.function(vtype)(description, element)
+
 
