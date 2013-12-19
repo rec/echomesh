@@ -30,4 +30,4 @@ elements:
     end: infinite
     type: pattern
     pattern: one
-    bank: light
+    output: light

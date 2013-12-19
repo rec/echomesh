@@ -10,4 +10,4 @@ elements:
   -
     type: pattern
     pattern: a simple one
-    bank: light
+    output: light

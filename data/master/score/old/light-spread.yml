@@ -17,4 +17,4 @@ elements:
   -
     type: pattern
     pattern: one
-    bank: light
+    output: light

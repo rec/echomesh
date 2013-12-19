@@ -20,5 +20,5 @@ elements:
   -
     type: pattern
     pattern: three
-    bank: light
+    output: light
 

@@ -22,9 +22,9 @@ elements:
   -
     type: pattern
     pattern: one
-    bank: light
+    output: light
 
   -
     type: pattern
     pattern: two
-    bank: light
+    output: light
