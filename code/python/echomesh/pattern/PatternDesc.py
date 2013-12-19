@@ -17,20 +17,12 @@ class _PatternDesc(_Parent):
       self.name, self.element.class_name())
 
 
-def _make_pattern(element, desc, name, is_top_level):
-  pd = _PatternDesc(element, desc, name)
-  type_value = pd.description.pop('type', None)
-  if not type_value:
-    raise Exception('No pattern type found')
-  try:
-    entry = REGISTRY.entry(type_value)
-  except GetPrefix.PrefixException:
-    raise Exception('Didn\'t understand pattern type="%s"' % type_value)
+def _make_pattern(element, description, name, is_top_level):
+  entry = REGISTRY.get_by_type(description)
+  if is_top_level:
+    name += ':%s' % entry.name
 
-  if not is_top_level:
-    pd = _PatternDesc(pd.element, pd.description,
-                      pd.name + ':%s' % entry.name)
-  return entry.function(pd)
+  return entry.function(_PatternDesc(element, description, name))
 
 def make_patterns_for_element(element, description):
   result = {}

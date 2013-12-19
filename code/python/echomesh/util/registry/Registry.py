@@ -68,6 +68,18 @@ class Registry(object):
   def get_help(self, name):
     return self._entry(name).help()
 
+  def get_by_type(self, description):
+    """Pops a type out of a description and uses it to locate a registry item.
+    """
+    type_value = description.pop('type', None)
+    if not type_value:
+      raise Exception('No %s type found' % self.name)
+    try:
+      return self.entry(type_value)
+    except GetPrefix.PrefixException:
+      raise Exception('Didn\'t understand %s type="%s"' %
+                      (self.name, type_value))
+
   def join_keys(self, command_only=True, load=True):
     words = []
     for key, entry in self._registry.items():
