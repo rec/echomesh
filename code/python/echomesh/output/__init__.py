@@ -1,6 +1,8 @@
-def _make_output_maker():
+from __future__ import absolute_import, division, print_function, unicode_literals
+
+def _make_make_output():
   from echomesh.util.registry.Module import register
-  from echomesh.output import OutputCache
+  from echomesh.output.OutputCache import OutputCache
 
   registry = register(
     __name__,
@@ -20,4 +22,4 @@ def _make_output_maker():
 
   return make_output
 
-make_output = _make_output_maker()
+make_output = _make_make_output()

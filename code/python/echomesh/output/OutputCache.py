@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import DataFile
 
-from echomesh.output import make_output
-from echomesh.util.ClientSingleton import ClientSingleton
 from echomesh.util import Log
 from echomesh.util.thread import Lock
 
@@ -11,6 +9,7 @@ LOGGER = Log.logger(__name__)
 
 class _SingleOutput(object):
   def __init__(self, filename, output_cache):
+    from echomesh.output import make_output
     self._filename = filename
     self._output = make_output(filename)
     self._output_cache = output_cache
@@ -32,7 +31,7 @@ class OutputCache(object):
 
   def add_output(self, name):
     with self.lock:
-      filename = DataFile.resolve(name)
+      filename = DataFile.resolve('output', name)
       if not filename:
         raise Exception('No output named "%s".' % name)
       output = self.outputs.get(filename, [None, 0])
