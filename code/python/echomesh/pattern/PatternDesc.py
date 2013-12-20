@@ -18,7 +18,7 @@ class _PatternDesc(_Parent):
 
 
 def _make_pattern(element, description, name, is_top_level):
-  entry = REGISTRY.get_by_type(description)
+  entry = REGISTRY.get_from_description(description)
   if is_top_level:
     name += ':%s' % entry.name
 

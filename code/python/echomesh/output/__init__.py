@@ -1,0 +1,23 @@
+def _make_output_maker():
+  from echomesh.util.registry.Module import register
+  from echomesh.output import OutputCache
+
+  registry = register(
+    __name__,
+    'Offset',
+    'Output',
+    'Remap',
+    'Test',
+  )
+
+  output_cache = OutputCache()
+
+  def make_output(data):
+    if isinstance(data, dict):
+      return registry.make_from_description(data, default_type='output')
+    else:
+      return output_cache.add_output(data)
+
+  return make_output
+
+make_output = _make_output_maker()

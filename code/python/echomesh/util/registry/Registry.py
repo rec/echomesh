@@ -68,10 +68,10 @@ class Registry(object):
   def get_help(self, name):
     return self._entry(name).help()
 
-  def get_by_type(self, description):
+  def get_from_description(self, description, default_type=None):
     """Pops a type out of a description and uses it to locate a registry item.
     """
-    type_value = description.pop('type', None)
+    type_value = description.pop('type', default_type)
     if not type_value:
       raise Exception('No %s type found' % self.name)
     try:
@@ -79,6 +79,10 @@ class Registry(object):
     except GetPrefix.PrefixException:
       raise Exception('Didn\'t understand %s type="%s"' %
                       (self.name, type_value))
+
+  def make_from_description(self, description, default_type=None):
+    entry = self.get_from_description(description, default_type)
+    return entry.function(**description)
 
   def join_keys(self, command_only=True, load=True):
     words = []
