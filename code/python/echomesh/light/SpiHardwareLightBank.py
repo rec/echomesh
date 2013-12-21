@@ -7,6 +7,8 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
+SPI_DEVICE = '/dev/spidev0.0'
+
 _LATCH_BYTE_COUNT = 3
 _LATCH = bytearray(0 for i in xrange(_LATCH_BYTE_COUNT))
 
@@ -53,7 +55,7 @@ class SpiHardwareLightBank(SpiLightBank):
 
   def _before_thread_start(self):
     super(SpiHardwareLightBank, self)._before_thread_start()
-    self._device = open('/dev/spidev0.0', 'wb')
+    self._device = open(SPI_DEVICE, 'wb')
 
   def _after_thread_pause(self):
     super(SpiHardwareLightBank, self)._after_thread_pause()

@@ -8,6 +8,7 @@ LOGGER = Log.logger(__name__)
 
 class Offset(Output):
   def __init__(self, offset=None, length=-1, **description):
+    super(Offset, self).__init__()
     self.offset = offset
     if self.offset is None:
       LOGGER.error('No offset in output Offset')

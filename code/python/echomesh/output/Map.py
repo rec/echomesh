@@ -1,6 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.output import make_output
 from echomesh.output.Output import Output
 from echomesh.util import Log
 
@@ -8,6 +7,7 @@ LOGGER = Log.logger(__name__)
 
 class Map(Output):
   def __init__(self, map=None, filter=False, **description):
+    super(Map, self).__init__()
     self.filter = filter
     if map is None:
       LOGGER.error('No map in output Map')

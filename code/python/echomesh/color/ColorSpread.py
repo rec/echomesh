@@ -25,8 +25,7 @@ def color_spread(begin, end, steps, transform=None, use_hsv=True):
   return step_array
 
 def color_name_spread(begin=None, end=None, steps=None, transform=None):
-  if transform:
-    transform = Transform.transform(transform)
+  transform = transform or Transform.transform(transform)
 
   # TODO: disallow these defaults?
   return color_spread(ColorTable.to_color(begin or 'black'),

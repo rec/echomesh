@@ -6,6 +6,9 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Output(object):
+  def __init__(self):
+    self.parts = []
+
   def finish_construction(self, description, is_redirect=True):
     if is_redirect:
       output = description.pop('output', None)
