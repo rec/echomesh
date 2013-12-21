@@ -6,6 +6,7 @@ def _make_make_output():
 
   registry = register(
     __name__,
+    'Bidirectional',
     'Offset',
     'Output',
     'Map',
