@@ -1,5 +1,6 @@
 cdef extern from "AppConfig.h" namespace "juce":
   cdef cppclass Colour:
+    Color(unsigned int)
     Colour withMultipliedBrightness(float multiplier)
     Colour overlaidWith(Colour foreground)
     float getFloatRed()

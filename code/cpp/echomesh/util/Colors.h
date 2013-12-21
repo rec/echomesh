@@ -6,6 +6,7 @@
 namespace echomesh {
 
 bool fillColor(const String& name, Colour* color);
+Colour colorFromInt(uint32 argb);
 
 }  // namespace echomesh
 

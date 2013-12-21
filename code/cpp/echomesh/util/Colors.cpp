@@ -176,4 +176,8 @@ bool fillColor(const String& cname, Colour* color) {
   return true;
 }
 
+Colour colorFromInt(uint32 argb) {
+  return Colour(argb);
+}
+
 }  // namespace echomesh

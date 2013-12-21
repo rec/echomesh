@@ -68,8 +68,6 @@
               file="../cpp/echomesh/util/EchomeshApplication.h"/>
         <FILE id="uc8zMT" name="FastTrig.cpp" compile="1" resource="0" file="../cpp/echomesh/util/FastTrig.cpp"/>
         <FILE id="zHpRoU" name="FastTrig.h" compile="0" resource="0" file="../cpp/echomesh/util/FastTrig.h"/>
-        <FILE id="mMb4m3" name="GetDevice.cpp" compile="1" resource="0" file="../cpp/echomesh/util/GetDevice.cpp"/>
-        <FILE id="prJ20Q" name="GetDevice.h" compile="0" resource="0" file="../cpp/echomesh/util/GetDevice.h"/>
         <FILE id="s1nFDa" name="Quit.cpp" compile="1" resource="0" file="echomesh/util/Quit.cpp"/>
         <FILE id="syC61X" name="Quit.h" compile="0" resource="0" file="../cpp/echomesh/util/Quit.h"/>
       </GROUP>

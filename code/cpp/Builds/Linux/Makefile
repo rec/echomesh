@@ -66,7 +66,6 @@ OBJECTS := \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
   $(OBJDIR)/FastTrig_b97710bd.o \
-  $(OBJDIR)/GetDevice_bdff9491.o \
   $(OBJDIR)/Quit_38fc84f4.o \
   $(OBJDIR)/Manager_ac61fac2.o \
   $(OBJDIR)/RegisterFormats_a3caa84e.o \
@@ -185,11 +184,6 @@ $(OBJDIR)/EchomeshApplication_68207ea3.o: ../../echomesh/util/EchomeshApplicatio
 $(OBJDIR)/FastTrig_b97710bd.o: ../../echomesh/util/FastTrig.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FastTrig.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/GetDevice_bdff9491.o: ../../echomesh/util/GetDevice.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling GetDevice.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Quit_38fc84f4.o: ../../echomesh/util/Quit.cpp
