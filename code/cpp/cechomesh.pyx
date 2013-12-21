@@ -3,8 +3,10 @@
 
 include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
+
 include "echomesh/audio/Source.pyx"
 include "echomesh/audio/DefaultDevice.pyx"
 include "echomesh/component/LightingWindow.pyx"
+include "echomesh/util/Colors.pyx"
 include "echomesh/util/EchomeshApplication.pyx"
 include "echomesh/util/Log.pyx"
