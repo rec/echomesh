@@ -158,9 +158,16 @@ bool compare(const ColorPreset& x, const ColorPreset& y) {
 } // namespace
 
 bool fillColor(const String& cname, Colour* color) {
-  auto name = cname.trim().toLowerCase();
+  auto name = cname.trim().toLowerCase().replace("gray", "grey");
   if (name.isEmpty())
     return false;
+
+  if (name.startsWith("grey") and name.length() > 4) {
+    auto grey = juce::jmin(name.getTrailingIntValue(), 100);
+    auto part = (0xFF * grey) / 100;
+    *color = Colour(part, part, part);
+    return true;
+  }
 
   uint32 hex;
   if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
