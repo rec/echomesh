@@ -62,6 +62,7 @@ OBJECTS := \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
+  $(OBJDIR)/Colors_ba418b95.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
   $(OBJDIR)/FastTrig_b97710bd.o \
@@ -164,6 +165,11 @@ $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightingWindow.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Colors_ba418b95.o: ../../echomesh/util/Colors.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Colors.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InitLog_83a5ff59.o: ../../echomesh/util/InitLog.cpp

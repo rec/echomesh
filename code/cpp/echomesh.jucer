@@ -58,6 +58,8 @@
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
       <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
+        <FILE id="V8iXC5" name="Colors.cpp" compile="1" resource="0" file="echomesh/util/Colors.cpp"/>
+        <FILE id="mASpmh" name="Colors.h" compile="0" resource="0" file="echomesh/util/Colors.h"/>
         <FILE id="NclU6P" name="InitLog.cpp" compile="1" resource="0" file="echomesh/util/InitLog.cpp"/>
         <FILE id="UrM8ro" name="InitLog.h" compile="0" resource="0" file="echomesh/util/InitLog.h"/>
         <FILE id="IalUji" name="EchomeshApplication.cpp" compile="1" resource="0"
