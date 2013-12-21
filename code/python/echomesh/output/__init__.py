@@ -8,7 +8,7 @@ def _make_make_output():
     __name__,
     'Offset',
     'Output',
-    'Remap',
+    'Map',
     'Test',
   )
 
