@@ -2,26 +2,6 @@ from libcpp.vector cimport vector
 
 ctypedef vector[Colour] ColourList
 
-cdef class Color:
-  cdef Colour* thisptr
-
-  def __cinit__(self):
-    self.thisptr = new Colour()
-
-  def __dealloc__(self):
-    del self.thisptr
-
-  def from_rgb(self, float r=0.0, float g=0.0, float b=0.0, float a=1.0):
-    copyColor(fromFloatRGBA(r, g, b , a), self.thisptr)
-
-  def from_string(self, string s):
-    if not fillColor(s, self.thisptr):
-      raise Exception('Don\'t understand color name "%s"' % s)
-
-  def __str__(self):
-    return 'Color(%s)' % colorName(self.thisptr[0])
-
-
 cdef class ColorList:
   cdef ColourList* thisptr
 
@@ -43,10 +23,11 @@ cdef class ColorList:
   def __getitem__(self, object key):
     if isinstance(key, slice):
       start, stop, stride = slice.indices(len(self))
-      cl = ColorList((stop - start) / stride)
+      size = (stop - start) / stride
+      cl = ColorList(size)
       i = 0
       while start < stop:
-        cl.thisptr.assign(i, self.thisptr.at(start))
+        copyColor(self.thisptr.at(start), &cl.thisptr.at(i))
         start += stride
         i += 1
       return cl
@@ -54,23 +35,36 @@ cdef class ColorList:
     else:
       self._check_key(key)
       color = Color()
-      copyColor(self.thisptr.at(key), color.thisptr)
+      color.thisptr[0] = self.thisptr.at(key)
       return color
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
       start, stop, stride = slice.indices(len(self))
-      cl = ColorList((stop - start) / stride)
+      steps = (stop - start) / stride
+      diff = steps - len(value)
+      if diff:
+        if stride != 1:
+          raise ValueError('attempt to assign sequence of size %s '
+                           'to extended slice of size %d' % (len(value), steps))
+
+      copy = min(steps, len(value))
       i = 0
-      while start < stop:
-        cl.thisptr.assign(i, self.thisptr.at(start))
-        start += stride
-        i += 1
+      if isinstance(value, ColorList):
+        cl = <ColorList> value
+        while i < copy:
+          copyColor(cl.thisptr.at(i), &self.thisptr.at(start + i))
+          i += 0
+      else:
+        while i < copy:
+          copyColor(make_colour(value[i]), &self.thisptr.at(start + i))
+          i += 0
+          # if diff > 0:
+          # self.thisptr.erase
 
     else:
       self._check_key(key)
-      color = Color()
-      copyColor(self.thisptr.at(key), color.thisptr)
+      self.thisptr.assign(key, make_colour(key))
 
   def __delitem__(self, key):
     self._check_key(key)
