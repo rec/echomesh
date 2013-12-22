@@ -4,6 +4,7 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   bool fillColor(string name, Colour* color)
   Colour colorFromInt(unsigned int argb)
   void copyColor(Colour c1, Colour* c2)
+  string colorName(Colour color)
 
 def string_to_color(string name):
   cdef Colour color
@@ -24,3 +25,4 @@ def to_color(object color):
   if c:
     return c
   raise Exception("Didn't understand color name %s." % color)
+

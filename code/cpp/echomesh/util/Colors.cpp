@@ -203,7 +203,7 @@ Colour colorFromInt(uint32 argb) {
   return Colour(argb);
 }
 
-String colorName(const Colour& color) {
+string colorName(const Colour& color) {
   String suffix;
   Colour c;
   if (color.isOpaque()) {
@@ -222,7 +222,7 @@ String colorName(const Colour& color) {
         ", green=" + String::toHexString(color.getGreen()) +
         ", blue=" + String::toHexString(color.getBlue());
   }
-  return "Color(" + name + suffix + ")";
+  return ("Color(" + name + suffix + ")").toStdString();
 }
 
 }  // namespace echomesh

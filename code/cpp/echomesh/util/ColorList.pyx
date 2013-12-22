@@ -18,6 +18,9 @@ cdef class Color:
     if not fillColor(s, self.thisptr):
       raise Exception('Don\'t understand color name "%s"' % s)
 
+  def __str__(self):
+    return 'Color(%s)' % colorName(self.thisptr[0])
+
 
 cdef class ColorList:
   cdef ColourList* thisptr
