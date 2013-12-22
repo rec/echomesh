@@ -3,7 +3,6 @@ include "rec/base/SampleTime.pyx"
 from libcpp cimport bool
 from libcpp.vector cimport vector
 
-
 cdef extern from "echomesh/audio/Envelope.h" namespace "echomesh::audio":
   cdef cppclass EnvelopePoint:
     EnvelopePoint(SampleTime time, float value)

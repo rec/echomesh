@@ -1,3 +1,5 @@
+#include <map>
+
 #include "echomesh/util/Colors.h"
 
 using namespace std;
@@ -6,154 +8,177 @@ namespace echomesh {
 
 namespace {
 
-// From JuceLibraryCode/modules/juce_graphics/colour/juce_Colours.cpp
-
-typedef pair<uint32, uint32> ColorPreset;
-
-// (first value is the string's hashcode, second is ARGB)
-ColorPreset COLOR_PRESETS[] = {
-  make_pair(0x0001b891, 0xffff0000), /* red */
-  make_pair(0x0001bfa1, 0xffd2b48c), /* tan */
-  make_pair(0x002dcebc, 0xff00ffff), /* aqua */
-  make_pair(0x002e305a, 0xff0000ff), /* blue */
-  make_pair(0x002ed323, 0xff00ffff), /* cyan */
-  make_pair(0x00308060, 0xffffd700), /* gold */
-  make_pair(0x00308adf, 0xff808080), /* grey */
-  make_pair(0x0032afd5, 0xff00ff00), /* lime */
-  make_pair(0x00337bb6, 0xff000080), /* navy */
-  make_pair(0x003472f8, 0xffcd853f), /* peru */
-  make_pair(0x00348176, 0xffffc0cb), /* pink */
-  make_pair(0x00348d94, 0xffdda0dd), /* plum */
-  make_pair(0x0035f183, 0xfffffafa), /* snow */
-  make_pair(0x0036425c, 0xff008080), /* teal */
-  make_pair(0x00674f7e, 0xffffebcd), /* blanchedalmond */
-  make_pair(0x056f5c58, 0xffba55d3), /* mediumorchid */
-  make_pair(0x0590228f, 0xfff0ffff), /* azure */
-  make_pair(0x05947fe4, 0xfff5f5dc), /* beige */
-  make_pair(0x05978fff, 0xff000000), /* black */
-  make_pair(0x059a8136, 0xffa52a2a), /* brown */
-  make_pair(0x05a74431, 0xffff7f50), /* coral */
-  make_pair(0x05e0cf03, 0xff008000), /* green */
-  make_pair(0x05fef6a9, 0xfffffff0), /* ivory */
-  make_pair(0x06149302, 0xfff0e68c), /* khaki */
-  make_pair(0x06234efa, 0xfffaf0e6), /* linen */
-  make_pair(0x064ee1db, 0xff808000), /* olive */
-  make_pair(0x066be19e, 0xff7b68ee), /* mediumslateblue */
-  make_pair(0x06bdbae7, 0xfff5deb3), /* wheat */
-  make_pair(0x06bdcc29, 0xffffffff), /* white */
-  make_pair(0x07556b71, 0xff9370db), /* mediumpurple */
-  make_pair(0x0bb131e1, 0xfff4a460), /* sandybrown */
-  make_pair(0x0fa260cf, 0xff5f9ea0), /* cadetblue */
-  make_pair(0x10802ee6, 0xfff5f5f5), /* whitesmoke */
-  make_pair(0x15e2ebc8, 0xffdb7093), /* palevioletred */
-  make_pair(0x168eb32a, 0xff191970), /* midnightblue */
-  make_pair(0x195756f0, 0xfffffacd), /* lemonchiffon */
-  make_pair(0x20a2676a, 0xfffaebd7), /* antiquewhite */
-  make_pair(0x21234e3c, 0xfffafad2), /* lightgoldenrodyellow */
-  make_pair(0x25832862, 0xffff1493), /* deeppink */
-  make_pair(0x28cb4834, 0xffeee8aa), /* palegoldenrod */
-  make_pair(0x28e4ea70, 0xffadd8e6), /* lightblue */
-  make_pair(0x28e58d39, 0xffe0ffff), /* lightcyan */
-  make_pair(0x28e744f5, 0xffd3d3d3), /* lightgrey */
-  make_pair(0x28eb3b8c, 0xffffb6c1), /* lightpink */
-  make_pair(0x2903623c, 0xffd2691e), /* chocolate */
-  make_pair(0x316858a9, 0xffff00ff), /* magenta */
-  make_pair(0x31bbd168, 0xffb8860b), /* darkgoldenrod */
-  make_pair(0x3256b281, 0xff00fa9a), /* mediumspringgreen */
-  make_pair(0x34636c14, 0xff2e8b57), /* seagreen */
-  make_pair(0x3507fb41, 0xfffff5ee), /* seashell */
-  make_pair(0x39129959, 0xff8a2be2), /* blueviolet */
-  make_pair(0x3d8c4edf, 0xffdc143c), /* crimson */
-  make_pair(0x3d9dd619, 0xff98fb98), /* palegreen */
-  make_pair(0x3e1524a5, 0xff4682b4), /* steelblue */
-  make_pair(0x41892743, 0xffff69b4), /* hotpink */
-  make_pair(0x4306b960, 0xfff5fffa), /* mintcream */
-  make_pair(0x44a8dd73, 0xff6a5acd), /* slateblue */
-  make_pair(0x44ab37f8, 0xff708090), /* slategrey */
-  make_pair(0x45c1ce55, 0xff1e90ff), /* dodgerblue */
-  make_pair(0x46bb5f7e, 0xff7fffd4), /* aquamarine */
-  make_pair(0x4cbc0e6b, 0xffffe4e1), /* mistyrose */
-  make_pair(0x50632b2a, 0xff20b2aa), /* lightseagreen */
-  make_pair(0x5369b689, 0xff3cb371), /* mediumseagreen */
-  make_pair(0x55ee0d5b, 0xff8b0000), /* darkred */
-  make_pair(0x58bebba3, 0xffff4500), /* orangered */
-  make_pair(0x5c293873, 0xff8b008b), /* darkmagenta */
-  make_pair(0x5fd898e2, 0xffffefd5), /* papayawhip */
-  make_pair(0x607bbc4e, 0xff32cd32), /* limegreen */
-  make_pair(0x618d42dd, 0xff6495ed), /* cornflowerblue */
-  make_pair(0x61be858a, 0xff8fbc8f), /* darkseagreen */
-  make_pair(0x620886da, 0xfff0f8ff), /* aliceblue */
-  make_pair(0x628e63dd, 0xffc71585), /* mediumvioletred */
-  make_pair(0x634c8b67, 0xff696969), /* dimgrey */
-  make_pair(0x67cc74d0, 0xff00008b), /* darkblue */
-  make_pair(0x67cd1799, 0xff008b8b), /* darkcyan */
-  make_pair(0x67cecf55, 0xff555555), /* darkgrey */
-  make_pair(0x68fb7b25, 0xff87cefa), /* lightskyblue */
-  make_pair(0x6b6671fe, 0xff556b2f), /* darkolivegreen */
-  make_pair(0x6b748956, 0xff7fff00), /* chartreuse */
-  make_pair(0x74022737, 0xffafeeee), /* paleturquoise */
-  make_pair(0x7880d61e, 0xffdcdcdc), /* gainsboro */
-  make_pair(0x7c4d5b99, 0xfffff0f5), /* lavenderblush */
-  make_pair(0x7cf2b06b, 0xff00ced1), /* darkturquoise */
-  make_pair(0x80da74fb, 0xff87ceeb), /* skyblue */
-  make_pair(0x89cea8f9, 0xffdeb887), /* burlywood */
-  make_pair(0x920b194d, 0xff006400), /* darkgreen */
-  make_pair(0x923edd4c, 0xffbdb76b), /* darkkhaki */
-  make_pair(0x93e1b776, 0xffffdab9), /* peachpuff */
-  make_pair(0x967dfd4f, 0xff0000cd), /* mediumblue */
-  make_pair(0x9e33a98a, 0xff6b8e23), /* olivedrab */
-  make_pair(0x9fb78304, 0xffffa07a), /* lightsalmon */
-  make_pair(0xa20d484f, 0xffb0c4de), /* lightsteelblue */
-  make_pair(0xa89d65b3, 0xffbc8f8f), /* rosybrown */
-  make_pair(0xa8a35ba2, 0xff778899), /* lightslategrey */
-  make_pair(0xaa2cf10a, 0xffffffe0), /* lightyellow */
-  make_pair(0xad388e35, 0xffffe4c4), /* bisque */
-  make_pair(0xad5a05c7, 0xffe6e6fa), /* lavender */
-  make_pair(0xadd2d33e, 0xfffdf5e6), /* oldlace */
-  make_pair(0xafc8858f, 0xffd8bfd8), /* thistle */
-  make_pair(0xb3b3bc1e, 0xffdaa520), /* goldenrod */
-  make_pair(0xb852b195, 0xfffffaf0), /* floralwhite */
-  make_pair(0xb969fed2, 0xff4b0082), /* indigo */
-  make_pair(0xbab8a537, 0xffadff2f), /* greenyellow */
-  make_pair(0xbcfd2524, 0xffff8c00), /* darkorange */
-  make_pair(0xbcfdf799, 0xff9932cc), /* darkorchid */
-  make_pair(0xbd58e0b3, 0xff66cdaa), /* mediumaquamarine */
-  make_pair(0xbd9413e1, 0xff4169e1), /* royalblue */
-  make_pair(0xbf8ca470, 0xff800000), /* maroon */
-  make_pair(0xc0ad9f4c, 0xff48d1cc), /* mediumturquoise */
-  make_pair(0xc2b0f2bd, 0xff483d8b), /* darkslateblue */
-  make_pair(0xc2b34d42, 0xff2f4f4f), /* darkslategrey */
-  make_pair(0xc2e5f564, 0xffe9967a), /* darksalmon */
-  make_pair(0xc3de262e, 0xffffa500), /* orange */
-  make_pair(0xc3def8a3, 0xffda70d6), /* orchid */
-  make_pair(0xc5c507bc, 0xff800080), /* purple */
-  make_pair(0xc8769375, 0xff9400d3), /* darkviolet */
-  make_pair(0xc9c6f66e, 0xfffa8072), /* salmon */
-  make_pair(0xca348772, 0xffa0522d), /* sienna */
-  make_pair(0xca37d30d, 0xffc0c0c0), /* silver */
-  make_pair(0xcc41600a, 0xffff6347), /* tomato */
-  make_pair(0xcf57947f, 0xffee82ee), /* violet */
-  make_pair(0xd036be93, 0xffb0e0e6), /* powderblue */
-  make_pair(0xd086fd06, 0xff228b22), /* forestgreen */
-  make_pair(0xd43c6474, 0xffffff00), /* yellow */
-  make_pair(0xd5440d16, 0xff00ff7f), /* springgreen */
-  make_pair(0xd5796f1a, 0xffcd5c5c), /* indianred */
-  make_pair(0xe106b6d7, 0xffff00ff), /* fuchsia */
-  make_pair(0xe1b5130f, 0xff9acd32), /* yellowgreen */
-  make_pair(0xe4b479fd, 0xfffff8dc), /* cornsilk */
-  make_pair(0xe4cacafb, 0xfff0fff0), /* honeydew */
-  make_pair(0xe97218a6, 0xffffdead), /* navajowhite */
-  make_pair(0xef19e3cb, 0xffb22222), /* firebrick */
-  make_pair(0xf3c7ccdb, 0xfff08080), /* lightcoral */
-  make_pair(0xf40157ad, 0xff90ee90), /* lightgreen */
-  make_pair(0xf456044f, 0xff8b4513), /* saddlebrown */
-  make_pair(0xfcad568f, 0xff00bfff), /* deepskyblue */
-  make_pair(0xfeea9b21, 0xff40e0d0), /* turquoise */
+struct Compare {
+  bool operator()(const Colour& x, const Colour& y) const {
+    return x.getARGB() < y.getARGB();
+  }
 };
 
-bool compare(const ColorPreset& x, const ColorPreset& y) {
-  return x.first < y.first;
+struct ColorNamer {
+  std::map<String, Colour> stringToColor_;
+  std::map<Colour, String, Compare> colorToString_;
+
+  void add(const String& s, uint32 h) {
+    add(s, Colour(h));
+  }
+
+  void add(const String& s, const Colour& c) {
+    stringToColor_[s] = c;
+    colorToString_[c] = s;
+  }
+};
+
+ColorNamer makeNamer() {
+  ColorNamer namer;
+
+  namer.add("aliceblue", 0xfff0f8ff);
+  namer.add("antiquewhite", 0xfffaebd7);
+  namer.add("aqua", 0xff00ffff);
+  namer.add("aquamarine", 0xff7fffd4);
+  namer.add("azure", 0xfff0ffff);
+  namer.add("beige", 0xfff5f5dc);
+  namer.add("bisque", 0xffffe4c4);
+  namer.add("black", 0xff000000);
+  namer.add("blanchedalmond", 0xffffebcd);
+  namer.add("blue", 0xff0000ff);
+  namer.add("blueviolet", 0xff8a2be2);
+  namer.add("brown", 0xffa52a2a);
+  namer.add("burlywood", 0xffdeb887);
+  namer.add("cadetblue", 0xff5f9ea0);
+  namer.add("chartreuse", 0xff7fff00);
+  namer.add("chocolate", 0xffd2691e);
+  namer.add("coral", 0xffff7f50);
+  namer.add("cornflowerblue", 0xff6495ed);
+  namer.add("cornsilk", 0xfffff8dc);
+  namer.add("crimson", 0xffdc143c);
+  namer.add("cyan", 0xff00ffff);
+  namer.add("darkblue", 0xff00008b);
+  namer.add("darkcyan", 0xff008b8b);
+  namer.add("darkgoldenrod", 0xffb8860b);
+  namer.add("darkgreen", 0xff006400);
+  namer.add("darkgrey", 0xff555555);
+  namer.add("darkkhaki", 0xffbdb76b);
+  namer.add("darkmagenta", 0xff8b008b);
+  namer.add("darkolivegreen", 0xff556b2f);
+  namer.add("darkorange", 0xffff8c00);
+  namer.add("darkorchid", 0xff9932cc);
+  namer.add("darkred", 0xff8b0000);
+  namer.add("darksalmon", 0xffe9967a);
+  namer.add("darkseagreen", 0xff8fbc8f);
+  namer.add("darkslateblue", 0xff483d8b);
+  namer.add("darkslategrey", 0xff2f4f4f);
+  namer.add("darkturquoise", 0xff00ced1);
+  namer.add("darkviolet", 0xff9400d3);
+  namer.add("deeppink", 0xffff1493);
+  namer.add("deepskyblue", 0xff00bfff);
+  namer.add("dimgrey", 0xff696969);
+  namer.add("dodgerblue", 0xff1e90ff);
+  namer.add("firebrick", 0xffb22222);
+  namer.add("floralwhite", 0xfffffaf0);
+  namer.add("forestgreen", 0xff228b22);
+  namer.add("fuchsia", 0xffff00ff);
+  namer.add("gainsboro", 0xffdcdcdc);
+  namer.add("gold", 0xffffd700);
+  namer.add("goldenrod", 0xffdaa520);
+  namer.add("green", 0xff008000);
+  namer.add("greenyellow", 0xffadff2f);
+  namer.add("grey", 0xff808080);
+  namer.add("honeydew", 0xfff0fff0);
+  namer.add("hotpink", 0xffff69b4);
+  namer.add("indianred", 0xffcd5c5c);
+  namer.add("indigo", 0xff4b0082);
+  namer.add("ivory", 0xfffffff0);
+  namer.add("khaki", 0xfff0e68c);
+  namer.add("lavender", 0xffe6e6fa);
+  namer.add("lavenderblush", 0xfffff0f5);
+  namer.add("lemonchiffon", 0xfffffacd);
+  namer.add("lightblue", 0xffadd8e6);
+  namer.add("lightcoral", 0xfff08080);
+  namer.add("lightcyan", 0xffe0ffff);
+  namer.add("lightgoldenrodyellow", 0xfffafad2);
+  namer.add("lightgreen", 0xff90ee90);
+  namer.add("lightgrey", 0xffd3d3d3);
+  namer.add("lightpink", 0xffffb6c1);
+  namer.add("lightsalmon", 0xffffa07a);
+  namer.add("lightseagreen", 0xff20b2aa);
+  namer.add("lightskyblue", 0xff87cefa);
+  namer.add("lightslategrey", 0xff778899);
+  namer.add("lightsteelblue", 0xffb0c4de);
+  namer.add("lightyellow", 0xffffffe0);
+  namer.add("lime", 0xff00ff00);
+  namer.add("limegreen", 0xff32cd32);
+  namer.add("linen", 0xfffaf0e6);
+  namer.add("magenta", 0xffff00ff);
+  namer.add("maroon", 0xff800000);
+  namer.add("mediumaquamarine", 0xff66cdaa);
+  namer.add("mediumblue", 0xff0000cd);
+  namer.add("mediumorchid", 0xffba55d3);
+  namer.add("mediumpurple", 0xff9370db);
+  namer.add("mediumseagreen", 0xff3cb371);
+  namer.add("mediumslateblue", 0xff7b68ee);
+  namer.add("mediumspringgreen", 0xff00fa9a);
+  namer.add("mediumturquoise", 0xff48d1cc);
+  namer.add("mediumvioletred", 0xffc71585);
+  namer.add("midnightblue", 0xff191970);
+  namer.add("mintcream", 0xfff5fffa);
+  namer.add("mistyrose", 0xffffe4e1);
+  namer.add("navajowhite", 0xffffdead);
+  namer.add("navy", 0xff000080);
+  namer.add("oldlace", 0xfffdf5e6);
+  namer.add("olive", 0xff808000);
+  namer.add("olivedrab", 0xff6b8e23);
+  namer.add("orange", 0xffffa500);
+  namer.add("orangered", 0xffff4500);
+  namer.add("orchid", 0xffda70d6);
+  namer.add("palegoldenrod", 0xffeee8aa);
+  namer.add("palegreen", 0xff98fb98);
+  namer.add("paleturquoise", 0xffafeeee);
+  namer.add("palevioletred", 0xffdb7093);
+  namer.add("papayawhip", 0xffffefd5);
+  namer.add("peachpuff", 0xffffdab9);
+  namer.add("peru", 0xffcd853f);
+  namer.add("pink", 0xffffc0cb);
+  namer.add("plum", 0xffdda0dd);
+  namer.add("powderblue", 0xffb0e0e6);
+  namer.add("purple", 0xff800080);
+  namer.add("red", 0xffff0000);
+  namer.add("rosybrown", 0xffbc8f8f);
+  namer.add("royalblue", 0xff4169e1);
+  namer.add("saddlebrown", 0xff8b4513);
+  namer.add("salmon", 0xfffa8072);
+  namer.add("sandybrown", 0xfff4a460);
+  namer.add("seagreen", 0xff2e8b57);
+  namer.add("seashell", 0xfffff5ee);
+  namer.add("sienna", 0xffa0522d);
+  namer.add("silver", 0xffc0c0c0);
+  namer.add("skyblue", 0xff87ceeb);
+  namer.add("slateblue", 0xff6a5acd);
+  namer.add("slategrey", 0xff708090);
+  namer.add("snow", 0xfffffafa);
+  namer.add("springgreen", 0xff00ff7f);
+  namer.add("steelblue", 0xff4682b4);
+  namer.add("tan", 0xffd2b48c);
+  namer.add("teal", 0xff008080);
+  namer.add("thistle", 0xffd8bfd8);
+  namer.add("tomato", 0xffff6347);
+  namer.add("turquoise", 0xff40e0d0);
+  namer.add("violet", 0xffee82ee);
+  namer.add("wheat", 0xfff5deb3);
+  namer.add("white", 0xffffffff);
+  namer.add("whitesmoke", 0xfff5f5f5);
+  namer.add("yellow", 0xffffff00);
+  namer.add("yellowgreen", 0xff9acd32);
+
+  for (auto i = 0; i <= 100; ++i) {
+    auto g = (i * 255) / 100;
+    namer.add("grey " + String(i), Colour(g, g, g));
+  }
+
+  return namer;
 }
+
+
+static const ColorNamer NAMER = makeNamer();
 
 } // namespace
 
@@ -162,29 +187,42 @@ bool fillColor(const String& cname, Colour* color) {
   if (name.isEmpty())
     return false;
 
-  if (name.startsWith("grey") and name.length() > 4) {
-    auto grey = juce::jmin(name.getTrailingIntValue(), 100);
-    auto part = (0xFF * grey) / 100;
-    *color = Colour(part, part, part);
+  if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
+    *color = Colour((uint32) name.getHexValue32());
     return true;
   }
 
-  uint32 hex;
-  if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
-    hex = (uint32) name.getHexValue32();
-  } else {
-    ColorPreset h((uint32) name.hashCode(), 0);
-    auto i = lower_bound(begin(COLOR_PRESETS), end(COLOR_PRESETS), h, compare);
-    if (i == end(COLOR_PRESETS) or i->first != h.first)
-      return false;
-    hex = i->second;
-  }
-  *color = Colour(hex);
-  return true;
+  auto i = NAMER.stringToColor_.find(name);
+  auto success = (i != NAMER.stringToColor_.end());
+  if (success)
+    *color = i->second;
+  return success;
 }
 
 Colour colorFromInt(uint32 argb) {
   return Colour(argb);
+}
+
+String colorName(const Colour& color) {
+  String suffix;
+  Colour c;
+  if (color.isOpaque()) {
+    c = color;
+  } else {
+    c = color.withAlpha(1.0f);
+    auto alpha = static_cast<int>(100 * color.getFloatAlpha());
+    suffix = " - " + String(alpha) + "%";
+  }
+  auto i = NAMER.colorToString_.find(color);
+  String name;
+  if (i != NAMER.colorToString_.end()) {
+    name = i->second;
+  } else {
+    name = "red=" + String::toHexString(color.getRed()) +
+        ", green=" + String::toHexString(color.getGreen()) +
+        ", blue=" + String::toHexString(color.getBlue());
+  }
+  return "Color(" + name + suffix + ")";
 }
 
 }  // namespace echomesh

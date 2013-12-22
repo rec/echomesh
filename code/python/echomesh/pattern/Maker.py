@@ -31,7 +31,6 @@ class Maker(object):
 
   def is_constant(self):
     is_constant = all(v.is_constant() for v in six.itervalues(self.table))
-    LOGGER.vdebug('%s.is_constant: %s', self, is_constant)
     return is_constant
 
   def __str__(self):
