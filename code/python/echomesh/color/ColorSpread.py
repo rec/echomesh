@@ -1,7 +1,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from cechomesh import to_color
+
 from echomesh.color import ColorConv
-from echomesh.color import ColorTable
 from echomesh.util import Importer
 from echomesh.expression import Transform
 
@@ -28,6 +29,6 @@ def color_name_spread(begin=None, end=None, steps=None, transform=None):
   transform = transform or Transform.transform(transform)
 
   # TODO: disallow these defaults?
-  return color_spread(ColorTable.to_color(begin or 'black'),
-                      ColorTable.to_color(end or 'white'),
+  return color_spread(to_color(begin or 'black'),
+                      to_color(end or 'white'),
                       steps or 2, transform=transform)

@@ -5,7 +5,6 @@ import copy
 import cechomesh
 
 from echomesh.base import Quit
-from echomesh.color import ColorTable
 from echomesh.expression import Expression
 from echomesh.light.SpiLightBank import SpiLightBank
 from echomesh.util import Log

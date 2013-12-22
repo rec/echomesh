@@ -13,3 +13,13 @@ def int_to_color(unsigned int argb):
   cdef Colour color = colorFromInt(argb)
   return [color.getFloatRed(), color.getFloatGreen(), color.getFloatBlue()]
 
+def to_color(object color):
+  if isinstance(color, (tuple, list)):
+    return color
+  if isinstance(color, int):
+    return int_to_color(color)
+
+  c = string_to_color(color)
+  if c:
+    return c
+  raise Exception("Didn't understand color name %s." % color)
