@@ -8,6 +8,7 @@ namespace echomesh {
 bool fillColor(const String& name, Colour* color);
 Colour colorFromInt(uint32 argb);
 String colorName(const Colour& color);
+inline void copyColor(const Colour& from, Colour* to) { *to = from; }
 
 }  // namespace echomesh
 
