@@ -1,17 +1,26 @@
-cdef Colour make_colour(object x):
-  cdef Colour c
-  try:
-    if len(x) == 3:
-      copyColor(fromFloatRGBA(x[0], x[1], x[2], 1.0), &c)
-    if len(x) == 4:
-      copyColor(fromFloatRGBA(x[0], x[1], x[2], x[3]), &c)
-  except:
+import six
+
+cdef bool fill_colour(object x, Colour* c):
+  if not x:
+    return True
+  elif isinstance(x, Color):
+    color = <Color> x
+    copyColor(color.thisptr[0], c)
+  elif isinstance(x, six.string_types):
+    return fillColor(x, c)
+  elif isinstance(x, six.integer_types):
+    copyColor(colorFromInt(x), c)
+  else:
     try:
-      if fillColor(x, &c):
-        return c
+      if len(x) == 3:
+        copyColor(fromFloatRGBA(x[0], x[1], x[2], 1.0), c)
+      elif len(x) == 4:
+        copyColor(fromFloatRGBA(x[0], x[1], x[2], x[3]), c)
+      else:
+        return False
     except:
-      pass
-  raise Exception('Can\'t construct color from "%s"' % x)
+      return False
+  return True
 
 
 cdef class Color:
@@ -19,10 +28,11 @@ cdef class Color:
 
   def __cinit__(self, *args):
     self.thisptr = new Colour()
+
     if len(args) == 1:
-      copyColor(make_colour(args[0]), self.thisptr)
-    elif len(args):
-      copyColor(make_colour(args), self.thisptr)
+      args = args[0]
+    if not fill_colour(args, self.thisptr):
+      raise ValueError('Can\'t construct color from "%s"' % args)
 
   def __dealloc__(self):
     del self.thisptr

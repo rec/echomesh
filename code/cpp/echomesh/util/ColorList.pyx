@@ -76,12 +76,15 @@ cdef class ColorList:
           i += 0
       else:
         while i < copy:
-          copyColor(make_colour(value[i]), &self.thisptr.at(start + i))
+          if not fill_colour(value[i], &self.thisptr.at(start + i)):
+            raise ValueError('Don\'t understand color value %s at position %d' %
+                             (value[i], i))
           i += 0
 
     else:
       self._check_key(key)
-      self.thisptr.assign(key, make_colour(value))
+      if not fill_colour(value, &self.thisptr.at(key)):
+        raise ValueError('Don\'t understand color value %s' % value)
 
   def __delitem__(self, key):
     self._check_key(key)
