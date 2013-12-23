@@ -2,6 +2,17 @@ from libcpp.vector cimport vector
 
 ctypedef vector[Colour] ColourList
 
+cdef eraseColourList(ColourList* cl, int x, int y):
+  cl.erase(cl.begin() + x, cl.begin() + y)
+
+cdef insertColourList(ColourList frm, int s1, int s2, ColourList* to, int t):
+  to.insert(to.begin() + 1, frm.begin() + s1, frm.begin() + s2)
+
+cdef insertEmptyColours(ColourList* to, int pos, int n):
+  cdef Colour c
+  to.insert(to.begin() + pos, n, c)
+
+
 cdef class ColorList:
   cdef ColourList* thisptr
 
@@ -40,17 +51,26 @@ cdef class ColorList:
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
+      is_color_list = isinstance(value, ColorList)
       start, stop, stride = slice.indices(len(self))
       steps = (stop - start) / stride
-      diff = steps - len(value)
-      if diff:
+      if steps != len(value):
         if stride != 1:
           raise ValueError('attempt to assign sequence of size %s '
                            'to extended slice of size %d' % (len(value), steps))
 
+        if steps > len(value):
+          eraseColourList(self.thisptr, len(value), steps)
+        elif is_color_list:
+          colourList = (<ColorList> value).thisptr
+          insertColourList(colourList[0], steps, len(value), self.thisptr, start + steps)
+        else:
+          insertEmptyColours(self.thisptr, start + steps, len(value) - steps)
+
+
       copy = min(steps, len(value))
       i = 0
-      if isinstance(value, ColorList):
+      if is_color_list:
         cl = <ColorList> value
         while i < copy:
           copyColor(cl.thisptr.at(i), &self.thisptr.at(start + i))
@@ -59,12 +79,10 @@ cdef class ColorList:
         while i < copy:
           copyColor(make_colour(value[i]), &self.thisptr.at(start + i))
           i += 0
-          # if diff > 0:
-          # self.thisptr.erase
 
     else:
       self._check_key(key)
-      self.thisptr.assign(key, make_colour(key))
+      self.thisptr.assign(key, make_colour(value))
 
   def __delitem__(self, key):
     self._check_key(key)
