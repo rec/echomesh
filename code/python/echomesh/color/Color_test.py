@@ -6,7 +6,7 @@ from echomesh.util.TestCase import TestCase
 
 class ColorTest(TestCase):
   def test_empty_color(self):
-    self.assertEqual(str(Color()), 'Color(black, alpha=0.000)')
+    self.assertEqual(str(Color()), 'Color(none)')
 
   def test_black(self):
     self.assertEqual(str(Color('black')), 'Color(black)')

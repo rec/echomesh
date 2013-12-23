@@ -124,6 +124,7 @@ ColorNamer makeNamer() {
   namer.add("mistyrose", 0xffffe4e1);
   namer.add("navajowhite", 0xffffdead);
   namer.add("navy", 0xff000080);
+  namer.add("none", 0x00000000);
   namer.add("oldlace", 0xfffdf5e6);
   namer.add("olive", 0xff808000);
   namer.add("olivedrab", 0xff6b8e23);
@@ -203,7 +204,9 @@ Colour colorFromInt(uint32 argb) {
   return Colour(argb);
 }
 
-string colorName(const Colour& color) {
+string colorName(Colour color) {
+  if (not color.getARGB())
+    return "none";
   String suffix;
   Colour c;
   if (color.isOpaque()) {
