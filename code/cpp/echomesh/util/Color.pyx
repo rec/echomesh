@@ -14,6 +14,7 @@ cdef Colour make_colour(object x):
       pass
   raise Exception('Can\'t construct color from "%s"' % x)
 
+
 cdef class Color:
   cdef Colour* thisptr
 
@@ -27,21 +28,21 @@ cdef class Color:
   def __dealloc__(self):
     del self.thisptr
 
-  def set_from_rgb(self, float r=0.0, float g=0.0, float b=0.0, float a=1.0):
-    self.thisptr[0] = fromFloatRGBA(r, g, b , a)
-
-  def set_from_string(self, string s):
-    if not fillColor(s, self.thisptr):
-      raise Exception('Don\'t understand color name "%s"' % s)
-
-  def set_from_object(self, object x):
-    try:
-      self.set_from_string(x)
-    except:
-      try:
-        self.set_from_rgb(*x)
-      except:
-        raise Exception('Can\'t construct color from "%s"' % x)
-
   def __str__(self):
     return 'Color(%s)' % colorName(self.thisptr[0])
+
+  def __repr__(self):
+    return self.__str__()
+
+  @property
+  def red(self):
+    return self.thisptr.getFloatRed()
+
+  @property
+  def green(self):
+    return self.thisptr.getFloatGreen()
+
+  @property
+  def blue(self):
+    return self.thisptr.getFloatBlue()
+
