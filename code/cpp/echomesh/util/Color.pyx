@@ -34,14 +34,11 @@ cdef class Color:
     if not fill_colour(args, self.thisptr):
       raise ValueError('Can\'t construct color from "%s"' % args)
 
-  def __dealloc__(self):
-    del self.thisptr
-
-  def __str__(self):
-    return 'Color(%s)' % colorName(self.thisptr[0])
-
-  def __repr__(self):
-    return self.__str__()
+  @property
+  def rgb(self):
+    return [self.thisptr.getFloatRed(),
+            self.thisptr.getFloatGreen(),
+            self.thisptr.getFloatBlue()]
 
   @property
   def red(self):
@@ -55,3 +52,12 @@ cdef class Color:
   def blue(self):
     return self.thisptr.getFloatBlue()
 
+
+  def __dealloc__(self):
+    del self.thisptr
+
+  def __str__(self):
+    return 'Color(%s)' % colorName(self.thisptr[0])
+
+  def __repr__(self):
+    return self.__str__()
