@@ -1,4 +1,3 @@
-
 cdef Colour make_colour(object x):
   cdef Colour c
   try:

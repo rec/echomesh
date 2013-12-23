@@ -169,7 +169,7 @@ ColorNamer makeNamer() {
   namer.add("yellow", 0xffffff00);
   namer.add("yellowgreen", 0xff9acd32);
 
-  for (auto i = 0; i <= 100; ++i) {
+  for (auto i = 1; i < 100; ++i) {
     auto g = (i * 255) / 100;
     namer.add("grey " + String(i), Colour(g, g, g));
   }
@@ -210,9 +210,9 @@ string colorName(const Colour& color) {
     c = color;
   } else {
     c = color.withAlpha(1.0f);
-    suffix = ", a=" + String(color.getFloatAlpha(), 3);
+    suffix = ", alpha=" + String(color.getFloatAlpha(), 3);
   }
-  auto i = NAMER.colorToString_.find(color);
+  auto i = NAMER.colorToString_.find(c);
   String name;
   if (i != NAMER.colorToString_.end()) {
     name = i->second;

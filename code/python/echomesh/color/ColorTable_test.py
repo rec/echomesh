@@ -26,8 +26,3 @@ class TestColorTable(TestCase):
     self.assertEqual(to_color('grey 3'),
                      [0.027450980618596077, 0.027450980618596077, 0.027450980618596077])
 
-  def test_grey0(self):
-    self.assertEqual(to_color('grey 0'), [0.0, 0.0, 0.0])
-
-  def test_grey1000(self):
-    self.assertEqual(to_color('grey 100'), [1.0, 1.0, 1.0])
