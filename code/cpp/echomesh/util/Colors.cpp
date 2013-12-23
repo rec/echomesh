@@ -213,16 +213,20 @@ string colorName(Colour color) {
     c = color;
   } else {
     c = color.withAlpha(1.0f);
-    suffix = ", alpha=" + String(color.getFloatAlpha(), 3);
+    suffix = ", alpha=" + String(color.getFloatAlpha(), 3) + "]";
   }
   auto i = NAMER.colorToString_.find(c);
   String name;
   if (i != NAMER.colorToString_.end()) {
     name = i->second;
+    if (not suffix.isEmpty())
+      name = "[" + name;
   } else {
-    name = "red=" + String(color.getFloatRed(), 3) +
+    name = "[red=" + String(color.getFloatRed(), 3) +
         ", green=" + String(color.getFloatGreen(), 3) +
         ", blue=" + String(color.getFloatBlue(), 3);
+    if (suffix.isEmpty())
+      suffix += "]";
   }
   return (name + suffix).toStdString();
 }

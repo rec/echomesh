@@ -15,6 +15,9 @@ cdef insertEmptyColours(ColourList* to, int pos, int n):
   cdef Colour c
   insertColours(to, pos, n, c)
 
+cdef setColourInList(ColourList* cl, int pos, Colour c):
+  copyColor(c, &cl.at(pos))
+
 
 cdef class ColorList:
   cdef ColourList* thisptr
@@ -35,11 +38,35 @@ cdef class ColorList:
       raise IndexError('ColorList index out of range')
 
   def append(self, object item):
+    length = len(self)
+    self.resize(length + 1)
+    try:
+      self._set_item(length, item)
+    except:
+      self.resize(length)
+      raise
+
+  def resize(self, size):
+    if size < 0:
+      raise ValueError('ColorList size must be non-negative.')
+    self.thisptr.resize(size)
+
+  def _set_item(self, int i, object item):
     cdef Colour c
-    if not fill_colour(item, &c):
+    if fill_colour(item, &c):
+      setColourInList(self.thisptr, i, c)
+    else:
       raise ValueError('Don\'t understand color value %s' % item)
 
-    insertColours(self.thisptr, len(self), 1, c)
+  def extend(self, object items):
+    length = len(self)
+    self.resize(length + len(items))
+
+    try:
+      for i, item in enumerate(items):
+        self._set_item(length + i, item)
+    except:
+      self.resize(length)
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
@@ -97,10 +124,10 @@ cdef class ColorList:
         raise ValueError('Don\'t understand color value %s' % value)
 
   def __str__(self):
-    return 'ColorList(%s)' % ', '.join(str(c) for c in self)
+    return '[%s]' % ', '.join(str(c) for c in self)
 
   def __repr__(self):
-    return 'ColorList(%s)' % ', '.join(str(c) for c in self)
+    return 'ColorList(%s)' % self.__str__()
 
   def __delitem__(self, key):
     self._check_key(key)

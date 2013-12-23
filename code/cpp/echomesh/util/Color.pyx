@@ -53,7 +53,7 @@ cdef class Color:
     del self.thisptr
 
   def __str__(self):
-    return 'Color(%s)' % colorName(self.thisptr[0])
+    return colorName(self.thisptr[0])
 
   def __repr__(self):
-    return self.__str__()
+    return 'Color(%s)' % str(self)
