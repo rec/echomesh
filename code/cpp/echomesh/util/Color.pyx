@@ -22,13 +22,11 @@ cdef bool fill_colour(object x, Colour* c):
       return False
   return True
 
-
 cdef class Color:
   cdef Colour* thisptr
 
   def __cinit__(self, *args):
     self.thisptr = new Colour()
-
     if len(args) == 1:
       args = args[0]
     if not fill_colour(args, self.thisptr):
@@ -36,9 +34,8 @@ cdef class Color:
 
   @property
   def rgb(self):
-    return [self.thisptr.getFloatRed(),
-            self.thisptr.getFloatGreen(),
-            self.thisptr.getFloatBlue()]
+    t = self.thisptr
+    return [t.getFloatRed(), t.getFloatGreen(), t.getFloatBlue()]
 
   @property
   def red(self):
@@ -51,7 +48,6 @@ cdef class Color:
   @property
   def blue(self):
     return self.thisptr.getFloatBlue()
-
 
   def __dealloc__(self):
     del self.thisptr

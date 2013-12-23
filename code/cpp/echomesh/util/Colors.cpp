@@ -217,9 +217,9 @@ string colorName(const Colour& color) {
   if (i != NAMER.colorToString_.end()) {
     name = i->second;
   } else {
-    name = "red=" + String::toHexString(color.getRed()) +
-        ", green=" + String::toHexString(color.getGreen()) +
-        ", blue=" + String::toHexString(color.getBlue());
+    name = "red=" + String(color.getFloatRed(), 3) +
+        ", green=" + String(color.getFloatGreen(), 3) +
+        ", blue=" + String(color.getFloatBlue(), 3);
   }
   return (name + suffix).toStdString();
 }
