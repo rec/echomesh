@@ -1,8 +1,28 @@
+
+cdef Colour make_colour(object x):
+  cdef Colour c
+  try:
+    if len(x) == 3:
+      copyColor(fromFloatRGBA(x[0], x[1], x[2], 1.0), &c)
+    if len(x) == 4:
+      copyColor(fromFloatRGBA(x[0], x[1], x[2], x[3]), &c)
+  except:
+    try:
+      if fillColor(x, &c):
+        return c
+    except:
+      pass
+  raise Exception('Can\'t construct color from "%s"' % x)
+
 cdef class Color:
   cdef Colour* thisptr
 
-  def __cinit__(self):
+  def __cinit__(self, *args):
     self.thisptr = new Colour()
+    if len(args) == 1:
+      copyColor(make_colour(args[0]), self.thisptr)
+    elif len(args):
+      copyColor(make_colour(args), self.thisptr)
 
   def __dealloc__(self):
     del self.thisptr
@@ -25,29 +45,3 @@ cdef class Color:
 
   def __str__(self):
     return 'Color(%s)' % colorName(self.thisptr[0])
-
-cdef bool fill_color_from_rgba(
-    Colour* c, float r=0.0, float g=0.0, float b=0.0, float a=1.0):
-  c[0] = fromFloatRGBA(r, g, b, a)
-
-def make_color(object x):
-  c = Color()
-  c.set_from_object(x)
-  return c
-
-cdef Colour make_colour(object x):
-  cdef Colour c = Colour()
-  try:
-    if len(x) == 3:
-      fill_color_from_rgba(&c, x[0], x[1], x[2])
-      return c
-    if len(x) == 4:
-      fill_color_from_rgba(&c, x[0], x[1], x[2], x[3])
-      return c
-  except:
-    try:
-      if fillColor(x, &c):
-        return c
-    except:
-      pass
-  raise Exception('Can\'t construct color from "%s"' % x)

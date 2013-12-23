@@ -210,8 +210,7 @@ string colorName(const Colour& color) {
     c = color;
   } else {
     c = color.withAlpha(1.0f);
-    auto alpha = static_cast<int>(100 * color.getFloatAlpha());
-    suffix = " - " + String(alpha) + "%";
+    suffix = ", a=" + String(color.getFloatAlpha(), 3);
   }
   auto i = NAMER.colorToString_.find(color);
   String name;
@@ -222,7 +221,7 @@ string colorName(const Colour& color) {
         ", green=" + String::toHexString(color.getGreen()) +
         ", blue=" + String::toHexString(color.getBlue());
   }
-  return ("Color(" + name + suffix + ")").toStdString();
+  return (name + suffix).toStdString();
 }
 
 }  // namespace echomesh

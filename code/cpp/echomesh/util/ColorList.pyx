@@ -67,7 +67,6 @@ cdef class ColorList:
         else:
           insertEmptyColours(self.thisptr, start + steps, len(value) - steps)
 
-
       copy = min(steps, len(value))
       i = 0
       if is_color_list:
