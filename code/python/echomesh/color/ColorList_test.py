@@ -11,15 +11,22 @@ class ColorListTest(TestCase):
   def assertResult(self, s):
     self.assertEqual(str(self.cl), s)
 
-
-  def test_empty(self):
-    self.assertResult('[]')
-
   def test_single(self):
     self.cl.append("red")
     self.assertResult('[red]')
 
+  def test_empty(self):
+    self.assertResult('[]')
+
+  def test_appendn(self):
+    self.cl.append("red")
+    self.assertResult('[red]')
+    self.assertRaises(ValueError, self.cl.append, 'glug')
+    self.assertResult('[red]')
+
   def test_resize(self):
     self.cl.resize(2)
-    # self.assertResult('
+    self.assertResult('[none, none]')
+    self.cl.resize(0)
+    self.assertResult('[]')
 
