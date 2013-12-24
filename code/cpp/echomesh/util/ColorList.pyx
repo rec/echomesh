@@ -8,24 +8,25 @@ cdef eraseColourList(ColourList* cl, int x, int y):
 cdef insertColourList(ColourList frm, int s1, int s2, ColourList* to, int t):
   to.insert(to.begin() + 1, frm.begin() + s1, frm.begin() + s2)
 
-cdef insertColours(ColourList* to, int pos, int n, Colour c):
-  to.insert(to.begin() + pos, n, c)
-
-cdef insertEmptyColours(ColourList* to, int pos, int n):
-  cdef Colour c
-  insertColours(to, pos, n, c)
-
 cdef setColourInList(ColourList* cl, int pos, Colour c):
   copyColor(c, &cl.at(pos))
 
+def _make_list(object value):
+  try:
+    len(value)
+  except:
+    value = list(value)
+  return value
 
 cdef class ColorList:
   cdef ColourList* thisptr
 
-  def __cinit__(self, int size=0):
+  def __cinit__(self, *args):
     self.thisptr = new ColourList()
-    if size:
-      self.thisptr.resize(size)
+    if len(args) == 1:
+      self.extend(args[0])
+    elif args:
+      raise TypeError('ColorList takes at most 1 argument (%d given)' % len(args))
 
   def __dealloc__(self):
     del self.thisptr
@@ -36,15 +37,6 @@ cdef class ColorList:
   def _check_key(self, int key):
     if key < 0 or key >= len(self):
       raise IndexError('ColorList index out of range')
-
-  def append(self, object item):
-    length = len(self)
-    self.resize(length + 1)
-    try:
-      self._set_item(length, item)
-    except:
-      self.resize(length)
-      raise
 
   def resize(self, size):
     if size < 0:
@@ -58,13 +50,22 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
+  def append(self, object item):
+    cdef Colour c
+    if fill_colour(item, &c):
+      self.thisptr.push_back(c)
+    else:
+      raise ValueError('Don\'t understand color value %s' % item)
+
   def extend(self, object items):
     length = len(self)
-    self.resize(length + len(items))
+    items = _make_list(items)
+    new_length = len(items)
 
+    self.thisptr.reserve(length + new_length)
     try:
-      for i, item in enumerate(items):
-        self._set_item(length + i, item)
+      for item in items:
+        self.append(item)
     except:
       self.resize(length)
 
@@ -88,35 +89,32 @@ cdef class ColorList:
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
-      is_color_list = isinstance(value, ColorList)
+      value = _make_list(value)
+      if isinstance(value, ColorList):
+        cl = <ColorList> value
+      else:
+        cl = ColorList(value)
+
+      length = len(cl)
       start, stop, stride = key.indices(len(self))
-      steps = (stop - start) / stride
-      if steps != len(value):
+      slice_length = int((stop - start) / stride)
+
+      if slice_length != length:
         if stride != 1:
           raise ValueError('attempt to assign sequence of size %s '
-                           'to extended slice of size %d' % (len(value), steps))
+                           'to extended slice of size %d' %
+                           (length, slice_length))
 
-        if steps > len(value):
-          eraseColourList(self.thisptr, len(value), steps)
-        elif is_color_list:
-          colourList = (<ColorList> value).thisptr
-          insertColourList(colourList[0], steps, len(value), self.thisptr, start + steps)
+        if slice_length > length:
+          eraseColourList(self.thisptr, length, slice_length)
         else:
-          insertEmptyColours(self.thisptr, start + steps, len(value) - steps)
+          insertColourList(cl.thisptr[0], slice_length, length, self.thisptr,
+                           start + slice_length)
 
-      copy = min(steps, len(value))
-      i = 0
-      if is_color_list:
-        cl = <ColorList> value
-        while i < copy:
-          copyColor(cl.thisptr.at(i), &self.thisptr.at(start + i))
-          i += 0
-      else:
-        while i < copy:
-          if not fill_colour(value[i], &self.thisptr.at(start + i)):
-            raise ValueError('Don\'t understand color value %s at position %d' %
-                             (value[i], i))
-          i += 0
+      for i in range(length):
+        assert start < stop
+        copyColor(cl.thisptr.at(i), &self.thisptr.at(start))
+        start += stride
 
     else:
       self._check_key(key)
