@@ -117,29 +117,36 @@ cdef class ColorList:
       color.thisptr[0] = self.thisptr.at(key)
       return color
 
-  def __imul__(self, object other):
-    pass
+  def __iadd__(self, object other):
+    self.extend(other)
+
+  def __imul__(self, int mult):
+    length = len(self)
+    self.thisptr.reserve(mult * length)
+    for i in range(1, mult):
+      insertColourList(self.thisptr[0], 0, length, self.thisptr, i * length)
 
   def __len__(self):
     return self.thisptr.size()
 
-  def __iadd__(self, object other):
-    pass
-
-  def __mul__(self, object other):
-    pass
+  def __mul__(self, int mult):
+    cl = ColorList(self)
+    cl *= mult
+    return cl
 
   def __radd__(self, object other):
-    pass
+    return ColorList(other) + self
 
   def __repr__(self):
     return 'ColorList(%s)' % self.__str__()
 
   def __reversed__(self):
-    pass
+    cl = ColorList(self)
+    cl.reverse()
+    return cl
 
-  def __rmul__(self, object other):
-    pass
+  def __rmul__(self, int other):
+    return self * other
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
@@ -176,7 +183,7 @@ cdef class ColorList:
         raise ValueError('Don\'t understand color value %s' % value)
 
   def __sizeof__(self):
-    pass
+    return super(ColorList, self).__sizeof__() + 4 * len(self)
 
   def __str__(self):
     return '[%s]' % ', '.join(str(c) for c in self)
