@@ -29,24 +29,13 @@ cdef class ColorList:
   def __dealloc__(self):
     del self.thisptr
 
-  def __len__(self):
-    return self.thisptr.size()
-
-  def _check_key(self, int key):
-    if key < 0 or key >= len(self):
-      raise IndexError('ColorList index out of range')
-
   def resize(self, size):
     if size < 0:
       raise ValueError('ColorList size must be non-negative.')
     self.thisptr.resize(size)
 
-  def _set_item(self, int i, object item):
-    cdef Colour c
-    if fill_colour(item, &c):
-      setColourInList(self.thisptr, i, c)
-    else:
-      raise ValueError('Don\'t understand color value %s' % item)
+  def __len__(self):
+    return self.thisptr.size()
 
   def append(self, object item):
     cdef Colour c
@@ -54,6 +43,9 @@ cdef class ColorList:
       self.thisptr.push_back(c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
+
+  def count(self, object item):
+    pass
 
   def extend(self, object items):
     length = len(self)
@@ -67,8 +59,50 @@ cdef class ColorList:
     except:
       self.resize(length)
 
+  def index(self, object item):
+    pass
+
+  def insert(self, int index, object item):
+    pass
+
+  def pop(self, int index=-1):
+    pass
+
+  def remove(self, object item):
+    pass
+
+  def reverse(self):
+    pass
+
   def sort(self):
     sortColorList(self.thisptr)
+
+  def __add__(self, object other):
+    pass
+
+  def __radd__(self, object other):
+    pass
+
+  def __iadd__(self, object other):
+    pass
+
+  def __mul__(self, object other):
+    pass
+
+  def __rmul__(self, object other):
+    pass
+
+  def __imul__(self, object other):
+    pass
+
+  def __contains__(self, object other):
+    pass
+
+  def __reversed__(self):
+    pass
+
+  def __sizeof__(self):
+    pass
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
@@ -130,4 +164,15 @@ cdef class ColorList:
 
   def __delitem__(self, key):
     self._check_key(key)
-    pass
+
+  def _check_key(self, int key):
+    if key < 0 or key >= len(self):
+      raise IndexError('ColorList index out of range')
+
+  def _set_item(self, int i, object item):
+    cdef Colour c
+    if fill_colour(item, &c):
+      setColourInList(self.thisptr, i, c)
+    else:
+      raise ValueError('Don\'t understand color value %s' % item)
+
