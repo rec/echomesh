@@ -248,4 +248,13 @@ int countColorsInList(const ColourList& cl, Colour c) {
   return std::count(cl.begin(), cl.end(), c);
 }
 
+int indexColorInList(const ColourList& cl, Colour c) {
+  auto i = std::find(cl.begin(), cl.end(), c);
+  return i == cl.end() ? i - cl.begin() : -1;
+}
+
+void reverseColorList(ColorList* cl) {
+  std::reverse(cl->begin(), cl->end());
+}
+
 }  // namespace echomesh

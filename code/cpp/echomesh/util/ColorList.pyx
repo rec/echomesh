@@ -9,6 +9,9 @@ cdef insertColourList(ColourList frm, int s1, int s2, ColourList* to, int t):
 cdef setColourInList(ColourList* cl, int pos, Colour c):
   copyColor(c, &cl.at(pos))
 
+cdef eraseInList(ColourList* cl, int pos):
+  cl.erase(cl.begin() + pos)
+
 def _make_list(object value):
   try:
     len(value)
@@ -55,31 +58,46 @@ cdef class ColorList:
       self.thisptr.resize(length)
 
   def index(self, object item):
-    pass
+    cdef Colour c
+    if not fill_colour(item, &c):
+      raise ValueError('Don\'t understand color value %s' % item)
+    index = indexColorInList(self.thisptr[0], c)
+    if index >= 0:
+      return index
+    raise ValueError('%s is not in ColorList' % item)
 
   def insert(self, int index, object item):
-    pass
+    self[index:index] = [item]
 
   def pop(self, int index=-1):
-    pass
+    index = self._check_key(index)
+    item = self[index]
+    del self[index]
+    return item
 
   def remove(self, object item):
-    pass
+    del self[self.index(item)]
 
   def reverse(self):
-    pass
+    reverseColorList(self.thisptr)
 
   def sort(self):
     sortColorList(self.thisptr)
 
   def __add__(self, object other):
-    pass
+    cl = ColorList(self)
+    cl.extend(other)
+    return cl
 
-  def __contains__(self, object other):
-    pass
+  def __contains__(self, object item):
+    try:
+      self.index(item)
+      return True
+    except ValueError:
+      return False
 
   def __delitem__(self, key):
-    self._check_key(key)
+    eraseInList(self.thisptr, self._check_key(key))
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
@@ -94,7 +112,7 @@ cdef class ColorList:
       return cl
 
     else:
-      self._check_key(key)
+      key = self._check_key(key)
       color = Color()
       color.thisptr[0] = self.thisptr.at(key)
       return color
@@ -153,7 +171,7 @@ cdef class ColorList:
         start += stride
 
     else:
-      self._check_key(key)
+      key = self._check_key(key)
       if not fill_colour(value, &self.thisptr.at(key)):
         raise ValueError('Don\'t understand color value %s' % value)
 
@@ -164,8 +182,13 @@ cdef class ColorList:
     return '[%s]' % ', '.join(str(c) for c in self)
 
   def _check_key(self, int key):
-    if key < 0 or key >= len(self):
-      raise IndexError('ColorList index out of range')
+    if key >= 0:
+      if key < len(self):
+        return key
+    else:
+      if -key <= len(self):
+        return len(self) + key
+    raise IndexError('ColorList index out of range')
 
   def _set_item(self, int i, object item):
     cdef Colour c

@@ -14,6 +14,8 @@ inline void copyColor(Colour from, Colour* to) { *to = from; }
 void sortColorList(ColourList*);
 inline bool colorsEqual(Colour x, Colour y) { return x == y; }
 int countColorsInList(const ColourList&, Colour);
+int indexColorInList(const ColourList&, Colour);
+void reverseColorList(ColorList*);
 
 }  // namespace echomesh
 

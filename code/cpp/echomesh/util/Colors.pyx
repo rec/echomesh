@@ -10,3 +10,5 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   void sortColorList(ColourList*)
   bool colorsEqual(Colour x, Colour y)
   int countColorsInList(ColourList, Colour)
+  int indexColorInList(ColourList, Colour)
+  void reverseColorList(ColourList*)
