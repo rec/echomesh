@@ -1,7 +1,5 @@
 from libcpp.vector cimport vector
 
-ctypedef vector[Colour] ColourList
-
 cdef eraseColourList(ColourList* cl, int x, int y):
   cl.erase(cl.begin() + x, cl.begin() + y)
 
@@ -68,6 +66,9 @@ cdef class ColorList:
         self.append(item)
     except:
       self.resize(length)
+
+  def sort(self):
+    sortColorList(self.thisptr)
 
   def __getitem__(self, object key):
     if isinstance(key, slice):

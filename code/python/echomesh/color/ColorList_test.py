@@ -30,3 +30,8 @@ class ColorListTest(TestCase):
     self.cl.resize(0)
     self.assertResult('[]')
 
+  def test_sort(self):
+    self.cl.extend(['green', 'red', 'blue'])
+    self.cl.sort()
+    self.assertResult('[blue, green, red]')
+

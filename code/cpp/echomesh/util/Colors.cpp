@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <map>
 
 #include "echomesh/util/Colors.h"
@@ -10,7 +11,15 @@ namespace {
 
 struct Compare {
   bool operator()(const Colour& x, const Colour& y) const {
-    return x.getARGB() < y.getARGB();
+    auto xa = x.getARGB();
+    auto ya = y.getARGB();
+    auto xrgb = xa & 0xffffff;
+    auto yrgb = ya & 0xffffff;
+    if (xrgb < yrgb)
+      return true;
+    if (xrgb > yrgb)
+      return false;
+    return xa < ya;
   }
 };
 
@@ -229,6 +238,10 @@ string colorName(Colour color) {
       suffix += "]";
   }
   return (name + suffix).toStdString();
+}
+
+void sortColorList(vector<Colour>* colorList) {
+  std::sort(colorList->begin(), colorList->end(), Compare());
 }
 
 }  // namespace echomesh
