@@ -18,7 +18,7 @@ class ColorListTest(TestCase):
   def test_empty(self):
     self.assertResult('[]')
 
-  def test_appendn(self):
+  def test_append(self):
     self.cl.append("red")
     self.assertResult('[red]')
     self.assertRaises(ValueError, self.cl.append, 'glug')
@@ -35,3 +35,27 @@ class ColorListTest(TestCase):
     self.assertEqual(self.cl.count('yellow'), 0)
     self.assertEqual(self.cl.count('red'), 2)
 
+  def test_index(self):
+    self.cl.extend(['green', 'red', 'blue', 'red', 0x303030])
+    self.assertEqual(self.cl.index('green'), 0)
+    self.assertEqual(self.cl.index('red'), 1)
+    self.assertRaises(ValueError, self.cl.index, 'yellow')
+
+  # def test_insert(self):
+  #   self.cl.extend(['green', 'red', 'blue', 'red'])
+  #   self.cl.insert(2, 'pink')
+  #   self.assertResult('[green, red, pink, blue, red]')
+
+  # def test_slice1(self):
+  #   self.cl[:] = ['green', 'red', 'blue', 'red']
+  #   self.assertResult('[green, red, blue, red]')
+
+  def test_getslice1(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl = self.cl[:]
+    self.assertResult('[green, red, blue, red]')
+
+  def test_getslice1(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl = self.cl[1::2]
+    self.assertResult('[red, red]')

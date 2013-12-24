@@ -101,13 +101,12 @@ cdef class ColorList:
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
-      start, stop, stride = slice.indices(len(self))
-      size = (stop - start) / stride
-      cl = ColorList(size)
+      parts = range(*key.indices(len(self)))
+      cl = ColorList()
+      cl.thisptr.resize(len(parts))
       i = 0
-      while start < stop:
-        copyColor(self.thisptr.at(start), &cl.thisptr.at(i))
-        start += stride
+      for j in parts:
+        copyColor(self.thisptr.at(j), &cl.thisptr.at(i))
         i += 1
       return cl
 
@@ -157,11 +156,11 @@ cdef class ColorList:
         cl = ColorList(value)
 
       length = len(cl)
-      start, stop, stride = key.indices(len(self))
-      slice_length = int((stop - start) / stride)
+      parts = key.indices(len(self))
+      slice_length = len(parts)
 
       if slice_length != length:
-        if stride != 1:
+        if value.stride != 1:
           raise ValueError('attempt to assign sequence of size %s '
                            'to extended slice of size %d' %
                            (length, slice_length))
@@ -170,12 +169,11 @@ cdef class ColorList:
           eraseColourList(self.thisptr, length, slice_length)
         else:
           insertColourList(cl.thisptr[0], slice_length, length, self.thisptr,
-                           start + slice_length)
+                           value.start + slice_length)
 
-      for i in range(length):
-        assert start < stop
-        copyColor(cl.thisptr.at(i), &self.thisptr.at(start))
-        start += stride
+      i = 0
+      for j in parts:
+        copyColor(cl.thisptr.at(i), &self.thisptr.at(j))
 
     else:
       key = self._check_key(key)

@@ -250,7 +250,7 @@ int countColorsInList(const ColourList& cl, Colour c) {
 
 int indexColorInList(const ColourList& cl, Colour c) {
   auto i = std::find(cl.begin(), cl.end(), c);
-  return i == cl.end() ? i - cl.begin() : -1;
+  return i == cl.end() ? -1 : i - cl.begin();
 }
 
 void reverseColorList(ColorList* cl) {
