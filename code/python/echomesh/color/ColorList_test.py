@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import ColorList
+from cechomesh import Color, ColorList
 
 from echomesh.util.TestCase import TestCase
 
@@ -97,4 +97,8 @@ class ColorListTest(TestCase):
 
   def test_pop(self):
     self.cl.extend(['green', 'red', 'blue', 'red'])
-    # self.assertEquals
+    self.assertEqual(self.cl.pop(), Color('red'))
+    self.assertEqual(self.cl, ColorList(['green', 'red', 'blue']))
+    self.assertEqual(self.cl.pop(0), Color('green'))
+    self.assertEqual(self.cl, ColorList(['red', 'blue']))
+    self.assertRaises(IndexError, self.cl.pop, 3)
