@@ -133,7 +133,9 @@ cdef class ColorList:
   def __len__(self):
     return self.thisptr.size()
 
-  def __mul__(self, int mult):
+  def __mul__(self, object mult):
+    if not isinstance(self, ColorList):
+      self, mult = mult, self
     cl = ColorList(self)
     cl *= mult
     return cl
@@ -218,4 +220,3 @@ cdef class ColorList:
       setColourInList(self.thisptr, i, c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
-

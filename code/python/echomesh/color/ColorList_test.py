@@ -111,3 +111,27 @@ class ColorListTest(TestCase):
     self.assertEqual(self.cl, ColorList(['blue', 'red']))
     self.assertRaises(ValueError, self.cl.remove, 'green')
 
+  def test_reverse(self):
+    self.cl += ['green', 'red', 'blue', 'red']
+    self.cl.reverse()
+    self.assertEqual(self.cl, ColorList(['red', 'blue', 'red', 'green']))
+
+  def test_reverses(self):
+    self.cl += ['green', 'red', 'blue', 'red']
+    cl = reversed(self.cl)
+    self.assertEqual(cl, ColorList(['red', 'blue', 'red', 'green']))
+
+  def test_mul(self):
+    self.cl += ['green', 'red']
+    self.cl = self.cl * 3
+    self.assertEqual(self.cl, ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+
+  def test_rmul(self):
+    self.cl += ['green', 'red']
+    self.cl = 3 * self.cl
+    self.assertEqual(self.cl, ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+
+  def test_imul(self):
+    self.cl += ['green', 'red']
+    self.cl *= 3
+    self.assertEqual(self.cl, ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
