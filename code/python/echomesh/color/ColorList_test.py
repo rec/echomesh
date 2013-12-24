@@ -24,14 +24,14 @@ class ColorListTest(TestCase):
     self.assertRaises(ValueError, self.cl.append, 'glug')
     self.assertResult('[red]')
 
-  def test_resize(self):
-    self.cl.resize(2)
-    self.assertResult('[none, none]')
-    self.cl.resize(0)
-    self.assertResult('[]')
-
   def test_sort(self):
     self.cl.extend(['green', 'red', 'blue'])
     self.cl.sort()
     self.assertResult('[blue, green, red]')
+
+  def test_count(self):
+    self.cl.extend(['green', 'red', 'blue', 'red', 'pink'])
+    self.assertEqual(self.cl.count('green'), 1)
+    self.assertEqual(self.cl.count('yellow'), 0)
+    self.assertEqual(self.cl.count('red'), 2)
 

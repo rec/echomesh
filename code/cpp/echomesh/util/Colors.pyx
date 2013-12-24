@@ -8,3 +8,5 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   void copyColor(Colour c1, Colour* c2)
   string colorName(Colour color)
   void sortColorList(ColourList*)
+  bool colorsEqual(Colour x, Colour y)
+  int countColorsInList(ColourList, Colour)

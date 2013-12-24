@@ -29,14 +29,6 @@ cdef class ColorList:
   def __dealloc__(self):
     del self.thisptr
 
-  def resize(self, size):
-    if size < 0:
-      raise ValueError('ColorList size must be non-negative.')
-    self.thisptr.resize(size)
-
-  def __len__(self):
-    return self.thisptr.size()
-
   def append(self, object item):
     cdef Colour c
     if fill_colour(item, &c):
@@ -45,7 +37,10 @@ cdef class ColorList:
       raise ValueError('Don\'t understand color value %s' % item)
 
   def count(self, object item):
-    pass
+    cdef Colour c
+    if not fill_colour(item, &c):
+      raise ValueError('Don\'t understand color value %s' % item)
+    return countColorsInList(self.thisptr[0], c)
 
   def extend(self, object items):
     length = len(self)
@@ -57,7 +52,7 @@ cdef class ColorList:
       for item in items:
         self.append(item)
     except:
-      self.resize(length)
+      self.thisptr.resize(length)
 
   def index(self, object item):
     pass
@@ -80,29 +75,11 @@ cdef class ColorList:
   def __add__(self, object other):
     pass
 
-  def __radd__(self, object other):
-    pass
-
-  def __iadd__(self, object other):
-    pass
-
-  def __mul__(self, object other):
-    pass
-
-  def __rmul__(self, object other):
-    pass
-
-  def __imul__(self, object other):
-    pass
-
   def __contains__(self, object other):
     pass
 
-  def __reversed__(self):
-    pass
-
-  def __sizeof__(self):
-    pass
+  def __delitem__(self, key):
+    self._check_key(key)
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
@@ -121,6 +98,30 @@ cdef class ColorList:
       color = Color()
       color.thisptr[0] = self.thisptr.at(key)
       return color
+
+  def __imul__(self, object other):
+    pass
+
+  def __len__(self):
+    return self.thisptr.size()
+
+  def __iadd__(self, object other):
+    pass
+
+  def __mul__(self, object other):
+    pass
+
+  def __radd__(self, object other):
+    pass
+
+  def __repr__(self):
+    return 'ColorList(%s)' % self.__str__()
+
+  def __reversed__(self):
+    pass
+
+  def __rmul__(self, object other):
+    pass
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
@@ -156,14 +157,11 @@ cdef class ColorList:
       if not fill_colour(value, &self.thisptr.at(key)):
         raise ValueError('Don\'t understand color value %s' % value)
 
+  def __sizeof__(self):
+    pass
+
   def __str__(self):
     return '[%s]' % ', '.join(str(c) for c in self)
-
-  def __repr__(self):
-    return 'ColorList(%s)' % self.__str__()
-
-  def __delitem__(self, key):
-    self._check_key(key)
 
   def _check_key(self, int key):
     if key < 0 or key >= len(self):

@@ -244,4 +244,8 @@ void sortColorList(vector<Colour>* colorList) {
   std::sort(colorList->begin(), colorList->end(), Compare());
 }
 
+int countColorsInList(const ColourList& cl, Colour c) {
+  return std::count(cl.begin(), cl.end(), c);
+}
+
 }  // namespace echomesh
