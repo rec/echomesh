@@ -102,3 +102,12 @@ class ColorListTest(TestCase):
     self.assertEqual(self.cl.pop(0), Color('green'))
     self.assertEqual(self.cl, ColorList(['red', 'blue']))
     self.assertRaises(IndexError, self.cl.pop, 3)
+
+  def test_remove(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl.remove('red')
+    self.assertEqual(self.cl, ColorList(['green', 'blue', 'red']))
+    self.cl.remove('green')
+    self.assertEqual(self.cl, ColorList(['blue', 'red']))
+    self.assertRaises(ValueError, self.cl.remove, 'green')
+
