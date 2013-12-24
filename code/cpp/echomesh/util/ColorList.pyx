@@ -12,6 +12,9 @@ cdef setColourInList(ColourList* cl, int pos, Colour c):
 cdef eraseInList(ColourList* cl, int pos):
   cl.erase(cl.begin() + pos)
 
+cdef richcmpColorsInList(ColourList* x, ColourList *y, int index, int cmp):
+  return richcmpColors(x.at(index), y.at(index), cmp)
+
 def _make_list(object value):
   try:
     len(value)
@@ -118,12 +121,14 @@ cdef class ColorList:
 
   def __iadd__(self, object other):
     self.extend(other)
+    return self
 
   def __imul__(self, int mult):
     length = len(self)
     self.thisptr.reserve(mult * length)
     for i in range(1, mult):
       insertColourList(self.thisptr[0], 0, length, self.thisptr, i * length)
+    return self
 
   def __len__(self):
     return self.thisptr.size()
@@ -138,6 +143,17 @@ cdef class ColorList:
 
   def __repr__(self):
     return 'ColorList(%s)' % self.__str__()
+
+  def __richcmp__(self, ColorList other, int cmp):
+    return self._richcmp(other, cmp)
+
+  def _richcmp(self, ColorList other, int cmp):
+    if len(self) != len(other):
+      return False
+    for i in range(len(self)):
+      if not richcmpColorsInList(self.thisptr, other.thisptr, i, cmp):
+        return False
+    return True
 
   def __reversed__(self):
     cl = ColorList(self)

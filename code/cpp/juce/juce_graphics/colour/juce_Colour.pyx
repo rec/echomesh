@@ -3,6 +3,7 @@ cdef extern from "AppConfig.h" namespace "juce":
     Color(unsigned int)
     Colour withMultipliedBrightness(float multiplier)
     Colour overlaidWith(Colour foreground)
+    unsigned int getARGB()
     float getFloatRed()
     float getFloatGreen()
     float getFloatBlue()

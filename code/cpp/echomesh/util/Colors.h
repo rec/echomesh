@@ -12,7 +12,7 @@ Colour colorFromInt(uint32 argb);
 string colorName(Colour color);
 inline void copyColor(Colour from, Colour* to) { *to = from; }
 void sortColorList(ColourList*);
-inline bool colorsEqual(Colour x, Colour y) { return x == y; }
+int compareColors(Colour x, Colour y);
 int countColorsInList(const ColourList&, Colour);
 int indexColorInList(const ColourList&, Colour);
 void reverseColorList(ColorList*);

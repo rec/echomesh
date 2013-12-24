@@ -11,15 +11,7 @@ namespace {
 
 struct Compare {
   bool operator()(const Colour& x, const Colour& y) const {
-    auto xa = x.getARGB();
-    auto ya = y.getARGB();
-    auto xrgb = xa & 0xffffff;
-    auto yrgb = ya & 0xffffff;
-    if (xrgb < yrgb)
-      return true;
-    if (xrgb > yrgb)
-      return false;
-    return xa < ya;
+    return compareColors(x, y) < 0;
   }
 };
 
@@ -255,6 +247,22 @@ int indexColorInList(const ColourList& cl, Colour c) {
 
 void reverseColorList(ColorList* cl) {
   std::reverse(cl->begin(), cl->end());
+}
+
+int compareColors(Colour x, Colour y) {
+  auto xa = x.getARGB();
+  auto ya = y.getARGB();
+  auto xrgb = xa & 0xffffff;
+  auto yrgb = ya & 0xffffff;
+  if (xrgb < yrgb)
+    return -1;
+  if (xrgb > yrgb)
+    return 1;
+  if (xa < ya)
+    return -1;
+  if (xa > ya)
+    return 1;
+  return 0;
 }
 
 }  // namespace echomesh

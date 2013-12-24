@@ -41,14 +41,19 @@ class ColorListTest(TestCase):
     self.assertEqual(self.cl.index('red'), 1)
     self.assertRaises(ValueError, self.cl.index, 'yellow')
 
-  # def test_insert(self):
-  #   self.cl.extend(['green', 'red', 'blue', 'red'])
-  #   self.cl.insert(2, 'pink')
-  #   self.assertResult('[green, red, pink, blue, red]')
+  def test_insert(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl.insert(2, 'pink')
+    self.assertResult('[green, red, pink, blue, red]')
 
   def test_slice1(self):
     self.cl[:] = ['green', 'red', 'blue', 'red']
     self.assertResult('[green, red, blue, red]')
+
+  def test_slice2(self):
+    self.cl[:] = ['green', 'red', 'blue', 'red']
+    self.cl[1:4:2] = ['pink', 'orange']
+    self.assertResult('[green, pink, blue, pink]')
 
   def test_getslice1(self):
     self.cl.extend(['green', 'red', 'blue', 'red'])
@@ -59,3 +64,37 @@ class ColorListTest(TestCase):
     self.cl.extend(['green', 'red', 'blue', 'red'])
     self.cl = self.cl[1::2]
     self.assertResult('[red, red]')
+
+  def test_del(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    del self.cl[2]
+    self.assertResult('[green, red, red]')
+
+  def test_del(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    del self.cl[2]
+    self.assertResult('[green, red, red]')
+
+  def test_contains(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.assertTrue('red' in self.cl)
+    self.assertFalse('pink' in self.cl)
+
+  def test_add(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl = self.cl + ['yellow', 'pink']
+    self.assertResult('[green, red, blue, red, yellow, pink]')
+
+  def test_radd(self):
+    self.cl.extend(['yellow', 'pink'])
+    self.cl = ['green', 'red', 'blue', 'red'] + self.cl
+    self.assertResult('[green, red, blue, red, yellow, pink]')
+
+  def test_iadd(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    self.cl += ['yellow', 'pink']
+    self.assertResult('[green, red, blue, red, yellow, pink]')
+
+  def test_pop(self):
+    self.cl.extend(['green', 'red', 'blue', 'red'])
+    # self.assertEquals

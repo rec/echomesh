@@ -22,6 +22,18 @@ cdef bool fill_colour(object x, Colour* c):
       return False
   return True
 
+_COLOR_COMPARES = {
+  0: lambda x: x < 0,
+  1: lambda x: x <= 0,
+  2: lambda x: x == 0,
+  3: lambda x: x != 0,
+  4: lambda x: x > 0,
+  5: lambda x: x >= 0,
+  }
+
+cdef bool richcmpColors(Colour x, Colour y, int cmp):
+  return _COLOR_COMPARES[cmp](compareColors(x, y))
+
 cdef class Color:
   cdef Colour* thisptr
 
@@ -52,8 +64,19 @@ cdef class Color:
   def __dealloc__(self):
     del self.thisptr
 
+  def __int__(self):
+    return self.thisptr.getARGB()
+
   def __str__(self):
     return colorName(self.thisptr[0])
 
   def __repr__(self):
     return 'Color(%s)' % str(self)
+
+  def __richcmp__(self, Color other, int cmp):
+    return self._richcmp(other, cmp)
+
+  def _richcmp(self, Color other, int cmp):
+    return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
+
+
