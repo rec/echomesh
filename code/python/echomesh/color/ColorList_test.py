@@ -46,9 +46,9 @@ class ColorListTest(TestCase):
   #   self.cl.insert(2, 'pink')
   #   self.assertResult('[green, red, pink, blue, red]')
 
-  # def test_slice1(self):
-  #   self.cl[:] = ['green', 'red', 'blue', 'red']
-  #   self.assertResult('[green, red, blue, red]')
+  def test_slice1(self):
+    self.cl[:] = ['green', 'red', 'blue', 'red']
+    self.assertResult('[green, red, blue, red]')
 
   def test_getslice1(self):
     self.cl.extend(['green', 'red', 'blue', 'red'])

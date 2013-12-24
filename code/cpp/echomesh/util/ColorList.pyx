@@ -4,7 +4,7 @@ cdef eraseColourList(ColourList* cl, int x, int y):
   cl.erase(cl.begin() + x, cl.begin() + y)
 
 cdef insertColourList(ColourList frm, int s1, int s2, ColourList* to, int t):
-  to.insert(to.begin() + 1, frm.begin() + s1, frm.begin() + s2)
+  to.insert(to.begin() + t, frm.begin() + s1, frm.begin() + s2)
 
 cdef setColourInList(ColourList* cl, int pos, Colour c):
   copyColor(c, &cl.at(pos))
@@ -156,11 +156,12 @@ cdef class ColorList:
         cl = ColorList(value)
 
       length = len(cl)
-      parts = key.indices(len(self))
+      indices = key.indices(len(self))
+      parts = range(*indices)
       slice_length = len(parts)
 
       if slice_length != length:
-        if value.stride != 1:
+        if indices[2] != 1:
           raise ValueError('attempt to assign sequence of size %s '
                            'to extended slice of size %d' %
                            (length, slice_length))
@@ -169,7 +170,7 @@ cdef class ColorList:
           eraseColourList(self.thisptr, length, slice_length)
         else:
           insertColourList(cl.thisptr[0], slice_length, length, self.thisptr,
-                           value.start + slice_length)
+                           indices[0] + slice_length)
 
       i = 0
       for j in parts:
