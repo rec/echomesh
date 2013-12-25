@@ -10,12 +10,6 @@ struct FColor {
   FColor(float red, float green, float blue, float alpha=1.0)
       : x_(red), y_(green), z_(blue), alpha_(alpha) {
   }
-  FColor(const Colour& c)
-      : x_(c.getFloatRed()),
-        y_(c.getFloatGreen()),
-        z_(c.getFloatBlue()),
-        alpha_(c.getFloatAlpha()) {
-  }
 
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
@@ -65,6 +59,13 @@ struct FColor {
  private:
   float x_, y_, z_, alpha_;
 };
+
+inline FColor csvFromColour(const Colour& c) {
+  return FColor(c.getFloatRed(), c.getFloatGreen(), c.getFloatBlue(),
+                c.getFloatAlpha());
+}
+
+
 
 typedef vector<FColor> FColorList;
 
