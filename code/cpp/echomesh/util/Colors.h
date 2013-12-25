@@ -36,12 +36,6 @@ struct FColor {
 
   bool operator==(const FColor& other) const;
 
-  void scale(float f) {
-    red() *= f;
-    green() *= f;
-    blue() *= f;
-  }
-
   static FColor NO_COLOR;
 
   void combine(const FColor& other) {
@@ -60,12 +54,16 @@ struct FColor {
   float x_, y_, z_, alpha_;
 };
 
-inline FColor csvFromColour(const Colour& c) {
+inline FColor rgbFromColour(const Colour& c) {
   return FColor(c.getFloatRed(), c.getFloatGreen(), c.getFloatBlue(),
                 c.getFloatAlpha());
 }
 
-
+inline void scaleRgb(FColor* color, float scale) {
+  color->red() *= scale;
+  color->green() *= scale;
+  color->blue() *= scale;
+}
 
 typedef vector<FColor> FColorList;
 
@@ -89,7 +87,7 @@ inline FColor makeFColor(float red, float green, float blue, float alpha) {
 
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
-    c.scale(scale);
+    scaleRgb(&c, scale);
 }
 
 inline void combineFColorList(const FColorList& from, FColorList* to) {

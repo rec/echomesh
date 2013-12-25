@@ -274,12 +274,12 @@ bool fillColor(const String& cname, FColor* color) {
   auto i = NAMER.stringToColor_.find(name);
   auto success = (i != NAMER.stringToColor_.end());
   if (success)
-    *color = csvFromColour(i->second);
+    *color = rgbFromColour(i->second);
   return success;
 }
 
 FColor colorFromInt(uint32 argb) {
-  return csvFromColour(Colour(argb));
+  return rgbFromColour(Colour(argb));
 }
 
 string colorName(const FColor& fcolor) {
@@ -289,9 +289,9 @@ string colorName(const FColor& fcolor) {
   String suffix;
   FColor c;
   if (color.isOpaque()) {
-    c = csvFromColour(color);
+    c = rgbFromColour(color);
   } else {
-    c = csvFromColour(color.withAlpha(1.0f));
+    c = rgbFromColour(color.withAlpha(1.0f));
     suffix = ", alpha=" + String(fcolor.alpha(), 3) + "]";
   }
   auto i = NAMER.colorToString_.find(c);

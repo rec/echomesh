@@ -6,8 +6,8 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
     float green()
     float blue()
     float alpha()
-    void scale(float)
     void combine(FColor)
+  void scaleRgb(FColor* color, float scale)
 
 cdef extern from "echomesh/util/Colors.h" namespace "echomesh::FColor":
   FColor NO_COLOR

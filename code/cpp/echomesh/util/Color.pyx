@@ -61,8 +61,8 @@ cdef class Color:
   def blue(self):
     return self.thisptr.blue()
 
-  def scale(self, f):
-    self.thisptr.scale(f)
+  def scale(self, float f):
+    scaleRgb(self.thisptr, f)
 
   def combine(self, Color c):
     self.thisptr.combine(c.thisptr[0])
