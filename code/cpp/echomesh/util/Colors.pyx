@@ -7,9 +7,11 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   Colour colorFromInt(unsigned int argb)
   void copyColor(Colour c1, Colour* c2)
   string colorName(Colour color)
-  void sortColorList(ColourList*)
+  void sortColourList(ColourList*)
   int compareColors(Colour x, Colour y)
   int countColorsInList(ColourList, Colour)
   int indexColorInList(ColourList, Colour)
-  void reverseColorList(ColourList*)
+  void reverseColourList(ColourList*)
+  void fillColourList(ColourList*, Colour begin, Colour end, int size)
+  Colour interpolate(Colour begin, Colour end, int index, int size)
 

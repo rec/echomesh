@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import Color, ColorList
+from cechomesh import Color, ColorList, color_spread, even_color_spread
 
 from echomesh.util.TestCase import TestCase
 
@@ -116,7 +116,7 @@ class ColorListTest(TestCase):
     self.cl.reverse()
     self.assertEqual(self.cl, ColorList(['red', 'blue', 'red', 'green']))
 
-  def test_reverses(self):
+  def test_reversed(self):
     self.cl += ['green', 'red', 'blue', 'red']
     cl = reversed(self.cl)
     self.assertEqual(cl, ColorList(['red', 'blue', 'red', 'green']))
@@ -135,3 +135,35 @@ class ColorListTest(TestCase):
     self.cl += ['green', 'red']
     self.cl *= 3
     self.assertEqual(self.cl, ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+
+  def test_spread1(self):
+    self.cl = even_color_spread(2, 'black', 'white')
+    self.assertResult('[black, white]')
+
+  def test_spread2(self):
+    self.cl = even_color_spread(3, 'black', 'white', 'green')
+    self.assertResult('[black, white, green]')
+
+  def test_spread3(self):
+    self.cl = even_color_spread(5, 'black', 'white')
+    self.assertResult('[black, grey 25, grey 50, grey 75, white]')
+
+  def test_spread4(self):
+    self.cl = even_color_spread(5, 'white', 'red')
+    self.assertResult('[white, '
+                      '[red=1.000, green=0.753, blue=0.753], '
+                      '[red=1.000, green=0.502, blue=0.502], '
+                      '[red=1.000, green=0.251, blue=0.251], red]')
+
+  def test_spread5(self):
+    self.cl = even_color_spread(10, 'black', 'white', 'red', 'yellow')
+    self.assertResult('[black, darkgrey, grey 67, white, '
+                      '[red=1.000, green=0.667, blue=0.667], '
+                      '[red=1.000, green=0.333, blue=0.333], red, '
+                      '[red=1.000, green=0.333, blue=0.000], '
+                      '[red=1.000, green=0.667, blue=0.000], yellow]')
+
+  def test_spread6(self):
+    self.cl = even_color_spread(5, 'black', 'white', 'red')
+    self.assertResult('[black, grey 50, white, '
+                      '[red=1.000, green=0.502, blue=0.502], red]')

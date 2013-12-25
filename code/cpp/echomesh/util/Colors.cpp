@@ -232,7 +232,7 @@ string colorName(Colour color) {
   return (name + suffix).toStdString();
 }
 
-void sortColorList(vector<Colour>* colorList) {
+void sortColourList(vector<Colour>* colorList) {
   std::sort(colorList->begin(), colorList->end(), Compare());
 }
 
@@ -245,7 +245,7 @@ int indexColorInList(const ColourList& cl, Colour c) {
   return i == cl.end() ? -1 : i - cl.begin();
 }
 
-void reverseColorList(ColorList* cl) {
+void reverseColourList(ColourList* cl) {
   std::reverse(cl->begin(), cl->end());
 }
 
@@ -263,6 +263,32 @@ int compareColors(Colour x, Colour y) {
   if (xa > ya)
     return 1;
   return 0;
+}
+
+Colour interpolate(Colour begin, Colour end, int index, int size) {
+  size = jmax(size, 2);
+  int br = begin.getRed(), bg = begin.getGreen(), bb = begin.getBlue();
+  int er = end.getRed(), eg = end.getGreen(), eb = end.getBlue();
+  if (false)
+  LOG(INFO)
+      << index << ", "
+      << size << " | "
+      << br << ", "
+      << bg << ", "
+      << bb << ", "
+      << er << ", "
+      << eg << ", "
+      << eb << ", ";
+  return Colour(
+      br + (index * (er - br)) / (size - 1),
+      bg + (index * (eg - bg)) / (size - 1),
+      bb + (index * (eb - bb)) / (size - 1));
+}
+
+void fillColourList(ColourList* cl, Colour begin, Colour end, int size) {
+  cl->resize(size);
+  for (auto i = 0; i < size; ++i)
+    cl->at(i) = interpolate(begin, end, i, size);
 }
 
 }  // namespace echomesh

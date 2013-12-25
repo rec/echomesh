@@ -1,3 +1,5 @@
+import math
+
 from libcpp.vector cimport vector
 
 cdef eraseColourList(ColourList* cl, int x, int y):
@@ -82,10 +84,10 @@ cdef class ColorList:
     del self[self.index(item)]
 
   def reverse(self):
-    reverseColorList(self.thisptr)
+    reverseColourList(self.thisptr)
 
   def sort(self):
-    sortColorList(self.thisptr)
+    sortColourList(self.thisptr)
 
   def __add__(self, object other):
     cl = ColorList(self)
@@ -220,3 +222,39 @@ cdef class ColorList:
       setColourInList(self.thisptr, i, c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
+
+def color_spread(*args):
+  cdef Color c1
+  cdef Color c2
+  if len(args) < 3:
+    raise Exception('make_color_spread must have at least three arguments')
+
+  if not len(args) % 2:
+    raise Exception('make_color_spread must have an odd number of arguments')
+
+  colors = [make_color(a) for a in args[::2]]
+  steps = args[1::2]
+
+  cl = ColorList()
+  cl.thisptr.resize(sum(steps) + len(colors))
+  pos = 0
+  for i, step in enumerate(steps):
+    c1, c2 = colors[i:i+2]
+    for j in range(step + 2):
+      copyColor(interpolate(c1.thisptr[0], c2.thisptr[0], j, step + 2),
+                &cl.thisptr.at(pos))
+      pos += 1
+    pos -= 1
+  return cl
+
+def even_color_slots(int size, int slots):
+  slot = 0
+  for i in range(slots):
+    previous = slot
+    slot = int(math.ceil(((i + 1) * size) / slots))
+    yield slot - previous - 1
+
+def even_color_spread(size, *colors):
+  slots = list(even_color_slots(size - 1, len(colors) - 1))
+  args = [j for i in zip(colors, slots) for j in i] + [colors[-1]]
+  return color_spread(*args)

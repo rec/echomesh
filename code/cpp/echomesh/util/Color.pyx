@@ -79,4 +79,5 @@ cdef class Color:
   def _richcmp(self, Color other, int cmp):
     return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
 
-
+def make_color(c):
+  return c if isinstance(c, Color) else Color(c)
