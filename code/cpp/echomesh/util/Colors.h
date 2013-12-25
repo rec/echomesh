@@ -5,6 +5,9 @@
 
 namespace echomesh {
 
+struct RGB;
+struct HSV;
+
 struct FColor {
   FColor() {}
   FColor(float red, float green, float blue, float alpha=1.0)
@@ -30,10 +33,6 @@ struct FColor {
   float& saturation() { return y_; }
   float& brightness() { return z_; }
 
-  operator Colour() const {
-    return Colour::fromFloatRGBA(red(), green(), blue(), alpha());
-  }
-
   bool operator==(const FColor& other) const;
 
   static FColor NO_COLOR;
@@ -52,9 +51,15 @@ struct FColor {
 
  private:
   float x_, y_, z_, alpha_;
+
+  friend struct RGB;
 };
 
-inline FColor rgbFromColour(const Colour& c) {
+inline Colour rgbToColour(const FColor& fc) {
+  return Colour::fromFloatRGBA(fc.red(), fc.green(), fc.blue(), fc.alpha());
+}
+
+inline FColor colourToRgb(const Colour& c) {
   return FColor(c.getFloatRed(), c.getFloatGreen(), c.getFloatBlue(),
                 c.getFloatAlpha());
 }
