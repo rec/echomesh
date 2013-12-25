@@ -8,44 +8,53 @@ namespace echomesh {
 struct FColor {
   FColor() {}
   FColor(float red, float green, float blue, float alpha=1.0)
-      : red_(red), green_(green), blue_(blue), alpha_(alpha) {
+      : x_(red), y_(green), z_(blue), alpha_(alpha) {
   }
   FColor(const Colour& c)
-      : red_(c.getFloatRed()),
-        green_(c.getFloatGreen()),
-        blue_(c.getFloatBlue()),
+      : x_(c.getFloatRed()),
+        y_(c.getFloatGreen()),
+        z_(c.getFloatBlue()),
         alpha_(c.getFloatAlpha()) {
   }
 
-  float alpha() const { return alpha_; }
+  const float& alpha() const { return alpha_; }
+  float& alpha() { return alpha_; }
 
-  float red() const { return red_; }
-  float green() const { return green_; }
-  float blue() const { return blue_; }
+  const float& red() const { return x_; }
+  const float& green() const { return y_; }
+  const float& blue() const { return z_; }
 
-  float hue() const { return red_; }
-  float saturation() const { return green_; }
-  float brightness() const { return blue_; }
+  float& red() { return x_; }
+  float& green() { return y_; }
+  float& blue() { return z_; }
+
+  const float& hue() const { return x_; }
+  const float& saturation() const { return y_; }
+  const float& brightness() const { return z_; }
+
+  float& hue() { return x_; }
+  float& saturation() { return y_; }
+  float& brightness() { return z_; }
 
   operator Colour() const {
-    return Colour::fromFloatRGBA(red_, green_, blue_, alpha_);
+    return Colour::fromFloatRGBA(red(), green(), blue(), alpha());
   }
 
   bool operator==(const FColor& other) const;
 
   void scale(float f) {
-    red_ *= f;
-    green_ *= f;
-    blue_ *= f;
+    red() *= f;
+    green() *= f;
+    blue() *= f;
   }
 
   static FColor NO_COLOR;
 
   void combine(const FColor& other) {
-    red_ = std::max(red_, other.red_);
-    green_ = std::max(green_, other.green_);
-    blue_ = std::max(blue_, other.blue_);
-    alpha_ = std::max(alpha_, other.alpha_);
+    red() = std::max(red(), other.red());
+    green() = std::max(green(), other.green());
+    blue() = std::max(blue(), other.blue());
+    alpha() = std::max(alpha(), other.alpha());
   }
 
   FColor toHSB() const;
@@ -54,7 +63,7 @@ struct FColor {
   FColor fromYIQ() const;
 
  private:
-  float red_, green_, blue_, alpha_;
+  float x_, y_, z_, alpha_;
 };
 
 typedef vector<FColor> FColorList;
