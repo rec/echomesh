@@ -86,6 +86,9 @@ cdef class ColorList:
   def reverse(self):
     reverseFColorList(self.thisptr)
 
+  def scale(self, float scale):
+    scaleFColorList(self.thisptr, scale)
+
   def sort(self):
     sortFColorList(self.thisptr)
 

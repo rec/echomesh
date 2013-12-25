@@ -25,6 +25,12 @@ struct FColor {
 
   bool operator==(const FColor& other) const;
 
+  void scale(float f) {
+    red_ *= f;
+    green_ *= f;
+    blue_ *= f;
+  }
+
   static FColor NO_COLOR;
 };
 
@@ -45,6 +51,11 @@ FColor interpolate(const FColor& begin, const FColor& end, int index, int size);
 
 inline FColor makeFColor(float red, float green, float blue, float alpha) {
   return FColor(red, green, blue, alpha);
+}
+
+inline void scaleFColorList(FColorList* fc, float scale) {
+  for (auto& c: *fc)
+    c.scale(scale);
 }
 
 }  // namespace echomesh

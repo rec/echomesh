@@ -136,6 +136,21 @@ class ColorListTest(TestCase):
     self.cl *= 3
     self.assertEqual(self.cl, ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
 
+  def test_scale0(self):
+    self.cl += ['green', 'red']
+    self.cl.scale(0)
+    self.assertResult('[black, black]')
+
+  def test_scale1(self):
+    self.cl += ['green', 'red']
+    self.cl.scale(1)
+    self.assertResult('[green, red]')
+
+  def test_scale2(self):
+    self.cl += ['white']
+    self.cl.scale(0.5)
+    self.assertResult('[grey 50]')
+
   def test_spread1(self):
     self.cl = even_color_spread(2, 'black', 'white')
     self.assertResult('[black, white]')

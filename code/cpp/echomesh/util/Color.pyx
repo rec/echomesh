@@ -62,6 +62,9 @@ cdef class Color:
   def blue(self):
     return self.thisptr.blue_
 
+  def scale(self, f):
+    self.thisptr.scale(f)
+
   def __dealloc__(self):
     del self.thisptr
 
