@@ -17,9 +17,9 @@ class ColorTest(TestCase):
   def test_red2(self):
     self.assertEqual(str(Color(1.0, 0, 0)), 'red')
 
-  def test_unnnamed(self):
+  def test_unnamed(self):
     self.assertEqual(str(Color(0.7, 0.1, 0.2)),
-                     '[red=0.698, green=0.098, blue=0.200]')
+                     '[red=0.700, green=0.100, blue=0.200]')
 
   def test_unknown(self):
     self.assertRaises(ValueError, Color, 'glug')

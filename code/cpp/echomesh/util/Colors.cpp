@@ -9,9 +9,31 @@ namespace echomesh {
 
 namespace {
 
+const float NEAR = 1.0 / powf(2.0, 16);
+
+bool near(float f1, float f2) {
+  return fabsf(f1 - f2) < NEAR;
+}
+
+int compareColours(const Colour& x, const Colour& y) {
+  auto xa = x.getARGB();
+  auto ya = y.getARGB();
+  auto xrgb = xa & 0xffffff;
+  auto yrgb = ya & 0xffffff;
+  if (xrgb < yrgb)
+    return -1;
+  if (xrgb > yrgb)
+    return 1;
+  if (xa < ya)
+    return -1;
+  if (xa > ya)
+    return 1;
+  return 0;
+}
+
 struct Compare {
   bool operator()(const Colour& x, const Colour& y) const {
-    return compareColors(x, y) < 0;
+    return compareColours(x, y) < 0;
   }
 };
 
@@ -179,42 +201,51 @@ ColorNamer makeNamer() {
   return namer;
 }
 
-
 static const ColorNamer NAMER = makeNamer();
 
 } // namespace
 
-bool fillColor(const String& cname, Colour* color) {
+bool FColor::operator==(const FColor& other) const {
+  return near(red_, other.red_) and
+      near(green_, other.green_) and
+      near(blue_, other.blue_) and
+      near(alpha_, other.alpha_);
+}
+
+FColor FColor::NO_COLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+bool fillColor(const String& cname, FColor* color) {
   auto name = cname.trim().toLowerCase().replace("gray", "grey");
   if (name.isEmpty())
     return false;
 
   if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
-    *color = Colour((uint32) name.getHexValue32());
+    *color = colorFromInt((uint32) name.getHexValue32());
     return true;
   }
 
   auto i = NAMER.stringToColor_.find(name);
   auto success = (i != NAMER.stringToColor_.end());
   if (success)
-    *color = i->second;
+    *color = FColor(i->second);
   return success;
 }
 
-Colour colorFromInt(uint32 argb) {
-  return Colour(argb);
+FColor colorFromInt(uint32 argb) {
+  return FColor(Colour(argb));
 }
 
-string colorName(Colour color) {
+string colorName(const FColor& fcolor) {
+  Colour color = static_cast<Colour>(fcolor);
   if (not color.getARGB())
     return "none";
   String suffix;
-  Colour c;
+  FColor c;
   if (color.isOpaque()) {
     c = color;
   } else {
     c = color.withAlpha(1.0f);
-    suffix = ", alpha=" + String(color.getFloatAlpha(), 3) + "]";
+    suffix = ", alpha=" + String(fcolor.alpha_, 3) + "]";
   }
   auto i = NAMER.colorToString_.find(c);
   String name;
@@ -223,69 +254,71 @@ string colorName(Colour color) {
     if (not suffix.isEmpty())
       name = "[" + name;
   } else {
-    name = "[red=" + String(color.getFloatRed(), 3) +
-        ", green=" + String(color.getFloatGreen(), 3) +
-        ", blue=" + String(color.getFloatBlue(), 3);
+    name = "[red=" + String(fcolor.red_, 3) +
+        ", green=" + String(fcolor.green_, 3) +
+        ", blue=" + String(fcolor.blue_, 3);
     if (suffix.isEmpty())
       suffix += "]";
   }
   return (name + suffix).toStdString();
 }
 
-void sortColourList(vector<Colour>* colorList) {
-  std::sort(colorList->begin(), colorList->end(), Compare());
+struct FCompare {
+  bool operator()(const FColor& x, const FColor& y) const {
+    return compareColors(x, y) < 0;
+  }
+};
+
+void sortFColorList(vector<FColor>* colorList) {
+  std::sort(colorList->begin(), colorList->end(), FCompare());
 }
 
-int countColorsInList(const ColourList& cl, Colour c) {
+int countColorsInList(const FColorList& cl, const FColor& c) {
   return std::count(cl.begin(), cl.end(), c);
 }
 
-int indexColorInList(const ColourList& cl, Colour c) {
+int indexColorInList(const FColorList& cl, const FColor& c) {
   auto i = std::find(cl.begin(), cl.end(), c);
   return i == cl.end() ? -1 : i - cl.begin();
 }
 
-void reverseColourList(ColourList* cl) {
+void reverseFColorList(FColorList* cl) {
   std::reverse(cl->begin(), cl->end());
 }
 
-int compareColors(Colour x, Colour y) {
-  auto xa = x.getARGB();
-  auto ya = y.getARGB();
-  auto xrgb = xa & 0xffffff;
-  auto yrgb = ya & 0xffffff;
-  if (xrgb < yrgb)
+int compareColors(const FColor& x, const FColor& y) {
+  if (x.red_ < y.red_)
     return -1;
-  if (xrgb > yrgb)
+  if (x.red_ > y.red_)
     return 1;
-  if (xa < ya)
+  if (x.green_ < y.green_)
     return -1;
-  if (xa > ya)
+  if (x.green_ > y.green_)
+    return 1;
+  if (x.blue_ < y.blue_)
+    return -1;
+  if (x.blue_ > y.blue_)
+    return 1;
+  if (x.alpha_ < y.alpha_)
+    return -1;
+  if (x.alpha_ > y.alpha_)
     return 1;
   return 0;
 }
 
-Colour interpolate(Colour begin, Colour end, int index, int size) {
+FColor interpolate(
+    const FColor& begin, const FColor& end, int index, int size) {
   size = jmax(size, 2);
-  int br = begin.getRed(), bg = begin.getGreen(), bb = begin.getBlue();
-  int er = end.getRed(), eg = end.getGreen(), eb = end.getBlue();
-  if (false)
-  LOG(INFO)
-      << index << ", "
-      << size << " | "
-      << br << ", "
-      << bg << ", "
-      << bb << ", "
-      << er << ", "
-      << eg << ", "
-      << eb << ", ";
-  return Colour(
+  auto br = begin.red_, bg = begin.green_, bb = begin.blue_;
+  auto er = end.red_, eg = end.green_, eb = end.blue_;
+  return FColor(
       br + (index * (er - br)) / (size - 1),
       bg + (index * (eg - bg)) / (size - 1),
       bb + (index * (eb - bb)) / (size - 1));
 }
 
-void fillColourList(ColourList* cl, Colour begin, Colour end, int size) {
+void fillFColorList(
+    FColorList* cl, const FColor& begin, const FColor& end, int size) {
   cl->resize(size);
   for (auto i = 0; i < size; ++i)
     cl->at(i) = interpolate(begin, end, i, size);

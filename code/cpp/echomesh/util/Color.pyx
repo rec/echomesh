@@ -1,7 +1,8 @@
 import six
 
-cdef bool fill_colour(object x, Colour* c):
+cdef bool fill_color(object x, FColor* c):
   if not x:
+    copyColor(NO_COLOR, c)
     return True
   elif isinstance(x, Color):
     color = <Color> x
@@ -13,9 +14,9 @@ cdef bool fill_colour(object x, Colour* c):
   else:
     try:
       if len(x) == 3:
-        copyColor(fromFloatRGBA(x[0], x[1], x[2], 1.0), c)
+        copyColor(makeFColor(x[0], x[1], x[2], 1.0), c)
       elif len(x) == 4:
-        copyColor(fromFloatRGBA(x[0], x[1], x[2], x[3]), c)
+        copyColor(makeFColor(x[0], x[1], x[2], x[3]), c)
       else:
         return False
     except:
@@ -31,41 +32,38 @@ _COLOR_COMPARES = {
   5: lambda x: x >= 0,
   }
 
-cdef bool richcmpColors(Colour x, Colour y, int cmp):
+cdef bool richcmpColors(FColor x, FColor y, int cmp):
   return _COLOR_COMPARES[cmp](compareColors(x, y))
 
 cdef class Color:
-  cdef Colour* thisptr
+  cdef FColor* thisptr
 
   def __cinit__(self, *args):
-    self.thisptr = new Colour()
+    self.thisptr = new FColor()
     if len(args) == 1:
       args = args[0]
-    if not fill_colour(args, self.thisptr):
+    if not fill_color(args, self.thisptr):
       raise ValueError('Can\'t construct color from "%s"' % args)
 
   @property
   def rgb(self):
     t = self.thisptr
-    return [t.getFloatRed(), t.getFloatGreen(), t.getFloatBlue()]
+    return [t.red_, t.green_, t.blue_]
 
   @property
   def red(self):
-    return self.thisptr.getFloatRed()
+    return self.thisptr.red_
 
   @property
   def green(self):
-    return self.thisptr.getFloatGreen()
+    return self.thisptr.green_
 
   @property
   def blue(self):
-    return self.thisptr.getFloatBlue()
+    return self.thisptr.blue_
 
   def __dealloc__(self):
     del self.thisptr
-
-  def __int__(self):
-    return self.thisptr.getARGB()
 
   def __str__(self):
     return colorName(self.thisptr[0])
@@ -79,5 +77,5 @@ cdef class Color:
   def _richcmp(self, Color other, int cmp):
     return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
 
-def make_color(c):
+def force_color(c):
   return c if isinstance(c, Color) else Color(c)

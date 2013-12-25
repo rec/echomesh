@@ -151,9 +151,10 @@ class ColorListTest(TestCase):
   def test_spread4(self):
     self.cl = even_color_spread(5, 'white', 'red')
     self.assertResult('[white, '
-                      '[red=1.000, green=0.753, blue=0.753], '
-                      '[red=1.000, green=0.502, blue=0.502], '
-                      '[red=1.000, green=0.251, blue=0.251], red]')
+                      '[red=1.000, green=0.750, blue=0.750], '
+                      '[red=1.000, green=0.500, blue=0.500], '
+                      '[red=1.000, green=0.250, blue=0.250], '
+                      'red]')
 
   def test_spread5(self):
     self.cl = even_color_spread(10, 'black', 'white', 'red', 'yellow')
@@ -166,4 +167,4 @@ class ColorListTest(TestCase):
   def test_spread6(self):
     self.cl = even_color_spread(5, 'black', 'white', 'red')
     self.assertResult('[black, grey 50, white, '
-                      '[red=1.000, green=0.502, blue=0.502], red]')
+                      '[red=1.000, green=0.500, blue=0.500], red]')

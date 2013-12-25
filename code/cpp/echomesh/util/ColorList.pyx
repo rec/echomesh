@@ -2,19 +2,19 @@ import math
 
 from libcpp.vector cimport vector
 
-cdef eraseColourList(ColourList* cl, int x, int y):
+cdef eraseFColorList(FColorList* cl, int x, int y):
   cl.erase(cl.begin() + x, cl.begin() + y)
 
-cdef insertColourList(ColourList frm, int s1, int s2, ColourList* to, int t):
+cdef insertFColorList(FColorList frm, int s1, int s2, FColorList* to, int t):
   to.insert(to.begin() + t, frm.begin() + s1, frm.begin() + s2)
 
-cdef setColourInList(ColourList* cl, int pos, Colour c):
+cdef setFColorInList(FColorList* cl, int pos, FColor c):
   copyColor(c, &cl.at(pos))
 
-cdef eraseInList(ColourList* cl, int pos):
+cdef eraseInList(FColorList* cl, int pos):
   cl.erase(cl.begin() + pos)
 
-cdef richcmpColorsInList(ColourList* x, ColourList *y, int index, int cmp):
+cdef richcmpColorsInList(FColorList* x, FColorList *y, int index, int cmp):
   return richcmpColors(x.at(index), y.at(index), cmp)
 
 def _make_list(object value):
@@ -25,10 +25,10 @@ def _make_list(object value):
   return value
 
 cdef class ColorList:
-  cdef ColourList* thisptr
+  cdef FColorList* thisptr
 
   def __cinit__(self, *args):
-    self.thisptr = new ColourList()
+    self.thisptr = new FColorList()
     if len(args) == 1:
       self.extend(args[0])
     elif args:
@@ -38,15 +38,15 @@ cdef class ColorList:
     del self.thisptr
 
   def append(self, object item):
-    cdef Colour c
-    if fill_colour(item, &c):
+    cdef FColor c
+    if fill_color(item, &c):
       self.thisptr.push_back(c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
   def count(self, object item):
-    cdef Colour c
-    if not fill_colour(item, &c):
+    cdef FColor c
+    if not fill_color(item, &c):
       raise ValueError('Don\'t understand color value %s' % item)
     return countColorsInList(self.thisptr[0], c)
 
@@ -63,8 +63,8 @@ cdef class ColorList:
       self.thisptr.resize(length)
 
   def index(self, object item):
-    cdef Colour c
-    if not fill_colour(item, &c):
+    cdef FColor c
+    if not fill_color(item, &c):
       raise ValueError('Don\'t understand color value %s' % item)
     index = indexColorInList(self.thisptr[0], c)
     if index >= 0:
@@ -84,10 +84,10 @@ cdef class ColorList:
     del self[self.index(item)]
 
   def reverse(self):
-    reverseColourList(self.thisptr)
+    reverseFColorList(self.thisptr)
 
   def sort(self):
-    sortColourList(self.thisptr)
+    sortFColorList(self.thisptr)
 
   def __add__(self, object other):
     cl = ColorList(self)
@@ -129,7 +129,7 @@ cdef class ColorList:
     length = len(self)
     self.thisptr.reserve(mult * length)
     for i in range(1, mult):
-      insertColourList(self.thisptr[0], 0, length, self.thisptr, i * length)
+      insertFColorList(self.thisptr[0], 0, length, self.thisptr, i * length)
     return self
 
   def __len__(self):
@@ -187,9 +187,9 @@ cdef class ColorList:
                            (length, slice_length))
 
         if slice_length > length:
-          eraseColourList(self.thisptr, length, slice_length)
+          eraseFColorList(self.thisptr, length, slice_length)
         else:
-          insertColourList(cl.thisptr[0], slice_length, length, self.thisptr,
+          insertFColorList(cl.thisptr[0], slice_length, length, self.thisptr,
                            indices[0] + slice_length)
 
       i = 0
@@ -198,7 +198,7 @@ cdef class ColorList:
 
     else:
       key = self._check_key(key)
-      if not fill_colour(value, &self.thisptr.at(key)):
+      if not fill_color(value, &self.thisptr.at(key)):
         raise ValueError('Don\'t understand color value %s' % value)
 
   def __sizeof__(self):
@@ -217,9 +217,9 @@ cdef class ColorList:
     raise IndexError('ColorList index out of range')
 
   def _set_item(self, int i, object item):
-    cdef Colour c
-    if fill_colour(item, &c):
-      setColourInList(self.thisptr, i, c)
+    cdef FColor c
+    if fill_color(item, &c):
+      setFColorInList(self.thisptr, i, c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
@@ -232,7 +232,7 @@ def color_spread(*args):
   if not len(args) % 2:
     raise Exception('make_color_spread must have an odd number of arguments')
 
-  colors = [make_color(a) for a in args[::2]]
+  colors = [force_color(a) for a in args[::2]]
   steps = args[1::2]
 
   cl = ColorList()
