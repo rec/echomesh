@@ -47,20 +47,19 @@ cdef class Color:
 
   @property
   def rgb(self):
-    t = self.thisptr
-    return [t.red_, t.green_, t.blue_]
+    return [self.red, self.green, self.blue]
 
   @property
   def red(self):
-    return self.thisptr.red_
+    return self.thisptr.red()
 
   @property
   def green(self):
-    return self.thisptr.green_
+    return self.thisptr.green()
 
   @property
   def blue(self):
-    return self.thisptr.blue_
+    return self.thisptr.blue()
 
   def scale(self, f):
     self.thisptr.scale(f)

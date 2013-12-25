@@ -205,13 +205,61 @@ static const ColorNamer NAMER = makeNamer();
 } // namespace
 
 bool FColor::operator==(const FColor& other) const {
-  return near(red_, other.red_) and
-      near(green_, other.green_) and
-      near(blue_, other.blue_) and
+  return near(red(), other.red()) and
+      near(green(), other.green()) and
+      near(blue(), other.blue()) and
       near(alpha_, other.alpha_);
 }
 
 FColor FColor::NO_COLOR(0.0f, 0.0f, 0.0f, 0.0f);
+
+FColor FColor::toHSB() const {
+  const auto brightness = jmax(red(), green(), blue());
+  auto hue = 0.0f, saturation = 0.0f;
+
+  if (not near(brightness, 0.0)) {
+    const auto darkest = jmin(red(), green(), blue());
+    const auto range = brightness - darkest;
+    saturation = range / brightness;
+
+    if (not near(saturation, 0.0)) {
+      const float r = (brightness - red()) / range;
+      const float g = (brightness - green()) / range;
+      const float b = (brightness - blue()) / range;
+
+      if (near(red(), brightness))
+        hue = b - g;
+      else if (near(green(), brightness))
+        hue = 2.0f + r - b;
+      else
+        hue = 4.0f + g - r;
+
+      hue /= 6.0f;
+
+      if (hue < 0)
+        hue += 1.0f;
+    }
+  }
+  return FColor(hue, saturation, brightness, alpha_);
+}
+
+FColor FColor::fromHSB() const {
+  return *this;
+}
+
+FColor FColor::toYIQ() const {
+  return FColor(0.2999f * red() + 0.5870f * green() + 0.1140f * blue(),
+                0.5957f * red() - 0.2744f * green() - 0.3212f * blue(),
+                0.2114f * red() - 0.5225f * green() - 0.3113f * blue(),
+                alpha_);
+}
+
+FColor FColor::fromYIQ() const {
+  return FColor(red() + 0.9563f * green() + 0.6210f * blue(),
+                red() - 0.2721f * green() - 0.6474f * blue(),
+                red() - 1.1070f * green() + 1.7046f * blue(),
+                alpha_);
+}
 
 bool fillColor(const String& cname, FColor* color) {
   auto name = cname.trim().toLowerCase().replace("gray", "grey");
@@ -244,7 +292,7 @@ string colorName(const FColor& fcolor) {
     c = color;
   } else {
     c = color.withAlpha(1.0f);
-    suffix = ", alpha=" + String(fcolor.alpha_, 3) + "]";
+    suffix = ", alpha=" + String(fcolor.alpha(), 3) + "]";
   }
   auto i = NAMER.colorToString_.find(c);
   String name;
@@ -253,9 +301,9 @@ string colorName(const FColor& fcolor) {
     if (not suffix.isEmpty())
       name = "[" + name;
   } else {
-    name = "[red=" + String(fcolor.red_, 3) +
-        ", green=" + String(fcolor.green_, 3) +
-        ", blue=" + String(fcolor.blue_, 3);
+    name = "[red=" + String(fcolor.red(), 3) +
+        ", green=" + String(fcolor.green(), 3) +
+        ", blue=" + String(fcolor.blue(), 3);
     if (suffix.isEmpty())
       suffix += "]";
   }
@@ -286,29 +334,29 @@ void reverseFColorList(FColorList* cl) {
 }
 
 int compareColors(const FColor& x, const FColor& y) {
-  if (x.red_ < y.red_)
+  if (x.red() < y.red())
     return -1;
-  if (x.red_ > y.red_)
+  if (x.red() > y.red())
     return 1;
-  if (x.green_ < y.green_)
+  if (x.green() < y.green())
     return -1;
-  if (x.green_ > y.green_)
+  if (x.green() > y.green())
     return 1;
-  if (x.blue_ < y.blue_)
+  if (x.blue() < y.blue())
     return -1;
-  if (x.blue_ > y.blue_)
+  if (x.blue() > y.blue())
     return 1;
-  if (x.alpha_ < y.alpha_)
+  if (x.alpha() < y.alpha())
     return -1;
-  if (x.alpha_ > y.alpha_)
+  if (x.alpha() > y.alpha())
     return 1;
   return 0;
 }
 
 FColor interpolate(
     const FColor& begin, const FColor& end, float ratio) {
-  auto br = begin.red_, bg = begin.green_, bb = begin.blue_;
-  auto er = end.red_, eg = end.green_, eb = end.blue_;
+  auto br = begin.red(), bg = begin.green(), bb = begin.blue();
+  auto er = end.red(), eg = end.green(), eb = end.blue();
   return FColor(br + ratio * (er - br),
                 bg + ratio * (eg - bg),
                 bb + ratio * (eb - bb));

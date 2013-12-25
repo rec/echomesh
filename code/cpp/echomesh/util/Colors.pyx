@@ -2,10 +2,10 @@ from libcpp.string cimport string
 
 cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   cdef cppclass FColor:
-    float red_
-    float green_
-    float blue_
-    float alpha_
+    float red()
+    float green()
+    float blue()
+    float alpha()
     void scale(float)
     void combine(FColor)
 

@@ -17,7 +17,15 @@ struct FColor {
         alpha_(c.getFloatAlpha()) {
   }
 
-  float red_, green_, blue_, alpha_;
+  float alpha() const { return alpha_; }
+
+  float red() const { return red_; }
+  float green() const { return green_; }
+  float blue() const { return blue_; }
+
+  float hue() const { return red_; }
+  float saturation() const { return green_; }
+  float brightness() const { return blue_; }
 
   operator Colour() const {
     return Colour::fromFloatRGBA(red_, green_, blue_, alpha_);
@@ -39,6 +47,14 @@ struct FColor {
     blue_ = std::max(blue_, other.blue_);
     alpha_ = std::max(alpha_, other.alpha_);
   }
+
+  FColor toHSB() const;
+  FColor fromHSB() const;
+  FColor toYIQ() const;
+  FColor fromYIQ() const;
+
+ private:
+  float red_, green_, blue_, alpha_;
 };
 
 typedef vector<FColor> FColorList;
