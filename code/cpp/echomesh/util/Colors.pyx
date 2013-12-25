@@ -25,7 +25,7 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   int indexColorInList(FColorList, FColor)
   void reverseFColorList(FColorList*)
   void fillFColorList(FColorList*, FColor begin, FColor end, int size)
-  FColor interpolate(FColor begin, FColor end, int index, int size)
+  FColor interpolate(FColor begin, FColor end, float ratio)
   FColor makeFColor(float red, float green, float blue, float alpha)
   void scaleFColorList(FColorList* fc, float scale)
   void combineFColorList(FColorList, FColorList*)

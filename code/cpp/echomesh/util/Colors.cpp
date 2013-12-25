@@ -306,21 +306,19 @@ int compareColors(const FColor& x, const FColor& y) {
 }
 
 FColor interpolate(
-    const FColor& begin, const FColor& end, int index, int size) {
-  size = jmax(size, 2);
+    const FColor& begin, const FColor& end, float ratio) {
   auto br = begin.red_, bg = begin.green_, bb = begin.blue_;
   auto er = end.red_, eg = end.green_, eb = end.blue_;
-  return FColor(
-      br + (index * (er - br)) / (size - 1),
-      bg + (index * (eg - bg)) / (size - 1),
-      bb + (index * (eb - bb)) / (size - 1));
+  return FColor(br + ratio * (er - br),
+                bg + ratio * (eg - bg),
+                bb + ratio * (eb - bb));
 }
 
 void fillFColorList(
     FColorList* cl, const FColor& begin, const FColor& end, int size) {
   cl->resize(size);
   for (auto i = 0; i < size; ++i)
-    cl->at(i) = interpolate(begin, end, i, size);
+    cl->at(i) = interpolate(begin, end, i / (size - 1.0));
 }
 
 }  // namespace echomesh

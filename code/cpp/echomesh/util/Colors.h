@@ -54,7 +54,8 @@ int indexColorInList(const FColorList&, const FColor&);
 void reverseFColorList(FColorList*);
 void fillFColorList(
     FColorList*, const FColor& begin, const FColor& end, int size);
-FColor interpolate(const FColor& begin, const FColor& end, int index, int size);
+
+FColor interpolate(const FColor& begin, const FColor& end, float ratio);
 
 inline FColor makeFColor(float red, float green, float blue, float alpha) {
   return FColor(red, green, blue, alpha);
