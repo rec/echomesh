@@ -65,7 +65,7 @@ cdef class Color:
     scaleRgb(self.thisptr, f)
 
   def combine(self, Color c):
-    self.thisptr.combine(c.thisptr[0])
+    combineRgb(c.thisptr[0], self.thisptr)
 
   def __dealloc__(self):
     del self.thisptr

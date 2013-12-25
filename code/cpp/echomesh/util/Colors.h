@@ -37,13 +37,6 @@ struct FColor {
 
   static FColor NO_COLOR;
 
-  void combine(const FColor& other) {
-    red() = std::max(red(), other.red());
-    green() = std::max(green(), other.green());
-    blue() = std::max(blue(), other.blue());
-    alpha() = std::max(alpha(), other.alpha());
-  }
-
   FColor toHSB() const;
   FColor fromHSB() const;
   FColor toYIQ() const;
@@ -54,6 +47,13 @@ struct FColor {
 
   friend struct RGB;
 };
+
+inline void combineRgb(const FColor& x, FColor* y) {
+  y->red() = std::max(y->red(), x.red());
+  y->green() = std::max(y->green(), x.green());
+  y->blue() = std::max(y->blue(), x.blue());
+  y->alpha() = std::max(y->alpha(), x.alpha());
+}
 
 inline Colour rgbToColour(const FColor& fc) {
   return Colour::fromFloatRGBA(fc.red(), fc.green(), fc.blue(), fc.alpha());
@@ -99,7 +99,7 @@ inline void combineFColorList(const FColorList& from, FColorList* to) {
   if (from.size() > to->size())
     to->resize(from.size());
   for (auto i = 0; i < from.size(); ++i)
-    (*to)[i].combine(from[i]);
+    combineRgb(from[i], &(*to)[i]);
 }
 
 }  // namespace echomesh
