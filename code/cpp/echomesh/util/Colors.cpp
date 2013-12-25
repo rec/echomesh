@@ -103,7 +103,7 @@ ColorNamer makeNamer() {
   namer.add("gainsboro", 0xffdcdcdc);
   namer.add("gold", 0xffffd700);
   namer.add("goldenrod", 0xffdaa520);
-  namer.add("green", 0xff008000);
+  namer.add("green", 0xff00ff00);
   namer.add("greenyellow", 0xffadff2f);
   namer.add("grey", 0xff808080);
   namer.add("honeydew", 0xfff0fff0);
@@ -128,7 +128,6 @@ ColorNamer makeNamer() {
   namer.add("lightslategrey", 0xff778899);
   namer.add("lightsteelblue", 0xffb0c4de);
   namer.add("lightyellow", 0xffffffe0);
-  namer.add("lime", 0xff00ff00);
   namer.add("limegreen", 0xff32cd32);
   namer.add("linen", 0xfffaf0e6);
   namer.add("magenta", 0xffff00ff);

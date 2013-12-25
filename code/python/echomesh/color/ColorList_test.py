@@ -29,6 +29,11 @@ class ColorListTest(TestCase):
     self.cl.sort()
     self.assertResult('[blue, green, red]')
 
+  def test_combine(self):
+    self.cl.extend(['black', 'white', 'red', 'blue', 'green'])
+    self.cl.combine(['white', 'white', 'blue', 'green', 'red'])
+    self.assertResult('[white, white, magenta, cyan, yellow]')
+
   def test_count(self):
     self.cl.extend(['green', 'red', 'blue', 'red', 'pink'])
     self.assertEqual(self.cl.count('green'), 1)
@@ -183,3 +188,4 @@ class ColorListTest(TestCase):
     self.cl = even_color_spread(5, 'black', 'white', 'red')
     self.assertResult('[black, grey 50, white, '
                       '[red=1.000, green=0.500, blue=0.500], red]')
+

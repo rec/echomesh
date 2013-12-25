@@ -44,6 +44,12 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
+  def _combine(self, ColorList other):
+    combineFColorList(other.thisptr[0], self.thisptr)
+
+  def combine(self, object other):
+    self._combine(other if isinstance(other, ColorList) else ColorList(other))
+
   def count(self, object item):
     cdef FColor c
     if not fill_color(item, &c):

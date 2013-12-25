@@ -32,6 +32,13 @@ struct FColor {
   }
 
   static FColor NO_COLOR;
+
+  void combine(const FColor& other) {
+    red_ = std::max(red_, other.red_);
+    green_ = std::max(green_, other.green_);
+    blue_ = std::max(blue_, other.blue_);
+    alpha_ = std::max(alpha_, other.alpha_);
+  }
 };
 
 typedef vector<FColor> FColorList;
@@ -56,6 +63,13 @@ inline FColor makeFColor(float red, float green, float blue, float alpha) {
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
     c.scale(scale);
+}
+
+inline void combineFColorList(const FColorList& from, FColorList* to) {
+  if (from.size() > to->size())
+    to->resize(from.size());
+  for (auto i = 0; i < from.size(); ++i)
+    (*to)[i].combine(from[i]);
 }
 
 }  // namespace echomesh
