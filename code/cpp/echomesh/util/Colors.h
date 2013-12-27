@@ -46,9 +46,19 @@ struct FColor {
   float x_, y_, z_, alpha_;
 
   friend struct RGB;
+  friend struct HSB;
 };
 
-inline void combineRgb(const FColor& x, FColor* y) {
+struct RGB {
+  void combineRgb(const FColor& x, FColor* y) {
+    y->red() = std::max(y->red(), x.red());
+    y->green() = std::max(y->green(), x.green());
+    y->blue() = std::max(y->blue(), x.blue());
+    y->alpha() = std::max(y->alpha(), x.alpha());
+  }
+};
+
+static void combineRgb(const FColor& x, FColor* y) {
   y->red() = std::max(y->red(), x.red());
   y->green() = std::max(y->green(), x.green());
   y->blue() = std::max(y->blue(), x.blue());

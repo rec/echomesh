@@ -243,6 +243,63 @@ FColor FColor::toHSB() const {
   return FColor(hue, saturation, brightness, alpha_);
 }
 
+
+// from http://www.cs.rit.edu/~ncs/color/t_convert.html
+void HSVtoRGB(float h, float s, float v) {
+  float r, g, b;
+ 	if (s == 0) {
+		// achromatic (grey)
+		r = g = b = v;
+	} else {
+    h *= 6;			// sector 0 to 5
+    int i = floor(h);
+    auto f = h - i;			// factorial part of h
+    auto p = v * (1 - s);
+    auto q = v * (1 - s * f);
+    auto t = v * (1 - s * (1 - f));
+
+    switch(i) {
+      case 0:
+        r = v;
+        g = t;
+        b = p;
+        break;
+
+      case 1:
+        r = q;
+        g = v;
+        b = p;
+        break;
+
+      case 2:
+        r = p;
+        g = v;
+        b = t;
+        break;
+
+      case 3:
+        r = p;
+        g = q;
+        b = v;
+        break;
+
+      case 4:
+        r = t;
+        g = p;
+        b = v;
+        break;
+
+      case 5:
+      default:
+        r = v;
+        g = p;
+        b = q;
+        break;
+    }
+  }
+
+}
+
 FColor FColor::fromHSB() const {
   return *this;
 }
