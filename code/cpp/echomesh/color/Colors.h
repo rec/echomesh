@@ -1,84 +1,10 @@
 #ifndef __ECHOMESH_COLORS__
 #define __ECHOMESH_COLORS__
 
-#include "echomesh/base/Echomesh.h"
+#include "echomesh/color/FColor.h"
+#include "echomesh/color/RGB.h"
 
 namespace echomesh {
-
-struct RGB;
-struct HSV;
-
-struct FColor {
-  FColor() {}
-  FColor(float red, float green, float blue, float alpha=1.0)
-      : x_(red), y_(green), z_(blue), alpha_(alpha) {
-  }
-
-  const float& alpha() const { return alpha_; }
-  float& alpha() { return alpha_; }
-
-  const float& red() const { return x_; }
-  const float& green() const { return y_; }
-  const float& blue() const { return z_; }
-
-  float& red() { return x_; }
-  float& green() { return y_; }
-  float& blue() { return z_; }
-
-  const float& hue() const { return x_; }
-  const float& saturation() const { return y_; }
-  const float& brightness() const { return z_; }
-
-  float& hue() { return x_; }
-  float& saturation() { return y_; }
-  float& brightness() { return z_; }
-
-  bool operator==(const FColor& other) const;
-
-  static FColor NO_COLOR;
-
-  FColor toHSB() const;
-  FColor fromHSB() const;
-  FColor toYIQ() const;
-  FColor fromYIQ() const;
-
- private:
-  float x_, y_, z_, alpha_;
-
-  friend struct RGB;
-  friend struct HSB;
-};
-
-struct RGB {
-  static const float& red(const FColor& fc) { return fc.x_; }
-  static const float& green(const FColor& fc) { return fc.y_; }
-  static const float& blue(const FColor& fc) { return fc.z_; }
-  static float& red(FColor& fc) { return fc.x_; }
-  static float& green(FColor& fc) { return fc.y_; }
-  static float& blue(FColor& fc) { return fc.z_; }
-
-  static void combine(const FColor& x, FColor* y) {
-    y->red() = std::max(y->red(), x.red());
-    y->green() = std::max(y->green(), x.green());
-    y->blue() = std::max(y->blue(), x.blue());
-    y->alpha() = std::max(y->alpha(), x.alpha());
-  }
-
-  static Colour toColour(const FColor& fc) {
-    return Colour::fromFloatRGBA(fc.red(), fc.green(), fc.blue(), fc.alpha());
-  }
-
-  static FColor fromColour(const Colour& c) {
-    return FColor(c.getFloatRed(), c.getFloatGreen(), c.getFloatBlue(),
-                  c.getFloatAlpha());
-  }
-
-  static void scale(FColor* color, float scale) {
-    color->red() *= scale;
-    color->green() *= scale;
-    color->blue() *= scale;
-  }
-};
 
 inline void combineRgb(const FColor& x, FColor* y) { RGB::combine(x, y); }
 inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
