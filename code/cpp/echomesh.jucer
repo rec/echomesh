@@ -43,6 +43,13 @@
         <FILE id="FnBRuc" name="Disallow.h" compile="0" resource="0" file="../cpp/echomesh/base/Disallow.h"/>
         <FILE id="KEIchB" name="Echomesh.h" compile="0" resource="0" file="../cpp/echomesh/base/Echomesh.h"/>
       </GROUP>
+      <GROUP id="{9381D9DB-19E3-CAFE-F817-53640684E9B7}" name="color">
+        <FILE id="z9jnqa" name="Color.pyx" compile="0" resource="1" file="echomesh/color/Color.pyx"/>
+        <FILE id="f8XU3W" name="ColorList.pyx" compile="0" resource="1" file="echomesh/color/ColorList.pyx"/>
+        <FILE id="EMMvq6" name="Colors.cpp" compile="1" resource="0" file="echomesh/color/Colors.cpp"/>
+        <FILE id="lMtyJS" name="Colors.h" compile="0" resource="0" file="echomesh/color/Colors.h"/>
+        <FILE id="m2e3j1" name="Colors.pyx" compile="0" resource="1" file="echomesh/color/Colors.pyx"/>
+      </GROUP>
       <GROUP id="{FEE735BA-5738-1145-8191-A33B1EAB942B}" name="component">
         <FILE id="zHH5n2" name="InstrumentComponent.cpp" compile="1" resource="0"
               file="../cpp/echomesh/component/InstrumentComponent.cpp"/>
@@ -58,8 +65,6 @@
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
       <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
-        <FILE id="V8iXC5" name="Colors.cpp" compile="1" resource="0" file="echomesh/util/Colors.cpp"/>
-        <FILE id="mASpmh" name="Colors.h" compile="0" resource="0" file="echomesh/util/Colors.h"/>
         <FILE id="NclU6P" name="InitLog.cpp" compile="1" resource="0" file="echomesh/util/InitLog.cpp"/>
         <FILE id="UrM8ro" name="InitLog.h" compile="0" resource="0" file="echomesh/util/InitLog.h"/>
         <FILE id="IalUji" name="EchomeshApplication.cpp" compile="1" resource="0"

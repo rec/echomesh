@@ -1,6 +1,6 @@
 from libcpp.string cimport string
 
-cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
+cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   cdef cppclass FColor:
     float red()
     float green()
@@ -9,12 +9,12 @@ cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
   void scaleRgb(FColor* color, float scale)
   void combineRgb(FColor, FColor*)
 
-cdef extern from "echomesh/util/Colors.h" namespace "echomesh::FColor":
+cdef extern from "echomesh/color/Colors.h" namespace "echomesh::FColor":
   FColor NO_COLOR
 
 ctypedef vector[FColor] FColorList
 
-cdef extern from "echomesh/util/Colors.h" namespace "echomesh":
+cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   bool fillColor(string name, FColor* color)
   FColor colorFromInt(unsigned int argb)
   void copyColor(FColor c1, FColor* c2)

@@ -59,10 +59,10 @@ OBJECTS := \
   $(OBJDIR)/ResamplingPositionableAudioSource_55438ad3.o \
   $(OBJDIR)/SampleAudioSource_602b6bc6.o \
   $(OBJDIR)/Source_b9c08e86.o \
+  $(OBJDIR)/Colors_aefed3ae.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
-  $(OBJDIR)/Colors_ba418b95.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
   $(OBJDIR)/FastTrig_b97710bd.o \
@@ -71,6 +71,7 @@ OBJECTS := \
   $(OBJDIR)/RegisterFormats_a3caa84e.o \
   $(OBJDIR)/OutputSampleRate_b96311f8.o \
   $(OBJDIR)/Trash_ed189496.o \
+  $(OBJDIR)/BinaryData_ce4232d4.o \
   $(OBJDIR)/juce_audio_basics_2442e4ea.o \
   $(OBJDIR)/juce_audio_devices_a4c8a728.o \
   $(OBJDIR)/juce_audio_formats_d349f0c8.o \
@@ -151,6 +152,11 @@ $(OBJDIR)/Source_b9c08e86.o: ../../echomesh/audio/Source.cpp
 	@echo "Compiling Source.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
+$(OBJDIR)/Colors_aefed3ae.o: ../../echomesh/color/Colors.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Colors.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
 $(OBJDIR)/InstrumentComponent_75edd5bc.o: ../../echomesh/component/InstrumentComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling InstrumentComponent.cpp"
@@ -164,11 +170,6 @@ $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightingWindow.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/Colors_ba418b95.o: ../../echomesh/util/Colors.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Colors.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InitLog_83a5ff59.o: ../../echomesh/util/InitLog.cpp
@@ -209,6 +210,11 @@ $(OBJDIR)/OutputSampleRate_b96311f8.o: ../../rec/audio/OutputSampleRate.cpp
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Trash.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/BinaryData_ce4232d4.o: ../../JuceLibraryCode/BinaryData.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling BinaryData.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2442e4ea.o: ../../JuceLibraryCode/modules/juce_audio_basics/juce_audio_basics.cpp

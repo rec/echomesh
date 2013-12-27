@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <map>
 
-#include "echomesh/util/Colors.h"
+#include "echomesh/color/Colors.h"
 
 using namespace std;
 
