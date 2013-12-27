@@ -50,9 +50,9 @@ struct FColor {
 };
 
 struct RGB {
-  static const float& red(const FColor& fc) const { return fc.x_; }
-  static const float& green(const FColor& fc) const { return fc.y_; }
-  static const float& blue(consnt FColor& fc) const { return fc.z_; }
+  static const float& red(const FColor& fc) { return fc.x_; }
+  static const float& green(const FColor& fc) { return fc.y_; }
+  static const float& blue(const FColor& fc) { return fc.z_; }
   static float& red(FColor& fc) { return fc.x_; }
   static float& green(FColor& fc) { return fc.y_; }
   static float& blue(FColor& fc) { return fc.z_; }
