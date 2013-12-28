@@ -15,6 +15,16 @@ struct FColor {
     parts_[2] = z;
   }
 
+  FColor(uint32 parts) {
+    parts_[2] = parts & 0xFF;
+    parts >>= 8;
+    parts_[1] = parts & 0xFF;
+    parts >>= 8;
+    parts_[0] = parts & 0xFF;
+    parts >>= 8;
+    alpha_ = parts;
+  }
+
   const float* parts() const { return parts_; }
   float* parts() { return parts_; }
 
@@ -58,9 +68,6 @@ struct FColor {
  private:
   float parts_[3];
   float alpha_;
-
-  friend struct RGB;
-  friend struct HSB;
 };
 
 }  // namespace color

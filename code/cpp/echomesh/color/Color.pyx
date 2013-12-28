@@ -78,7 +78,7 @@ cdef bool fill_color(object x, FColor* c):
     return nameToRgb(x, c)
 
   if isinstance(x, six.integer_types):
-    c.copy(rgbFromInt(x))
+    c.copy(FColor(x))
     return True
 
   try:

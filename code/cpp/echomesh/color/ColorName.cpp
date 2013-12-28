@@ -207,7 +207,7 @@ bool nameToRgb(const String& cname, FColor* color) {
     return false;
 
   if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
-    *color = RGB::fromInt((uint32) name.getHexValue32());
+    *color = FColor((uint32) name.getHexValue32());
     return true;
   }
 
