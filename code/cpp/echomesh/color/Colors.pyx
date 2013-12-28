@@ -22,7 +22,6 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   FColor colorFromInt(unsigned int argb)
   void copyColor(FColor c1, FColor* c2)
   void sortFColorList(FColorList*)
-  int compareColors(FColor x, FColor y)
   int countColorsInList(FColorList, FColor)
   int indexColorInList(FColorList, FColor)
   void reverseFColorList(FColorList*)
@@ -32,5 +31,5 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   void scaleFColorList(FColorList* fc, float scale)
   void combineFColorList(FColorList, FColorList*)
 
-cdef extern from "echomesh/color/RGB.h" namespace "echomesh::RGB":
-  FColor fromInt(unsigned int argb)
+  FColor rgbFromInt(unsigned int argb)
+  int compareRgb(FColor, FColor)

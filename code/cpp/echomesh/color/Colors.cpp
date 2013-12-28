@@ -9,7 +9,7 @@ namespace echomesh {
 
 struct FCompare {
   bool operator()(const FColor& x, const FColor& y) const {
-    return compareColors(x, y) < 0;
+    return RGB::compare(x, y) < 0;
   }
 };
 

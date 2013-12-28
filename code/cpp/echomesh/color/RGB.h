@@ -39,6 +39,26 @@ struct RGB {
   static FColor fromInt(uint32 argb) {
     return fromColour(Colour(argb));
   }
+
+  static int compare(const FColor& x, const FColor& y) {
+    if (red(x) < red(y))
+      return -1;
+    if (red(x) > red(y))
+      return 1;
+    if (green(x) < green(y))
+      return -1;
+    if (green(x) > green(y))
+      return 1;
+    if (blue(x) < blue(y))
+      return -1;
+    if (blue(x) > blue(y))
+      return 1;
+    if (x.alpha() < y.alpha())
+      return -1;
+    if (x.alpha() > y.alpha())
+      return 1;
+    return 0;
+  }
 };
 
 }  // namespace echomesh

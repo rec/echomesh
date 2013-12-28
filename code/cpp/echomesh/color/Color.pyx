@@ -10,7 +10,7 @@ cdef bool fill_color(object x, FColor* c):
   elif isinstance(x, six.string_types):
     return nameToRgb(x, c)
   elif isinstance(x, six.integer_types):
-    copyColor(fromInt(x), c)
+    copyColor(rgbFromInt(x), c)
   else:
     try:
       if len(x) == 3:
@@ -33,7 +33,7 @@ _COLOR_COMPARES = {
   }
 
 cdef bool richcmpColors(FColor x, FColor y, int cmp):
-  return _COLOR_COMPARES[cmp](compareColors(x, y))
+  return _COLOR_COMPARES[cmp](compareRgb(x, y))
 
 cdef class Color:
   cdef FColor* thisptr
