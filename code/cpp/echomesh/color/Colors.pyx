@@ -32,3 +32,5 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   void scaleFColorList(FColorList* fc, float scale)
   void combineFColorList(FColorList, FColorList*)
 
+cdef extern from "echomesh/color/RGB.h" namespace "echomesh::RGB":
+  FColor fromInt(unsigned int argb)

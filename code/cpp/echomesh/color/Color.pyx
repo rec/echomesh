@@ -10,7 +10,7 @@ cdef bool fill_color(object x, FColor* c):
   elif isinstance(x, six.string_types):
     return nameToRgb(x, c)
   elif isinstance(x, six.integer_types):
-    copyColor(colorFromInt(x), c)
+    copyColor(fromInt(x), c)
   else:
     try:
       if len(x) == 3:

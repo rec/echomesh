@@ -35,6 +35,10 @@ struct RGB {
     green(*color) *= scale;
     blue(*color) *= scale;
   }
+
+  static FColor fromInt(uint32 argb) {
+    return fromColour(Colour(argb));
+  }
 };
 
 }  // namespace echomesh

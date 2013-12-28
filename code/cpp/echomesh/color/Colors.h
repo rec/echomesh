@@ -14,7 +14,6 @@ inline void scaleRgb(FColor* color, float s) { return RGB::scale(color, s); }
 typedef vector<FColor> FColorList;
 
 bool fillColor(const String& name, FColor* color);
-FColor colorFromInt(uint32 argb);
 string colorName(const FColor& color);
 inline void copyColor(const FColor& from, FColor* to) { *to = from; }
 void sortFColorList(FColorList*);

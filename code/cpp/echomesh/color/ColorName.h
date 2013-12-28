@@ -5,7 +5,7 @@
 
 namespace echomesh {
 
-class FColor;
+struct FColor;
 
 namespace color {
 

@@ -7,10 +7,6 @@ using namespace std;
 
 namespace echomesh {
 
-FColor colorFromInt(uint32 argb) {
-  return colourToRgb(Colour(argb));
-}
-
 struct FCompare {
   bool operator()(const FColor& x, const FColor& y) const {
     return compareColors(x, y) < 0;
