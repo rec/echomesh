@@ -13,7 +13,6 @@ inline FColor colourToRgb(const Colour& c) { return RGB::fromColour(c); }
 inline void scaleRgb(FColor* color, float s) { return RGB::scale(color, s); }
 inline FColor rgbFromInt(uint32 i) { return RGB::fromInt(i); }
 
-inline void copyColor(const FColor& from, FColor* to) { *to = from; }
 void sortFColorList(FColorList*);
 int indexColorInList(const FColorList&, const FColor&);
 void reverseFColorList(FColorList*);

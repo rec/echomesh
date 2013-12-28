@@ -2,7 +2,6 @@ from libcpp.string cimport string
 
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   FColor colorFromInt(unsigned int argb)
-  void copyColor(FColor c1, FColor* c2)
   void sortFColorList(FColorList*)
   int countColorsInList(FColorList, FColor)
   int indexColorInList(FColorList, FColor)

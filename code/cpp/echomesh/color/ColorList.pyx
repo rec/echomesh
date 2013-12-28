@@ -236,8 +236,8 @@ def color_spread(*args):
   for i, step in enumerate(steps):
     c1, c2 = colors[i:i+2]
     for j in range(step + 2):
-      copyColor(interpolate(c1.thisptr[0], c2.thisptr[0], j / (step + 1.0)),
-                &cl.thisptr.at(pos))
+      inc = j / (step + 1.0)
+      cl.thisptr.set(interpolate(c1.thisptr[0], c2.thisptr[0], inc), pos)
       pos += 1
     pos -= 1
   return cl

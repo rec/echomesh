@@ -68,28 +68,27 @@ cdef class Color:
 
 cdef bool fill_color(object x, FColor* c):
   if not x:
-    copyColor(NO_COLOR, c)
+    c.copy(NO_COLOR)
     return True
 
   if isinstance(x, Color):
-    color = <Color> x
-    copyColor(color.thisptr[0], c)
+    c.copy((<Color> x).thisptr)
     return True
 
   elif isinstance(x, six.string_types):
     return nameToRgb(x, c)
 
   if isinstance(x, six.integer_types):
-    copyColor(rgbFromInt(x), c)
+    c.copy(rgbFromInt(x))
     return True
 
   try:
     if len(x) == 3:
-      copyColor(makeFColor(x[0], x[1], x[2], 1.0), c)
+      c.copy(makeFColor(x[0], x[1], x[2], 1.0))
       return True
 
     if len(x) == 4:
-      copyColor(makeFColor(x[0], x[1], x[2], x[3]), c)
+      c.copy(makeFColor(x[0], x[1], x[2], x[3]))
       return True
   except:
     pass

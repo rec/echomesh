@@ -3,6 +3,8 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
     float alpha()
     float* parts()
     bool compare(FColor)
+    void copy(FColor)
+    void copy(FColor*)
 
   void scaleRgb(FColor* color, float scale)
   void combineRgb(FColor, FColor*)

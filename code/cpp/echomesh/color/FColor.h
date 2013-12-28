@@ -22,18 +22,18 @@ struct FColor {
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
 
+  void copy(const FColor& other) { *this = other; }
+  void copy(const FColor* other) { copy(*other); }
   bool operator==(const FColor& other) const { return not compare(other); }
 
   int compare(const FColor& x) const {
     if (this != &x) {
       for (auto i = 0; i < 3; ++i) {
         if (not near(parts_[i], x.parts_[i])) {
-          // LOG(INFO) << "a. " << i << ", " << parts_[i] << ", " << x.parts_[i];
           if (parts_[i] < x.parts_[i])
             return -1;
           if (parts_[i] > x.parts_[i])
             return 1;
-          DLOG(INFO) << "b. " << i;
         }
       }
       if (alpha() < x.alpha())
@@ -51,7 +51,6 @@ struct FColor {
                   b1 + ratio * (e1 - b1),
                   b2 + ratio * (e2 - b2));
   }
-
 
   struct Comparer {
     bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
