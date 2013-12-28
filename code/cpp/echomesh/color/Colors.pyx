@@ -1,23 +1,5 @@
 from libcpp.string cimport string
 
-ctypedef float Parts[3]
-
-cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
-  cdef cppclass FColor:
-    float alpha()
-    float* parts()
-  void scaleRgb(FColor* color, float scale)
-  void combineRgb(FColor, FColor*)
-
-cdef extern from "echomesh/color/Colors.h" namespace "echomesh::FColor":
-  FColor NO_COLOR
-
-ctypedef vector[FColor] FColorList
-
-cdef extern from "echomesh/color/ColorName.h" namespace "echomesh::color":
-  string rgbToName(FColor color)
-  bool nameToRgb(string name, FColor* color)
-
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   FColor colorFromInt(unsigned int argb)
   void copyColor(FColor c1, FColor* c2)
@@ -32,4 +14,3 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   void combineFColorList(FColorList, FColorList*)
 
   FColor rgbFromInt(unsigned int argb)
-  int compareRgb(FColor, FColor)

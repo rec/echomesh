@@ -1,0 +1,15 @@
+cdef extern from "echomesh/color/FColorList.h" namespace "echomesh":
+  cdef cppclass FColorList:
+    FColor& at(int pos)
+    int count(FColor c)
+    void eraseOne(int pos)
+    void eraseRange(int b, int e)
+    int index(FColor c)
+    void insertRange(int b1, FColorList cl, int b2, int e2)
+    void push_back(FColor c)
+    void resize(size_t size)
+    void reserve(size_t size)
+    void reverse()
+    void set(FColor color, int pos)
+    int size()
+    void sort()

@@ -2,6 +2,7 @@
 #define __ECHOMESH_COLORS__
 
 #include "echomesh/color/FColor.h"
+#include "echomesh/color/FColorList.h"
 #include "echomesh/color/RGB.h"
 
 namespace echomesh {
@@ -10,16 +11,10 @@ inline void combineRgb(const FColor& x, FColor* y) { RGB::combine(x, y); }
 inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
 inline FColor colourToRgb(const Colour& c) { return RGB::fromColour(c); }
 inline void scaleRgb(FColor* color, float s) { return RGB::scale(color, s); }
-inline int compareRgb(const FColor& x, const FColor& y) {
-  return RGB::compare(x, y);
-}
 inline FColor rgbFromInt(uint32 i) { return RGB::fromInt(i); }
-
-typedef vector<FColor> FColorList;
 
 inline void copyColor(const FColor& from, FColor* to) { *to = from; }
 void sortFColorList(FColorList*);
-int countColorsInList(const FColorList&, const FColor&);
 int indexColorInList(const FColorList&, const FColor&);
 void reverseFColorList(FColorList*);
 void fillFColorList(

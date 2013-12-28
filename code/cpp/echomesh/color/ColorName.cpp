@@ -3,6 +3,7 @@
 #include "echomesh/color/ColorName.h"
 #include "echomesh/color/Colors.h"
 #include "echomesh/color/FColor.h"
+#include "echomesh/color/FColorList.h"
 
 using namespace std;
 

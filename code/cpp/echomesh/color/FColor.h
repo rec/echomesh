@@ -7,11 +7,14 @@ namespace echomesh {
 
 struct FColor {
   FColor() {}
-  FColor(float red, float green, float blue, float alpha=1.0) : alpha_(alpha) {
-    parts_[0] = red;
-    parts_[1] = green;
-    parts_[2] = blue;
+
+  FColor(float x, float y, float z, float alpha=1.0) : alpha_(alpha) {
+    parts_[0] = x;
+    parts_[1] = y;
+    parts_[2] = z;
   }
+
+  static FColor NO_COLOR;
 
   const float* parts() const { return parts_; }
   float* parts() { return parts_; }
@@ -19,14 +22,40 @@ struct FColor {
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
 
-  bool operator==(const FColor& other) const {
-    return
-        near(parts_[0], other.parts_[0]) and
-        near(parts_[1], other.parts_[1]) and
-        near(parts_[2], other.parts_[2]) and
-        near(alpha_, other.alpha_);
+  bool operator==(const FColor& other) const { return not compare(other); }
+
+  int compare(const FColor& x) const {
+    if (this != &x) {
+      for (auto i = 0; i < 3; ++i) {
+        if (not near(parts_[i], x.parts_[i])) {
+          // LOG(INFO) << "a. " << i << ", " << parts_[i] << ", " << x.parts_[i];
+          if (parts_[i] < x.parts_[i])
+            return -1;
+          if (parts_[i] > x.parts_[i])
+            return 1;
+          DLOG(INFO) << "b. " << i;
+        }
+      }
+      if (alpha() < x.alpha())
+        return -1;
+      if (alpha() > x.alpha())
+        return 1;
+    }
+    return 0;
   }
-  static FColor NO_COLOR;
+
+  FColor interpolate(const FColor& end, float ratio) const {
+    auto b0 = parts_[0], b1 = parts_[1], b2 = parts_[2];
+    auto e0 = end.parts_[0], e1 = end.parts_[1], e2 = end.parts_[2];
+    return FColor(b0 + ratio * (e0 - b0),
+                  b1 + ratio * (e1 - b1),
+                  b2 + ratio * (e2 - b2));
+  }
+
+
+  struct Comparer {
+    bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
+  };
 
  private:
   float parts_[3];

@@ -1,27 +1,7 @@
-import six
+include "echomesh/color/FColor.pyx"
+include "echomesh/color/ColorName.pyx"
 
-cdef bool fill_color(object x, FColor* c):
-  if not x:
-    copyColor(NO_COLOR, c)
-    return True
-  elif isinstance(x, Color):
-    color = <Color> x
-    copyColor(color.thisptr[0], c)
-  elif isinstance(x, six.string_types):
-    return nameToRgb(x, c)
-  elif isinstance(x, six.integer_types):
-    copyColor(rgbFromInt(x), c)
-  else:
-    try:
-      if len(x) == 3:
-        copyColor(makeFColor(x[0], x[1], x[2], 1.0), c)
-      elif len(x) == 4:
-        copyColor(makeFColor(x[0], x[1], x[2], x[3]), c)
-      else:
-        return False
-    except:
-      return False
-  return True
+import six
 
 _COLOR_COMPARES = {
   0: lambda x: x < 0,
@@ -33,7 +13,10 @@ _COLOR_COMPARES = {
   }
 
 cdef bool richcmpColors(FColor x, FColor y, int cmp):
-  return _COLOR_COMPARES[cmp](compareRgb(x, y))
+  return _COLOR_COMPARES[cmp](x.compare(y))
+
+def force_color(c):
+  return c if isinstance(c, Color) else Color(c)
 
 cdef class Color:
   cdef FColor* thisptr
@@ -43,7 +26,7 @@ cdef class Color:
     if len(args) == 1:
       args = args[0]
     if not fill_color(args, self.thisptr):
-      raise ValueError('Can\'t construct color from "%s"' % args)
+      raise ValueError('Can\'t construct color from "%s"' % str(args))
 
   @property
   def parts(self):
@@ -80,11 +63,33 @@ cdef class Color:
   def __repr__(self):
     return 'Color(%s)' % str(self)
 
-  def __richcmp__(self, Color other, int cmp):
-    return self._richcmp(other, cmp)
-
-  def _richcmp(self, Color other, int cmp):
+  def __richcmp__(Color self, Color other, int cmp):
     return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
 
-def force_color(c):
-  return c if isinstance(c, Color) else Color(c)
+cdef bool fill_color(object x, FColor* c):
+  if not x:
+    copyColor(NO_COLOR, c)
+    return True
+
+  if isinstance(x, Color):
+    color = <Color> x
+    copyColor(color.thisptr[0], c)
+    return True
+
+  elif isinstance(x, six.string_types):
+    return nameToRgb(x, c)
+
+  if isinstance(x, six.integer_types):
+    copyColor(rgbFromInt(x), c)
+    return True
+
+  try:
+    if len(x) == 3:
+      copyColor(makeFColor(x[0], x[1], x[2], 1.0), c)
+      return True
+
+    if len(x) == 4:
+      copyColor(makeFColor(x[0], x[1], x[2], x[3]), c)
+      return True
+  except:
+    pass
