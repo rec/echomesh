@@ -19,22 +19,17 @@ struct FColor {
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
 
-  const float& hue() const { return parts_[0]; }
-  const float& saturation() const { return parts_[1]; }
-  const float& brightness() const { return parts_[2]; }
-
-  float& hue() { return parts_[0]; }
-  float& saturation() { return parts_[1]; }
-  float& brightness() { return parts_[2]; }
-
-  bool operator==(const FColor& other) const;
-
+  bool operator==(const FColor& other) const {
+    return
+        near(parts_[0], other.parts_[0]) and
+        near(parts_[1], other.parts_[1]) and
+        near(parts_[2], other.parts_[2]) and
+        near(alpha_, other.alpha_);
+  }
   static FColor NO_COLOR;
 
   FColor toHSB() const;
   FColor fromHSB() const;
-  FColor toYIQ() const;
-  FColor fromYIQ() const;
 
  private:
   float parts_[3];

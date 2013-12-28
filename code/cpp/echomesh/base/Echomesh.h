@@ -24,21 +24,13 @@ using rec::RealTime;
 using rec::SampleTime;
 using rec::SampleRate;
 
-#ifdef MAKE_SIGNED
-
-template <class T>
-typename std::make_signed<T>::type as_signed(T t) {
-  return std::make_signed<T>::type(t);
-}
-
-template <class T>
-typename std::make_unsigned<T>::type as_unsigned(T t) {
-  return std::make_unsigned<T>::type(t);
-}
-
-#endif
-
 namespace echomesh {
+
+const float EPSILON = 1.0 / 0x10000;
+
+inline bool near(float scale, float value, float tolerance = EPSILON) {
+  return fabsf(scale - value) < tolerance;
+}
 
 class Exception : public std::exception {
  public:

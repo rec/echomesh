@@ -5,12 +5,6 @@ namespace audio {
 
 namespace {
 
-static const float EPSILON = 1.0 / 0x10000;
-
-static bool near(float scale, float value) {
-  return fabsf(scale - value) < EPSILON;
-}
-
 static const float PI = 3.14159265f;
 typedef std::pair<float, float> Pan;
 

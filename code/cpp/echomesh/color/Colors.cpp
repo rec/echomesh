@@ -9,12 +9,6 @@ namespace echomesh {
 
 namespace {
 
-const float NEAR = 1.0 / powf(2.0, 16);
-
-bool near(float f1, float f2) {
-  return fabsf(f1 - f2) < NEAR;
-}
-
 int compareColours(const Colour& x, const Colour& y) {
   auto xa = x.getARGB();
   auto ya = y.getARGB();
@@ -204,14 +198,6 @@ static const ColorNamer NAMER = makeNamer();
 
 } // namespace
 
-bool FColor::operator==(const FColor& other) const {
-  return
-      near(RGB::red(*this), RGB::red(other)) and
-      near(RGB::green(*this), RGB::green(other)) and
-      near(RGB::blue(*this), RGB::blue(other)) and
-      near(alpha_, other.alpha_);
-}
-
 FColor FColor::NO_COLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
 FColor FColor::toHSB() const {
@@ -303,20 +289,6 @@ void HSVtoRGB(float h, float s, float v) {
 
 FColor FColor::fromHSB() const {
   return *this;
-}
-
-FColor FColor::toYIQ() const {
-  return FColor(0.2999f * RGB::red(*this) + 0.5870f * RGB::green(*this) + 0.1140f * RGB::blue(*this),
-                0.5957f * RGB::red(*this) - 0.2744f * RGB::green(*this) - 0.3212f * RGB::blue(*this),
-                0.2114f * RGB::red(*this) - 0.5225f * RGB::green(*this) - 0.3113f * RGB::blue(*this),
-                alpha_);
-}
-
-FColor FColor::fromYIQ() const {
-  return FColor(RGB::red(*this) + 0.9563f * RGB::green(*this) + 0.6210f * RGB::blue(*this),
-                RGB::red(*this) - 0.2721f * RGB::green(*this) - 0.6474f * RGB::blue(*this),
-                RGB::red(*this) - 1.1070f * RGB::green(*this) + 1.7046f * RGB::blue(*this),
-                alpha_);
 }
 
 bool fillColor(const String& cname, FColor* color) {
