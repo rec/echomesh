@@ -16,10 +16,6 @@ inline FColor rgbFromInt(uint32 i) { return RGB::fromInt(i); }
 int indexColorInList(const FColorList&, const FColor&);
 FColor interpolate(const FColor& begin, const FColor& end, float ratio);
 
-inline FColor makeFColor(float red, float green, float blue, float alpha) {
-  return FColor(red, green, blue, alpha);
-}
-
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
     scaleRgb(&c, scale);

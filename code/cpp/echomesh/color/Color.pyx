@@ -88,11 +88,11 @@ cdef bool fill_color(object x, FColor* c):
 
   try:
     if len(x) == 3:
-      c.copy(makeFColor(x[0], x[1], x[2], 1.0))
+      c.copy(FColor(x[0], x[1], x[2], 1.0))
       return True
 
     if len(x) == 4:
-      c.copy(makeFColor(x[0], x[1], x[2], x[3]))
+      c.copy(FColor(x[0], x[1], x[2], x[3]))
       return True
   except:
     pass

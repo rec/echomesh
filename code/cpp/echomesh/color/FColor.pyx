@@ -1,5 +1,8 @@
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   cdef cppclass FColor:
+    FColor()
+    FColor(float, float, float, float)
+    FColor(float, float, float)
     float alpha()
     float* parts()
     bool compare(FColor)
