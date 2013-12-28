@@ -62,6 +62,7 @@ OBJECTS := \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
+  $(OBJDIR)/ColorName_ff26ac1a.o \
   $(OBJDIR)/Colors_aefed3ae.o \
   $(OBJDIR)/FColor_a3dc465b.o \
   $(OBJDIR)/HSB_7615b903.o \
@@ -167,6 +168,11 @@ $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightingWindow.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/ColorName_ff26ac1a.o: ../../echomesh/color/ColorName.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling ColorName.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Colors_aefed3ae.o: ../../echomesh/color/Colors.cpp

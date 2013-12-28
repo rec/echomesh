@@ -8,7 +8,7 @@ cdef bool fill_color(object x, FColor* c):
     color = <Color> x
     copyColor(color.thisptr[0], c)
   elif isinstance(x, six.string_types):
-    return fillColor(x, c)
+    return nameToRgb(x, c)
   elif isinstance(x, six.integer_types):
     copyColor(colorFromInt(x), c)
   else:
@@ -75,7 +75,7 @@ cdef class Color:
     del self.thisptr
 
   def __str__(self):
-    return colorName(self.thisptr[0])
+    return rgbToName(self.thisptr[0])
 
   def __repr__(self):
     return 'Color(%s)' % str(self)

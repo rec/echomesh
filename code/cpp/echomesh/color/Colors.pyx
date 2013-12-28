@@ -14,11 +14,13 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::FColor":
 
 ctypedef vector[FColor] FColorList
 
+cdef extern from "echomesh/color/ColorName.h" namespace "echomesh::color":
+  string rgbToName(FColor color)
+  bool nameToRgb(string name, FColor* color)
+
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
-  bool fillColor(string name, FColor* color)
   FColor colorFromInt(unsigned int argb)
   void copyColor(FColor c1, FColor* c2)
-  string colorName(FColor color)
   void sortFColorList(FColorList*)
   int compareColors(FColor x, FColor y)
   int countColorsInList(FColorList, FColor)
