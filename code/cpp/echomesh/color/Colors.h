@@ -17,8 +17,6 @@ inline FColor rgbFromInt(uint32 i) { return RGB::fromInt(i); }
 
 typedef vector<FColor> FColorList;
 
-bool fillColor(const String& name, FColor* color);
-string colorName(const FColor& color);
 inline void copyColor(const FColor& from, FColor* to) { *to = from; }
 void sortFColorList(FColorList*);
 int countColorsInList(const FColorList&, const FColor&);
