@@ -58,13 +58,9 @@
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
       <GROUP id="{9381D9DB-19E3-CAFE-F817-53640684E9B7}" name="color">
-        <FILE id="CTNWEY" name="Color.pyx" compile="0" resource="1" file="echomesh/color/Color.pyx"/>
-        <FILE id="nMmVzo" name="ColorList.pyx" compile="0" resource="1" file="echomesh/color/ColorList.pyx"/>
         <FILE id="Ymm2iO" name="ColorName.cpp" compile="1" resource="0" file="echomesh/color/ColorName.cpp"/>
         <FILE id="n3f3uh" name="ColorName.h" compile="0" resource="0" file="echomesh/color/ColorName.h"/>
-        <FILE id="Ivf1zL" name="Colors.cpp" compile="1" resource="0" file="echomesh/color/Colors.cpp"/>
         <FILE id="LQ9zXN" name="Colors.h" compile="0" resource="0" file="echomesh/color/Colors.h"/>
-        <FILE id="SykhnL" name="Colors.pyx" compile="0" resource="1" file="echomesh/color/Colors.pyx"/>
         <FILE id="aCwxu3" name="FColor.cpp" compile="1" resource="0" file="echomesh/color/FColor.cpp"/>
         <FILE id="fkNS41" name="FColor.h" compile="0" resource="0" file="echomesh/color/FColor.h"/>
         <FILE id="nzb8hr" name="HSB.cpp" compile="1" resource="0" file="echomesh/color/HSB.cpp"/>

@@ -63,7 +63,6 @@ OBJECTS := \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
   $(OBJDIR)/ColorName_ff26ac1a.o \
-  $(OBJDIR)/Colors_aefed3ae.o \
   $(OBJDIR)/FColor_a3dc465b.o \
   $(OBJDIR)/HSB_7615b903.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
@@ -74,7 +73,6 @@ OBJECTS := \
   $(OBJDIR)/RegisterFormats_a3caa84e.o \
   $(OBJDIR)/OutputSampleRate_b96311f8.o \
   $(OBJDIR)/Trash_ed189496.o \
-  $(OBJDIR)/BinaryData_ce4232d4.o \
   $(OBJDIR)/juce_audio_basics_2442e4ea.o \
   $(OBJDIR)/juce_audio_devices_a4c8a728.o \
   $(OBJDIR)/juce_audio_formats_d349f0c8.o \
@@ -175,11 +173,6 @@ $(OBJDIR)/ColorName_ff26ac1a.o: ../../echomesh/color/ColorName.cpp
 	@echo "Compiling ColorName.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Colors_aefed3ae.o: ../../echomesh/color/Colors.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Colors.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/FColor_a3dc465b.o: ../../echomesh/color/FColor.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling FColor.cpp"
@@ -228,11 +221,6 @@ $(OBJDIR)/OutputSampleRate_b96311f8.o: ../../rec/audio/OutputSampleRate.cpp
 $(OBJDIR)/Trash_ed189496.o: ../../rec/util/thread/Trash.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Trash.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
-$(OBJDIR)/BinaryData_ce4232d4.o: ../../JuceLibraryCode/BinaryData.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling BinaryData.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/juce_audio_basics_2442e4ea.o: ../../JuceLibraryCode/modules/juce_audio_basics/juce_audio_basics.cpp
