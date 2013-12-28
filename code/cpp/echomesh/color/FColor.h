@@ -28,9 +28,6 @@ struct FColor {
   }
   static FColor NO_COLOR;
 
-  FColor toHSB() const;
-  FColor fromHSB() const;
-
  private:
   float parts_[3];
   float alpha_;

@@ -59,10 +59,12 @@ OBJECTS := \
   $(OBJDIR)/ResamplingPositionableAudioSource_55438ad3.o \
   $(OBJDIR)/SampleAudioSource_602b6bc6.o \
   $(OBJDIR)/Source_b9c08e86.o \
-  $(OBJDIR)/Colors_aefed3ae.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
   $(OBJDIR)/InstrumentGrid_18eea031.o \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
+  $(OBJDIR)/Colors_aefed3ae.o \
+  $(OBJDIR)/FColor_a3dc465b.o \
+  $(OBJDIR)/HSB_7615b903.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
   $(OBJDIR)/FastTrig_b97710bd.o \
@@ -152,11 +154,6 @@ $(OBJDIR)/Source_b9c08e86.o: ../../echomesh/audio/Source.cpp
 	@echo "Compiling Source.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
-$(OBJDIR)/Colors_aefed3ae.o: ../../echomesh/color/Colors.cpp
-	-@mkdir -p $(OBJDIR)
-	@echo "Compiling Colors.cpp"
-	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
-
 $(OBJDIR)/InstrumentComponent_75edd5bc.o: ../../echomesh/component/InstrumentComponent.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling InstrumentComponent.cpp"
@@ -170,6 +167,21 @@ $(OBJDIR)/InstrumentGrid_18eea031.o: ../../echomesh/component/InstrumentGrid.cpp
 $(OBJDIR)/LightingWindow_79bb5b00.o: ../../echomesh/component/LightingWindow.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling LightingWindow.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Colors_aefed3ae.o: ../../echomesh/color/Colors.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Colors.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/FColor_a3dc465b.o: ../../echomesh/color/FColor.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling FColor.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/HSB_7615b903.o: ../../echomesh/color/HSB.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling HSB.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InitLog_83a5ff59.o: ../../echomesh/util/InitLog.cpp
