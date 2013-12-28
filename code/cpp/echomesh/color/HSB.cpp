@@ -33,7 +33,6 @@ FColor HSB::fromRGB(const FColor& rgb) {
   return FColor(hue, saturation, brightness, rgb.alpha());
 }
 
-
 // from http://www.cs.rit.edu/~ncs/color/t_convert.html
 FColor HSB::toRGB(const FColor& hsb) {
   auto h = hue(hsb), s = saturation(hsb), b = brightness(hsb);
