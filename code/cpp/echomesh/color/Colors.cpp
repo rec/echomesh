@@ -16,11 +16,4 @@ FColor interpolate(
                 bb + ratio * (eb - bb));
 }
 
-void fillFColorList(
-    FColorList* cl, const FColor& begin, const FColor& end, int size) {
-  cl->resize(size);
-  for (auto i = 0; i < size; ++i)
-    cl->at(i) = interpolate(begin, end, i / (size - 1.0));
-}
-
 }  // namespace echomesh
