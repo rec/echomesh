@@ -1,4 +1,4 @@
-cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
+cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
   cdef cppclass FColor:
     FColor()
     FColor(float, float, float, float)

@@ -4,6 +4,7 @@
 #include "echomesh/color/FColor.h"
 
 namespace echomesh {
+namespace color {
 
 struct RGB {
   static const float& red(const FColor& fc) { return fc.parts_[0]; }
@@ -41,6 +42,7 @@ struct RGB {
   }
 };
 
+}  // namespace color
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_RGB__

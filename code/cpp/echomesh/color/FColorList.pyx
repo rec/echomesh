@@ -1,4 +1,4 @@
-cdef extern from "echomesh/color/FColorList.h" namespace "echomesh":
+cdef extern from "echomesh/color/FColorList.h" namespace "echomesh::color":
   cdef cppclass FColorList:
     FColor& at(int pos)
     int count(FColor c)

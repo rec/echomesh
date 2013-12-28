@@ -214,7 +214,8 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
-
+def force_color(c):
+  return c if isinstance(c, Color) else Color(c)
 
 def color_spread(*args):
   cdef Color c1

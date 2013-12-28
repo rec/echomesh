@@ -2,6 +2,7 @@
 #include "echomesh/color/RGB.h"
 
 namespace echomesh {
+namespace color {
 
 FColor HSB::fromRGB(const FColor& rgb) {
   const auto brightness = jmax(RGB::red(rgb), RGB::green(rgb), RGB::blue(rgb));
@@ -91,4 +92,5 @@ FColor HSB::toRGB(const FColor& hsb) {
   return FColor(r, g, bl, hsb.alpha());
 }
 
+}  // namespace color
 }  // namespace echomesh

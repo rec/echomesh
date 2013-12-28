@@ -15,9 +15,6 @@ _COLOR_COMPARES = {
 cdef bool richcmpColors(FColor x, FColor y, int cmp):
   return _COLOR_COMPARES[cmp](x.compare(y))
 
-def force_color(c):
-  return c if isinstance(c, Color) else Color(c)
-
 cdef class Color:
   cdef FColor* thisptr
 

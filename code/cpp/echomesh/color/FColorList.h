@@ -6,7 +6,7 @@
 #include "echomesh/color/FColor.h"
 
 namespace echomesh {
-//namespace color {
+namespace color {
 
 class FColorList : public vector<FColor> {
  public:
@@ -44,7 +44,7 @@ class FColorList : public vector<FColor> {
   }
 };
 
-//}  // namespace color
+}  // namespace color
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_COLOR_FCOLORLIST__

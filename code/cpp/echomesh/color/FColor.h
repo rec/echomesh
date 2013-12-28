@@ -4,6 +4,7 @@
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+namespace color {
 
 struct FColor {
   FColor() {}
@@ -62,6 +63,7 @@ struct FColor {
   friend struct HSB;
 };
 
+}  // namespace color
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_FCOLOR__

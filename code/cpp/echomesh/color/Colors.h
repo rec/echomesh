@@ -6,6 +6,7 @@
 #include "echomesh/color/RGB.h"
 
 namespace echomesh {
+namespace color {
 
 inline void combineRgb(const FColor& x, FColor* y) { RGB::combine(x, y); }
 inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
@@ -25,6 +26,7 @@ inline void combineFColorList(const FColorList& from, FColorList* to) {
     combineRgb(from[i], &(*to)[i]);
 }
 
+}  // namespace color
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_COLORS__

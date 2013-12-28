@@ -4,6 +4,7 @@
 #include "echomesh/color/FColor.h"
 
 namespace echomesh {
+namespace color {
 
 struct HSB {
   static const float& hue(const FColor& c) { return c.parts_[0]; }
@@ -18,6 +19,7 @@ struct HSB {
   static FColor toRGB(const FColor&);
 };
 
+}  // namespace color
 }  // namespace echomesh
 
 #endif  // __ECHOMESH_HSB__
