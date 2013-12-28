@@ -32,6 +32,10 @@ cdef class Color:
   def parts(self):
     p = self.thisptr.parts()
     return [p[0], p[1], p[2]]
+
+  @property
+  def alpha(self):
+    return self.thisptr.alpha()
   # @property
   # def rgb(self):
   #   return [self.red, self.green, self.blue]
