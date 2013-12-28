@@ -72,7 +72,7 @@ cdef class Color:
 
 cdef bool fill_color(object x, FColor* c):
   if not x:
-    c.copy(NO_COLOR)
+    c.copy(FColor(0.0, 0.0, 0.0, 0.0))
     return True
 
   if isinstance(x, Color):

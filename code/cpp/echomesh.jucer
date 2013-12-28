@@ -61,7 +61,6 @@
         <FILE id="Ymm2iO" name="ColorName.cpp" compile="1" resource="0" file="echomesh/color/ColorName.cpp"/>
         <FILE id="n3f3uh" name="ColorName.h" compile="0" resource="0" file="echomesh/color/ColorName.h"/>
         <FILE id="LQ9zXN" name="Colors.h" compile="0" resource="0" file="echomesh/color/Colors.h"/>
-        <FILE id="aCwxu3" name="FColor.cpp" compile="1" resource="0" file="echomesh/color/FColor.cpp"/>
         <FILE id="fkNS41" name="FColor.h" compile="0" resource="0" file="echomesh/color/FColor.h"/>
         <FILE id="nzb8hr" name="HSB.cpp" compile="1" resource="0" file="echomesh/color/HSB.cpp"/>
         <FILE id="E6XNSs" name="HSB.h" compile="0" resource="0" file="echomesh/color/HSB.h"/>

@@ -10,9 +10,5 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
     void copy(FColor*)
     FColor interpolate(FColor end, float ratio)
 
-
   void scaleRgb(FColor* color, float scale)
   void combineRgb(FColor, FColor*)
-
-cdef extern from "echomesh/color/Colors.h" namespace "echomesh::FColor":
-  FColor NO_COLOR

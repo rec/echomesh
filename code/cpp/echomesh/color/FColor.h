@@ -14,8 +14,6 @@ struct FColor {
     parts_[2] = z;
   }
 
-  static FColor NO_COLOR;
-
   const float* parts() const { return parts_; }
   float* parts() { return parts_; }
 

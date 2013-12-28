@@ -21,7 +21,6 @@
 		CE90EE4CEF08E3AC57D08661 = { isa = PBXBuildFile; fileRef = 6C070AFC59A342A703BCBCC8; };
 		D705CAC531715707021B8714 = { isa = PBXBuildFile; fileRef = FC3561C9AEB8364BC8086CED; };
 		4884EDA67F1A7BB82CF8AB83 = { isa = PBXBuildFile; fileRef = 66F503A8A74D5BFAF54A3767; };
-		1300359E595A58A90E9C2954 = { isa = PBXBuildFile; fileRef = 5B14671C6F586E4972229E22; };
 		86AA924D93AB8C5ADE6DF729 = { isa = PBXBuildFile; fileRef = 5489686D99F37C39BBD19E19; };
 		9FE3E343BEAEDC3443839F93 = { isa = PBXBuildFile; fileRef = 50FE275A0CCFA94FAD35A86F; };
 		654FD978B3DB7E163383531C = { isa = PBXBuildFile; fileRef = C685B3AB8F83BD2C60721226; };
@@ -332,7 +331,6 @@
 		5A45A77878A6A05CD6539B70 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ChannelRemappingAudioSource.h"; path = "../../JuceLibraryCode/modules/juce_audio_basics/sources/juce_ChannelRemappingAudioSource.h"; sourceTree = "SOURCE_ROOT"; };
 		5A48589DB672E6F1FB886C99 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_CallbackMessage.h"; path = "../../JuceLibraryCode/modules/juce_events/messages/juce_CallbackMessage.h"; sourceTree = "SOURCE_ROOT"; };
 		5AC458FE7F0EB9EB3E83BA57 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_DropShadower.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/misc/juce_DropShadower.cpp"; sourceTree = "SOURCE_ROOT"; };
-		5B14671C6F586E4972229E22 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FColor.cpp; path = ../../echomesh/color/FColor.cpp; sourceTree = "SOURCE_ROOT"; };
 		5BAABA00A753CC76A1993A8F = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_Clipboard.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/native/juce_linux_Clipboard.cpp"; sourceTree = "SOURCE_ROOT"; };
 		5BCDFACC77D912FBE81A61B3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ModalCallback.h; path = ../../rec/util/thread/ModalCallback.h; sourceTree = "SOURCE_ROOT"; };
 		5C0AD6188FB8A46652524C3D = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_Memory.h"; path = "../../JuceLibraryCode/modules/juce_core/memory/juce_Memory.h"; sourceTree = "SOURCE_ROOT"; };
@@ -934,7 +932,6 @@
 				66F503A8A74D5BFAF54A3767,
 				44A530621823AA50EA953979,
 				284C5919A729E7A9D2CAB797,
-				5B14671C6F586E4972229E22,
 				9EC097767D68B28EC91B19FB,
 				5489686D99F37C39BBD19E19,
 				A04A13A89557AD87BD0F36CC,
@@ -2056,7 +2053,6 @@
 				CE90EE4CEF08E3AC57D08661,
 				D705CAC531715707021B8714,
 				4884EDA67F1A7BB82CF8AB83,
-				1300359E595A58A90E9C2954,
 				86AA924D93AB8C5ADE6DF729,
 				9FE3E343BEAEDC3443839F93,
 				654FD978B3DB7E163383531C,
