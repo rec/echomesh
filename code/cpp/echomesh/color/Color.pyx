@@ -46,20 +46,24 @@ cdef class Color:
       raise ValueError('Can\'t construct color from "%s"' % args)
 
   @property
-  def rgb(self):
-    return [self.red, self.green, self.blue]
+  def parts(self):
+    p = self.thisptr.parts()
+    return [p[0], p[1], p[2]]
+  # @property
+  # def rgb(self):
+  #   return [self.red, self.green, self.blue]
 
-  @property
-  def red(self):
-    return self.thisptr.red()
+  # @property
+  # def red(self):
+  #   return self.thisptr.red()
 
-  @property
-  def green(self):
-    return self.thisptr.green()
+  # @property
+  # def green(self):
+  #   return self.thisptr.green()
 
-  @property
-  def blue(self):
-    return self.thisptr.blue()
+  # @property
+  # def blue(self):
+  #   return self.thisptr.blue()
 
   def scale(self, float f):
     scaleRgb(self.thisptr, f)

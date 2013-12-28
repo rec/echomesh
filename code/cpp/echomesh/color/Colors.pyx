@@ -1,11 +1,11 @@
 from libcpp.string cimport string
 
+ctypedef float Parts[3]
+
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh":
   cdef cppclass FColor:
-    float red()
-    float green()
-    float blue()
     float alpha()
+    float* parts()
   void scaleRgb(FColor* color, float scale)
   void combineRgb(FColor, FColor*)
 

@@ -29,6 +29,6 @@ def color_name_spread(begin=None, end=None, steps=None, transform=None):
   transform = transform or Transform.transform(transform)
 
   # TODO: disallow these defaults?
-  return color_spread(Color(begin or 'black').rgb,
-                      Color(end or 'white').rgb,
+  return color_spread(Color(begin or 'black').parts,
+                      Color(end or 'white').parts,
                       steps or 2, transform=transform)

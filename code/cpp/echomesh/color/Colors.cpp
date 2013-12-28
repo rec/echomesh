@@ -205,31 +205,32 @@ static const ColorNamer NAMER = makeNamer();
 } // namespace
 
 bool FColor::operator==(const FColor& other) const {
-  return near(red(), other.red()) and
-      near(green(), other.green()) and
-      near(blue(), other.blue()) and
+  return
+      near(RGB::red(*this), RGB::red(other)) and
+      near(RGB::green(*this), RGB::green(other)) and
+      near(RGB::blue(*this), RGB::blue(other)) and
       near(alpha_, other.alpha_);
 }
 
 FColor FColor::NO_COLOR(0.0f, 0.0f, 0.0f, 0.0f);
 
 FColor FColor::toHSB() const {
-  const auto brightness = jmax(red(), green(), blue());
+  const auto brightness = jmax(RGB::red(*this), RGB::green(*this), RGB::blue(*this));
   auto hue = 0.0f, saturation = 0.0f;
 
   if (not near(brightness, 0.0)) {
-    const auto darkest = jmin(red(), green(), blue());
+    const auto darkest = jmin(RGB::red(*this), RGB::green(*this), RGB::blue(*this));
     const auto range = brightness - darkest;
     saturation = range / brightness;
 
     if (not near(saturation, 0.0)) {
-      const float r = (brightness - red()) / range;
-      const float g = (brightness - green()) / range;
-      const float b = (brightness - blue()) / range;
+      const float r = (brightness - RGB::red(*this)) / range;
+      const float g = (brightness - RGB::green(*this)) / range;
+      const float b = (brightness - RGB::blue(*this)) / range;
 
-      if (near(red(), brightness))
+      if (near(RGB::red(*this), brightness))
         hue = b - g;
-      else if (near(green(), brightness))
+      else if (near(RGB::green(*this), brightness))
         hue = 2.0f + r - b;
       else
         hue = 4.0f + g - r;
@@ -305,16 +306,16 @@ FColor FColor::fromHSB() const {
 }
 
 FColor FColor::toYIQ() const {
-  return FColor(0.2999f * red() + 0.5870f * green() + 0.1140f * blue(),
-                0.5957f * red() - 0.2744f * green() - 0.3212f * blue(),
-                0.2114f * red() - 0.5225f * green() - 0.3113f * blue(),
+  return FColor(0.2999f * RGB::red(*this) + 0.5870f * RGB::green(*this) + 0.1140f * RGB::blue(*this),
+                0.5957f * RGB::red(*this) - 0.2744f * RGB::green(*this) - 0.3212f * RGB::blue(*this),
+                0.2114f * RGB::red(*this) - 0.5225f * RGB::green(*this) - 0.3113f * RGB::blue(*this),
                 alpha_);
 }
 
 FColor FColor::fromYIQ() const {
-  return FColor(red() + 0.9563f * green() + 0.6210f * blue(),
-                red() - 0.2721f * green() - 0.6474f * blue(),
-                red() - 1.1070f * green() + 1.7046f * blue(),
+  return FColor(RGB::red(*this) + 0.9563f * RGB::green(*this) + 0.6210f * RGB::blue(*this),
+                RGB::red(*this) - 0.2721f * RGB::green(*this) - 0.6474f * RGB::blue(*this),
+                RGB::red(*this) - 1.1070f * RGB::green(*this) + 1.7046f * RGB::blue(*this),
                 alpha_);
 }
 
@@ -358,9 +359,9 @@ string colorName(const FColor& fcolor) {
     if (not suffix.isEmpty())
       name = "[" + name;
   } else {
-    name = "[red=" + String(fcolor.red(), 3) +
-        ", green=" + String(fcolor.green(), 3) +
-        ", blue=" + String(fcolor.blue(), 3);
+    name = "[red=" + String(RGB::red(fcolor), 3) +
+        ", green=" + String(RGB::green(fcolor), 3) +
+        ", blue=" + String(RGB::blue(fcolor), 3);
     if (suffix.isEmpty())
       suffix += "]";
   }
@@ -391,17 +392,17 @@ void reverseFColorList(FColorList* cl) {
 }
 
 int compareColors(const FColor& x, const FColor& y) {
-  if (x.red() < y.red())
+  if (RGB::red(x) < RGB::red(y))
     return -1;
-  if (x.red() > y.red())
+  if (RGB::red(x) > RGB::red(y))
     return 1;
-  if (x.green() < y.green())
+  if (RGB::green(x) < RGB::green(y))
     return -1;
-  if (x.green() > y.green())
+  if (RGB::green(x) > RGB::green(y))
     return 1;
-  if (x.blue() < y.blue())
+  if (RGB::blue(x) < RGB::blue(y))
     return -1;
-  if (x.blue() > y.blue())
+  if (RGB::blue(x) > RGB::blue(y))
     return 1;
   if (x.alpha() < y.alpha())
     return -1;
@@ -412,8 +413,8 @@ int compareColors(const FColor& x, const FColor& y) {
 
 FColor interpolate(
     const FColor& begin, const FColor& end, float ratio) {
-  auto br = begin.red(), bg = begin.green(), bb = begin.blue();
-  auto er = end.red(), eg = end.green(), eb = end.blue();
+  auto br = RGB::red(begin), bg = RGB::green(begin), bb = RGB::blue(begin);
+  auto er = RGB::red(end), eg = RGB::green(end), eb = RGB::blue(end);
   return FColor(br + ratio * (er - br),
                 bg + ratio * (eg - bg),
                 bb + ratio * (eb - bb));
