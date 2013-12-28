@@ -21,10 +21,8 @@ def force_color(c):
 cdef class Color:
   cdef FColor* thisptr
 
-  def __cinit__(self, *args):
+  def __cinit__(self, args=None):
     self.thisptr = new FColor()
-    if len(args) == 1:
-      args = args[0]
     if not fill_color(args, self.thisptr):
       raise ValueError('Can\'t construct color from "%s"' % str(args))
 

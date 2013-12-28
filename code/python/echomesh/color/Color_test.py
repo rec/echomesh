@@ -15,13 +15,13 @@ class ColorTest(TestCase):
     self.assertEqual(str(Color('red')), 'red')
 
   def test_red2(self):
-    self.assertEqual(str(Color(1.0, 0, 0)), 'red')
+    self.assertEqual(str(Color([1.0, 0, 0])), 'red')
 
   def test_equal(self):
     self.assertEqual(Color('red'), Color('red'))
 
   def test_unnamed(self):
-    self.assertEqual(str(Color(0.7, 0.1, 0.2)),
+    self.assertEqual(str(Color([0.7, 0.1, 0.2])),
                      '[red=0.700, green=0.100, blue=0.200]')
 
   def test_unknown(self):

@@ -12,12 +12,10 @@ def _make_list(object value):
 cdef class ColorList:
   cdef FColorList* thisptr
 
-  def __cinit__(self, *args):
+  def __cinit__(self, args=None):
     self.thisptr = new FColorList()
-    if len(args) == 1:
-      self.extend(args[0])
-    elif args:
-      raise TypeError('ColorList takes at most 1 argument (%d given)' % len(args))
+    if args:
+      self.extend(args)
 
   def __dealloc__(self):
     del self.thisptr
