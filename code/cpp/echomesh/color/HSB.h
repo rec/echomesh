@@ -8,18 +8,28 @@ namespace echomesh {
 namespace color {
 
 class HSB : public ColorModel {
-  void scale(FColor*, float) const override {
+  void scale(FColor* c, float f) const override {
+    brightness(*c) *= f;
   }
 
-  void combine(const FColor&, FColor*) const override {
+  void combine(const FColor& f, FColor* t) const override {
+    auto h1 = hue(f), h2 = hue(*t);
+    hue(*t) = (h1 + h2) / 2;  // Guess?
+
+    saturation(*t) = jmax(saturation(*t), saturation(f));
+    brightness(*t) = jmax(brightness(*t), brightness(f));
   }
 
-  string toName(const FColor&) const override {
-    return "";
+  string toName(const FColor& c) const override {
+    return ColorModel::RGB_MODEL->toName(toRGB(c));
   }
 
-  bool fromName(const string&, FColor*) const override {
-    return false;
+  bool fromName(const string& s, FColor* c) const override {
+    FColor rgb;
+    bool success = ColorModel::RGB_MODEL->fromName(s, &rgb);
+    if (success)
+      *c = fromRGB(rgb);
+    return success;
   }
 
   FColor toRGB(const FColor& color) const override;
@@ -32,7 +42,6 @@ class HSB : public ColorModel {
   static float& hue(FColor& c) { return c.parts()[0]; }
   static float& saturation(FColor& c) { return c.parts()[1]; }
   static float& brightness(FColor& c) { return c.parts()[2]; }
-
 };
 
 }  // namespace color
