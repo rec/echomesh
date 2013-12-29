@@ -18,7 +18,8 @@ class ColorModel {
   virtual string toName(const FColor&) const = 0;
   virtual bool fromName(const string&, FColor*) const = 0;
 
-  static unique_ptr<ColorModel> RGB_MODEL, HSB_MODEL;
+  static ColorModel* const RGB_MODEL;
+  static ColorModel* const HSB_MODEL;
 };
 
 }  // namespace color

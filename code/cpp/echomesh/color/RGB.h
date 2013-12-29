@@ -10,18 +10,18 @@ namespace color {
 
 class RGB : public ColorModel {
  public:
-  virtual void scale(FColor*, float) const {
+  void scale(FColor*, float) const override {
   }
 
-  virtual void combine(const FColor& x, FColor* y) const {
+  void combine(const FColor& x, FColor* y) const override {
     combineRGB(x, y);
   }
 
-  virtual string toName(const FColor& c) const {
+  string toName(const FColor& c) const override {
     return rgbToName(c);
   }
 
-  virtual bool fromName(const string& s, FColor* c) const {
+  bool fromName(const string& s, FColor* c) const override {
     return nameToRgb(s, c);
   }
 

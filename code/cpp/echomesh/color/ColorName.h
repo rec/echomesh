@@ -6,7 +6,7 @@
 namespace echomesh {
 namespace color {
 
-struct FColor;
+class FColor;
 
 bool nameToRgb(const String& cname, FColor*);
 string rgbToName(const FColor&);

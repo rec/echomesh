@@ -6,8 +6,8 @@
 namespace echomesh {
 namespace color {
 
-unique_ptr<ColorModel> ColorModel::RGB_MODEL(new RGB);
-// HSB_MODEL;
+ColorModel* const ColorModel::RGB_MODEL = new RGB;
+ColorModel* const ColorModel::HSB_MODEL = new HSB;
 
 }  // namespace color
 }  // namespace echomesh
