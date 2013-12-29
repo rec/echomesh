@@ -48,10 +48,10 @@ cdef class Color:
   #   return self.thisptr.blue()
 
   def scale(self, float f):
-    scaleRGB(self.thisptr, f)
+    RGB_MODEL.scale(self.thisptr, f)
 
   def combine(self, Color c):
-    combineRGB(c.thisptr[0], self.thisptr)
+    RGB_MODEL.combine(c.thisptr[0], self.thisptr)
 
   def __dealloc__(self):
     del self.thisptr

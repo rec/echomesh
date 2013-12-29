@@ -10,11 +10,17 @@ namespace color {
 
 class RGB : public ColorModel {
  public:
-  void scale(FColor*, float) const override {
+  void scale(FColor* color, float scale) const override {
+    red(*color) *= scale;
+    green(*color) *= scale;
+    blue(*color) *= scale;
   }
 
   void combine(const FColor& x, FColor* y) const override {
-    combineRGB(x, y);
+    red(*y) = std::max(red(*y), red(x));
+    green(*y) = std::max(green(*y), green(x));
+    blue(*y) = std::max(blue(*y), blue(x));
+    y->alpha() = std::max(y->alpha(), x.alpha());
   }
 
   string toName(const FColor& c) const override {
@@ -32,19 +38,6 @@ class RGB : public ColorModel {
   static float& red(FColor& fc) { return fc.parts()[0]; }
   static float& green(FColor& fc) { return fc.parts()[1]; }
   static float& blue(FColor& fc) { return fc.parts()[2]; }
-
-  static void combineRGB(const FColor& x, FColor* y) {
-    red(*y) = std::max(red(*y), red(x));
-    green(*y) = std::max(green(*y), green(x));
-    blue(*y) = std::max(blue(*y), blue(x));
-    y->alpha() = std::max(y->alpha(), x.alpha());
-  }
-
-  static void scaleRGB(FColor* color, float scale) {
-    red(*color) *= scale;
-    green(*color) *= scale;
-    blue(*color) *= scale;
-  }
 
   static Colour toColour(const FColor& fc) {
     return Colour::fromFloatRGBA(red(fc), green(fc), blue(fc), fc.alpha());

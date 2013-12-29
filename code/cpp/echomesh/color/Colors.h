@@ -13,14 +13,14 @@ inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
 
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
-    RGB::scaleRGB(&c, scale);
+    ColorModel::RGB_MODEL->scale(&c, scale);
 }
 
 inline void combineFColorList(const FColorList& from, FColorList* to) {
   if (from.size() > to->size())
     to->resize(from.size());
   for (auto i = 0; i < from.size(); ++i)
-    RGB::combineRGB(from[i], &(*to)[i]);
+    ColorModel::RGB_MODEL->combine(from[i], &(*to)[i]);
 }
 
 }  // namespace color
