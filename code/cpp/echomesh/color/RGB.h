@@ -31,6 +31,14 @@ class RGB : public ColorModel {
     return nameToRgb(s, c);
   }
 
+  FColor toRGB(const FColor& color) const override {
+    return color;
+  }
+
+  FColor fromRGB(const FColor& color) const override {
+    return color;
+  }
+
   static const float& red(const FColor& fc) { return fc.parts()[0]; }
   static const float& green(const FColor& fc) { return fc.parts()[1]; }
   static const float& blue(const FColor& fc) { return fc.parts()[2]; }

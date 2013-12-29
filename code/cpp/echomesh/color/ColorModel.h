@@ -17,6 +17,8 @@ class ColorModel {
   virtual void combine(const FColor&, FColor*) const = 0;
   virtual string toName(const FColor&) const = 0;
   virtual bool fromName(const string&, FColor*) const = 0;
+  virtual FColor toRGB(const FColor&) const = 0;
+  virtual FColor fromRGB(const FColor&) const = 0;
 
   static ColorModel* const RGB_MODEL;
   static ColorModel* const HSB_MODEL;

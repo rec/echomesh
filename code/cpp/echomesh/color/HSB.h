@@ -22,6 +22,9 @@ class HSB : public ColorModel {
     return false;
   }
 
+  FColor toRGB(const FColor& color) const override;
+  FColor fromRGB(const FColor& color) const override;
+
   static const float& hue(const FColor& c) { return c.parts()[0]; }
   static const float& saturation(const FColor& c) { return c.parts()[1]; }
   static const float& brightness(const FColor& c) { return c.parts()[2]; }
@@ -30,8 +33,6 @@ class HSB : public ColorModel {
   static float& saturation(FColor& c) { return c.parts()[1]; }
   static float& brightness(FColor& c) { return c.parts()[2]; }
 
-  static FColor fromRGB(const FColor&);
-  static FColor toRGB(const FColor&);
 };
 
 }  // namespace color

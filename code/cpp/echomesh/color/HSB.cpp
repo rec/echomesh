@@ -4,7 +4,7 @@
 namespace echomesh {
 namespace color {
 
-FColor HSB::fromRGB(const FColor& rgb) {
+FColor HSB::fromRGB(const FColor& rgb) const {
   const auto brightness = jmax(RGB::red(rgb), RGB::green(rgb), RGB::blue(rgb));
   auto hue = 0.0f, saturation = 0.0f;
 
@@ -35,7 +35,7 @@ FColor HSB::fromRGB(const FColor& rgb) {
 }
 
 // from http://www.cs.rit.edu/~ncs/color/t_convert.html
-FColor HSB::toRGB(const FColor& hsb) {
+FColor HSB::toRGB(const FColor& hsb) const {
   auto h = hue(hsb), s = saturation(hsb), b = brightness(hsb);
   float r, g, bl;
  	if (s == 0) {
