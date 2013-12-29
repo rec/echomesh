@@ -58,6 +58,7 @@
               file="../cpp/echomesh/component/LightingWindow.h"/>
       </GROUP>
       <GROUP id="{9381D9DB-19E3-CAFE-F817-53640684E9B7}" name="color">
+        <FILE id="t3GAZw" name="ColorModel.cpp" compile="1" resource="0" file="echomesh/color/ColorModel.cpp"/>
         <FILE id="Ymm2iO" name="ColorName.cpp" compile="1" resource="0" file="echomesh/color/ColorName.cpp"/>
         <FILE id="n3f3uh" name="ColorName.h" compile="0" resource="0" file="echomesh/color/ColorName.h"/>
         <FILE id="LQ9zXN" name="Colors.h" compile="0" resource="0" file="echomesh/color/Colors.h"/>

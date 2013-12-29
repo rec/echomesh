@@ -6,7 +6,8 @@
 namespace echomesh {
 namespace color {
 
-struct FColor {
+class FColor {
+ public:
   FColor() {}
 
   FColor(float x, float y, float z, float alpha=1.0) : alpha_(alpha) {

@@ -4,10 +4,9 @@
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
+namespace color {
 
 struct FColor;
-
-namespace color {
 
 bool nameToRgb(const String& cname, FColor*);
 string rgbToName(const FColor&);

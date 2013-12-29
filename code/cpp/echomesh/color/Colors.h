@@ -8,21 +8,19 @@
 namespace echomesh {
 namespace color {
 
-inline void combineRgb(const FColor& x, FColor* y) { RGB::combine(x, y); }
 inline FColor colourToRgb(const Colour& c) { return RGB::fromColour(c); }
-inline void scaleRgb(FColor* color, float s) { return RGB::scale(color, s); }
 inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
 
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
-    scaleRgb(&c, scale);
+    RGB::scaleRGB(&c, scale);
 }
 
 inline void combineFColorList(const FColorList& from, FColorList* to) {
   if (from.size() > to->size())
     to->resize(from.size());
   for (auto i = 0; i < from.size(); ++i)
-    combineRgb(from[i], &(*to)[i]);
+    RGB::combineRGB(from[i], &(*to)[i]);
 }
 
 }  // namespace color

@@ -20,6 +20,7 @@
 		5C8AE127382720C3F9F8411C = { isa = PBXBuildFile; fileRef = 921D8C0732317F08D3EAE3E5; };
 		CE90EE4CEF08E3AC57D08661 = { isa = PBXBuildFile; fileRef = 6C070AFC59A342A703BCBCC8; };
 		D705CAC531715707021B8714 = { isa = PBXBuildFile; fileRef = FC3561C9AEB8364BC8086CED; };
+		383DBEAFE15A53F79A0492AF = { isa = PBXBuildFile; fileRef = 114382C7EFFCA695F5AF1F72; };
 		4884EDA67F1A7BB82CF8AB83 = { isa = PBXBuildFile; fileRef = 66F503A8A74D5BFAF54A3767; };
 		86AA924D93AB8C5ADE6DF729 = { isa = PBXBuildFile; fileRef = 5489686D99F37C39BBD19E19; };
 		9FE3E343BEAEDC3443839F93 = { isa = PBXBuildFile; fileRef = 50FE275A0CCFA94FAD35A86F; };
@@ -103,6 +104,7 @@
 		1026267787BB1D5F0705BBA0 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_MouseEvent.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/mouse/juce_MouseEvent.h"; sourceTree = "SOURCE_ROOT"; };
 		103233B87632303B02BF2C3A = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_CommonFile.cpp"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_linux_CommonFile.cpp"; sourceTree = "SOURCE_ROOT"; };
 		10FC5E53E450650F21428D68 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ComponentAnimator.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_ComponentAnimator.h"; sourceTree = "SOURCE_ROOT"; };
+		114382C7EFFCA695F5AF1F72 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ColorModel.cpp; path = ../../echomesh/color/ColorModel.cpp; sourceTree = "SOURCE_ROOT"; };
 		11C5C4F5DFC34BC6A13670BA = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_ProgressBar.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/widgets/juce_ProgressBar.h"; sourceTree = "SOURCE_ROOT"; };
 		11F751A9F379126C76C48128 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_linux_Windowing.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/native/juce_linux_Windowing.cpp"; sourceTree = "SOURCE_ROOT"; };
 		12029D636B304009D5AF9924 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_android_JNIHelpers.h"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_android_JNIHelpers.h"; sourceTree = "SOURCE_ROOT"; };
@@ -929,6 +931,7 @@
 				FC3561C9AEB8364BC8086CED,
 				3D4FCF868FF0F9DD7CC0F7E1 ); name = component; sourceTree = "<group>"; };
 		3BCE1D687E40CF5F0483BC9B = { isa = PBXGroup; children = (
+				114382C7EFFCA695F5AF1F72,
 				66F503A8A74D5BFAF54A3767,
 				44A530621823AA50EA953979,
 				284C5919A729E7A9D2CAB797,
@@ -2052,6 +2055,7 @@
 				5C8AE127382720C3F9F8411C,
 				CE90EE4CEF08E3AC57D08661,
 				D705CAC531715707021B8714,
+				383DBEAFE15A53F79A0492AF,
 				4884EDA67F1A7BB82CF8AB83,
 				86AA924D93AB8C5ADE6DF729,
 				9FE3E343BEAEDC3443839F93,
