@@ -6,8 +6,11 @@
 namespace echomesh {
 namespace color {
 
-ColorModel* const ColorModel::RGB_MODEL = new RGB;
-ColorModel* const ColorModel::HSB_MODEL = new HSB;
+static const ColorModel* const COLOR_MODELS[2] = { new RGB, new HSB };
+
+const ColorModel* ColorModel::getColorModel(ColorModel::Model model) {
+  return COLOR_MODELS[model];
+}
 
 }  // namespace color
 }  // namespace echomesh

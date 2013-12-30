@@ -20,8 +20,8 @@ class ColorModel {
   virtual FColor toRGB(const FColor&) const = 0;
   virtual FColor fromRGB(const FColor&) const = 0;
 
-  static ColorModel* const RGB_MODEL;
-  static ColorModel* const HSB_MODEL;
+  enum Model { RGB, HSV };
+  static const ColorModel* getColorModel(Model);
 };
 
 }  // namespace color

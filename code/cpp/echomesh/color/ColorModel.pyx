@@ -8,5 +8,6 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
     bool fromName(string, FColor*)
 
 cdef extern from "echomesh/color/ColorModel.h" namespace "echomesh::color::ColorModel":
-  ColorModel* RGB_MODEL
-  ColorModel* HSB_MODEL
+  enum Model:
+    RGB, HSV
+  const ColorModel* getColorModel(Model)
