@@ -1,4 +1,5 @@
 include "echomesh/color/FColor.pyx"
+include "echomesh/color/HSB.pyx"
 include "echomesh/color/ColorName.pyx"
 
 import six

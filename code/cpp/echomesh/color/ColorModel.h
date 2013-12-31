@@ -19,6 +19,8 @@ class ColorModel {
   virtual bool fromName(const string&, FColor*) const = 0;
   virtual FColor toRGB(const FColor&) const = 0;
   virtual FColor fromRGB(const FColor&) const = 0;
+  virtual FColor interpolate(
+      const FColor& begin, const FColor& end, float ratio) const = 0;
 
   enum Model { RGB, HSV };
   static const ColorModel* getColorModel(Model);

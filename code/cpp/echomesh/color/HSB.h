@@ -26,6 +26,27 @@ class HSB : public ColorModel {
   FColor toRGB(const FColor& color) const override;
   FColor fromRGB(const FColor& color) const override;
 
+  FColor interpolate(
+      const FColor& begin, const FColor& end, float ratio) const override {
+    auto h0 = hue(begin), s0 = saturation(begin), b0 = brightness(begin),
+        a0 = begin.alpha();
+    auto h1 = hue(end), s1 = saturation(end), b1 = brightness(end),
+        a1 = end.alpha();
+    return FColor(
+        interpolateHue(h0, h1, ratio),
+        s0 + ratio * (s1 - s0),
+        b0 + ratio * (b1 - b0),
+        a0 + ratio * (a1 - a0));
+  }
+
+  static float interpolateHue(float x, float y, float r) {
+    if (fabs(x - y) < 0.5)
+      return x + (y - x) * r;
+
+    float res = (x < y) ? (1 + x) - r * (1 + x - y) : x + r * (1 + y - x);
+    return res - floorf(res);
+  }
+
   static const float& hue(const FColor& c) { return c.parts()[0]; }
   static const float& saturation(const FColor& c) { return c.parts()[1]; }
   static const float& brightness(const FColor& c) { return c.parts()[2]; }
@@ -39,20 +60,11 @@ class HSB : public ColorModel {
   }
 
   static void combineHSB(const FColor& f, FColor* t) {
-    auto h1 = hue(f), h2 = hue(*t), h3 = jmin(h1, h2), h4 = jmax(h1, h2);
-    auto d1 = h4 - h3, d2 = (h3 + 1) - h4;
-
-    if (d1 < d2) {
-      hue(*t) = (h1 + h2) / 2;
-    } else {
-      auto a = (h3 + 1) / 2;
-      hue(*t) = a - floor(a);
-    }
-
+    hue(*t) = interpolateHue(hue(f), hue(*t), 0.5);
     saturation(*t) = jmax(saturation(*t), saturation(f));
     brightness(*t) = jmax(brightness(*t), brightness(f));
+    t->alpha() = jmax(t->alpha(), f.alpha());
   }
-
 };
 
 }  // namespace color
