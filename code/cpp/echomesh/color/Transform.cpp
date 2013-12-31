@@ -88,6 +88,8 @@ FloatTransform getTransform(const string& name) {
   for (auto i = 0; i < parts.size(); ++i) {
     auto p = parts[i];
     if (p == "inverse") {
+      if (not i)
+        throw Exception("Transform: inverse can't be the first transform.");
       auto t = result.first;
       result.first = result.second;
       result.second = t;

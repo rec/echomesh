@@ -4,7 +4,7 @@ from cechomesh import Color
 
 from echomesh.color import ColorConv
 from echomesh.util import Importer
-from echomesh.expression import Transform
+from cechomesh import Transform
 
 numpy = Importer.imp('numpy')
 
@@ -15,7 +15,7 @@ def color_spread(begin, end, steps, transform=None, use_hsv=True):
     colors = numpy.array([begin, end]).T
   steps = int(steps)
   if transform:
-    fn, fi = transform
+    fn, fi = transform.apply, transform.inverse
     step_array = [fi(numpy.linspace(fn(s), fn(f), steps)) for s, f in colors]
   else:
     step_array = [numpy.linspace(s, f, steps) for s, f in colors]
@@ -26,7 +26,7 @@ def color_spread(begin, end, steps, transform=None, use_hsv=True):
   return step_array
 
 def color_name_spread(begin=None, end=None, steps=None, transform=None):
-  transform = transform or Transform.transform(transform)
+  transform = transform and Transform(transform)
 
   # TODO: disallow these defaults?
   return color_spread(Color(begin or 'black').parts,
