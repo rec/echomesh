@@ -23,5 +23,13 @@ const FloatTransform* getTransform(const string& name) {
   return i == TRANSFORMS.end() ? nullptr : &i->second;
 }
 
+vector<string> getTransformNames() {
+  vector<string> res;
+  for (auto i: TRANSFORMS)
+    res.push_back(i.first);
+  return res;
+}
+
+
 }  // namespace color
 }  // namespace echomesh

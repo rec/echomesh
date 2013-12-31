@@ -12,7 +12,7 @@ typedef std::function<float(float)> FloatFunction;
 typedef std::pair<FloatFunction, FloatFunction> FloatTransform;
 
 const FloatTransform* getTransform(const string&);
-
+vector<string> getTransformNames();
 
 }  // namespace color
 }  // namespace echomesh
