@@ -54,7 +54,7 @@ TransformMap makeTransforms() {
   tm["identity"] = FloatTransform(identity, identity);
   tm["log"] = FloatTransform(log, exp);
   tm["reverse"] = FloatTransform(reverse, reverse);
-  tm["sin"] = FloatTransform(sine, arcsine);
+  tm["sine"] = FloatTransform(sine, arcsine);
   tm["sqrt"] = FloatTransform(sqrtf, square);
   tm["square"] = FloatTransform(square, sqrtf);
 
