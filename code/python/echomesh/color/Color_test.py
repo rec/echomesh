@@ -56,3 +56,8 @@ class ColorTest(TestCase):
     self.assertNear(interpolate_hue(0.4, 0, 0.4), 0.24)
     self.assertNear(interpolate_hue(0.4, 0, 0.6), 0.16)
 
+  def test_interpolate_hue5(self):
+    self.assertNear(interpolate_hue(0.8, 0.2, 0.0), 0.8)
+    self.assertNear(interpolate_hue(0.8, 0.2, 0.4), 0.96)
+    self.assertNear(interpolate_hue(0.8, 0.2, 0.6), 0.04)
+
