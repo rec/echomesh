@@ -102,9 +102,9 @@ FloatTransform getTransform(const string& name) {
 
 }
 
-Transform* makeTransform(const string& s) {
+CTransform* makeTransform(const string& s) {
   try {
-    return new Transform(getTransform(s));
+    return new CTransform(getTransform(s));
   } catch (Exception e) {
     LOG(ERROR) << e.what();
     return nullptr;

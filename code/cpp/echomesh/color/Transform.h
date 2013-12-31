@@ -11,18 +11,18 @@ namespace color {
 typedef std::function<float(float)> FloatFunction;
 typedef std::pair<FloatFunction, FloatFunction> FloatTransform;
 
-class Transform {
+class CTransform {
  public:
-  Transform(const FloatTransform& ft) : floatTransform_(ft) {}
+  CTransform(const FloatTransform& ft) : floatTransform_(ft) {}
 
-  float perform(float x) const { return floatTransform_.first(x); }
+  float apply(float x) const { return floatTransform_.first(x); }
   float inverse(float x) const { return floatTransform_.second(x); }
 
  private:
   FloatTransform const floatTransform_;
 };
 
-Transform* makeTransform(const string&);
+CTransform* makeTransform(const string&);
 
 vector<string> getTransformNames();
 
