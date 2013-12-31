@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import Color
+from cechomesh import Color, interpolate_hue
 
 from echomesh.util.TestCase import TestCase
 
@@ -35,3 +35,24 @@ class ColorTest(TestCase):
 
   def test_sort9(self):
     self.assertTrue(Color('green') > Color('red'))
+
+  def test_interpolate_hue1(self):
+    self.assertNear(interpolate_hue(0, 0, 0), 0)
+    self.assertNear(interpolate_hue(0, 0, 0.5), 0)
+    self.assertNear(interpolate_hue(0, 0, 1.0), 0)
+
+  def test_interpolate_hue2(self):
+    self.assertNear(interpolate_hue(0, 0.5, 0), 0)
+    self.assertNear(interpolate_hue(0, 0.5, 0.5), 0.25)
+    self.assertNear(interpolate_hue(0, 0.5, 1), 0.5)
+
+  def test_interpolate_hue3(self):
+    self.assertNear(interpolate_hue(0, 0.6, 0), 0)
+    self.assertNear(interpolate_hue(0, 0.6, 0.5), 0.80)
+    self.assertNear(interpolate_hue(0, 0.6, 1), 0.6)
+
+  def test_interpolate_hue4(self):
+    self.assertNear(interpolate_hue(0.4, 0, 0), 0.4)
+    self.assertNear(interpolate_hue(0.4, 0, 0.4), 0.24)
+    self.assertNear(interpolate_hue(0.4, 0, 0.6), 0.16)
+

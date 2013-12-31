@@ -8,6 +8,7 @@ namespace echomesh {
 namespace color {
 
 class HSB : public ColorModel {
+ public:
   void scale(FColor* c, float f) const override { scaleHSB(c, f); }
   void combine(const FColor& f, FColor* t) const override { combineHSB(f, t); }
 
@@ -40,8 +41,9 @@ class HSB : public ColorModel {
   }
 
   static float interpolateHue(float x, float y, float r) {
-    if (fabs(x - y) < 0.5)
+    if (fabs(x - y) <= 0.5) {
       return x + (y - x) * r;
+    }
 
     float res = (x < y) ? (1 + x) - r * (1 + x - y) : x + r * (1 + y - x);
     return res - floorf(res);
