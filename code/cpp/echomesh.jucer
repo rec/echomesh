@@ -66,6 +66,8 @@
         <FILE id="nzb8hr" name="HSB.cpp" compile="1" resource="0" file="echomesh/color/HSB.cpp"/>
         <FILE id="E6XNSs" name="HSB.h" compile="0" resource="0" file="echomesh/color/HSB.h"/>
         <FILE id="mnSJbF" name="RGB.h" compile="0" resource="0" file="echomesh/color/RGB.h"/>
+        <FILE id="w9w8r7" name="Transform.cpp" compile="1" resource="0" file="echomesh/color/Transform.cpp"/>
+        <FILE id="DaVFq2" name="Transform.h" compile="0" resource="0" file="echomesh/color/Transform.h"/>
       </GROUP>
       <GROUP id="{68CE40DA-0872-685D-5AC7-C2652AFFB504}" name="util">
         <FILE id="NclU6P" name="InitLog.cpp" compile="1" resource="0" file="echomesh/util/InitLog.cpp"/>

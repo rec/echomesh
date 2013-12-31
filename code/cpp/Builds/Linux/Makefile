@@ -65,6 +65,7 @@ OBJECTS := \
   $(OBJDIR)/ColorModel_26f43044.o \
   $(OBJDIR)/ColorName_ff26ac1a.o \
   $(OBJDIR)/HSB_7615b903.o \
+  $(OBJDIR)/Transform_d1c2c3f8.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
   $(OBJDIR)/FastTrig_b97710bd.o \
@@ -181,6 +182,11 @@ $(OBJDIR)/ColorName_ff26ac1a.o: ../../echomesh/color/ColorName.cpp
 $(OBJDIR)/HSB_7615b903.o: ../../echomesh/color/HSB.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling HSB.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Transform_d1c2c3f8.o: ../../echomesh/color/Transform.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Transform.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/InitLog_83a5ff59.o: ../../echomesh/util/InitLog.cpp
