@@ -80,13 +80,13 @@ FloatTransform getOneTransform(const string& name) {
 
 FloatTransform getTransform(const string& name) {
   StringArray parts;
-  parts.addTokens(String(name), ", ", "");
+  parts.addTokens(String(name), "+", "");
   if (not parts.size())
     throw Exception("Can't understand empty transform");
 
   FloatTransform result;
   for (auto i = 0; i < parts.size(); ++i) {
-    auto p = parts[i];
+    auto p = parts[i].trim();
     if (p == "inverse") {
       if (not i)
         throw Exception("Transform: inverse can't be the first transform.");

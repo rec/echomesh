@@ -38,7 +38,6 @@ class TransformTest(TestCase):
 class CTransformTest(TestCase):
   def assertTransform(self, name):
     tr = cechomesh.Transform(name)
-    # print('1.', name)
     self.assertNear(tr.apply(0), 0)
     self.assertNear(tr.inverse(0), 0)
     self.assertNear(tr.apply(1), 1)
@@ -46,7 +45,6 @@ class CTransformTest(TestCase):
 
     VALUES = 0, 1, 0.5, 1 / 3, 2 / 3
     for v in VALUES:
-      # print('2.', v, tr.apply(v), tr.inverse(v))
       self.assertNear(v, tr.apply(tr.inverse(v)))
       self.assertNear(v, tr.inverse(tr.apply(v)))
 
