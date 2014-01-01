@@ -19,7 +19,7 @@ def _to_list(s, base_type):
       s = [s]
   return [i if isinstance(i, base_type) else base_type(i) for i in s]
 
-def _ensure_length(x, length):
+def _ensure_length(list x, int length):
   if len(x) < length:
     x.extend([x[-1]] * length - len(x))
   else:
@@ -27,6 +27,7 @@ def _ensure_length(x, length):
       x.pop()
 
 def color_spread(colors, hsv, max_steps, steps, total_steps, transform):
+  # TODO: hsv!
   cdef Color c1
   cdef Color c2
   if not colors or len(colors) <= 1:
@@ -37,25 +38,29 @@ def color_spread(colors, hsv, max_steps, steps, total_steps, transform):
 
   colors = _to_list(colors, Color)
   transform = _to_list(transform, Transform)
-  lc = len(colors) - 1
+  lc = len(colors)
   if transform:
-    _ensure_length(transform, lc)
+    _ensure_length(transform, lc - 1)
   if steps:
-    _ensure_length(steps, lc)
+    _ensure_length(steps, lc - 1)
   else:
-    steps = _even_color_slots(total_steps or max_steps)
+    steps = _even_color_slots((total_steps or max_steps) - 1, lc - 1)
 
+  steps = list(steps)
   cl = ColorList()
-  cl.thisptr.resize(sum(steps) + lc + 1)
+  cl.thisptr.resize(sum(steps) + lc)
   pos = 0
   for i, step in enumerate(steps):
-    c1 = colors[i].thisptr
-    c2 = colors[i+1].thisptr
-    tr = transform[i].apply
+    c1 = colors[i]
+    c2 = colors[i+1]
+    tr = (transform and transform[i].apply) or (lambda x: x)
     for j in range(step + 2):
       inc = j / (step + 1.0)
-      cl.thisptr.set(c1.thisptr.interpolate(c2.thisptr[0], apply(inc)), pos)
+      cl.thisptr.set(c1.thisptr.interpolate(c2.thisptr[0], tr(inc)), pos)
       pos += 1
     pos -= 1
 
   return cl
+
+def even_color_spread(steps, *colors):
+  return color_spread(colors, False, steps, None, None, None)

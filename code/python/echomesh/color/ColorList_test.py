@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import Color, ColorList, color_spread, even_color_spread
+from cechomesh import Color, ColorList, even_color_spread
 
 from echomesh.util.TestCase import TestCase
 
