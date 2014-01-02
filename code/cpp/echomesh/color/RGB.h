@@ -21,13 +21,15 @@ class RGB : public ColorModel {
     return fromNameRGB(s, c);
   }
 
-  FColor toRGB(const FColor& color) const override {
+  FColor toRgb(const FColor& color) const override {
     return color;
   }
 
-  FColor fromRGB(const FColor& color) const override {
+  FColor fromRgb(const FColor& color) const override {
     return color;
   }
+
+  string modelName() const override { return "RGB"; }
 
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {

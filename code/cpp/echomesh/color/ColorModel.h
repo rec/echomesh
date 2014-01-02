@@ -20,8 +20,9 @@ class ColorModel {
 
   virtual string toName(const FColor&) const = 0;
   virtual bool fromName(const string&, FColor*) const = 0;
-  virtual FColor toRGB(const FColor&) const = 0;
-  virtual FColor fromRGB(const FColor&) const = 0;
+  virtual FColor toRgb(const FColor&) const = 0;
+  virtual FColor fromRgb(const FColor&) const = 0;
+  virtual string modelName() const = 0;
 
   enum Model { RGB, HSB };
   static const ColorModel* getColorModel(Model);

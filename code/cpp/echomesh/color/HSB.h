@@ -13,19 +13,21 @@ class HSB : public ColorModel {
   void combine(const FColor& f, FColor* t) const override { combineHSB(f, t); }
 
   string toName(const FColor& c) const override {
-    return RGB::toNameRGB(toRGB(c));
+    return RGB::toNameRGB(toRgb(c));
   }
 
   bool fromName(const string& s, FColor* c) const override {
     FColor rgb;
     bool success = RGB::fromNameRGB(s, &rgb);
     if (success)
-      *c = fromRGB(rgb);
+      *c = fromRgb(rgb);
     return success;
   }
 
-  FColor toRGB(const FColor& color) const override;
-  FColor fromRGB(const FColor& color) const override;
+  string modelName() const override { return "HSB"; }
+
+  FColor toRgb(const FColor& color) const override;
+  FColor fromRgb(const FColor& color) const override;
 
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {

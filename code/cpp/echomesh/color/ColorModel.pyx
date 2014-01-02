@@ -9,6 +9,8 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
     void scale(FColor*, float)
     string toName(FColor)
     bool fromName(string, FColor*)
+    string modelName()
+    FColor toRgb(FColor)
 
 cdef extern from "echomesh/color/ColorModel.h" namespace "echomesh::color::ColorModel":
   enum Model:
@@ -21,6 +23,7 @@ cdef const ColorModel* get_color_model(object x):
   x = x.lower()
   if x == 'rgb':
     return getColorModel(RGB)
-  if x == 'hsv':
+  if x == 'hsb':
     return getColorModel(HSB)
-  return NULL
+  print('Error: didn\t understand model %s: returning RGB' % x)
+  return getColorModel(RGB)
