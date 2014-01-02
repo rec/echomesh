@@ -37,21 +37,22 @@ cdef class Color:
   @property
   def alpha(self):
     return self.thisptr.alpha()
-  # @property
-  # def rgb(self):
-  #   return [self.red, self.green, self.blue]
 
-  # @property
-  # def red(self):
-  #   return self.thisptr.red()
+  @property
+  def model(self):
+    return self._model.modelName()
 
-  # @property
-  # def green(self):
-  #   return self.thisptr.green()
+  @property
+  def red(self):
+    return self.rgb[0]
 
-  # @property
-  # def blue(self):
-  #   return self.thisptr.blue()
+  @property
+  def green(self):
+    return self.rgb[1]
+
+  @property
+  def blue(self):
+    return self.rgb[2]
 
   def scale(self, float f):
     self._model.scale(self.thisptr, f)
