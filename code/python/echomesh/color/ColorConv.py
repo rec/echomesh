@@ -19,8 +19,8 @@ def _prepare_colorarray(arr, dtype):
 
   return numpy.array(arr, dtype=dtype)
 
-def rgb_to_hsv(rgb, dtype=numpy.float64):
-  """RGB to HSV color space conversion."""
+def rgb_to_hsb(rgb, dtype=numpy.float64):
+  """RGB to HSB color space conversion."""
   arr = _prepare_colorarray(rgb, dtype)
   out = numpy.empty_like(arr)
 
@@ -63,9 +63,9 @@ def rgb_to_hsv(rgb, dtype=numpy.float64):
   return out
 
 
-def hsv_to_rgb(hsv, dtype=numpy.float64):
-  """HSV to RGB color space conversion."""
-  arr = _prepare_colorarray(hsv, dtype)
+def hsb_to_rgb(hsb, dtype=numpy.float64):
+  """HSB to RGB color space conversion."""
+  arr = _prepare_colorarray(hsb, dtype)
 
   hi = numpy.floor(arr[:, 0] * 6)
   f = arr[:, 0] * 6 - hi

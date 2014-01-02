@@ -26,10 +26,11 @@ def _ensure_length(list x, int length):
     while len(x) > length:
       x.pop()
 
-def color_spread(colors, hsv, max_steps, steps, total_steps, transform):
+def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, transform=None):
   # TODO: hsv!
   cdef Color c1
   cdef Color c2
+
   if not colors or len(colors) <= 1:
     raise Exception('spread: There must be at least two colors.')
 
@@ -47,7 +48,7 @@ def color_spread(colors, hsv, max_steps, steps, total_steps, transform):
     steps = _even_color_slots((total_steps or max_steps) - 1, lc - 1)
 
   steps = list(steps)
-  cl = ColorList()
+  cl = ColorList(model=model)
   cl.thisptr.resize(sum(steps) + lc)
   pos = 0
   for i, step in enumerate(steps):
@@ -63,4 +64,4 @@ def color_spread(colors, hsv, max_steps, steps, total_steps, transform):
   return cl
 
 def even_color_spread(steps, *colors):
-  return color_spread(colors, False, steps, None, None, None)
+  return color_spread(colors, None, steps, None, None, None)

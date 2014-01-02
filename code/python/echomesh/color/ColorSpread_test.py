@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import numpy
 
-from cechomesh import Transform
+from cechomesh import Transform, ColorList
 
 from echomesh.color import ColorSpread
 from echomesh.util.TestCase import TestCase
@@ -12,11 +12,11 @@ class TestColorSpread(TestCase):
 
   def assertSpreadResult(self, *args, **kwds):
     spread = ColorSpread.color_spread(*args, **kwds)
-    self.assertArrayEquals(numpy.array(self.result), spread)
+    self.assertEquals(ColorList(self.result), spread)
 
   def assertColorSpreadResult(self, *args, **kwds):
-    spread = ColorSpread.color_name_spread(*args, **kwds)
-    self.assertArrayEquals(numpy.array(self.result), spread)
+    spread = ColorSpread.color_spread(*args, **kwds)
+    self.assertEquals(ColorList(self.result), spread)
 
   def test_simple(self):
     self.result = numpy.array([[], [], []], dtype=numpy.float64).T
@@ -32,7 +32,7 @@ class TestColorSpread(TestCase):
       [ 0. ,  0. ,  1. ]]
     self.assertSpreadResult([1, 0, 0], [0, 0, 1], 6)
 
-  def test_no_hsv(self):
+  def test_no_hsb(self):
     self.result = [
       [ 1. ,  0. ,  0. ],
       [ 0.8,  0. ,  0.2],
@@ -40,7 +40,7 @@ class TestColorSpread(TestCase):
       [ 0.4,  0. ,  0.6],
       [ 0.2,  0. ,  0.8],
       [ 0. ,  0. ,  1. ]]
-    self.assertSpreadResult([1, 0, 0], [0, 0, 1], 6, use_hsv=False)
+    self.assertSpreadResult([1, 0, 0], [0, 0, 1], 6, use_hsb=False)
 
   def test_two_colors(self):
     self.result = [
