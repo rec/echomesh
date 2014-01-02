@@ -13,9 +13,9 @@ cdef class ColorList:
   cdef FColorList* thisptr
   cdef const ColorModel* model
 
-  def __cinit__(self, args=None, Model model=RGB):
+  def __cinit__(self, args=None, object model=RGB):
     self.thisptr = new FColorList()
-    self.model = getColorModel(model)
+    self.model = get_color_model(model)
     if args:
       self.extend(args)
 

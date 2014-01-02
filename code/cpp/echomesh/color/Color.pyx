@@ -20,9 +20,9 @@ cdef class Color:
   cdef FColor* thisptr
   cdef const ColorModel* model
 
-  def __cinit__(self, object args=None, Model model=RGB):
+  def __cinit__(self, object args=None, object model=RGB):
     self.thisptr = new FColor()
-    self.model = getColorModel(model)
+    self.model = get_color_model(model)
     if not fill_color(args, self.thisptr, self.model):
       raise ValueError('Can\'t construct color from "%s"' % str(args))
 

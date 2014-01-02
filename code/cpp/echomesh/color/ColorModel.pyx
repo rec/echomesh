@@ -1,3 +1,5 @@
+import six
+
 from libcpp.string cimport string
 
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
@@ -13,3 +15,12 @@ cdef extern from "echomesh/color/ColorModel.h" namespace "echomesh::color::Color
   enum Model:
     RGB, HSV
   const ColorModel* getColorModel(Model)
+
+cdef const ColorModel* get_color_model(object x):
+  if x in [RGB, HSV]:
+    return getColorModel(x)
+  if x == 'rgb':
+    return getColorModel(RGB)
+  if x == 'hsv':
+    return getColorModel(HSV)
+  return NULL
