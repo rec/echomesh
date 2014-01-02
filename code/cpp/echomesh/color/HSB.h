@@ -26,8 +26,8 @@ class HSB : public ColorModel {
 
   string modelName() const override { return "hsb"; }
 
-  FColor toRgb(const FColor& color) const override;
-  FColor fromRgb(const FColor& color) const override;
+  FColor toRgb(const FColor& c) const override { return hsbToRgb(c); }
+  FColor fromRgb(const FColor& c) const override { return hsbFromRgb(c); }
 
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {
@@ -69,6 +69,9 @@ class HSB : public ColorModel {
     brightness(*t) = jmax(brightness(*t), brightness(f));
     t->alpha() = jmax(t->alpha(), f.alpha());
   }
+
+  static FColor hsbToRgb(const FColor&);
+  static FColor hsbFromRgb(const FColor&);
 };
 
 }  // namespace color

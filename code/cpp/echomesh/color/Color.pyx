@@ -35,6 +35,18 @@ cdef class Color:
     return [parts[0], parts[1], parts[2]]
 
   @property
+  def hsb(self):
+    cdef FColor c
+    cdef float* parts
+    m = self.model
+    if m == 'hsb':
+      parts = self.thisptr.parts()
+    if m == 'rgb':
+      c = hsbFromRgb(self.thisptr[0])
+      parts = c.parts()
+    return [parts[0], parts[1], parts[2]]
+
+  @property
   def alpha(self):
     return self.thisptr.alpha()
 
