@@ -76,7 +76,7 @@ cdef class Color:
     return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
 
   def __str__(self):
-    return rgbToName(self.thisptr[0])
+    return self._model.toName(self.thisptr[0])
 
 
 cdef bool fill_color(object x, FColor* c, const ColorModel* model):
@@ -88,6 +88,8 @@ cdef bool fill_color(object x, FColor* c, const ColorModel* model):
     cl = <Color> x
     if cl._model == model:
       c.copy(cl.thisptr)
+    else:
+      c.copy(model.fromRgb(cl._model.toRgb(cl.thisptr[0])))
     return True
 
   elif isinstance(x, six.string_types):
