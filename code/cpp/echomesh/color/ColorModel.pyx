@@ -2,8 +2,10 @@ from libcpp.string cimport string
 
 cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
   cdef cppclass ColorModel:
-    void scale(FColor*, float)
     void combine(FColor, FColor*)
+    FColor interpolate(FColor begin, FColor end, float ratio)
+    void scale(FColor*, float)
+
     string toName(FColor)
     bool fromName(string, FColor*)
 

@@ -13,14 +13,15 @@ class ColorModel {
   ColorModel() {}
   virtual ~ColorModel() {}
 
-  virtual void scale(FColor*, float) const = 0;
   virtual void combine(const FColor&, FColor*) const = 0;
+  virtual FColor interpolate(
+      const FColor& begin, const FColor& end, float ratio) const = 0;
+  virtual void scale(FColor*, float) const = 0;
+
   virtual string toName(const FColor&) const = 0;
   virtual bool fromName(const string&, FColor*) const = 0;
   virtual FColor toRGB(const FColor&) const = 0;
   virtual FColor fromRGB(const FColor&) const = 0;
-  virtual FColor interpolate(
-      const FColor& begin, const FColor& end, float ratio) const = 0;
 
   enum Model { RGB, HSV };
   static const ColorModel* getColorModel(Model);

@@ -11,9 +11,11 @@ def _make_list(object value):
 
 cdef class ColorList:
   cdef FColorList* thisptr
+  cdef const ColorModel* model
 
-  def __cinit__(self, args=None):
+  def __cinit__(self, args=None, Model model=RGB):
     self.thisptr = new FColorList()
+    self.model = getColorModel(model)
     if args:
       self.extend(args)
 
@@ -22,7 +24,7 @@ cdef class ColorList:
 
   def append(self, object item):
     cdef FColor c
-    if fill_color(item, &c):
+    if fill_color(item, &c, self.model):
       self.thisptr.push_back(c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
@@ -33,11 +35,12 @@ cdef class ColorList:
       cl = <ColorList> other
     else:
       cl = ColorList(other)
-    combineFColorList(cl.thisptr[0], self.thisptr)
+    for i in range(self.thisptr.size()):
+      self.model.combine(cl.thisptr.at(i), &self.thisptr.at(i))
 
   def count(self, object item):
     cdef FColor c
-    if not fill_color(item, &c):
+    if not fill_color(item, &c, self.model):
       raise ValueError('Don\'t understand color value %s' % item)
     return self.thisptr.count(c)
 
@@ -55,7 +58,7 @@ cdef class ColorList:
 
   def index(self, object item):
     cdef FColor c
-    if not fill_color(item, &c):
+    if not fill_color(item, &c, self.model):
       raise ValueError('Don\'t understand color value %s' % item)
     index = self.thisptr.index(c)
     if index >= 0:
@@ -78,7 +81,8 @@ cdef class ColorList:
     self.thisptr.reverse()
 
   def scale(self, float scale):
-    scaleFColorList(self.thisptr, scale)
+    for i in range(self.thisptr.size()):
+      self.model.scale(&self.thisptr.at(i), scale)
 
   def sort(self):
     self.thisptr.sort()
@@ -112,6 +116,7 @@ cdef class ColorList:
     else:
       key = self._check_key(key)
       color = Color()
+      color.model = self.model
       color.thisptr[0] = self.thisptr.at(key)
       return color
 
@@ -189,7 +194,7 @@ cdef class ColorList:
 
     else:
       key = self._check_key(key)
-      if not fill_color(value, &self.thisptr.at(key)):
+      if not fill_color(value, &self.thisptr.at(key), self.model):
         raise ValueError('Don\'t understand color value %s' % value)
 
   def __sizeof__(self):
@@ -209,7 +214,7 @@ cdef class ColorList:
 
   def _set_item(self, int i, object item):
     cdef FColor c
-    if fill_color(item, &c):
+    if fill_color(item, &c, self.model):
       self.thisptr.set(c, i)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
