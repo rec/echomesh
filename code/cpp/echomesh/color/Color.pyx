@@ -27,9 +27,12 @@ cdef class Color:
       raise ValueError('Can\'t construct color from "%s"' % str(args))
 
   @property
-  def parts(self):
-    p = self.thisptr.parts()
-    return [p[0], p[1], p[2]]
+  def rgb(self):
+    cdef FColor c
+    cdef float* parts
+    c = self._model.toRgb(self.thisptr[0])
+    parts = c.parts()
+    return [parts[0], parts[1], parts[2]]
 
   @property
   def alpha(self):
