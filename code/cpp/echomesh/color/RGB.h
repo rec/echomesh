@@ -29,7 +29,7 @@ class RGB : public ColorModel {
     return color;
   }
 
-  string modelName() const override { return "RGB"; }
+  string modelName() const override { return "rgb"; }
 
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {

@@ -24,7 +24,7 @@ class HSB : public ColorModel {
     return success;
   }
 
-  string modelName() const override { return "HSB"; }
+  string modelName() const override { return "hsb"; }
 
   FColor toRgb(const FColor& color) const override;
   FColor fromRgb(const FColor& color) const override;

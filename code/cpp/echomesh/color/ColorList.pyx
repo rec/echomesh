@@ -65,6 +65,10 @@ cdef class ColorList:
       return index
     raise ValueError('%s is not in ColorList' % item)
 
+  @property
+  def model(self):
+    return self._model.modelName()
+
   def insert(self, int index, object item):
     self[index:index] = [item]
 

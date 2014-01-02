@@ -12,14 +12,31 @@ class ColorListTest(TestCase):
     self.assertEqual(str(self.cl), s)
 
   def test_single(self):
-    self.cl.append("red")
+    self.cl.append('red')
     self.assertResult('[red]')
+    self.assertEqual(self.cl[0].model, 'rgb')
+    self.assertEqual(self.cl.model, 'rgb')
+
+  def test_single_hsb(self):
+    self.cl = ColorList(model='hsb')
+    self.cl.append('red')
+    self.assertResult('[red]')
+    self.assertEqual(self.cl[0].model, 'hsb')
+    self.assertEqual(self.cl.model, 'hsb')
+
+  def test_construct_hsb(self):
+    self.cl = ColorList(['red', 'green', 'blue'], model='hsb')
+    self.cl.append('yellow')
+    self.assertResult('[red, green, blue, yellow]')
+    self.assertEqual(self.cl.model, 'hsb')
+    for i in self.cl:
+      self.assertEqual(i.model, 'hsb')
 
   def test_empty(self):
     self.assertResult('[]')
 
   def test_append(self):
-    self.cl.append("red")
+    self.cl.append('red')
     self.assertResult('[red]')
     self.assertRaises(ValueError, self.cl.append, 'glug')
     self.assertResult('[red]')

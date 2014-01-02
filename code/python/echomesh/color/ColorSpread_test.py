@@ -30,7 +30,7 @@ class TestColorSpread(TestCase):
       [ 0. ,  1. ,  0.4],
       [ 0. ,  0.8,  1. ],
       [ 0. ,  0. ,  1. ]]
-    self.assertSpreadResult([1, 0, 0], [0, 0, 1], 6)
+    self.assertSpreadResult([1, 0, 0], [0, 0, 1], 6, use_hsb=True)
 
   def test_no_hsb(self):
     self.result = [
