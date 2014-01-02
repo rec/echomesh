@@ -63,14 +63,21 @@ cdef class Color:
   def __dealloc__(self):
     del self.thisptr
 
-  def __str__(self):
-    return rgbToName(self.thisptr[0])
+  def __len__(self):
+    return 3
+
+  def __getitem__(self, object key):
+    return self.rgb[key]
 
   def __repr__(self):
     return 'Color(%s)' % str(self)
 
   def __richcmp__(Color self, Color other, int cmp):
     return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
+
+  def __str__(self):
+    return rgbToName(self.thisptr[0])
+
 
 cdef bool fill_color(object x, FColor* c, const ColorModel* model):
   if not x:
