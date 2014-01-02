@@ -116,7 +116,7 @@ cdef class ColorList:
     else:
       key = self._check_key(key)
       color = Color()
-      color.model = self._model
+      color._model = self._model
       color.thisptr[0] = self.thisptr.at(key)
       return color
 

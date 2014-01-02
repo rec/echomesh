@@ -18,12 +18,12 @@ cdef bool richcmpColors(FColor x, FColor y, int cmp):
 
 cdef class Color:
   cdef FColor* thisptr
-  cdef const ColorModel* model
+  cdef const ColorModel* _model
 
   def __cinit__(self, object args=None, object model=RGB):
     self.thisptr = new FColor()
-    self.model = get_color_model(model)
-    if not fill_color(args, self.thisptr, self.model):
+    self._model = get_color_model(model)
+    if not fill_color(args, self.thisptr, self._model):
       raise ValueError('Can\'t construct color from "%s"' % str(args))
 
   @property
@@ -51,10 +51,10 @@ cdef class Color:
   #   return self.thisptr.blue()
 
   def scale(self, float f):
-    self.model.scale(self.thisptr, f)
+    self._model.scale(self.thisptr, f)
 
   def combine(self, Color c):
-    self.model.combine(c.thisptr[0], self.thisptr)
+    self._model.combine(c.thisptr[0], self.thisptr)
 
   def __dealloc__(self):
     del self.thisptr
