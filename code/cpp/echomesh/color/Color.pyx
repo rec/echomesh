@@ -85,11 +85,13 @@ cdef bool fill_color(object x, FColor* c, const ColorModel* model):
     return True
 
   if isinstance(x, Color):
-    c.copy((<Color> x).thisptr)
+    cl = <Color> x
+    if cl._model == model:
+      c.copy(cl.thisptr)
     return True
 
   elif isinstance(x, six.string_types):
-    return nameToRgb(x, c)
+    return model.fromName(x, c)
 
   if isinstance(x, six.integer_types):
     c.copy(FColor(x))
