@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import itertools
+
 from echomesh.output import make_output
 from echomesh.util import Log
 
@@ -10,6 +12,7 @@ class Output(object):
     self.parts = []
 
   def finish_construction(self, description, is_redirect=True):
+    self.clients = []
     if is_redirect:
       output = description.pop('output', None)
       if output is None:
@@ -24,6 +27,35 @@ class Output(object):
     if description:
       LOGGER.error('Unknown keywords %s in output %s', description,
                    self.__class__.__name__)
+
+  def add_client(self, client):
+    if client in self.clients:
+      LOGGER.error('Output', self, 'already contains client', client)
+    else:
+      self.clients.append(client)
+
+  def remove_client(self, client):
+    try:
+      self.clients.remove(client)
+    except ValueError:
+      LOGGER.error('Output', self, 'did not contain client', client)
+
+  def evaluate(self):
+    bad_clients = []
+    def _eval(c):
+      try:
+        return c.evaluate()
+      except Exception as e:
+        LOGGER.error('Got error from client %s, disabling', c)
+        bad_clients.append(c)
+    result = itertools.chain.from_iterable(_eval(c) for c in self.clients)
+    for c in bad_clients:
+      self.remove_client(c)
+    return result
+
+  def clear(self):
+    for o in self.output:
+      o.clear()
 
   def emit_output(self, data):
     for o in self.output:
