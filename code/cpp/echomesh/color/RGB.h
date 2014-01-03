@@ -31,6 +31,8 @@ class RGB : public ColorModel {
 
   string modelName() const override { return "rgb"; }
 
+  bool isRgb() const override { return true; }
+
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {
     auto r0 = red(begin), g0 = green(begin), b0 = blue(begin), a0 = begin.alpha();

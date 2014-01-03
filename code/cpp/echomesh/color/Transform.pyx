@@ -9,7 +9,10 @@ cdef extern from "echomesh/color/Transform.h" namespace "echomesh::color":
 cdef class Transform:
   cdef CTransform* thisptr
 
-  def __cinit__(self, string s):
+  def __cinit__(self, object s):
+    if not isinstance(s, six.string_types):
+      raise ValueError('Transform description "%s" is not a string' % s)
+
     self.thisptr = makeTransform(s)
     if not self.thisptr:
       raise ValueError('Couldn\'t understand transform %s' % s)

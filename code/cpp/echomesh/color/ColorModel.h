@@ -20,6 +20,7 @@ class ColorModel {
 
   virtual string toName(const FColor&) const = 0;
   virtual bool fromName(const string&, FColor*) const = 0;
+  virtual bool isRgb() const = 0;
   virtual FColor toRgb(const FColor&) const = 0;
   virtual FColor fromRgb(const FColor&) const = 0;
   virtual string modelName() const = 0;

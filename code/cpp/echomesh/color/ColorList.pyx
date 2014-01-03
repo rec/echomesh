@@ -155,7 +155,8 @@ cdef class ColorList:
     if len(self) != len(other):
       return False
     for i in range(len(self)):
-      if not richcmpColors(self.thisptr.at(i), other.thisptr.at(i), cmp):
+      if not richcmpColors(&self.thisptr.at(i), &other.thisptr.at(i),
+                           self._model, other._model, cmp):
         return False
     return True
 

@@ -12,6 +12,7 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
     string modelName()
     FColor toRgb(FColor)
     FColor fromRgb(FColor)
+    bool isRgb()
 
 cdef extern from "echomesh/color/ColorModel.h" namespace "echomesh::color::ColorModel":
   enum Model:

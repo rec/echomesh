@@ -49,13 +49,13 @@ class ColorTest(TestCase):
     self.assertRaises(ValueError, Color, 'glug')
 
   def test_sort2(self):
-    self.assertTrue(Color('blue') > Color('green'))
+    self.assertTrue(Color('blue') < Color('green'))
 
   def test_sort6(self):
-    self.assertTrue(Color('blue') > Color('red'))
+    self.assertTrue(Color('blue') < Color('red'))
 
   def test_sort9(self):
-    self.assertTrue(Color('green') > Color('red'))
+    self.assertTrue(Color('green') < Color('red'))
 
   def test_interpolate_hue1(self):
     self.assertNear(interpolate_hue(0, 0, 0), 0)

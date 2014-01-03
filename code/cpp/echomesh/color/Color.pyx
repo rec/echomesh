@@ -4,6 +4,12 @@ include "echomesh/color/ColorName.pyx"
 
 import six
 
+_EPSILON = (1.0 / 2 ** 16)
+
+def _near_zero(x):
+  print('_near_zero', x, _EPSILON)
+  return abs(x) < _EPSILON
+
 _COLOR_COMPARES = {
   0: lambda x: x < 0,
   1: lambda x: x <= 0,
@@ -13,8 +19,17 @@ _COLOR_COMPARES = {
   5: lambda x: x >= 0,
   }
 
-cdef bool richcmpColors(FColor x, FColor y, int cmp):
-  return _COLOR_COMPARES[cmp](x.compare(y))
+cdef bool richcmpColors(FColor* x, FColor* y,
+                        const ColorModel* mx, const ColorModel* my,
+                        int cmp):
+  cdef int result
+  if mx == my:
+    result = x.compare(y[0])
+  elif mx.isRgb():
+    result = x.compare(my.toRgb(y[0]))
+  else:
+    result = mx.toRgb(x[0]).compare(y[0])
+  return _COLOR_COMPARES[cmp](result)
 
 cdef class Color:
   cdef FColor* thisptr
@@ -39,11 +54,11 @@ cdef class Color:
     cdef FColor c
     cdef float* parts
     m = self.model
-    if m == 'hsb':
-      parts = self.thisptr.parts()
-    if m == 'rgb':
+    if self._model.isRgb():
       c = hsbFromRgb(self.thisptr[0])
       parts = c.parts()
+    else:
+      parts = self.thisptr.parts()
     return [parts[0], parts[1], parts[2]]
 
   @property
@@ -85,7 +100,8 @@ cdef class Color:
     return 'Color(%s)' % str(self)
 
   def __richcmp__(Color self, Color other, int cmp):
-    return richcmpColors(self.thisptr[0], other.thisptr[0], cmp)
+    return richcmpColors(self.thisptr, other.thisptr,
+                         self._model, other._model, cmp)
 
   def __str__(self):
     return self._model.toName(self.thisptr[0])

@@ -29,6 +29,8 @@ class HSB : public ColorModel {
   FColor toRgb(const FColor& c) const override { return hsbToRgb(c); }
   FColor fromRgb(const FColor& c) const override { return hsbFromRgb(c); }
 
+  bool isRgb() const override { return false; }
+
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {
     auto h0 = hue(begin), s0 = saturation(begin), b0 = brightness(begin),
