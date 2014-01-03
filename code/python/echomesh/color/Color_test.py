@@ -22,6 +22,9 @@ class ColorTest(TestCase):
   def test_red2(self):
     self.assertEqual(str(Color([1.0, 0, 0])), 'red')
 
+  def test_yellow(self):
+    self.assertEqual(str(Color('white', model='hsb')), 'white')
+
   def test_equal(self):
     self.assertEqual(Color('red'), Color('red'))
 

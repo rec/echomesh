@@ -26,20 +26,22 @@ def _ensure_length(list x, int length):
     while len(x) > length:
       x.pop()
 
-def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, transform=None):
-  # TODO: hsv!
+def color_spread(colors2, model, max_steps=None, steps=None, total_steps=None, transform=None):
   cdef Color c1
   cdef Color c2
   cdef FColor f1
   cdef FColor f2
 
-  if not colors or len(colors) <= 1:
+  if not colors2 or len(colors2) <= 1:
     raise Exception('spread: There must be at least two colors.')
 
   if not (steps is None or total_steps is None):
     raise ValueError('spread: Can only set one of steps and total_steps')
 
-  colors = _to_list(colors, Color, model=model)
+  cdef ColorList colors
+  colors = ColorList(colors2, model=model)
+  # print('!!!!', colors2, colors)
+  # colors = _to_list(colors, Color, model=model)
   transform = _to_list(transform, Transform)
   lc = len(colors)
   if transform:
@@ -59,6 +61,7 @@ def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, tr
     c2 = colors[i+1]
     f1 = c1.thisptr[0]
     f2 = c2.thisptr[0]
+    # print('!!!!', i, c1, c2)
     tr = (transform and transform[i].apply) or (lambda x: x)
     for j in range(step + 2):
       inc = tr(j / (step + 1.0))

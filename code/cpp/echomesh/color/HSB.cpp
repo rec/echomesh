@@ -5,6 +5,9 @@ namespace echomesh {
 namespace color {
 
 FColor HSB::hsbFromRgb(const FColor& rgb) {
+  if (false)
+  LOG(INFO) << "HSB::hsbFromRgb " << RGB::red(rgb) << ", "
+            << RGB::green(rgb) << ", " <<  RGB::blue(rgb);
   const auto brightness = jmax(RGB::red(rgb), RGB::green(rgb), RGB::blue(rgb));
   auto hue = 0.0f, saturation = 0.0f;
 
@@ -37,10 +40,13 @@ FColor HSB::hsbFromRgb(const FColor& rgb) {
 // from http://www.cs.rit.edu/~ncs/color/t_convert.html
 FColor HSB::hsbToRgb(const FColor& hsb) {
   auto h = hue(hsb), s = saturation(hsb), b = brightness(hsb);
-  float r, g, bl;
+  if (false)
+  LOG(INFO) << "HSB::hsbToRgb " << h << ", "
+            << s << ", " << b;
+  float red, green, blue;
  	if (s == 0) {
 		// achromatic (grey)
-		r = g = b = b;
+		red = green = blue = b;
 	} else {
     h *= 6;			// sector 0 to 5
     int i = floor(h);
@@ -51,45 +57,45 @@ FColor HSB::hsbToRgb(const FColor& hsb) {
 
     switch(i) {
       case 0:
-        r = b;
-        g = t;
-        bl = p;
+        red = b;
+        green = t;
+        blue = p;
         break;
 
       case 1:
-        r = q;
-        g = b;
-        bl = p;
+        red = q;
+        green = b;
+        blue = p;
         break;
 
       case 2:
-        r = p;
-        g = b;
-        bl = t;
+        red = p;
+        green = b;
+        blue = t;
         break;
 
       case 3:
-        r = p;
-        g = q;
-        bl = b;
+        red = p;
+        green = q;
+        blue = b;
         break;
 
       case 4:
-        r = t;
-        g = p;
-        bl = b;
+        red = t;
+        green = p;
+        blue = b;
         break;
 
       case 5:
       default:
-        r = b;
-        g = p;
-        bl = q;
+        red = b;
+        green = p;
+        blue = q;
         break;
     }
   }
 
-  return FColor(r, g, bl, hsb.alpha());
+  return FColor(red, green, blue, hsb.alpha());
 }
 
 }  // namespace color

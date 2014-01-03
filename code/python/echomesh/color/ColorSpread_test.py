@@ -14,10 +14,6 @@ class TestColorSpread(TestCase):
     spread = ColorSpread.color_spread(*args, **kwds)
     self.assertEquals(ColorList(self.result), spread)
 
-  def assertColorSpreadResult(self, *args, **kwds):
-    spread = ColorSpread.color_spread(*args, **kwds)
-    self.assertEquals(ColorList(self.result), spread)
-
   def test_tiny_spread(self):
     self.result = ['red', [0.5, 0.0, 0.5], 'blue']
     self.assertSpreadResult('red', 'blue', 3, use_hsb=False)
@@ -148,4 +144,5 @@ class TestColorSpread(TestCase):
       [ 1. ,  0.6,  0.6],
       [ 1. ,  0.8,  0.8],
       [ 1. ,  1. ,  1. ]]
-    self.assertColorSpreadResult('red', 'white', 6)
+
+    self.assertSpreadResult('red', 'white', 6)

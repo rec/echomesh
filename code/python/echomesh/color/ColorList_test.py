@@ -17,6 +17,14 @@ class ColorListTest(TestCase):
     self.assertEqual(self.cl[0].model, 'rgb')
     self.assertEqual(self.cl.model, 'rgb')
 
+  def test_issue(self):
+    cl = ColorList(['red', 'white'], model='hsb')
+    self.assertEqual(str(cl), '[red, white]')
+
+  def test_issue(self):
+    cl = ColorList(['red', 'white', 'green', 'blue'], model='hsb')
+    self.assertEqual(str(cl), '[red, white, green, blue]')
+
   def test_single_hsb(self):
     self.cl = ColorList(model='hsb')
     self.cl.append('red')
