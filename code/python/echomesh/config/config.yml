@@ -243,16 +243,6 @@ load_module:
   # for everyone else.
   pi3d: false
 
-  # This is the pyaudio port audio bindings:
-  # http://people.csail.mit.edu/hubert/pyaudio/
-  # It's available for most operating systems.
-  pyaudio: true
-
-  # This is probably installed on every target system and it's not entirely
-  # clear if the program would work without it since we have no test systems
-  # without numpy.
-  numpy: true
-
 # The logging section controls the destination of informational and warning
 # messages.
 logging:

@@ -8,11 +8,7 @@ USE_NUMPY = False
 
 def combine(combiner, *lighters):
   linverse = itertools.izip_longest(*lighters)
-  if USE_NUMPY:
-    import numpy
-    return numpy.array([combiner(z) for z in linverse])
-  else:
-    return [combiner(z) for z in linverse]
+  return [combiner(z) for z in linverse]
 
 def first(items):
   return items[0]

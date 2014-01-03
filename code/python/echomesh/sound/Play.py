@@ -14,10 +14,6 @@ def _get_player(player):
     from echomesh.sound import CPlayer
     return CPlayer.CPlayer
 
-  if player == 'pyaudio':
-    from echomesh.sound import PyaudioPlayer
-    return PyaudioPlayer.PyaudioPlayer
-
   raise Exception('Don\'t understand player %s' % player)
 
 def play(element, **kwds):

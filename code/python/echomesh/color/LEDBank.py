@@ -30,8 +30,7 @@ class LEDBank(object):
     self.control_data = bytearray(3 * count + LEDBank.LATCH_BYTES)
     self.control_data_dirty = False
 
-    import numpy
-    self.led = numpy.array([[0.0] * 3] * count)
+    self.led = [[0.0] * 3] * count
 
     self.led_dirty = True
     self.lock = Lock.Lock()

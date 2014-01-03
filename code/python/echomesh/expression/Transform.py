@@ -4,13 +4,8 @@ from echomesh.base import Config
 from echomesh.util.registry import Registry
 from echomesh.util import Log
 
-if Config.get('load_module', 'numpy'):
-  import numpy as math
-  pow = math.power
-else:
-  import math
-  pow = math.pow
-
+import math
+pow = math.pow
 
 LOGGER = Log.logger(__name__)
 
@@ -42,7 +37,7 @@ def sine(x):
   return (1 + math.sin(math.pi * (x - 0.5))) / 2
 
 def arcsine(x):
-  return 0.5 + math.arcsin(2 * x - 1) / math.pi
+  return 0.5 + math.asin(2 * x - 1) / math.pi
 
 def exp(x):
   return (math.exp(x) - 1) / (math.e - 1)

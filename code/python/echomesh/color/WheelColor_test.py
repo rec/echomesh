@@ -19,4 +19,4 @@ EXPECTED = [
 class TestWheelColor(TestCase):
   def test_several(self):
     result = [WheelColor.wheel_color(r / 10.0) for r in range(11)]
-    self.assertArrayEquals(result, EXPECTED)
+    self.assertNear(result, EXPECTED)
