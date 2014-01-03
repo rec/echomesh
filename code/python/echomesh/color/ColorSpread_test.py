@@ -60,7 +60,7 @@ class TestColorSpread(TestCase):
     self.assertSpread('yellow', 'cyan', 6, transform='exp')
 
   def test_inverse_exp(self):
-    self.result = ('[yellow, [red=0.409, green=1.000, blue=0.000], [red=0.000, green=1.000, blue=0.046], [red=0.000, green=1.000, blue=0.417], [red=0.000, green=1.000, blue=0.730], [red=0.000, green=1.000, blue=1.000]]')
+    self.result = ('[yellow, [red=0.409, green=1.000, blue=0.000], [red=0.000, green=1.000, blue=0.046], [red=0.000, green=1.000, blue=0.417], [red=0.000, green=1.000, blue=0.730], cyan]')
     self.assertSpread(
       'yellow', 'cyan', 6, transform='exp+inverse')
 
@@ -69,7 +69,7 @@ class TestColorSpread(TestCase):
     self.assertSpread('yellow', 'cyan', 6, transform='sine')
 
   def test_inverse_sine(self):
-    self.result = ('')
+    self.result = ('[yellow, [red=0.410, green=1.000, blue=0.000], [red=0.128, green=1.000, blue=0.000], [red=0.000, green=1.000, blue=0.128], [red=0.000, green=1.000, blue=0.410], cyan]')
     self.assertSpread('yellow', 'cyan', 6, transform='sine+inverse')
 
   def test_name(self):
