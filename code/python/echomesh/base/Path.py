@@ -26,7 +26,7 @@ BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
 CPP_BUILD_PATH = os.path.join(ECHOMESH_PATH, 'code', 'cpp')
 COMPATIBILITY_PATH = os.path.join(PYTHON_PATH, 'compatibility')
 
-PATHS = (PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH, CPP_BUILD_PATH,
+PATHS = (CPP_BUILD_PATH, PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH,
          BINARY_PATH, COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
@@ -78,16 +78,16 @@ def info():
     'External code path': EXTERNAL_CODE_PATH,
     'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': PROJECT_PATH,
+    'Python path': ':'.join(PATHS),
     'echomesh path': ECHOMESH_PATH,
     }
 
 def fix_sys_path():
   for path in reversed(PATHS):
-    if path not in sys.path:
-      if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
-        sys.path.insert(1, path)
-      else:
-        sys.path.append(path)
+    if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
+      sys.path.insert(1, path)
+    else:
+      sys.path.append(path)
 
 _HOME_VARIABLE_FIXED = False
 
