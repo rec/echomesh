@@ -2,23 +2,22 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import numpy
 
-from cechomesh import ColorList
-
-from echomesh.color import ColorSpread
+from cechomesh import ColorList, color_spread
 from echomesh.util.TestCase import TestCase
 
 class TestColorSpread(TestCase):
-  def assertSpread(self, *args, **kwds):
-    spread = ColorSpread.color_spread(*args, **kwds)
+  def assertSpread(self, begin, end, steps, transform=None, model='hsb'):
+    spread = color_spread([begin, end], model,
+                          max_steps=steps, transform=transform)
     self.assertEquals(self.result, str(spread))
 
   def test_tiny_spread(self):
     self.result = '[red, [red=0.500, green=0.000, blue=0.500], blue]'
-    self.assertSpread('red', 'blue', 3, use_hsb=False)
+    self.assertSpread('red', 'blue', 3, model='rgb')
 
   def test_tiny_spread_hsb(self):
     self.result = '[red, magenta, blue]'
-    self.assertSpread('red', 'blue', 3, use_hsb=True)
+    self.assertSpread('red', 'blue', 3, model='hsb')
 
   def test_one_spread(self):
     self.result = ('[red, '
@@ -26,7 +25,7 @@ class TestColorSpread(TestCase):
                    '[red=1.000, green=0.000, blue=0.800], '
                    '[red=0.800, green=0.000, blue=1.000], '
                    '[red=0.400, green=0.000, blue=1.000], blue]')
-    self.assertSpread('red', 'blue', 6, use_hsb=True)
+    self.assertSpread('red', 'blue', 6, model='hsb')
 
   def test_no_hsb(self):
     self.result = ('[red, '
@@ -34,7 +33,7 @@ class TestColorSpread(TestCase):
                    '[red=0.600, green=0.000, blue=0.400], '
                    '[red=0.400, green=0.000, blue=0.600], '
                    '[red=0.200, green=0.000, blue=0.800], blue]')
-    self.assertSpread('red', 'blue', 6, use_hsb=False)
+    self.assertSpread('red', 'blue', 6, model='rgb')
 
   def test_two_colors(self):
     self.result = ('[yellow, '
