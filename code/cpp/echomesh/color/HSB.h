@@ -66,9 +66,13 @@ class HSB : public ColorModel {
   }
 
   static void combineHSB(const FColor& f, FColor* t) {
-    hue(*t) = interpolateHue(hue(f), hue(*t), 0.5);
+    auto bf = brightness(f), bt = brightness(*t), btotal = bf + bt;
+    if (near(btotal, 0.0f))
+      hue(*t) = 0.0f;
+    else
+      hue(*t) = interpolateHue(hue(f), hue(*t), bf / btotal);
     saturation(*t) = jmax(saturation(*t), saturation(f));
-    brightness(*t) = jmax(brightness(*t), brightness(f));
+    brightness(*t) = jmax(bf, bt);
     t->alpha() = jmax(t->alpha(), f.alpha());
   }
 

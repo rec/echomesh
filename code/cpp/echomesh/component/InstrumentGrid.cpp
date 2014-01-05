@@ -63,12 +63,6 @@ void InstrumentGrid::layout() {
   setSize(screenWidth, screenHeight);
 }
 
-void InstrumentGrid::setLights(const ColorList& lights) {
-  MessageManagerLock l;
-  for (auto i = 0; i < lights.size(); ++i)
-    instruments_[i]->setColor(lights[i]);
-}
-
 void InstrumentGrid::paint(Graphics& g) {
   g.fillAll(background_);
 }

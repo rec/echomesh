@@ -43,10 +43,6 @@ class Exception : public std::exception {
   const String message_;
 };
 
-typedef uint8 ColorBytes[3];
-typedef std::vector<Colour> ColorList;
-typedef std::vector<uint8> ByteList;
-
 struct Point {
   Point() {}
   Point(int x_, int y_) : x(x_), y(y_) {}
