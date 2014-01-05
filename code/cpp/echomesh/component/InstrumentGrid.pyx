@@ -7,6 +7,7 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
     InstrumentGrid()
 
     void setLights(char*)
+    void setLights(FColorList)
     void setPaintingIsUnclipped(bool)
     void setLightCount(int)
     void setLabelStartsAtZero(bool)

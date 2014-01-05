@@ -33,6 +33,9 @@ cdef class PyLightingWindow:
   def set_lights(self, object lights):
     self.thisptr.grid().setLights(PyByteArray_AsString(lights))
 
+  def set_clights(self, ColorList lights):
+    self.thisptr.grid().setLights(lights.thisptr[0])
+
   def set_light_count(self, int count):
     self.thisptr.grid().setLightCount(count)
 
