@@ -22,7 +22,7 @@ class Visualizer(Poll):
     if light_count is None:
       Config.add_client(self)
     else:
-      set_light_count(light_count)
+      self.set_light_count(light_count)
 
   def snapshot(self, filename):
     self.lighting_window.save_snapshot_to_file(filename)
