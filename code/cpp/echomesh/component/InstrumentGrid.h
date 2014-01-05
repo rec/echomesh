@@ -4,6 +4,8 @@
 #include "echomesh/base/Echomesh.h"
 #include "echomesh/component/InstrumentComponent.h"
 
+namespace echomesh { namespace color { class FColorList; }}
+
 namespace echomesh {
 
 struct LightConfig;
@@ -14,6 +16,7 @@ class InstrumentGrid : public Component {
   virtual ~InstrumentGrid();
 
   void setLights(const char*);
+  void setLights(const color::FColorList&);
   void setPaintingIsUnclipped(bool);
   void setLightCount(int);
   int getLightCount() const;

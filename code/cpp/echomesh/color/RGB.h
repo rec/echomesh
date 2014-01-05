@@ -8,15 +8,6 @@
 namespace echomesh {
 namespace color {
 
-inline uint8 floatToUInt8(const float n) {
-  if (n <= 0.0f)
-    return 0;
-  if (n >= 1.0f)
-    return 255;
-  return static_cast<uint8>(n * 255.1f);
-}
-
-
 class RGB : public ColorModel {
  public:
   void scale(FColor* c, float s) const override { scaleRGB(c, s); }
@@ -89,8 +80,13 @@ class RGB : public ColorModel {
   static string toNameRGB(const FColor& c) {
     return rgbToName(c);
   }
+
   static bool fromNameRGB(const string& s, FColor* c) {
     return nameToRgb(s, c);
+  }
+
+  static uint8 floatToUInt8(const float n) {
+    return static_cast<uint8>(jmax(0.0f, jmin(255.0f, n * 255.1f)));
   }
 };
 

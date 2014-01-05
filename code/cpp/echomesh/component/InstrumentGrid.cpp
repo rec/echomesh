@@ -1,4 +1,6 @@
 #include "rec/util/STL.h"
+#include "echomesh/color/FColorList.h"
+#include "echomesh/color/RGB.h"
 #include "echomesh/component/InstrumentGrid.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
@@ -133,6 +135,13 @@ void InstrumentGrid::setLights(const char* lights) {
     Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
     instruments_[i]->setColor(color);
   }
+}
+
+void InstrumentGrid::setLights(const color::FColorList& colors) {
+  MessageManagerLock l;
+  auto size = jmin(colors.size(), instruments_.size());
+  for (auto i = 0; i < size; ++i)
+    instruments_[i]->setColor(color::RGB::toColour(colors.at(i)));
 }
 
 }  // namespace echomesh
