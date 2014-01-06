@@ -20,5 +20,4 @@ elements:
   -
     type: pattern
     pattern: three
-    output: light
 

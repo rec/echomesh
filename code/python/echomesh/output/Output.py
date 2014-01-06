@@ -11,6 +11,13 @@ class Output(object):
   def __init__(self):
     self.parts = []
 
+  def start(self):
+    pass
+
+  def pause(self):
+    LOGGER.info('OUTPUT pause! %s', self.__class__)
+    pass
+
   def finish_construction(self, description, is_redirect=True):
     self.clients = []
     if is_redirect:
@@ -48,7 +55,7 @@ class Output(object):
       except Exception as e:
         LOGGER.error('Got error from client %s, disabling', c)
         bad_clients.append(c)
-    result = itertools.chain.from_iterable(_eval(c) for c in self.clients)
+    result = list(itertools.chain.from_iterable([_eval(c) for c in self.clients]))
     for c in bad_clients:
       self.remove_client(c)
     return result

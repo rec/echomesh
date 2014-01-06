@@ -1,41 +1,46 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import base64
-import copy
 import cechomesh
 
-from echomesh.base import Quit
+from echomesh.base import Config
 from echomesh.expression import Expression
-from echomesh.light.SpiLightBank import SpiLightBank
 from echomesh.output.Poll import Poll
 from echomesh.util import Log
-from echomesh.util import Log
-from echomesh.util.string import Split
-from echomesh.base import Config
 
 LOGGER = Log.logger(__name__)
 
 class Visualizer(Poll):
-  def __init__(self, light_count=None, *args, **kwds):
-    super(self, Poll).__init__(*args, **kwds)
+  def __init__(self, light_count=None, interval=None, **kwds):
+    assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
-    if light_count is None:
-      Config.add_client(self)
-    else:
+    self.interval = interval
+    self.interval_set = interval is not None
+    self.light_count_set = light_count is not None
+    if self.light_count_set:
       self.set_light_count(light_count)
+
+    Config.add_client(self)
+    super(Visualizer, self).__init__(is_redirect=False, interval=self.interval,
+                                     **kwds)
+
+  def _after_thread_pause(self):
+    self.lighting_window.close()
 
   def snapshot(self, filename):
     self.lighting_window.save_snapshot_to_file(filename)
 
   def config_update(self, get):
-    set_light_count(get('light', 'count'))
+    if not self.light_count_set:
+      self.set_light_count(get('light', 'count'))
+    if not self.interval_set:
+      self.interval = Expression.convert(get('light', 'visualizer', 'period'))
 
-  def set_light_count(light_count):
+  def set_light_count(self, light_count):
     self.lighting_window.set_light_count(light_count)
 
-  def _on_pause(self):
-    self.lighting_window.close()
-
   def emit_output(self, data):
-    self.lighting_window.set_clights(data)
-
+    if data:
+      data = [cechomesh.to_color_list(d) for d in data]
+      lights = data.pop()
+      lights.combine(*data)
+      self.lighting_window.set_clights(lights)

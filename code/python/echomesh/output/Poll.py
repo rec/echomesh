@@ -8,20 +8,16 @@ from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-class Poll(Output, ThreadLoop):
-  def __init__(self, interval=None, is_daemon=True, name=None, **description):
-    Output.__init__(self)
+class Poll(ThreadLoop, Output):
+  def __init__(self, interval=None, is_daemon=True, name=None, is_redirect=True,
+               **description):
     ThreadLoop.__init__(self, is_daemon=is_daemon, name=name)
-    if not interval or interval < 0:
-      raise Exception('You need an interval for a Poll Output')
+    Output.__init__(self)
     self.interval = interval
-    self.finish_construction(description)
+    self.finish_construction(description, is_redirect=is_redirect)
 
   def _before_thread_start(self):
     self._next_time = time.time()
-
-  def _after_thread_pause(self):
-    self.clear()
 
   def single_loop(self):
     e = self.evaluate()
@@ -30,7 +26,7 @@ class Poll(Output, ThreadLoop):
     self.emit_output(e)
     if not self.is_running:
       return
-    self._next_time += period
+    self._next_time += self.interval
     sleep_time = max(0, self._next_time - time.time())
     if sleep_time:
       time.sleep(sleep_time)

@@ -3,6 +3,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util.thread.LockedList import LockedList
 from echomesh.util.thread.Runnable import Runnable
 from echomesh.base import Quit
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 class MasterRunnable(Runnable):
   """A Runnable that controls a list of other runnables.
@@ -47,7 +50,9 @@ class MasterRunnable(Runnable):
         self.is_running = True
       super(MasterRunnable, self).pause()
     except:
-      if not Quit.QUITTING:
+      if Quit.QUITTING:
+        LOGGER.error('')
+      else:
         raise
 
   def begin(self):

@@ -7,12 +7,17 @@ from echomesh.util.thread import Lock
 
 LOGGER = Log.logger(__name__)
 
+def default_output():
+  from echomesh.output.Visualizer import Visualizer
+  return Visualizer()
+
 class _SingleOutput(object):
   def __init__(self, filename, output_cache):
     from echomesh.output import make_output
     self._filename = filename
-    self._output = make_output(filename)
     self._output_cache = output_cache
+    self._output = make_output(filename) if filename else default_output()
+    self._output.start()
 
   def __getattr__(self, name):
     return getattr(self._output, name)
@@ -31,9 +36,12 @@ class OutputCache(object):
 
   def add_output(self, name):
     with self.lock:
-      filename = DataFile.resolve('output', name)
-      if not filename:
-        raise Exception('No output named "%s".' % name)
+      if name:
+        filename = DataFile.resolve('output', name)
+        if not filename:
+          raise Exception('No output named "%s".' % name)
+      else:
+        filename = name
       output = self.outputs.get(filename, [None, 0])
       output[1] += 1
       if not output[0]:
@@ -45,4 +53,9 @@ class OutputCache(object):
     with self.lock:
       output = self.outputs[filename]
       output[1] -= 1
+
+  def pause(self):
+    with self.lock:
+      for output in self.outputs.values():
+        output[0].pause()
 

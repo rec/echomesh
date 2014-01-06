@@ -11,6 +11,7 @@ from echomesh.graphics import Display
 from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
+from echomesh.output import pause_outputs
 from echomesh.util import CLog
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -56,6 +57,7 @@ class Instance(MasterRunnable):
 
     def do_quit():
       LightSingleton.pause()
+      pause_outputs()
       self.pause()
       self.unload()
 

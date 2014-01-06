@@ -9,6 +9,15 @@ def _make_list(object value):
     value = list(value)
   return value
 
+cdef ColorList toColorList(object value):
+  if isinstance(value, ColorList):
+    return <ColorList> value
+  else:
+    return ColorList(value)
+
+def to_color_list(object x):
+  return toColorList(x)
+
 cdef class ColorList:
   cdef FColorList* thisptr
   cdef const ColorModel* _model
@@ -29,14 +38,18 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
-  def combine(self, object other):
+  def combine(self, *items):
     cdef ColorList cl
-    if isinstance(other, ColorList):
-      cl = <ColorList> other
-    else:
-      cl = ColorList(other)
-    for i in range(self.thisptr.size()):
-      self._model.combine(cl.thisptr.at(i), &self.thisptr.at(i))
+    cdef ColorModel* model
+    for other in items:
+      cl = toColorList(other)
+      isRgb = cl._model.isRgb()
+      for i in range(self.thisptr.size()):
+        if isRgb:
+          self._model.combine(cl.thisptr.at(i), &self.thisptr.at(i))
+        else:
+          self._model.combine(cl._model.toRgb(cl.thisptr.at(i)),
+                              &self.thisptr.at(i))
 
   def count(self, object item):
     cdef FColor c
@@ -90,6 +103,12 @@ cdef class ColorList:
 
   def sort(self):
     self.thisptr.sort()
+
+  def toRgb(self):
+    if not self._model.isRgb():
+      for i in range(self.thisptr.size()):
+        self.thisptr.set(self._model.toRgb(self.thisptr.at(i)), i)
+      self._model = get_color_model(RGB)
 
   def __add__(self, object other):
     cl = ColorList(self)
@@ -170,12 +189,7 @@ cdef class ColorList:
 
   def __setitem__(self, object key, object value):
     if isinstance(key, slice):
-      value = _make_list(value)
-      if isinstance(value, ColorList):
-        cl = <ColorList> value
-      else:
-        cl = ColorList(value)
-
+      cl = toColorList(value)
       length = len(cl)
       indices = key.indices(len(self))
       parts = range(*indices)

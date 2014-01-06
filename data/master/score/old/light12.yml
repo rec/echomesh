@@ -10,4 +10,3 @@ elements:
   -
     type: pattern
     pattern: one
-    output: light

@@ -21,6 +21,7 @@ class Sequence(Loop.Loop):
                     for a in Sequence.ATTRIBUTES])
 
     self.elements = []
+    self.output = desc.get('output', None)
     self.pattern_makers = PatternDesc.make_patterns_for_element(
       self, desc.get('patterns', {}))
 

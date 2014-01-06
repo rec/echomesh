@@ -11,6 +11,7 @@ def _make_make_output():
     'Output',
     'Map',
     'Test',
+    'Visualizer',
   )
 
   output_cache = OutputCache()
@@ -21,6 +22,6 @@ def _make_make_output():
     else:
       return output_cache.add_output(data)
 
-  return make_output
+  return make_output, output_cache.pause
 
-make_output = _make_make_output()
+make_output, pause_outputs = _make_make_output()
