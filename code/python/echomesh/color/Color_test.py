@@ -11,7 +11,7 @@ class ColorTest(TestCase):
       self.assertNear(i, j)
 
   def test_empty_color(self):
-    self.assertEqual(str(Color()), 'none')
+    self.assertEqual(str(Color()), 'black')
 
   def test_black(self):
     self.assertEqual(str(Color('black')), 'black')

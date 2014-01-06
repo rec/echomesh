@@ -22,14 +22,16 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
     auto image = createComponentSnapshot(getLocalBounds());
     FileOutputStream stream(file);
     if (not format->writeImageToStream(image, stream))
-      DLOG(FATAL) << "Unable to write to filename " << name;
+      LOG(DFATAL) << "Unable to write to filename " << name;
   } else {
-    DLOG(FATAL) << "Don't understand filename " << name;
+    LOG(DFATAL) << "Don't understand filename " << name;
   }
 }
 
 LightingWindow* makeLightingWindow() {
+  LOG(INFO) << "About to take mml";
   MessageManagerLock l;
+  LOG(INFO) << "mml taken";
 
   auto window = make_unique<LightingWindow>();
   window->toFront(true);

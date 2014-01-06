@@ -13,7 +13,7 @@ cdef extern from "echomesh/component/LightingWindow.h" namespace "echomesh":
     InstrumentGrid* grid()
     void saveSnapshotToFile(string)
 
-  LightingWindow* makeLightingWindow()
+  LightingWindow* makeLightingWindow() nogil
   void deleteLightingWindow(LightingWindow*) nogil
 
 

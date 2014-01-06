@@ -12,7 +12,9 @@ LOGGER = Log.logger(__name__)
 class Visualizer(Poll):
   def __init__(self, light_count=None, interval=None, **kwds):
     assert cechomesh.is_started()
+    print('starting to create lighting window')
     self.lighting_window = cechomesh.PyLightingWindow()
+    print('created lighting window')
     self.interval = interval
     self.interval_set = interval is not None
     self.light_count_set = light_count is not None
@@ -20,8 +22,8 @@ class Visualizer(Poll):
       self.set_light_count(light_count)
 
     Config.add_client(self)
-    super(Visualizer, self).__init__(is_redirect=False, interval=self.interval,
-                                     **kwds)
+    super(Visualizer, self).__init__(
+      is_redirect=False, interval=self.interval, **kwds)
 
   def _after_thread_pause(self):
     self.lighting_window.close()

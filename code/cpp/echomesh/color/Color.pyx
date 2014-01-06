@@ -109,7 +109,7 @@ cdef class Color:
 
 cdef bool fill_color(object x, FColor* c, const ColorModel* model):
   if not x:
-    c.copy(FColor(0.0, 0.0, 0.0, 0.0))
+    c.copy(FColor(0.0, 0.0, 0.0, 1.0))
     return True
 
   if isinstance(x, Color):
