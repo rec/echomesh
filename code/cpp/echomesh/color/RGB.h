@@ -44,13 +44,13 @@ class RGB : public ColorModel {
         a0 + ratio * (a1 - a0));
   }
 
-  static const float& red(const FColor& fc) { return fc.parts()[0]; }
-  static const float& green(const FColor& fc) { return fc.parts()[1]; }
-  static const float& blue(const FColor& fc) { return fc.parts()[2]; }
+  static const float& red(const FColor& fc) { return fc.red(); }
+  static const float& green(const FColor& fc) { return fc.green(); }
+  static const float& blue(const FColor& fc) { return fc.blue(); }
 
-  static float& red(FColor& fc) { return fc.parts()[0]; }
-  static float& green(FColor& fc) { return fc.parts()[1]; }
-  static float& blue(FColor& fc) { return fc.parts()[2]; }
+  static float& red(FColor& fc) { return fc.red(); }
+  static float& green(FColor& fc) { return fc.green(); }
+  static float& blue(FColor& fc) { return fc.blue(); }
 
   static Colour toColour(const FColor& fc) {
     return Colour(floatToUInt8(red(fc)),

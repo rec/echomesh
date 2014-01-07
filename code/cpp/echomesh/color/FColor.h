@@ -26,6 +26,15 @@ class FColor {
     alpha_ = parts;
   }
 
+
+  const float& red() const { return parts()[0]; }
+  const float& green() const { return parts()[1]; }
+  const float& blue() const { return parts()[2]; }
+
+  float& red() { return parts()[0]; }
+  float& green() { return parts()[1]; }
+  float& blue() { return parts()[2]; }
+
   const float* parts() const { return parts_; }
   float* parts() { return parts_; }
 
