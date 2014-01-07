@@ -12,25 +12,17 @@ def _near_zero(x):
   return abs(x) < _EPSILON
 
 _COLOR_COMPARES = {
-  0: lambda x: x < 0,
-  1: lambda x: x <= 0,
+  0: lambda x: x > 0,
+  1: lambda x: x >= 0,
   2: lambda x: x == 0,
   3: lambda x: x != 0,
-  4: lambda x: x > 0,
-  5: lambda x: x >= 0,
+  4: lambda x: x < 0,
+  5: lambda x: x <= 0,
   }
 
-cdef bool richcmpColors(FColor* x, FColor* y,
-                        const ColorModel* mx, const ColorModel* my,
-                        int cmp):
-  cdef int result
-  if mx == my:
-    result = x.compare(y[0])
-  elif mx.isRgb():
-    result = x.compare(my.toRgb(y[0]))
-  else:
-    result = mx.toRgb(x[0]).compare(y[0])
-  return _COLOR_COMPARES[cmp](result)
+cdef bool richcmpColors(FColor* x, FColor* y, int cmp):
+  result = _COLOR_COMPARES[cmp](x.compare(y[0]))
+  return result
 
 cdef class Color:
   cdef FColor* thisptr
@@ -97,8 +89,7 @@ cdef class Color:
     return 'Color(%s)' % str(self)
 
   def __richcmp__(Color self, Color other, int cmp):
-    return richcmpColors(self.thisptr, other.thisptr,
-                         self._model, other._model, cmp)
+    return richcmpColors(self.thisptr, other.thisptr, cmp)
 
   def __str__(self):
     return rgbToName(self.thisptr[0])

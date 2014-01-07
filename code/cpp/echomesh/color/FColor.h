@@ -69,7 +69,7 @@ class FColor {
         return 1;
     }
     if (alpha() < x.alpha())
-        return -1;
+      return -1;
     if (alpha() > x.alpha())
       return 1;
 
