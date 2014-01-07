@@ -26,37 +26,26 @@ cdef bool richcmpColors(FColor* x, FColor* y, int cmp):
 
 cdef class Color:
   cdef FColor* thisptr
-  cdef const ColorModel* _model
 
-  def __cinit__(self, object args=None, object model=RGB):
+  def __cinit__(self, object args=None):
     self.thisptr = new FColor()
-    self._model = get_color_model(model)
-    if not fill_color(args, self.thisptr, self._model):
+    if not fill_color(args, self.thisptr):
       raise ValueError('Can\'t construct color from "%s"' % str(args))
 
   @property
   def rgb(self):
-    cdef FColor c
-    c = self._model.toRgb(self.thisptr[0])
-    return [c.red(), c.green(), c.blue()]
+    return [self.thisptr.red(), self.thisptr.green(), self.thisptr.blue()]
 
   @property
   def hsb(self):
     cdef FColor c
     cdef float* parts
-    m = self.model
-    if self._model.isRgb():
-      c = hsbFromRgb(self.thisptr[0])
-      return [c.red(), c.green(), c.blue()]
-    return [self.thisptr.red(), self.thisptr.green(), self.thisptr.blue()]
+    c = hsbFromRgb(self.thisptr[0])
+    return [c.red(), c.green(), c.blue()]
 
   @property
   def alpha(self):
     return self.thisptr.alpha()
-
-  @property
-  def model(self):
-    return self._model.modelName()
 
   @property
   def red(self):
@@ -95,17 +84,13 @@ cdef class Color:
     return rgbToName(self.thisptr[0])
 
 
-cdef bool fill_color(object x, FColor* c, const ColorModel* model):
+cdef bool fill_color(object x, FColor* c):
   if not x:
     c.copy(FColor(0.0, 0.0, 0.0, 1.0))
     return True
 
   if isinstance(x, Color):
-    cl = <Color> x
-    if cl._model == model:
-      c.copy(cl.thisptr)
-    else:
-      c.copy(model.fromRgb(cl._model.toRgb(cl.thisptr[0])))
+    c.copy((<Color> x).thisptr)
     return True
 
   elif isinstance(x, six.string_types):

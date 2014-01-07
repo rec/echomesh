@@ -33,7 +33,7 @@ cdef class ColorList:
 
   def append(self, object item):
     cdef FColor c
-    if fill_color(item, &c, self._model):
+    if fill_color(item, &c):
       self.thisptr.push_back(c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
@@ -48,7 +48,7 @@ cdef class ColorList:
 
   def count(self, object item):
     cdef FColor c
-    if not fill_color(item, &c, self._model):
+    if not fill_color(item, &c):
       raise ValueError('Don\'t understand color value %s' % item)
     return self.thisptr.count(c)
 
@@ -66,7 +66,7 @@ cdef class ColorList:
 
   def index(self, object item):
     cdef FColor c
-    if not fill_color(item, &c, self._model):
+    if not fill_color(item, &c):
       raise ValueError('Don\'t understand color value %s' % item)
     index = self.thisptr.index(c)
     if index >= 0:
@@ -134,7 +134,6 @@ cdef class ColorList:
     else:
       key = self._check_key(key)
       color = Color()
-      color._model = self._model
       color.thisptr[0] = self.thisptr.at(key)
       return color
 
@@ -207,7 +206,7 @@ cdef class ColorList:
 
     else:
       key = self._check_key(key)
-      if not fill_color(value, &self.thisptr.at(key), self._model):
+      if not fill_color(value, &self.thisptr.at(key)):
         raise ValueError('Don\'t understand color value %s' % value)
 
   def __sizeof__(self):
@@ -227,7 +226,7 @@ cdef class ColorList:
 
   def _set_item(self, int i, object item):
     cdef FColor c
-    if fill_color(item, &c, self._model):
+    if fill_color(item, &c):
       self.thisptr.set(c, i)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
