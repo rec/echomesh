@@ -11,32 +11,28 @@ class FColor {
   FColor() {}
 
   FColor(float x, float y, float z, float alpha=1.0) : alpha_(alpha) {
-    parts_[0] = x;
-    parts_[1] = y;
-    parts_[2] = z;
+    red_ = x;
+    green_ = y;
+    blue_ = z;
   }
 
   FColor(uint32 parts) {
-    parts_[2] = parts & 0xFF;
+    blue_ = parts & 0xFF;
     parts >>= 8;
-    parts_[1] = parts & 0xFF;
+    green_ = parts & 0xFF;
     parts >>= 8;
-    parts_[0] = parts & 0xFF;
+    red_ = parts & 0xFF;
     parts >>= 8;
     alpha_ = parts;
   }
 
+  const float& red() const { return red_; }
+  const float& green() const { return green_; }
+  const float& blue() const { return blue_; }
 
-  const float& red() const { return parts()[0]; }
-  const float& green() const { return parts()[1]; }
-  const float& blue() const { return parts()[2]; }
-
-  float& red() { return parts()[0]; }
-  float& green() { return parts()[1]; }
-  float& blue() { return parts()[2]; }
-
-  const float* parts() const { return parts_; }
-  float* parts() { return parts_; }
+  float& red() { return red_; }
+  float& green() { return green_; }
+  float& blue() { return blue_; }
 
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
@@ -46,27 +42,38 @@ class FColor {
   bool operator==(const FColor& other) const { return not compare(other); }
 
   int compare(const FColor& x) const {
-    if (this != &x) {
-      for (auto i = 0; i < 3; ++i) {
-        if (not near(parts_[i], x.parts_[i])) {
-          if (parts_[i] < x.parts_[i])
-            return -1;
-          if (parts_[i] > x.parts_[i])
-            return 1;
-        }
-      }
-      if (alpha() < x.alpha())
+    if (this == &x)
+      return 0;
+
+    if (not near(red(), x.red())) {
+      if (red() < x.red())
+        return -1;
+      if (red() > x.red())
+        return 1;
+    }
+    if (not near(green(), x.green())) {
+      if (green() < x.green())
+        return -1;
+      if (green() > x.green())
+        return 1;
+    }
+    if (not near(blue(), x.blue())) {
+      if (blue() < x.blue())
+        return -1;
+      if (blue() > x.blue())
+        return 1;
+    }
+    if (alpha() < x.alpha())
         return -1;
       if (alpha() > x.alpha())
         return 1;
-    }
-    return 0;
+      return 0;
   }
 
 #if 0
   FColor interpolate(const FColor& end, float ratio) const {
-    auto b0 = parts_[0], b1 = parts_[1], b2 = parts_[2];
-    auto e0 = end.parts_[0], e1 = end.parts_[1], e2 = end.parts_[2];
+    auto b0 = red_, b1 = green_, b2 = blue_;
+    auto e0 = end.red_, e1 = end.green_, e2 = end.blue_;
     return FColor(b0 + ratio * (e0 - b0),
                   b1 + ratio * (e1 - b1),
                   b2 + ratio * (e2 - b2));
@@ -78,8 +85,7 @@ class FColor {
   };
 
  private:
-  float parts_[3];
-  float alpha_;
+  float red_, green_, blue_, alpha_;
 };
 
 }  // namespace color
