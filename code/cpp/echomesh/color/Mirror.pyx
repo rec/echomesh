@@ -10,4 +10,3 @@ def mirror_color_list(object fcl, int x, int y,
   result = ColorList()
   result.thisptr.copy(mirror(source.thisptr[0], x, y, reverseX, reverseY))
   return result
-
