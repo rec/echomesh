@@ -10,7 +10,6 @@ namespace color {
 
 class RGB : public ColorModel {
  public:
-  void scale(FColor* c, float s) const override { scaleRGB(c, s); }
   void combine(const FColor& x, FColor* y) const override { combineRGB(x, y); }
 
   FColor toRgb(const FColor& color) const override {
@@ -43,12 +42,6 @@ class RGB : public ColorModel {
     green(*y) = std::max(green(*y), green(x));
     blue(*y) = std::max(blue(*y), blue(x));
     y->alpha() = std::max(y->alpha(), x.alpha());
-  }
-
-  static void scaleRGB(FColor* color, float scale) {
-    red(*color) *= scale;
-    green(*color) *= scale;
-    blue(*color) *= scale;
   }
 };
 

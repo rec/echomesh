@@ -14,3 +14,4 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
     bool compare(FColor)
     void copy(FColor)
     void copy(FColor*)
+    void scale(float scale)

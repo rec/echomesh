@@ -16,7 +16,6 @@ class ColorModel {
   virtual void combine(const FColor&, FColor*) const = 0;
   virtual FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const = 0;
-  virtual void scale(FColor*, float) const = 0;
 
   virtual bool isRgb() const = 0;
   virtual FColor toRgb(const FColor&) const = 0;

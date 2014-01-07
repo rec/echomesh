@@ -78,7 +78,7 @@ cdef class Color:
     return self.rgb[2]
 
   def scale(self, float f):
-    self._model.scale(self.thisptr, f)
+    self.thisptr.scale(f)
 
   def combine(self, Color c):
     self._model.combine(c.thisptr[0], self.thisptr)

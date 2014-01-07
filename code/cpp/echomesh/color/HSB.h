@@ -9,7 +9,6 @@ namespace color {
 
 class HSB : public ColorModel {
  public:
-  void scale(FColor* c, float f) const override { scaleHSB(c, f); }
   void combine(const FColor& f, FColor* t) const override { combineHSB(f, t); }
 
   string modelName() const override { return "hsb"; }
@@ -48,10 +47,6 @@ class HSB : public ColorModel {
   static float& hue(FColor& c) { return c.red(); }
   static float& saturation(FColor& c) { return c.green(); }
   static float& brightness(FColor& c) { return c.blue(); }
-
-  static void scaleHSB(FColor* c, float f) {
-    brightness(*c) *= f;
-  }
 
   static void combineHSB(const FColor& f, FColor* t) {
     auto bf = brightness(f), bt = brightness(*t), btotal = bf + bt;

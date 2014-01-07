@@ -8,11 +8,6 @@
 namespace echomesh {
 namespace color {
 
-inline void scaleFColorList(FColorList* fc, float scale) {
-  for (auto& c: *fc)
-    RGB::scaleRGB(&c, scale);
-}
-
 inline void combineFColorList(const FColorList& from, FColorList* to) {
   if (from.size() > to->size())
     to->resize(from.size());

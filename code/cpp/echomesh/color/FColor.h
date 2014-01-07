@@ -91,6 +91,12 @@ class FColor {
                   b2 + ratio * (e2 - b2));
   }
 
+  void scale(float scale) {
+    red_ *= scale;
+    green_ *= scale;
+    blue_ *= scale;
+  }
+
   struct Comparer {
     bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
   };

@@ -99,7 +99,7 @@ cdef class ColorList:
 
   def scale(self, float scale):
     for i in range(self.thisptr.size()):
-      self._model.scale(&self.thisptr.at(i), scale)
+      self.thisptr.at(i).scale(scale)
 
   def sort(self):
     self.thisptr.sort()
