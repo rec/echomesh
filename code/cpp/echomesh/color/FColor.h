@@ -65,12 +65,12 @@ class FColor {
     }
     if (alpha() < x.alpha())
         return -1;
-      if (alpha() > x.alpha())
-        return 1;
-      return 0;
+    if (alpha() > x.alpha())
+      return 1;
+
+    return 0;
   }
 
-#if 0
   FColor interpolate(const FColor& end, float ratio) const {
     auto b0 = red_, b1 = green_, b2 = blue_;
     auto e0 = end.red_, e1 = end.green_, e2 = end.blue_;
@@ -78,7 +78,6 @@ class FColor {
                   b1 + ratio * (e1 - b1),
                   b2 + ratio * (e2 - b2));
   }
-#endif
 
   struct Comparer {
     bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }

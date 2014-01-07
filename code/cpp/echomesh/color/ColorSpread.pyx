@@ -26,11 +26,13 @@ def _ensure_length(list x, int length):
     while len(x) > length:
       x.pop()
 
-def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, transform=None):
+def color_spread(colors, model=None, max_steps=None, steps=None,
+                 total_steps=None, transform=None):
   cdef Color c1
   cdef Color c2
   cdef FColor f1
   cdef FColor f2
+  cdef const ColorModel* cmodel
 
   if not colors or len(colors) <= 1:
     raise Exception('spread: There must be at least two colors.')
@@ -38,8 +40,13 @@ def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, tr
   if not (steps is None or total_steps is None):
     raise ValueError('spread: Can only set one of steps and total_steps')
 
+  if model is None:
+    cmodel = NULL
+  else:
+    cmodel = get_color_model(model)
+
   cdef ColorList colors2
-  colors2 = ColorList(colors, model=model)
+  colors2 = ColorList(colors, model)
   transform = _to_list(transform, Transform)
   lc = len(colors2)
   if transform:
@@ -49,6 +56,7 @@ def color_spread(colors, model, max_steps=None, steps=None, total_steps=None, tr
     _ensure_length(steps, lc - 1)
   else:
     steps = list(_even_color_slots((total_steps or max_steps) - 1, lc - 1))
+
 
   steps = list(steps)
   cl = ColorList(model=model)
