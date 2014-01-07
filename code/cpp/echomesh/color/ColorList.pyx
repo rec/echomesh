@@ -18,6 +18,7 @@ cdef ColorList toColorList(object value):
 def to_color_list(object x):
   return toColorList(x)
 
+
 cdef class ColorList:
   cdef FColorList* thisptr
 

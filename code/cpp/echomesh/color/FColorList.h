@@ -10,6 +10,10 @@ namespace color {
 
 class FColorList : public vector<FColor> {
  public:
+  void copy(const FColorList& that) {
+    *this = that;
+  }
+
   int count(const FColor& c) const {
     return std::count(begin(), end(), c);
   }

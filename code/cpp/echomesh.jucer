@@ -61,11 +61,12 @@
         <FILE id="t3GAZw" name="ColorModel.cpp" compile="1" resource="0" file="echomesh/color/ColorModel.cpp"/>
         <FILE id="Ymm2iO" name="ColorName.cpp" compile="1" resource="0" file="echomesh/color/ColorName.cpp"/>
         <FILE id="n3f3uh" name="ColorName.h" compile="0" resource="0" file="echomesh/color/ColorName.h"/>
-        <FILE id="LQ9zXN" name="Colors.h" compile="0" resource="0" file="echomesh/color/Colors.h"/>
         <FILE id="fkNS41" name="FColor.h" compile="0" resource="0" file="echomesh/color/FColor.h"/>
         <FILE id="nzb8hr" name="HSB.cpp" compile="1" resource="0" file="echomesh/color/HSB.cpp"/>
         <FILE id="E6XNSs" name="HSB.h" compile="0" resource="0" file="echomesh/color/HSB.h"/>
         <FILE id="mnSJbF" name="RGB.h" compile="0" resource="0" file="echomesh/color/RGB.h"/>
+        <FILE id="p7JrLC" name="Mirror.cpp" compile="1" resource="0" file="echomesh/color/Mirror.cpp"/>
+        <FILE id="RmokB0" name="Mirror.h" compile="0" resource="0" file="echomesh/color/Mirror.h"/>
         <FILE id="w9w8r7" name="Transform.cpp" compile="1" resource="0" file="echomesh/color/Transform.cpp"/>
         <FILE id="DaVFq2" name="Transform.h" compile="0" resource="0" file="echomesh/color/Transform.h"/>
       </GROUP>
