@@ -12,9 +12,7 @@ LOGGER = Log.logger(__name__)
 class Visualizer(Poll):
   def __init__(self, light_count=None, interval=None, **kwds):
     assert cechomesh.is_started()
-    print('starting to create lighting window')
     self.lighting_window = cechomesh.PyLightingWindow()
-    print('created lighting window')
     self.interval = interval
     self.interval_set = interval is not None
     self.light_count_set = light_count is not None

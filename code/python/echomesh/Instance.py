@@ -7,6 +7,7 @@ import time
 from echomesh.base import Config
 from echomesh.base import Quit
 from echomesh.element import ScoreMaster
+from echomesh.expression import Expression
 from echomesh.graphics import Display
 from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
@@ -15,6 +16,7 @@ from echomesh.output import pause_outputs
 from echomesh.util import CLog
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
+from echomesh.util.thread.RunAfter import run_after
 
 LOGGER = Log.logger(__name__)
 
@@ -34,7 +36,7 @@ class Instance(MasterRunnable):
     self.callback = self.after_server_starts
 
     self.display = Display.display(self.callback)
-    self.is_cechomesh = hasattr(self.display, 'callback')
+    self.using_cechomesh = hasattr(self.display, 'callback')
     self.keyboard = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
@@ -86,7 +88,7 @@ class Instance(MasterRunnable):
       self.keyboard.thread.join()
 
   def main(self):
-    if self.is_cechomesh:
+    if self.using_cechomesh:
       self.display_loop()
     else:
       self.after_server_starts()
@@ -94,17 +96,17 @@ class Instance(MasterRunnable):
     # Prevents crashes if you start and stop echomesh very fast.
 
   def after_server_starts(self):
-    self.run()
-    if self.is_cechomesh:
-      return
-
-    if self.display:
-      self.display_loop()
-    elif not USE_KEYBOARD_THREAD and self.keyboard:
-      self.keyboard.loop()
+    if self.using_cechomesh:
+      run_after(self.run, Expression.convert(Config.get('delay_before_run')))
     else:
-      while self.is_running:
-        time.sleep(self.timeout)
+      self.run()
+      if self.display:
+        self.display_loop()
+      elif not USE_KEYBOARD_THREAD and self.keyboard:
+        self.keyboard.loop()
+      else:
+        while self.is_running:
+          time.sleep(self.timeout)
 
   def start_mic(self):
     if not self.mic:

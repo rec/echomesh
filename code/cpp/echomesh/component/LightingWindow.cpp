@@ -29,9 +29,7 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
 }
 
 LightingWindow* makeLightingWindow() {
-  LOG(INFO) << "About to take mml";
   MessageManagerLock l;
-  LOG(INFO) << "mml taken";
 
   auto window = make_unique<LightingWindow>();
   window->toFront(true);
