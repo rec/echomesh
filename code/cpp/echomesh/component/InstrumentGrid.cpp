@@ -141,7 +141,7 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
   MessageManagerLock l;
   auto size = jmin(colors.size(), instruments_.size());
   for (auto i = 0; i < size; ++i)
-    instruments_[i]->setColor(color::RGB::toColour(colors.at(i)));
+    instruments_[i]->setColor(colors.at(i).toColour());
 }
 
 }  // namespace echomesh

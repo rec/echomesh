@@ -35,13 +35,7 @@ class RGB : public ColorModel {
 
   FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const override {
-    auto r0 = red(begin), g0 = green(begin), b0 = blue(begin), a0 = begin.alpha();
-    auto r1 = red(end), g1 = green(end), b1 = blue(end), a1 = end.alpha();
-    return FColor(
-        r0 + ratio * (r1 - r0),
-        g0 + ratio * (g1 - g0),
-        b0 + ratio * (b1 - b0),
-        a0 + ratio * (a1 - a0));
+    return begin.interpolate(end, ratio);
   }
 
   static const float& red(const FColor& fc) { return fc.red(); }
@@ -51,18 +45,6 @@ class RGB : public ColorModel {
   static float& red(FColor& fc) { return fc.red(); }
   static float& green(FColor& fc) { return fc.green(); }
   static float& blue(FColor& fc) { return fc.blue(); }
-
-  static Colour toColour(const FColor& fc) {
-    return Colour(floatToUInt8(red(fc)),
-                  floatToUInt8(green(fc)),
-                  floatToUInt8(blue(fc)),
-                  floatToUInt8(fc.alpha()));
-  }
-
-  static FColor fromColour(const Colour& c) {
-    return FColor(c.getFloatRed(), c.getFloatGreen(), c.getFloatBlue(),
-                  c.getFloatAlpha());
-  }
 
   static void combineRGB(const FColor& x, FColor* y) {
     red(*y) = std::max(red(*y), red(x));
@@ -83,10 +65,6 @@ class RGB : public ColorModel {
 
   static bool fromNameRGB(const string& s, FColor* c) {
     return nameToRgb(s, c);
-  }
-
-  static uint8 floatToUInt8(const float n) {
-    return static_cast<uint8>(jmax(0.0f, jmin(255.0f, n * 255.1f)));
   }
 };
 

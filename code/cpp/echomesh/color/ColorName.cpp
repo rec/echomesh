@@ -214,32 +214,32 @@ bool nameToRgb(const String& cname, FColor* color) {
   auto i = NAMER.stringToColor_.find(name);
   auto success = (i != NAMER.stringToColor_.end());
   if (success)
-    *color = colourToRgb(i->second);
+    *color = FColor(i->second);
   return success;
 }
 
 string rgbToName(const FColor& fcolor) {
-  Colour color = rgbToColour(fcolor);
+  Colour color = fcolor.toColour();
   if (not color.getARGB())
     return "none";
   String suffix;
   FColor c;
   if (color.isOpaque()) {
-    c = colourToRgb(color);
+    c = color;
   } else {
-    c = colourToRgb(color.withAlpha(1.0f));
+    c = color.withAlpha(1.0f);
     suffix = ", alpha=" + String(fcolor.alpha(), 3) + "]";
   }
-  auto i = NAMER.colorToString_.find(rgbToColour(c));
+  auto i = NAMER.colorToString_.find(c.toColour());
   String name;
   if (i != NAMER.colorToString_.end()) {
     name = i->second;
     if (not suffix.isEmpty())
       name = "[" + name;
   } else {
-    name = "[red=" + String(RGB::red(fcolor), 3) +
-        ", green=" + String(RGB::green(fcolor), 3) +
-        ", blue=" + String(RGB::blue(fcolor), 3);
+    name = "[red=" + String(fcolor.red(), 3) +
+        ", green=" + String(fcolor.green(), 3) +
+        ", blue=" + String(fcolor.blue(), 3);
     if (suffix.isEmpty())
       suffix += "]";
   }

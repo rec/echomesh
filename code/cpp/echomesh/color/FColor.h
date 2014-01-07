@@ -10,10 +10,8 @@ class FColor {
  public:
   FColor() {}
 
-  FColor(float x, float y, float z, float alpha=1.0) : alpha_(alpha) {
-    red_ = x;
-    green_ = y;
-    blue_ = z;
+  FColor(float red, float green, float blue, float alpha=1.0)
+      : red_(red), green_(green), blue_(blue), alpha_(alpha) {
   }
 
   FColor(uint32 parts) {
@@ -24,6 +22,13 @@ class FColor {
     red_ = parts & 0xFF;
     parts >>= 8;
     alpha_ = parts;
+  }
+
+  FColor(const Colour& c)
+      : red_(c.getFloatRed()),
+        green_(c.getFloatGreen()),
+        blue_(c.getFloatBlue()),
+        alpha_(c.getFloatAlpha()) {
   }
 
   const float& red() const { return red_; }
@@ -71,6 +76,13 @@ class FColor {
     return 0;
   }
 
+  Colour toColour() const {
+    return Colour(floatToUInt8(red()),
+                  floatToUInt8(green()),
+                  floatToUInt8(blue()),
+                  floatToUInt8(alpha()));
+  }
+
   FColor interpolate(const FColor& end, float ratio) const {
     auto b0 = red_, b1 = green_, b2 = blue_;
     auto e0 = end.red_, e1 = end.green_, e2 = end.blue_;
@@ -82,6 +94,10 @@ class FColor {
   struct Comparer {
     bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
   };
+
+  static uint8 floatToUInt8(const float n) {
+    return static_cast<uint8>(jmax(0.0f, jmin(255.0f, n * 255.1f)));
+  }
 
  private:
   float red_, green_, blue_, alpha_;

@@ -8,9 +8,6 @@
 namespace echomesh {
 namespace color {
 
-inline FColor colourToRgb(const Colour& c) { return RGB::fromColour(c); }
-inline Colour rgbToColour(const FColor& fc) { return RGB::toColour(fc); }
-
 inline void scaleFColorList(FColorList* fc, float scale) {
   for (auto& c: *fc)
     RGB::scaleRGB(&c, scale);
