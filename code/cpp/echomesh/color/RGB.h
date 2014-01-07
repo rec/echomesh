@@ -10,8 +10,6 @@ namespace color {
 
 class RGB : public ColorModel {
  public:
-  void combine(const FColor& x, FColor* y) const override { combineRGB(x, y); }
-
   FColor toRgb(const FColor& color) const override {
     return color;
   }
@@ -36,13 +34,6 @@ class RGB : public ColorModel {
   static float& red(FColor& fc) { return fc.red(); }
   static float& green(FColor& fc) { return fc.green(); }
   static float& blue(FColor& fc) { return fc.blue(); }
-
-  static void combineRGB(const FColor& x, FColor* y) {
-    red(*y) = std::max(red(*y), red(x));
-    green(*y) = std::max(green(*y), green(x));
-    blue(*y) = std::max(blue(*y), blue(x));
-    y->alpha() = std::max(y->alpha(), x.alpha());
-  }
 };
 
 }  // namespace color

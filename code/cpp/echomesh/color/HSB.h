@@ -9,8 +9,6 @@ namespace color {
 
 class HSB : public ColorModel {
  public:
-  void combine(const FColor& f, FColor* t) const override { combineHSB(f, t); }
-
   string modelName() const override { return "hsb"; }
 
   FColor toRgb(const FColor& c) const override { return hsbToRgb(c); }

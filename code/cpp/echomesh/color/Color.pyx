@@ -1,5 +1,6 @@
 include "echomesh/color/FColor.pyx"
 include "echomesh/color/HSB.pyx"
+include "echomesh/color/ColorModel.pyx"
 include "echomesh/color/ColorName.pyx"
 
 import six
@@ -81,7 +82,7 @@ cdef class Color:
     self.thisptr.scale(f)
 
   def combine(self, Color c):
-    self._model.combine(c.thisptr[0], self.thisptr)
+    self.thisptr.combine(c.thisptr[0])
 
   def __dealloc__(self):
     del self.thisptr

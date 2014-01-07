@@ -2,9 +2,8 @@ import six
 
 from libcpp.string cimport string
 
-cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
+cdef extern from "echomesh/color/ColorModel.h" namespace "echomesh::color":
   cdef cppclass ColorModel:
-    void combine(FColor, FColor*)
     FColor interpolate(FColor begin, FColor end, float ratio)
     string modelName()
     FColor toRgb(FColor)

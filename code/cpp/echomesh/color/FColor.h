@@ -105,6 +105,13 @@ class FColor {
     return static_cast<uint8>(jmax(0.0f, jmin(255.0f, n * 255.1f)));
   }
 
+  void combine(const FColor& x) {
+    red_ = std::max(red_, x.red());
+    green_ = std::max(green_, x.green());
+    blue_ = std::max(blue_, x.blue());
+    alpha_ = std::max(alpha_, x.alpha_);
+  }
+
  private:
   float red_, green_, blue_, alpha_;
 };

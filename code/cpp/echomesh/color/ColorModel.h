@@ -13,7 +13,6 @@ class ColorModel {
   ColorModel() {}
   virtual ~ColorModel() {}
 
-  virtual void combine(const FColor&, FColor*) const = 0;
   virtual FColor interpolate(
       const FColor& begin, const FColor& end, float ratio) const = 0;
 

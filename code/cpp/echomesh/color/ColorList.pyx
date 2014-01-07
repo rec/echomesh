@@ -43,13 +43,8 @@ cdef class ColorList:
     cdef ColorModel* model
     for other in items:
       cl = toColorList(other)
-      isRgb = cl._model.isRgb()
       for i in range(self.thisptr.size()):
-        if isRgb:
-          self._model.combine(cl.thisptr.at(i), &self.thisptr.at(i))
-        else:
-          self._model.combine(cl._model.toRgb(cl.thisptr.at(i)),
-                              &self.thisptr.at(i))
+        self.thisptr.at(i).combine(cl.thisptr.at(i))
 
   def count(self, object item):
     cdef FColor c
