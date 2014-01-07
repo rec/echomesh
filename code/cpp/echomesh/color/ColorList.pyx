@@ -20,11 +20,9 @@ def to_color_list(object x):
 
 cdef class ColorList:
   cdef FColorList* thisptr
-  cdef const ColorModel* _model
 
-  def __cinit__(self, args=None, object model=RGB):
+  def __cinit__(self, args=None):
     self.thisptr = new FColorList()
-    self._model = get_color_model(model)
     if args:
       self.extend(args)
 
@@ -40,7 +38,6 @@ cdef class ColorList:
 
   def combine(self, *items):
     cdef ColorList cl
-    cdef ColorModel* model
     for other in items:
       cl = toColorList(other)
       for i in range(self.thisptr.size()):
@@ -73,10 +70,6 @@ cdef class ColorList:
       return index
     raise ValueError('%s is not in ColorList' % item)
 
-  @property
-  def model(self):
-    return self._model.modelName()
-
   def insert(self, int index, object item):
     self[index:index] = [item]
 
@@ -98,12 +91,6 @@ cdef class ColorList:
 
   def sort(self):
     self.thisptr.sort()
-
-  def toRgb(self):
-    if not self._model.isRgb():
-      for i in range(self.thisptr.size()):
-        self.thisptr.set(self._model.toRgb(self.thisptr.at(i)), i)
-      self._model = get_color_model(RGB)
 
   def __add__(self, object other):
     cl = ColorList(self)
