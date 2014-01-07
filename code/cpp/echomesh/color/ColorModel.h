@@ -18,8 +18,6 @@ class ColorModel {
       const FColor& begin, const FColor& end, float ratio) const = 0;
   virtual void scale(FColor*, float) const = 0;
 
-  virtual string toName(const FColor&) const = 0;
-  virtual bool fromName(const string&, FColor*) const = 0;
   virtual bool isRgb() const = 0;
   virtual FColor toRgb(const FColor&) const = 0;
   virtual FColor fromRgb(const FColor&) const = 0;

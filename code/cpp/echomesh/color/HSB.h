@@ -12,18 +12,6 @@ class HSB : public ColorModel {
   void scale(FColor* c, float f) const override { scaleHSB(c, f); }
   void combine(const FColor& f, FColor* t) const override { combineHSB(f, t); }
 
-  string toName(const FColor& c) const override {
-    return RGB::toNameRGB(toRgb(c));
-  }
-
-  bool fromName(const string& s, FColor* c) const override {
-    FColor rgb;
-    bool success = RGB::fromNameRGB(s, &rgb);
-    if (success)
-      *c = fromRgb(rgb);
-    return success;
-  }
-
   string modelName() const override { return "hsb"; }
 
   FColor toRgb(const FColor& c) const override { return hsbToRgb(c); }

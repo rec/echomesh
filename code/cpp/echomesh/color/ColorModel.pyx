@@ -7,8 +7,6 @@ cdef extern from "echomesh/color/Colors.h" namespace "echomesh::color":
     void combine(FColor, FColor*)
     FColor interpolate(FColor begin, FColor end, float ratio)
     void scale(FColor*, float)
-    string toName(FColor)
-    bool fromName(string, FColor*)
     string modelName()
     FColor toRgb(FColor)
     FColor fromRgb(FColor)

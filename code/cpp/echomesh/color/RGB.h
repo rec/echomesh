@@ -13,14 +13,6 @@ class RGB : public ColorModel {
   void scale(FColor* c, float s) const override { scaleRGB(c, s); }
   void combine(const FColor& x, FColor* y) const override { combineRGB(x, y); }
 
-  string toName(const FColor& c) const override {
-    return toNameRGB(c);
-  }
-
-  bool fromName(const string& s, FColor* c) const override {
-    return fromNameRGB(s, c);
-  }
-
   FColor toRgb(const FColor& color) const override {
     return color;
   }
@@ -57,14 +49,6 @@ class RGB : public ColorModel {
     red(*color) *= scale;
     green(*color) *= scale;
     blue(*color) *= scale;
-  }
-
-  static string toNameRGB(const FColor& c) {
-    return rgbToName(c);
-  }
-
-  static bool fromNameRGB(const string& s, FColor* c) {
-    return nameToRgb(s, c);
   }
 };
 
