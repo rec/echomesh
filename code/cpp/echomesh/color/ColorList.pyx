@@ -127,11 +127,11 @@ cdef class ColorList:
 
   def __getitem__(self, object key):
     if isinstance(key, slice):
-      parts = range(*key.indices(len(self)))
+      indices = range(*key.indices(len(self)))
       cl = ColorList()
-      cl.thisptr.resize(len(parts))
+      cl.thisptr.resize(len(indices))
       i = 0
-      for j in parts:
+      for j in indices:
         cl.thisptr.set(self.thisptr.at(j), i)
         i += 1
       return cl
@@ -192,8 +192,8 @@ cdef class ColorList:
       cl = toColorList(value)
       length = len(cl)
       indices = key.indices(len(self))
-      parts = range(*indices)
-      slice_length = len(parts)
+      pieces = range(*indices)
+      slice_length = len(pieces)
 
       if slice_length != length:
         if indices[2] != 1:
@@ -208,7 +208,7 @@ cdef class ColorList:
                                    cl.thisptr[0], slice_length, length)
 
       i = 0
-      for j in parts:
+      for j in pieces:
         self.thisptr.set(cl.thisptr.at(i), j)
 
     else:
