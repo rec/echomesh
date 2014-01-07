@@ -46,7 +46,7 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
     cmodel = get_color_model(model)
 
   cdef ColorList colors2
-  colors2 = ColorList(colors, model)
+  colors2 = ColorList(colors)
   transform = _to_list(transform, Transform)
   lc = len(colors2)
   if transform:
@@ -57,9 +57,8 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
   else:
     steps = list(_even_color_slots((total_steps or max_steps) - 1, lc - 1))
 
-
   steps = list(steps)
-  cl = ColorList(model=model)
+  cl = ColorList()
   cl.thisptr.resize(sum(steps) + lc)
   pos = 0
   for i, step in enumerate(steps):
@@ -67,10 +66,17 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
     c2 = colors2[i + 1]
     f1 = c1.thisptr[0]
     f2 = c2.thisptr[0]
+    if cmodel:
+      f1 = cmodel.fromRgb(f1)
+      f2 = cmodel.fromRgb(f2)
+
     tr = (transform and transform[i].apply) or (lambda x: x)
     for j in range(step + 2):
       inc = tr(j / (step + 1.0))
-      cl.thisptr.set(cl._model.interpolate(f1, f2, inc), pos)
+      if cmodel:
+        cl.thisptr.set(cmodel.toRgb(cmodel.interpolate(f1, f2, inc)), pos)
+      else:
+        cl.thisptr.set(f1.interpolate(f2, inc), pos)
       pos += 1
     pos -= 1
 
