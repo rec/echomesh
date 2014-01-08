@@ -1,0 +1,23 @@
+type: sequence
+
+variables:
+  switch:
+    type: counter
+    count:  2
+    period: 1/2 second
+
+patterns:
+  eins:
+    type: insert
+    offset: 32
+    pattern:
+      type: spread
+      colors: [burnt sienna, cadmium yellow]
+      steps: 32
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: eins
+
