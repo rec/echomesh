@@ -7,7 +7,8 @@ namespace echomesh {
 namespace color {
 
 FColorList mirror(
-    const FColorList&, int x, int y, bool reverseX, bool reverseY);
+    const FColorList&, unsigned int x, unsigned int y,
+    bool reverseX, bool reverseY);
 
 }  // namespace color
 }  // namespace echomesh

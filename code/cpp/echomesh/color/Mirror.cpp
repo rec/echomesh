@@ -4,10 +4,12 @@ namespace echomesh {
 namespace color {
 
 FColorList mirror(
-    const FColorList& fcl, int x, int y, bool reverseX, bool reverseY) {
+    const FColorList& fcl, unsigned int x, unsigned int y,
+    bool reverseX, bool reverseY) {
   FColorList result;
-  result.resize(fcl.size());
-  for (auto i = 0; i < fcl.size(); ++i) {
+  unsigned int size = fcl.size();
+  result.resize(std::max(size, x * y));
+  for (auto i = 0; i < result.size(); ++i) {
     auto my_y = i / x;
     auto my_x = i - (my_y * x);
     if (reverseX)
@@ -16,7 +18,9 @@ FColorList mirror(
       my_y = y - my_y - 1;
     auto index = my_x * y + my_y;
     if (index < fcl.size())
-      result[index] = fcl[i];
+      result[i] = fcl[index];
+    else
+      result[i].clear();
   }
   return result;
 }
