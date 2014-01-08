@@ -39,7 +39,7 @@ class Config(object):
     else:
       extra_args = {}
       extra_compile_args += '-O2 '
-      extra_link_args = ''
+      extra_link_args = '-flto '
 
     if Platform.PLATFORM == Platform.MAC:
       extra_link_args += '-framework Cocoa -framework WebKit -framework CoreMidi '

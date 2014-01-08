@@ -49,13 +49,14 @@ class Output(object):
 
   def evaluate(self):
     bad_clients = []
-    def _eval(c):
+    result = []
+    for c in self.clients:
       try:
-        return c.evaluate()
+        result.append(c.evaluate())
       except Exception as e:
-        LOGGER.error('Got error from client %s, disabling', c)
+        LOGGER.error('Got error from client %s, disabling output client')
         bad_clients.append(c)
-    result = list(itertools.chain.from_iterable([_eval(c) for c in self.clients]))
+    result = list(itertools.chain.from_iterable(result))
     for c in bad_clients:
       self.remove_client(c)
     return result

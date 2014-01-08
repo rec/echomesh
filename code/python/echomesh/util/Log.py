@@ -12,6 +12,7 @@ import sys
 import traceback
 
 FORCE_DEBUG = not True
+DINFO = 3.5
 VDEBUG = 5
 
 LOG_LEVEL = 'INFO'
@@ -34,7 +35,7 @@ def _suppress_this_line(limit, every):
         _LOG_COUNTER[line] = count + 1
         return not (every and (count % every))
 
-def _add_level_vdebug():
+def _add_new_levels():
   logging.addLevelName(VDEBUG, 'VDEBUG')
 
   def vdebug(self, message, *args, **kws):
@@ -43,7 +44,7 @@ def _add_level_vdebug():
   logging.Logger.vdebug = vdebug
   logging.VDEBUG = VDEBUG
 
-_add_level_vdebug()
+_add_new_levels()
 
 class _ConfigClient(object):
   def config_update(self, get):
@@ -101,11 +102,13 @@ def _make_logger(logger, name):
     message, args = (args[0] if args else ''), args[1:]
     if is_error and not raw:
       exc_type, exc_value = sys.exc_info()[:2]
+      exc_info = False
       if exc_type:
         message = '%s %s' % (exc_value, message)
-        kwds['exc_info'] = kwds.get('exc_info', _CONFIG.stack_traces)
+        exc_info = kwds.get('exc_info', _CONFIG.stack_traces)
+        kwds['exc_info'] = exc_info
       if not _CONFIG.filename:
-        message = 'ERROR: %s\n' % message
+        message = 'ERROR: %s\n\n' % message
     original_logger(message, *args, **kwds)
 
   setattr(logger, name, new_logger)

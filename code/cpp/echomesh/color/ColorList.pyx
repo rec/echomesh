@@ -22,10 +22,9 @@ def to_color_list(object x):
 cdef class ColorList:
   cdef FColorList* thisptr
 
-  def __cinit__(self, args=None):
+  def __cinit__(self, colors=None):
     self.thisptr = new FColorList()
-    if args:
-      self.extend(args)
+    self.extend(colors)
 
   def __dealloc__(self):
     del self.thisptr
@@ -50,26 +49,41 @@ cdef class ColorList:
       raise ValueError('Don\'t understand color value %s' % item)
     return self.thisptr.count(c)
 
-  def extend(self, object items):
-    length = len(self)
-    items = _make_list(items)
-    new_length = len(items)
+  def extend(self, object colors, bool return_errors=False):
+    if not colors:
+      return
 
-    self.thisptr.reserve(length + new_length)
-    try:
-      for item in items:
-        self.append(item)
-    except:
-      self.thisptr.resize(length)
+    if isinstance(colors, ColorList):
+      self.thisptr.extend((<ColorList> colors).thisptr[0])
+      return
 
-  def index(self, object item):
+    original_length = len(self)
+    colors = list(colors)
+    new_length = len(colors)
+    if return_errors:
+      error_colors = []
+
+    self.thisptr.reserve(original_length + new_length)
+    for color in colors:
+      try:
+        self.append(color)
+      except:
+        if return_errors:
+          error_colors.append(color)
+          self.append(None)
+        else:
+          self.thisptr.resize(original_length)
+          raise
+    return return_errors and error_colors
+
+  def index(self, object color):
     cdef FColor c
-    if not fill_color(item, &c):
-      raise ValueError('Don\'t understand color value %s' % item)
+    if not fill_color(color, &c):
+      raise ValueError('Don\'t understand color value %s' % color)
     index = self.thisptr.index(c)
     if index >= 0:
       return index
-    raise ValueError('%s is not in ColorList' % item)
+    raise ValueError('%s is not in ColorList' % color)
 
   def insert(self, int index, object item):
     self[index:index] = [item]
@@ -219,3 +233,7 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
+
+def color_list_with_errors(colors=None):
+  cl = ColorList()
+  return cl, cl.extend(colors, return_errors=True)

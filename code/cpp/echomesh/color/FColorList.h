@@ -18,6 +18,10 @@ class FColorList : public vector<FColor> {
     return std::count(begin(), end(), c);
   }
 
+  void extend(const FColorList& that) {
+    insert(end(), that.begin(), that.end());
+  }
+
   void eraseOne(int pos) {
     erase(begin() + pos);
   }

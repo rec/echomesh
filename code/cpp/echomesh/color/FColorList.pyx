@@ -3,6 +3,7 @@ cdef extern from "echomesh/color/FColorList.h" namespace "echomesh::color":
     FColor& at(int pos)
     void copy(FColorList that)
     int count(FColor c)
+    void extend(FColorList that)
     void eraseOne(int pos)
     void eraseRange(int b, int e)
     int index(FColor c)
