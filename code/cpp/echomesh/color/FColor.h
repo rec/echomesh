@@ -1,6 +1,8 @@
 #ifndef __ECHOMESH_FCOLOR__
 #define __ECHOMESH_FCOLOR__
 
+#include <math.h>
+
 #include "echomesh/base/Echomesh.h"
 
 namespace echomesh {
@@ -46,6 +48,13 @@ class FColor {
     red_ = green_ = blue_ = 0.0f;
     alpha_ = 1.0f;
   }
+
+  void gamma(float f) {
+    red_ = powf(red_, f);
+    green_ = powf(green_, f);
+    blue_ = powf(blue_, f);
+  }
+
   void copy(const FColor& other) { *this = other; }
   void copy(const FColor* other) { copy(*other); }
   bool operator==(const FColor& other) const { return not compare(other); }

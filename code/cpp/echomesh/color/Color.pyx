@@ -65,6 +65,9 @@ cdef class Color:
   def combine(self, Color c):
     self.thisptr.combine(c.thisptr[0])
 
+  def gamma(self, float f):
+    self.thisptr.gamma(f)
+
   def __dealloc__(self):
     del self.thisptr
 

@@ -50,6 +50,11 @@ class FColorList : public vector<FColor> {
   void sort() {
     std::sort(begin(), end(), FColor::Comparer());
   }
+
+  void gamma(float gamma) {
+    for (auto color: *this)
+      color.gamma(gamma);
+  }
 };
 
 }  // namespace color

@@ -13,7 +13,6 @@ _LATCH = bytearray(0 for i in xrange(_LATCH_BYTE_COUNT))
 
 _INTERNAL_LATCH_BYTE_COUNT = 0
 
-
 class Spi(Output):
   def RGB(r, g, b):
     return r, g, b

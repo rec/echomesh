@@ -76,6 +76,9 @@ cdef class ColorList:
           raise
     return return_errors and error_colors
 
+  def gamma(self, float f):
+    self.thisptr.gamma(f)
+
   def index(self, object color):
     cdef FColor c
     if not fill_color(color, &c):
