@@ -70,4 +70,4 @@ class SpiHardwareLightBank(SpiLightBank):
         light =  self.order(*int(min(0x80 + 0x7F * x * brightness, 0xFF)
                                  for x in light))
       self._bank[3 * i:3 * (i + 1)] = light
-      self._write(self.pattern)
+    self._write(self.pattern)

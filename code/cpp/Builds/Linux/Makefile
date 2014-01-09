@@ -66,6 +66,7 @@ OBJECTS := \
   $(OBJDIR)/ColorName_ff26ac1a.o \
   $(OBJDIR)/HSB_7615b903.o \
   $(OBJDIR)/Mirror_c90fc27d.o \
+  $(OBJDIR)/SPI_b73e5f78.o \
   $(OBJDIR)/Transform_d1c2c3f8.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
@@ -188,6 +189,11 @@ $(OBJDIR)/HSB_7615b903.o: ../../echomesh/color/HSB.cpp
 $(OBJDIR)/Mirror_c90fc27d.o: ../../echomesh/color/Mirror.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Mirror.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/SPI_b73e5f78.o: ../../echomesh/color/SPI.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling SPI.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Transform_d1c2c3f8.o: ../../echomesh/color/Transform.cpp

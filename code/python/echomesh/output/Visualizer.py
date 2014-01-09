@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
+from echomesh.color import Combiner
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
 from echomesh.util import Log
@@ -40,7 +41,4 @@ class Visualizer(Poll):
 
   def emit_output(self, data):
     if data:
-      data = [cechomesh.to_color_list(d) for d in data]
-      lights = data.pop()
-      lights.combine(*data)
-      self.lighting_window.set_clights(lights)
+      self.lighting_window.set_clights(Combiner.ccombine(data))

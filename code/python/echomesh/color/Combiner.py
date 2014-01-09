@@ -4,7 +4,7 @@ import itertools
 
 from six.moves import xrange
 
-USE_NUMPY = False
+import cechomesh
 
 def combine(combiner, *lighters):
   linverse = itertools.izip_longest(*lighters)
@@ -30,6 +30,12 @@ def combine_to_bytearray(array, lighters, brightness):
           b = max(b, light[i][j])
       array[3 * i + j] = min(0xFF, int(0x100 * b * brightness))
 
+def ccombine(data):
+  if not data:
+    return []
 
-# We could put HSV combiners in here.
+  data = [cechomesh.to_color_list(d) for d in data]
+  lights = data.pop()
+  lights.combine(*data)
+  return lights
 
