@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.color import Combiner
-from echomesh.light import SetupDebianSpiLights
+from echomesh.color import SetupDebianSpiLights
 from echomesh.output.Output import Output
 from echomesh.util import Log
 

@@ -9,7 +9,6 @@ from echomesh.base import Quit
 from echomesh.element import ScoreMaster
 from echomesh.expression import Expression
 from echomesh.graphics import Display
-from echomesh.light import LightSingleton
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.output import pause_outputs
@@ -58,7 +57,6 @@ class Instance(MasterRunnable):
     self.timeout = Config.get('network', 'timeout')
 
     def do_quit():
-      LightSingleton.pause()
       pause_outputs()
       self.pause()
       self.unload()
