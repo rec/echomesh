@@ -45,5 +45,4 @@ class Visualizer(Poll):
     self.lighting_window.set_light_count(light_count)
 
   def emit_output(self, data):
-    if data:
-      self.lighting_window.set_clights(Combiner.ccombine(data))
+    self.lighting_window.set_clights(Combiner.ccombine(data))

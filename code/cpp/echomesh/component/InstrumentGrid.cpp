@@ -142,6 +142,10 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
   auto size = jmin(colors.size(), instruments_.size());
   for (auto i = 0; i < size; ++i)
     instruments_[i]->setColor(colors.at(i).toColour());
+
+  auto maxSize = jmax(colors.size(), instruments_.size());
+  for (auto i = size; i < maxSize; ++i)
+    instruments_[i]->setColor(Colours::black);
 }
 
 }  // namespace echomesh

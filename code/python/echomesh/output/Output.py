@@ -15,7 +15,6 @@ class Output(object):
     pass
 
   def pause(self):
-    LOGGER.info('OUTPUT pause! %s', self.__class__)
     pass
 
   def finish_construction(self, description, is_redirect=True):
@@ -28,6 +27,9 @@ class Output(object):
         output = [output]
 
       self.output = [make_output(o) for o in output]
+      if False:  # TODO
+        for o in self.output:
+          o.add_client(self)
     else:
       self.output = []
 

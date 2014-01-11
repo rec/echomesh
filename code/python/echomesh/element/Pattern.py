@@ -29,7 +29,6 @@ class Pattern(Element.Element):
       self.output.add_client(self)
 
   def _on_unload(self):
-    super(Pattern, self)._on_unload()
     if self.output:
       self.output.remove_client(self)
       self.output = None

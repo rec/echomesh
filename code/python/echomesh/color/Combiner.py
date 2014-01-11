@@ -32,7 +32,7 @@ def combine_to_bytearray(array, lighters, brightness):
 
 def ccombine(data):
   if not data:
-    return []
+    return cechomesh.ColorList()
 
   data = [cechomesh.to_color_list(d) for d in data]
   lights = data.pop()
