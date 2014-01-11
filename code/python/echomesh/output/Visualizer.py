@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
-from echomesh.color import Combiner
+from echomesh.color import Combine
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
 from echomesh.util import Log
@@ -45,4 +45,4 @@ class Visualizer(Poll):
     self.lighting_window.set_light_count(light_count)
 
   def emit_output(self, data):
-    self.lighting_window.set_clights(Combiner.ccombine(data))
+    self.lighting_window.set_clights(Combine.combine(data))

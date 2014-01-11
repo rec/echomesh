@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
-from echomesh.color import Combiner
+from echomesh.color import Combine
 from echomesh.color import SetupDebianSpiLights
 from echomesh.output.Output import Output
 from echomesh.util import Log
@@ -52,7 +52,7 @@ class Spi(Output):
     return b
 
   def emit_output(self, data):
-    lights = Combiner.ccombine(data)
+    lights = Combine.combine(data)
     lights.gamma(self.gamma)
     for l in lights:
 
