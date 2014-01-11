@@ -1,6 +1,7 @@
 include "echomesh/color/FColorList.pyx"
 
 import math
+import six
 
 def _make_list(object value):
   try:
@@ -106,6 +107,9 @@ cdef class ColorList:
   def scale(self, float scale):
     for i in range(self.thisptr.size()):
       self.thisptr.at(i).scale(scale)
+
+  def set_all(self, Color c):
+    self.thisptr.setAll(c.thisptr[0])
 
   def sort(self):
     self.thisptr.sort()
@@ -238,5 +242,7 @@ cdef class ColorList:
 
 
 def color_list_with_errors(colors=None):
+  if isinstance(colors, six.string_types):
+    colors = [colors]
   cl = ColorList()
   return cl, cl.extend(colors, return_errors=True)

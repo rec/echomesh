@@ -14,5 +14,6 @@ cdef extern from "echomesh/color/FColorList.h" namespace "echomesh::color":
     void reserve(size_t size)
     void reverse()
     void set(FColor color, int pos)
+    void setAll(FColor color)
     int size()
     void sort()

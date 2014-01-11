@@ -11,7 +11,12 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Visualizer(Poll):
+  INSTANCE = None
+
   def __init__(self, light_count=None, interval=None, **kwds):
+    assert not Visualizer.INSTANCE
+    Visualizer.INSTANCE = self
+
     assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
     self.interval = interval

@@ -28,5 +28,11 @@ class Pattern(Element.Element):
       self.output = make_output(self.output_name)
       self.output.add_client(self)
 
+  def _on_unload(self):
+    super(Pattern, self)._on_unload()
+    if self.output:
+      self.output.remove_client(self)
+      self.output = None
+
   def evaluate(self):
     return [self.maker.evaluate()]

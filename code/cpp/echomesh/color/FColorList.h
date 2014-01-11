@@ -47,6 +47,11 @@ class FColorList : public vector<FColor> {
     at(pos) = color;
   }
 
+  void setAll(const FColor& fc) {
+    for (auto& i: *this)
+      i = fc;
+  }
+
   void sort() {
     std::sort(begin(), end(), FColor::Comparer());
   }

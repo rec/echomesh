@@ -3,7 +3,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import os.path
 
 from echomesh.element.Element import Element
-from echomesh.light import LightSingleton
+from echomesh.output.Visualizer import Visualizer
+from echomesh.util import Log
+
+LOGGER = Log.logger(__name__)
 
 LEGAL_FILE_SUFFIXES = '.png', '.jpg', '.jpeg'
 
@@ -23,6 +26,11 @@ class Snapshot(Element):
 
   def _on_run(self):
     super(Snapshot, self)._on_run()
+
+    if not Visualizer.INSTANCE:
+      LOGGER.error('No Visualizer.INSTANCE')
+      return
+
     self.pause()
     self.index += 1
     if self.use_index:
@@ -32,4 +40,4 @@ class Snapshot(Element):
         f = '%s-%s%s' % (self.root, self.index, self.ext)
     else:
       f = self.root + self.ext
-    LightSingleton.snapshot(f)
+    Visualizer.INSTANCE.snapshot(f)

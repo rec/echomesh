@@ -54,7 +54,7 @@ class Output(object):
       try:
         result.append(c.evaluate())
       except Exception as e:
-        LOGGER.error('Got error from client %s, disabling output client')
+        LOGGER.error('Got error from client %s, disabling output client', c)
         bad_clients.append(c)
     result = list(itertools.chain.from_iterable(result))
     for c in bad_clients:
