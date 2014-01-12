@@ -13,15 +13,19 @@ LOGGER = Log.logger(__name__)
 class Visualizer(Poll):
   INSTANCE = None
 
-  def __init__(self, light_count=None, interval=None, **kwds):
+  def __init__(self, light_count=None, interval=None, transform=None, **kwds):
     assert not Visualizer.INSTANCE
     Visualizer.INSTANCE = self
 
     assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
     self.interval = interval
+    self.transform = transform
+
     self.interval_set = interval is not None
     self.light_count_set = light_count is not None
+    self.transform_set = transform is not None
+
     if self.light_count_set:
       self.set_light_count(light_count)
 
@@ -40,9 +44,21 @@ class Visualizer(Poll):
       self.set_light_count(get('light', 'count'))
     if not self.interval_set:
       self.interval = Expression.convert(get('light', 'visualizer', 'period'))
+    if not self.transform_set:
+      transform = get('light', 'visualizer', 'transform')
+      if transform:
+        try:
+          self.transform = cechomesh.Transform(transform)
+        except:
+          LOGGER.error('Don\'t understand transform %s', transform)
+    self.brightness = Expression.convert(get('light', 'brightness'))
+    if self.transform:
+      self.brightness = self.transform.apply(self.brightness)
 
   def set_light_count(self, light_count):
     self.lighting_window.set_light_count(light_count)
 
   def emit_output(self, data):
-    self.lighting_window.set_clights(Combine.combine(data))
+    lights = Combine.combine(data)
+    lights.scale(self.brightness)
+    self.lighting_window.set_lights(lights)

@@ -15,6 +15,7 @@ def set_config(_, *values):
     assignment = Leafs.leafs(Config.assign(values))
     for address, value in six.iteritems(assignment):
       LOGGER.info('Set %s=%s', '.'.join(address), value)
+    Config.update_clients()
   elif Config.MERGE_CONFIG.has_changes():
     LOGGER.info(Yaml.encode_one(dict(Config.MERGE_CONFIG.get_changes())))
   else:

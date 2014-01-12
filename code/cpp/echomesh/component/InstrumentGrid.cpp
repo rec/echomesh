@@ -129,16 +129,9 @@ int InstrumentGrid::getLightCount() const {
   return instruments_.size();
 }
 
-void InstrumentGrid::setLights(const char* lights) {
-  MessageManagerLock l;
-  for (auto i = 0; i < instruments_.size(); ++i) {
-    Colour color(lights[3 * i], lights[3 * i + 1], lights[3 * i + 2]);
-    instruments_[i]->setColor(color);
-  }
-}
-
 void InstrumentGrid::setLights(const color::FColorList& colors) {
   MessageManagerLock l;
+
   auto size = jmin(colors.size(), instruments_.size());
   for (auto i = 0; i < size; ++i)
     instruments_[i]->setColor(colors.at(i).toColour());

@@ -15,7 +15,6 @@ class InstrumentGrid : public Component {
   InstrumentGrid();
   virtual ~InstrumentGrid();
 
-  void setLights(const char*);
   void setLights(const color::FColorList&);
   void setPaintingIsUnclipped(bool);
   void setLightCount(int);
@@ -27,6 +26,7 @@ class InstrumentGrid : public Component {
                  const Point& instrumentPadding, const Point& labelPadding);
 
   void paint(Graphics&);
+
   void doRepaint() {
     MessageManagerLock l;
     JUCE_AUTORELEASEPOOL {

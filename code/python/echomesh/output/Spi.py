@@ -35,6 +35,7 @@ class Spi(Output):
       raise Exception('Don\'t understand rgb_order=%s' % rgb_order)
 
     self.count = count or Config.get('light', 'count')
+    # TODO: brightness!
     self._device = open(device, 'wb')
     self.finish_construction(description, is_redirect=False)
 
@@ -55,4 +56,5 @@ class Spi(Output):
     lights = Combine.combine(data)
     lights.gamma(self.gamma)
     for l in lights:
+      pass
 

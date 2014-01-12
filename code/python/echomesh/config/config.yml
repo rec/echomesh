@@ -206,6 +206,7 @@ light:
 
   visualizer:
     enable: true
+    transform: null
     hide_on_no_clients: true
     show_at_startup: true
     show: true

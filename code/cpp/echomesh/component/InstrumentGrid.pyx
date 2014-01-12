@@ -6,6 +6,7 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
   cdef cppclass InstrumentGrid:
     InstrumentGrid()
 
+    void setBrightness(float)
     void setLights(char*)
     void setLights(FColorList)
     void setPaintingIsUnclipped(bool)

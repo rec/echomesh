@@ -43,6 +43,11 @@ class FColorList : public vector<FColor> {
     std::reverse(begin(), end());
   }
 
+  void scale(float s) {
+    for (auto& i: *this)
+      i.scale(s);
+  }
+
   void set(const FColor& color, int pos) {
     at(pos) = color;
   }
