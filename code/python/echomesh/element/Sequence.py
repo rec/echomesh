@@ -22,8 +22,9 @@ class Sequence(Loop.Loop):
 
     self.elements = []
     self.output = desc.get('output', None)
-    self.pattern_makers = PatternDesc.make_patterns_for_element(
-      self, desc.get('patterns', {}))
+    self.pattern_makers = {}
+    for k, v in desc.get('patterns', {}).items():
+      self.pattern_makers[k] = PatternDesc.make_pattern(self, k, v, True)
 
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)
