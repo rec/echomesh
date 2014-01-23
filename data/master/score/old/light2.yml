@@ -1,6 +1,6 @@
 type: sequence
 
-patterns:
+pattern:
   one:
     type: insert
     pattern:
@@ -17,7 +17,7 @@ elements:
 
 type: sequence
 
-patterns:
+pattern:
   two:
     type: insert
     offset: 32

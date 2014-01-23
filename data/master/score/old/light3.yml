@@ -1,6 +1,6 @@
 type: sequence
 
-patterns:
+pattern:
   two:
     type: insert
     pattern:

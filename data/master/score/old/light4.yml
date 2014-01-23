@@ -6,7 +6,7 @@ variables:
     count:  2
     period: 1/2 second
 
-patterns:
+pattern:
   one:
     type: choose
     choose: local.switch

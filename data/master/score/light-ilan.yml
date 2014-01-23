@@ -1,6 +1,6 @@
 type: sequence
 
-patterns:
+pattern:
   a simple one:
     type: spread
     colors: [red, white]

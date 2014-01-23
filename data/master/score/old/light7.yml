@@ -6,7 +6,7 @@ variables:
     count:  config.light.count
     period: 5ms
 
-patterns:
+pattern:
   one:
     type: insert
     offset: local.loop + 32

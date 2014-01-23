@@ -1,6 +1,6 @@
 type: sequence
 
-patterns:
+pattern:
   one:
     type: concatenate
     pattern:

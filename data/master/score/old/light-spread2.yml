@@ -3,7 +3,7 @@ type: sequence
 variables:
   steps: 96
 
-patterns:
+pattern:
   one:
     type: spread
     colors: [red, yellow]

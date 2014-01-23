@@ -5,7 +5,7 @@ variables:
     type: counter
     period: 20ms
 
-patterns:
+pattern:
   one:
     type: insert
     offset: local.loop / 2 + 32

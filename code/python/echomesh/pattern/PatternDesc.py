@@ -14,8 +14,7 @@ class PatternDesc(namedtuple('PatternDesc', 'element description name')):
     return 'pattern "%s" in element "%s"' % (
       self.name, self.element.class_name())
 
-
-def make_pattern(element, name, description, is_top_level):
+def make_pattern(element, name, description, is_top_level=True):
   entry = REGISTRY.get_from_description(description)
   if is_top_level:
     name = '%s:%s' % (name, entry.name)
@@ -43,4 +42,4 @@ def make_table_and_patterns(pattern_desc, attributes):
 
 def make_pattern_from_file(element, name):
   desc = DataFile.load('pattern', name)[0]
-  return make_pattern(element, name, desc, True)
+  return make_pattern(element, name, desc)

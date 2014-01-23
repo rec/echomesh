@@ -6,5 +6,5 @@ network:
 
 ---
 light:
-  brightness: 50%
+  brightness: 100%
   visualizer: {transform: sqrt}

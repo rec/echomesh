@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+from echomesh.base import DataFile
 from echomesh.element import Element
 from echomesh.element.Sequence import Sequence
 from echomesh.output import make_output
