@@ -5,9 +5,8 @@
 namespace echomesh {
 namespace color {
 
-FColorList mirror(
-    const FColorList&, unsigned int x, unsigned int y,
-    bool reverseX, bool reverseY);
+FColorList insert(const FColorList& fcl,
+                  int offset, uint length, bool rollover, int skip);
 
 }  // namespace color
 }  // namespace echomesh

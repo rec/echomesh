@@ -64,6 +64,8 @@
         <FILE id="fkNS41" name="FColor.h" compile="0" resource="0" file="echomesh/color/FColor.h"/>
         <FILE id="nzb8hr" name="HSB.cpp" compile="1" resource="0" file="echomesh/color/HSB.cpp"/>
         <FILE id="E6XNSs" name="HSB.h" compile="0" resource="0" file="echomesh/color/HSB.h"/>
+        <FILE id="e71aOm" name="Insert.cpp" compile="1" resource="0" file="echomesh/color/Insert.cpp"/>
+        <FILE id="mrVaMb" name="Insert.h" compile="0" resource="0" file="echomesh/color/Insert.h"/>
         <FILE id="mnSJbF" name="RGB.h" compile="0" resource="0" file="echomesh/color/RGB.h"/>
         <FILE id="p7JrLC" name="Mirror.cpp" compile="1" resource="0" file="echomesh/color/Mirror.cpp"/>
         <FILE id="RmokB0" name="Mirror.h" compile="0" resource="0" file="echomesh/color/Mirror.h"/>

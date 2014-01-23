@@ -65,6 +65,7 @@ OBJECTS := \
   $(OBJDIR)/ColorModel_26f43044.o \
   $(OBJDIR)/ColorName_ff26ac1a.o \
   $(OBJDIR)/HSB_7615b903.o \
+  $(OBJDIR)/Insert_9aab0c77.o \
   $(OBJDIR)/Mirror_c90fc27d.o \
   $(OBJDIR)/SPI_b73e5f78.o \
   $(OBJDIR)/Transform_d1c2c3f8.o \
@@ -184,6 +185,11 @@ $(OBJDIR)/ColorName_ff26ac1a.o: ../../echomesh/color/ColorName.cpp
 $(OBJDIR)/HSB_7615b903.o: ../../echomesh/color/HSB.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling HSB.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Insert_9aab0c77.o: ../../echomesh/color/Insert.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Insert.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Mirror_c90fc27d.o: ../../echomesh/color/Mirror.cpp
