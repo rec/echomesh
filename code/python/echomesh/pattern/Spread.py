@@ -23,6 +23,7 @@ def spread(colors=None, model='hsb', steps=None, transform=None):
     steps = None
   else:
     total_steps = None
+
   return cechomesh.color_spread(
     colors,
     model,

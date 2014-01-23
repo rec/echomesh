@@ -8,4 +8,4 @@ from echomesh.pattern.Maker import maker
 
 @maker
 def concatenate(light_sets):
-  return list(itertools.chain(*light_sets))
+  return cechomesh.concatenate_color_lists(light_sets)
