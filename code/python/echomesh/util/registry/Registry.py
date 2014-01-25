@@ -82,7 +82,10 @@ class Registry(object):
 
   def make_from_description(self, description, default_type=None):
     entry = self.get_from_description(description, default_type)
-    return entry.function(**description)
+    if entry and entry.function:
+      return entry.function(**description)
+    else:
+      raise Exception("Didn't understand description %s" % description)
 
   def join_keys(self, command_only=True, load=True):
     words = []

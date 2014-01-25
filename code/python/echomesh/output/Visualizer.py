@@ -13,16 +13,16 @@ LOGGER = Log.logger(__name__)
 class Visualizer(Poll):
   INSTANCE = None
 
-  def __init__(self, light_count=None, interval=None, transform=None, **kwds):
+  def __init__(self, light_count=None, period=None, transform=None, **kwds):
     assert not Visualizer.INSTANCE
     Visualizer.INSTANCE = self
 
     assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
-    self.interval = interval
+    self.period = period
     self.transform = transform
 
-    self.interval_set = interval is not None
+    self.period_set = period is not None
     self.light_count_set = light_count is not None
     self.transform_set = transform is not None
 
@@ -31,7 +31,7 @@ class Visualizer(Poll):
 
     Config.add_client(self)
     super(Visualizer, self).__init__(
-      is_redirect=False, interval=self.interval, **kwds)
+      is_redirect=False, period=self.period, **kwds)
 
   def _after_thread_pause(self):
     self.lighting_window.close()
@@ -42,8 +42,9 @@ class Visualizer(Poll):
   def config_update(self, get):
     if not self.light_count_set:
       self.set_light_count(get('light', 'count'))
-    if not self.interval_set:
-      self.interval = Expression.convert(get('light', 'visualizer', 'period'))
+
+    if not self.period_set:
+      self.period = Expression.convert(get('light', 'visualizer', 'period'))
     if not self.transform_set:
       transform = get('light', 'visualizer', 'transform')
       if transform:

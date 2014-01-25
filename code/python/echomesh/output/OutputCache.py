@@ -12,11 +12,15 @@ def default_output():
   return Visualizer()
 
 class _SingleOutput(object):
-  def __init__(self, filename, output_cache):
+  def __init__(self, name, data, output_cache):
     from echomesh.output import make_output
-    self._filename = filename
+    self._name = name
     self._output_cache = output_cache
-    self._output = make_output(filename) if filename else default_output()
+    if data:
+      from echomesh.output import make_output
+      self._output = make_output(data)
+    else:
+      self._output = default_output()
     self._output.start()
 
   def __getattr__(self, name):
@@ -24,7 +28,7 @@ class _SingleOutput(object):
 
   def __del__(self):
     try:
-      self._output_cache.remove_output(self._filename)
+      self._output_cache.remove_output(self._name)
     except:
       LOGGER.error('Unexpected error in _SingleOutput.__del__')
 
@@ -34,24 +38,27 @@ class OutputCache(object):
     self.outputs = {}
     self.lock = Lock.Lock()
 
-  def add_output(self, name):
+  def get_output(self, name):
     with self.lock:
-      if name:
-        filename = DataFile.resolve('output', name)
-        if not filename:
-          raise Exception('No output named "%s".' % name)
+      output = self.outputs.setdefault(name, [None, 1])
+      if output[0]:
+        output[1] += 1
       else:
-        filename = name
-      output = self.outputs.get(filename, [None, 0])
-      output[1] += 1
-      if not output[0]:
-        output[0] = _SingleOutput(filename, self)
-        self.outputs[filename] = output
+        if name:
+          try:
+            data = DataFile.load('output', name)
+          except:
+            del self.outputs[name]
+            raise Exception('No output named "%s".' % name)
+        else:
+          data = None
+        output[0] = _SingleOutput(name, data, self)
+        self.outputs[name] = output
       return output[0]
 
-  def remove_output(self, filename):
+  def remove_output(self, name):
     with self.lock:
-      output = self.outputs[filename]
+      output = self.outputs[name]
       output[1] -= 1
 
   def pause(self):

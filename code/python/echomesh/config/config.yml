@@ -165,7 +165,6 @@ diagnostics:
 network:
   client:
     allow_reuse_address: true
-    binary: ""
     buffer_size: 4096
     debug: false
     host_name: localhost
@@ -201,18 +200,14 @@ light:
   hardware:
     enable: true
     period: 5ms
-    local: true
+    local: true  # Do we use this?
     rgb_order: rgb
 
   visualizer:
     enable: true
-    transform: null
-    hide_on_no_clients: true
-    show_at_startup: true
-    show: true
-    type: cython
     period: 10ms
-    closes_echomesh: false
+    show: true
+    transform: null  # Should this be brightness_transform?
 
     background: white
     layout: [16, 16]
@@ -237,13 +232,6 @@ load_module:
   # This is the SoundAnalyse package:  https://pypi.python.org/pypi/SoundAnalyse.
   # It's automatically included as part of echomesh so no need to turn this off.
   analyse: true
-
-  # This is the pi3d OpenGL ES 2.0 Python library for the Raspberry Pi:
-  # http://pi3d.github.com.  It does slick 3-D graphics.
-  #
-  # pi3d will only work for Raspberry Pi users and is disabled automatically
-  # for everyone else.
-  pi3d: false
 
   pyaudio: true
 
@@ -323,6 +311,7 @@ pi3d:
   background: [0, 0, 0, 0]  # Red, green, blue, alpha.
   depth: null
   dimensions: null  # Can be a 4-tuple: x, y, width, height.
+  enable: false
   far: null
   frames_per_second: 30
   full_screen: true

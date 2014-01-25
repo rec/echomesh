@@ -1,7 +1,3 @@
-network:
-  client:
-    binary: /development/echomesh/code/cpp/Builds/MacOSX/build/Debug/echomesh-client.app/Contents/MacOS/echomesh-client
-
 midi:
   input:
     name: from Max
@@ -9,6 +5,3 @@ midi:
   output:
     name: to Max
 
-light:
-  visualizer:
-    closes_echomesh: true
