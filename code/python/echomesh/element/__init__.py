@@ -10,7 +10,7 @@ REGISTRY = _register(
   'Print',
   'Repeat',
   'Root',
-  'Pattern',
+  ('Pattern', 'PatternElement'),
   'Schedule',
   'Sequence',
   'Select',

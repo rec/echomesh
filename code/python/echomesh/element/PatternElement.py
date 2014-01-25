@@ -9,9 +9,9 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-class Pattern(Element.Element):
+class PatternElement(Element.Element):
   def __init__(self, parent, description):
-    super(Pattern, self).__init__(parent, description)
+    super(PatternElement, self).__init__(parent, description)
 
     assert isinstance(parent, Sequence)
     self.pattern_name = description['pattern']
@@ -24,7 +24,7 @@ class Pattern(Element.Element):
     return 'pattern(%s)' % self.pattern_name
 
   def _on_run(self):
-    super(Pattern, self)._on_run()
+    super(PatternElement, self)._on_run()
     if not self.output:
       self.output = make_output(self.output_name)
       self.output.add_client(self)
