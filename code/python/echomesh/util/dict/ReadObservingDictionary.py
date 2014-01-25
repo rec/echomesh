@@ -9,3 +9,5 @@ class ReadObservingDictionary(dict):
     self.read.add(key)
     return super(ReadObservingDictionary, self).__getitem__(key)
 
+  def unread(self):
+    return set(self.keys()) - self.read

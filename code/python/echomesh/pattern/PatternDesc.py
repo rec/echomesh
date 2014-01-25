@@ -16,6 +16,8 @@ class PatternDesc(namedtuple('PatternDesc', 'element description name')):
 
 def make_pattern(element, name, description, is_top_level=True):
   entry = REGISTRY.get_from_description(description)
+
+  # TODO: Get rid of this or somehow fix this.
   if is_top_level:
     name = '%s:%s' % (name, entry.name)
 
@@ -24,7 +26,6 @@ def make_pattern(element, name, description, is_top_level=True):
 def make_table_and_patterns(pattern_desc, attributes):
   pd = pattern_desc
   table = {}
-  patterns = []
 
   desc = pd.description
 
