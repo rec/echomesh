@@ -1,0 +1,19 @@
+type: sequence
+
+pattern:
+  one:
+    type: concatenate
+    pattern:
+      -
+        type: spread
+        colors: red, white
+        steps: 48
+      -
+        type: spread
+        colors: white, black
+        steps: 48
+
+elements:
+  -
+    type: pattern
+    pattern: one

@@ -1,0 +1,14 @@
+type: sequence
+
+variables:
+  switch:
+    type: counter
+    count:  2
+    period: 1/2 second
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: three
+

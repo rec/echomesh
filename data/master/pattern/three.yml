@@ -1,0 +1,14 @@
+type: choose
+choose: local.switch
+pattern:
+  -
+    type: spread
+    colors: [white, red]
+    steps: 32
+  -
+    type: insert
+    offset: 32
+    pattern:
+      type: spread
+      colors: [blue, white]
+      steps: 32
