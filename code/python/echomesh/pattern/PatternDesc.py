@@ -34,7 +34,7 @@ def make_table_and_patterns(pattern_desc, attributes):
         v = Expression.expression(v, pd.element)
       table[k] = v
 
-  pats = desc.get('patterns') or desc.get('pattern') or []
+  pats = desc.get('pattern') or []
   if type(pats) is not list:
     pats = [pats]
 

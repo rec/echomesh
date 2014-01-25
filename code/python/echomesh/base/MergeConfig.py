@@ -35,13 +35,13 @@ Examples:
 FileConfig = namedtuple('FileConfig', 'file base edits changes')
 
 class MergeConfig(object):
-  def __init__(self, args):
-    self.args = args
+  def __init__(self, configs):
+    self.configs = configs
     self.read()
 
   def read(self):
     self._read_file_configs()
-    self.arg_config = self._assignment_to_config(self.args, _ARGUMENT_ERROR)
+    self.arg_config = self._assignment_to_config(self.configs, _ARGUMENT_ERROR)
     return self.recalculate()
 
   def recalculate(self):
