@@ -33,6 +33,7 @@ def spread(colors=None, model='hsb', steps=None, transform=None):
 class Spread(Pattern):
   CONSTANTS = 'model', 'transform'
   VARIABLES = 'colors', 'steps', 'total_steps'
+  PATTERN_COUNT = 0
 
   def _evaluate(self):
     colors, error_colors = cechomesh.color_list_with_errors(self.get('colors'))

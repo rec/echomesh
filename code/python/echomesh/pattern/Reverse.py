@@ -11,8 +11,7 @@ def reverse(light_sets):
   return reversed(light_set)
 
 class Reverse(Pattern):
-  def finish_initialization(self, desc):
-    assert len(self.patterns) == 1, 'Reverse must contain exactly one pattern.'
+  PATTERN_COUNT = 1
 
   def _evaluate(self):
-    return reverse(self.patterns[0].evaluate())
+    return reverse(self.patterns()[0])
