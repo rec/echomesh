@@ -245,3 +245,10 @@ def color_list_with_errors(colors=None):
     colors = [colors]
   cl = ColorList()
   return cl, cl.extend(colors, return_errors=True)
+
+def combine_color_lists(color_lists):
+  cdef ColorList result = ColorList()
+  cdef ColorList cl
+  result = ColorList()
+  for cl in color_lists:
+    pass

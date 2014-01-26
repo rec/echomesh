@@ -16,7 +16,7 @@ class Maker(object):
     self.pattern_desc = pattern_desc
 
   def evaluate(self):
-    table = dict((k, Call.call(v)) for k, v in self.table.items())
+    table = dict((k, Call.call_recursive(v)) for k, v in self.table.items())
     if self.patterns:
       arg = [[p.evaluate() for p in self.patterns]]
     else:

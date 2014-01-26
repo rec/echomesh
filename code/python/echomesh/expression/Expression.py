@@ -18,6 +18,11 @@ def expression(expr, element):
 
   return UnitExpression(expr, element)
 
+def constant_expression(expr):
+  ue = UnitExpression(None)
+  ue.expr = expr
+  return ue
+
 def convert(number, element=None, assume_minutes=True):
   if number is None:
     return number
