@@ -7,20 +7,23 @@ from echomesh.expression.ListExpression import ListExpression
 from echomesh.expression.UnitExpression import UnitExpression
 
 def expression(expr, element):
-  if isinstance(expr, dict):
-    return Envelope(expr, element)
+  try:
+    if isinstance(expr, dict):
+      return Envelope(expr, element)
 
-  if isinstance(expr, (list, tuple)):
-    return ListExpression(expr, element)
+    if isinstance(expr, (list, tuple)):
+      return ListExpression(expr, element)
 
-  if isinstance(expr, six.string_types) and ',' in expr:
-    return ListExpression(expr.split(','), element)
+    if isinstance(expr, six.string_types) and ',' in expr:
+      return ListExpression(expr.split(','), element)
 
-  return UnitExpression(expr, element)
+    return UnitExpression(expr, element)
+  except:
+    raise Exception("Couldn't evaluate expression %s" % expr)
 
 def constant_expression(expr):
   ue = UnitExpression(None)
-  ue.expr = expr
+  ue.value = expr
   return ue
 
 def convert(number, element=None, assume_minutes=True):

@@ -3,18 +3,20 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
-from echomesh.pattern.Maker import maker
+from echomesh.pattern.Pattern import Pattern
 
-USE_CECHOMESH = True
+class Insert(Pattern):
+  PATTERN_COUNT = 1
+  OPTIONAL_VARIABLES = 'length', 'offset', 'rollover', 'skip'
 
-@maker('offset', 'length', 'rollover', 'skip')
-def insert(color_lists, offset=None, length=None, rollover=True, skip=None):
-  assert len(color_lists) == 1
-  color_list = color_lists[0]
+  def _evaluate(self):
+    color_list = self.patterns()[0]
+    skip = int(self.get('skip') or 1)
+    offset = int(self.get('offset') or 0)
+    length = self.get('length')
+    if length is None:
+      length = Config.get('light', 'count')
+    rollover = bool(self.get('rollover'))
 
-  skip = int((skip and skip.evaluate()) or 1)
-  offset = int((offset and offset.evaluate()) or 0)
-  if length is None:
-    length = Config.get('light', 'count')
+    return cechomesh.insert_color_list(color_list, offset, length, rollover, skip)
 
-  return cechomesh.insert_color_list(color_list, offset, length, rollover, skip)
