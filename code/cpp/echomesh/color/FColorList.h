@@ -44,6 +44,23 @@ class FColorList : public vector<FColor> {
     erase(begin() + b, begin() + e);
   }
 
+  FColorList interpolate(const FColorList& that, float ratio) const {
+    auto thatLonger = (size() < that.size());
+    if (thatLonger)
+      ratio = 1.0f - ratio;
+    auto& longer = thatLonger ? that : *this;
+    auto& shorter = thatLonger ? *this : that;
+    FColorList result;
+    result.reserve(longer.size());
+
+    for (auto i = 0; i < longer.size(); ++i) {
+      auto& color = (i < shorter.size()) ? shorter[i] : FColor::black();
+      result.push_back(longer[i].interpolate(color, ratio));
+    }
+
+    return result;
+  }
+
   int index(const FColor& c) const {
     auto i = std::find(begin(), end(), c);
     return i == end() ? -1 : i - begin();

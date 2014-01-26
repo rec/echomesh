@@ -12,11 +12,5 @@ class Choose(Pattern):
     def restrict(size):
       return int(max(0, min(length - 1, size)))
     choose = self.get('choose')
-    if hasattr(choose, '__call__'):
-      # TODO: there's no way to specify callables to choose so this case is
-      # never called.
-      zipped = itertools.izip_longest(*self.patterns())
-      return [vec[restrict(choose(i))] for i, vec in enumerate(zipped)]
-    else:
-      return self._patterns[restrict(choose)].evaluate()
+    return self._patterns[restrict(choose)].evaluate()
 

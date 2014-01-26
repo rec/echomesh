@@ -10,8 +10,6 @@ LOGGER = Log.logger(__name__)
 USE_PATTERN = False
 
 class Pattern(object):
-  # The list of pattern description variables that need to be sent to the
-  # evaluator.
   CONSTANTS = ()
   VARIABLES = ()
 

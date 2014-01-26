@@ -10,6 +10,7 @@ cdef extern from "echomesh/color/FColorList.h" namespace "echomesh::color":
     void gamma(float)
     int index(FColor)
     void insertRange(int b1, FColorList, int b2, int e2)
+    FColorList interpolate(FColorList, float ratio)
     void push_back(FColor)
     void resize(size_t size)
     void reserve(size_t size)
