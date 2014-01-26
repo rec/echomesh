@@ -9,39 +9,48 @@ LOGGER = Log.logger(__name__)
 class Pattern(object):
   # The list of pattern description variables that need to be sent to the
   # evaluator.
-  VARIABLES = set()
+  VARIABLES = ()
+  CONSTANTS = ()
+  PATTERN_COUNT = None
 
   def __init__(self, desc, element):
     desc = ReadObservingDictionary(desc)
-    self.patterns = [make_pattern(p) for p in desc.pop('pattern', [])]
+    pat = desc.pop('pattern', [])
+    if isinstance(pat, dict):
+      pat = [pat]
+    self.patterns = [make_pattern(p) for p in pat]
+
+    if self.PATTERN_COUNT is not None:
+      assert self.PATTERN_COUNT == len(self.patterns), (
+        "Pattern type %s expects %s subpatterns but got %d" %
+        (self.__class__.__name__, self.PATTERN_COUNT, len(self.patterns)))
+
     self.dictionary = {}
-    is_constant = True
-    for k, v in desc.iteritems():
-      if v in self.VARIABLES:
-        self.dictionary[k] = Expression.expression(v, element)
-        is_constant = is_constant and self.dictionary[k].is_constant()
-      else:
-        self.dictionary[k] = Expression.constant_expression(v)
-    self.finish_initialization(desc)
+    self.is_constant = all(p.is_constant for p in self.patterns)
+    for k in self.VARIABLES:
+      self.dictionary[k] = Expression.expression(dict.get(k), element)
+      is_constant = is_constant and self.dictionary[k].is_constant()
+
+    for k in self.CONSTANTS:
+      self.dictionary[k] = Expression.constant_expression(dict.get(k))
+
     unread = desc.unread()
     if unread:
       LOGGER.error(
         "For pattern type %s, we didn't use the following parameters: %s" %
         (self.__class__.__name__, ', '.join(unread)))
 
-    self.is_constant = is_constant and self._is_constant() and (
-      all(p.is_constant for p in self.patterns))
     if self.is_constant:
       self._value = self._evaluate();
+
+  def get(self, name):
+    return self.dictionary[name].evaluate()
 
   def evalulate(self):
     return self._value if self.is_constant else self._evaluate()
 
   def _evaluate(self):
     return []
-
-  def _is_constant(self):
-    return True
 
   def finish_initialization(self, desc):
     pass

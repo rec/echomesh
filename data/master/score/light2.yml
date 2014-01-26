@@ -10,5 +10,5 @@ elements:
   -
     end: infinite
     type: pattern
-    pattern: one
+    pattern: one-reverse
 

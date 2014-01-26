@@ -5,8 +5,6 @@ import sys
 
 from echomesh.util.registry.Registry import Registry
 
-EXPORTED_ATTRIBUTES = ()  # 'entry', 'function', 'get_help', 'keys', 'join_keys'
-
 def register(class_path, *modules, **kwds):
   module = sys.modules[class_path]
   registry = Registry(class_path, class_path=class_path, **kwds)
@@ -16,8 +14,5 @@ def register(class_path, *modules, **kwds):
       registry.register(sub, sub.lower())
     else:
       registry.register(sub[1], sub[0].lower())
-
-  for a in EXPORTED_ATTRIBUTES:
-    setattr(module, a, getattr(registry, a))
 
   return registry
