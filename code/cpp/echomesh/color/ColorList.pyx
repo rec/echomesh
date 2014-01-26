@@ -41,8 +41,7 @@ cdef class ColorList:
     cdef ColorList cl
     for other in items:
       cl = toColorList(other)
-      for i in range(self.thisptr.size()):
-        self.thisptr.at(i).combine(cl.thisptr.at(i))
+      self.thisptr.combine(cl.thisptr[0])
 
   def count(self, object item):
     cdef FColor c
@@ -239,16 +238,8 @@ cdef class ColorList:
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 
-
 def color_list_with_errors(colors=None):
   if isinstance(colors, six.string_types):
     colors = [colors]
   cl = ColorList()
   return cl, cl.extend(colors, return_errors=True)
-
-def combine_color_lists(color_lists):
-  cdef ColorList result = ColorList()
-  cdef ColorList cl
-  result = ColorList()
-  for cl in color_lists:
-    pass
