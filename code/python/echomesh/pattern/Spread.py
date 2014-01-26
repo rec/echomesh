@@ -5,10 +5,7 @@ import six
 
 from echomesh.base import Config
 from echomesh.pattern.Maker import maker
-from echomesh.util import Log
 from echomesh.util.string.Plural import plural
-
-LOGGER = Log.logger(__name__)
 
 @maker('steps', 'total_steps')
 def spread(colors=None, model='hsb', steps=None, transform=None):
