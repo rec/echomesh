@@ -1,13 +1,15 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import Log
-from echomesh.util.dict.ReadObservingDictionary import ReadObservingDictionary
+import re
+import six
+
 from echomesh.expression import Expression
 from echomesh.pattern import make_pattern
+from echomesh.util import Log
+from echomesh.util.dict.ReadObservingDictionary import ReadObservingDictionary
+from echomesh.util.string.Split import split_on_commas
 
 LOGGER = Log.logger(__name__)
-
-USE_PATTERN = False
 
 class Pattern(object):
   CONSTANTS = ()
@@ -22,8 +24,10 @@ class Pattern(object):
     self.element = element
     desc = ReadObservingDictionary(desc)
     pat = desc.pop('pattern', [])
-    if not isinstance(pat, (list, tuple)):
+    if isinstance(pat, dict):
       pat = [pat]
+    elif isinstance(pat, six.string_types):
+      pat = split_on_commas(pat)
     self._patterns = [make_pattern(element, p) for p in pat]
 
     if self.PATTERN_COUNT is not None:

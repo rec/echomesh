@@ -31,12 +31,14 @@ class ValueRoot(object):
     variable = parts.pop()
     for p in parts:
       element = element.get_child(p)
-    return element.variables[variable]
+    try:
+      return element.variables[variable]
+    except Exception as e:
+      raise Exception(self._error(parts + [variable], e))
 
   def _error(self, parts, exception):
-    return ('Couldn\'t understand %s variable "%s" - got error "%s"' %
-            (self.__class__.__name__.lower(), '.'.join(parts),
-            exception.message))
+    return ('No such %s variable "%s"' %
+            (self.__class__.__name__.lower(), '.'.join(parts)))
 
   def evaluate(self, parts, evaluator, element):
     try:

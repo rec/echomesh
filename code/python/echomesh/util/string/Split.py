@@ -4,9 +4,13 @@ import re
 import six
 
 WORD_SPLITTER = re.compile(r'[\s]+')
+COMMA_SPLITTER = re.compile(r'[\s,]+')
 
 def split_words(s):
   return [i for i in WORD_SPLITTER.split(s) if i]
+
+def split_on_commas(s):
+  return [i for i in COMMA_SPLITTER.split(s) if i]
 
 def pair_split(items, split='as'):
   result = []
