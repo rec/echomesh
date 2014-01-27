@@ -25,6 +25,7 @@ class Loop(Element.Element):
     self.pause_on_exception = pause_on_exception
     self.max_error_count = max_error_count
     self.error_count = 0
+    self.time = 0
 
   def next_time(self, t):
     # TODO: is this right?
@@ -67,15 +68,15 @@ class Loop(Element.Element):
       if self.delay > 0:
         time.sleep(self.delay)
 
-    now = time.time()
-    if now >= self.next_loop_time:
-      self.loop_target(now)
+    self.time = time.time()
+    if self.time >= self.next_loop_time:
+      self.loop_target(self.time)
       self.next_loop_time = self.next_time(self.next_loop_time)
-      if self.next_loop_time <= now:
-        self.next_loop_time = self.next_time(now)
+      if self.next_loop_time <= self.time:
+        self.next_loop_time = self.next_time(self.time)
 
     if self.is_running:
-      sleep_time = min(self.timeout, self.next_loop_time - now)
+      sleep_time = min(self.timeout, self.next_loop_time - self.time)
       if sleep_time > 0:
         time.sleep(sleep_time)
       else:

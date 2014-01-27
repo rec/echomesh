@@ -11,7 +11,7 @@ import six
 import sys
 import traceback
 
-FORCE_DEBUG = not True
+FORCE_DEBUG = False
 DINFO = 3.5
 VDEBUG = 5
 

@@ -47,7 +47,7 @@ class Output(object):
     try:
       self.clients.remove(client)
     except ValueError:
-      LOGGER.error('Output', self, 'did not contain client', client)
+      LOGGER.error('Output %s did not contain %s', self, client, exc_info=0)
 
   def evaluate(self):
     bad_clients = []
