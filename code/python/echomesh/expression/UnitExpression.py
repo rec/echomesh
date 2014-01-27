@@ -11,6 +11,7 @@ _ANY_UNIT = re.compile(r'( .*? (?: \d\.? | \s | \) ) ) ( [a-z%]* ) \s* $', re.X)
 
 class UnitExpression(object):
   def __init__(self, expression, element=None, assume_minutes=True):
+    self.original_expression = expression
     self.element = element
     self.expression = self.value = None
     if expression is not None:
@@ -32,14 +33,27 @@ class UnitExpression(object):
     if not self.expression:
       return self.value
 
-    val = self.expression.evaluate()
+    try:
+      val = self.expression.evaluate()
+    except Exception as e:
+      e.message = ('Got the error "%s" when evaluating the expression "%s"' %
+                   (e.message, self.original_expression))
+      e.args = e.message,
+      raise
+
     if self.unit_converter:
       return self.unit_converter(val)
     else:
       return val
 
   def is_constant(self):
-    return not self.expression or self.expression.is_constant()
+    try:
+      return not self.expression or self.expression.is_constant()
+    except Exception as e:
+      e.message = ('Got the error "%s" when evaluating the expression "%s"' %
+                   (e.message, self.original_expression))
+      e.args = e.message,
+      raise
 
   def __str__(self):
     return 'UnitExpression(%s)' % (self.expression or self.value)

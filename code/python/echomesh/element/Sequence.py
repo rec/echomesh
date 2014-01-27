@@ -6,7 +6,7 @@ import time
 from echomesh.element import Loop
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.pattern import PatternDesc
+from echomesh.pattern import make_pattern
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -22,9 +22,9 @@ class Sequence(Loop.Loop):
 
     self.elements = []
     self.output = desc.get('output', None)
-    self.pattern_makers = {}
+    self.patterns = {}
     for k, v in desc.get('pattern', {}).items():
-      self.pattern_makers[k] = PatternDesc.make_pattern(self, k, v)
+      self.patterns[k] = make_pattern(self, v, k)
 
     super(Sequence, self).__init__(
       parent, desc, name='Sequence', full_slave=False)

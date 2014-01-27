@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import bisect
+import six
 
 from echomesh.expression import SplitNumbers
 from echomesh.util.dict.FromAttributes import from_attributes
@@ -26,6 +27,10 @@ class Envelope(object):
     _check_times(self.times)
 
     self.loops = kwds.get('loops', 1)
+    if not isinstance(self.loops, six.integer_types):
+      from echomesh.expression import Expression
+      self.loops = Expression.convert(self.loops)
+
     self.last_time = self.times[-1]
 
     length = kwds.get('length', self.last_time * self.loops)

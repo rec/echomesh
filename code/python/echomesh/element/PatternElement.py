@@ -1,10 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from echomesh.base import DataFile
 from echomesh.element import Element
 from echomesh.element.Sequence import Sequence
 from echomesh.output import make_output
-from echomesh.pattern import PatternDesc
+from echomesh.pattern import make_pattern
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -14,14 +16,12 @@ class PatternElement(Element.Element):
     super(PatternElement, self).__init__(parent, description)
 
     assert isinstance(parent, Sequence)
-    self.pattern_name = description['pattern']
-    self.maker = parent.pattern_makers.get(self.pattern_name) or (
-      PatternDesc.make_pattern_from_file(parent, self.pattern_name))
+    self.pattern = make_pattern(parent, description['pattern'], parent.patterns)
     self.output_name = description.get('output') or parent.output
     self.output = None
 
   def class_name(self):
-    return 'pattern(%s)' % self.pattern_name
+    return 'pattern(%s)' % self.pattern.name
 
   def _on_run(self):
     super(PatternElement, self)._on_run()
@@ -35,4 +35,4 @@ class PatternElement(Element.Element):
       self.output = None
 
   def evaluate(self):
-    return [self.maker.evaluate()]
+    return [self.pattern.evaluate()]

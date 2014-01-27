@@ -7,6 +7,8 @@ from echomesh.util.registry.Registry import Registry
 
 _REGISTRY = Registry('expression values')
 
+DO_RAISE = True
+
 def _get_value_function(value):
    parts = value.split('.')
    if len(parts) == 1:
@@ -31,21 +33,42 @@ class ValueRoot(object):
       element = element.get_child(p)
     return element.variables[variable]
 
+  def _error(self, parts, exception):
+    return ('Couldn\'t understand %s variable "%s" - got error "%s"' %
+            (self.__class__.__name__.lower(), '.'.join(parts),
+            exception.message))
+
   def evaluate(self, parts, evaluator, element):
-    return self._get_function(parts, element).evaluate()
+    try:
+      return self._evaluate(parts, evaluator, element)
+    except Exception as e:
+      if DO_RAISE:
+        raise
+      raise Exception(self._error(parts, e))
 
   def is_constant(self, parts, element):
+    try:
+      return self._is_constant(parts, element)
+    except Exception as e:
+      if DO_RAISE:
+        raise
+      raise Exception(self._error(parts, e))
+
+  def _evaluate(self, parts, evaluator, element):
+    return self._get_function(parts, element).evaluate()
+
+  def _is_constant(self, parts, element):
     return self._get_function(parts, element).is_constant()
 
   def _get_element(self, parts, element):
-    pass
+    return element
 
 class Configuration(ValueRoot):
-  def evaluate(self, parts, evaluator, element):
+  def _evaluate(self, parts, evaluator, element):
     from echomesh.base import Config
     return Config.get(*parts)
 
-  def is_constant(self, parts, element):
+  def _is_constant(self, parts, element):
     return False  # TODO: it's inefficient that Configs are non-constant.
 
 class Element(ValueRoot):
@@ -53,11 +76,11 @@ class Element(ValueRoot):
     return element.get_root()
 
 class Function(ValueRoot):
-  def evaluate(self, parts, evaluator, element):
+  def _evaluate(self, parts, evaluator, element):
     value = evaluator.pop_and_evaluate()
     return Functions.FUNCTIONS.get('.'.join(parts))(value)
 
-  def is_constant(self, parts, element):
+  def _is_constant(self, parts, element):
     return True
 
 class Global(ValueRoot):
@@ -66,14 +89,7 @@ class Global(ValueRoot):
     return ScoreMaster.INSTANCE.get_prefix(parts.pop(0))[1]
 
 class Local(ValueRoot):
-  def _get_element(self, parts, element):
-    return element
-
-  def evaluate(self, parts, evaluator, element):
-    return super(Local, self).evaluate(parts, evaluator, element)
-
-  def is_constant(self, parts, element):
-    return super(Local, self).is_constant(parts, element)
+  pass
 
 class Parent(ValueRoot):
   def _get_element(self, parts, element):
@@ -83,16 +99,11 @@ class System(ValueRoot):
   def _get_system(self, parts):
     return echomesh.expression.parse.System.get('.'.join(parts))
 
-  def evaluate(self, parts, evaluator, element):
+  def _evaluate(self, parts, evaluator, element):
     return Call.call_recursive(self._get_system(parts).function)
 
-  def is_constant(self, parts, element):
-    return self._get_system(parts).is_constant
+  def _is_constant(self, parts, element):
+    return self._get_system(parts)._is_constant
 
-_REGISTRY.register(Configuration(), 'configuration')
-_REGISTRY.register(Element(), 'element')
-_REGISTRY.register(Function(), 'function')
-_REGISTRY.register(Global(), 'global')
-_REGISTRY.register(Local(), 'local')
-_REGISTRY.register(Parent(), 'parent')
-_REGISTRY.register(System(), 'system')
+for c in Configuration, Element, Function, Global, Local, Parent, System:
+  _REGISTRY.register(c(), c.__name__)

@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util import Log
 from echomesh.util.dict.ReadObservingDictionary import ReadObservingDictionary
 from echomesh.expression import Expression
-from echomesh.pattern import PatternDesc
+from echomesh.pattern import make_pattern
 
 LOGGER = Log.logger(__name__)
 
@@ -19,13 +19,12 @@ class Pattern(object):
 
   def __init__(self, desc, element, name):
     self.name = name
-    self.element_name = element.class_name()
+    self.element = element
     desc = ReadObservingDictionary(desc)
     pat = desc.pop('pattern', [])
-    if isinstance(pat, dict):
+    if not isinstance(pat, (list, tuple)):
       pat = [pat]
-    # TODO: we need to be able to reference subpatterns
-    self._patterns = [PatternDesc.make_pattern(element, 'NONAME', p) for p in pat]
+    self._patterns = [make_pattern(element, p) for p in pat]
 
     if self.PATTERN_COUNT is not None:
       assert self.PATTERN_COUNT == len(self._patterns), (
@@ -84,5 +83,6 @@ class Pattern(object):
     return []
 
   def __str__(self):
-    return 'pattern "%s" in element "%s"' % (self.name, self.element_name)
+    return 'pattern "%s" in element "%s"' % (
+      self.name, self.element.class_name())
 

@@ -3,9 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.expression.parse import BNF
 from echomesh.expression.parse import Evaluator
 from echomesh.expression.parse import Values
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
 
 class RawExpression(object):
   def __init__(self, expression, element):
@@ -19,11 +16,10 @@ class RawExpression(object):
 
   def is_constant(self):
     if self._is_constant is None:
-      def const(s):
+      def is_const(s):
         return not s[0].isalpha() or Values.is_constant(s, self.element)
-      self._is_constant = all(const(s) for s in self.stack)
+      self._is_constant = all(is_const(s) for s in self.stack)
 
-    LOGGER.vdebug('%s.is_constant=%s', self.expression, self._is_constant)
     return self._is_constant
 
   def evaluate(self):
