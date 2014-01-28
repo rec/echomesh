@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import bisect
 import six
+import time
 
 from echomesh.expression import SplitNumbers
 from echomesh.util.dict.FromAttributes import from_attributes
@@ -49,7 +50,7 @@ class Envelope(object):
         self.length = 0
 
   def evaluate(self):
-    return self.interpolate(self.element.time)
+    return self.interpolate(time.time() - self.element.start_time)
 
   def is_constant(self):
     return self._is_constant

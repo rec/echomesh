@@ -51,12 +51,12 @@ class Loop(Element.Element):
         elif self.report_error_on_close:
           LOGGER.error('Thread %s reports an error on close:', self.name)
 
-
   def run(self):
     # Don't call super, because it starts things automatically
     if not self.is_running:
       self.is_running = True
       self.first_time = True
+      self.start_time = time.time()
       self.next_loop_time = self.next_time(time.time())
       self.thread = threading.Thread(target=self.target)
       self.thread.daemon = True
