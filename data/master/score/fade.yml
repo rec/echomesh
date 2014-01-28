@@ -1,0 +1,26 @@
+variables:
+  fader:
+    type: envelope
+    loops: infinite
+    0:00: 0
+    0:10: 1
+    0:20: 0
+
+type: sequence
+
+elements:
+  -
+    type: pattern
+    pattern:
+      type: fade
+      fade: local.fader
+      pattern:
+      -
+        type: spread
+        colors: [white, red]
+        steps: 32
+      -
+        type: spread
+        colors: [blue, white]
+        steps: 32
+
