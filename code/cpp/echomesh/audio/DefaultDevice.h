@@ -11,6 +11,15 @@ double defaultOutputSampleRate();
 string defaultInputDevice();
 string defaultOutputDevice();
 
+struct DeviceDeleter {
+  void operator()(AudioDeviceManager*);
+};
+
+typedef unique_ptr<AudioDeviceManager, DeviceDeleter> AudioDeviceManagerPointer;
+
+AudioDeviceManagerPointer getDevice(
+    bool isInput, const string& name = "", int channels = 2);
+
 }  // namespace audio
 }  // namespace echomesh
 

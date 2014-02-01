@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import six
-
 from echomesh.base import GetPrefix
 
 class Enum(object):
@@ -18,7 +16,7 @@ class Enum(object):
     for i, s in enumerate(sequential):
       setattr(self, s, i)
       self._reverse[i] = s
-    for k, v in six.iteritems(named):
+    for k, v in named.items():
       setattr(self, k, v)
       self._reverse[v] = k
 
