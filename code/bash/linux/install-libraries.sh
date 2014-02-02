@@ -7,6 +7,7 @@ echo
 echo "----------------------"
 
 apt-get install \
+ distcc \
  ffmpeg \
  freeglut3-dev \
  git \
