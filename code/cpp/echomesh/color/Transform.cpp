@@ -63,8 +63,14 @@ TransformMap makeTransforms() {
 
 auto TRANSFORMS = makeTransforms();
 
+
+float composer(FloatFunction f, FloatFunction g, float x) {
+  return f(g(x));
+}
+
 FloatFunction compose(FloatFunction f, FloatFunction g) {
-  return [&](float x) { return f(g(x)); };
+  return bind(composer, f, g, placeholders::_3);
+  // return [&](float x) { return f(g(x)); };  Doesn't work in Clang 3!
 }
 
 FloatTransform compose(FloatTransform f, FloatTransform g) {

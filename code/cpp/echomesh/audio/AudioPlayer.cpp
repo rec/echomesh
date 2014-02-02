@@ -55,7 +55,7 @@ bool AudioPlayer::removeInputSource(AudioSource* source) {
 }
 
 void AudioPlayer::removePlayer(AudioPlayer* player) {
-  auto name = string{player->name_};
+  const string name = player->name_;
   if (not PLAYERS.erase(name))
     LOG(DFATAL) << "Didn't erase Player " << name;
 }

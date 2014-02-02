@@ -4,18 +4,7 @@ import os
 
 from echomesh.base import Platform
 from echomesh.build.BuildConfig import CONFIG
-
-_DARWIN_COMMAND = ('xcodebuild -project Builds/MacOSX/echomesh.xcodeproj '
-                   '-configuration {Config}')
-
-COMMANDS = {
-  'library': {
-    'darwin': _DARWIN_COMMAND
-    },
-  'clean': {
-    'darwin': '%s clean' % _DARWIN_COMMAND
-    },
-}
+from echomesh.build.BuildCommands import COMMANDS
 
 def execute(command):
   config = 'debug' if CONFIG.debug else 'release'

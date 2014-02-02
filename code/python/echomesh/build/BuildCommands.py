@@ -3,12 +3,16 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 _DARWIN_BUILD = ('xcodebuild -project Builds/MacOSX/echomesh.xcodeproj '
                  '-configuration {Config} ')
 
+_DEBIAN_BUILD = ('cd Builds/Linux && make -k ')
+
 COMMANDS = {
   'build': {
     'darwin': _DARWIN_BUILD
+    'debian': _DEBIAN_BUILD
   },
   'clean': {
     'darwin': _DARWIN_BUILD + 'clean'
+    'debian': _DEBIAN_BUILD + 'clean'
   },
 }
 
