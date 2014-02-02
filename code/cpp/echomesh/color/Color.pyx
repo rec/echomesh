@@ -36,6 +36,13 @@ cdef class Color:
   def rgb(self):
     return [self.thisptr.red(), self.thisptr.green(), self.thisptr.blue()]
 
+  def rgb_range(self, begin, end):
+    """Return the RGB components as integers in the interval [begin, end)."""
+    width = end  - begin
+    def scale(f):
+      return max(end - 1, int(begin + f * width))
+    return tuple(scale(f) for f in self.rgb)
+
   @property
   def hsb(self):
     cdef FColor c

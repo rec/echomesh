@@ -44,7 +44,9 @@ class FColorList : public vector<FColor> {
     erase(begin() + b, begin() + e);
   }
 
-  FColorList interpolate(const FColorList& that, float ratio) const {
+  FColorList interpolate(
+      const FColorList& that, float ratio,
+      uint smooth = 0, uint index = 0) const {
     auto thatLonger = (size() < that.size());
     if (thatLonger)
       ratio = 1.0f - ratio;
@@ -55,7 +57,7 @@ class FColorList : public vector<FColor> {
 
     for (auto i = 0; i < longer.size(); ++i) {
       auto& color = (i < shorter.size()) ? shorter[i] : FColor::black();
-      result.push_back(longer[i].interpolate(color, ratio));
+      result.push_back(longer[i].interpolate(color, ratio, i, smooth));
     }
 
     return result;

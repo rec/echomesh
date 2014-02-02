@@ -54,7 +54,7 @@ void DeviceDeleter::operator()(AudioDeviceManager* dm) {
     auto& device = i.second;
     if (device.manager_.get() == dm) {
       if (not --device.referenceCount_)
-        DEVICE_TABLE.erase(&i);
+        DEVICE_TABLE.erase(i.first);
       return;
     }
   }

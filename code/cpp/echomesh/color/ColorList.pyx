@@ -91,10 +91,10 @@ cdef class ColorList:
   def insert(self, int index, object item):
     self[index:index] = [item]
 
-  def interpolate(self, color_list, float fader):
+  def interpolate(self, color_list, float fader, unsigned int smooth=0):
     cdef ColorList cl = toColorList(color_list)
     cdef ColorList result = ColorList()
-    result.thisptr[0] = self.thisptr.interpolate(cl.thisptr[0], fader)
+    result.thisptr[0] = self.thisptr.interpolate(cl.thisptr[0], fader, smooth)
     return result
 
   def pop(self, int index=-1):

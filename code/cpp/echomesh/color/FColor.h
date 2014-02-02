@@ -107,12 +107,16 @@ class FColor {
                   floatToUInt8(alpha()));
   }
 
-  FColor interpolate(const FColor& end, float ratio) const {
-    auto b0 = red_, b1 = green_, b2 = blue_;
-    auto e0 = end.red_, e1 = end.green_, e2 = end.blue_;
-    return FColor(b0 + ratio * (e0 - b0),
-                  b1 + ratio * (e1 - b1),
-                  b2 + ratio * (e2 - b2));
+  FColor interpolate(
+      const FColor& end, float ratio, uint smooth = 0, uint index = 0) const {
+    if (smooth) {
+      LOG(DFATAL) << "We don't support smooth interpolation yet.";
+      return FColor();
+    } else {
+      return FColor(red_ + ratio * (end.red_ - red_),
+                    green_ + ratio * (end.green_ - green_),
+                    blue_ + ratio * (end.blue_ - blue_));
+    }
   }
 
   void scale(float scale) {

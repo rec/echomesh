@@ -6,6 +6,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Fade(Pattern):
   VARIABLES = 'fade',
+  OPTIONAL_VARIABLES = 'smooth',
 
   def _evaluate(self):
     patterns = self.patterns()
@@ -21,6 +22,6 @@ class Fade(Pattern):
     fade = total_fade - segment
     if segment < steps:
       return cechomesh.to_color_list(patterns[segment]).interpolate(
-        patterns[segment + 1], fade)
+        patterns[segment + 1], fade, self.get('smooth', 0))
     else:
       return patterns[segment]

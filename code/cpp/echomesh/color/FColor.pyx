@@ -15,5 +15,6 @@ cdef extern from "echomesh/color/FColor.h" namespace "echomesh::color":
     void copy(FColor)
     void copy(FColor*)
     void gamma(float)
-    FColor interpolate(FColor end, float ratio)
+    FColor interpolate(FColor end, float ratio,
+                       unsigned int smooth, unsigned int index)
     void scale(float)

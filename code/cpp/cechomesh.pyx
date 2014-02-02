@@ -1,6 +1,8 @@
 # distutils: language = c++
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
+ctypedef unsigned int uint
+
 include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
 
