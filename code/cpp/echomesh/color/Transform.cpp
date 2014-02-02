@@ -69,8 +69,8 @@ float composer(FloatFunction f, FloatFunction g, float x) {
 }
 
 FloatFunction compose(FloatFunction f, FloatFunction g) {
-  return bind(composer, f, g, placeholders::_3);
-  // return [&](float x) { return f(g(x)); };  Doesn't work in Clang 3!
+  // return bind(composer, f, g, placeholders::_3);
+  return [&](float x) { return f(g(x)); };  Doesn't work in Clang 3!
 }
 
 FloatTransform compose(FloatTransform f, FloatTransform g) {
