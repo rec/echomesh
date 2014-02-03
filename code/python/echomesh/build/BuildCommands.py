@@ -6,12 +6,12 @@ _DARWIN_BUILD = ('xcodebuild -project Builds/MacOSX/echomesh.xcodeproj '
 _DEBIAN_BUILD = ('cd Builds/Linux && make -k ')
 
 COMMANDS = {
-  'build': {
-    'darwin': _DARWIN_BUILD
+  'library': {
+    'darwin': _DARWIN_BUILD,
     'debian': _DEBIAN_BUILD
   },
   'clean': {
-    'darwin': _DARWIN_BUILD + 'clean'
+    'darwin': _DARWIN_BUILD + 'clean',
     'debian': _DEBIAN_BUILD + 'clean'
   },
 }
