@@ -32,7 +32,6 @@ class _SingleOutput(object):
     except:
       LOGGER.error('Unexpected error in _SingleOutput.__del__')
 
-
 class OutputCache(object):
   def __init__(self):
     self.outputs = {}
@@ -48,8 +47,12 @@ class OutputCache(object):
           try:
             data = DataFile.load('output', name)
           except:
-            del self.outputs[name]
-            raise Exception('No output named "%s".' % name)
+            try:
+              from echomesh.output.Registry import REGISTRY
+              data = {'type': REGISTRY.entry(name).name}
+            except:
+              del self.outputs[name]
+              raise Exception('No output named "%s".' % name)
         else:
           data = None
         output[0] = _SingleOutput(name, data, self)

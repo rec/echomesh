@@ -4,7 +4,7 @@ from echomesh.util.registry.Module import register
 from echomesh.output.OutputCache import OutputCache
 
 REGISTRY = register(
-  '.'.join(__name__.split('.')[:-1]),
+  '.'.join(__name__.split('.')[:-1]),  # The name of the *parent* of this module.
   'Bidirectional',
   'Offset',
   'Output',
