@@ -54,7 +54,7 @@ class Config(object):
     elif Platform.PLATFORM == Platform.UBUNTU:
       extra_link_args += (
         '-lc++ -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
-        '-ldl -lfreetype -lrt ')
+        '-ldl -lfreetype -lrt -lechomesh')
       extra_compile_args += '-stdlib=libc++ -arch x86_64  -x c++ '
 
       if DEBUG:
@@ -66,7 +66,7 @@ class Config(object):
     elif Platform.PLATFORM == Platform.DEBIAN:
       extra_link_args += (
         '-L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
-        '-ldl -lfreetype -lrt ')
+        '-ldl -lfreetype -lrt -lechomesh')
 
       echomesh_lib = 'Builds/Linux/build'
 
