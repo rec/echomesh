@@ -15,7 +15,7 @@ class FColorList : public vector<FColor> {
   }
 
   void combine(const FColorList& that) {
-    auto thisSize = size(), thatSize = that.size();
+    int thisSize = size(), thatSize = that.size();
     if (thisSize >= thatSize) {
       for (auto i = 0; i < thatSize; ++i)
         (*this)[i].combine(that[i]);
@@ -55,7 +55,7 @@ class FColorList : public vector<FColor> {
     FColorList result;
     result.reserve(longer.size());
 
-    for (auto i = 0; i < longer.size(); ++i) {
+    for (uint i = 0; i < longer.size(); ++i) {
       auto& color = (i < shorter.size()) ? shorter[i] : FColor::black();
       result.push_back(longer[i].interpolate(color, ratio, i, smooth));
     }
