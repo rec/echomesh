@@ -53,7 +53,7 @@ class Spi(Output):
     if self.enabled:
       self._device.write(self.lights)
       self._device.flush()
-    elif not getattr(self, 'emulation_written'):
+    elif self.lights and not getattr(self, 'emulation_written'):
       self.emulation_written = True
       with open(EMULATION_FILE, 'w') as f:
         f.write(str(self.lights))
@@ -65,12 +65,13 @@ class Spi(Output):
       self.lights[-1 - i] = 0
 
   def emit_output(self, data):
-    lights = Combine.combine(data)
-    lights.scale(self.brightness)
-    lights.gamma(self.gamma)
+    if data:
+      lights = Combine.combine(data)
+      lights.scale(self.brightness)
+      lights.gamma(self.gamma)
 
-    for i, light in enumerate(lights):
-      light_bytes = self.rgb_order(*light.rgb_range(128, 256))
-      self.lights[3 * i: 3 * (i + 1)] = light_bytes
+      for i, light in enumerate(lights):
+        light_bytes = self.rgb_order(*light.rgb_range(128, 256))
+        self.lights[3 * i: 3 * (i + 1)] = light_bytes
 
-    self._write()
+      self._write()

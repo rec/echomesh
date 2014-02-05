@@ -16,7 +16,8 @@ class PatternElement(Element.Element):
     super(PatternElement, self).__init__(parent, description)
 
     assert isinstance(parent, Sequence)
-    self.pattern = make_pattern(parent, description['pattern'], parent.patterns)
+    self.pattern = make_pattern(parent, description['pattern'],
+                                patterns=parent.patterns)
     self.output_name = description.get('output') or parent.output
     self.output = None
 
