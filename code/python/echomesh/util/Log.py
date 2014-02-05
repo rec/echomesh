@@ -109,9 +109,20 @@ def _make_logger(logger, name):
 
   setattr(logger, name, new_logger)
 
-def logger(name=None):
-  assert name
-  logger = logging.getLogger(name or 'echomesh')
+_CONFIG = None
+
+def _configure():
+  global _CONFIG, _LOGGER
+  if not _CONFIG:
+    _add_new_levels()
+    _CONFIG = _ConfigClient()
+    _reconfigure()
+    _LOGGER = logger(__name__)
+    _LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
+
+def logger(name):
+  _configure()
+  logger = logging.getLogger(name)
 
   for name in 'vdebug', 'debug', 'error', 'warn', 'info':
     _make_logger(logger, name)
@@ -123,11 +134,4 @@ def set_stream(stream):
   global _STREAM
   _STREAM = stream
   _reconfigure()
-
-_add_new_levels()
-_CONFIG = _ConfigClient()
-
-_reconfigure()
-LOGGER = logger(__name__)
-LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
 
