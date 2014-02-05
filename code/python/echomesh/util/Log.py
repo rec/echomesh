@@ -44,8 +44,6 @@ def _add_new_levels():
   logging.Logger.vdebug = vdebug
   logging.VDEBUG = VDEBUG
 
-_add_new_levels()
-
 class _ConfigClient(object):
   def config_update(self, get):
     get = get or (lambda *x: None)
@@ -74,8 +72,6 @@ class _ConfigClient(object):
     self.kwds = dict((str(k), v) for k, v in six.iteritems(self.kwds))
     logging.basicConfig(**self.kwds)
 
-
-_CONFIG = _ConfigClient()
 
 def _reconfigure():
   try:
@@ -127,6 +123,9 @@ def set_stream(stream):
   global _STREAM
   _STREAM = stream
   _reconfigure()
+
+_add_new_levels()
+_CONFIG = _ConfigClient()
 
 _reconfigure()
 LOGGER = logger(__name__)
