@@ -9,6 +9,7 @@ REGISTRY = register(
   'Offset',
   'Output',
   'Map',
+  'Spi',
   'Test',
   'Visualizer',
 )

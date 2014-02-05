@@ -4,12 +4,16 @@ from collections import namedtuple
 
 import sys
 
+MYSTERIOUS_FAILURE = False
+
 from echomesh.base.AddExceptionSuffix import add_exception_suffix
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Importer
 from echomesh.util import Log
-from echomesh.util.registry import Entry
+
+if MYSTERIOUS_FAILURE:
+  from echomesh.util.registry import Entry
 
 LOGGER = Log.logger(__name__)
 
@@ -30,6 +34,8 @@ class Registry(object):
 
     entry = self._registry.get(function_name, None)
     if not entry:
+      if not MYSTERIOUS_FAILURE:
+        from echomesh.util.registry import Entry
       self._registry[function_name] = Entry.Entry(
         function_name, function, help_text, see_also, self)
     else:
@@ -54,7 +60,9 @@ class Registry(object):
     try:
       entry = GetPrefix.get_prefix(
         self._registry, name, allow_prefixes=self.allow_prefixes)[1]
+      print('11111111111111111', entry)
       entry.resolve_function()
+      print('222222222222222222')
       return entry
     except:
       add_exception_suffix(' in registry "%s"' % self.name)

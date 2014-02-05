@@ -4,7 +4,7 @@ from echomesh.base import Config
 from echomesh.color import Combine
 from echomesh.color import SetupDebianSpiLights
 from echomesh.expression import Expression
-from echomesh.output.Output import Output
+from echomesh.output.Poll import Poll
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -27,27 +27,32 @@ class Spi(Output):
     return b, r, g
 
   def __init__(self, count=None, rgb_order='rgb', device=DEFAULT_SPI_DEVICE,
-               gamma=DEFAULT_GAMMA, **description):
+               gamma=DEFAULT_GAMMA, period=None, **description):
     self.enabled = SetupDebianSpiLights.lights_enabled()
     if not self.enabled:
-      LOGGER.error('SPI running in emulation mode.')
+      LOGGER.info('SPI running in emulation mode.')
     self.gamma = gamma
     self.rgb_order = getattr(Spi, rgb_order.upper(), None)
     if not self.rgb_order:
       raise Exception('Don\'t understand rgb_order=%s' % rgb_order)
+    self.period = period
+    self.period_set = period is not None
 
-    Config.add_client(self)
     self.count_set = count is not None
     if self.count_set:
       self._set_count(count)
-    self._device = open(device, 'wb')
-    self.finish_construction(description, is_redirect=False)
+    Config.add_client(self)
+    if self.enabled:
+      self._device = open(device, 'wb')
+    super(Spi, self).__init__(
+      is_redirect=False, period=self.period, **description)
 
   def config_update(self, get):
     if not self.count_set:
-      self.count = get('light', 'count')
-      self._set_count()
+      self._set_count(get('light', 'count'))
     self.brightness = Expression.convert(get('light', 'brightness'))
+    if not self.period_set:
+      self.period = Expression.convert(get('light', 'visualizer', 'period'))
 
   def _write(self):
     if self.enabled:

@@ -49,9 +49,13 @@ class OutputCache(object):
           except:
             try:
               from echomesh.output.Registry import REGISTRY
-              data = {'type': REGISTRY.entry(name).name}
+              print('?????')
+              entry = REGISTRY.entry(name)
+              print('!!!!', entry)
+              data = {'type': entry.name}
             except:
               del self.outputs[name]
+              print('!!!!!!!!!!', REGISTRY._registry)
               raise Exception('No output named "%s".' % name)
         else:
           data = None
