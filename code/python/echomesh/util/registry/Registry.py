@@ -60,9 +60,7 @@ class Registry(object):
     try:
       entry = GetPrefix.get_prefix(
         self._registry, name, allow_prefixes=self.allow_prefixes)[1]
-      print('11111111111111111', entry)
       entry.resolve_function()
-      print('222222222222222222')
       return entry
     except:
       add_exception_suffix(' in registry "%s"' % self.name)
