@@ -5,7 +5,7 @@ import six
 from echomesh.base import DataFile
 from echomesh.element import Element
 from echomesh.element.Sequence import Sequence
-from echomesh.output import make_output
+from echomesh.output.Registry import make_output
 from echomesh.pattern import make_pattern
 from echomesh.util import Log
 

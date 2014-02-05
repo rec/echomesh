@@ -4,8 +4,8 @@ import operator
 import six
 
 from echomesh.base import Config
+from echomesh.base import DataFileName
 from echomesh.base import GetPrefix
-from echomesh.base import Yaml
 from echomesh.element import MakeRoot
 from echomesh.util import Log
 from echomesh.util.string import Split
@@ -77,7 +77,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
         is_file = True
       else:
         name = score_file
-        is_file = Yaml.has_extension(score_file)
+        is_file = DataFileName.has_extension(score_file)
         if is_file:
           name = name[:-4]
         elif name not in self.elements:

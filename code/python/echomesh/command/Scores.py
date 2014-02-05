@@ -5,7 +5,7 @@ import os.path
 import time
 
 from echomesh.base import Path
-from echomesh.base import Yaml
+from echomesh.base import DataFileName
 from echomesh.util import Log
 from echomesh.util import Context
 from echomesh.util.string import Flag
@@ -39,7 +39,7 @@ def _scores(path, resolve=False, context='all', recursive=False,
       for f in sorted(os.listdir(pathdir)):
         joined_f = os.path.join(pathdir, f)
         is_dir = os.path.isdir(joined_f)
-        if not (is_dir or Yaml.has_extension(f)):
+        if not (is_dir or DataFileName.has_extension(f)):
           continue
         if not printed_this_time:
           printed_this_time = True

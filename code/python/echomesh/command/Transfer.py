@@ -4,7 +4,7 @@ import os
 import os.path
 
 from echomesh.base import Path
-from echomesh.base import Yaml
+from echomesh.base import DataFileName
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -48,7 +48,7 @@ def _get_files_to_transfer(path):
       for root, _, fs in walk:
         if not root.startswith('.'):
           for ffs in fs:
-            if _TRANSFER_ALL_FILES or Yaml.has_extension(ffs):
+            if _TRANSFER_ALL_FILES or DataFileName.has_extension(ffs):
               files.add(os.path.join(Path.DATA_PATH, root, ffs))
       LOGGER.vdebug('Transferring directory %s', p)
     else:

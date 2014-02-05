@@ -11,7 +11,7 @@ from echomesh.expression import Expression
 from echomesh.graphics import Display
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
-from echomesh.output import pause_outputs
+from echomesh.output.Registry import pause_outputs
 from echomesh.util import CLog
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable

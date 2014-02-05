@@ -13,11 +13,10 @@ def default_output():
 
 class _SingleOutput(object):
   def __init__(self, name, data, output_cache):
-    from echomesh.output import make_output
     self._name = name
     self._output_cache = output_cache
     if data:
-      from echomesh.output import make_output
+      from echomesh.output.Registry import make_output
       self._output = make_output(data)
     else:
       self._output = default_output()

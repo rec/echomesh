@@ -2,6 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
+from echomesh.base import DataFileName
 from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.base import Platform
@@ -53,7 +54,7 @@ def expand_config():
 def resolve(*path):
   for f in _expand(*path):
     try:
-      return Yaml.filename(f)
+      return DataFileName.data_filename(f)
     except:
       continue
 

@@ -4,27 +4,13 @@ import os.path
 import yaml
 
 from echomesh.base.AddExceptionSuffix import add_exception_suffix
+from echomesh.base.DataFileName import data_filename
 
 from contextlib import closing
 
 SEPARATOR_BASE = '---'
 SEPARATOR = '\n%s\n' % SEPARATOR_BASE
 PROPAGATE_EXCEPTIONS = False
-
-def has_extension(f):
-  return f.endswith('.yml') or f.endswith('.json')
-
-def filename(name):
-  if os.path.exists(name):
-    return name
-  if not has_extension(name):
-    n = name + '.yml'
-    if os.path.exists(n):
-      return n
-    n = name + '.json'
-    if os.path.exists(n):
-      return n
-  raise Exception("Couldn't find a file matching %s" % name)
 
 def encode_one(item, **kwds):
   return yaml.safe_dump(item, **kwds)
@@ -70,5 +56,5 @@ def write(fname, *items):
       raise
 
 def _open_userfile(fname, perms='r'):
-  return open(filename(os.path.expanduser(fname)), perms)
+  return open(data_filename(os.path.expanduser(fname)), perms)
 

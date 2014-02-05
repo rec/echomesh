@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import itertools
 
-from echomesh.output import make_output
+from echomesh.output.Registry import make_output
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
