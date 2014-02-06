@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import numpy
-
 from cechomesh import ColorList, color_spread
 from echomesh.util.TestCase import TestCase
 

@@ -8,8 +8,8 @@ from echomesh.base import Path
 from echomesh.base import Platform
 from echomesh.base import Yaml
 
-DATA_PATH = None
-DATA_PATH_NAMES = None
+_DATA_PATH = None
+_DATA_PATH_NAMES = None
 
 def clean(*path):
   return os.path.join(*path).split('/')
@@ -21,32 +21,33 @@ def _command_file(*path):
   else:
     return os.path.join(Path.PROJECT_PATH, 'data', *path)
 
-DATA_PATH = None
-def compute_command_path():
-  global DATA_PATH, DATA_PATH_NAMES
-  DATA_PATH = (['name/' + Name.NAME] +
+def compute_command_path(force=False):
+  global _DATA_PATH, _DATA_PATH_NAMES
+  if _DATA_PATH and not force:
+    return
+  _DATA_PATH = (['name/' + Name.NAME] +
                [('tag/' + t) for t in Name.TAGS] +
                ['platform/' + Platform.PLATFORM,
                 'master',
                 _command_file('default/platform/%s' % Platform.PLATFORM),
                 _command_file('default')])
 
-  DATA_PATH_NAMES = (['name'] +  # TODO: fix?
+  _DATA_PATH_NAMES = (['name'] +  # TODO: fix?
                      [('tag/' + t) for t in Name.TAGS] +
                      ['platform/' + Platform.PLATFORM,
                       'master',
                       'default/platform/%s' % Platform.PLATFORM,
                       'default'])
 
-compute_command_path()
-
 def named_paths():
-  return zip(DATA_PATH_NAMES, DATA_PATH)
+  compute_command_path()
+  return zip(_DATA_PATH_NAMES, _DATA_PATH)
 
 def _expand(*path):
   # These first two lines are to make sure we split on / for Windows and others.
   path = clean(*path)
-  return [os.path.join('data', i, *path) for i in DATA_PATH]
+  compute_command_path()
+  return [os.path.join('data', i, *path) for i in _DATA_PATH]
 
 def expand_config():
   return _expand('config', 'config.yml')[:-2] + _expand('config.yml')[-2:]

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.sound import Loudness
+# Not used - what is this?
 
 class LevelNameMap(object):
   def __init__(self, **kwds):

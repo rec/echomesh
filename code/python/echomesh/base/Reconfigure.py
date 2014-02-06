@@ -10,7 +10,7 @@ def _make(name, tags, project, show_error, args):
   Name.set_tags(tags)
   Path.set_project_path(project_path=project, show_error=show_error)
 
-  DataFile.compute_command_path()
+  DataFile.compute_command_path(force=True)
   return MergeConfig.MergeConfig(args)
 
 def reconfigure(args):
