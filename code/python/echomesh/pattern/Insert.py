@@ -10,7 +10,10 @@ class Insert(Pattern):
   OPTIONAL_VARIABLES = 'length', 'offset', 'rollover', 'skip'
 
   def _evaluate(self):
-    color_list = self.patterns()[0]
+    color_lists = self.patterns()
+    assert len(color_lists) == 1
+    color_list = color_lists[0]
+
     skip = int(self.get('skip') or 1)
     offset = int(self.get('offset') or 0)
     length = self.get('length')
