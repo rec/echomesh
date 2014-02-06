@@ -122,8 +122,9 @@ def _configure():
 _LOGGER_NAMES = 'vdebug', 'debug', 'error', 'warning', 'info'
 
 class _Logger(object):
-  def __init__(self):
+  def __init__(self, name):
     self._logger = None
+    self._name = name
 
   def __getattr__(self, name):
     if name not in _LOGGER_NAMES:
@@ -131,20 +132,12 @@ class _Logger(object):
 
     _configure()
     if not self._logger:
-      self._logger = logging.getLogger(name)
+      self._logger = logging.getLogger(self._name)
     attr = _make_logger(self._logger, name)
     setattr(self, name, attr)
     return attr
 
-def logger(name):
-  if True:
-    return _Logger()
-  _configure()
-  logger = logging.getLogger(name)
-
-  for name in 'vdebug', 'debug', 'error', 'warning', 'info':
-    _make_logger(logger, name)
-  return logger
+logger = _Logger
 
 def set_stream(stream):
   """Set a stream to which all logging is redirected."""
