@@ -32,17 +32,21 @@ PATHS = (_CPP_BUILD_PATH, _PLATFORM_EXTERNAL_CODE_PATH, _EXTERNAL_CODE_PATH,
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
 
+def data_path():
+  _set_project_path()
+  return _DATA_PATH
+
+def echomesh_path():
+  _set_project_path()
+  return _ECHOMESH_PATH
+
 def project_path():
+  _set_project_path()
   return _PROJECT_PATH
 
 def python_path():
+  _set_project_path()
   return _PYTHON_PATH
-
-def echomesh_path():
-  return _ECHOMESH_PATH
-
-def data_path():
-  return _DATA_PATH
 
 def _possible_project(path):
   for d in _REQUIRED_DIRECTORIES:
@@ -79,9 +83,12 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
   os.chdir(path)
   return True
 
-set_project_path()
+def _set_project_path():
+  if not _PROJECT_PATH:
+    set_project_path()
 
 def info():
+  _set_project_path()
   return {
     'Asset path': _ASSET_PATH,
     'Code path': _PYTHON_PATH,
@@ -96,6 +103,7 @@ def info():
     }
 
 def fix_sys_path():
+  _set_project_path()
   for path in reversed(PATHS):
     if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
       sys.path.insert(1, path)
