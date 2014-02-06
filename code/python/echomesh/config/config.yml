@@ -245,7 +245,7 @@ logging:
 
   # This is the long output format for log messages - it includes
   #   * the time
-  #   * the level of logging (debug, info, warn, error, critical)
+  #   * the level of logging (debug, info, warning, error, critical)
   #   * the name of the Python file it came from
   #   * the actual message.
   # format: "%(asctime)s %(levelname)s: %(name)s: %(message)s"

@@ -106,6 +106,7 @@ def _make_logger(logger, name):
     original_logger(message, *args, **kwds)
 
   setattr(logger, name, new_logger)
+  return new_logger
 
 _CONFIG = None
 
@@ -118,11 +119,30 @@ def _configure():
     _LOGGER = logger(__name__)
     _LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
 
+_LOGGER_NAMES = 'vdebug', 'debug', 'error', 'warning', 'info'
+
+class _Logger(object):
+  def __init__(self):
+    self._logger = None
+
+  def __getattr__(self, name):
+    if name not in _LOGGER_NAMES:
+      raise AttributeError("'_Logger' object has no attribute '%s'" % name)
+
+    _configure()
+    if not self._logger:
+      self._logger = logging.getLogger(name)
+    attr = _make_logger(self._logger, name)
+    setattr(self, name, attr)
+    return attr
+
 def logger(name):
+  if True:
+    return _Logger()
   _configure()
   logger = logging.getLogger(name)
 
-  for name in 'vdebug', 'debug', 'error', 'warn', 'info':
+  for name in 'vdebug', 'debug', 'error', 'warning', 'info':
     _make_logger(logger, name)
   return logger
 
