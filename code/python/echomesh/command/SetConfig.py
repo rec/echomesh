@@ -5,7 +5,7 @@ import six
 from echomesh.base import Config
 from echomesh.base import Leafs
 from echomesh.base import Yaml
-from echomesh.command.Registry import REGISTRY
+from echomesh.command import Registry
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -31,4 +31,4 @@ Examples:
   set speed=10% light.period=40ms
 """
 
-REGISTRY.register(set_config, 'set', SET_HELP)
+Registry.registry().register(set_config, 'set', SET_HELP)

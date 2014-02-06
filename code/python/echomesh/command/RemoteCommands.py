@@ -6,7 +6,7 @@ import sys
 
 from echomesh.base import Config
 from echomesh.base import Path
-from echomesh.command.Registry import REGISTRY
+from echomesh.command import Registry
 from echomesh.remote import RemoteRegistry
 from echomesh.util import Log
 from echomesh.base import Quit
@@ -94,7 +94,7 @@ at the echomesh prompt and everything should proceed automatically.
 def _register():
   for cmd, help_text, see_also in COMMANDS:
     name = cmd.__name__.strip('_')
-    REGISTRY.register(_local(cmd, name), name, help_text, see_also)
+    Registry.registry().register(_local(cmd, name), name, help_text, see_also)
     RemoteRegistry.register(_remote(cmd), name)
 
 COMMANDS = [

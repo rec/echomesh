@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.command import Aliases
 from echomesh.base import Join
 
-from echomesh.command.Registry import REGISTRY
+from echomesh.command import Registry
 
 # pylint: disable=W0611
 from echomesh.command import ElementCommands, GetConfig
@@ -26,8 +26,8 @@ COMMENT_HELP = """
 Comment lines start with a # - everything after that is ignored.
 """
 
-REGISTRY.register(lambda e: None, '#', COMMENT_HELP)
-REGISTRY.register(None, 'sample', 'This is a sample with just help')
+Registry.registry().register(lambda e: None, '#', COMMENT_HELP)
+Registry.registry().register(None, 'sample', 'This is a sample with just help')
 
 def _fix_exception_message(m, name):
   loc = m.find(')')
@@ -41,7 +41,7 @@ def _fix_exception_message(m, name):
   return name + m
 
 def usage():
-  result = ['Valid commands are:', REGISTRY.join_keys()]
+  result = ['Valid commands are:', Registry.registry().join_keys()]
   aliases = Aliases.instance()
   if aliases:
     result.append('\nand aliases are:')
@@ -60,14 +60,14 @@ def _expand(command):
       alias = aliases.get_prefix(command)
       if alias:
         cmd, alias_commands = alias
-        if cmd == command or name != REGISTRY.entry(name).name:
+        if cmd == command or name != Registry.registry().entry(name).name:
           assert cmd not in stack
           stack.add(cmd)
           expand(*alias_commands)
           stack.remove(cmd)
           continue
 
-      result.append([REGISTRY.function(name), parts])
+      result.append([Registry.registry().function(name), parts])
   expand(command)
   return result
 

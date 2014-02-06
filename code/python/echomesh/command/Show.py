@@ -7,7 +7,7 @@ from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Aliases
-from echomesh.command.Registry import REGISTRY
+import echomesh.command.Registry
 from echomesh.command import Contexts
 from echomesh.command import Scores
 from echomesh.expression import Transform
@@ -270,4 +270,4 @@ SHOW_HELP = """
 
 """ + SHOW_USAGE
 
-REGISTRY.register_all(show=(_show, SHOW_HELP))
+echomesh.command.Registry.registry().register_all(show=(_show, SHOW_HELP))
