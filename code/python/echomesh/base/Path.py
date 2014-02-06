@@ -13,36 +13,36 @@ import sys
 # your system path.
 ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 
-PYTHON_PATH = os.path.abspath(sys.path[0])
+_PYTHON_PATH = os.path.abspath(sys.path[0])
+_ECHOMESH_PATH = os.path.dirname(os.path.dirname(_PYTHON_PATH))
 
-ECHOMESH_PATH = os.path.dirname(os.path.dirname(PYTHON_PATH))
-PROJECT_PATH = None
-DATA_PATH = None
-ASSET_PATH = None
+_ASSET_PATH = None
+_DATA_PATH = None
+_PROJECT_PATH = None
 
-EXTERNAL_CODE_PATH = os.path.join(PYTHON_PATH, 'external')
-PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
-  EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
-BINARY_PATH = os.path.join(ECHOMESH_PATH, 'bin', Platform.PLATFORM)
-CPP_BUILD_PATH = os.path.join(ECHOMESH_PATH, 'code', 'cpp')
-COMPATIBILITY_PATH = os.path.join(PYTHON_PATH, 'compatibility')
+_EXTERNAL_CODE_PATH = os.path.join(_PYTHON_PATH, 'external')
+_PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
+  _EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
+_BINARY_PATH = os.path.join(_ECHOMESH_PATH, 'bin', Platform.PLATFORM)
+_CPP_BUILD_PATH = os.path.join(_ECHOMESH_PATH, 'code', 'cpp')
+_COMPATIBILITY_PATH = os.path.join(_PYTHON_PATH, 'compatibility')
 
-PATHS = (CPP_BUILD_PATH, PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH,
-         BINARY_PATH, COMPATIBILITY_PATH)
+PATHS = (_CPP_BUILD_PATH, _PLATFORM_EXTERNAL_CODE_PATH, _EXTERNAL_CODE_PATH,
+         _BINARY_PATH, _COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
 
 def project_path():
-  return PROJECT_PATH
+  return _PROJECT_PATH
 
 def python_path():
-  return PYTHON_PATH
+  return _PYTHON_PATH
 
 def echomesh_path():
-  return ECHOMESH_PATH
+  return _ECHOMESH_PATH
 
 def data_path():
-  return DATA_PATH
+  return _DATA_PATH
 
 def _possible_project(path):
   for d in _REQUIRED_DIRECTORIES:
@@ -54,7 +54,7 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
   original_path = os.path.abspath(os.path.expanduser(project_path or os.curdir))
   path = original_path
 
-  global PROJECT_PATH, DATA_PATH, ASSET_PATH
+  global _PROJECT_PATH, _DATA_PATH, _ASSET_PATH
   while not _possible_project(path):
     p = os.path.dirname(path)
     if p != path:
@@ -65,17 +65,17 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
         path = original_path
         break
       else:
-        PROJECT_PATH = None
+        _PROJECT_PATH = None
         return False
     if show_error:
       print("\nYour path %s isn't in an echomesh project." % original_path)
-      print("Defaulting to the echomesh path %s." % ECHOMESH_PATH)
-    path = ECHOMESH_PATH
+      print("Defaulting to the echomesh path %s." % _ECHOMESH_PATH)
+    path = _ECHOMESH_PATH
     break
 
-  PROJECT_PATH = path
-  DATA_PATH = os.path.join(path, 'data')
-  ASSET_PATH = os.path.join(path, 'asset')
+  _PROJECT_PATH = path
+  _DATA_PATH = os.path.join(path, 'data')
+  _ASSET_PATH = os.path.join(path, 'asset')
   os.chdir(path)
   return True
 
@@ -83,16 +83,16 @@ set_project_path()
 
 def info():
   return {
-    'Asset path': ASSET_PATH,
-    'Code path': PYTHON_PATH,
-    'Compatibility path': COMPATIBILITY_PATH,
-    'C++ build path': CPP_BUILD_PATH,
-    'Data path': DATA_PATH,
-    'External code path': EXTERNAL_CODE_PATH,
-    'Platform external code path': PLATFORM_EXTERNAL_CODE_PATH,
-    'Project path': PROJECT_PATH,
+    'Asset path': _ASSET_PATH,
+    'Code path': _PYTHON_PATH,
+    'Compatibility path': _COMPATIBILITY_PATH,
+    'C++ build path': _CPP_BUILD_PATH,
+    'Data path': _DATA_PATH,
+    'External code path': _EXTERNAL_CODE_PATH,
+    'Platform external code path': _PLATFORM_EXTERNAL_CODE_PATH,
+    'Project path': _PROJECT_PATH,
     'Python path': ':'.join(PATHS),
-    'echomesh path': ECHOMESH_PATH,
+    'echomesh path': _ECHOMESH_PATH,
     }
 
 def fix_sys_path():
