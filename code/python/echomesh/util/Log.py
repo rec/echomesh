@@ -72,7 +72,6 @@ class _ConfigClient(object):
     self.kwds = dict((str(k), v) for k, v in six.iteritems(self.kwds))
     logging.basicConfig(**self.kwds)
 
-
 def _reconfigure():
   try:
     from echomesh.base import Config
@@ -80,7 +79,6 @@ def _reconfigure():
     _CONFIG.config_update(None)
   else:
     Config.add_client(_CONFIG)
-
 
 def _make_logger(logger, name):
   original_logger = getattr(logger, name)
@@ -130,6 +128,7 @@ def logger(name):
 
 def set_stream(stream):
   """Set a stream to which all logging is redirected."""
+  # Not used.
   assert hasattr(stream, 'write'), 'Streams need to have a write method'
   global _STREAM
   _STREAM = stream

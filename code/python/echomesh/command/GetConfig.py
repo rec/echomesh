@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.base import Join
-from echomesh.command import REGISTRY
+from echomesh.command.Registry import REGISTRY
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

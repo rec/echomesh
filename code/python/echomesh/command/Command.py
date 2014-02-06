@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.command import Aliases
 from echomesh.base import Join
 
-from echomesh.command import REGISTRY
+from echomesh.command.Registry import REGISTRY
 
 # pylint: disable=W0611
 from echomesh.command import ElementCommands, GetConfig

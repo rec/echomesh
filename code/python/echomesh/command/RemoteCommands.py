@@ -6,7 +6,7 @@ import sys
 
 from echomesh.base import Config
 from echomesh.base import Path
-from echomesh.command import REGISTRY
+from echomesh.command.Registry import REGISTRY
 from echomesh.remote import RemoteRegistry
 from echomesh.util import Log
 from echomesh.base import Quit

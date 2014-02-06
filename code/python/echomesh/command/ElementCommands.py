@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.util import Log
 from echomesh.base import Join
 
-from echomesh.command import REGISTRY as command_registry
+from echomesh.command.Registry import REGISTRY as command_registry
 from echomesh.remote import REGISTRY as remote_registry
 
 LOGGER = Log.logger(__name__)

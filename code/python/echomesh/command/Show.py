@@ -7,7 +7,7 @@ from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.base import Yaml
 from echomesh.command import Aliases
-from echomesh.command import REGISTRY
+from echomesh.command.Registry import REGISTRY
 from echomesh.command import Contexts
 from echomesh.command import Scores
 from echomesh.expression import Transform

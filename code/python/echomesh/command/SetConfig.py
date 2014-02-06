@@ -5,7 +5,7 @@ import six
 from echomesh.base import Config
 from echomesh.base import Leafs
 from echomesh.base import Yaml
-from echomesh.command import REGISTRY
+from echomesh.command.Registry import REGISTRY
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
