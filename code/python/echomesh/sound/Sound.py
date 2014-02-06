@@ -1,8 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
-from echomesh.util import ImportIf
-pyaudio = ImportIf.imp('pyaudio')
 
 _PYAUDIO = None
 
@@ -12,6 +10,7 @@ _LIST_FORMAT = ('{name:24}: {maxInputChannels} in, ' +
 def PYAUDIO():
   global _PYAUDIO
   if not _PYAUDIO:
+    import pyaudio
     _PYAUDIO = pyaudio.PyAudio()
   return _PYAUDIO
 

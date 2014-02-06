@@ -1,9 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util import ImportIf
-
-pi3d = ImportIf.imp('pi3d')
-
 DEFAULT_SHADER = None
 
 def SHADER():
@@ -14,6 +10,7 @@ def SHADER():
   return DEFAULT_SHADER
 
 def shader(shader_file=None):
+  import pi3d
   return pi3d.Shader(shfile=shader_file) if shader_file else SHADER()
 
 

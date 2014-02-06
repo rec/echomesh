@@ -9,7 +9,6 @@ MYSTERIOUS_FAILURE = False
 from echomesh.base.AddExceptionSuffix import add_exception_suffix
 from echomesh.base import GetPrefix
 from echomesh.base import Join
-from echomesh.util import Importer
 from echomesh.util import Log
 
 if MYSTERIOUS_FAILURE:

@@ -7,7 +7,6 @@ from pi3d import Display
 from echomesh.base import Config
 from echomesh.expression import Expression
 from echomesh.graphics import Shader
-from echomesh.util import ImportIf
 from echomesh.util.thread import Runnable
 
 class Pi3dDisplay(Runnable.Runnable):

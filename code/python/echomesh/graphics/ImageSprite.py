@@ -6,9 +6,6 @@ from echomesh.graphics import Shader
 from echomesh.util import Log
 from echomesh.util.file import DefaultFile
 from echomesh.util.thread.Runnable import Runnable
-from echomesh.util import ImportIf
-
-pi3d = ImportIf.imp('pi3d')
 
 LOGGER = Log.logger(__name__)
 
@@ -24,6 +21,8 @@ class ImageSprite(Runnable):
                size=1, duration=None, z=DEFAULT_Z,
                shader=None, **kwds):
     super(ImageSprite, self).__init__()
+    import pi3d
+
     self.element = element
     self.imagename = IMAGE_DIRECTORY.expand(kwds.pop('file', None))
     del kwds['type']
@@ -95,9 +94,11 @@ class ImageSprite(Runnable):
     self._add_sprite()
 
   def _add_sprite(self):
+    import pi3d
     pi3d.Display.Display.INSTANCE.add_sprites(self.sprite)
 
   def _on_pause(self):
+    import pi3d
     super(ImageSprite, self)._on_pause()
     pi3d.Display.Display.INSTANCE.remove_sprites(self.sprite)
 
