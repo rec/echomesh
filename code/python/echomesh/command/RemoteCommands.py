@@ -72,7 +72,7 @@ def _update(echomesh_instance):
   directory = os.getcwd()
 
   try:
-    os.chdir(Path.ECHOMESH_PATH)
+    os.chdir(Path.echomesh_path())
     Git.run_git_commands(GIT_UPDATE)
     _initialize(echomesh_instance)
     if not INITIALIZE_ENABLED:

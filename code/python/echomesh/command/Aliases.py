@@ -23,7 +23,7 @@ class Aliases(object):
 
   def config_update(self, get):
     if get('aliases', 'save_with_project'):
-      filename = os.path.join(Path.PROJECT_PATH, ALIAS_FILE_NAME)
+      filename = os.path.join(Path.project_path(), ALIAS_FILE_NAME)
     else:
       filename = os.path.join(os.path.expanduser('~'), ALIAS_DOTFILE_NAME)
     if Aliases.DICT:

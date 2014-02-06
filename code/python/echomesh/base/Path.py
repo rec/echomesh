@@ -8,9 +8,10 @@ import os
 import os.path
 import sys
 
+# If ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES is True, you want Echomesh to
+# use its own external packages in preference to any you might have installed in
+# your system path.
 ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
-# If this is True, you want Echomesh to use its own external packages in
-# preference to any you might have installed in your system path.
 
 PYTHON_PATH = os.path.abspath(sys.path[0])
 
@@ -30,6 +31,18 @@ PATHS = (CPP_BUILD_PATH, PLATFORM_EXTERNAL_CODE_PATH, EXTERNAL_CODE_PATH,
          BINARY_PATH, COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
+
+def project_path():
+  return PROJECT_PATH
+
+def python_path():
+  return PYTHON_PATH
+
+def echomesh_path():
+  return ECHOMESH_PATH
+
+def data_path():
+  return DATA_PATH
 
 def _possible_project(path):
   for d in _REQUIRED_DIRECTORIES:

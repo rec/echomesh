@@ -28,7 +28,7 @@ def _main():
     print(Version.ERROR)
 
   from echomesh.base import Path
-  if not Path.PROJECT_PATH:
+  if not Path.project_path():
     return
   p()
 
