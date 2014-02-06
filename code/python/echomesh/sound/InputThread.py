@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import pyaudio
-
 from echomesh.base import Config
 from echomesh.sound import GetFormatName
 from echomesh.sound import Sound

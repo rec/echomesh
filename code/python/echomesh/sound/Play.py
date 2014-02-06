@@ -1,20 +1,10 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.base import Config
+from echomesh.sound import CPlayer
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
-
-def _get_player(player):
-  if player == 'aplay':
-    from echomesh.sound import AplayPlayer
-    return AplayPlayer.AplayPlayer
-
-  if player == 'cython':
-    from echomesh.sound import CPlayer
-    return CPlayer.CPlayer
-
-  raise Exception('Don\'t understand player %s' % player)
 
 def play(element, **kwds):
   if 'type' in kwds:
@@ -26,4 +16,4 @@ def play(element, **kwds):
   else:
     player = Config.get('audio', 'output', 'player')
 
-  return _get_player(player)(element, **kwds)
+  return CPlayer.Cplayer(player)(element, **kwds)

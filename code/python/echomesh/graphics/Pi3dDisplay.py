@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from pi3d import Display
-
 from echomesh.base import Config
 from echomesh.expression import Expression
 from echomesh.graphics import Shader
@@ -27,6 +25,7 @@ class Pi3dDisplay(Runnable.Runnable):
     for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
       keywords[k] = Config.get('pi3d', k)
 
+    from pi3d import Display
     self.display = Display.create(**keywords)
     Config.add_client(self)
     Shader.SHADER()  # Make sure that the shader is created in the main thread!

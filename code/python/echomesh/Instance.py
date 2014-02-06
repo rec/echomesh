@@ -21,9 +21,6 @@ LOGGER = Log.logger(__name__)
 
 USE_KEYBOARD_THREAD = False
 
-def test_str(s):
-  LOGGER.info('test_str %s', s)
-
 class Instance(MasterRunnable):
   def __init__(self):
     super(Instance, self).__init__()
@@ -121,8 +118,3 @@ class Instance(MasterRunnable):
       self.mic.pause()
       self.remove_slave(self.mic)
       self.mic = None
-
-
-INSTANCE = Instance()
-main = INSTANCE.main
-

@@ -58,8 +58,12 @@ def _main():
   Quit.register_atexit(Config.save)
   p()
 
-  from echomesh import Instance
+  from echomesh.Instance import Instance
+  p()
+
+  instance = Instance()
   print()
+  p()
 
   if Config.get('diagnostics', 'startup_times'):
     print()
@@ -67,7 +71,7 @@ def _main():
       print(i, ':', int(1000 * (times[i + 1] - times[i])))
     print()
 
-  Instance.main()
+  instance.main()
 
 def main():
   try:
@@ -75,4 +79,3 @@ def main():
   except:
     import traceback
     print(traceback.format_exc())
-
