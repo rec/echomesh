@@ -2,7 +2,4 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import cechomesh
 
-def combine(data):
-  result = cechomesh.ColorList()
-  result.combine(*data)
-  return result
+combine = cechomesh.combine_color_lists

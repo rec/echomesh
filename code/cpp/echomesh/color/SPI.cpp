@@ -25,7 +25,8 @@ void reorder(Order order, T& r, T& g, T& b) {
 }
 
 uint8 toLight(float x) {
-  return std::min(static_cast<int>((0x7F + 0.1f) * x), 0x7f);
+  auto value = 0x7F + static_cast<int>(0x80 * x);
+  return std::max(std::min(value, 0xFF), 0x7f);
 }
 
 }  // namespace
@@ -39,7 +40,8 @@ Order getOrder(const String& s) {
   return NONE;
 }
 
-void fillSpi(const FColorList& fc, uint8* bytes, Order o) {
+void fillSpi(const FColorList& fc, char* data, int length, Order o) {
+  auto bytes = reinterpret_cast<uint8*>(data);
   auto i = 0;
   for (auto color: fc) {
     auto red = toLight(color.red());
@@ -50,7 +52,12 @@ void fillSpi(const FColorList& fc, uint8* bytes, Order o) {
     bytes[i++] = red;
     bytes[i++] = green;
     bytes[i++] = blue;
+    if (i >= length)
+      return;
   }
+
+  for (; i < length; ++i)
+    bytes[i] = 0x7f;
 }
 
 }  // namespace color

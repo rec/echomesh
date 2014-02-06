@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import cechomesh
+
 from echomesh.base import Config
 from echomesh.color import Combine
 from echomesh.color import SetupDebianSpiLights
@@ -17,27 +19,13 @@ _LATCH_COUNT = 3
 EMULATION_FILE = '/tmp/spi-emulation.txt'
 
 class Spi(Poll):
-  @staticmethod
-  def RGB(r, g, b):
-    return r, g, b
-
-  @staticmethod
-  def GRB(r, g, b):
-    return g, r, b
-
-  @staticmethod
-  def BRG(r, g, b):
-    return b, r, g
-
-  def __init__(self, count=None, rgb_order='rgb', device=DEFAULT_SPI_DEVICE,
+  def __init__(self, count=None, order='rgb', device=DEFAULT_SPI_DEVICE,
                gamma=DEFAULT_GAMMA, period=None, **description):
     self.enabled = SetupDebianSpiLights.lights_enabled()
     if not self.enabled:
       LOGGER.info('SPI running in emulation mode.')
     self.gamma = gamma
-    self.rgb_order = getattr(Spi, rgb_order.upper(), None)
-    if not self.rgb_order:
-      raise Exception('Don\'t understand rgb_order=%s' % rgb_order)
+    self.order = cechomesh.get_spi_order(order)
     self.period = period
     self.period_set = period is not None
 
@@ -74,12 +62,7 @@ class Spi(Poll):
 
   def emit_output(self, data):
     if data:
-      lights = Combine.combine(data)
-      lights.scale(self.brightness)
-      lights.gamma(self.gamma)
-
-      for i, light in enumerate(lights):
-        light_bytes = self.rgb_order(*light.rgb_range(128, 256))
-        self.lights[3 * i: 3 * (i + 1)] = light_bytes
+      cechomesh.combine_to_spi(
+        data, self.brightness, self.gamma, self.lights, self.order)
 
       self._write()
