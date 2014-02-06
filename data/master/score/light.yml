@@ -1,6 +1,6 @@
 type: sequence
 
-# output: spi
+output: spi
 
 pattern:
   a simple one:

@@ -40,7 +40,7 @@ cdef class Color:
     """Return the RGB components as integers in the interval [begin, end)."""
     width = end  - begin
     def scale(f):
-      return max(end - 1, int(begin + f * width))
+      return min(end - 1, int(begin + f * width))
     return tuple(scale(f) for f in self.rgb)
 
   @property

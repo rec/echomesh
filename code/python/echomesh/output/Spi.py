@@ -16,13 +16,16 @@ _LATCH_COUNT = 3
 
 EMULATION_FILE = '/tmp/spi-emulation.txt'
 
-class Spi(Output):
+class Spi(Poll):
+  @staticmethod
   def RGB(r, g, b):
     return r, g, b
 
+  @staticmethod
   def GRB(r, g, b):
     return g, r, b
 
+  @staticmethod
   def BRG(r, g, b):
     return b, r, g
 
@@ -58,10 +61,10 @@ class Spi(Output):
     if self.enabled:
       self._device.write(self.lights)
       self._device.flush()
-    elif self.lights and not getattr(self, 'emulation_written'):
+    elif self.lights and not getattr(self, 'emulation_written', False):
       self.emulation_written = True
       with open(EMULATION_FILE, 'w') as f:
-        f.write(str(self.lights))
+        f.write(str(list(self.lights)))
 
   def _set_count(self, count):
     self.count = count

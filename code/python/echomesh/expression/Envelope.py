@@ -4,7 +4,6 @@ import bisect
 import six
 import time
 
-from echomesh.expression import SplitNumbers
 from echomesh.util.dict.FromAttributes import from_attributes
 from echomesh.util import Log
 
@@ -16,6 +15,7 @@ class Envelope(object):
   def __init__(self, data, element=None):
     self.element = element
 
+    from echomesh.expression import SplitNumbers
     kwds, numeric = SplitNumbers.split(data)
     self.times, self.data = zip(*numeric)
     if not self.times:
