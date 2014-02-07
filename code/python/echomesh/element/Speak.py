@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.element import Element
 from echomesh.sound import GoogleTextToSpeech
-from echomesh.sound import Play
+from echomesh.sound.CPlayer import CPlayer
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -29,6 +29,6 @@ class Speak(Element.Element):
                      exc_info=1)
       self.pause()
     else:
-      player = Play.play(self, file=f, **self.description)
+      player = CPlayer(self, file=f, **self.description)
       self.add_mutual_pause_slave(player)
       player.run()

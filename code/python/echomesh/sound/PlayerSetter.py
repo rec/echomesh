@@ -8,6 +8,7 @@ LOGGER = Log.logger(__name__)
 
 def set_player(player, element,
                level=1, pan=0, loops=1, begin=0, end=-1, length=-1, **kwds):
+  kwds.pop('type', None)
   player._element = element
   player._file = kwds.pop('file')
   player._filename = Util.DEFAULT_AUDIO_DIRECTORY.expand(player._file)

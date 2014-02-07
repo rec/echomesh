@@ -91,11 +91,6 @@ audio:
   # output subsection.
 
   output:
-    # This is the location of the binary for the aplay program used as an
-    # external player for mp3s.  The Mac and RP have good defaults if you
-    # leave this blank.
-    aplay_binary: ""
-
     chunk_size: 1024
 
     # Similar to device_index and device_name for input.
@@ -111,19 +106,6 @@ audio:
     # Do we route the audio to the HD or the earphone audio jack?
     # Disabled, see https://github.com/rec/echomesh/issues/197.
     route: audio
-
-    # There are three types of player:
-    #
-    #   aplay:    Use the external aplay program to play sound files.
-    #   cython:   Play sounds using the Cythonized code.
-    #   client:   Play sounds from the external C++ client.
-    #   pyaudio:  Play sounds internally with Python.
-    #
-    # aplay supports mp3s envelopes but not volume and pan.
-    # client supports everything but isn't yet implemented.
-    # pyaudio supports volume and pan envelopes but not mp3s.
-
-    player: cython
 
 # Do we get and process commands from the keyboard?
 # Set this to "false" for autostart jobs.

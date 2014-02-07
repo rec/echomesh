@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Config
 from echomesh.element import Element
-from echomesh.sound import Play
+from echomesh.sound.CPlayer import CPlayer
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -12,7 +12,7 @@ class Audio(Element.Element):
     super(Audio, self).__init__(parent, description)
     if Config.get('audio', 'output', 'enable'):
       try:
-        self.add_mutual_pause_slave(Play.play(self, **description))
+        self.add_mutual_pause_slave(CPlayer(self, **description))
       except:
         LOGGER.error()
     else:
