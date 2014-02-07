@@ -17,9 +17,9 @@ def _blacklist_line(line):
 def _is_blacklisted():
   try:
     with open(BLACKLIST_FILE, 'rb') as f:
-      LOGGER.info('You are running the Raspian distribution, '
+      LOGGER.vdebug('You are running the Raspian distribution, '
                   'blacklist file is here:')
-      LOGGER.info(BLACKLIST_FILE)
+      LOGGER.vdebug(BLACKLIST_FILE)
       return any(_blacklist_line(line) for line in f)
   except:
     LOGGER.warning('You are not running the Raspian distribution, '
@@ -34,6 +34,7 @@ def _fix_blacklist():
             line = '#' + line
           g.write(line)
     os.rename(BLACKLIST_TEMP, BLACKLIST_FILE)
+    return True
 
   except Exception:
     LOGGER.error("Couldn't fix blacklist.")
@@ -67,15 +68,13 @@ The SPI blacklist has been removed.  Please restart your Raspberry Pi
 and run echomesh again."""
 
 def _fix_spi(prompt_to_fix):
-  if _is_blacklisted():
-    LOGGER.info(BLACKLISTED_MESSAGE)
-    if prompt_to_fix:
-      print('Would you like to fix the blacklist now? (y/N) ', end='')
-      result = raw_input()
-      if result.lower().startswith('y'):
-        _fix_blacklist()
-        LOGGER.error()
-    LOGGER.error("SPI is blacklisted, lights are disabled.")
+  LOGGER.info(BLACKLISTED_MESSAGE)
+  if prompt_to_fix:
+    print('Would you like to fix the blacklist now? (y/N) ', end='')
+    result = raw_input()
+    if result.lower().startswith('y'):
+      return _fix_blacklist()
+  LOGGER.error("SPI is blacklisted, lights are disabled.")
 
 SPI_ERROR = """\
 you have lights enabled, the lights require SPI, and the SPI driver
@@ -89,7 +88,7 @@ def _test_spi(prompt_to_fix):
     LOGGER.error()
   else:
     _speedup()
-    return _fix_spi(prompt_to_fix)
+    return not _is_blacklisted() or _fix_spi(prompt_to_fix)
 
 _LIGHTS_ENABLED = None
 
