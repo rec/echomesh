@@ -1,9 +1,13 @@
 #include "echomesh/audio/Input.h"
+#include "echomesh/util/STL.h"
+
+using namespace std;
 
 namespace echomesh {
 namespace audio {
 
 String Input::initialize(const string& name, int channels) {
+  name_ = name;
   String error = manager_.initialise(channels, 0, nullptr, false, name);
   manager_.addAudioCallback(this);
   return error;
@@ -13,11 +17,11 @@ Input::~Input() {
   manager_.removeAudioCallback(this);
 }
 
-void Input::audioDeviceIOCallback (const float** inputChannelData,
-                                   int numInputChannels,
-                                   float** outputChannelData,
-                                   int numOutputChannels,
-                                   int numSamples) {
+void Input::audioDeviceIOCallback(const float** inputChannelData,
+                                  int numInputChannels,
+                                  float**,
+                                  int,
+                                  int numSamples) {
 }
 
 void Input::audioDeviceAboutToStart(AudioIODevice* device) {
@@ -27,6 +31,18 @@ void Input::audioDeviceStopped() {
 }
 
 void Input::audioDeviceError(const String& errorMessage) {
+  LOG(ERROR) << "Error on device " << name_
+             << ": " << errorMessage.toStdString();
+}
+
+void Input::addCallback(unique_ptr<Callback> cb) {
+  ScopedLock l(lock_);
+  callbacks_.push_back(std::move(cb));
+}
+
+void Input::removeCallback(Callback* cb) {
+  ScopedLock l(lock_);
+  erasePointer(&callbacks_, cb);
 }
 
 }  // namespace audio
