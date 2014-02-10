@@ -12,6 +12,7 @@
 		25E466D700127C24D96EFE9B = { isa = PBXBuildFile; fileRef = E43C0B903A64EF0F76D0CEED; };
 		2E0BC4333FFE42E0703C5405 = { isa = PBXBuildFile; fileRef = E9CF9517BE5FE68D92F972BB; };
 		B3667DCC6364B09D2247F424 = { isa = PBXBuildFile; fileRef = 5FC27F82666E719E41C6C533; };
+		B5FDF27E09B511EC2EA2B28D = { isa = PBXBuildFile; fileRef = DA3C1D70447373EC6CB1A4EF; };
 		0FBE2029D29EE59BC5517E73 = { isa = PBXBuildFile; fileRef = A787DD5C80C50E616B1AE5E8; };
 		48B9E449E4C33A1EFF4409FE = { isa = PBXBuildFile; fileRef = 63149E8F948AAFF3B1295AA7; };
 		AF4A551B01678B90ECAD2BCC = { isa = PBXBuildFile; fileRef = CBB0087052867CC3EE4FAE93; };
@@ -607,6 +608,7 @@
 		A68CA489A635FD7A49DDA79A = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_FileBasedDocument.h"; path = "../../JuceLibraryCode/modules/juce_gui_extra/documents/juce_FileBasedDocument.h"; sourceTree = "SOURCE_ROOT"; };
 		A6EE2819B568AFF91376D5B1 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_Path.cpp"; path = "../../JuceLibraryCode/modules/juce_graphics/geometry/juce_Path.cpp"; sourceTree = "SOURCE_ROOT"; };
 		A71FBE614784C641ACD1F149 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_MidiBuffer.cpp"; path = "../../JuceLibraryCode/modules/juce_audio_basics/midi/juce_MidiBuffer.cpp"; sourceTree = "SOURCE_ROOT"; };
+		A7852A122E8F6C02ABD11B81 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Input.h; path = ../../echomesh/audio/Input.h; sourceTree = "SOURCE_ROOT"; };
 		A787DD5C80C50E616B1AE5E8 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MidiController.cpp; path = ../../echomesh/audio/MidiController.cpp; sourceTree = "SOURCE_ROOT"; };
 		A7A3985B5EA9EA0DB51B495D = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_LowLevelGraphicsSoftwareRenderer.cpp"; path = "../../JuceLibraryCode/modules/juce_graphics/contexts/juce_LowLevelGraphicsSoftwareRenderer.cpp"; sourceTree = "SOURCE_ROOT"; };
 		A83C38EC8916F040A8A929E6 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_RelativeParallelogram.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/positioning/juce_RelativeParallelogram.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -770,6 +772,7 @@
 		D86C727A3DE17C9737FD1AF1 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_AudioDeviceManager.cpp"; path = "../../JuceLibraryCode/modules/juce_audio_devices/audio_io/juce_AudioDeviceManager.cpp"; sourceTree = "SOURCE_ROOT"; };
 		D95CAAA9BD7CF8AABEED12F9 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_ColourGradient.cpp"; path = "../../JuceLibraryCode/modules/juce_graphics/colour/juce_ColourGradient.cpp"; sourceTree = "SOURCE_ROOT"; };
 		D9A40DA7080193E7F30B14A5 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_FileChooser.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/filebrowser/juce_FileChooser.h"; sourceTree = "SOURCE_ROOT"; };
+		DA3C1D70447373EC6CB1A4EF = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Input.cpp; path = ../../echomesh/audio/Input.cpp; sourceTree = "SOURCE_ROOT"; };
 		DB377F6982FF6C4B9B7A8BA3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_FileInputSource.h"; path = "../../JuceLibraryCode/modules/juce_core/streams/juce_FileInputSource.h"; sourceTree = "SOURCE_ROOT"; };
 		DB94C3983F6425DACD091283 = { isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_FloatVectorOperations.h"; path = "../../JuceLibraryCode/modules/juce_audio_basics/buffers/juce_FloatVectorOperations.h"; sourceTree = "SOURCE_ROOT"; };
 		DBA313B9A3DC8345188A90A3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_RecentlyOpenedFilesList.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_extra/misc/juce_RecentlyOpenedFilesList.cpp"; sourceTree = "SOURCE_ROOT"; };
@@ -919,6 +922,8 @@
 				14BC9A9DD0C1AB82361B51A7,
 				5FC27F82666E719E41C6C533,
 				3E25E3B7AAFEACA26FFDF193,
+				DA3C1D70447373EC6CB1A4EF,
+				A7852A122E8F6C02ABD11B81,
 				A787DD5C80C50E616B1AE5E8,
 				E237BEBF5C342EBF322FE7E6,
 				63149E8F948AAFF3B1295AA7,
@@ -2065,6 +2070,7 @@
 				25E466D700127C24D96EFE9B,
 				2E0BC4333FFE42E0703C5405,
 				B3667DCC6364B09D2247F424,
+				B5FDF27E09B511EC2EA2B28D,
 				0FBE2029D29EE59BC5517E73,
 				48B9E449E4C33A1EFF4409FE,
 				AF4A551B01678B90ECAD2BCC,
