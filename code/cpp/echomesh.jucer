@@ -21,6 +21,8 @@
         <FILE id="ySBCqW" name="GetReader.h" compile="0" resource="0" file="../cpp/echomesh/audio/GetReader.h"/>
         <FILE id="cKduWa" name="Input.cpp" compile="1" resource="0" file="echomesh/audio/Input.cpp"/>
         <FILE id="YJNezD" name="Input.h" compile="0" resource="0" file="echomesh/audio/Input.h"/>
+        <FILE id="SNBoc8" name="Loudness.cpp" compile="1" resource="0" file="echomesh/audio/Loudness.cpp"/>
+        <FILE id="a1J2YY" name="Loudness.h" compile="0" resource="0" file="echomesh/audio/Loudness.h"/>
         <FILE id="uzaZfD" name="MidiController.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/MidiController.cpp"/>
         <FILE id="ghA7Zk" name="MidiController.h" compile="0" resource="0"

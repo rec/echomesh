@@ -1,18 +1,12 @@
 #pragma once
 
-#include "echomesh/base/Echomesh.h"
+#include "echomesh/audio/InputCallback.h"
 
 namespace echomesh {
 namespace audio {
 
 class Input : public AudioIODeviceCallback {
  public:
-  class Callback {
-   public:
-    virtual ~Callback() {}
-    virtual void callback(int channels, int count, const float** samples) = 0;
-  };
-
   Input() {}
   ~Input();
 
@@ -27,13 +21,13 @@ class Input : public AudioIODeviceCallback {
   void audioDeviceStopped() override;
   void audioDeviceError(const String& errorMessage) override;
 
-  void addCallback(unique_ptr<Callback>);
-  void removeCallback(Callback*);
+  void addCallback(unique_ptr<InputCallback>);
+  void removeCallback(InputCallback*);
 
  private:
   string name_;
   AudioDeviceManager manager_;
-  std::vector<unique_ptr<Callback>> callbacks_;
+  std::vector<unique_ptr<InputCallback>> callbacks_;
   CriticalSection lock_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(Input);

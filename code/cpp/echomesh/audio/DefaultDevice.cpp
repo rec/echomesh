@@ -34,6 +34,7 @@ const AudioDeviceSetup& defaultOutputSetup() {
   return SETUP;
 }
 
+#if 0
 typedef tuple<bool, string, int> DeviceID;
 
 struct Device {
@@ -45,9 +46,11 @@ typedef map<DeviceID, Device> DeviceTable;
 
 CriticalSection DEVICE_LOCK;
 static DeviceTable DEVICE_TABLE;
+#endif
 
 }  // namespace
 
+#if 0
 void DeviceDeleter::operator()(AudioDeviceManager* dm) {
   ScopedLock l(DEVICE_LOCK);
   for (auto& i: DEVICE_TABLE) {
@@ -89,7 +92,7 @@ AudioDeviceManagerPointer getDevice(
   }
   return result;
 }
-
+#endif
 
 string defaultOutputDevice() {
   return defaultOutputSetup().outputDeviceName.toStdString();

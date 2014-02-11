@@ -55,6 +55,7 @@ OBJECTS := \
   $(OBJDIR)/EnvelopePlayer_6908c03c.o \
   $(OBJDIR)/GetReader_4ae00cf8.o \
   $(OBJDIR)/Input_2738d89.o \
+  $(OBJDIR)/Loudness_e76c1294.o \
   $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/PanGainPlayer_d877dfc.o \
   $(OBJDIR)/ResamplingPositionableAudioSource_55438ad3.o \
@@ -136,6 +137,11 @@ $(OBJDIR)/GetReader_4ae00cf8.o: ../../echomesh/audio/GetReader.cpp
 $(OBJDIR)/Input_2738d89.o: ../../echomesh/audio/Input.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Input.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Loudness_e76c1294.o: ../../echomesh/audio/Loudness.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Loudness.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/MidiController_f87aad08.o: ../../echomesh/audio/MidiController.cpp

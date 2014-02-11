@@ -18,10 +18,13 @@ Input::~Input() {
 }
 
 void Input::audioDeviceIOCallback(const float** inputChannelData,
-                                  int numInputChannels,
+                                  int channels,
                                   float**,
                                   int,
                                   int numSamples) {
+  ScopedLock l(lock_);
+  for (auto& i: callbacks_)
+    i->callback(channels, numSamples, inputChannelData);
 }
 
 void Input::audioDeviceAboutToStart(AudioIODevice* device) {
@@ -35,12 +38,12 @@ void Input::audioDeviceError(const String& errorMessage) {
              << ": " << errorMessage.toStdString();
 }
 
-void Input::addCallback(unique_ptr<Callback> cb) {
+void Input::addCallback(unique_ptr<InputCallback> cb) {
   ScopedLock l(lock_);
   callbacks_.push_back(std::move(cb));
 }
 
-void Input::removeCallback(Callback* cb) {
+void Input::removeCallback(InputCallback* cb) {
   ScopedLock l(lock_);
   erasePointer(&callbacks_, cb);
 }
