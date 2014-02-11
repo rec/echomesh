@@ -5,33 +5,14 @@
 namespace echomesh {
 namespace audio {
 
-class Input : public AudioIODeviceCallback {
+class InputBase {
  public:
-  Input() {}
-  ~Input();
-
-  String initialize(const string& name, int channels);
-
-  void audioDeviceIOCallback(const float** inputChannelData,
-                             int numInputChannels,
-                             float**, int,
-                             int numSamples) override;
-
-  void audioDeviceAboutToStart(AudioIODevice* device) override;
-  void audioDeviceStopped() override;
-  void audioDeviceError(const String& errorMessage) override;
-
-  void addCallback(unique_ptr<InputCallback>);
-  void removeCallback(InputCallback*);
-
- private:
-  string name_;
-  AudioDeviceManager manager_;
-  std::vector<unique_ptr<InputCallback>> callbacks_;
-  CriticalSection lock_;
-
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(Input);
+  virtual ~InputBase() {}
+  virtual void addCallback(unique_ptr<InputCallback>) = 0;
+  virtual void removeCallback(InputCallback*) = 0;
 };
+
+unique_ptr<InputBase> getInput(const string& name, int channels);
 
 }  // namespace audio
 }  // namespace echomesh
