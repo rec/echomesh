@@ -11,6 +11,8 @@ double defaultOutputSampleRate();
 string defaultInputDevice();
 string defaultOutputDevice();
 
+vector<string> getDeviceNames(bool wantInputs);
+
 }  // namespace audio
 }  // namespace echomesh
 

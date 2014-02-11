@@ -50,5 +50,18 @@ double defaultOutputSampleRate() {
   return defaultInputSetup().sampleRate;
 }
 
+vector<string> getDeviceNames(bool wantInputs = false) {
+  vector<string> result;
+  AudioDeviceManager manager;
+  auto& types = manager.getAvailableDeviceTypes();
+  for (auto& t: types) {
+    t->scanForDevices();
+    auto names = t->getDeviceNames(wantInputs);
+    for (auto& name: names)
+      result.push_back(name.toStdString());
+  }
+  return result;
+}
+
 }  // namespace audio
 }  // namespace echomesh

@@ -3,6 +3,10 @@
 
 ctypedef unsigned int uint
 
+from libcpp cimport bool
+from libcpp.string cimport string
+from libcpp.vector cimport vector
+
 include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
 
