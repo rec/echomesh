@@ -7,6 +7,7 @@ include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
 
 include "echomesh/audio/DefaultDevice.pyx"
+include "echomesh/audio/Loudness.pyx"
 include "echomesh/audio/Source.pyx"
 include "echomesh/color/Color.pyx"
 include "echomesh/color/ColorList.pyx"
