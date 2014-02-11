@@ -1,18 +1,22 @@
 #pragma once
 
+#include <memory>
 #include "echomesh/audio/InputCallback.h"
 
 namespace echomesh {
 namespace audio {
 
-class InputBase {
+typedef std::pair<string, int> InputID;
+
+class Input {
  public:
-  virtual ~InputBase() {}
-  virtual void addCallback(unique_ptr<InputCallback>) = 0;
+  virtual ~Input() {}
+  virtual void addCallback(InputCallback*) = 0;
   virtual void removeCallback(InputCallback*) = 0;
+  virtual const InputID& id() const = 0;
 };
 
-unique_ptr<InputBase> getInput(const string& name, int channels);
+std::shared_ptr<Input> getInput(const string& name, int channels);
 
 }  // namespace audio
 }  // namespace echomesh

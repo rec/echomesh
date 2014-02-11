@@ -43,7 +43,7 @@ class Config(object):
 
     if Platform.PLATFORM == Platform.MAC:
       extra_link_args += '-framework Cocoa -framework WebKit -framework CoreMidi '
-      extra_compile_args += '-stdlib=libc++ -arch x86_64  -x c++ '
+      extra_compile_args += '-stdlib=libc++ -x c++ -arch x86_64 '
 
       if DEBUG:
         echomesh_lib = 'Builds/MacOSX/build/Debug'

@@ -1,5 +1,6 @@
 #include <limits>
 
+#include "echomesh/audio/Input.h"
 #include "echomesh/audio/Loudness.h"
 
 namespace echomesh {
@@ -29,6 +30,36 @@ void Loudness::callback(int channels, int count, const float** samples) {
 float Loudness::loudness() const {
   ScopedLock l(lock_);
   return loudness_;
+}
+
+class LoudnessInput : public Loudness {
+ public:
+  explicit LoudnessInput(const string& name, int channels, uint windowSize)
+      : Loudness(windowSize),
+        input_(getInput(name, channels)) {
+    if (hasInput())
+      input_->addCallback(this);
+  }
+
+  ~LoudnessInput() {
+    if (hasInput())
+      input_->removeCallback(this);
+  }
+
+  bool hasInput() const { return input_.get(); }
+
+ private:
+  std::shared_ptr<Input> input_;
+};
+
+unique_ptr<Loudness> loudnessInput(
+    const string& name, int channels, uint windowSize) {
+  unique_ptr<LoudnessInput> result(
+      new LoudnessInput(name, channels, windowSize));
+  if (not result->hasInput())
+    result.reset();
+
+  return unique_ptr<Loudness>(result.release());
 }
 
 }  // namespace audio

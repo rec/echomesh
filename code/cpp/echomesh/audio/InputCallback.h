@@ -5,6 +5,8 @@
 namespace echomesh {
 namespace audio {
 
+class Input;
+
 class InputCallback {
  public:
   virtual ~InputCallback() {}

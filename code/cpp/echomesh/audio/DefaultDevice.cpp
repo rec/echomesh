@@ -1,6 +1,3 @@
-#include <map>
-#include <tuple>
-
 #include "echomesh/audio/DefaultDevice.h"
 
 using namespace std;
