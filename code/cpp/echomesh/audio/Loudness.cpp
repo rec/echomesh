@@ -18,7 +18,7 @@ void Loudness::callback(int channels, int count, const float** samples) {
       sum_ += s * s;
     }
     if (++sampleIndex_ >= windowSize_) {
-      auto loudness = logf(sqrtf(sum_ / (channels * windowSize_)));
+      auto loudness = 10.f * logf(sqrtf(sum_ / (channels * windowSize_)));
       sampleIndex_ = 0;
       sum_ = 0;
       ScopedLock l(lock_);
@@ -55,6 +55,7 @@ class LoudnessInput : public Loudness {
 Loudness* loudnessInput(const string& name, int channels, int windowSize) {
   unique_ptr<LoudnessInput> result(
       new LoudnessInput(name, channels, windowSize));
+  printf("%s\n", result->hasInput() ? "has input" : "NO");
   return result->hasInput() ? result.release() : nullptr;
 }
 
