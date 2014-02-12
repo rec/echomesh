@@ -1,5 +1,6 @@
 #include <map>
 
+#include "echomesh/audio/DefaultDevice.h"
 #include "echomesh/audio/Input.h"
 
 using namespace std;
@@ -23,7 +24,32 @@ class InputImpl : public AudioIODeviceCallback, public Input {
   }
 
   String initialize() {
-    String error = manager_.initialise(id_.second, 0, nullptr, false, id_.first);
+    String error;
+    auto& name = id_.first;
+    if (name.length()) {
+      AudioDeviceManager::AudioDeviceSetup setup;
+      setup.inputDeviceName = name;
+      error = manager_.initialise(id_.second, 0, nullptr, false, "", &setup);
+      if (error.length()) {
+        String newName;
+        auto inputNames = getDeviceNames(true);
+        for (auto& i: inputNames) {
+          if (0 == i.find(name)) {
+            if (newName.length()) {
+              error = "Multiple input names start with " + name;
+              break;
+            }
+            newName = i;
+          }
+        }
+        if (newName.length()) {
+          setup.inputDeviceName = newName;
+          error = manager_.initialise(id_.second, 0, nullptr, false, "", &setup);
+        }
+      }
+    } else {
+      error = manager_.initialise(id_.second, 0, nullptr, false, "");
+    }
     manager_.addAudioCallback(this);
     return error;
   }
@@ -97,7 +123,7 @@ shared_ptr<Input> getInput(const string& name, int channels) {
 
     String error = input->initialize();
     if (error.length()) {
-      LOG(DFATAL) << "Couldn't initialize input " << name;
+      LOG(ERROR) << "Couldn't initialize input " << name;
       result.reset();
     } else {
       INPUT_TABLE[id] = input;

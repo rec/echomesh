@@ -6,7 +6,7 @@ cdef extern from "echomesh/audio/Loudness.h" namespace "echomesh::audio":
 cdef class AudioLoudness:
   cdef Loudness* thisptr
 
-  def __cinit__(self, string name, int channels, int windowSize = 1024):
+  def __cinit__(self, string name='', int channels=1, int windowSize=1024):
     self.thisptr = loudnessInput(name, channels, windowSize)
     if not self.thisptr:
       raise Exception('Couldn\'t create input for %s:%d' % (name, channels))

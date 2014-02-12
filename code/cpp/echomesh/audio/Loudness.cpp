@@ -55,7 +55,6 @@ class LoudnessInput : public Loudness {
 Loudness* loudnessInput(const string& name, int channels, int windowSize) {
   unique_ptr<LoudnessInput> result(
       new LoudnessInput(name, channels, windowSize));
-  printf("%s\n", result->hasInput() ? "has input" : "NO");
   return result->hasInput() ? result.release() : nullptr;
 }
 
