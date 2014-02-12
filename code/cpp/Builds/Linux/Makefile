@@ -59,6 +59,7 @@ OBJECTS := \
   $(OBJDIR)/MidiController_f87aad08.o \
   $(OBJDIR)/PanGainPlayer_d877dfc.o \
   $(OBJDIR)/ResamplingPositionableAudioSource_55438ad3.o \
+  $(OBJDIR)/RingBuffer_a9bbdf7b.o \
   $(OBJDIR)/SampleAudioSource_602b6bc6.o \
   $(OBJDIR)/Source_b9c08e86.o \
   $(OBJDIR)/InstrumentComponent_75edd5bc.o \
@@ -157,6 +158,11 @@ $(OBJDIR)/PanGainPlayer_d877dfc.o: ../../echomesh/audio/PanGainPlayer.cpp
 $(OBJDIR)/ResamplingPositionableAudioSource_55438ad3.o: ../../echomesh/audio/ResamplingPositionableAudioSource.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ResamplingPositionableAudioSource.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/RingBuffer_a9bbdf7b.o: ../../echomesh/audio/RingBuffer.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling RingBuffer.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/SampleAudioSource_602b6bc6.o: ../../echomesh/audio/SampleAudioSource.cpp

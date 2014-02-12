@@ -35,6 +35,8 @@
               resource="0" file="echomesh/audio/ResamplingPositionableAudioSource.cpp"/>
         <FILE id="iJ2Jgq" name="ResamplingPositionableAudioSource.h" compile="0"
               resource="0" file="echomesh/audio/ResamplingPositionableAudioSource.h"/>
+        <FILE id="KNCMzo" name="RingBuffer.cpp" compile="1" resource="0" file="echomesh/audio/RingBuffer.cpp"/>
+        <FILE id="FuOUMi" name="RingBuffer.h" compile="0" resource="0" file="echomesh/audio/RingBuffer.h"/>
         <FILE id="nMx3QM" name="SampleAudioSource.cpp" compile="1" resource="0"
               file="../cpp/echomesh/audio/SampleAudioSource.cpp"/>
         <FILE id="nImeHl" name="SampleAudioSource.h" compile="0" resource="0"
