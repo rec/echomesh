@@ -43,21 +43,21 @@ public:
     NamedValueSet() noexcept;
 
     /** Creates a copy of another set. */
-    NamedValueSet (const NamedValueSet&);
+    NamedValueSet (const NamedValueSet& other);
 
     /** Replaces this set with a copy of another set. */
-    NamedValueSet& operator= (const NamedValueSet&);
+    NamedValueSet& operator= (const NamedValueSet& other);
 
    #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
-    NamedValueSet (NamedValueSet&&) noexcept;
-    NamedValueSet& operator= (NamedValueSet&&) noexcept;
+    NamedValueSet (NamedValueSet&& other) noexcept;
+    NamedValueSet& operator= (NamedValueSet&& other) noexcept;
    #endif
 
     /** Destructor. */
     ~NamedValueSet();
 
-    bool operator== (const NamedValueSet&) const;
-    bool operator!= (const NamedValueSet&) const;
+    bool operator== (const NamedValueSet& other) const;
+    bool operator!= (const NamedValueSet& other) const;
 
     //==============================================================================
     /** Returns the total number of values that the set contains. */
@@ -67,48 +67,45 @@ public:
         If the name isn't found, this will return a void variant.
         @see getProperty
     */
-    const var& operator[] (Identifier name) const;
+    const var& operator[] (const Identifier name) const;
 
     /** Tries to return the named value, but if no such value is found, this will
         instead return the supplied default value.
     */
-    var getWithDefault (Identifier name, const var& defaultReturnValue) const;
+    var getWithDefault (const Identifier name, const var& defaultReturnValue) const;
 
     /** Changes or adds a named value.
         @returns    true if a value was changed or added; false if the
                     value was already set the the value passed-in.
     */
-    bool set (Identifier name, const var& newValue);
+    bool set (const Identifier name, const var& newValue);
 
    #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
     /** Changes or adds a named value.
         @returns    true if a value was changed or added; false if the
                     value was already set the the value passed-in.
     */
-    bool set (Identifier name, var&& newValue);
+    bool set (const Identifier name, var&& newValue);
    #endif
 
     /** Returns true if the set contains an item with the specified name. */
-    bool contains (Identifier name) const;
+    bool contains (const Identifier name) const;
 
     /** Removes a value from the set.
         @returns    true if a value was removed; false if there was no value
                     with the name that was given.
     */
-    bool remove (Identifier name);
+    bool remove (const Identifier name);
 
     /** Returns the name of the value at a given index.
         The index must be between 0 and size() - 1.
     */
-    Identifier getName (int index) const;
+    const Identifier getName (int index) const;
 
     /** Returns the value of the item at a given index.
         The index must be between 0 and size() - 1.
     */
     const var& getValueAt (int index) const;
-
-    /** Returns the index of the given name, or -1 if it's not found. */
-    int indexOf (Identifier name) const noexcept;
 
     /** Removes all values. */
     void clear();
@@ -120,7 +117,7 @@ public:
         Do not use this method unless you really need access to the internal var object
         for some reason - for normal reading and writing always prefer operator[]() and set().
     */
-    var* getVarPointer (Identifier name) const noexcept;
+    var* getVarPointer (const Identifier name) const noexcept;
 
     //==============================================================================
     /** Sets properties to the values of all of an XML element's attributes. */
@@ -138,14 +135,14 @@ private:
     public:
         NamedValue() noexcept;
         NamedValue (const NamedValue&);
-        NamedValue (Identifier, const var&);
+        NamedValue (const Identifier name, const var& value);
         NamedValue& operator= (const NamedValue&);
        #if JUCE_COMPILER_SUPPORTS_MOVE_SEMANTICS
         NamedValue (NamedValue&&) noexcept;
-        NamedValue (Identifier, var&&);
+        NamedValue (const Identifier name, var&& value);
         NamedValue& operator= (NamedValue&&) noexcept;
        #endif
-        bool operator== (const NamedValue&) const noexcept;
+        bool operator== (const NamedValue& other) const noexcept;
 
         LinkedListPointer<NamedValue> nextListItem;
         Identifier name;
