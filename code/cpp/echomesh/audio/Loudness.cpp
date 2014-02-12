@@ -41,7 +41,7 @@ class LoudnessInput : public Loudness {
       input_->addCallback(this);
   }
 
-  ~LoudnessInput() {
+  ~LoudnessInput() override {
     if (hasInput())
       input_->removeCallback(this);
   }

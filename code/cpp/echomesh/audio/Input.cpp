@@ -10,11 +10,6 @@ namespace audio {
 
 namespace {
 
-typedef map<InputID, Input*> InputTable;
-
-CriticalSection INPUT_LOCK;
-InputTable INPUT_TABLE;
-
 class InputImpl : public AudioIODeviceCallback, public Input {
  public:
   InputImpl(const InputID& id) : id_(id) {}
@@ -23,7 +18,7 @@ class InputImpl : public AudioIODeviceCallback, public Input {
     manager_.removeAudioCallback(this);
   }
 
-  String initialize() {
+  String initialize() override {
     String error;
     auto& name = id_.first;
     if (name.length()) {
@@ -97,37 +92,30 @@ class InputImpl : public AudioIODeviceCallback, public Input {
   DISALLOW_COPY_ASSIGN_AND_LEAKS(InputImpl);
 };
 
-struct InputDeleter {
-  void operator()(Input* base) {
-    if (base) {
-      ScopedLock l(INPUT_LOCK);
-      INPUT_TABLE.erase(base->id());
-      delete base;
-    }
-  }
-};
+typedef map<InputID, weak_ptr<Input>> InputTable;
+
+CriticalSection INPUT_LOCK;
+InputTable INPUT_TABLE;
 
 }  // namespace
 
 shared_ptr<Input> getInput(const string& name, int channels) {
-  shared_ptr<Input> result(nullptr, InputDeleter());
   ScopedLock l(INPUT_LOCK);
 
   InputID id(name, channels);
   auto i = INPUT_TABLE.find(id);
   if (i != INPUT_TABLE.end()) {
-    result.reset(i->second);
-  } else {
-    auto input = new InputImpl(id);
-    result.reset(input);
+    if (auto p = i->second.lock())
+      return std::move(p);
+  }
+  auto result = make_shared<InputImpl>(id);
 
-    String error = input->initialize();
-    if (error.length()) {
-      LOG(ERROR) << "Couldn't initialize input " << name;
-      result.reset();
-    } else {
-      INPUT_TABLE[id] = input;
-    }
+  String error = result->initialize();
+  if (error.length()) {
+    LOG(ERROR) << "Couldn't initialize input " << name;
+    result.reset();
+  } else {
+    INPUT_TABLE[id] = result;
   }
   return std::move(result);
 }

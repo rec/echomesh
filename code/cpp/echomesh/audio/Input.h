@@ -14,6 +14,7 @@ class Input {
   virtual void addCallback(InputCallback*) = 0;
   virtual void removeCallback(InputCallback*) = 0;
   virtual const InputID& id() const = 0;
+  virtual String initialize() = 0;
 };
 
 std::shared_ptr<Input> getInput(const string& name, int channels);
