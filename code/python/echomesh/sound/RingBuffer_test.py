@@ -46,3 +46,21 @@ class RingBuffer_test(TestCase):
     self.assertTrue(self.buffer.write(12), [(24, 32), (0, 8)])
     self.assertEqual(self.buffer.available(), 28)
 
+  def test_simple_read(self):
+    self.buffer = cechomesh.PyRingBufferIndex(32, 0, 8)
+    self.assertTrue(self.buffer.read(6), [(0, 6)])
+    self.assertEqual(self.buffer.available(), 2)
+
+  def test_read_underrun(self):
+    self.buffer = cechomesh.PyRingBufferIndex(32, 0, 8)
+    self.assertTrue(self.buffer.read(10), [(0, 8)])
+    self.assertEqual(self.buffer.available(), 0)
+    self.assertEqual(self.buffer.begin(), 8)
+    self.assertEqual(self.buffer.end(), 8)
+
+  def test_read_wrap(self):
+    self.buffer = cechomesh.PyRingBufferIndex(32, 28, 4)
+    self.assertTrue(self.buffer.read(6), [(28, 32), (0, 2)])
+    self.assertEqual(self.buffer.available(), 2)
+
+
