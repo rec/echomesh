@@ -8,8 +8,12 @@ namespace audio {
 template <typename Number>
 class RingBufferIndex {
  public:
-  explicit RingBufferIndex(Number size)
-      : size_(size), begin_(0), end_(0), justWrote_(false) {
+  explicit RingBufferIndex(Number size, Number begin = 0, Number end = 0)
+      : size_(size), begin_(begin), end_(end), justWrote_(false) {
+    DCHECK_GE(begin_, 0);
+    DCHECK_GE(end_, 0);
+    DCHECK_LT(begin_, size_);
+    DCHECK_GE(end_, size_);
   }
 
   typedef std::pair<Number, Number> Block;
@@ -18,7 +22,7 @@ class RingBufferIndex {
   Blocks write(Number count) {
     Blocks result;
     count = std::min(count, size_);
-    auto overruns = available() - count;
+    auto overruns = count - (size_ - available());
 
     if (overruns > 0)
       begin_ = limit(begin_ + overruns);
@@ -26,7 +30,6 @@ class RingBufferIndex {
     while (count > 0) {
       auto e = wraps() ? begin_ : size_;
       auto c = std::min(count, e - end_);
-      CHECK_GT(c, 0) << e << ", " << c;
       append(&result, end_, end_ + c);
       end_ = limit(end_ + c);
       count -= c;
