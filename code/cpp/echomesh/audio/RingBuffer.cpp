@@ -8,7 +8,7 @@ RingBuffer::RingBuffer(int channels, int size)
       channels_(channels), size_(size) {
 }
 
-void RingBuffer::append(int count, const float** samples) {
+void RingBuffer::appendFrom(int count, const float** samples) {
   bool twoParts;
   int oldEnd, newEnd;
   {
@@ -43,9 +43,9 @@ void RingBuffer::append(int count, const float** samples) {
   }
 }
 
-void RingBuffer::append(const AudioSampleBuffer& buffer) {
-  append(buffer.getNumSamples(),
-         const_cast<const float**>(buffer.getArrayOfChannels()));
+void RingBuffer::appendFrom(const AudioSampleBuffer& buffer) {
+  appendFrom(buffer.getNumSamples(),
+             const_cast<const float**>(buffer.getArrayOfChannels()));
 }
 
 void RingBuffer::fill(const AudioSourceChannelInfo& info) {
