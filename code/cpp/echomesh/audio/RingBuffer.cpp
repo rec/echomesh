@@ -43,6 +43,11 @@ void RingBuffer::append(int count, const float** samples) {
   }
 }
 
+void RingBuffer::append(const AudioSampleBuffer& buffer) {
+  append(buffer.getNumSamples(),
+         const_cast<const float**>(buffer.getArrayOfChannels()));
+}
+
 void RingBuffer::fill(const AudioSourceChannelInfo& info) {
   auto count = info.numSamples;
   bool twoParts;
@@ -81,21 +86,16 @@ void RingBuffer::fill(const AudioSourceChannelInfo& info) {
   }
 }
 
+void RingBuffer::fill(AudioSampleBuffer* buffer) {
+  fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
+}
+
 int RingBuffer::sampleCount() const {
   ScopedLock l(lock_);
   auto result = end_ - begin_;
   if (result < 0)
     result += size_;
   return result;
-}
-
-void RingBuffer::fill(int count, float* const* samples) {
-  AudioSampleBuffer buffer(samples, channels_, 0, count);
-  fill(AudioSourceChannelInfo(&buffer, 0, count));
-}
-
-void RingBuffer::fill(AudioSampleBuffer* buffer) {
-  fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 
 }  // namespace audio
