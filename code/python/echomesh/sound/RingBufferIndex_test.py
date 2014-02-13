@@ -4,7 +4,7 @@ from echomesh.util.TestCase import TestCase
 
 import cechomesh
 
-class RingBuffer_test(TestCase):
+class RingBufferIndex_test(TestCase):
   def setUp(self):
     self.buffer = cechomesh.PyRingBufferIndex(32)
 

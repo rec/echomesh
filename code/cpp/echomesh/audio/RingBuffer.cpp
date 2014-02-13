@@ -1,50 +1,30 @@
 #include "echomesh/audio/RingBuffer.h"
+#include "echomesh/audio/RingBufferIndex.h"
 
 namespace echomesh {
 namespace audio {
 
+class RingBuffer::Index : public RingBufferIndex<int> {
+ public:
+  explicit Index(int size) : RingBufferIndex<int>(size) {}
+};
+
 RingBuffer::RingBuffer(int channels, int size)
-    : buffer_(channels, size), begin_(0), end_(0), overruns_(0), underruns_(0),
-      channels_(channels), size_(size), lastOperationWasWrite_(false) {
+    : index_(new Index(size)), buffer_(channels, size), channels_(channels) {
 }
 
+RingBuffer::~RingBuffer() {}
+
 bool RingBuffer::write(int count, const float** samples) {
-  auto success = true;
-  bool twoParts;
-  int oldEnd, newEnd;
-  {
-    ScopedLock l(lock_);
-    auto forward = (begin_ <= end_);
-    oldEnd = end_;
-
-    end_ += count;
-    twoParts = (end_ > size_);
-    if (twoParts)
-      end_ -= size_;
-    newEnd = end_;
-
-    if (forward == twoParts and begin_ <= end_) {
-      success = false;
-      overruns_ += 1;
-      begin_ = end_ + 1;
-      if (begin_ >= size_)
-        begin_ -= size_;
-    }
-    lastOperationWasWrite_ = true;
+  auto blocks = index_->write(count);
+  auto total = 0;
+  for (auto& b: blocks) {
+    auto size = b.second - b.first;
+    for (auto c = 0; c < channels_; ++c)
+      buffer_.copyFrom(c, b.first, samples[c] + total, size);
+    total += size;
   }
-
-  if (twoParts) {
-    auto first = size_ - oldEnd;
-    auto second = count - first;
-    for (auto i = 0; i < channels_; ++i) {
-      buffer_.copyFrom(i, oldEnd, samples[i], first);
-      buffer_.copyFrom(i, 0, samples[i] + first, second);
-    }
-  } else {
-    for (auto i = 0; i < channels_; ++i)
-      buffer_.copyFrom(i, oldEnd, samples[i], count);
-  }
-  return success;
+  return total == count;
 }
 
 bool RingBuffer::write(const AudioSampleBuffer& buffer) {
@@ -53,60 +33,30 @@ bool RingBuffer::write(const AudioSampleBuffer& buffer) {
 }
 
 bool RingBuffer::read(const AudioSourceChannelInfo& info) {
-  auto success = true;
   auto count = info.numSamples;
-  bool twoParts;
-  int oldBegin, newBegin;
-  {
-    ScopedLock l(lock_);
-    oldBegin = begin_;
-    auto forward = (begin_ <= end_);
-    auto remaining = end_ - begin_;
-    if (not remaining and lastOperationWasWrite_)
-      remaining = size_;
-    if (not forward)
-      remaining += size_;
-    if (count > remaining) {
-      success = false;
-      underruns_ += 1;
-      count = remaining;
-    }
-
-    auto firstPart = (forward ? end_ : size_) - oldBegin;
-    twoParts = firstPart < count;
-    if (twoParts)
-      begin_ = count - firstPart;
-    else
-      begin_ = begin_ + count;
-    newBegin = begin_;
-    lastOperationWasWrite_ = false;
+  auto blocks = index_->read(count);
+  auto total = 0;
+  auto buf = info.buffer;
+  for (auto& b: blocks) {
+    auto size = b.second - b.first;
+    for (auto c = 0; c < channels_; ++c)
+      buf->copyFrom(c, info.startSample + total, buffer_, c, b.first, size);
+    total += size;
   }
-
-  if (twoParts) {
-    auto first = size_ - oldBegin;
-    auto second = count - first;
-    for (auto i = 0; i < channels_; ++i) {
-      info.buffer->copyFrom(i, info.startSample, buffer_, i, oldBegin, first);
-      info.buffer->copyFrom(i, info.startSample + first, buffer_, i, 0, second);
-    }
-  } else {
-    for (auto i = 0; i < channels_; ++i)
-      info.buffer->copyFrom(i, info.startSample, buffer_, i, oldBegin, count);
-  }
-  return success;
+  return total == count;
 }
 
 bool RingBuffer::read(AudioSampleBuffer* buffer) {
   return read(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 
-int RingBuffer::sampleCount() const {
+int RingBuffer::available() const {
   ScopedLock l(lock_);
-  auto result = end_ - begin_;
-  if (result <= 0 and (result or lastOperationWasWrite_))
-    result += size_;
+  return index_->available();
+}
 
-  return result;
+int RingBuffer::size() const {
+  return index_->size();
 }
 
 }  // namespace audio

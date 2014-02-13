@@ -8,22 +8,24 @@ namespace audio {
 class RingBuffer {
  public:
   RingBuffer(int channels, int size);
+  ~RingBuffer();
+
   bool write(int count, const float** samples);
   bool write(const AudioSampleBuffer&);
 
   bool read(const AudioSourceChannelInfo& info);
   bool read(AudioSampleBuffer*);
 
-  int sampleCount() const;
-  int size() const { return size_; }
+  int available() const;
+  int size() const;
   int channels() const { return channels_; }
 
  private:
+  class Index;
+
+  unique_ptr<Index> index_;
   AudioSampleBuffer buffer_;
-  int begin_, end_, overruns_, underruns_;
   const int channels_;
-  const int size_;
-  bool lastOperationWasWrite_;
   CriticalSection lock_;
 
   DISALLOW_COPY_ASSIGN_AND_LEAKS(RingBuffer);

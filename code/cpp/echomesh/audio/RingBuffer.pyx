@@ -10,7 +10,7 @@ cdef extern from "echomesh/audio/RingBuffer.h" namespace "echomesh::audio":
     RingBuffer(int channels, int size)
     bool write(AudioSampleBuffer)
     bool read(AudioSampleBuffer*)
-    int sampleCount()
+    int available()
     int size()
     int channels()
 
@@ -23,8 +23,8 @@ cdef class AudioRingBuffer:
   def __dealloc__(self):
     del self.thisptr
 
-  def sample_count(self):
-    return self.thisptr.sampleCount()
+  def available(self):
+    return self.thisptr.available()
 
   def read(self, int size, list data):
     cdef int channels = self.thisptr.channels()

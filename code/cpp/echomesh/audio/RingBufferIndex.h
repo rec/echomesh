@@ -8,7 +8,7 @@ namespace audio {
 template <typename Number>
 class RingBufferIndex {
  public:
-  explicit RingBufferIndex(Number size, Number begin = 0, Number end = 0)
+  RingBufferIndex(Number size, Number begin = 0, Number end = 0)
       : size_(size), begin_(begin), end_(end), justWrote_(false) {
     DCHECK_GE(begin_, 0);
     DCHECK_GE(end_, 0);
