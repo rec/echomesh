@@ -31,12 +31,15 @@ cdef class AudioRingBuffer:
     cdef AudioSampleBuffer* buffer
     cdef float* channel_data
     buffer = new AudioSampleBuffer(channels, size)
-    success = self.thisptr.fill(buffer)
-    for channel in range(channels):
-      channel_data = buffer.getSampleData(channel)
-      data.append([channel_data[j] for j in range(size)])
+    try:
+      success = self.thisptr.fill(buffer)
+      for channel in range(channels):
+        channel_data = buffer.getSampleData(channel)
+        data.append([channel_data[j] for j in range(size)])
 
-    return success
+      return success
+    finally:
+      del buffer
 
   def append_from(self, data):
     cdef int channels = len(data)

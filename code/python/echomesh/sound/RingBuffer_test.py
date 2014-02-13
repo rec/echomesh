@@ -10,5 +10,11 @@ class RingBuffer_test(TestCase):
 
   def test_empty(self):
     self.assertEqual(self.buffer.sample_count(), 0)
+    data = []
+    self.assertFalse(self.buffer.fill(16, data))
+    self.assertFalse(self.buffer.fill(64, data))
 
+  def test_append(self):
+    pass
+    #self.assertTrue(self.buffer.append_from(
 
