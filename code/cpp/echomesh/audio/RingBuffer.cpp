@@ -15,7 +15,7 @@ RingBuffer::RingBuffer(int channels, int size)
 
 RingBuffer::~RingBuffer() {}
 
-bool RingBuffer::write(int count, const float** samples) {
+int RingBuffer::write(int count, const float** samples) {
   auto blocks = index_->write(count);
   auto total = 0;
   for (auto& b: blocks) {
@@ -24,15 +24,15 @@ bool RingBuffer::write(int count, const float** samples) {
       buffer_.copyFrom(c, b.first, samples[c] + total, size);
     total += size;
   }
-  return total == count;
+  return total;
 }
 
-bool RingBuffer::write(const AudioSampleBuffer& buffer) {
+int RingBuffer::write(const AudioSampleBuffer& buffer) {
   auto samples = const_cast<const float**>(buffer.getArrayOfChannels());
   return write(buffer.getNumSamples(), samples);
 }
 
-bool RingBuffer::read(const AudioSourceChannelInfo& info) {
+int RingBuffer::read(const AudioSourceChannelInfo& info) {
   auto count = info.numSamples;
   auto blocks = index_->read(count);
   auto total = 0;
@@ -43,10 +43,10 @@ bool RingBuffer::read(const AudioSourceChannelInfo& info) {
       buf->copyFrom(c, info.startSample + total, buffer_, c, b.first, size);
     total += size;
   }
-  return total == count;
+  return total;
 }
 
-bool RingBuffer::read(AudioSampleBuffer* buffer) {
+int RingBuffer::read(AudioSampleBuffer* buffer) {
   return read(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 

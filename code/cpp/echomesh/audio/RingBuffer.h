@@ -10,11 +10,11 @@ class RingBuffer {
   RingBuffer(int channels, int size);
   ~RingBuffer();
 
-  bool write(int count, const float** samples);
-  bool write(const AudioSampleBuffer&);
+  int write(int count, const float** samples);
+  int write(const AudioSampleBuffer&);
 
-  bool read(const AudioSourceChannelInfo& info);
-  bool read(AudioSampleBuffer*);
+  int read(const AudioSourceChannelInfo& info);
+  int read(AudioSampleBuffer*);
 
   int available() const;
   int size() const;

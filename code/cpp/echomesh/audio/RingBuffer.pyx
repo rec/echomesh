@@ -8,8 +8,8 @@ cdef extern from "JuceLibraryCode/modules/juce_audio_basics/buffers/juce_AudioSa
 cdef extern from "echomesh/audio/RingBuffer.h" namespace "echomesh::audio":
   cdef cppclass RingBuffer:
     RingBuffer(int channels, int size)
-    bool write(AudioSampleBuffer)
-    bool read(AudioSampleBuffer*)
+    int write(AudioSampleBuffer)
+    int read(AudioSampleBuffer*)
     int available()
     int size()
     int channels()
@@ -32,12 +32,12 @@ cdef class AudioRingBuffer:
     cdef float* channel_data
     buffer = new AudioSampleBuffer(channels, size)
     try:
-      success = self.thisptr.read(buffer)
+      result = self.thisptr.read(buffer)
       for channel in range(channels):
         channel_data = buffer.getSampleData(channel)
-        data.append([channel_data[j] for j in range(size)])
+        data.append([channel_data[j] for j in range(result)])
 
-      return success
+      return result
     finally:
       del buffer
 
