@@ -9,7 +9,10 @@ class RingBuffer {
  public:
   RingBuffer(int channels, int size);
   void append(int count, const float** samples);
-  void remove(AudioSampleBuffer* buffer);
+  void fill(const AudioSourceChannelInfo& info);
+  void fill(int count, float* const* samples);
+  void fill(AudioSampleBuffer*);
+  int sampleCount() const;
 
  private:
   AudioSampleBuffer buffer_;

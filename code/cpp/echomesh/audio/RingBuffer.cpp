@@ -43,9 +43,59 @@ void RingBuffer::append(int count, const float** samples) {
   }
 }
 
-void RingBuffer::remove(AudioSampleBuffer* buffer) {
-  // auto bufferSize = buffer->getNumSamples();
+void RingBuffer::fill(const AudioSourceChannelInfo& info) {
+  auto count = info.numSamples;
+  bool twoParts;
+  int oldBegin, newBegin;
+  {
+    ScopedLock l(lock_);
+    oldBegin = begin_;
+    auto forward = (begin_ <= end_);
+    auto remaining = end_ - begin_;
+    if (not forward)
+      remaining += size_;
+    if (count > remaining) {
+      underruns_ += 1;
+      count = remaining;
+    }
 
+    auto firstPart = (forward ? end_ : size_) - oldBegin;
+    twoParts = firstPart < count;
+    if (twoParts)
+      begin_ = count - firstPart;
+    else
+      begin_ = begin_ + count;
+    newBegin = begin_;
+  }
+
+  if (twoParts) {
+    auto first = size_ - oldBegin;
+    auto second = count - first;
+    for (auto i = 0; i < channels_; ++i) {
+      info.buffer->copyFrom(i, info.startSample, buffer_, i, oldBegin, first);
+      info.buffer->copyFrom(i, info.startSample + first, buffer_, i, 0, second);
+    }
+  } else {
+    for (auto i = 0; i < channels_; ++i)
+      info.buffer->copyFrom(i, info.startSample, buffer_, i, oldBegin, count);
+  }
+}
+
+int RingBuffer::sampleCount() const {
+  ScopedLock l(lock_);
+  auto result = end_ - begin_;
+  if (result < 0)
+    result += size_;
+  return result;
+}
+
+void RingBuffer::fill(int count, float* const* samples) {
+  AudioSampleBuffer buffer(samples, channels_, 0, count);
+  fill(AudioSourceChannelInfo(&buffer, 0, count));
+}
+
+void RingBuffer::fill(AudioSampleBuffer* buffer) {
+  fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 
 }  // namespace audio
