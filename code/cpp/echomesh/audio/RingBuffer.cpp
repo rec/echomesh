@@ -5,10 +5,10 @@ namespace audio {
 
 RingBuffer::RingBuffer(int channels, int size)
     : buffer_(channels, size), begin_(0), end_(0), overruns_(0), underruns_(0),
-      channels_(channels), size_(size) {
+      channels_(channels), size_(size), lastOperationWasWrite_(false) {
 }
 
-bool RingBuffer::appendFrom(int count, const float** samples) {
+bool RingBuffer::write(int count, const float** samples) {
   auto success = true;
   bool twoParts;
   int oldEnd, newEnd;
@@ -30,6 +30,7 @@ bool RingBuffer::appendFrom(int count, const float** samples) {
       if (begin_ >= size_)
         begin_ -= size_;
     }
+    lastOperationWasWrite_ = true;
   }
 
   if (twoParts) {
@@ -46,12 +47,12 @@ bool RingBuffer::appendFrom(int count, const float** samples) {
   return success;
 }
 
-bool RingBuffer::appendFrom(const AudioSampleBuffer& buffer) {
+bool RingBuffer::write(const AudioSampleBuffer& buffer) {
   auto samples = const_cast<const float**>(buffer.getArrayOfChannels());
-  return appendFrom(buffer.getNumSamples(), samples);
+  return write(buffer.getNumSamples(), samples);
 }
 
-bool RingBuffer::fill(const AudioSourceChannelInfo& info) {
+bool RingBuffer::read(const AudioSourceChannelInfo& info) {
   auto success = true;
   auto count = info.numSamples;
   bool twoParts;
@@ -61,6 +62,8 @@ bool RingBuffer::fill(const AudioSourceChannelInfo& info) {
     oldBegin = begin_;
     auto forward = (begin_ <= end_);
     auto remaining = end_ - begin_;
+    if (not remaining and lastOperationWasWrite_)
+      remaining = size_;
     if (not forward)
       remaining += size_;
     if (count > remaining) {
@@ -76,6 +79,7 @@ bool RingBuffer::fill(const AudioSourceChannelInfo& info) {
     else
       begin_ = begin_ + count;
     newBegin = begin_;
+    lastOperationWasWrite_ = false;
   }
 
   if (twoParts) {
@@ -92,15 +96,16 @@ bool RingBuffer::fill(const AudioSourceChannelInfo& info) {
   return success;
 }
 
-bool RingBuffer::fill(AudioSampleBuffer* buffer) {
-  return fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
+bool RingBuffer::read(AudioSampleBuffer* buffer) {
+  return read(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 
 int RingBuffer::sampleCount() const {
   ScopedLock l(lock_);
   auto result = end_ - begin_;
-  if (result < 0)
+  if (result <= 0 and (result or lastOperationWasWrite_))
     result += size_;
+
   return result;
 }
 

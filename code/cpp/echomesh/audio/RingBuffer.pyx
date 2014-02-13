@@ -8,8 +8,8 @@ cdef extern from "JuceLibraryCode/modules/juce_audio_basics/buffers/juce_AudioSa
 cdef extern from "echomesh/audio/RingBuffer.h" namespace "echomesh::audio":
   cdef cppclass RingBuffer:
     RingBuffer(int channels, int size)
-    bool appendFrom(AudioSampleBuffer)
-    bool fill(AudioSampleBuffer*)
+    bool write(AudioSampleBuffer)
+    bool read(AudioSampleBuffer*)
     int sampleCount()
     int size()
     int channels()
@@ -26,13 +26,13 @@ cdef class AudioRingBuffer:
   def sample_count(self):
     return self.thisptr.sampleCount()
 
-  def fill(self, int size, list data):
+  def read(self, int size, list data):
     cdef int channels = self.thisptr.channels()
     cdef AudioSampleBuffer* buffer
     cdef float* channel_data
     buffer = new AudioSampleBuffer(channels, size)
     try:
-      success = self.thisptr.fill(buffer)
+      success = self.thisptr.read(buffer)
       for channel in range(channels):
         channel_data = buffer.getSampleData(channel)
         data.append([channel_data[j] for j in range(size)])
@@ -41,7 +41,7 @@ cdef class AudioRingBuffer:
     finally:
       del buffer
 
-  def append_from(self, data):
+  def write(self, data):
     cdef int channels = len(data)
     cdef int size = len(data[0])
     cdef AudioSampleBuffer* buffer
@@ -55,6 +55,6 @@ cdef class AudioRingBuffer:
         channel_data = buffer.getSampleData(channel)
         for sample_index, data_point in enumerate(cdata):
           channel_data[sample_index] = data_point
-      return self.thisptr.appendFrom(buffer[0])
+      return self.thisptr.write(buffer[0])
     finally:
       del buffer
