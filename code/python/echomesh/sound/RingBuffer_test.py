@@ -6,16 +6,17 @@ import cechomesh
 
 class RingBuffer_test(TestCase):
   def setUp(self):
-    self.buffer = cechomesh.AudioRingBuffer(1, 32)
+    self.buffer = cechomesh.PyRingBufferIndex(32)
 
   def test_empty(self):
-    self.assertEqual(self.buffer.sample_count(), 0)
-    data = []
-    self.assertFalse(self.buffer.read(16, data))
-    self.assertFalse(self.buffer.read(64, data))
+    self.assertEqual(self.buffer.available(), 0)
+    self.assertEqual(self.buffer.read(16), [])
+    self.assertEqual(self.buffer.read(64), [])
 
-  def test_append(self):
-    self.assertTrue(self.buffer.write([range(3)]))
-    self.assertEqual(self.buffer.sample_count(), 3)
-    self.assertTrue(self.buffer.write([range(28)]))
-    self.assertEqual(self.buffer.sample_count(), 31)
+  def test_write(self):
+    self.assertEqual(self.buffer.write(3), [(0, 3)])
+    self.assertEqual(self.buffer.begin(), 0)
+    self.assertEqual(self.buffer.end(), 3)
+    self.assertEqual(self.buffer.available(), 3)
+    self.assertTrue(self.buffer.write(28), [(3, 31)])
+    self.assertEqual(self.buffer.available(), 31)

@@ -6,6 +6,7 @@ ctypedef unsigned int uint
 from libcpp cimport bool
 from libcpp.string cimport string
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 
 include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
@@ -13,6 +14,7 @@ include "juce/juce_graphics/colour/juce_Colours.pyx"
 include "echomesh/audio/DefaultDevice.pyx"
 include "echomesh/audio/Loudness.pyx"
 include "echomesh/audio/RingBuffer.pyx"
+include "echomesh/audio/RingBufferIndex.pyx"
 include "echomesh/audio/Source.pyx"
 include "echomesh/color/Color.pyx"
 include "echomesh/color/ColorList.pyx"
