@@ -8,7 +8,8 @@ RingBuffer::RingBuffer(int channels, int size)
       channels_(channels), size_(size) {
 }
 
-void RingBuffer::appendFrom(int count, const float** samples) {
+bool RingBuffer::appendFrom(int count, const float** samples) {
+  auto success = true;
   bool twoParts;
   int oldEnd, newEnd;
   {
@@ -23,6 +24,7 @@ void RingBuffer::appendFrom(int count, const float** samples) {
     newEnd = end_;
 
     if (forward == twoParts and begin_ <= end_) {
+      success = false;
       overruns_ += 1;
       begin_ = end_ + 1;
       if (begin_ >= size_)
@@ -41,14 +43,16 @@ void RingBuffer::appendFrom(int count, const float** samples) {
     for (auto i = 0; i < channels_; ++i)
       buffer_.copyFrom(i, oldEnd, samples[i], count);
   }
+  return success;
 }
 
-void RingBuffer::appendFrom(const AudioSampleBuffer& buffer) {
-  appendFrom(buffer.getNumSamples(),
-             const_cast<const float**>(buffer.getArrayOfChannels()));
+bool RingBuffer::appendFrom(const AudioSampleBuffer& buffer) {
+  auto samples = const_cast<const float**>(buffer.getArrayOfChannels());
+  return appendFrom(buffer.getNumSamples(), samples);
 }
 
-void RingBuffer::fill(const AudioSourceChannelInfo& info) {
+bool RingBuffer::fill(const AudioSourceChannelInfo& info) {
+  auto success = true;
   auto count = info.numSamples;
   bool twoParts;
   int oldBegin, newBegin;
@@ -60,6 +64,7 @@ void RingBuffer::fill(const AudioSourceChannelInfo& info) {
     if (not forward)
       remaining += size_;
     if (count > remaining) {
+      success = false;
       underruns_ += 1;
       count = remaining;
     }
@@ -84,10 +89,11 @@ void RingBuffer::fill(const AudioSourceChannelInfo& info) {
     for (auto i = 0; i < channels_; ++i)
       info.buffer->copyFrom(i, info.startSample, buffer_, i, oldBegin, count);
   }
+  return success;
 }
 
-void RingBuffer::fill(AudioSampleBuffer* buffer) {
-  fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
+bool RingBuffer::fill(AudioSampleBuffer* buffer) {
+  return fill(AudioSourceChannelInfo(buffer, 0, buffer->getNumSamples()));
 }
 
 int RingBuffer::sampleCount() const {

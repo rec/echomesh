@@ -8,11 +8,11 @@ namespace audio {
 class RingBuffer {
  public:
   RingBuffer(int channels, int size);
-  void appendFrom(int count, const float** samples);
-  void appendFrom(const AudioSampleBuffer&);
+  bool appendFrom(int count, const float** samples);
+  bool appendFrom(const AudioSampleBuffer&);
 
-  void fill(const AudioSourceChannelInfo& info);
-  void fill(AudioSampleBuffer*);
+  bool fill(const AudioSourceChannelInfo& info);
+  bool fill(AudioSampleBuffer*);
 
   int sampleCount() const;
   int size() const { return size_; }
