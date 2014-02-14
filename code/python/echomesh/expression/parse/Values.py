@@ -99,7 +99,7 @@ class Parent(ValueRoot):
 
 class System(ValueRoot):
   def _get_system(self, parts):
-    return echomesh.expression.parse.System.get('.'.join(parts))
+    return echomesh.expression.parse.System.get('.'.join(parts))()
 
   def _evaluate(self, parts, evaluator, element):
     return Call.call_recursive(self._get_system(parts).function)

@@ -17,10 +17,10 @@ _REGISTRY = Registry('System functions')
 def register(name, function, is_constant):
   _REGISTRY.register(_SystemFunction(function, is_constant), name)
 
-register('e', math.e, True)
-register('level', Level.input_level, False)
-register('pi', math.pi, True)
-register('random', random.random, False)
-register('time', time.time, False)
+register('e', lambda: math.e, True)
+register('level', lambda: Level.input_level, False)
+register('pi', lambda: math.pi, True)
+register('random', lambda: random.random, False)
+register('time', lambda: time.time, False)
 
 get = _REGISTRY.get

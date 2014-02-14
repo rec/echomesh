@@ -211,10 +211,6 @@ light:
 # The load modules are third-party Python modules that are optional to the core
 # functional of the program but still extremely useful.
 load_module:
-  # This is the SoundAnalyse package:  https://pypi.python.org/pypi/SoundAnalyse.
-  # It's automatically included as part of echomesh so no need to turn this off.
-  analyse: true
-
   pyaudio: true
 
 # The logging section controls the destination of informational and warning
