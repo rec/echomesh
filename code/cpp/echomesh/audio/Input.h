@@ -1,12 +1,13 @@
 #pragma once
 
-#include <memory>
+#include <tuple>
+
 #include "echomesh/audio/InputCallback.h"
 
 namespace echomesh {
 namespace audio {
 
-typedef std::pair<string, int> InputID;
+typedef std::tuple<string, int, int> InputID;
 
 class Input {
  public:

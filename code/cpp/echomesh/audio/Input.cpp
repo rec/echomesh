@@ -1,4 +1,5 @@
 #include <map>
+#include <memory>
 
 #include "echomesh/audio/DefaultDevice.h"
 #include "echomesh/audio/Input.h"
@@ -20,11 +21,15 @@ class InputImpl : public AudioIODeviceCallback, public Input {
 
   String initialize() override {
     String error;
-    auto& name = id_.first;
+    string name;
+    int channels;
+    int sampleRate;
+    std::tie(name, channels, sampleRate) = id_;
     if (name.length()) {
       AudioDeviceManager::AudioDeviceSetup setup;
       setup.inputDeviceName = name;
-      error = manager_.initialise(id_.second, 0, nullptr, false, "", &setup);
+      setup.sampleRate = sampleRate;
+      error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
       if (error.length()) {
         String newName;
         auto inputNames = getDeviceNames(true);
@@ -39,11 +44,11 @@ class InputImpl : public AudioIODeviceCallback, public Input {
         }
         if (newName.length()) {
           setup.inputDeviceName = newName;
-          error = manager_.initialise(id_.second, 0, nullptr, false, "", &setup);
+          error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
         }
       }
     } else {
-      error = manager_.initialise(id_.second, 0, nullptr, false, "");
+      error = manager_.initialise(channels, 0, nullptr, false, "");
     }
     manager_.addAudioCallback(this);
     return error;
@@ -62,7 +67,7 @@ class InputImpl : public AudioIODeviceCallback, public Input {
   void audioDeviceStopped() override {}
 
   void audioDeviceError(const String& errorMessage) override {
-    LOG(ERROR) << "Error on device " << id().first
+    LOG(ERROR) << "Error on device " << std::get<0>(id())
                << ": " << errorMessage.toStdString();
   }
 
@@ -103,7 +108,7 @@ shared_ptr<Input> getInput(
     const string& name, int channels, int sampleRate) {
   ScopedLock l(INPUT_LOCK);
 
-  InputID id(name, channels);
+  InputID id(name, channels, sampleRate);
   auto i = INPUT_TABLE.find(id);
   if (i != INPUT_TABLE.end()) {
     if (auto p = i->second.lock())
