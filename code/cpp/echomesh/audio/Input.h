@@ -17,7 +17,8 @@ class Input {
   virtual String initialize() = 0;
 };
 
-std::shared_ptr<Input> getInput(const string& name, int channels);
+std::shared_ptr<Input> getInput(
+    const string& name, int channels, int sampleRate);
 
 }  // namespace audio
 }  // namespace echomesh

@@ -21,7 +21,8 @@ class Loudness : public InputCallback {
   DISALLOW_COPY_ASSIGN_AND_LEAKS(Loudness);
 };
 
-Loudness* loudnessInput(const string& name, int channels, int windowSize);
+Loudness* loudnessInput(
+    const string& name, int channels, int windowSize, int sampleRate);
 
 }  // namespace audio
 }  // namespace echomesh

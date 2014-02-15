@@ -34,9 +34,10 @@ float Loudness::loudness() const {
 
 class LoudnessInput : public Loudness {
  public:
-  explicit LoudnessInput(const string& name, int channels, int windowSize)
+  LoudnessInput(
+      const string& name, int channels, int windowSize, int sampleRate)
       : Loudness(windowSize),
-        input_(getInput(name, channels)) {
+        input_(getInput(name, channels, sampleRate)) {
     if (hasInput())
       input_->addCallback(this);
   }
@@ -52,9 +53,10 @@ class LoudnessInput : public Loudness {
   std::shared_ptr<Input> input_;
 };
 
-Loudness* loudnessInput(const string& name, int channels, int windowSize) {
+Loudness* loudnessInput(const string& name, int channels, int windowSize,
+                        int sampleRate) {
   unique_ptr<LoudnessInput> result(
-      new LoudnessInput(name, channels, windowSize));
+      new LoudnessInput(name, channels, windowSize, sampleRate));
   return result->hasInput() ? result.release() : nullptr;
 }
 

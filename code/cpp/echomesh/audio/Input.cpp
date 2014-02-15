@@ -99,7 +99,8 @@ InputTable INPUT_TABLE;
 
 }  // namespace
 
-shared_ptr<Input> getInput(const string& name, int channels) {
+shared_ptr<Input> getInput(
+    const string& name, int channels, int sampleRate) {
   ScopedLock l(INPUT_LOCK);
 
   InputID id(name, channels);
