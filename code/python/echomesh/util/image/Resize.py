@@ -4,7 +4,7 @@ from PIL import Image
 
 from echomesh.util.image.MakeImage import make_image
 
-def resize_to(image, x, y, top=True, left=True, mode='RGB'):
+def resize_to(image, x, y, center=True, top=True, left=True, mode='RGB'):
   image = make_image(image)
   size = x, y
   ratios = [d1 / d2 for d1, d2 in zip(size, image.size)]
@@ -13,7 +13,13 @@ def resize_to(image, x, y, top=True, left=True, mode='RGB'):
   else:
     new_size = (int(image.size[0] * ratios[1]), size[1])
 
-  box = (0 if top else x - new_size[0], 0 if left else y - new_size[1])
+
+  if center:
+    box = (int((x - new_size[0]) / 2),
+           int((y - new_size[1]) / 2))
+  else:
+    box = (0 if top else x - new_size[0],
+           0 if left else y - new_size[1])
 
   result = Image.new(mode, size)
   result.paste(image.resize(new_size), box=box)
