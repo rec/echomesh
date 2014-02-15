@@ -6,7 +6,7 @@ import time
 from echomesh.element import Loop
 from echomesh.expression import Expression
 from echomesh.expression import UnitConfig
-from echomesh.pattern import make_pattern
+from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

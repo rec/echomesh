@@ -16,3 +16,6 @@ def register(class_path, *modules, **kwds):
       registry.register(sub[1], sub[0].lower())
 
   return registry
+
+def register_parent(class_path, *modules, **kwds):
+  return register('.'.join(class_path.split('.')[:-1]), *modules, **kwds)

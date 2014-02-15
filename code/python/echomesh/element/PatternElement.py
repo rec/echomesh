@@ -6,7 +6,7 @@ from echomesh.base import DataFile
 from echomesh.element import Element
 from echomesh.element.Sequence import Sequence
 from echomesh.output.Registry import make_output
-from echomesh.pattern import make_pattern
+from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)

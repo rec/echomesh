@@ -4,7 +4,7 @@ import re
 import six
 
 from echomesh.expression import Expression
-from echomesh.pattern import make_pattern
+from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
 from echomesh.util.dict.ReadObservingDictionary import ReadObservingDictionary
 from echomesh.util.string.Split import split_on_commas
@@ -76,6 +76,9 @@ class Pattern(object):
 
   def get(self, name):
     return self.dictionary[name].evaluate()
+
+  def get_all(self, *names):
+    return (self.get(name) for name in names)
 
   def patterns(self):
     return [p.evaluate() for p in self._patterns]

@@ -93,6 +93,8 @@ cdef class Color:
   def __str__(self):
     return rgbToName(self.thisptr[0])
 
+def _conv(c):
+  return c if isinstance(c, float) else c / 256.0;
 
 cdef bool fill_color(object x, FColor* c):
   if not x:
@@ -112,11 +114,11 @@ cdef bool fill_color(object x, FColor* c):
 
   try:
     if len(x) == 3:
-      c.copy(FColor(x[0], x[1], x[2], 1.0))
+      c.copy(FColor(_conv(x[0]), _conv(x[1]), _conv(x[2]), 1.0))
       return True
 
     if len(x) == 4:
-      c.copy(FColor(x[0], x[1], x[2], x[3]))
+      c.copy(FColor(_conv(x[0]), _conv(x[1]), _conv(x[2]), _conv(x[3])))
       return True
   except:
     pass
