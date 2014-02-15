@@ -6,6 +6,7 @@ REGISTRY = register_parent(
   'Choose',
   'Concatenate',
   'Fade',
+  'Image',
   'Inject',
   'Insert',
   'Mirror',
