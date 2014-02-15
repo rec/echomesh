@@ -31,47 +31,19 @@ audio:
   input:
     # This section configures the audio input, usually a microphone.
 
-    chunk_size: 1024   # The number of samples in one chunk.
-
-    # These numbers control the moving averages of the microphone levels that
-    # are used to trigger mic level changes.
-    average:
-      group_size: 1      # The number of chunks in a group.  All the samples in
-                         # group are averaged into one number.
-                         # A group_size of 1 (or empty) disables grouping.
-      window_size: 1     # The number of groups used for a moving average
-                         # window.  A window size of 1 or (or empty) disables
-                         # the moving average.
+    channels: 1
+    chunk_size: 4096   # The number of samples in one chunk.
 
     # If this is false, then audio input is disabled.
     enable: true
 
-    # The number of sample frames used per input buffer - you probably don't
-    # have to change this.
-    frames_per_buffer: 4096
-
-    # device_index and device_name identity your audio input device.
-    # If there's a device_name, echomesh looks for an input device which starts
-    # with that.
-    #
-    # Otherwise, if the device_index is not negative, then echomesh uses that
-    # to look up the input audio device in the input audio device table.
-    #
-    # Otherwise, it uses the default input - most of the time, the default input
-    # will work perfectly well.
-    device_index: -1  # See https://github.com/rec/echomesh/issues/196.
     device_name: ""
-
-    periodsize: 160
-
-    # The number of bytes per input sample.
-    sample_bytes: 2
 
     # A list of possible sample rates.  When opening the input device, echomesh
     # tries each of these rates in order, selecting the first one which works.
     # All interfaces we have tested seem to support one of the sample rates
     # in this default file.
-    sample_rates: [8000, 4000, 16000]
+    sample_rate: 8000
 
     # If verbose is true, then every incoming level from the microphone is
     # printed on the console - very spammy.
@@ -207,11 +179,6 @@ light:
       paint_unclipped: false
       shape: circle
       size: [12, 12]
-
-# The load modules are third-party Python modules that are optional to the core
-# functional of the program but still extremely useful.
-load_module:
-  pyaudio: true
 
 # The logging section controls the destination of informational and warning
 # messages.

@@ -7,13 +7,13 @@ namespace audio {
 
 class Loudness : public InputCallback {
  public:
-  explicit Loudness(int windowSize);
+  explicit Loudness(int chunkSize);
   void callback(int channels, int count, const float** samples) override;
   float loudness() const;
 
  private:
   int sampleIndex_;
-  const int windowSize_;
+  const int chunkSize_;
   float sum_;
   float loudness_;
   CriticalSection lock_;
@@ -22,7 +22,7 @@ class Loudness : public InputCallback {
 };
 
 Loudness* loudnessInput(
-    const string& name, int channels, int windowSize, int sampleRate);
+    const string& name, int channels, int chunkSize, int sampleRate);
 
 }  // namespace audio
 }  // namespace echomesh

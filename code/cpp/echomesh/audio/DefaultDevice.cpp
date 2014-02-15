@@ -58,7 +58,7 @@ vector<string> getDeviceNames(bool wantInputs = false) {
     t->scanForDevices();
     auto names = t->getDeviceNames(wantInputs);
     for (auto& name: names)
-      result.push_back(name.toStdString());
+      result.push_back(name.trimEnd().toStdString());
   }
   return result;
 }

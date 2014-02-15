@@ -6,8 +6,8 @@
 namespace echomesh {
 namespace audio {
 
-Loudness::Loudness(int windowSize)
-    : windowSize_(windowSize),
+Loudness::Loudness(int chunkSize)
+    : chunkSize_(chunkSize),
       sum_(0),
       loudness_(-std::numeric_limits<float>::infinity()) {}
 
@@ -17,8 +17,8 @@ void Loudness::callback(int channels, int count, const float** samples) {
       auto s = samples[j][i];
       sum_ += s * s;
     }
-    if (++sampleIndex_ >= windowSize_) {
-      auto loudness = 10.f * logf(sqrtf(sum_ / (channels * windowSize_)));
+    if (++sampleIndex_ >= chunkSize_) {
+      auto loudness = 10.f * logf(sqrtf(sum_ / (channels * chunkSize_)));
       sampleIndex_ = 0;
       sum_ = 0;
       ScopedLock l(lock_);
@@ -35,8 +35,8 @@ float Loudness::loudness() const {
 class LoudnessInput : public Loudness {
  public:
   LoudnessInput(
-      const string& name, int channels, int windowSize, int sampleRate)
-      : Loudness(windowSize),
+      const string& name, int channels, int chunkSize, int sampleRate)
+      : Loudness(chunkSize),
         input_(getInput(name, channels, sampleRate)) {
     if (hasInput())
       input_->addCallback(this);
@@ -53,10 +53,10 @@ class LoudnessInput : public Loudness {
   std::shared_ptr<Input> input_;
 };
 
-Loudness* loudnessInput(const string& name, int channels, int windowSize,
+Loudness* loudnessInput(const string& name, int channels, int chunkSize,
                         int sampleRate) {
   unique_ptr<LoudnessInput> result(
-      new LoudnessInput(name, channels, windowSize, sampleRate));
+      new LoudnessInput(name, channels, chunkSize, sampleRate));
   return result->hasInput() ? result.release() : nullptr;
 }
 

@@ -50,7 +50,6 @@ class Instance(MasterRunnable):
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
-    self.mic = None
     self.timeout = Config.get('network', 'timeout')
 
     def do_quit():
@@ -102,19 +101,3 @@ class Instance(MasterRunnable):
       else:
         while self.is_running:
           time.sleep(self.timeout)
-
-  def start_mic(self):
-    if not self.mic:
-      from echomesh.sound import Microphone
-      def mic_event(level):
-        self.send(type='event', event_type='mic', key=level)
-
-      self.mic = Microphone.microphone(mic_event)
-      self.mic.run()
-      self.add_mutual_pause_slave(self.mic)
-
-  def stop_mic(self):
-    if self.mic:
-      self.mic.pause()
-      self.remove_slave(self.mic)
-      self.mic = None

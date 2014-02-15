@@ -1,16 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-_LEVEL = 0
-_ADDED = False
+import cechomesh
 
-def _level_client(input):
-  global _LEVEL
-  _LEVEL = input.level
+from echomesh.base import Config
 
-def input_level():
-  global _ADDED
-  if not _ADDED:
-    from echomesh.sound import InputManager
-    InputManager.INPUT_MANAGER.add_client(_level_client)
-    _ADDED = True
-  return _LEVEL
+def input_level_maker():
+  return cechomesh.AudioLoudness(
+    name=Config.get('audio', 'input', 'device_name'),
+    channels=Config.get('audio', 'input', 'channels'),
+    chunk_size=Config.get('audio', 'input', 'chunk_size'),
+    sample_rate=Config.get('audio', 'input', 'sample_rate')).loudness
