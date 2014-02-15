@@ -7,7 +7,8 @@ from echomesh.pattern.Pattern import Pattern
 
 class Insert(Pattern):
   PATTERN_COUNT = 1
-  OPTIONAL_VARIABLES = 'length', 'offset', 'rollover', 'skip'
+  OPTIONAL_VARIABLES = {
+    'length': None, 'offset': 0, 'rollover': False, 'skip': 1}
 
   def _evaluate(self):
     color_lists = self.patterns()

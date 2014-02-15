@@ -9,8 +9,8 @@ from echomesh.util.string.Plural import plural
 
 class Spread(Pattern):
   CONSTANTS = 'colors',
-  OPTIONAL_CONSTANTS = 'model', 'transform'
-  OPTIONAL_VARIABLES = 'steps', 'total_steps'
+  OPTIONAL_CONSTANTS = {'model': None, 'transform': None}
+  OPTIONAL_VARIABLES = {'steps': None, 'total_steps': None}
   PATTERN_COUNT = 0
 
   def _evaluate(self):
@@ -20,11 +20,13 @@ class Spread(Pattern):
           plural(len(error_colors), 'color'), ', '.join(error_colors)))
 
     steps = self.get('steps')
-    if isinstance(steps, six.integer_types):
-      total_steps = steps
-      steps = None
-    else:
-      total_steps = None
+    total_steps = self.get('total_steps')
+    if total_steps is None:
+      if steps is None:
+        total_steps = None
+      else:
+        total_steps = steps
+        steps = None
 
     return cechomesh.color_spread(
       colors,

@@ -15,8 +15,8 @@ class Pattern(object):
   CONSTANTS = ()
   VARIABLES = ()
 
-  OPTIONAL_CONSTANTS = ()
-  OPTIONAL_VARIABLES = ()
+  OPTIONAL_CONSTANTS = {}
+  OPTIONAL_VARIABLES = {}
   PATTERN_COUNT = None
 
   def __init__(self, desc, element, name):
@@ -46,8 +46,8 @@ class Pattern(object):
         self.dictionary[k] = Expression.expression(v, element)
         is_constant = is_constant and self.dictionary[k].is_constant()
 
-    for k in self.OPTIONAL_VARIABLES:
-      self.dictionary[k] = Expression.expression(desc.get(k), element)
+    for k, v in self.OPTIONAL_VARIABLES.items():
+      self.dictionary[k] = Expression.expression(desc.get(k, v), element)
       is_constant = is_constant and self.dictionary[k].is_constant()
 
     for k in self.CONSTANTS:
@@ -57,8 +57,8 @@ class Pattern(object):
       else:
         self.dictionary[k] = Expression.constant_expression(v)
 
-    for k in self.OPTIONAL_CONSTANTS:
-      self.dictionary[k] = Expression.constant_expression(desc.get(k))
+    for k, v in self.OPTIONAL_CONSTANTS.items():
+      self.dictionary[k] = Expression.constant_expression(desc.get(k, v))
 
     if missing:
       raise Exception('%s is missing required arguments %s' %
