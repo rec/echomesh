@@ -43,6 +43,7 @@ Order getOrder(const String& s) {
 void fillSpi(const FColorList& fc, char* data, int length, Order o) {
   auto bytes = reinterpret_cast<uint8*>(data);
   auto i = 0;
+  auto tail = length - 3;
   for (auto color: fc) {
     auto red = toLight(color.red());
     auto green = toLight(color.green());
@@ -52,12 +53,15 @@ void fillSpi(const FColorList& fc, char* data, int length, Order o) {
     bytes[i++] = red;
     bytes[i++] = green;
     bytes[i++] = blue;
-    if (i >= length)
-      return;
+    if (i >= tail)
+      break;
   }
 
-  for (; i < length; ++i)
+  for (; i < tail; ++i)
     bytes[i] = 0x7f;
+
+  for (i = tail; i < length; ++i)
+    bytes[i] = 0;
 }
 
 }  // namespace color
