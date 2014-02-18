@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_HSB__
-#define __ECHOMESH_HSB__
+#pragma once
 
 #include "echomesh/color/FColor.h"
 #include "echomesh/color/RGB.h"
@@ -64,4 +63,3 @@ class HSB : public ColorModel {
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_HSB__

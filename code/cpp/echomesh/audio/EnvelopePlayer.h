@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_ENVELOPEVALUEPLAYER__
-#define __ECHOMESH_ENVELOPEVALUEPLAYER__
+#pragma once
 
 #include "echomesh/audio/Envelope.h"
 
@@ -41,4 +40,3 @@ class EnvelopePlayer {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_ENVELOPEVALUEPLAYER__

@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_GETREADER__
-#define __ECHOMESH_GETREADER__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -13,4 +12,3 @@ unique_ptr<PositionableAudioSource> getReader(
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_GETREADER__

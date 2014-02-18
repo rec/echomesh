@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_SAMPLEAUDIOSOURCE__
-#define __ECHOMESH_SAMPLEAUDIOSOURCE__
+#pragma once
 
 #include "echomesh/audio/PanGainPlayer.h"
 #include "echomesh/util/AppCallback.h"
@@ -53,4 +52,3 @@ class SampleAudioSource : public AudioSource {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_SAMPLEAUDIOSOURCE__

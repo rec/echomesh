@@ -24,8 +24,7 @@
   ==============================================================================
 */
 
-#ifndef ECHOMESH_RESAMPLINGAUDIOSOURCE_H_INCLUDED
-#define ECHOMESH_RESAMPLINGAUDIOSOURCE_H_INCLUDED
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -129,4 +128,3 @@ private:
 }  // namespace audio
 }  // namespace echomesh
 
-#endif   // ECHOMESH_RESAMPLINGAUDIOSOURCE_H_INCLUDED

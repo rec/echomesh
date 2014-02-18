@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_INSTRUMENT_COMPONENT__
-#define __ECHOMESH_INSTRUMENT_COMPONENT__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -33,4 +32,3 @@ class InstrumentComponent : public Component {
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_INSTRUMENT_COMPONENT__

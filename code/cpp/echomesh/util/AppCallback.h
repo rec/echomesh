@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_APPCALLBACK__
-#define __ECHOMESH_APPCALLBACK__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -10,4 +9,3 @@ typedef void (*StringCaller)(void *callback, string data);
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_APPCALLBACK__

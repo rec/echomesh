@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_DEFAULTDEVICE__
-#define __ECHOMESH_DEFAULTDEVICE__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -15,5 +14,3 @@ vector<string> getDeviceNames(bool wantInputs);
 
 }  // namespace audio
 }  // namespace echomesh
-
-#endif  // __ECHOMESH_DEFAULTDEVICE__

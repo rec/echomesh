@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_AUDIOPLAYER__
-#define __ECHOMESH_AUDIOPLAYER__
+#pragma once
 
 #include <unordered_set>
 
@@ -38,5 +37,3 @@ class AudioPlayer {
 
 }  // namespace audio
 }  // namespace echomesh
-
-#endif  // __ECHOMESH_AUDIOPLAYER__

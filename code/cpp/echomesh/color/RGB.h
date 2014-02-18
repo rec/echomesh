@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_RGB__
-#define __ECHOMESH_RGB__
+#pragma once
 
 #include "echomesh/color/FColor.h"
 #include "echomesh/color/ColorModel.h"
@@ -39,4 +38,3 @@ class RGB : public ColorModel {
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_RGB__

@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_INSTRUMENT_PANEL__
-#define __ECHOMESH_INSTRUMENT_PANEL__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 #include "echomesh/component/InstrumentComponent.h"
@@ -62,4 +61,3 @@ class InstrumentGrid : public Component {
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_INSTRUMENT_PANEL__

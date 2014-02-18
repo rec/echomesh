@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_FAST_TRIG__
-#define __ECHOMESH_FAST_TRIG__
+#pragma once
 
 #include <cmath>
 
@@ -19,4 +18,3 @@ inline float restrictAngle(float x) {
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_FAST_TRIG__

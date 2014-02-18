@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_AUDIO_PANGAINPLAYER__
-#define __ECHOMESH_AUDIO_PANGAINPLAYER__
+#pragma once
 
 #include "echomesh/audio/Envelope.h"
 #include "echomesh/audio/EnvelopePlayer.h"
@@ -26,4 +25,3 @@ class PanGainPlayer {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_AUDIO_PANGAINPLAYER__

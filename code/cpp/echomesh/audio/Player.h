@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_PLAYER__
-#define __ECHOMESH_PLAYER__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -30,4 +29,3 @@ class Player {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_PLAYER__

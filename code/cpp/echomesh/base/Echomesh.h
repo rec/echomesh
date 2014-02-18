@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH__
-#define __ECHOMESH__
+#pragma once
 
 #include <stdio.h>
 
@@ -52,4 +51,3 @@ struct Point {
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH__

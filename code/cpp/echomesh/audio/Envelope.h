@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_ENVELOPE__
-#define __ECHOMESH_ENVELOPE__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -14,8 +13,8 @@ struct EnvelopePoint {
   float value;
 };
 
-inline EnvelopePoint operator-(const EnvelopePoint& x,
-                               const EnvelopePoint& y) {
+inline EnvelopePoint subtract(
+    const EnvelopePoint& x, const EnvelopePoint& y) {
   return EnvelopePoint(x.time - y.time, x.value - y.value);
 }
 
@@ -38,17 +37,5 @@ inline void addPoint(Envelope* env, long long time, float value) {
 // and the last segment always is at least as long as length.
 void normalizeEnvelope(Envelope*);
 
-struct Playback {
-  SampleTime begin, end;
-  string filename;
-  rec::SampleTime length;
-  Envelope level;
-  int loops;
-  Envelope pan;
-  bool passthrough;
-};
-
 }  // namespace audio
 }  // namespace echomesh
-
-#endif  // __ECHOMESH_ENVELOPE__
