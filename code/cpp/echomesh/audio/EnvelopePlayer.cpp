@@ -66,7 +66,7 @@ SegmentList EnvelopePlayer::getSegments(SampleTime numSamples) {
       }
     }
 
-    auto delta = *next - *previous;
+    auto delta = subtract(*next, *previous);
     auto slope = delta.value / delta.time;
 
     auto t = jmin(remains, numSamples);
