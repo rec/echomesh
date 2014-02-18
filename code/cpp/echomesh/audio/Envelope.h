@@ -14,9 +14,8 @@ struct EnvelopePoint {
   float value;
 };
 
-
-inline EnvelopePoint subtract(const EnvelopePoint& x,
-                              const EnvelopePoint& y) {
+inline EnvelopePoint subtract(
+    const EnvelopePoint& x, const EnvelopePoint& y) {
   return EnvelopePoint(x.time - y.time, x.value - y.value);
 }
 
