@@ -1,0 +1,14 @@
+type: sequence
+
+pattern:
+  an image:
+    type: image
+    filename: "/Volumes/Zog/Documents/cover images/IMG_7782.JPG"
+    x: 16
+    y: 16
+    stretch: true
+
+elements:
+  -
+    type: pattern
+    pattern: an image
