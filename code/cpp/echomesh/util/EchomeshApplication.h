@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_ECHOMESHAPPLICATION__
-#define __ECHOMESH_ECHOMESHAPPLICATION__
+#pragma once
 
 #include "echomesh/util/AppCallback.h"
 
@@ -10,4 +9,3 @@ bool isStarted();
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_ECHOMESHAPPLICATION__

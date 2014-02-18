@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_ENVELOPE__
-#define __ECHOMESH_ENVELOPE__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -40,5 +39,3 @@ void normalizeEnvelope(Envelope*);
 
 }  // namespace audio
 }  // namespace echomesh
-
-#endif  // __ECHOMESH_ENVELOPE__

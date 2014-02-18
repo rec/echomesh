@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_QUIT__
-#define __ECHOMESH_QUIT__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -9,4 +8,3 @@ void quit();
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_QUIT__

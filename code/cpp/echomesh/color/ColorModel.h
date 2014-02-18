@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_COLOR_COLORMODEL__
-#define __ECHOMESH_COLOR_COLORMODEL__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -28,4 +27,3 @@ class ColorModel {
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_COLOR_COLORMODEL__

@@ -1,5 +1,4 @@
-#ifndef __REC_UTIL_MAKE_UNIQUE
-#define __REC_UTIL_MAKE_UNIQUE
+#pragma once
 
 #include <memory>
 
@@ -40,4 +39,3 @@ std::unique_ptr<T> make_unique(A0&& a0, A1&& a1, A2&& a2, A3&& a3, A4&& a4){
       std::forward<A3>(a3), std::forward<A4>(a4)));
 }
 
-#endif // __REC_UTIL_MAKE_UNIQUE

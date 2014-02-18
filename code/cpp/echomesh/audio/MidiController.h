@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_MIDI_CONTROLLER__
-#define __ECHOMESH_MIDI_CONTROLLER__
+#pragma once
 
 #include <stdio.h>
 
@@ -32,4 +31,3 @@ class MidiController : public MidiInputCallback {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_MIDI_CONTROLLER__

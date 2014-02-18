@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_COLOR_FCOLORLIST__
-#define __ECHOMESH_COLOR_FCOLORLIST__
+#pragma once
 
 #include <algorithm>
 
@@ -103,4 +102,3 @@ class FColorList : public vector<FColor> {
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_COLOR_FCOLORLIST__

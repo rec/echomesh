@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_RUNONMESSAGETHREAD__
-#define __ECHOMESH_RUNONMESSAGETHREAD__
+#pragma once
 
 #include <functional>
 
@@ -32,4 +31,3 @@ void runOnMessageThread(F f, X x, Y y) {
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_RUNONMESSAGETHREAD__

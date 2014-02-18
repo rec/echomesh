@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_SOURCE__
-#define __ECHOMESH_SOURCE__
+#pragma once
 
 #include "echomesh/audio/SampleAudioSource.h"
 #include "echomesh/util/AppCallback.h"
@@ -28,4 +27,3 @@ class Source : public SampleAudioSource {
 }  // namespace audio
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_SOURCE__

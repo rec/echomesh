@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_GET_DEVICE__
-#define __ECHOMESH_GET_DEVICE__
+#pragma once
 
 #if 0
 
@@ -87,4 +86,3 @@ class ConfigMidiOutput : public ConfigMidi<MidiOutput> {
 
 #endif
 
-#endif  // __ECHOMESH_GET_DEVICE__

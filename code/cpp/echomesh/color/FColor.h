@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_FCOLOR__
-#define __ECHOMESH_FCOLOR__
+#pragma once
 
 #include <math.h>
 
@@ -147,4 +146,3 @@ class FColor {
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_FCOLOR__

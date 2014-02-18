@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_COLOR_SPI__
-#define __ECHOMESH_COLOR_SPI__
+#pragma once
 
 #include "echomesh/base/Echomesh.h"
 
@@ -17,4 +16,3 @@ void fillSpi(const FColorList&, char*, int length, Order);
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_COLOR_SPI__

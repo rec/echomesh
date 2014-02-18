@@ -1,5 +1,4 @@
-#ifndef __REC_BASE_DISALLOW__
-#define __REC_BASE_DISALLOW__
+#pragma once
 
 #include <stddef.h>
 
@@ -26,6 +25,3 @@
 #define DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(TypeName) \
   DISALLOW_COPY_ASSIGN_AND_EMPTY(TypeName);            \
   JUCE_LEAK_DETECTOR(TypeName)
-
-
-#endif  // __REC_BASE_DISALLOW__

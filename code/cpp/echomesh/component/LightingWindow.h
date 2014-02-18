@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_LIGHTING_WINDOW__
-#define __ECHOMESH_LIGHTING_WINDOW__
+#pragma once
 
 #include "echomesh/component/InstrumentGrid.h"
 
@@ -30,4 +29,3 @@ void deleteLightingWindow(LightingWindow*);
 
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_LIGHTING_WINDOW__

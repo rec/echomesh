@@ -1,5 +1,4 @@
-#ifndef __ECHOMESH_COLOR_TRANSFORM__
-#define __ECHOMESH_COLOR_TRANSFORM__
+#pragma once
 
 #include <functional>
 
@@ -29,4 +28,3 @@ vector<string> getTransformNames();
 }  // namespace color
 }  // namespace echomesh
 
-#endif  // __ECHOMESH_COLOR_TRANSFORM__

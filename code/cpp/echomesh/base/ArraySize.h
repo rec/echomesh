@@ -1,9 +1,8 @@
+#pragma once
+
 // Copyright (c) 2006-2008 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
-#ifndef __REC_BASE_ARRAYSIZE_H_
-#define __REC_BASE_ARRAYSIZE_H_
 
 #include "rec/base/base.h"
 
@@ -74,5 +73,3 @@ char (&ArraySizeHelper(const TypeName (&array)[N]))[N];
 #define ARRAYSIZE_UNSAFE(a) \
   ((sizeof(a) / sizeof(*(a))) / \
    static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
-
-#endif  // __REC_BASE_ARRAYSIZE_H_
