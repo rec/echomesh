@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import PIL.Image
+
 import cechomesh
 
 from echomesh.util.image import Resize
@@ -14,5 +16,9 @@ class Image(Pattern):
   PATTERN_COUNT = 0
 
   def _evaluate(self):
-    parts = self.get_all('filename', 'x', 'y', 'stretch', 'top', 'left')
-    return cechomesh.ColorList(Resize.resize(*parts).getdata())
+    image = PIL.Image.open(self.get('filename'))
+    return self._image_to_list(image)
+
+  def _image_to_list(self, image):
+    parts = self.get_all('x', 'y', 'stretch', 'top', 'left')
+    return cechomesh.ColorList(Resize.resize(image, *parts).getdata())

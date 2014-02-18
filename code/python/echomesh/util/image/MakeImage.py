@@ -2,9 +2,9 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from PIL import Image
 
-def make_image(x, mode='F'):
+def make_image(x, mode='RGB'):
   try:
     x.size
   except:
-    x = Image.open(x, 'r')
+    x = Image.open(x, mode=mode)
   return x

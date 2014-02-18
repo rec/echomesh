@@ -18,6 +18,7 @@ class Pattern(object):
   OPTIONAL_CONSTANTS = {}
   OPTIONAL_VARIABLES = {}
   PATTERN_COUNT = None
+  IS_CONSTANT = True
 
   def __init__(self, desc, element, name):
     self.name = name
@@ -36,7 +37,9 @@ class Pattern(object):
         (self.__class__.__name__, self.PATTERN_COUNT, len(self._patterns)))
 
     self.dictionary = {}
-    is_constant = all(p.is_constant for p in self._patterns)
+    is_constant = self.IS_CONSTANT and all(
+      p.is_constant for p in self._patterns)
+
     missing = []
     for k in self.VARIABLES:
       v = desc.get(k)

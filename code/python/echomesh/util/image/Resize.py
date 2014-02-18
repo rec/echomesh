@@ -2,10 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from PIL import Image
 
-from echomesh.util.image.MakeImage import make_image
-
 def resize(image, x, y, stretch=False, top=None, left=None, mode='RGB'):
-  image = make_image(image)
   size = x, y
   if stretch:
     return image.resize(size, resample=Image.ANTIALIAS)
