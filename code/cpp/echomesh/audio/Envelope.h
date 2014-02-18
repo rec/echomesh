@@ -38,16 +38,6 @@ inline void addPoint(Envelope* env, long long time, float value) {
 // and the last segment always is at least as long as length.
 void normalizeEnvelope(Envelope*);
 
-struct Playback {
-  SampleTime begin, end;
-  string filename;
-  rec::SampleTime length;
-  Envelope level;
-  int loops;
-  Envelope pan;
-  bool passthrough;
-};
-
 }  // namespace audio
 }  // namespace echomesh
 
