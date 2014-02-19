@@ -1,3 +1,4 @@
+#include "echomesh/color/FColorList.h"
 #include "echomesh/component/LightingWindow.h"
 #include "echomesh/util/Quit.h"
 #include "echomesh/util/RunOnMessageThread.h"
@@ -26,6 +27,10 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
   } else {
     LOG(DFATAL) << "Don't understand filename " << name;
   }
+}
+
+void LightingWindow::setLights(const color::FColorList& colors) {
+  runOnMessageThread(&InstrumentGrid::setLights, instrumentGrid_, colors);
 }
 
 LightingWindow* makeLightingWindow() {

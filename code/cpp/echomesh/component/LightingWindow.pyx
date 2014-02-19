@@ -4,18 +4,14 @@ from libcpp.string cimport string
 
 include "echomesh/component/InstrumentGrid.pyx"
 
-cdef extern from "Python.h":
-   char* PyByteArray_AsString(object bytearray) except NULL
-
-
 cdef extern from "echomesh/component/LightingWindow.h" namespace "echomesh":
   cdef cppclass LightingWindow:
     InstrumentGrid* grid()
     void saveSnapshotToFile(string)
+    void setLights(FColorList)
 
   LightingWindow* makeLightingWindow() nogil
   void deleteLightingWindow(LightingWindow*) nogil
-
 
 cdef class PyLightingWindow:
   cdef LightingWindow* thisptr
@@ -31,7 +27,7 @@ cdef class PyLightingWindow:
     self.thisptr = NULL
 
   def set_lights(self, ColorList lights):
-    self.thisptr.grid().setLights(lights.thisptr[0])
+    self.thisptr.setLights(lights.thisptr[0])
 
   def set_light_count(self, int count):
     self.thisptr.grid().setLightCount(count)

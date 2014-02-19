@@ -8,6 +8,9 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
+cdef extern from "Python.h":
+   char* PyByteArray_AsString(object bytearray) except NULL
+
 include "juce/juce_graphics/colour/juce_Colour.pyx"
 include "juce/juce_graphics/colour/juce_Colours.pyx"
 

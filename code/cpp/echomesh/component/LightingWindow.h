@@ -2,6 +2,8 @@
 
 #include "echomesh/component/InstrumentGrid.h"
 
+namespace echomesh { namespace color { class FColorList; }}
+
 namespace echomesh {
 
 class InstrumentGrid;
@@ -16,6 +18,7 @@ class LightingWindow : public DocumentWindow {
 
   void closeButtonPressed() {}
   virtual void moved() {}
+  void setLights(const color::FColorList&);
 
  private:
   InstrumentGrid* instrumentGrid_;
