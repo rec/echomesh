@@ -1,0 +1,15 @@
+type: sequence
+
+pattern:
+  an animation:
+    type: animation
+    filename: "/Volumes/Zog/Documents/animated gifs/rainbow triangle tunnel 2.gif"
+    x: 32
+    y: 32
+    stretch: true
+    frame: system.elapsed * 12
+
+elements:
+  -
+    type: pattern
+    pattern: an animation
