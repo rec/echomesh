@@ -139,5 +139,11 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
   pythonRepaint();
 }
 
+void InstrumentGrid::pythonRepaint() {
+  JUCE_AUTORELEASEPOOL {
+    repaint();
+  }
+}
+
 }  // namespace echomesh
 

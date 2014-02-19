@@ -25,14 +25,9 @@ class InstrumentGrid : public Component {
                  const Point& instrumentPadding, const Point& labelPadding);
 
   void paint(Graphics&);
+  void pythonRepaint();
 
  private:
-  void pythonRepaint() {
-    JUCE_AUTORELEASEPOOL {
-      repaint();
-    }
-  }
-
   void layout();
   void doSetLights();
 

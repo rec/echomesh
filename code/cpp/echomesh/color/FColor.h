@@ -48,16 +48,7 @@ class FColor {
     alpha_ = 1.0f;
   }
 
-  static const FColor make_black() {
-    FColor black;
-    black.clear();
-    return black;
-  }
-
-  static const FColor& black() {
-    static FColor BLACK = make_black();
-    return BLACK;
-  }
+  static const FColor BLACK;
 
   void gamma(float f) {
     red_ = powf(red_, f);

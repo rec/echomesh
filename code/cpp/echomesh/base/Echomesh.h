@@ -42,6 +42,8 @@ class Exception : public std::exception {
   const String message_;
 };
 
+// typedef std::pair<int, int> Point;
+
 struct Point {
   Point() {}
   Point(int x_, int y_) : x(x_), y(y_) {}
