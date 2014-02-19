@@ -6,5 +6,7 @@ def make_image(x, mode='RGB'):
   try:
     x.size
   except:
-    x = Image.open(x, mode=mode)
+    x = Image.open(x, mode='r')
+  if x.mode != mode:
+    x = x.convert(mode=mode)
   return x

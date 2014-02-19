@@ -105,7 +105,7 @@ class System(ValueRoot):
     return Call.call_recursive(self._get_system(parts).evaluate(element))
 
   def _is_constant(self, parts, element):
-    return self._get_system(parts)._is_constant
+    return self._get_system(parts).is_constant
 
 for c in Configuration, Element, Function, Global, Local, Parent, System:
   _REGISTRY.register(c(), c.__name__)

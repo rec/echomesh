@@ -27,7 +27,11 @@ def register(name, function, is_constant, needs_element=False):
   _REGISTRY.register(
     _SystemFunction(function, is_constant, needs_element), name)
 
+def _elapsed(element):
+  return element.elapsed_time()
+
 register('e', lambda: math.e, True)
+register('elapsed', lambda: _elapsed, False, needs_element=True)
 register('level', lambda: Level.input_level, False)
 register('pi', lambda: math.pi, True)
 register('random', lambda: random.random, False)
