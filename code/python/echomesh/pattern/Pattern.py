@@ -72,6 +72,7 @@ class Pattern(object):
         self.__class__.__name__, ', '.join(unread))
 
     self.is_constant = is_constant
+    self._post_initialize()
     if self.is_constant:
       self._value = self._evaluate();
 
@@ -89,6 +90,9 @@ class Pattern(object):
 
   def _evaluate(self):
     return []
+
+  def _post_initialize(self):
+    pass
 
   def __str__(self):
     return 'pattern "%s" in element "%s"' % (

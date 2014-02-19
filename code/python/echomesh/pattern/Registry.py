@@ -3,6 +3,7 @@ from echomesh.base import DataFile
 
 REGISTRY = register_parent(
   __name__,
+  'Animation',
   'Choose',
   'Concatenate',
   'Fade',

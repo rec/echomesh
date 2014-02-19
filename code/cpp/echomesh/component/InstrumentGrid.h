@@ -43,8 +43,6 @@ class InstrumentGrid : public Component {
   bool labelStartsAtZero_;
   bool showLabel_;
   Colour background_;
-  int columns_;
-  int rows_;
 
   Point layout_;
   Point size_;

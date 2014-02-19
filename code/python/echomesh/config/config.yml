@@ -148,7 +148,7 @@ git:
 # for the lighting to work.
 light:
   brightness: 100%
-  count: 256
+  count: 1024
   enable: false
 
   hardware:
@@ -164,7 +164,7 @@ light:
     transform: null  # Should this be brightness_transform?
 
     background: white
-    layout: [16, 16]
+    layout: [32, 32]
     padding: [3, 3]
     top_left: [0,44]
     instrument:

@@ -102,7 +102,7 @@ class System(ValueRoot):
     return echomesh.expression.parse.System.get('.'.join(parts))
 
   def _evaluate(self, parts, evaluator, element):
-    return Call.call_recursive(self._get_system(parts).function)
+    return Call.call_recursive(self._get_system(parts).evaluate(element))
 
   def _is_constant(self, parts, element):
     return self._get_system(parts)._is_constant

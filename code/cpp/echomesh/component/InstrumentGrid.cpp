@@ -14,11 +14,9 @@ InstrumentGrid::InstrumentGrid()
       labelStartsAtZero_(false),
       showLabel_(false),
       background_(Colours::white),
-      columns_(16),
-      rows_(16),
-      layout_(16, 16),
-      size_(16, 16),
-      padding_(5, 5),
+      layout_(32, 32),
+      size_(12, 12),
+      padding_(4, 4),
       instrumentPadding_(2, 2),
       labelPadding_(2, 2) {
   setSize(64, 64);

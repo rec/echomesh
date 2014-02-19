@@ -8,19 +8,24 @@ from echomesh.sound import Level
 from echomesh.util.registry.Registry import Registry
 
 class _SystemFunction(object):
-  def __init__(self, function_maker, is_constant):
+  def __init__(self, function_maker, is_constant, needs_element):
     self.function = None
     self.function_maker = function_maker
     self.is_constant = is_constant
+    self.needs_element = needs_element
 
   def prepare(self):
     if not self.function:
       self.function = self.function_maker()
 
+  def evaluate(self, element):
+    return self.function(element) if self.needs_element else self.function
+
 _REGISTRY = Registry('System functions')
 
-def register(name, function, is_constant):
-  _REGISTRY.register(_SystemFunction(function, is_constant), name)
+def register(name, function, is_constant, needs_element=False):
+  _REGISTRY.register(
+    _SystemFunction(function, is_constant, needs_element), name)
 
 register('e', lambda: math.e, True)
 register('level', lambda: Level.input_level, False)
