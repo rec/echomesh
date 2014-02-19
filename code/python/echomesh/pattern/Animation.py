@@ -39,4 +39,4 @@ class Animation(Image):
     if ceil >= len(self.cells):
       ceil = 0
 
-    return self.cells[floor].interpolate(self.cells[ceil], frame - floor, True)
+    return self.cells[floor].interpolate(self.cells[ceil], frame - floor, False)

@@ -159,7 +159,7 @@ light:
 
   visualizer:
     enable: true
-    period: 10ms
+    period: 10Hz
     show: true
     transform: null  # Should this be brightness_transform?
 

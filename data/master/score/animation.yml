@@ -3,7 +3,7 @@ type: sequence
 pattern:
   an animation:
     type: animation
-    filename: "/Volumes/Zog/Documents/animated gifs/rainbow triangle tunnel 2.gif"
+    filename: "/Volumes/Zog/Documents/animated gifs/spinning sparks.gif"
     x: 32
     y: 32
     stretch: true

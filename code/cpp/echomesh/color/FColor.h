@@ -109,13 +109,11 @@ class FColor {
   FColor interpolate(
       const FColor& end, float ratio, uint smooth = 0, uint index = 0) const {
     if (smooth) {
-      LOG(DFATAL) << "We don't support smooth interpolation yet.";
-      return FColor();
-    } else {
-      return FColor(red_ + ratio * (end.red_ - red_),
-                    green_ + ratio * (end.green_ - green_),
-                    blue_ + ratio * (end.blue_ - blue_));
+      LOG_FIRST_N(ERROR, 1) << "We don't support smooth interpolation yet.";
     }
+    return FColor(red_ + ratio * (end.red_ - red_),
+                  green_ + ratio * (end.green_ - green_),
+                  blue_ + ratio * (end.blue_ - blue_));
   }
 
   void scale(float scale) {

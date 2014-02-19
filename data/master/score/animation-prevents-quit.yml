@@ -8,6 +8,7 @@ pattern:
     y: 32
     stretch: true
     frame: system.elapsed * 12
+    smooth: true
 
 elements:
   -

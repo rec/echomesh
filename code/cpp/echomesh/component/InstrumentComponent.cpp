@@ -17,9 +17,6 @@ void InstrumentComponent::setColor(const Colour& c) {
   auto g = color_.getGreen();
   auto b = color_.getBlue();
   labelColor_ = (r + g + b >= GREY) ? Colours::black : Colours::white;
-  JUCE_AUTORELEASEPOOL {
-    repaint();
-  }
 }
 
 void InstrumentComponent::paint(Graphics& g) {

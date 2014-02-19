@@ -26,14 +26,13 @@ class InstrumentGrid : public Component {
 
   void paint(Graphics&);
 
-  void doRepaint() {
-    MessageManagerLock l;
+ private:
+  void pythonRepaint() {
     JUCE_AUTORELEASEPOOL {
       repaint();
     }
   }
 
- private:
   void layout();
   void doSetLights();
 

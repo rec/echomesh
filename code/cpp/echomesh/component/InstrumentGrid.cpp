@@ -137,6 +137,7 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
   auto maxSize = jmax(colors.size(), instruments_.size());
   for (auto i = size; i < maxSize; ++i)
     instruments_[i]->setColor(Colours::black);
+  pythonRepaint();
 }
 
 }  // namespace echomesh

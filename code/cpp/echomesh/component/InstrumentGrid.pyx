@@ -7,7 +7,6 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
     InstrumentGrid()
 
     void setBrightness(float)
-    void setLights(char*)
     void setLights(FColorList)
     void setPaintingIsUnclipped(bool)
     void setLightCount(int)
@@ -15,6 +14,5 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
     void setLayout(Point layout, Point size, Point padding,
                    Point instrumentPadding, Point labelPadding)
     void setShowLabel(bool)
-    void doRepaint()
     int getLightCount()
 
