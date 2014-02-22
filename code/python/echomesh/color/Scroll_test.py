@@ -38,3 +38,15 @@ class ScrollTest(TestCase):
   def test_five_left(self):
     self.doTest(-5, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
+  def test_one_down(self):
+    self.doTest(0, 1, [0, 0, 0, 0, 1, 2, 3, 4, 10, 20, 30, 40])
+
+  def test_two_down(self):
+    self.doTest(0, 2, [0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4])
+
+  def test_three_down(self):
+    self.doTest(0, 3, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+  def test_four_down(self):
+    self.doTest(0, 4, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+

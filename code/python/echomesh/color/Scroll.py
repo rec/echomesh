@@ -19,7 +19,7 @@ def scroll(items, x, dx, dy, empty=None):
   elif dy > 0:
     items = ([empty] * (dy * x) + items)[:len(items)]
   elif dy < 0:
-    items = items[-dy * x:]
+    items = items[-dy * x:] + [empty] * (-dy * x)
   return items
 
 
