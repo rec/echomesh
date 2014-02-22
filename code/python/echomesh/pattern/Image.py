@@ -12,7 +12,15 @@ LOGGER = Log.logger(__name__)
 
 class Image(Pattern):
   CONSTANTS = 'filename', 'x', 'y',
-  OPTIONAL_CONSTANTS = {'top': None, 'left': None, 'stretch': False}
+  OPTIONAL_CONSTANTS = {
+    'bottom_offset': 0,
+    'left': None,
+    'left_offset': 0,
+    'right_offset': 0,
+    'stretch': False,
+    'top': None,
+    'top_offset': 0,
+    }
   PATTERN_COUNT = 0
 
   def _get_image(self):
@@ -22,7 +30,9 @@ class Image(Pattern):
     return self._image_to_list(self._get_image())
 
   def _image_to_list(self, image):
-    parts = self.get_all('x', 'y', 'stretch', 'top', 'left')
+    parts = self.get_all('x', 'y', 'stretch', 'top', 'left',
+                         'top_offset', 'left_offset',
+                         'bottom_offset', 'right_offset')
     if image.mode != 'RGB':
       image = image.convert(mode='RGB')
     return cechomesh.ColorList(Resize.resize(image, *parts).getdata())
