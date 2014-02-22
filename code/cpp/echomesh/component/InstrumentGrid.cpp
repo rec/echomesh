@@ -39,25 +39,25 @@ void InstrumentGrid::setLayout(
 }
 
 void InstrumentGrid::layout() {
-  auto left = padding_.x;
-  auto top = padding_.y;
-  auto columns = layout_.x;
-  auto rows = layout_.y;
+  auto left = padding_.first;
+  auto top = padding_.second;
+  auto columns = layout_.first;
+  auto rows = layout_.second;
 
-  auto w = size_.x + instrumentPadding_.x;
-  auto h = size_.y + instrumentPadding_.y;
+  auto w = size_.first + instrumentPadding_.first;
+  auto h = size_.second + instrumentPadding_.second;
   auto i = 0;
   for (auto y = 0; y < rows and i < instruments_.size(); ++y) {
     for (auto x = 0; x < columns and i < instruments_.size(); ++x) {
       auto& instr = instruments_[i++];
-      instr->setLabelPadding(labelPadding_.x, labelPadding_.y);
-      instr->setBounds(left + x * w, top + y * h, size_.x, size_.y);
+      instr->setLabelPadding(labelPadding_.first, labelPadding_.second);
+      instr->setBounds(left + x * w, top + y * h, size_.first, size_.second);
       instr->setShowLabel(showLabel_);
     }
   }
 
-  auto screenWidth = left + w * columns + padding_.x,
-    screenHeight = top + h * rows + padding_.y;
+  auto screenWidth = left + w * columns + padding_.first,
+    screenHeight = top + h * rows + padding_.second;
 
   setSize(screenWidth, screenHeight);
 }
@@ -99,7 +99,7 @@ void InstrumentGrid::setLightCount(int count) {
   for (auto i = oldCount; i < count; ++i) {
     auto inst = make_unique<InstrumentComponent>();
     inst->setPaintingIsUnclipped(isUnclipped_);
-    inst->setLabelPadding(labelPadding_.x, labelPadding_.y);
+    inst->setLabelPadding(labelPadding_.first, labelPadding_.second);
     inst->setLabel(String(uint32(i + delta)));
     addAndMakeVisible(inst.get());
     instruments_[i] = std::move(inst);

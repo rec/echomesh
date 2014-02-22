@@ -1,7 +1,3 @@
-include "echomesh/base/Echomesh.pyx"
-
-from libcpp cimport bool
-
 cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
   cdef cppclass InstrumentGrid:
     InstrumentGrid()
