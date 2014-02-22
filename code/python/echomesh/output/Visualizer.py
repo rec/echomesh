@@ -20,10 +20,10 @@ class Visualizer(Poll):
 
     self.values = ConfigValues(
       configs={
+        'brightness': 'light.brightness',
         'light_count': 'light.count',
         'period': 'light.visualizer.period',
         'transform': 'light.visualizer.transform',
-        'brightness': 'light.brightness',
         },
       values=values,
       update_callback=self.update_callback)

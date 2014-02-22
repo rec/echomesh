@@ -34,3 +34,16 @@ cdef class PyLightingWindow:
 
   def save_snapshot_to_file(self, object filename):
     self.thisptr.saveSnapshotToFile(filename)
+
+  def set_show_label(self, bool show):
+    self.thisptr.grid().setShowLabel(show)
+
+  def set_label_starts_at_zero(self, bool at_zero):
+    self.thisptr.grid().setShowLabel(at_zero)
+
+  def set_layout(self, object layout, object size, object padding,
+                 object instrument_padding, object label_padding):
+    self.thisptr.grid().setLayout(layout, size, padding, instrument_padding,
+                                  label_padding)
+
+
