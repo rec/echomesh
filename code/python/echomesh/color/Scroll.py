@@ -14,7 +14,8 @@ def scroll(items, x, dx, dy, empty=None):
     items = items[:]
     for i in xrange(len(items)):
       m = i % x
-      items[i] = items[i - dx] if m < x - dx else empty
+      rollover = (m < x + dx) and (i - dx < len(items))
+      items[i] = items[i - dx] if rollover  else empty
   elif dy > 0:
     items = ([empty] * (dy * x) + items)[:len(items)]
   elif dy < 0:

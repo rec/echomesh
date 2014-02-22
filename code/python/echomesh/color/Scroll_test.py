@@ -23,3 +23,18 @@ class ScrollTest(TestCase):
   def test_four_right(self):
     self.doTest(4, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 
+  def test_five_right(self):
+    self.doTest(5, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+  def test_one_left(self):
+    self.doTest(-1, 0, [2, 3, 4, 0, 20, 30, 40, 0, 200, 300, 400, 0])
+
+  def test_three_left(self):
+    self.doTest(-3, 0, [4, 0, 0, 0, 40, 0, 0, 0, 400, 0, 0, 0])
+
+  def test_four_left(self):
+    self.doTest(-4, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
+  def test_five_left(self):
+    self.doTest(-5, 0, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+
