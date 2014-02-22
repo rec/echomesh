@@ -77,8 +77,8 @@ class Pattern(object):
   def get(self, name):
     return self.dictionary[name].evaluate()
 
-  def get_all(self, *names):
-    return (self.get(name) for name in names)
+  def get_dict(self, *names):
+    return dict((name, self.get(name)) for name in names)
 
   def patterns(self):
     return [p.evaluate() for p in self._patterns]

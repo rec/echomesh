@@ -53,6 +53,9 @@ cdef class ColorList:
     if not colors:
       return
 
+    if hasattr(colors, 'getdata'):
+      colors = colors.getdata()
+
     if isinstance(colors, ColorList):
       self.thisptr.extend((<ColorList> colors).thisptr[0])
       return

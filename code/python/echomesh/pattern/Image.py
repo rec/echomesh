@@ -6,7 +6,8 @@ import cechomesh
 
 from echomesh.pattern.Pattern import Pattern
 from echomesh.util import Log
-from echomesh.util.image import Resize
+from echomesh.util.image.Crop import crop
+from echomesh.util.image.Resize import resize
 
 LOGGER = Log.logger(__name__)
 
@@ -30,9 +31,10 @@ class Image(Pattern):
     return self._image_to_list(self._get_image())
 
   def _image_to_list(self, image):
-    parts = self.get_all('x', 'y', 'stretch', 'top', 'left',
-                         'top_offset', 'left_offset',
-                         'bottom_offset', 'right_offset')
     if image.mode != 'RGB':
       image = image.convert(mode='RGB')
-    return cechomesh.ColorList(Resize.resize(image, *parts).getdata())
+
+    image = crop(image, **self.get_dict(
+      'top_offset', 'left_offset', 'bottom_offset', 'right_offset'))
+    image = resize(image, **self.get_dict('x', 'y', 'stretch', 'top', 'left'))
+    return cechomesh.ColorList(image)
