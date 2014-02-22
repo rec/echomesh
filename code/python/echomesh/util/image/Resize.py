@@ -2,13 +2,11 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from PIL import Image
 
+from echomesh.util.image.Crop import crop
 
 def resize(image, x, y, stretch=False, top=None, left=None, mode='RGB',
            top_offset=0, left_offset=0, bottom_offset=0, right_offset=0):
-  if bottom_offset or top_offset or left_offset or right_offset:
-    width, height = image.size
-    image = image.crop(box=(left_offset, top_offset,
-                            width - right_offset, height - left_offset))
+  image = crop(image, top_offset, left_offset, bottom_offset, right_offset)
 
   size = x, y
   if stretch:
