@@ -38,6 +38,12 @@ void InstrumentGrid::setLayout(
   layout();
 }
 
+void InstrumentGrid::setShape(bool isRect) {
+  MessageManagerLock l;
+  for (auto& i: instruments_)
+    i->setShape(isRect);
+}
+
 void InstrumentGrid::layout() {
   auto left = padding_.first;
   auto top = padding_.second;

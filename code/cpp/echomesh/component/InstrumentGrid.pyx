@@ -9,6 +9,7 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
     void setLayout(
       Point layout, Point size, Point padding,
       Point instrumentPadding, Point labelPadding)
+    void setShape(bool isRect)
     void setShowLabel(bool)
     int getLightCount()
 

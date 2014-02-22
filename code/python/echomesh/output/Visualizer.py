@@ -21,8 +21,17 @@ class Visualizer(Poll):
     self.values = ConfigValues(
       configs={
         'brightness': 'light.brightness',
+        'instrument_padding': 'light.visualizer.instrument.padding',
+        'label_padding': 'light.visualizer.instrument.label_padding',
+        'label_starts_at_zero':
+          'light.visualizer.instrument.label_starts_at_zero',
+        'layout': 'light.visualizer.layout',
         'light_count': 'light.count',
+        'padding': 'light.visualizer.padding',
         'period': 'light.visualizer.period',
+        'show_label': 'light.visualizer.instrument.label',
+        'shape': 'light.visualizer.instrument.shape',
+        'size': 'light.visualizer.instrument.size',
         'transform': 'light.visualizer.transform',
         },
       values=values,
@@ -41,7 +50,15 @@ class Visualizer(Poll):
 
   def update_callback(self):
     self.period = Expression.convert(self.values.period)
-    self.set_light_count(self.values.light_count)
+    self.lighting_window.set_light_count(self.values.light_count)
+    self.lighting_window.set_shape(self.values.shape == 'rect')
+    self.lighting_window.set_show_label(self.values.show_label)
+    self.lighting_window.set_label_starts_at_zero(
+      self.values.label_starts_at_zero)
+    self.lighting_window.set_layout(
+      self.values.layout, self.values.size, self.values.padding,
+      self.values.instrument_padding, self.values.label_padding);
+
     self.transform = self.values.transform
     if self.transform:
       try:
@@ -52,9 +69,6 @@ class Visualizer(Poll):
     self.brightness = Expression.convert(self.values.brightness)
     if self.transform:
       self.brightness = self.transform.apply(self.brightness)
-
-  def set_light_count(self, light_count):
-    self.lighting_window.set_light_count(light_count)
 
   def emit_output(self, data):
     lights = Combine.combine(data)

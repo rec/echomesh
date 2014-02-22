@@ -35,6 +35,9 @@ cdef class PyLightingWindow:
   def save_snapshot_to_file(self, object filename):
     self.thisptr.saveSnapshotToFile(filename)
 
+  def set_shape(self, bool isRect):
+    self.thisptr.grid().setShape(isRect)
+
   def set_show_label(self, bool show):
     self.thisptr.grid().setShowLabel(show)
 
@@ -45,5 +48,4 @@ cdef class PyLightingWindow:
                  object instrument_padding, object label_padding):
     self.thisptr.grid().setLayout(layout, size, padding, instrument_padding,
                                   label_padding)
-
 

@@ -19,6 +19,7 @@ class InstrumentGrid : public Component {
   void setLightCount(int);
   int getLightCount() const;
   void setLabelStartsAtZero(bool);
+  void setShape(bool isRect);
   void setShowLabel(bool);
   void setBackground(const Colour&);
   void setLayout(const Point& layout, const Point& size, const Point& padding,
