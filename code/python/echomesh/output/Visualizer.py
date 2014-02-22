@@ -6,6 +6,7 @@ from echomesh.base import Config
 from echomesh.color import Combine
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
+from echomesh.util.config.ConfigValues import ConfigValues
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -13,25 +14,24 @@ LOGGER = Log.logger(__name__)
 class Visualizer(Poll):
   INSTANCE = None
 
-  def __init__(self, light_count=None, period=None, transform=None, **kwds):
-    assert not Visualizer.INSTANCE
-    Visualizer.INSTANCE = self
+  def __init__(self, **values):
+    if not Visualizer.INSTANCE:
+      Visualizer.INSTANCE = self
+
+    self.values = ConfigValues(
+      configs={
+        'light_count': 'light.count',
+        'period': 'light.visualizer.period',
+        'transform': 'light.visualizer.transform',
+        'brightness': 'light.brightness',
+        },
+      values=values,
+      update_callback=self.update_callback)
 
     assert cechomesh.is_started()
     self.lighting_window = cechomesh.PyLightingWindow()
-    self.period = period
-    self.transform = transform
-
-    self.period_set = period is not None
-    self.light_count_set = light_count is not None
-    self.transform_set = transform is not None
-
-    if self.light_count_set:
-      self.set_light_count(light_count)
-
-    Config.add_client(self)
-    super(Visualizer, self).__init__(
-      is_redirect=False, period=self.period, **kwds)
+    super(Visualizer, self).__init__(is_redirect=False)
+    self.values.add_client()
 
   def _after_thread_pause(self):
     self.lighting_window.close()
@@ -39,20 +39,17 @@ class Visualizer(Poll):
   def snapshot(self, filename):
     self.lighting_window.save_snapshot_to_file(filename)
 
-  def config_update(self, get):
-    if not self.light_count_set:
-      self.set_light_count(get('light', 'count'))
-
-    if not self.period_set:
-      self.period = Expression.convert(get('light', 'visualizer', 'period'))
-    if not self.transform_set:
-      transform = get('light', 'visualizer', 'transform')
-      if transform:
-        try:
-          self.transform = cechomesh.Transform(transform)
-        except:
-          LOGGER.error('Don\'t understand transform %s', transform)
-    self.brightness = Expression.convert(get('light', 'brightness'))
+  def update_callback(self):
+    self.period = Expression.convert(self.values.period)
+    self.set_light_count(self.values.light_count)
+    self.transform = self.values.transform
+    if self.transform:
+      try:
+        self.transform = cechomesh.Transform(self.transform)
+      except:
+        LOGGER.error('Don\'t understand transform %s', self.transform)
+        self.transform = None
+    self.brightness = Expression.convert(self.values.brightness)
     if self.transform:
       self.brightness = self.transform.apply(self.brightness)
 

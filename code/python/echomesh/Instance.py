@@ -25,6 +25,14 @@ class Instance(MasterRunnable):
   def __init__(self):
     super(Instance, self).__init__()
 
+    def do_quit():
+      pause_outputs()
+      self.pause()
+      self.unload()
+
+    Quit.register_atexit(do_quit)
+
+
     CLog.initialize()
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)
@@ -51,13 +59,6 @@ class Instance(MasterRunnable):
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.timeout = Config.get('network', 'timeout')
-
-    def do_quit():
-      pause_outputs()
-      self.pause()
-      self.unload()
-
-    Quit.register_atexit(do_quit)
 
   def keyboard_callback(self, s):
     self.keyboard_queue.put(s)

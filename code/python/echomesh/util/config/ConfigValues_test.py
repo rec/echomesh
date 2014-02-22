@@ -18,6 +18,7 @@ class ConfigValuesTest(TestCase):
     self.values = ConfigValues(values={'a': 23, 'b': 'hello'},
                                configs={'c': 'c', 'd': 'd.e'},
                                add_client=self.add_client)
+    self.values.add_client()
 
   def test_simple(self):
     self.assertEqual(self.values.a, 23)
