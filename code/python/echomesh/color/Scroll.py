@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-def _scroll(items, x, dx, dy, empty=None):
+def _scroll(items, x, dx, dy, empty=None, wrap=False):
   if abs(dx) >= x or abs(dy) >= len(items) / x:
     return [empty] * len(items)
 
@@ -22,9 +22,7 @@ def _scroll(items, x, dx, dy, empty=None):
     items = items[-dy * x:] + [empty] * (-dy * x)
   return items
 
-def scroll(colors, x, dx, dy, empty=None, smooth=True):
+def scroll(colors, x, dx, dy, empty=None, smooth=True, wrap=False):
   bx, by = int(dx), int(dy)
   if (not smooth) or (bx == dx and by == dy):
-    return _scroll(colors, x, dx, dy, empty)
-
-
+    return _scroll(colors, x, dx, dy, empty, wrap)
