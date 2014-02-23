@@ -1,14 +1,8 @@
 #include "echomesh/color/Insert.h"
+#include "echomesh/util/math.h"
 
 namespace echomesh {
 namespace color {
-
-static int mod(int dividend, int divisor) {
-  auto modulo = dividend % divisor;
-  if (modulo < 0)
-    modulo += abs(divisor);
-  return modulo;
-}
 
 FColorList insert(const FColorList& fcl,
                   int offset, uint length, bool rollover, int skip) {
