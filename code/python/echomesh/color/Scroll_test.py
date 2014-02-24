@@ -2,8 +2,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import cechomesh
 
-from echomesh.color.Scroll import scroll
-
 from echomesh.util.TestCase import TestCase
 
 class ScrollTest(TestCase):
@@ -14,7 +12,7 @@ class ScrollTest(TestCase):
        'plum', 'teal', 'wheat', 'orchid', ])
 
   def doTest(self, dx, dy, expected):
-    result = scroll(self.data, dx, dy, 4)
+    result = cechomesh.scroll_color_list(self.data, dx, dy, 4)
     expected = cechomesh.ColorList(expected)
     self.assertEquals(result, cechomesh.ColorList(expected))
 
@@ -130,7 +128,7 @@ class ScrollTest(TestCase):
                  'black', 'black', 'black', 'black', ])
 
   def doWrapTest(self, dx, dy, expected):
-    result = scroll(self.data, dx, dy, 4, wrap=True)
+    result = cechomesh.scroll_color_list(self.data, dx, dy, 4, wrap=True)
     expected = cechomesh.ColorList(expected)
     self.assertEquals(result, cechomesh.ColorList(expected))
 
