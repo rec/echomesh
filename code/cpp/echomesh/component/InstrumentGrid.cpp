@@ -12,7 +12,7 @@ InstrumentGrid::InstrumentGrid()
     : isUnclipped_(false),
       labelStartsAtZero_(false),
       showLabel_(false),
-      background_(Colours::white),
+      background_(Colours::black),
       layout_(32, 32),
       size_(12, 12),
       padding_(4, 4),
