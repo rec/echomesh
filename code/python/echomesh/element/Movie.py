@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import images2gif
+import os
 
 from PIL import Image
 
@@ -34,4 +35,12 @@ class Movie(Repeat):
       images2gif.writeGif(self.filename, images, **self.gif_dict)
     except:
       LOGGER.error('Unable to write movie file %s', self.filename)
+    else:
+      LOGGER.info('Wrote movie file %s', self.filename)
+    finally:
+      for i in range(self.repeat_count):
+        try:
+          os.remove(self.snapshot.get_file(i + 1))
+        except:
+          pass
 
