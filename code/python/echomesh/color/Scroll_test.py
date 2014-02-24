@@ -180,55 +180,55 @@ class ScrollTest(TestCase):
                      'teal', 'wheat', 'orchid', 'plum', ])
 
   def xtest_one_down_wrap(self):
-    self.doWrapTest(0, 1,
-                    ['black', 'black', 'black', 'black',
+    self.doWrapXtest(0, 1,
+                    ['teal', 'wheat', 'orchid', 'plum',
                      'red', 'green', 'blue', 'yellow',
                      'beige', 'khaki', 'olive', 'tan',])
 
   def xtest_two_down_wrap(self):
-    self.doWrapTest(0, 2,
-                    ['black', 'black', 'black', 'black',
-                     'black', 'black', 'black', 'black',
+    self.doWrapXtest(0, 2,
+                    ['beige', 'khaki', 'olive', 'tan',
+                     'teal', 'wheat', 'orchid', 'plum',
                      'red', 'green', 'blue', 'yellow',])
 
   def xtest_three_down_wrap(self):
-    self.doWrapTest(0, 3, self.data)
+    self.doWrapXtest(0, 3, self.data)
 
   def xtest_four_down_wrap(self):
-    self.doWrapTest(0, 4,
-                    ['black', 'black', 'black', 'black',
-                     'black', 'black', 'black', 'black',
-                     'black', 'black', 'black', 'black',])
+    self.doWrapXtest(0, 4,
+                    ['teal', 'wheat', 'orchid', 'plum',
+                     'red', 'green', 'blue', 'yellow',
+                     'beige', 'khaki', 'olive', 'tan',])
 
   def xtest_one_up_wrap(self):
-    self.doWrapTest(0, -1,
+    self.doWrapXtest(0, -1,
                     ['beige', 'khaki', 'olive', 'tan',
                      'plum', 'teal', 'wheat', 'orchid',
                      'black', 'black', 'black', 'black',])
 
   def xtest_two_up_wrap(self):
-    self.doWrapTest(0, -2,
-                    ['plum', 'teal', 'wheat', 'orchid',
-                     'black', 'black', 'black', 'black',
-                     'black', 'black', 'black', 'black',])
+    self.doWrapXtest(0, -2,
+                    ['teal', 'wheat', 'orchid', 'plum',
+                     'red', 'green', 'blue', 'yellow',
+                     'beige', 'khaki', 'olive', 'tan',])
 
   def xtest_three_up_wrap(self):
-    self.doWrapTest(0, -3, self.data)
+    self.doWrapXtest(0, -3, self.data)
 
   def xtest_four_up_wrap(self):
-    self.doWrapTest(0, -4,
-                    ['black', 'black', 'black', 'black',
-                     'black', 'black', 'black', 'black',
+    self.doWrapXtest(0, -4,
+                    ['beige', 'khaki', 'olive', 'tan',
+                     'plum', 'teal', 'wheat', 'orchid',
                      'black', 'black', 'black', 'black',])
 
   def xtest_down_right_wrap(self):
-    self.doWrapTest(1, 1,
-                    ['black', 'black', 'black', 'black',
-                     'black', 'red', 'green', 'blue',
-                     'black', 'beige', 'khaki', 'olive',])
+    self.doWrapXtest(1, 1,
+                    ['tan', 'beige', 'khaki', 'olive',
+                     'orchid', 'plum', 'teal', 'wheat',
+                     'yellow', 'red', 'green', 'blue', ])
 
   def xtest_up_left_wrap(self):
-    self.doWrapTest(-1, -1,
-                    ['khaki', 'olive', 'tan', 'black',
-                     'teal', 'wheat', 'orchid', 'black',
-                     'black', 'black', 'black', 'black',])
+    self.doWrapXtest(-1, -1,
+                    ['teal', 'wheat', 'orchid', 'plum',
+                     'green', 'blue', 'yellow','red',
+                     'khaki', 'olive', 'tan', 'beige' ])
