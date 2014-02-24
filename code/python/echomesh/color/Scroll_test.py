@@ -1,16 +1,20 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import cechomesh
+
 from echomesh.color.Scroll import scroll
 
 from echomesh.util.TestCase import TestCase
 
 class ScrollTest(TestCase):
   def setUp(self):
-    self.data = ['red', 'green', 'blue', 'yellow', 'beige', 'khaki',
-                 'olive', 'tan', 'plum', 'teal', 'wheat', 'orchid', ]
+    self.data = cechomesh.ColorList(['red', 'green', 'blue', 'yellow', 'beige', 'khaki',
+                                    'olive', 'tan', 'plum', 'teal', 'wheat', 'orchid', ])
 
   def doTest(self, dx, dy, expected):
-    self.assertEquals(scroll(self.data, dx, dy, 4, empty='black'), expected)
+    result = scroll(self.data, dx, dy, 4)
+    expected = cechomesh.ColorList(expected)
+    self.assertEquals(result, cechomesh.ColorList(expected))
 
   def test_empty(self):
     self.doTest(0, 0, self.data)
