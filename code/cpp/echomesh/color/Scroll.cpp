@@ -1,4 +1,5 @@
 #include "echomesh/color/Scroll.h"
+#include "echomesh/color/ColorName.h"
 #include "echomesh/util/Math.h"
 
 namespace echomesh {
@@ -29,6 +30,15 @@ FColorList scroll(const FColorList& fcl, int dx, int dy, int xSize, bool wrap) {
           auto i = x3 + y3 * xSize;
           r = (i < fcl.size()) ? fcl[i] : FColor::BLACK;
         }
+        if (false)
+        LOG(INFO)
+            << "x: "
+            << x2 << ", "
+            << x3
+            << ",  y: "
+            << y2 << ", "
+            << y3 << ", "
+            << rgbToName(r);
       }
     }
   }
