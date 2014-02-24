@@ -1,0 +1,4 @@
+type: movie
+period: 1/2 second
+repeat: 10
+file: /tmp/file

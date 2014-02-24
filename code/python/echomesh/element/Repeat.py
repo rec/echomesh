@@ -32,7 +32,10 @@ class Repeat(Loop):
 
     self.repeat_count += 1
     if self.repeat_count >= self.repeat:
-      self.pause()
+      self._repeat_count_exceeded()
+
+  def _repeat_count_exceeded(self):
+    self.pause()
 
   def child_paused(self, child):
     pass

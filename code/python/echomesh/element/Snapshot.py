@@ -8,7 +8,7 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-LEGAL_FILE_SUFFIXES = '.png', '.jpg', '.jpeg'
+LEGAL_FILE_SUFFIXES = frozenset(['.jpeg', '.jpg', '.png'])
 
 class Snapshot(Element):
   def __init__(self, parent, description):
@@ -33,11 +33,14 @@ class Snapshot(Element):
 
     self.pause()
     self.index += 1
+    Visualizer.INSTANCE.snapshot(self.get_file(self.index))
+
+  def get_file(self, index):
     if self.use_index:
       if self.use_format:
-        f = self.root % self.index + self.ext
+        return self.root % index + self.ext
       else:
-        f = '%s-%s%s' % (self.root, self.index, self.ext)
+        return '%s-%s%s' % (self.root, index, self.ext)
     else:
-      f = self.root + self.ext
-    Visualizer.INSTANCE.snapshot(f)
+      return self.root + self.ext
+

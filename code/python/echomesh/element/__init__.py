@@ -7,6 +7,7 @@ REGISTRY = _register(
   'Handler',
   'Image',
   'Loop',
+  'Movie',
   'Print',
   'Repeat',
   'Root',
