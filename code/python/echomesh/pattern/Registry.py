@@ -11,6 +11,7 @@ REGISTRY = register_parent(
   'Inject',
   'Insert',
   'Mirror',
+  'Scroll',
   'Spread',
   'Reverse',
 )

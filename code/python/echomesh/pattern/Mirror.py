@@ -10,7 +10,7 @@ class Mirror(Pattern):
     'x': None, 'y': None, 'reverse_x': False, 'reverse_y': False}
   PATTERN_COUNT = 1
 
-  def _evaluate(self, x=None, y=None, reverse_x=False, reverse_y=False):
+  def _evaluate(self):
     color_lists = self.patterns()
     assert len(color_lists) == 1
     color_list = color_lists[0]

@@ -30,15 +30,6 @@ FColorList scroll(const FColorList& fcl, int dx, int dy, int xSize, bool wrap) {
           auto i = x3 + y3 * xSize;
           r = (i < fcl.size()) ? fcl[i] : FColor::BLACK;
         }
-        if (false)
-        LOG(INFO)
-            << "x: "
-            << x2 << ", "
-            << x3
-            << ",  y: "
-            << y2 << ", "
-            << y3 << ", "
-            << rgbToName(r);
       }
     }
   }
@@ -49,22 +40,26 @@ FColorList scroll(const FColorList& fcl, int dx, int dy, int xSize, bool wrap) {
 FColorList smoothScroll(const FColorList& fcl, float dx, float dy, int xSize,
                         bool wrap) {
   auto dx1 = static_cast<int>(dx), dy1 = static_cast<int>(dy);
+  auto xSame = near(dx1, dx), ySame = near(dy1, dy);
 
-  if (dx1 == dx and dy1 == dy)
+  if (xSame and ySame)
     return scroll(fcl, dx1, dy1, xSize, wrap);
 
-  int dx2 = dx1 + ((dx > 0) ? 1 : -1);
-  int dy2 = dy1 + (dy > 0 ? 1 : -1);
+  int dx2 = dx1 + (xSame ? 0 : (dx > 0 ? 1 : -1));
+  int dy2 = dy1 + (ySame ? 0 : (dy > 0 ? 1 : -1));
 
   float rx = (dx > 0) ? (dx - dx1) : (dx1 - dx);
   float ry = (dy > 0) ? (dy - dy1) : (dy1 - dy);
 
-  CHECK_GT(rx, 0);
-  CHECK_GT(ry, 0);
+  auto rxZero = near(rx, 0.0f), ryZero = near(ry, 0.0f);
+
+  DCHECK(not (rxZero and ryZero));
 
   FColorList fcl1 = scroll(fcl, dx1, dy1, xSize, wrap);
   FColorList fcl2 = scroll(fcl, dx2, dy2, xSize, wrap);
-  return fcl1.interpolate(fcl2, (rx + ry) / 2);
+
+  auto r = rxZero ? ry : (ryZero ? rx : (rx + ry) / 2.0f);
+  return fcl1.interpolate(fcl2, r);
 }
 
 }  // namespace color
