@@ -71,6 +71,7 @@ OBJECTS := \
   $(OBJDIR)/HSB_7615b903.o \
   $(OBJDIR)/Insert_9aab0c77.o \
   $(OBJDIR)/Mirror_c90fc27d.o \
+  $(OBJDIR)/Scroll_6508068b.o \
   $(OBJDIR)/SPI_b73e5f78.o \
   $(OBJDIR)/Transform_d1c2c3f8.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
@@ -219,6 +220,11 @@ $(OBJDIR)/Insert_9aab0c77.o: ../../echomesh/color/Insert.cpp
 $(OBJDIR)/Mirror_c90fc27d.o: ../../echomesh/color/Mirror.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Mirror.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Scroll_6508068b.o: ../../echomesh/color/Scroll.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Scroll.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/SPI_b73e5f78.o: ../../echomesh/color/SPI.cpp

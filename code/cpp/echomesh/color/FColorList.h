@@ -43,6 +43,10 @@ class FColorList : public vector<FColor> {
     erase(begin() + b, begin() + e);
   }
 
+  const FColor& get(int i) const {
+    return (i >= 0 and i < size()) ? at(i) : FColor::BLACK;
+  }
+
   FColorList interpolate(
       const FColorList& that, float ratio,
       uint smooth = 0, uint index = 0) const {

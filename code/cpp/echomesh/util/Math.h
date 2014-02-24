@@ -24,4 +24,5 @@ auto mod(X dividend, Y divisor) -> decltype(dividend % divisor) {
   return modulo;
 }
 
+
 }  // namespace echomesh

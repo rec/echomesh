@@ -76,6 +76,8 @@
         <FILE id="mnSJbF" name="RGB.h" compile="0" resource="0" file="echomesh/color/RGB.h"/>
         <FILE id="p7JrLC" name="Mirror.cpp" compile="1" resource="0" file="echomesh/color/Mirror.cpp"/>
         <FILE id="RmokB0" name="Mirror.h" compile="0" resource="0" file="echomesh/color/Mirror.h"/>
+        <FILE id="xed47c" name="Scroll.cpp" compile="1" resource="0" file="echomesh/color/Scroll.cpp"/>
+        <FILE id="HwYoRw" name="Scroll.h" compile="0" resource="0" file="echomesh/color/Scroll.h"/>
         <FILE id="wwGsuS" name="SPI.cpp" compile="1" resource="0" file="echomesh/color/SPI.cpp"/>
         <FILE id="TmBv0o" name="SPI.h" compile="0" resource="0" file="echomesh/color/SPI.h"/>
         <FILE id="w9w8r7" name="Transform.cpp" compile="1" resource="0" file="echomesh/color/Transform.cpp"/>
