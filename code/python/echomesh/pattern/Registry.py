@@ -13,6 +13,7 @@ REGISTRY = register_parent(
   'Mirror',
   'Scroll',
   'Spread',
+  'Text',
   'Reverse',
 )
 
