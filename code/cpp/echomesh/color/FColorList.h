@@ -14,17 +14,9 @@ class FColorList : public vector<FColor> {
   }
 
   void combine(const FColorList& that) {
-    int thisSize = size(), thatSize = that.size();
-    if (thisSize >= thatSize) {
-      for (auto i = 0; i < thatSize; ++i)
-        (*this)[i].combine(that[i]);
-    } else {
-      resize(thatSize);
-      for (auto i = 0; i < thisSize; ++i)
-        (*this)[i].combine(that[i]);
-      for (auto i = thisSize; i < thatSize; ++i)
-        (*this)[i] = that[i];
-    }
+    resize(std::max(size(), that.size()), FColor::BLACK);
+    for (auto i = 0; i < size(); ++i)
+      at(i).combine(that.get(i));
   }
 
   int count(const FColor& c) const {

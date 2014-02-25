@@ -5,8 +5,12 @@
 namespace echomesh {
 namespace color {
 
+bool mustRecolumn(int oldColumns, int newColumns) {
+  return oldColumns != newColumns and newColumns and oldColumns;
+}
+
 void recolumn(FColorList* fcl, int oldColumns, int newColumns) {
-  if (oldColumns == newColumns or not (newColumns and oldColumns))
+  if (not mustRecolumn(oldColumns, newColumns))
     return;
 
   auto rows = computeRows(fcl->size(), oldColumns);

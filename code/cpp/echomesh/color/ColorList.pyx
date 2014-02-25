@@ -19,10 +19,6 @@ cdef ColorList toColorList(object value):
 def to_color_list(object x):
   return toColorList(x)
 
-cdef extern from "echomesh/color/Recolumn.h" namespace "echomesh::color":
-  void recolumn(FColorList*, int oldColumns, int newColumns)
-
-
 cdef class ColorList:
   cdef FColorList* thisptr
   cdef int _columns
@@ -54,9 +50,18 @@ cdef class ColorList:
   def combine(self, *items):
     cdef ColorList cl
     for other in items:
-      cl = toColorList(other)
-      if self.columns and cl.columns and self.columns != cl.columns:
-        pass
+      if isinstance(other, ColorList):
+        if mustRecolumn(self.columns, other.columns):
+          if other.columns < self.columns:
+            cl = ColorList(other, columns=self.columns)
+          else:
+            cl = <ColorList> other
+            self.columns = cl.columns
+        else:
+          cl = <ColorList> other
+      else:
+        cl = ColorList(other, columns=self.columns)
+
       self.thisptr.combine(cl.thisptr[0])
 
   def count(self, object item):
