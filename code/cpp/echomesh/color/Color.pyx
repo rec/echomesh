@@ -11,7 +11,7 @@ def _near_zero(x):
   print('_near_zero', x, _EPSILON)
   return abs(x) < _EPSILON
 
-_COLOR_COMPARES = {
+COMPARE_MAP = {
   0: lambda x: x > 0,
   1: lambda x: x >= 0,
   2: lambda x: x == 0,
@@ -20,9 +20,11 @@ _COLOR_COMPARES = {
   5: lambda x: x <= 0,
   }
 
-cdef bool richcmpColors(FColor* x, FColor* y, int cmp):
-  result = _COLOR_COMPARES[cmp](x.compare(y[0]))
-  return result
+def compare_ints(int x, int y, int comparer):
+  return COMPARE_MAP[comparer](cmp(x, y))
+
+cdef bool richcmpColors(const FColor* x, const FColor* y, int cmp):
+  return COMPARE_MAP[cmp](x.compare(y[0]))
 
 cdef class Color:
   cdef FColor* thisptr

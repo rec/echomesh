@@ -19,26 +19,30 @@ cdef ColorList toColorList(object value):
 def to_color_list(object x):
   return toColorList(x)
 
+cdef extern from "echomesh/color/Recolumn.h" namespace "echomesh::color":
+  void recolumn(FColorList*, int oldColumns, int newColumns)
+
 
 cdef class ColorList:
   cdef FColorList* thisptr
   cdef int _columns
 
-  def __cinit__(self, colors=None, columns=None):
+  def __cinit__(self, colors=None, columns=0):
     self.thisptr = new FColorList()
     self.extend(colors)
-    self._columns = columns or getattr(colors, 'columns', 0)
+    self._columns = getattr(colors, 'columns', 0)
+    self.columns = columns
 
   def __dealloc__(self):
     del self.thisptr
 
-  @property
-  def columns(self):
-    return self._columns
+  property columns:
+    def __get__(self):
+      return self._columns
 
-  @columns.setter
-  def columns(self, cols):
-    pass  # TODO!
+    def __set__(self, cols):
+      recolumn(self.thisptr, self._columns, cols)
+      self._columns = cols
 
   def append(self, object item):
     cdef FColor c
@@ -155,14 +159,14 @@ cdef class ColorList:
       cl.thisptr.resize(len(indices))
       i = 0
       for j in indices:
-        cl.thisptr.set(self.thisptr.at(j), i)
+        cl.thisptr.set(i, self.thisptr.get(j))
         i += 1
       return cl
 
     else:
       key = self._check_key(key)
       color = Color()
-      color.thisptr[0] = self.thisptr.at(key)
+      color.thisptr[0] = self.thisptr.get(key)
       return color
 
   def __iadd__(self, object other):
@@ -192,11 +196,13 @@ cdef class ColorList:
   def __repr__(self):
     return 'ColorList(%s)' % self.__str__()
 
-  def __richcmp__(ColorList self, ColorList other, int cmp):
-    if len(self) != len(other):
-      return False
-    for i in range(len(self)):
-      if not richcmpColors(&self.thisptr.at(i), &other.thisptr.at(i), cmp):
+  def __richcmp__(ColorList self, ColorList other, int comparer):
+    if self.columns != other.columns:
+      return compare_ints(self.columns, other.columns, comparer)
+
+    for i in range(max(len(self), len(other))):
+      if not richcmpColors(
+          &self.thisptr.get(i), &other.thisptr.get(i), comparer):
         return False
     return True
 
@@ -230,7 +236,7 @@ cdef class ColorList:
 
       i = 0
       for j in pieces:
-        self.thisptr.set(cl.thisptr.at(i), j)
+        self.thisptr.set(j, cl.thisptr.get(i))
 
     else:
       key = self._check_key(key)
@@ -241,7 +247,10 @@ cdef class ColorList:
     return super(ColorList, self).__sizeof__() + 4 * len(self)
 
   def __str__(self):
-    return '[%s]' % ', '.join(str(c) for c in self)
+    s = '[%s]' % ', '.join(str(c) for c in self)
+    if self._columns:
+      s = '%s, columns=%d' % (s, self._columns)
+    return s
 
   def _check_key(self, int key):
     if key >= 0:
@@ -255,7 +264,7 @@ cdef class ColorList:
   def _set_item(self, int i, object item):
     cdef FColor c
     if fill_color(item, &c):
-      self.thisptr.set(c, i)
+      self.thisptr.set(i, c)
     else:
       raise ValueError('Don\'t understand color value %s' % item)
 

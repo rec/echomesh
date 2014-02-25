@@ -13,12 +13,12 @@ void recolumn(FColorList* fcl, int oldColumns, int newColumns) {
   auto newSize = rows * newColumns;
   if (newColumns < oldColumns) {
     if (fcl->size() < newSize)
-      fcl->resize(newSize);
+      fcl->resize(newSize, FColor::BLACK);
     for (auto r = 1; r < rows; ++r) {
       auto oldOffset = r * oldColumns;
       auto newOffset = r * newColumns;
       for (auto c = 0; c < newColumns; ++c)
-        fcl->set(fcl->get(oldOffset + c), newOffset + c);
+        fcl->set(newOffset + c, fcl->get(oldOffset + c));
     }
     fcl->resize(newSize);
   } else {
@@ -27,10 +27,13 @@ void recolumn(FColorList* fcl, int oldColumns, int newColumns) {
       auto oldOffset = r * oldColumns;
       auto newOffset = r * newColumns;
       for (auto c = oldColumns - 1; c >= 0; --c)
-        fcl->set(fcl->get(oldOffset + c), newOffset + c);
+        fcl->set(newOffset + c, fcl->get(oldOffset + c));
+
       for (auto c = newColumns - 1; c >= oldColumns; --c)
-        fcl->set(FColor::BLACK, newOffset + c);
+        fcl->set(newOffset + c, FColor::BLACK);
     }
+    for (auto c = newColumns - 1; c >= oldColumns; --c)
+      fcl->set(c, FColor::BLACK);
   }
 }
 

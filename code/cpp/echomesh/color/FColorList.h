@@ -84,7 +84,9 @@ class FColorList : public vector<FColor> {
       i.scale(s);
   }
 
-  void set(const FColor& color, int pos) {
+  void set(int pos, const FColor& color) {
+    if (pos >= size())
+      resize(pos + 1, FColor::BLACK);
     at(pos) = color;
   }
 

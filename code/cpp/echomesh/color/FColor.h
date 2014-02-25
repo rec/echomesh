@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "echomesh/base/Echomesh.h"
+#include "echomesh/color/ColorName.h"
 
 namespace echomesh {
 namespace color {
@@ -128,6 +129,10 @@ class FColor {
     alpha_ = std::max(alpha_, x.alpha_);
   }
 
+  string toString() const {
+    return rgbToName(*this);
+  }
+
  private:
   float red_, green_, blue_, alpha_;
 };
@@ -135,3 +140,7 @@ class FColor {
 }  // namespace color
 }  // namespace echomesh
 
+inline std::ostream & operator<<(
+    std::ostream &os, const echomesh::color::FColor& color) {
+  return os << color.toString();
+}

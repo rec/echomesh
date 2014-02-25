@@ -91,9 +91,9 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
     for j in range(step + 2):
       inc = tr(j / (step + 1.0))
       if cmodel:
-        cl.thisptr.set(cmodel.toRgb(cmodel.interpolate(f1, f2, inc)), pos)
+        cl.thisptr.set(pos, cmodel.toRgb(cmodel.interpolate(f1, f2, inc)))
       else:
-        cl.thisptr.set(f1.interpolate(f2, inc, 0, 0), pos)
+        cl.thisptr.set(pos, f1.interpolate(f2, inc, 0, 0))
       pos += 1
     pos -= 1
 

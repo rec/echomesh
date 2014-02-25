@@ -93,6 +93,26 @@ class ColorListTest(TestCase):
     del self.cl[2]
     self.assertResult('[green, red, red]')
 
+  def test_columns(self):
+    cl = ColorList(['green', 'red', 'blue'], columns=8)
+    cl.columns = 4
+    self.assertEqual(
+      cl, ColorList(['green', 'red', 'blue', 'black'], columns=4))
+
+    self.cl = ColorList(['green', 'red', 'blue', 'yellow', 'orange'], columns=3)
+    self.assertEqual(self.cl, self.cl)
+    cl = ColorList(['green', 'red', 'blue', 'yellow', 'orange'], columns=2)
+    self.assertNotEqual(self.cl, cl)
+
+    self.cl.columns = 2
+    self.assertEqual(
+      self.cl, ColorList(['green', 'red', 'yellow', 'orange'], columns=2))
+
+    self.cl.columns = 3
+    self.assertEqual(
+      self.cl, ColorList(['green', 'red', 'black', 'yellow', 'orange', 'black'],
+                         columns=3))
+
   def test_contains(self):
     self.cl.extend(['green', 'red', 'blue', 'red'])
     self.assertTrue('red' in self.cl)
