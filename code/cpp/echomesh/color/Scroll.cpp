@@ -1,17 +1,13 @@
 #include "echomesh/color/Scroll.h"
 #include "echomesh/color/ColorName.h"
+#include "echomesh/color/Rows.h"
 #include "echomesh/util/Math.h"
 
 namespace echomesh {
 namespace color {
 
 FColorList scroll(const FColorList& fcl, int dx, int dy, int xSize, bool wrap) {
-  int size = fcl.size();
-  auto ySize = size / xSize;
-
-  if (size % xSize)
-    ySize++;
-
+  auto ySize = computeRows(fcl.size(), xSize);
   FColorList result;
   result.resize(xSize * ySize);
 

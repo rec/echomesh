@@ -658,7 +658,7 @@ String MidiMessage::getTextFromTextMetaEvent() const
                    CharPointer_UTF8 (textData + getMetaEventLength()));
 }
 
-MidiMessage MidiMessage::textMetaEvent (int type, const StringRef& text)
+MidiMessage MidiMessage::textMetaEvent (int type, StringRef text)
 {
     jassert (type > 0 && type < 16)
 
@@ -679,8 +679,8 @@ MidiMessage MidiMessage::textMetaEvent (int type, const StringRef& text)
 
     const size_t headerLen = sizeof (header) - n;
 
-    uint8* const dest = result.allocateSpace (headerLen + textSize);
-    result.size = headerLen + textSize;
+    uint8* const dest = result.allocateSpace ((int) (headerLen + textSize));
+    result.size = (int) (headerLen + textSize);
 
     memcpy (dest, header + n, headerLen);
     memcpy (dest + headerLen, text.text.getAddress(), textSize);

@@ -22,13 +22,23 @@ def to_color_list(object x):
 
 cdef class ColorList:
   cdef FColorList* thisptr
+  cdef int _columns
 
-  def __cinit__(self, colors=None):
+  def __cinit__(self, colors=None, columns=None):
     self.thisptr = new FColorList()
     self.extend(colors)
+    self._columns = columns or getattr(colors, 'columns', 0)
 
   def __dealloc__(self):
     del self.thisptr
+
+  @property
+  def columns(self):
+    return self._columns
+
+  @columns.setter
+  def columns(self, cols):
+    pass  # TODO!
 
   def append(self, object item):
     cdef FColor c
@@ -41,6 +51,8 @@ cdef class ColorList:
     cdef ColorList cl
     for other in items:
       cl = toColorList(other)
+      if self.columns and cl.columns and self.columns != cl.columns:
+        pass
       self.thisptr.combine(cl.thisptr[0])
 
   def count(self, object item):
@@ -96,7 +108,7 @@ cdef class ColorList:
 
   def interpolate(self, color_list, float fader, unsigned int smooth=0):
     cdef ColorList cl = toColorList(color_list)
-    cdef ColorList result = ColorList()
+    cdef ColorList result = ColorList(columns=self.columns)
     result.thisptr[0] = self.thisptr.interpolate(cl.thisptr[0], fader, smooth)
     return result
 
@@ -122,7 +134,7 @@ cdef class ColorList:
     self.thisptr.sort()
 
   def __add__(self, object other):
-    cl = ColorList(self)
+    cl = ColorList(self, columns=getattr(self, 'columns', 0))
     cl.extend(other)
     return cl
 
@@ -139,7 +151,7 @@ cdef class ColorList:
   def __getitem__(self, object key):
     if isinstance(key, slice):
       indices = range(*key.indices(len(self)))
-      cl = ColorList()
+      cl = ColorList(columns=self.columns)
       cl.thisptr.resize(len(indices))
       i = 0
       for j in indices:
@@ -170,7 +182,7 @@ cdef class ColorList:
   def __mul__(self, object mult):
     if not isinstance(self, ColorList):
       self, mult = mult, self
-    cl = ColorList(self)
+    cl = ColorList(self, columns=self.columns)
     cl *= mult
     return cl
 

@@ -18,14 +18,15 @@ ifeq ($(CONFIG),Debug)
     TARGET_ARCH := -march=native
   endif
 
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -g -ggdb -O0 -I../..  -I../../glog/src -std=c++11 -x c++
   CXXFLAGS += $(CFLAGS)
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
-  RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
+  RESFLAGS :=  -D "LINUX=1" -D "DEBUG=1" -D "_DEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
   TARGET := libechomesh.a
   BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS)
+  CLEANCMD = rm -rf $(OUTDIR)/$(TARGET) $(OBJDIR)
 endif
 
 ifeq ($(CONFIG),Release)
@@ -38,14 +39,15 @@ ifeq ($(CONFIG),Release)
     TARGET_ARCH := -march=native
   endif
 
-  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
+  CPPFLAGS := $(DEPFLAGS) -D "LINUX=1" -D "NDEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
   CFLAGS += $(CPPFLAGS) $(TARGET_ARCH) -Os -I../..  -I../../glog/src -std=c++11 -x c++
   CXXFLAGS += $(CFLAGS)
   LDFLAGS += $(TARGET_ARCH) -L$(BINDIR) -L$(LIBDIR) -fvisibility=hidden -L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound -ldl -lfreetype -lpthread -lrt 
   LDDEPS :=
-  RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
+  RESFLAGS :=  -D "LINUX=1" -D "NDEBUG=1" -D "JUCE_DISABLE_JUCE_VERSION_PRINTING=1" -D "JUCER_LINUX_MAKE_7346DA2A=1" -D "JUCE_APP_VERSION=1.0.0" -D "JUCE_APP_VERSION_HEX=0x10000" -I /usr/include -I /usr/include/freetype2 -I ../../JuceLibraryCode -I ../../JuceLibraryCode/modules
   TARGET := libechomesh.a
   BLDCMD = ar -rcs $(OUTDIR)/$(TARGET) $(OBJECTS)
+  CLEANCMD = rm -rf $(OUTDIR)/$(TARGET) $(OBJDIR)
 endif
 
 OBJECTS := \
@@ -71,6 +73,7 @@ OBJECTS := \
   $(OBJDIR)/HSB_7615b903.o \
   $(OBJDIR)/Insert_9aab0c77.o \
   $(OBJDIR)/Mirror_c90fc27d.o \
+  $(OBJDIR)/Recolumn_5d00f2c7.o \
   $(OBJDIR)/Scroll_6508068b.o \
   $(OBJDIR)/SPI_b73e5f78.o \
   $(OBJDIR)/Transform_d1c2c3f8.o \
@@ -104,9 +107,7 @@ $(OUTDIR)/$(TARGET): $(OBJECTS) $(LDDEPS) $(RESOURCES)
 
 clean:
 	@echo Cleaning echomesh
-	-@rm -f $(OUTDIR)/$(TARGET)
-	-@rm -rf $(OBJDIR)/*
-	-@rm -rf $(OBJDIR)
+	@$(CLEANCMD)
 
 strip:
 	@echo Stripping echomesh
@@ -220,6 +221,11 @@ $(OBJDIR)/Insert_9aab0c77.o: ../../echomesh/color/Insert.cpp
 $(OBJDIR)/Mirror_c90fc27d.o: ../../echomesh/color/Mirror.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling Mirror.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Recolumn_5d00f2c7.o: ../../echomesh/color/Recolumn.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Recolumn.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Scroll_6508068b.o: ../../echomesh/color/Scroll.cpp
