@@ -136,11 +136,12 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
   MessageManagerLock l;
 
   auto size = jmin(colors.size(), instruments_.size());
-  for (auto i = 0; i < size; ++i)
-    instruments_[i]->setColor(colors.at(i).toColour());
+  for (auto i = 0; i < size; ++i) {
+    auto color = colors.get(i).toColour();
+    instruments_[i]->setColor(color);
+  }
 
-  auto maxSize = jmax(colors.size(), instruments_.size());
-  for (auto i = size; i < maxSize; ++i)
+  for (auto i = size; i < instruments_.size(); ++i)
     instruments_[i]->setColor(Colours::black);
   pythonRepaint();
 }

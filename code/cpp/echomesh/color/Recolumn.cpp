@@ -6,7 +6,7 @@ namespace echomesh {
 namespace color {
 
 bool mustRecolumn(int oldColumns, int newColumns) {
-  return oldColumns != newColumns and newColumns and oldColumns;
+  return (oldColumns != newColumns) and newColumns and oldColumns;
 }
 
 void recolumn(FColorList* fcl, int oldColumns, int newColumns) {
@@ -17,7 +17,7 @@ void recolumn(FColorList* fcl, int oldColumns, int newColumns) {
   auto newSize = rows * newColumns;
   if (newColumns < oldColumns) {
     if (fcl->size() < newSize)
-      fcl->resize(newSize, FColor::BLACK);
+      fcl->resize(newSize);
     for (auto r = 1; r < rows; ++r) {
       auto oldOffset = r * oldColumns;
       auto newOffset = r * newColumns;

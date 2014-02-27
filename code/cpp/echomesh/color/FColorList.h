@@ -9,13 +9,18 @@ namespace color {
 
 class FColorList : public vector<FColor> {
  public:
+  FColor& at(int i) {
+    DCHECK(isIndex(i)) << "Bad index " << i;
+    return vector<FColor>::at(i);
+  }
+
   void copy(const FColorList& that) {
     *this = that;
   }
 
   void combine(const FColorList& that) {
-    resize(std::max(size(), that.size()), FColor::BLACK);
-    for (auto i = 0; i < size(); ++i)
+    resize(std::max(size(), that.size()));
+    for (auto i = 0; i < that.size(); ++i)
       at(i).combine(that.get(i));
   }
 
@@ -36,7 +41,7 @@ class FColorList : public vector<FColor> {
   }
 
   const FColor& get(int i) const {
-    return (i >= 0 and i < size()) ? at(i) : FColor::BLACK;
+    return isIndex(i) ? vector<FColor>::at(i) : FColor::BLACK;
   }
 
   FColorList interpolate(
@@ -67,6 +72,14 @@ class FColorList : public vector<FColor> {
     insert(begin() + b1, from.begin() + b2, from.begin() + e2);
   }
 
+  bool isIndex(int i) const {
+    return i >= 0 and i < size();
+  }
+
+  void resize(int s) {
+    vector<FColor>::resize(s, FColor::BLACK);
+  }
+
   void reverse() {
     std::reverse(begin(), end());
   }
@@ -78,7 +91,8 @@ class FColorList : public vector<FColor> {
 
   void set(int pos, const FColor& color) {
     if (pos >= size())
-      resize(pos + 1, FColor::BLACK);
+      resize(pos + 1);
+    LOG_IF(DFATAL, pos < 0) << "position is negative: " << pos;
     at(pos) = color;
   }
 

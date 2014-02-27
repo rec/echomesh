@@ -57,7 +57,8 @@ class Visualizer(Poll):
       self.values.label_starts_at_zero)
     self.lighting_window.set_layout(
       self.values.layout, self.values.size, self.values.padding,
-      self.values.instrument_padding, self.values.label_padding);
+      self.values.instrument_padding, self.values.label_padding)
+    self.columns = self.values.layout[0]
 
     self.transform = self.values.transform
     if self.transform:
@@ -71,6 +72,6 @@ class Visualizer(Poll):
       self.brightness = self.transform.apply(self.brightness)
 
   def emit_output(self, data):
-    lights = Combine.combine(data)
+    lights = Combine.combine(data)  #, columns=self.columns)
     lights.scale(self.brightness)
     self.lighting_window.set_lights(lights)
