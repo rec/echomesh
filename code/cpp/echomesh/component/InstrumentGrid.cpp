@@ -137,7 +137,7 @@ void InstrumentGrid::setLights(const color::FColorList& colors) {
 
   auto size = jmin(colors.size(), instruments_.size());
   for (auto i = 0; i < size; ++i) {
-    auto color = colors.get(i).toColour();
+    auto color = Colour(colors.get(i).argb());
     instruments_[i]->setColor(color);
   }
 

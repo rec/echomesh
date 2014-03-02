@@ -27,13 +27,6 @@ class FColor {
     alpha_ = parts / C;
   }
 
-  FColor(const Colour& c)
-      : red_(c.getFloatRed()),
-        green_(c.getFloatGreen()),
-        blue_(c.getFloatBlue()),
-        alpha_(c.getFloatAlpha()) {
-  }
-
   const float& red() const { return red_; }
   const float& green() const { return green_; }
   const float& blue() const { return blue_; }
@@ -109,13 +102,6 @@ class FColor {
       return 1;
 
     return 0;
-  }
-
-  Colour toColour() const {
-    return Colour(floatToUInt8(red()),
-                  floatToUInt8(green()),
-                  floatToUInt8(blue()),
-                  floatToUInt8(alpha()));
   }
 
   FColor interpolate(
