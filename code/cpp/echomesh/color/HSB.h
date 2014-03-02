@@ -51,9 +51,9 @@ class HSB : public ColorModel {
       hue(*t) = 0.0f;
     else
       hue(*t) = interpolateHue(hue(f), hue(*t), bf / btotal);
-    saturation(*t) = jmax(saturation(*t), saturation(f));
-    brightness(*t) = jmax(bf, bt);
-    t->alpha() = jmax(t->alpha(), f.alpha());
+    saturation(*t) = std::max(saturation(*t), saturation(f));
+    brightness(*t) = std::max(bf, bt);
+    t->alpha() = std::max(t->alpha(), f.alpha());
   }
 
   static FColor hsbToRgb(const FColor&);

@@ -1,15 +1,19 @@
 #include "echomesh/color/HSB.h"
 #include "echomesh/color/RGB.h"
 
+using namespace std;
+
 namespace echomesh {
 namespace color {
 
 FColor HSB::hsbFromRgb(const FColor& rgb) {
-  const auto brightness = jmax(RGB::red(rgb), RGB::green(rgb), RGB::blue(rgb));
+  const auto brightness = max(
+      max(RGB::red(rgb), RGB::green(rgb)), RGB::blue(rgb));
   auto hue = 0.0f, saturation = 0.0f;
 
   if (not near(brightness, 0.0)) {
-    const auto darkest = jmin(RGB::red(rgb), RGB::green(rgb), RGB::blue(rgb));
+    const auto darkest = min(
+        min(RGB::red(rgb), RGB::green(rgb)), RGB::blue(rgb));
     const auto range = brightness - darkest;
     saturation = range / brightness;
 
