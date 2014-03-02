@@ -125,6 +125,10 @@ network:
     port: 1238
     timeout: 0.1
 
+  startup:
+    retries: 20
+    timeout: 0.25
+
   timeout: 0.1
 
 # The git section sets the user, project name and server for a git repository

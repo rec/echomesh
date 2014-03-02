@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import socket
+import time
 import yaml
 
 from six.moves import queue
@@ -12,6 +13,7 @@ from echomesh.util.thread.MasterRunnable import MasterRunnable
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
+RUNNING_ERROR = 'There is already an echomesh node running on port %d'
 
 # See http://docs.python.org/2/howto/sockets.html
 
@@ -32,6 +34,8 @@ class Socket(MasterRunnable):
 
   def config_update(self, get):
     self.timeout = Expression.convert(get('network', 'timeout'))
+    self.retries = get('network', 'startup', 'retries')
+    self.retry_timeout = get('network', 'startup', 'timeout')
 
   def receive(self):
     if not self.is_running:
@@ -75,15 +79,29 @@ class Socket(MasterRunnable):
   def _on_run(self):
     super(Socket, self)._on_run()
 
-    self.socket = socket.socket(socket.AF_INET, self.socket_type)
-    self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.max_size)
-    try:
-      self._start_socket()
-    except Exception as e:
-      if 'Address already in use' in str(e):
-        raise Exception('There is already an echomesh node running on port %d' %
-                        self.bind_port)
-      self.pause()
+    retries = 0
+    while True:
+      self.socket = socket.socket(socket.AF_INET, self.socket_type)
+      self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, self.max_size)
+      try:
+        self._start_socket()
+      except Exception as e:
+        if 'Address already in use' in str(e):
+          retries += 1
+          if retries >= self.retries:
+            raise Exception(RUNNING_ERROR % self.bind_port)
+          else:
+            try:
+              self.socket.close()
+            except:
+              pass
+            self.socket = None
+            time.sleep(self.retry_timeout)
+        else:
+          self.pause()
+          raise
+      else:
+        break
 
   def _start_socket(self):
     self.socket.bind((self.hostname, self.bind_port))
