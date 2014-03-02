@@ -31,8 +31,10 @@ uint8 toLight(float x) {
 
 }  // namespace
 
-Order getOrder(const String& s) {
-  auto t = s.toUpperCase();
+Order getOrder(const string& s) {
+  string t = s;
+  for (auto& ch: t)
+    ch = toupper(ch);
   for (auto& name: NAMES) {
     if (t == name)
       return static_cast<Order>(&name - NAMES);

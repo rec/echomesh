@@ -22,9 +22,18 @@ class ColorTest(TestCase):
   def test_red2(self):
     self.assertEqual(str(Color([1.0, 0, 0])), 'red')
 
-  def test_yellow(self):
-    if False:
-      self.assertEqual(str(Color('white', model='hsb')), 'white')
+  def test_grey(self):
+    for i in xrange(100, 10000):
+      c = str(Color('grey ' + str(i / 100)))
+      if i % 100:
+        print('???', str(int(round(i / 100))), i / 100)
+        self.assertEquals(c, 'grey ' + str(round(i / 10) / 10))
+      else:
+        print('???', str(int(round(i / 100))), i / 100)
+        self.assertEquals(c, 'grey ' + str(int(round(i / 100))))
+
+    self.assertEquals(Color('grey 0.0'), Color('black'))
+    self.assertEquals(Color('grey 100.0'), Color('white'))
 
   def test_equal(self):
     self.assertEqual(Color('red'), Color('red'))

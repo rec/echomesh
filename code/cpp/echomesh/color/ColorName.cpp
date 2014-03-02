@@ -35,6 +35,16 @@ string toString(float f) {
   return result;
 }
 
+// Return a float as "xx.x or 100.0".
+string toPercent(float f) {
+  f = roundf(min(1.0f, max(0.0f, f)) * 1000.0f) / 10.0f;
+  string result;
+  result.resize(5);
+  sprintf(&result.front(), "%.1f", f);
+  return result;
+}
+
+
 bool isHex(const string& s) {
   return strspn(s.data(), "abcdef0123456789") == s.size();
 }
@@ -43,6 +53,12 @@ uint32 fromHex(const char* s) {
   uint32 decimalValue;
   sscanf(s, "%u", &decimalValue);
   return decimalValue;
+}
+
+bool isGrey(const FColor& c) {
+  return near(c.red(), c.green(), 0.001) and
+      near(c.green(), c.blue(), 0.001) and
+      near(c.blue(), c.red(), 0.001);
 }
 
 struct ColorNamer {
@@ -550,6 +566,8 @@ ColorNamer makeNamer() {
 
 static const ColorNamer NAMER = makeNamer();
 
+static const char GREY_MARKER[] = "grey";
+
 } // namespace
 
 bool nameToRgb(const string& cname, FColor* color) {
@@ -567,8 +585,19 @@ bool nameToRgb(const string& cname, FColor* color) {
 
   auto i = NAMER.stringToColor_.find(name);
   auto success = (i != NAMER.stringToColor_.end());
-  if (success)
+  if (success) {
     *color = FColor(i->second);
+  } else if (not name.find(GREY_MARKER)) {
+    auto start = name.c_str();
+    auto p = start + strlen(GREY_MARKER);
+    for (; isspace(*p); ++p);
+    char* endptr;
+    auto f = strtof(p, &endptr) / 100.0f;
+    if (not *endptr and f >= 0.0f and f <= 1.0f) {
+      *color = FColor(f, f, f);
+      success = true;
+    }
+  }
   return success;
 }
 
@@ -586,6 +615,8 @@ string rgbToName(const FColor& color) {
     name = i->second;
     if (not suffix.empty())
       name = "[" + name;
+  } else if (isGrey(c)) {
+    name = "grey " + toPercent(c.red());
   } else {
     name = "[red=" + toString(c.red()) +
         ", green=" + toString(c.green()) +

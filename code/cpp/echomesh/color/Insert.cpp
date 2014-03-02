@@ -1,5 +1,5 @@
 #include "echomesh/color/Insert.h"
-#include "echomesh/util/math.h"
+#include "echomesh/util/Math.h"
 
 namespace echomesh {
 namespace color {
