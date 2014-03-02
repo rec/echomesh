@@ -72,6 +72,6 @@ class Visualizer(Poll):
       self.brightness = self.transform.apply(self.brightness)
 
   def emit_output(self, data):
-    lights = Combine.combine(data)  #, columns=self.columns)
+    lights = Combine.combine(data, columns=self.columns)
     lights.scale(self.brightness)
     self.lighting_window.set_lights(lights)
