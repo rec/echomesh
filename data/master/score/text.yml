@@ -4,8 +4,9 @@ pattern:
   some text:
     type: text
     font: asset/font/DejaVuSansMono-Bold
-    size: 12
-    text: "Hello, world."
+    height: 12
+    text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
+    # text: "A"
 
 elements:
   -
