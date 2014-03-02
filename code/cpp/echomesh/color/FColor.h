@@ -119,7 +119,7 @@ class FColor {
   };
 
   static uint8 floatToUInt8(const float n) {
-    return static_cast<uint8>(jmax(0.0f, jmin(255.0f, n * 255.1f)));
+    return static_cast<uint8>(std::max(0.0f, std::min(255.0f, n * 255.1f)));
   }
 
   void combine(const FColor& x) {
