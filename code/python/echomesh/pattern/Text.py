@@ -1,32 +1,17 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import math
-from PIL import Image, ImageDraw, ImageFont
+
+from PIL import Image, ImageDraw
 
 import cechomesh
 
 from echomesh.pattern.Pattern import Pattern
-from echomesh.util import Log
-
-LOGGER = Log.logger(__name__)
-_SUFFIX = '.ttf'
-
-def _get_font(fontfile, text, height):
-  new_height = height
-  while True:
-    try:
-      font = ImageFont.truetype(fontfile, new_height)
-    except:
-      raise Exception('Can\'t open font file %s' % fontfile)
-    size = font.getsize(text)
-    if height >= size[1]:
-      return font, size
-    else:
-      new_height -= 1
+from echomesh.util.image.GetFont import get_font
 
 class Text(Pattern):
   CONSTANTS =  'font', 'height', 'text'
-  OPTIONAL_CONSTANTS = {'oversample': 1, 'resample': None}
+  OPTIONAL_CONSTANTS = {'debug': False, 'oversample': 1, 'resample': None}
   PATTERN_COUNT = 0
 
   def _evaluate(self):
@@ -34,12 +19,10 @@ class Text(Pattern):
     height = self.get('height')
     oversample = self.get('oversample')
     text = self.get('text')
-
-    if not fontfile.endswith(_SUFFIX):
-      fontfile += _SUFFIX
+    debug = self.get('debug')
 
     height_over = height * oversample
-    font, size = _get_font(fontfile, text, height_over)
+    font, size = get_font(fontfile, text, height_over)
     offset = font.getoffset(text)
     image = Image.new('RGBA', size)
     draw = ImageDraw.Draw(image)
@@ -47,6 +30,8 @@ class Text(Pattern):
 
     width = size[0]
     if oversample > 1:
+      if debug:
+        image.show()
       width = int(math.ceil(width / oversample))
       if resample:
         try:
@@ -57,4 +42,6 @@ class Text(Pattern):
         resample = Image.BICUBIC
       image = image.resize((width, height), resample=resample)
 
+    if debug:
+      image.show()
     return cechomesh.ColorList(image, columns=width)

@@ -3,10 +3,10 @@ type: sequence
 pattern:
   some text:
     type: text
-    font: asset/font/DejaVuSansMono-Bold
+    font: DejaVuSansMono-Bold
     height: 12
     #text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
-    text: "Hello...|"
+    text: "A"
 
 elements:
   -
