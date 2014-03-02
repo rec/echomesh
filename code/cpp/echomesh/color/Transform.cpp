@@ -84,25 +84,34 @@ FloatTransform getOneTransform(const string& name) {
 }
 
 FloatTransform getTransform(const string& name) {
-  StringArray transforms;
-  transforms.addTokens(String(name), "+", "");
-  if (not transforms.size())
-    throw Exception("Can't understand empty transform");
-
   FloatTransform result;
-  for (auto i = 0; i < transforms.size(); ++i) {
-    auto p = transforms[i].trim();
-    if (p == "inverse") {
-      if (not i)
-        throw Exception("Transform: inverse can't be the first transform.");
-      auto t = result.first;
-      result.first = result.second;
-      result.second = t;
+  bool first = true;
+
+  string token;
+  for (auto i = 0; i <= name.size(); ++i) {
+    auto ch = name.c_str()[i];
+    if ((not ch) or isspace(ch) or ch == '+') {
+      if (not token.empty()) {
+        if (token == "inverse") {
+          if (first)
+            throw Exception("Transform: inverse can't be the first transform.");
+          auto t = result.first;
+          result.first = result.second;
+          result.second = t;
+        } else {
+          auto tr = getOneTransform(token);
+          result = first ? tr : compose(result, tr);
+        }
+        token.clear();
+        first = false;
+      }
     } else {
-      auto tr = getOneTransform(p.toStdString());
-      result = i ? compose(result, tr) : tr;
+      token.push_back(ch);
     }
   }
+
+  if (first)
+    throw Exception("Transform: cannot be empty.");
 
   return result;
 }
