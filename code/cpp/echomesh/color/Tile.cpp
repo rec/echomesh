@@ -15,8 +15,9 @@ FColorList tile(const FColorList& fcl, int xMult, int yMult, int columns) {
     for (auto mx = 0; mx < xMult; ++mx) {
       for (auto y = 0; y < rows; ++y) {
         for (auto x = 0; x < columns; ++x) {
-          auto index = x + mx * columns + newColumns * (y + my * rows);
-          result[index] = fcl[x + y * rows];
+          auto newIndex = x + mx * columns + newColumns * (y + my * rows);
+          auto oldIndex = x + y * columns;
+          result[newIndex] = fcl.get(oldIndex);
         }
       }
     }
