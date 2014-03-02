@@ -17,13 +17,14 @@ class FColor {
   }
 
   FColor(uint32 parts) {
-    blue_ = parts & 0xFF;
+    static const auto C = 0xFF * 1.0f;
+    blue_ = (parts & 0xFF) / C;
     parts >>= 8;
-    green_ = parts & 0xFF;
+    green_ = (parts & 0xFF) / C;
     parts >>= 8;
-    red_ = parts & 0xFF;
+    red_ = (parts & 0xFF) / C;
     parts >>= 8;
-    alpha_ = parts;
+    alpha_ = parts / C;
   }
 
   FColor(const Colour& c)
@@ -44,6 +45,19 @@ class FColor {
   const float& alpha() const { return alpha_; }
   float& alpha() { return alpha_; }
 
+  static uint8 floatToUInt8(const float n) {
+    return static_cast<uint8>(std::max(0.0f, std::min(255.0f, n * 255.1f)));
+  }
+
+  uint32 argb() const {
+    static const auto C = 0x100;
+    uint32 r = floatToUInt8(alpha());
+    r = C * r + floatToUInt8(red());
+    r = C * r + floatToUInt8(green());
+    r = C * r + floatToUInt8(blue());
+    return r;
+  }
+
   void clear() {
     red_ = green_ = blue_ = 0.0f;
     alpha_ = 1.0f;
@@ -59,7 +73,13 @@ class FColor {
 
   void copy(const FColor& other) { *this = other; }
   void copy(const FColor* other) { copy(*other); }
+
   bool operator==(const FColor& other) const { return not compare(other); }
+  bool operator!=(const FColor& other) const { return compare(other); }
+  bool operator>(const FColor& other) const { return compare(other) > 0; }
+  bool operator>=(const FColor& other) const { return compare(other) >= 0; }
+  bool operator<(const FColor& other) const { return compare(other) < 0; }
+  bool operator<=(const FColor& other) const { return compare(other) <= 0; }
 
   int compare(const FColor& x) const {
     if (this == &x)
@@ -117,10 +137,6 @@ class FColor {
   struct Comparer {
     bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
   };
-
-  static uint8 floatToUInt8(const float n) {
-    return static_cast<uint8>(std::max(0.0f, std::min(255.0f, n * 255.1f)));
-  }
 
   void combine(const FColor& x) {
     red_ = std::max(red_, x.red());
