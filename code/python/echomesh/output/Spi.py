@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
-from echomesh.color import Combine
 from echomesh.color import SetupDebianSpiLights
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll

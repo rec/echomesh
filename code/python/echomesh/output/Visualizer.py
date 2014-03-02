@@ -3,7 +3,6 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
-from echomesh.color import Combine
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
 from echomesh.util.config.ConfigValues import ConfigValues
@@ -72,6 +71,6 @@ class Visualizer(Poll):
       self.brightness = self.transform.apply(self.brightness)
 
   def emit_output(self, data):
-    lights = Combine.combine(data, columns=self.columns)
+    lights = cechomesh.combine_color_lists(data, columns=self.columns)
     lights.scale(self.brightness)
     self.lighting_window.set_lights(lights)
