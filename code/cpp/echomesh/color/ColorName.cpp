@@ -12,12 +12,45 @@ namespace color {
 
 namespace {
 
-struct ColorNamer {
-  std::map<String, uint32> stringToColor_;
-  std::map<uint32, String> colorToString_;
+string replace(string subject, const string& search, const string& replace) {
+  size_t pos = 0;
+  while ((pos = subject.find(search, pos)) != string::npos) {
+    subject.replace(pos, search.length(), replace);
+    pos += replace.length();
+  }
+  return subject;
+}
 
-  void add(const String& s, uint32 c) {
-    stringToColor_[s.replace(" ", "")] = c;
+void lower(string* subject) {
+  for (auto& ch: *subject)
+    ch = tolower(ch);
+}
+
+// Return a float as "x.xxx".
+string toString(float f) {
+  f = min(1.0f, max(0.0f, f));
+  string result;
+  result.resize(5);
+  sprintf(&result.front(), "%.3f", f);
+  return result;
+}
+
+bool isHex(const string& s) {
+  return strspn(s.data(), "abcdef0123456789") == s.size();
+}
+
+uint32 fromHex(const char* s) {
+  uint32 decimalValue;
+  sscanf(s, "%u", &decimalValue);
+  return decimalValue;
+}
+
+struct ColorNamer {
+  map<string, uint32> stringToColor_;
+  map<uint32, string> colorToString_;
+
+  void add(const string& s, uint32 c) {
+    stringToColor_[replace(s, " ", "")] = c;
     if (colorToString_.find(c) == colorToString_.end())
       colorToString_[c] = s;
   }
@@ -507,8 +540,10 @@ ColorNamer makeNamer() {
   namer.add("yellow 2", 0xffeeee00);
   namer.add("yellow 3", 0xffcdcd00);
   namer.add("yellow 4", 0xff8b8b00);
-  for (auto i = 1; i < 100; ++i)
-    namer.add("grey " + String(i), 0xff000000 + 0x10101 * ((i * 0xff) / 100));
+  for (auto i = 1; i < 100; ++i) {
+    auto argb = 0xff000000 + 0x10101 * ((i * 0xff) / 100);
+    namer.add("grey " + to_string(i), argb);
+  }
 
   return namer;
 }
@@ -517,14 +552,16 @@ static const ColorNamer NAMER = makeNamer();
 
 } // namespace
 
-bool nameToRgb(const String& cname, FColor* color) {
-  auto name = cname.trim().toLowerCase().
-      replace("gray", "grey").replace(" ", "");
-  if (name.isEmpty())
+bool nameToRgb(const string& cname, FColor* color) {
+  auto name = replace(cname, " ", "");
+  lower(&name);
+  name = replace(name, "gray", "grey");
+  if (name.empty())
     return false;
 
-  if (name[0] == '#' or name.containsOnly("abcdef0123456789")) {
-    *color = FColor(static_cast<uint32>(name.getHexValue32()));
+  auto hasHash = (name[0] == '#');
+  if (hasHash or isHex(name)) {
+    *color = FColor(fromHex(&name[hasHash ? 1 : 0]));
     return true;
   }
 
@@ -536,27 +573,27 @@ bool nameToRgb(const String& cname, FColor* color) {
 }
 
 string rgbToName(const FColor& color) {
-  String suffix;
+  string suffix;
   FColor c = color;
   if (c.alpha() < 1.0f) {
-    suffix = ", alpha=" + String(c.alpha(), 3) + "]";
+    suffix = ", alpha=" + toString(c.alpha()) + "]";
     c.alpha() = 1.0f;
   }
 
   auto i = NAMER.colorToString_.find(c.argb());
-  String name;
+  string name;
   if (i != NAMER.colorToString_.end()) {
     name = i->second;
-    if (not suffix.isEmpty())
+    if (not suffix.empty())
       name = "[" + name;
   } else {
-    name = "[red=" + String(c.red(), 3) +
-        ", green=" + String(c.green(), 3) +
-        ", blue=" + String(c.blue(), 3);
-    if (suffix.isEmpty())
+    name = "[red=" + toString(c.red()) +
+        ", green=" + toString(c.green()) +
+        ", blue=" + toString(c.blue());
+    if (suffix.empty())
       suffix += "]";
   }
-  return (name + suffix).toStdString();
+  return name + suffix;
 }
 
 }  // namespace color

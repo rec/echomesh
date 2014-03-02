@@ -7,7 +7,7 @@ namespace color {
 
 class FColor;
 
-bool nameToRgb(const String& cname, FColor*);
+bool nameToRgb(const string& cname, FColor*);
 string rgbToName(const FColor&);
 
 }  // namespace color
