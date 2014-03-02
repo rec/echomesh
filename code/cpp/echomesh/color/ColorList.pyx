@@ -280,7 +280,9 @@ def color_list_with_errors(colors=None):
   return cl, cl.extend(colors, return_errors=True)
 
 def combine_color_lists(list data, int columns=0):
-  cdef ColorList result = ColorList(columns=columns)
+  cdef ColorList result = ColorList()
   result.combine(*data)
+  if columns:
+    result.columns = columns
   return result
 

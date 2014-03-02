@@ -76,6 +76,7 @@ OBJECTS := \
   $(OBJDIR)/Recolumn_5d00f2c7.o \
   $(OBJDIR)/Scroll_6508068b.o \
   $(OBJDIR)/SPI_b73e5f78.o \
+  $(OBJDIR)/Tile_192e82c.o \
   $(OBJDIR)/Transform_d1c2c3f8.o \
   $(OBJDIR)/InitLog_83a5ff59.o \
   $(OBJDIR)/EchomeshApplication_68207ea3.o \
@@ -236,6 +237,11 @@ $(OBJDIR)/Scroll_6508068b.o: ../../echomesh/color/Scroll.cpp
 $(OBJDIR)/SPI_b73e5f78.o: ../../echomesh/color/SPI.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling SPI.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Tile_192e82c.o: ../../echomesh/color/Tile.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Tile.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Transform_d1c2c3f8.o: ../../echomesh/color/Transform.cpp

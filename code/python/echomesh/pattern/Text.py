@@ -46,7 +46,6 @@ class Text(Pattern):
     draw.text((-offset[0], -offset[1]), text=text, font=font)
 
     width = size[0]
-    image.show()
     if oversample > 1:
       width = int(math.ceil(width / oversample))
       if resample:
@@ -57,6 +56,5 @@ class Text(Pattern):
       else:
         resample = Image.BICUBIC
       image = image.resize((width, height), resample=resample)
-      image.show()
 
     return cechomesh.ColorList(image, columns=width)

@@ -5,8 +5,8 @@ pattern:
     type: text
     font: asset/font/DejaVuSansMono-Bold
     height: 12
-    text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
-    # text: "A"
+    #text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
+    text: "Hello...|"
 
 elements:
   -

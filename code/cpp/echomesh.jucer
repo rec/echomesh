@@ -83,6 +83,8 @@
         <FILE id="HwYoRw" name="Scroll.h" compile="0" resource="0" file="echomesh/color/Scroll.h"/>
         <FILE id="wwGsuS" name="SPI.cpp" compile="1" resource="0" file="echomesh/color/SPI.cpp"/>
         <FILE id="TmBv0o" name="SPI.h" compile="0" resource="0" file="echomesh/color/SPI.h"/>
+        <FILE id="NGQvJ0" name="Tile.cpp" compile="1" resource="0" file="echomesh/color/Tile.cpp"/>
+        <FILE id="rOfuBD" name="Tile.h" compile="0" resource="0" file="echomesh/color/Tile.h"/>
         <FILE id="w9w8r7" name="Transform.cpp" compile="1" resource="0" file="echomesh/color/Transform.cpp"/>
         <FILE id="DaVFq2" name="Transform.h" compile="0" resource="0" file="echomesh/color/Transform.h"/>
       </GROUP>
