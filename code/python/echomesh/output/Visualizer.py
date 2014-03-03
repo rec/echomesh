@@ -71,14 +71,23 @@ class Visualizer(Poll):
       self.brightness = self.transform.apply(self.brightness)
 
   def emit_output(self, data):
-    first = getattr(self, 'first', True)
-    self.first = False
-    lights = cechomesh.combine_color_lists(data, columns=self.columns)
-    if first:
+    first = getattr(self, 'first', not True)
+    if first and len(data) and len(data[0]):
       print('---------------------------')
-      print(data)
+      print('???', data[0])
+      for i, d in enumerate(data):
+        print(i, data)
+      print('---------------------------')
+      self.first = False
+    lights = cechomesh.combine_color_lists(data, columns=self.columns)
+
+    if first and len(lights):
+      print('two! ---------------------------')
+      for i, d in enumerate(data):
+        print(i, data)
       print(lights)
       print('---------------------------')
+      self.first = False
 
     lights.scale(self.brightness)
     self.lighting_window.set_lights(lights)

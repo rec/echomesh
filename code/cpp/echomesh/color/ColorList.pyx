@@ -63,6 +63,8 @@ cdef class ColorList:
         cl = ColorList(other, columns=self.columns)
 
       self.thisptr.combine(cl.thisptr[0])
+      if not self.columns:
+        self.columns = cl.columns
 
   def count(self, object item):
     cdef FColor c

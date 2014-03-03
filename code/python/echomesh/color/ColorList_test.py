@@ -61,6 +61,12 @@ class ColorListTest(TestCase):
     self.assertResult('[yellow, white, red, magenta, green, black, coral, '
                       'black, black], columns=3')
 
+  def test_combine_columns4(self):
+    self.cl = ColorList()
+    self.cl.combine(ColorList(['yellow', 'white', 'red', 'green', 'coral'],
+                              columns=2))
+    self.assertResult('[yellow, white, red, green, coral], columns=2')
+
   def test_count(self):
     self.cl.extend(['green', 'red', 'blue', 'red', 'pink'])
     self.assertEqual(self.cl.count('green'), 1)

@@ -615,6 +615,8 @@ string rgbToName(const FColor& color) {
       name = "[" + name;
   } else if (c.isGrey()) {
     name = "grey " + toPercent(c.red());
+    if (not suffix.empty())
+      name = "[" + name;
   } else {
     name = "[red=" + toString(c.red()) +
         ", green=" + toString(c.green()) +

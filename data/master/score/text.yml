@@ -5,9 +5,7 @@ pattern:
     type: text
     font: DejaVuSansMono-Bold
     height: 12
-    #text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
-    text: "A"
-    debug: true
+    text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
 
 elements:
   -
