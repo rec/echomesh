@@ -11,14 +11,71 @@ namespace color {
 
 namespace {
 
+typedef std::function<float(float)> FloatFunction;
+typedef std::pair<FloatFunction, FloatFunction> FloatTransform;
+
+class CTransformBase : public CTransform {
+ public:
+  explicit CTransformBase(const FloatTransform& ft) : floatTransform_(ft) {}
+
+  float apply(float x) const override { return floatTransform_.first(x); }
+  float inverse(float x) const override { return floatTransform_.second(x); }
+
+ private:
+  FloatTransform const floatTransform_;
+  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CTransformBase);
+};
+
+class Inverse : public CTransform {
+ public:
+  explicit Inverse(unique_ptr<CTransform>& t) : transform_(move(t)) {}
+
+  float apply(float x) const override { return transform_->inverse(x); }
+  float inverse(float x) const override { return transform_->apply(x); }
+
+ private:
+  unique_ptr<CTransform> transform_;
+  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(Inverse);
+};
+
+class Compose : public CTransform {
+ public:
+  Compose(unique_ptr<CTransform>& first, unique_ptr<CTransform>& second)
+      : first_(move(first)), second_(move(second)) {
+  }
+
+  float apply(float x) const override {
+    return second_->apply(first_->apply(x));
+  }
+
+  float inverse(float x) const override {
+    return first_->inverse(second_->inverse(x));
+  }
+
+ private:
+  unique_ptr<CTransform> first_, second_;
+  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(Compose);
+};
+
+unique_ptr<CTransform> compose(
+    unique_ptr<CTransform> first, unique_ptr<CTransform> second) {
+  if (not first.get())
+    return move(second);
+  if (not second.get())
+    return move(first);
+  return unique_ptr<CTransform>(new Compose(first, second));
+}
+
+unique_ptr<CTransform> inverse(unique_ptr<CTransform> transform) {
+  if (not transform.get())
+    throw Exception("Invert cannot be the first transform.");
+  return unique_ptr<CTransform>(new Inverse(transform));
+}
+
 typedef map<string, FloatTransform> TransformMap;
 
 float PI = 3.14159265358979f;
 float E = 2.718281828;
-
-FloatTransform inverse(FloatTransform ft) {
-  return FloatTransform(ft.second, ft.first);
-}
 
 float identity(float x) { return x; }
 float reverse(float x) { return 1.0 - x; }
@@ -63,64 +120,37 @@ TransformMap makeTransforms() {
 
 auto TRANSFORMS = makeTransforms();
 
-
-float composer(FloatFunction f, FloatFunction g, float x) {
-  return f(g(x));
-}
-
-FloatFunction compose(FloatFunction f, FloatFunction g) {
-  return [&](float x) { return f(g(x)); };
-}
-
-FloatTransform compose(FloatTransform f, FloatTransform g) {
-  return FloatTransform(compose(g.first, f.first), compose(f.second, g.second));
-}
-
-FloatTransform getOneTransform(const string& name) {
+unique_ptr<CTransform> getOneTransform(const string& name) {
   auto i = TRANSFORMS.find(name);
-  if (i != TRANSFORMS.end())
-    return i->second;
-  throw Exception("Can't understand transform " + name);
+  if (i == TRANSFORMS.end())
+    throw Exception("Can't understand transform " + name);
+  return unique_ptr<CTransform>(new CTransformBase(i->second));
 }
 
-FloatTransform getTransform(const string& name) {
-  FloatTransform result;
-  bool first = true;
+unique_ptr<CTransform> getTransform(const string& name) {
+  unique_ptr<CTransform> result;
 
   string token;
   for (auto i = 0; i <= name.size(); ++i) {
     auto ch = name.c_str()[i];
-    if ((not ch) or isspace(ch) or ch == '+') {
-      if (not token.empty()) {
-        if (token == "inverse") {
-          if (first)
-            throw Exception("Transform: inverse can't be the first transform.");
-          auto t = result.first;
-          result.first = result.second;
-          result.second = t;
-        } else {
-          auto tr = getOneTransform(token);
-          result = first ? tr : compose(result, tr);
-        }
-        token.clear();
-        first = false;
-      }
-    } else {
+    if (ch and (not isspace(ch)) and (ch != '+')) {
       token.push_back(ch);
+    } else if (not token.empty()) {
+      if (token == "inverse")
+        result = inverse(move(result));
+      else
+        result = compose(move(result), getOneTransform(token));
+      token.clear();
     }
   }
-
-  if (first)
-    throw Exception("Transform: cannot be empty.");
-
-  return result;
+  return move(result);
 }
 
 }
 
 CTransform* makeTransform(const string& s) {
   try {
-    return new CTransform(getTransform(s));
+    return getTransform(s).release();
   } catch (Exception e) {
     LOG(ERROR) << e.what();
     return nullptr;

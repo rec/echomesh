@@ -5,9 +5,11 @@
 namespace echomesh {
 namespace color {
 
-FColorList scroll(const FColorList&, int dx, int dy, int xSize, bool wrap);
-FColorList smoothScroll(const FColorList&, float dx, float dy, int xSize,
-                        bool wrap);
+class CTransform;
+
+FColorList scroll(const FColorList&, int dx, int dy, int columns, bool wrap);
+FColorList smoothScroll(const FColorList&, float dx, float dy, int columns,
+                        bool wrap, const CTransform* transform = nullptr);
 
 }  // namespace color
 }  // namespace echomesh

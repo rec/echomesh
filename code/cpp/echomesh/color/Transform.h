@@ -7,18 +7,11 @@
 namespace echomesh {
 namespace color {
 
-typedef std::function<float(float)> FloatFunction;
-typedef std::pair<FloatFunction, FloatFunction> FloatTransform;
-
 class CTransform {
  public:
-  CTransform(const FloatTransform& ft) : floatTransform_(ft) {}
-
-  float apply(float x) const { return floatTransform_.first(x); }
-  float inverse(float x) const { return floatTransform_.second(x); }
-
- private:
-  FloatTransform const floatTransform_;
+  virtual ~CTransform() {}
+  virtual float apply(float x) const = 0;
+  virtual float inverse(float x) const = 0;
 };
 
 CTransform* makeTransform(const string&);

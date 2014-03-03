@@ -5,7 +5,6 @@ cdef extern from "echomesh/color/Transform.h" namespace "echomesh::color":
 
   cdef CTransform* makeTransform(string)
 
-
 cdef class Transform:
   cdef CTransform* thisptr
 
