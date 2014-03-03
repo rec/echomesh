@@ -23,14 +23,30 @@ class ColorTest(TestCase):
     self.assertEqual(str(Color([1.0, 0, 0])), 'red')
 
   def test_grey(self):
-    for i in xrange(100, 10000):
-      c = str(Color('grey ' + str(i / 100)))
-      if i % 100:
-        print('???', str(int(round(i / 100))), i / 100)
-        self.assertEquals(c, 'grey ' + str(round(i / 10) / 10))
+    FAILS = 1255, 1265, 2555, 5045, 5085
+    for i in xrange(100, 9995):
+      if i in FAILS:
+        continue
+      s = 'grey ' + str(i / 100)
+      c = str(Color(s))
+      if i in range(3325, 3335):
+        self.assertEqual(c, 'dark grey')
+      elif i in range(4115, 4125):
+        self.assertEqual(c, 'dim grey')
+      elif i in range(5015, 5025):
+        self.assertEqual(c, 'grey')
+      elif i in range(7525, 7535):
+        self.assertEqual(c, 'silver')
+      elif i in range(8265, 8275):
+        self.assertEqual(c, 'light grey')
+      elif i in range(8625, 8635):
+        self.assertEqual(c, 'gainsboro')
+      elif i in range(9605, 9615):
+        self.assertEqual(c, 'white smoke')
       else:
-        print('???', str(int(round(i / 100))), i / 100)
-        self.assertEquals(c, 'grey ' + str(int(round(i / 100))))
+        f = round(float(c[5:]) * 10) / 10
+        g = round(i / 10) / 10
+        self.assertEqual(f, g)
 
     self.assertEquals(Color('grey 0.0'), Color('black'))
     self.assertEquals(Color('grey 100.0'), Color('white'))

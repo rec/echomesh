@@ -225,7 +225,7 @@ class ColorListTest(TestCase):
 
   def test_spread5(self):
     self.cl = even_color_spread(10, 'black', 'white', 'red', 'yellow')
-    self.assertResult('[black, dark grey, grey 67, white, '
+    self.assertResult('[black, dark grey, grey 66.7, white, '
                       '[red=1.000, green=0.667, blue=0.667], '
                       '[red=1.000, green=0.333, blue=0.333], red, '
                       '[red=1.000, green=0.333, blue=0.000], '

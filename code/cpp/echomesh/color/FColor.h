@@ -1,9 +1,8 @@
 #pragma once
 
-#include <math.h>
-
 #include "echomesh/base/Echomesh.h"
 #include "echomesh/color/ColorName.h"
+#include "echomesh/util/Math.h"
 
 namespace echomesh {
 namespace color {
@@ -73,6 +72,20 @@ class FColor {
   bool operator>=(const FColor& other) const { return compare(other) >= 0; }
   bool operator<(const FColor& other) const { return compare(other) < 0; }
   bool operator<=(const FColor& other) const { return compare(other) <= 0; }
+
+  static float round(float x) {
+    return roundf(1000.0 * x) / 1000.0;
+  }
+
+  static bool near(float x, float y) {
+    return ::echomesh::near(round(x), round(y), 0.0005);
+  }
+
+  bool isGrey() const {
+    return near(red(), green()) and
+        near(green(), blue()) and
+        near(blue(), red());
+  }
 
   int compare(const FColor& x) const {
     if (this == &x)

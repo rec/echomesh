@@ -31,19 +31,20 @@ string toString(float f) {
   f = min(1.0f, max(0.0f, f));
   string result;
   result.resize(5);
-  sprintf(&result.front(), "%.3f", f);
+  result.resize(sprintf(&result.front(), "%.3f", f));
   return result;
 }
 
 // Return a float as "xx.x or 100.0".
-string toPercent(float f) {
-  f = roundf(min(1.0f, max(0.0f, f)) * 1000.0f) / 10.0f;
+string toPercent(float g) {
+  auto f = roundf(min(1.0f, max(0.0f, g)) * 1000.0f) / 10.0f;
   string result;
   result.resize(5);
-  sprintf(&result.front(), "%.1f", f);
+  result.resize(sprintf(&result.front(), "%.1f", f));
+  if (result.find(".0") != string::npos)
+    result = result.substr(0, result.size() - 2);
   return result;
 }
-
 
 bool isHex(const string& s) {
   return strspn(s.data(), "abcdef0123456789") == s.size();
@@ -55,17 +56,12 @@ uint32 fromHex(const char* s) {
   return decimalValue;
 }
 
-bool isGrey(const FColor& c) {
-  return near(c.red(), c.green(), 0.001) and
-      near(c.green(), c.blue(), 0.001) and
-      near(c.blue(), c.red(), 0.001);
-}
-
 struct ColorNamer {
-  map<string, uint32> stringToColor_;
-  map<uint32, string> colorToString_;
+  map<string, FColor> stringToColor_;
+  map<FColor, string> colorToString_;
 
-  void add(const string& s, uint32 c) {
+  void add(const string& s, uint32 argb) {
+    FColor c(argb);
     stringToColor_[replace(s, " ", "")] = c;
     if (colorToString_.find(c) == colorToString_.end())
       colorToString_[c] = s;
@@ -556,10 +552,12 @@ ColorNamer makeNamer() {
   namer.add("yellow 2", 0xffeeee00);
   namer.add("yellow 3", 0xffcdcd00);
   namer.add("yellow 4", 0xff8b8b00);
+#if 0
   for (auto i = 1; i < 100; ++i) {
     auto argb = 0xff000000 + 0x10101 * ((i * 0xff) / 100);
     namer.add("grey " + to_string(i), argb);
   }
+#endif
 
   return namer;
 }
@@ -592,7 +590,7 @@ bool nameToRgb(const string& cname, FColor* color) {
     auto p = start + strlen(GREY_MARKER);
     for (; isspace(*p); ++p);
     char* endptr;
-    auto f = strtof(p, &endptr) / 100.0f;
+    auto f = roundf(strtof(p, &endptr) * 100.0f) / 10000.0f;
     if (not *endptr and f >= 0.0f and f <= 1.0f) {
       *color = FColor(f, f, f);
       success = true;
@@ -609,13 +607,13 @@ string rgbToName(const FColor& color) {
     c.alpha() = 1.0f;
   }
 
-  auto i = NAMER.colorToString_.find(c.argb());
+  auto i = NAMER.colorToString_.find(c);
   string name;
   if (i != NAMER.colorToString_.end()) {
     name = i->second;
     if (not suffix.empty())
       name = "[" + name;
-  } else if (isGrey(c)) {
+  } else if (c.isGrey()) {
     name = "grey " + toPercent(c.red());
   } else {
     name = "[red=" + toString(c.red()) +
