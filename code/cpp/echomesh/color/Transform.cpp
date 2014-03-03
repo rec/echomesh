@@ -23,12 +23,13 @@ class CTransformBase : public CTransform {
 
  private:
   FloatTransform const floatTransform_;
-  DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CTransformBase);
+  // DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CTransformBase);
+  // See https://github.com/rec/echomesh/issues/512
 };
 
 class Inverse : public CTransform {
  public:
-  explicit Inverse(unique_ptr<CTransform>& t) : transform_(move(t)) {}
+  explicit Inverse(unique_ptr<CTransform> t) : transform_(move(t)) {}
 
   float apply(float x) const override { return transform_->inverse(x); }
   float inverse(float x) const override { return transform_->apply(x); }
@@ -40,7 +41,7 @@ class Inverse : public CTransform {
 
 class Compose : public CTransform {
  public:
-  Compose(unique_ptr<CTransform>& first, unique_ptr<CTransform>& second)
+  Compose(unique_ptr<CTransform> first, unique_ptr<CTransform> second)
       : first_(move(first)), second_(move(second)) {
   }
 
@@ -63,13 +64,13 @@ unique_ptr<CTransform> compose(
     return move(second);
   if (not second.get())
     return move(first);
-  return unique_ptr<CTransform>(new Compose(first, second));
+  return unique_ptr<CTransform>(new Compose(move(first), move(second)));
 }
 
 unique_ptr<CTransform> inverse(unique_ptr<CTransform> transform) {
   if (not transform.get())
     throw Exception("Invert cannot be the first transform.");
-  return unique_ptr<CTransform>(new Inverse(transform));
+  return unique_ptr<CTransform>(new Inverse(move(transform)));
 }
 
 typedef map<string, FloatTransform> TransformMap;
@@ -139,7 +140,7 @@ unique_ptr<CTransform> getTransform(const string& name) {
       if (token == "inverse")
         result = inverse(move(result));
       else
-        result = compose(move(result), getOneTransform(token));
+        result = compose(move(result), move(getOneTransform(token)));
       token.clear();
     }
   }
