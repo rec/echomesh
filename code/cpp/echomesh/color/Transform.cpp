@@ -130,6 +130,7 @@ unique_ptr<CTransform> getOneTransform(const string& name) {
 
 unique_ptr<CTransform> getTransform(const string& name) {
   unique_ptr<CTransform> result;
+  bool invert = false;
 
   string token;
   for (auto i = 0; i <= name.size(); ++i) {
@@ -137,13 +138,20 @@ unique_ptr<CTransform> getTransform(const string& name) {
     if (ch and (not isspace(ch)) and (ch != '+')) {
       token.push_back(ch);
     } else if (not token.empty()) {
-      if (token == "inverse")
-        result = inverse(move(result));
-      else
+      if (token == "inverse") {
+        if (result.get())
+          result = inverse(move(result));
+        else
+          invert = true;
+      } else {
         result = compose(move(result), move(getOneTransform(token)));
+      }
       token.clear();
     }
   }
+  if (invert)
+    result = inverse(move(result));
+
   return move(result);
 }
 
