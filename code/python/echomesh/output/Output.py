@@ -1,21 +1,21 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import itertools
+from weakref import WeakSet
 
 from echomesh.output.Registry import make_output
 from echomesh.util import Log
+from echomesh.util.thread.MasterRunnable import MasterRunnable
 
 LOGGER = Log.logger(__name__)
 
-class Output(object):
+class Output(MasterRunnable):
+  OUTPUTS = WeakSet()
+
   def __init__(self):
+    super(Output, self).__init__()
     self.parts = []
-
-  def start(self):
-    pass
-
-  def pause(self):
-    pass
+    Output.OUTPUTS.add(self)
 
   def finish_construction(self, description, is_redirect=True):
     self.clients = []
@@ -70,3 +70,13 @@ class Output(object):
   def emit_output(self, data):
     for o in self.output:
       o.emit_output(data)
+
+
+def pause_outputs():
+  for o in Output.OUTPUTS:
+    try:
+      print('pausing ', o)
+      o.pause()
+      print('paused ')
+    except:
+      pass

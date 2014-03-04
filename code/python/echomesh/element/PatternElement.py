@@ -18,7 +18,7 @@ class PatternElement(Element.Element):
     assert isinstance(parent, Sequence)
     self.pattern = make_pattern(parent, description['pattern'],
                                 patterns=parent.patterns)
-    self.output_name = description.get('output') or parent.output
+    self.output_data = description.get('output') or parent.output
     self.output = None
 
   def class_name(self):
@@ -27,7 +27,7 @@ class PatternElement(Element.Element):
   def _on_run(self):
     super(PatternElement, self)._on_run()
     if not self.output:
-      self.output = make_output(self.output_name)
+      self.output = make_output(self.output_data)
       self.output.add_client(self)
 
   def _on_unload(self):

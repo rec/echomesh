@@ -32,7 +32,6 @@ class Instance(MasterRunnable):
 
     Quit.register_atexit(do_quit)
 
-
     CLog.initialize()
     self.score_master = ScoreMaster.ScoreMaster()
     self.peers = Peers.Peers(self)

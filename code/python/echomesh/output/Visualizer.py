@@ -41,8 +41,14 @@ class Visualizer(Poll):
     super(Visualizer, self).__init__(is_redirect=False)
     self.values.add_client()
 
+  def _close_window(self):
+    if self.lighting_window:
+      self.lighting_window.close()
+      self.lighting_window = None
+
   def _after_thread_pause(self):
-    self.lighting_window.close()
+    print('closing Visualizer ', self)
+    self._close_window()
 
   def snapshot(self, filename):
     self.lighting_window.save_snapshot_to_file(filename)

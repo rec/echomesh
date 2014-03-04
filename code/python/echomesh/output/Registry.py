@@ -22,4 +22,6 @@ def make_output(data):
   else:
     return OUTPUT_CACHE.get_output(data)
 
-pause_outputs = OUTPUT_CACHE.pause
+def pause_outputs():
+  from echomesh.output.Output import pause_outputs
+  pause_outputs()

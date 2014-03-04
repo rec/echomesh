@@ -8,15 +8,17 @@ from echomesh.util.thread.ThreadLoop import ThreadLoop
 
 LOGGER = Log.logger(__name__)
 
-class Poll(ThreadLoop, Output):
-  def __init__(self, period=None, is_daemon=True, name=None, is_redirect=True,
-               **description):
-    ThreadLoop.__init__(self, is_daemon=is_daemon, name=name)
-    Output.__init__(self)
+class Poll(Output):
+  def __init__(
+      self, period=None, is_daemon=True, name=None, is_redirect=True, **desc):
+    self.thread_loop = ThreadLoop(
+      is_daemon=is_daemon, name=name, single_loop=self.single_loop)
+    super(Poll, self).__init__()
+    self.add_mutual_pause_slave(self.thread_loop)
     self.period = period
-    self.finish_construction(description, is_redirect=is_redirect)
+    self.finish_construction(desc, is_redirect=is_redirect)
 
-  def _before_thread_start(self):
+  def _on_run(self):
     self._next_time = time.time()
 
   def single_loop(self):
