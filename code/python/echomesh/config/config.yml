@@ -160,7 +160,7 @@ light:
     transform: null  # Should this be brightness_transform?
 
     background: white
-    layout: [60, 12]
+    layout: [60, 6]
     padding: [3, 3]
     top_left: [0, 44]
     instrument:

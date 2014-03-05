@@ -10,19 +10,30 @@ from echomesh.pattern.Pattern import Pattern
 from echomesh.util.image.GetFont import get_font
 
 class Text(Pattern):
-  CONSTANTS =  'font', 'height', 'text'
-  OPTIONAL_CONSTANTS = {'debug': False, 'oversample': 1, 'resample': None}
+  CONSTANTS =  'font', 'text'
+  OPTIONAL_CONSTANTS = {
+    'debug': False,
+    'height': 0,
+    'font_height': 0,
+    'oversample': 1,
+    'resample': None,
+    }
   PATTERN_COUNT = 0
 
   def _evaluate(self):
     fontfile = self.get('font')
     height = self.get('height')
+    font_height = self.get('font_height')
     oversample = self.get('oversample')
     text = self.get('text')
     debug = self.get('debug')
+    height = height or font_height
 
     height_over = height * oversample
-    font, size = get_font(fontfile, text, height_over)
+    font_height_over = font_height * oversample
+    font, size = get_font(fontfile, text, height_over, font_height)
+    if debug:
+      print('!!', size)
     offset = font.getoffset(text)
     image = Image.new('RGBA', size)
     draw = ImageDraw.Draw(image)

@@ -46,8 +46,8 @@ class Visualizer(Poll):
       self.lighting_window.close()
       self.lighting_window = None
 
-  def _after_thread_pause(self):
-    print('closing Visualizer ', self)
+  def pause(self):
+    super(Visualizer, self).pause()
     self._close_window()
 
   def snapshot(self, filename):

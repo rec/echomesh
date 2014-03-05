@@ -3,8 +3,9 @@ type: sequence
 pattern:
   some text:
     type: text
-    font: DejaVuSansMono-Bold
-    height: 12
+    font: silkscreen/slkscr
+    font_height: 8
+    debug: true
     text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
 
 elements:

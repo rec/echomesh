@@ -75,8 +75,6 @@ class Output(MasterRunnable):
 def pause_outputs():
   for o in Output.OUTPUTS:
     try:
-      print('pausing ', o)
       o.pause()
-      print('paused ')
     except:
       pass
