@@ -26,9 +26,7 @@ class Text(Pattern):
     debug = self.get('debug')
     height = height or font_height
 
-    font = get_font(fontfile, text, height, font_height)
-    size = font.getsize(text)
-    offset = font.getoffset(text)
+    font, size, offset = get_font(fontfile, text, height, font_height)
     image = Image.new('RGBA', size)
     draw = ImageDraw.Draw(image)
     draw.text((-offset[0], -offset[1]), text=text, font=font)

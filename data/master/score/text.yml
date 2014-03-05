@@ -3,9 +3,9 @@ type: sequence
 pattern:
   some text:
     type: text
+    # font: DejaVuSansMono-Bold
     font: dina/DinaMedium10
-    font_height: 8
-    debug: true
+    height: 12
     text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
 
 elements:
