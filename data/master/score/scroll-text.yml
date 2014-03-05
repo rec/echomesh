@@ -1,0 +1,20 @@
+type: sequence
+
+pattern:
+  scroll text:
+    type: scroll
+    wrap: true
+    smooth: true
+    # transform: exp
+    dx: 3 * system.elapsed
+    pattern:
+      type: text
+      font: silkscreen/slkscr
+      height: 6
+      # text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
+      text: "H"
+
+elements:
+  -
+    type: pattern
+    pattern: scroll text
