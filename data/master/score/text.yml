@@ -3,7 +3,7 @@ type: sequence
 pattern:
   some text:
     type: text
-    font: silkscreen/slkscr
+    font: dina/DinaMedium10
     font_height: 8
     debug: true
     text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"

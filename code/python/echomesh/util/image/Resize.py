@@ -1,16 +1,26 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import six
+
 from PIL import Image
 
 from echomesh.util.image.Crop import crop
 
 def resize(image, x, y, stretch=False, top=None, left=None, mode='RGB',
-           top_offset=0, left_offset=0, bottom_offset=0, right_offset=0):
+           top_offset=0, left_offset=0, bottom_offset=0, right_offset=0,
+           resample=None):
+  if resample:
+    try:
+      resample = getattr(Image, resample.upper())
+    except:
+      raise ValueError("Didn't understand resample=%s" % resample)
+  else:
+    resample = Image.ANTIALIAS
   image = crop(image, top_offset, left_offset, bottom_offset, right_offset)
 
   size = x, y
   if stretch:
-    return image.resize(size, resample=Image.ANTIALIAS)
+    return image.resize(size, resample=resample)
   result = Image.new(mode, size)
 
   ratios = [d1 / d2 for d1, d2 in zip(size, image.size)]
@@ -19,7 +29,7 @@ def resize(image, x, y, stretch=False, top=None, left=None, mode='RGB',
   else:
     new_size = (int(image.size[0] * ratios[1]), size[1])
 
-  image = image.resize(new_size, resample=Image.ANTIALIAS)
+  image = image.resize(new_size, resample=resample)
   if left is None:
     box_x = int((x - new_size[0]) / 2)
   elif left:
