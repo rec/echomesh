@@ -3,8 +3,8 @@ type: sequence
 pattern:
   some text:
     type: text
-    # font: DejaVuSansMono-Bold
-    font: dina/DinaMedium10
+    font: DejaVuSansMono-Bold
+    # font: dina/DinaMedium10
     height: 12
     text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
 

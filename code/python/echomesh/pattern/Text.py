@@ -26,13 +26,13 @@ class Text(Pattern):
     debug = self.get('debug')
     height = height or font_height
 
-    font, size, offset = get_font(fontfile, text, height, font_height)
-    image = Image.new('RGBA', size)
+    font = get_font(fontfile, text, height, font_height)
+    image = Image.new('RGBA', font.size)
     draw = ImageDraw.Draw(image)
-    draw.text((-offset[0], -offset[1]), text=text, font=font)
+    font.draw(draw)
 
     if debug:
       image.show()
-    return cechomesh.ColorList(image, columns=size[0])
+    return cechomesh.ColorList(image, columns=font.size[0])
 
 
