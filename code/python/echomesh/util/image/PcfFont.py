@@ -5,6 +5,7 @@ from PIL import Image, PcfFontFile
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
+INFINITY = float('inf')
 
 def draw_pcf(fontfile, text, height, font_height):
   if height or font_height:
@@ -26,10 +27,11 @@ def draw_pcf(fontfile, text, height, font_height):
     width += w
     height = max(height, h)
 
+  print(x, y, width, height)
   image = Image.new('RGBA', (width, height))
   for ch in text:
     g = glyph(ch)
     image.paste(g[3], box=(x, y))
-    x += g[2][3]
+    x += g[2][2]
   return image, width
 
