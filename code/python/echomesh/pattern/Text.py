@@ -1,13 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import math
-
-from PIL import Image, ImageDraw
-
 import cechomesh
 
 from echomesh.pattern.Pattern import Pattern
-from echomesh.util.image.GetFont import get_font
+from echomesh.util.image.DrawText import draw_text
 
 class Text(Pattern):
   CONSTANTS =  'font', 'text'
@@ -19,20 +15,13 @@ class Text(Pattern):
   PATTERN_COUNT = 0
 
   def _evaluate(self):
-    fontfile = self.get('font')
-    height = self.get('height')
-    font_height = self.get('font_height')
-    text = self.get('text')
     debug = self.get('debug')
-    height = height or font_height
+    fontfile = self.get('font')
+    font_height = self.get('font_height')
+    height = self.get('height') or font_height
+    text = self.get('text')
 
-    font = get_font(fontfile, text, height, font_height)
-    image = Image.new('RGBA', font.size)
-    draw = ImageDraw.Draw(image)
-    font.draw(draw)
-
+    image, width = draw_text(fontfile, text, height, font_height)
     if debug:
       image.show()
-    return cechomesh.ColorList(image, columns=font.size[0])
-
-
+    return cechomesh.ColorList(image, columns=width)

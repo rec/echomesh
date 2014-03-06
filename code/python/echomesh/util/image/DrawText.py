@@ -7,8 +7,8 @@ from echomesh.util.image import PcfFont, TtfFont
 INFINITY = float('inf')
 
 _FONT_HANDLERS = {
-  '.pcf': PcfFont.PcfFont,
-  '.ttf': TtfFont.TtfFont,
+  '.pcf': PcfFont.draw_pcf,
+  '.ttf': TtfFont.draw_ttf,
   }
 
 def _resolve_name(fontfile):
@@ -30,6 +30,6 @@ def _resolve_name(fontfile):
       return name, extension
   raise IOError("No font named '%s'" % fontfile)
 
-def get_font(fontfile, text, height=0, font_height=0):
+def draw_text(fontfile, text, height, font_height):
   fontfile, extension = _resolve_name(fontfile)
   return _FONT_HANDLERS[extension](fontfile, text, height, font_height)
