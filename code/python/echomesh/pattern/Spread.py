@@ -4,6 +4,7 @@ import cechomesh
 import six
 
 from echomesh.base import Config
+from echomesh.color.LightCount import light_count
 from echomesh.pattern.Pattern import Pattern
 from echomesh.util.string.Plural import plural
 
@@ -31,7 +32,7 @@ class Spread(Pattern):
     return cechomesh.color_spread(
       colors,
       self.get('model'),
-      max_steps=Config.get('light', 'count'),
+      max_steps=light_count(Config.get)
       steps=steps,
       total_steps=total_steps,
       transform=self.get('transform'))

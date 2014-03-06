@@ -55,7 +55,8 @@ class Visualizer(Poll):
 
   def update_callback(self):
     self.period = Expression.convert(self.values.period)
-    self.lighting_window.set_light_count(self.values.light_count)
+    self.lighting_window.set_light_count(
+      self.values.light_count or (self.values.layout[0] * self.values.layout[1]))
     self.lighting_window.set_shape(self.values.shape == 'rect')
     self.lighting_window.set_show_label(self.values.show_label)
     self.lighting_window.set_label_starts_at_zero(

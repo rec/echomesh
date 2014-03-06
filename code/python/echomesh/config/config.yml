@@ -144,7 +144,7 @@ git:
 # for the lighting to work.
 light:
   brightness: 100%
-  count: 480
+  count: 0
   enable: false
 
   hardware:
@@ -160,7 +160,7 @@ light:
     transform: null  # Should this be brightness_transform?
 
     background: white
-    layout: [40, 12]
+    layout: [32, 32]
     padding: [3, 3]
     top_left: [0, 44]
     instrument:
@@ -174,7 +174,7 @@ light:
       padding: [2, 2]
       paint_unclipped: false
       shape: circle
-      size: [4, 4]
+      size: [8, 8]
 
 # The logging section controls the destination of informational and warning
 # messages.

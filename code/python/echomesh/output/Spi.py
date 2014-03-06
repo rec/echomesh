@@ -4,6 +4,7 @@ import cechomesh
 
 from echomesh.base import Config
 from echomesh.color import SetupDebianSpiLights
+from echomesh.color.LightCount import light_count
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
 from echomesh.util import Log
@@ -39,7 +40,7 @@ class Spi(Poll):
 
   def config_update(self, get):
     if not self.count_set:
-      self._set_count(get('light', 'count'))
+      self._set_count(light_count(get))
     self.brightness = Expression.convert(get('light', 'brightness'))
     if not self.period_set:
       self.period = Expression.convert(get('light', 'visualizer', 'period'))

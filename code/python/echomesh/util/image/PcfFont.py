@@ -27,11 +27,10 @@ def draw_pcf(fontfile, text, height, font_height):
     width += w
     height = max(height, h)
 
-  print(x, y, width, height)
   image = Image.new('RGBA', (width, height))
   for ch in text:
     g = glyph(ch)
     image.paste(g[3], box=(x, y))
     x += g[2][2]
-  return image, width
+  return image, width, height
 

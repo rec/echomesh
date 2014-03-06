@@ -3,12 +3,13 @@ type: sequence
 pattern:
   some text:
     type: text
-    #font: DejaVuSansMono-Bold
+    # font: DejaVuSansMono-Bold
     font: dina/DinaMedium10
     # font: trisk
     height: 12
     # text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
     text: "Hello"
+    debug: true
 
 elements:
   -

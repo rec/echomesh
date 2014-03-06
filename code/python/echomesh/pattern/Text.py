@@ -21,7 +21,8 @@ class Text(Pattern):
     height = self.get('height') or font_height
     text = self.get('text')
 
-    image, width = draw_text(fontfile, text, height, font_height)
+    image, width, height = draw_text(fontfile, text, height, font_height)
     if debug:
+      print('width=%d, height=%d' % (width, height))
       image.show()
     return cechomesh.ColorList(image, columns=width)

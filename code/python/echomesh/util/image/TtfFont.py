@@ -23,4 +23,4 @@ def draw_ttf(fontfile, text, height, font_height):
   image = Image.new('RGBA', size)
   draw = ImageDraw.Draw(image)
   draw.text(offset, text=text, font=font)
-  return image, size[0]
+  return (image,) + size

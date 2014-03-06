@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import cechomesh
 
 from echomesh.base import Config
+from echomesh.color.LightCount import light_count
 from echomesh.pattern.Pattern import Pattern
 
 class Insert(Pattern):
@@ -19,7 +20,7 @@ class Insert(Pattern):
     offset = int(self.get('offset') or 0)
     length = self.get('length')
     if length is None:
-      length = Config.get('light', 'count')
+      length = light_count(Config.get)
     rollover = bool(self.get('rollover'))
 
     return cechomesh.insert_color_list(color_list, offset, length, rollover, skip)
