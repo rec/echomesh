@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.pattern.Pattern import Pattern
 
 class Inject(Pattern):
-  CONSTANTS = 'mapping', 'length'
+  SETTINGS = {'mapping': {'default': {}}}
   PATTERN_COUNT = 1
 
   def _evaluate(self):

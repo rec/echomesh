@@ -6,20 +6,25 @@ from echomesh.pattern.Pattern import Pattern
 from echomesh.util.image.DrawText import draw_text
 
 class Text(Pattern):
-  CONSTANTS =  'font', 'text'
-  OPTIONAL_CONSTANTS = {
-    'debug': False,
-    'height': 0,
-    'font_height': 0,
+  SETTINGS = {
+    'font': {'default': ''},
+    'text': {'default': ''},
+    'debug': {'default': False},
+    'height': {'default': 0},
+    'font_height': {'default': 0},
     }
   PATTERN_COUNT = 0
 
   def _evaluate(self):
     debug = self.get('debug')
     fontfile = self.get('font')
+    if not fontfile:
+      raise ValueError("Text doesn't have a font setting")
     font_height = self.get('font_height')
     height = self.get('height') or font_height
     text = self.get('text')
+    if not text:
+      raise ValueError("Text doesn't have a text setting")
 
     image, width, height = draw_text(fontfile, text, height, font_height)
     if debug:

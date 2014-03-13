@@ -9,6 +9,6 @@ elements:
   -
     type: pattern
     pattern: just red
-    output:
-      type: visualizer
-      layout: [20, 1]
+#    output:
+#      type: visualizer
+#      layout: [20, 1]

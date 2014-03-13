@@ -5,7 +5,9 @@ import itertools
 from echomesh.pattern.Pattern import Pattern
 
 class Choose(Pattern):
-  VARIABLES = 'choose',
+  SETTINGS = {
+    'choose': {'default': 0},
+  }
 
   def _evaluate(self):
     length = len(self._patterns)

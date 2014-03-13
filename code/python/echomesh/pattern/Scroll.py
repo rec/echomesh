@@ -6,9 +6,14 @@ from echomesh.base import Config
 from echomesh.pattern.Pattern import Pattern
 
 class Scroll(Pattern):
-  OPTIONAL_CONSTANTS = {
-    'columns': None, 'wrap': False, 'smooth': True, 'transform': ''}
-  OPTIONAL_VARIABLES = {'dx': 0, 'dy': 0}
+  SETTINGS = {
+    'columns': {'default': None},
+    'dx': {'default': 0},
+    'dy': {'default': 0},
+    'smooth': {'default': True},
+    'transform': {'default': ''},
+    'wrap': {'default': False},
+    }
   PATTERN_COUNT = 1
 
   def _evaluate(self):

@@ -3,6 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import re
 import six
 
+from echomesh.expression import ConstantExpression
 from echomesh.expression import Expression
 from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
@@ -12,11 +13,7 @@ from echomesh.util.string.Split import split_on_commas
 LOGGER = Log.logger(__name__)
 
 class Pattern(object):
-  CONSTANTS = ()
-  VARIABLES = ()
-
-  OPTIONAL_CONSTANTS = {}
-  OPTIONAL_VARIABLES = {}
+  SETTINGS = {}
   PATTERN_COUNT = None
 
   def __init__(self, desc, element, name):
@@ -36,30 +33,24 @@ class Pattern(object):
         (self.__class__.__name__, self.PATTERN_COUNT, len(self._patterns)))
 
     self.dictionary = {}
-    is_constant = all(p.is_constant for p in self._patterns)
+    self.is_constant = all(p.is_constant for p in self._patterns)
 
     missing = []
-    for k in self.VARIABLES:
-      v = desc.get(k)
-      if v is None:
+    self.constants = set()
+    for k, v in self.SETTINGS.items():
+      const = v.get('constant') or False
+      if const:
+        self.constants.add(k)
+      value = desc.get(k, v.get('default'))
+      if value is None and 'default' not in v:
         missing.append(k)
       else:
-        self.dictionary[k] = Expression.expression(v, element)
-        is_constant = is_constant and self.dictionary[k].is_constant()
-
-    for k, v in self.OPTIONAL_VARIABLES.items():
-      self.dictionary[k] = Expression.expression(desc.get(k, v), element)
-      is_constant = is_constant and self.dictionary[k].is_constant()
-
-    for k in self.CONSTANTS:
-      v = desc.get(k)
-      if v is None:
-        missing.append(k)
-      else:
-        self.dictionary[k] = Expression.constant_expression(v)
-
-    for k, v in self.OPTIONAL_CONSTANTS.items():
-      self.dictionary[k] = Expression.constant_expression(desc.get(k, v))
+        if const:
+          expression = ConstantExpression.constant_expression(value)
+        else:
+          expression = Expression.expression(value, element)
+        self.dictionary[k] = expression
+        self.is_constant = self.is_constant and expression.is_constant()
 
     if missing:
       raise Exception('%s is missing required arguments %s' %
@@ -71,10 +62,16 @@ class Pattern(object):
         "For pattern type %s, we didn't use the following parameters: %s",
         self.__class__.__name__, ', '.join(unread))
 
-    self.is_constant = is_constant
+    self._in_precompute = True
     self._precompute()
+    self._in_precompute = False
+    if self.is_constant:
+      self._value = self._evaluate();
 
   def get(self, name):
+    if self._in_precompute and name not in self.constants:
+      raise Exception('Tried to use non-constant value %s in initialization' %
+                      name)
     return self.dictionary[name].evaluate()
 
   def get_dict(self, *names):
@@ -90,8 +87,7 @@ class Pattern(object):
     return []
 
   def _precompute(self):
-    if self.is_constant:
-      self._value = self._evaluate();
+    pass
 
   def __str__(self):
     return 'pattern "%s" in element "%s"' % (

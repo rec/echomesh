@@ -12,7 +12,21 @@ from echomesh.util.image.MakeImage import make_image
 LOGGER = Log.logger(__name__)
 
 class Animation(Image):
-  OPTIONAL_VARIABLES = {'frame': 0.0, 'smooth': False}
+  SETTINGS = {
+    'bottom_offset': {'default': 0, 'constant': True},
+    'left': {'default': None, 'constant': True},
+    'left_offset': {'default': 0, 'constant': True},
+    'right_offset': {'default': 0, 'constant': True},
+    'stretch': {'default': False, 'constant': True},
+    'top': {'default': None, 'constant': True},
+    'top_offset': {'default': 0, 'constant': True},
+    'filename': {'default': 0, 'constant': True},
+    'x': {'default': 0, 'constant': True},
+    'y': {'default': 0, 'constant': True},
+
+    'frame': {'default': 0.0},
+    'smooth': {'default': False},
+    }
 
   def _precompute(self):
     self.cells = []
@@ -27,8 +41,6 @@ class Animation(Image):
         break
     self.length = 1 + len(self.cells)
     # +1 because we need a full cell between the end cell and the start.
-    if self.is_constant:
-      _value = self._evaluate()
 
   def _evaluate(self):
     frame = ((self.get('frame') / self.length) % 1) * self.length
@@ -40,3 +52,4 @@ class Animation(Image):
       ceil = 0
 
     return self.cells[floor].interpolate(self.cells[ceil], frame - floor, False)
+

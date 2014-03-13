@@ -5,8 +5,10 @@ import cechomesh
 from echomesh.pattern.Pattern import Pattern
 
 class Fade(Pattern):
-  VARIABLES = 'fade',
-  OPTIONAL_VARIABLES = {'smooth': 0}
+  SETTINGS = {
+    'fade': {'default': 0.0},
+    'smooth': {'default': 0},
+    }
 
   def _evaluate(self):
     patterns = self.patterns()

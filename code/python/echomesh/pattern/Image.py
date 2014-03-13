@@ -12,20 +12,26 @@ from echomesh.util.image.Resize import resize
 LOGGER = Log.logger(__name__)
 
 class Image(Pattern):
-  CONSTANTS = 'filename', 'x', 'y',
-  OPTIONAL_CONSTANTS = {
-    'bottom_offset': 0,
-    'left': None,
-    'left_offset': 0,
-    'right_offset': 0,
-    'stretch': False,
-    'top': None,
-    'top_offset': 0,
+  SETTINGS = {
+    'bottom_offset': {'default': 0},
+    'left': {'default': None},
+    'left_offset': {'default': 0},
+    'right_offset': {'default': 0},
+    'stretch': {'default': False},
+    'top': {'default': None},
+    'top_offset': {'default': 0},
+    'filename': {'default': 0, 'constant': True},
+    'x': {'default': 0, 'constant': True},
+    'y': {'default': 0, 'constant': True},
     }
+
   PATTERN_COUNT = 0
 
   def _get_image(self):
-    return PIL.Image.open(self.get('filename'), 'r')
+    filename = self.get('filename')
+    if not filename:
+      raise Exception('Missing filename setting in Image pattern.')
+    return PIL.Image.open(filename, 'r')
 
   def _evaluate(self):
     return self._image_to_list(self._get_image())

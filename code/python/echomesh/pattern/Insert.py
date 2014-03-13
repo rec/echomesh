@@ -8,18 +8,22 @@ from echomesh.pattern.Pattern import Pattern
 
 class Insert(Pattern):
   PATTERN_COUNT = 1
-  OPTIONAL_VARIABLES = {
-    'length': None, 'offset': 0, 'rollover': False, 'skip': 1}
+  SETTINGS = {
+    'length': {'default': 0},
+    'offset': {'default': 0},
+    'rollover': {'default': False},
+    'skip': {'default': 1},
+    }
 
   def _evaluate(self):
     color_lists = self.patterns()
     assert len(color_lists) == 1
     color_list = color_lists[0]
 
-    skip = int(self.get('skip') or 1)
-    offset = int(self.get('offset') or 0)
+    skip = int(self.get('skip'))
+    offset = int(self.get('offset'))
     length = self.get('length')
-    if length is None:
+    if not length:
       length = light_count(Config.get)
     rollover = bool(self.get('rollover'))
 

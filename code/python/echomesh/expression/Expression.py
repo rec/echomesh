@@ -18,13 +18,9 @@ def expression(expr, element):
       return ListExpression(expr.split(','), element)
 
     return UnitExpression(expr, element)
-  except:
-    raise Exception("Couldn't evaluate expression %s" % expr)
-
-def constant_expression(expr):
-  ue = UnitExpression(None)
-  ue.value = expr
-  return ue
+  except Exception as e:
+    e.message = "Couldn't evaluate expression %s because %s" % (expr, e.message)
+    raise
 
 def convert(number, element=None, assume_minutes=True):
   if number is None:
