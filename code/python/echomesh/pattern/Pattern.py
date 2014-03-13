@@ -1,5 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import copy
 import re
 import six
 
@@ -93,3 +94,13 @@ class Pattern(object):
     return 'pattern "%s" in element "%s"' % (
       self.name, self.element.class_name())
 
+
+def copy_settings(cl, **kwds):
+  return dict(copy.deepcopy(cl.SETTINGS), **kwds)
+
+def copy_const_settings(cl, **kwds):
+  parent = copy.deepcopy(cl.SETTINGS)
+  for k, v in parent.items():
+    v['constant'] = True
+
+  return dict(parent, **kwds)

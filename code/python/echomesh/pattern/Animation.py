@@ -4,7 +4,7 @@ import PIL
 import cechomesh
 
 from echomesh.pattern.Image import Image
-from echomesh.pattern.Pattern import Pattern
+from echomesh.pattern import Pattern
 from echomesh.util import Log
 from echomesh.util.image import Resize
 from echomesh.util.image.MakeImage import make_image
@@ -12,21 +12,11 @@ from echomesh.util.image.MakeImage import make_image
 LOGGER = Log.logger(__name__)
 
 class Animation(Image):
-  SETTINGS = {
-    'bottom_offset': {'default': 0, 'constant': True},
-    'left': {'default': None, 'constant': True},
-    'left_offset': {'default': 0, 'constant': True},
-    'right_offset': {'default': 0, 'constant': True},
-    'stretch': {'default': False, 'constant': True},
-    'top': {'default': None, 'constant': True},
-    'top_offset': {'default': 0, 'constant': True},
-    'filename': {'default': 0, 'constant': True},
-    'x': {'default': 0, 'constant': True},
-    'y': {'default': 0, 'constant': True},
-
-    'frame': {'default': 0.0},
-    'smooth': {'default': False},
-    }
+  SETTINGS = Pattern.copy_const_settings(
+    Image,
+    frame={'default': 0.0},
+    smooth={'default': False},
+    )
 
   def _precompute(self):
     self.cells = []
