@@ -9,10 +9,22 @@ from echomesh.pattern.Pattern import Pattern
 class Insert(Pattern):
   PATTERN_COUNT = 1
   SETTINGS = {
-    'length': {'default': 0},
-    'offset': {'default': 0},
-    'rollover': {'default': False},
-    'skip': {'default': 1},
+    'length': {
+      'default': 0,
+      'help': '',
+      },
+    'offset': {
+      'default': 0,
+      'help': '',
+      },
+    'rollover': {
+      'default': False,
+      'help': '',
+      },
+    'skip': {
+      'default': 1,
+      'help': '',
+      },
     }
 
   def _evaluate(self):

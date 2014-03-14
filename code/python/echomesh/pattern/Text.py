@@ -7,11 +7,26 @@ from echomesh.util.image.DrawText import draw_text
 
 class Text(Pattern):
   SETTINGS = {
-    'font': {'default': ''},
-    'text': {'default': ''},
-    'debug': {'default': False},
-    'height': {'default': 0},
-    'font_height': {'default': 0},
+    'font': {
+      'default': '',
+      'help': '',
+      },
+    'text': {
+      'default': '',
+      'help': '',
+      },
+    'debug': {
+      'default': False,
+      'help': '',
+      },
+    'height': {
+      'default': 0,
+      'help': '',
+      },
+    'font_height': {
+      'default': 0,
+      'help': '',
+      },
     }
   PATTERN_COUNT = 0
 

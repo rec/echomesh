@@ -6,8 +6,14 @@ from echomesh.pattern.Pattern import Pattern
 
 class Fade(Pattern):
   SETTINGS = {
-    'fade': {'default': 0.0},
-    'smooth': {'default': 0},
+    'fade': {
+      'default': 0.0,
+      'help': '',
+      },
+    'smooth': {
+      'default': 0,
+      'help': '',
+      },
     }
 
   def _evaluate(self):

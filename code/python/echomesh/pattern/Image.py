@@ -13,16 +13,48 @@ LOGGER = Log.logger(__name__)
 
 class Image(Pattern):
   SETTINGS = {
-    'bottom_offset': {'default': 0},
-    'left': {'default': None},
-    'left_offset': {'default': 0},
-    'right_offset': {'default': 0},
-    'stretch': {'default': False},
-    'top': {'default': None},
-    'top_offset': {'default': 0},
-    'filename': {'default': 0, 'constant': True},
-    'x': {'default': 0, 'constant': True},
-    'y': {'default': 0, 'constant': True},
+    'bottom_offset': {
+      'default': 0,
+      'help': '',
+      },
+    'left': {
+      'default': None,
+      'help': '',
+      },
+    'left_offset': {
+      'default': 0,
+      'help': '',
+      },
+    'right_offset': {
+      'default': 0,
+      'help': '',
+      },
+    'stretch': {
+      'default': False,
+      'help': '',
+      },
+    'top': {
+      'default': None,
+      'help': '',
+      },
+    'top_offset': {
+      'default': 0,
+      'help': '',
+      },
+    'filename': {
+      'default': 0, 'constant': True,
+      'help': '',
+      },
+    'x': {
+      'default': 0,
+      'constant': True,
+      'help': '',
+      },
+    'y': {
+      'default': 0,
+      'constant': True,
+      'help': '',
+      },
     }
 
   PATTERN_COUNT = 0

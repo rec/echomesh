@@ -10,11 +10,31 @@ from echomesh.util.string.Plural import plural
 
 class Spread(Pattern):
   SETTINGS = {
-    'colors': {'default': [], 'constant': True},
-    'model': {'default': None, 'constant': True},
-    'transform': {'default': None, 'constant': True},
-    'steps': {'default': None, 'constant': True},
-    'total_steps': {'default': None, 'constant': True},
+    'colors': {
+      'default': [],
+      'constant': True,
+      'help': '',
+      },
+    'model': {
+      'default': None,
+      'constant': True,
+      'help': '',
+      },
+    'transform': {
+      'default': None,
+      'constant': True,
+      'help': '',
+      },
+    'steps': {
+      'default': None,
+      'constant': True,
+      'help': '',
+      },
+    'total_steps': {
+      'default': None,
+      'constant': True,
+      'help': '',
+      },
     }
   PATTERN_COUNT = 0
 

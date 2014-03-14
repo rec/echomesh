@@ -6,7 +6,10 @@ from echomesh.pattern.Pattern import Pattern
 
 class Choose(Pattern):
   SETTINGS = {
-    'choose': {'default': 0},
+    'choose': {
+      'default': 0,
+      'help': '',
+      },
   }
 
   def _evaluate(self):

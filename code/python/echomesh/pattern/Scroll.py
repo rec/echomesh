@@ -7,12 +7,30 @@ from echomesh.pattern.Pattern import Pattern
 
 class Scroll(Pattern):
   SETTINGS = {
-    'columns': {'default': None},
-    'dx': {'default': 0},
-    'dy': {'default': 0},
-    'smooth': {'default': True},
-    'transform': {'default': ''},
-    'wrap': {'default': False},
+    'columns': {
+      'default': None,
+      'help': '',
+      },
+    'dx': {
+      'default': 0,
+      'help': '',
+      },
+    'dy': {
+      'default': 0,
+      'help': '',
+      },
+    'smooth': {
+      'default': True,
+      'help': '',
+      },
+    'transform': {
+      'default': '',
+      'help': '',
+      },
+    'wrap': {
+      'default': False,
+      'help': '',
+      },
     }
   PATTERN_COUNT = 1
 

@@ -7,10 +7,26 @@ from echomesh.pattern.Pattern import Pattern
 
 class Mirror(Pattern):
   OPTIONAL_CONSTANTS = {
-    'x': {'default': 0, 'constant': True},
-    'y': {'default': 0, 'constant': True},
-    'reverse_x': {'default': False, 'constant': True},
-    'reverse_y': {'default': False 'constant': True},
+    'x': {
+      'default': 0,
+      'constant': True,
+      'help': '',
+      },
+    'y': {
+      'default': 0,
+      'constant': True,
+      'help': '',
+      },
+    'reverse_x': {
+      'default': False,
+      'constant': True,
+      'help': '',
+      },
+    'reverse_y': {
+      'default': False,
+      'constant': True,
+      'help': '',
+      },
     }
   PATTERN_COUNT = 1
 

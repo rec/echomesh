@@ -14,8 +14,14 @@ LOGGER = Log.logger(__name__)
 class Animation(Image):
   SETTINGS = Pattern.copy_const_settings(
     Image,
-    frame={'default': 0.0},
-    smooth={'default': False},
+    frame={
+      'default': 0.0,
+      'help': '',
+      },
+    smooth={
+      'default': False,
+      'help': '',
+      },
     )
 
   def _precompute(self):
