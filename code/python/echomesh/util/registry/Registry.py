@@ -4,15 +4,10 @@ from collections import namedtuple
 
 import sys
 
-MYSTERIOUS_FAILURE = False
-
 from echomesh.base.AddExceptionSuffix import add_exception_suffix
 from echomesh.base import GetPrefix
 from echomesh.base import Join
 from echomesh.util import Log
-
-if MYSTERIOUS_FAILURE:
-  from echomesh.util.registry import Entry
 
 LOGGER = Log.logger(__name__)
 
