@@ -65,7 +65,7 @@ class Registry(object):
     return self.entry(name).function
 
   def get_help(self, name):
-    return self._entry(name).help()
+    return self.entry(name).help()
 
   def get_from_description(self, description, default_type=None):
     """Pops a type out of a description and uses it to locate a registry item.
