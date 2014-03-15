@@ -1,6 +1,6 @@
-from echomesh.util.registry.Module import register as _register
+from echomesh.util.registry.Module import register_module as _register_module
 
-REGISTRY = _register(
+REGISTRY = _register_module(
   __name__,
   'Event',
   'Config',

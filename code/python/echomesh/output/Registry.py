@@ -1,9 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.util.registry.Module import register_parent
+from echomesh.util.registry.Module import register
 from echomesh.output.OutputCache import OutputCache
 
-REGISTRY = register_parent(
+REGISTRY = register(
   __name__,
   'Bidirectional',
   'Offset',

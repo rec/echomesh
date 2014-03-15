@@ -1,7 +1,7 @@
-from echomesh.util.registry.Module import register_parent
+from echomesh.util.registry.Module import register
 from echomesh.base import DataFile
 
-REGISTRY = register_parent(
+REGISTRY = register(
   __name__,
   'Animation',
   'Choose',

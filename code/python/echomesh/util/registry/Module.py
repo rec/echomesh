@@ -5,7 +5,7 @@ import sys
 
 from echomesh.util.registry.Registry import Registry
 
-def register(class_path, *modules, **kwds):
+def register_module(class_path, *modules, **kwds):
   module = sys.modules[class_path]
   registry = Registry(class_path, class_path=class_path, **kwds)
 
@@ -17,5 +17,5 @@ def register(class_path, *modules, **kwds):
 
   return registry
 
-def register_parent(class_path, *modules, **kwds):
-  return register('.'.join(class_path.split('.')[:-1]), *modules, **kwds)
+def register(class_path, *modules, **kwds):
+  return register_module('.'.join(class_path.split('.')[:-1]), *modules, **kwds)
