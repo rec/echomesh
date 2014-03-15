@@ -28,8 +28,7 @@ class Registry(object):
 
     entry = self._registry.get(function_name, None)
     if not entry:
-      if not MYSTERIOUS_FAILURE:
-        from echomesh.util.registry import Entry
+      from echomesh.util.registry import Entry
       self._registry[function_name] = Entry.Entry(
         function_name, function, help_text, see_also, self)
     else:
