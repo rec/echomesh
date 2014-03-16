@@ -6,7 +6,7 @@ PLATFORM = platform.system().lower()
 
 DEBIAN = 'debian'
 MAC = 'darwin'
-RASPBERRY_PI = 'raspberry pi'
+RASPBERRY_PI = 'raspberry-pi'
 UBUNTU = 'ubuntu'
 WINDOWS = 'windows'
 

@@ -107,30 +107,6 @@ diagnostics:
   # If true, on quit echomesh prints a list of configs that were never read.
   unused_configs: false
 
-# The discovery section controls how the echomesh unit contacts other nodes.
-network:
-  client:
-    allow_reuse_address: true
-    buffer_size: 4096
-    debug: false
-    host_name: localhost
-    input_file: ""
-    pipe_stdin: true
-    pipe_stdout: true
-    port: 1239
-    start: true
-    timeout: 0.1
-
-  discovery:
-    port: 1238
-    timeout: 0.1
-
-  startup:
-    retries: 20
-    timeout: 0.25
-
-  timeout: 0.1
-
 # The git section sets the user, project name and server for a git repository
 # connected to the echomesh project.  Please note that you'll still have to
 # authenticate your machine to your git host if you want to check in changes
@@ -139,6 +115,13 @@ git:
   user: rec
   project: echomesh
   server: github.com
+
+hardware:
+  gpio:
+    enable: false
+    shutdown_pin: 23
+    shutdown_pin_pull_up: true
+    shutdown_pin_bounce_time: 300
 
 # Enable lighting control.  Note that your program has to be running as sudo
 # for the lighting to work.
@@ -216,6 +199,30 @@ midi:
 # Set the name of the machine, overriding
 # This gives you a last-ditch ability to override your own name.
 name: ""
+
+# The discovery section controls how the echomesh unit contacts other nodes.
+network:
+  client:
+    allow_reuse_address: true
+    buffer_size: 4096
+    debug: false
+    host_name: localhost
+    input_file: ""
+    pipe_stdin: true
+    pipe_stdout: true
+    port: 1239
+    start: true
+    timeout: 0.1
+
+  discovery:
+    port: 1238
+    timeout: 0.1
+
+  startup:
+    retries: 20
+    timeout: 0.25
+
+  timeout: 0.1
 
 # The OpenSoundControl protocol named OSC
 osc:

@@ -9,6 +9,7 @@ from echomesh.base import Quit
 from echomesh.element import ScoreMaster
 from echomesh.expression import Expression
 from echomesh.graphics import Display
+from echomesh.util.hardware import GPIO
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.output.Registry import pause_outputs
@@ -31,6 +32,12 @@ class Instance(MasterRunnable):
       self.unload()
 
     Quit.register_atexit(do_quit)
+    gpio = Config.get('hardware', 'gpio')
+    if gpio['enable']:
+      GPIO.on_gpio(Quit.request_quit,
+                   gpio['shutdown_pin'],
+                   gpio['shutdown_pin_pull_up'],
+                   gpio['shutdown_pin_bounce_time'])
 
     CLog.initialize()
     self.score_master = ScoreMaster.ScoreMaster()
