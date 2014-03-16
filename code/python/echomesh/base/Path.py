@@ -114,7 +114,7 @@ _HOME_VARIABLE_FIXED = False
 
 # HACK!
 def fix_home_directory_environment_variable():
-  if Platform.PLATFORM == Platform.DEBIAN:
+  if Platform.PLATFORM == Platform.RASPBERRY_PI:
     global _HOME_VARIABLE_FIXED
     if not _HOME_VARIABLE_FIXED:
       # If running as root, export user pi's home directory as $HOME.

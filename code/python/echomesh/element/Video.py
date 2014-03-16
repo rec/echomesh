@@ -7,7 +7,7 @@ from echomesh.base import Platform
 LOGGER = Log.logger(__name__)
 
 ARGS = {
-  Platform.DEBIAN: [],
+  Platform.RASPBERRY_PI: [],
   Platform.UBUNTU: [
     '--fullscreen',
     '--key-leave-fullscreen',
@@ -18,7 +18,7 @@ ARGS = {
 }
 
 BINARY = {
-  Platform.DEBIAN: '/usr/bin/omxplayer',
+  Platform.RASPBERRY_PI: '/usr/bin/omxplayer',
   Platform.UBUNTU: '/usr/bin/cvlc',
 }
 

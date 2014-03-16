@@ -63,7 +63,7 @@ class Config(object):
       else:
         echomesh_lib = 'Builds/Linux/build'
 
-    elif Platform.PLATFORM == Platform.DEBIAN:
+    elif Platform.PLATFORM == Platform.RASPBERRY_PI:
       extra_link_args += (
         '-L/usr/X11R6/lib/ -lX11 -lXext -lXinerama -lasound '
         '-ldl -lfreetype -lrt -lechomesh')
