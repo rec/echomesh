@@ -5,10 +5,11 @@ import itertools
 from echomesh.pattern.Pattern import Pattern
 
 class Choose(Pattern):
+  HELP = """Choose one of several patterns to display."""
   SETTINGS = {
     'choose': {
       'default': 0,
-      'help': '',
+      'help': 'Selects which specific pattern to display',
       },
   }
 

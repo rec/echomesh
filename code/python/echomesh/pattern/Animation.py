@@ -12,15 +12,22 @@ from echomesh.util.image.MakeImage import make_image
 LOGGER = Log.logger(__name__)
 
 class Animation(Image):
+  HELP = """
+  Displays a GIF animation.  You can control the playback
+  with the "frame" setting.
+  """
   SETTINGS = Pattern.copy_const_settings(
     Image,
     frame={
       'default': 0.0,
-      'help': '',
+      'help': ('Controls which frame from the animation is being displayed.'
+               'frame=0.0 displays the first frame, frame=1.0 displays the '
+               'last frame, and a value between 0 and 1 displays one of the '
+               'intermediate frames.'),
       },
     smooth={
       'default': False,
-      'help': '',
+      'help': 'If true, then Animation interpolates between frames.',
       },
     )
 

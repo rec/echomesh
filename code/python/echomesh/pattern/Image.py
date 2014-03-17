@@ -12,48 +12,53 @@ from echomesh.util.image.Resize import resize
 LOGGER = Log.logger(__name__)
 
 class Image(Pattern):
+  HELP = """Displays an image on an x, y plane.
+Image accepts JPG, GIF and PNG files."""
   SETTINGS = {
     'bottom_offset': {
       'default': 0,
-      'help': '',
+      'help': 'How many pixels to crop off the bottom of the image.',
       },
     'left': {
       'default': None,
-      'help': '',
+      'help': ('If None, then the image is horizontally centered - if true, '
+               'the image is left justified, otherwise it\'s right justified.'),
       },
     'left_offset': {
       'default': 0,
-      'help': '',
+      'help': 'How many pixels to crop off the left of the image.',
       },
     'right_offset': {
       'default': 0,
-      'help': '',
+      'help': 'How many pixels to crop off the right of the image.',
       },
     'stretch': {
       'default': False,
-      'help': '',
+      'help': ('If true, the image is stretched to fit the pane, ignoring '
+               'the aspect ratio '),
       },
     'top': {
       'default': None,
-      'help': '',
+      'help': ('If None, then the image is vertically centered - if true, '
+               'the image is top justified, otherwise it\'s bottom justified.'),
       },
     'top_offset': {
       'default': 0,
-      'help': '',
+      'help': 'How many pixels to crop off the top of the image.',
       },
     'filename': {
       'default': 0, 'constant': True,
-      'help': '',
+      'help': 'Filename for the image file.',
       },
     'x': {
       'default': 0,
       'constant': True,
-      'help': '',
+      'help': 'Width of the result, in pixels.',
       },
     'y': {
       'default': 0,
       'constant': True,
-      'help': '',
+      'help': 'Height of the result, in pixels.',
       },
     }
 
