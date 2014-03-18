@@ -42,6 +42,7 @@ it includes both ascenders and descenders of maximum size.
                'get better results for Truetype fonts.'),
       },
     }
+
   PATTERN_COUNT = 0
 
   def _evaluate(self):

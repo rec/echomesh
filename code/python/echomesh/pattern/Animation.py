@@ -12,10 +12,9 @@ from echomesh.util.image.MakeImage import make_image
 LOGGER = Log.logger(__name__)
 
 class Animation(Image):
-  HELP = """
-  Displays a GIF animation.  You can control the playback
-  with the "frame" setting.
-  """
+  HELP = """Displays a GIF animation.  You can control the playback
+with the "frame" setting."""
+
   SETTINGS = Pattern.copy_const_settings(
     Image,
     frame={

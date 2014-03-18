@@ -39,6 +39,7 @@ class Spread(Pattern):
       'help': 'The transform to apply to the spread - see "transforms".',
       },
     }
+
   PATTERN_COUNT = 0
 
   def _evaluate(self):

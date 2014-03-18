@@ -14,6 +14,7 @@ LOGGER = Log.logger(__name__)
 class Image(Pattern):
   HELP = """Displays an image on an x, y plane.
 Image accepts JPG, GIF and PNG files."""
+
   SETTINGS = {
     'bottom_offset': {
       'default': 0,

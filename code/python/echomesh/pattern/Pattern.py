@@ -15,7 +15,9 @@ LOGGER = Log.logger(__name__)
 
 class Pattern(object):
   SETTINGS = {}
+
   HELP = ''
+
   PATTERN_COUNT = None
 
   def __init__(self, desc, element, name):

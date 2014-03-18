@@ -4,6 +4,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Inject(Pattern):
   HELP = """Injects a pattern into a larger ColorList."""
+
   SETTINGS = {
     'mapping': {
       'default': {},
@@ -11,6 +12,7 @@ class Inject(Pattern):
                ' where the final color is mapped.'),
       },
     }
+
   PATTERN_COUNT = 1
 
   def _evaluate(self):

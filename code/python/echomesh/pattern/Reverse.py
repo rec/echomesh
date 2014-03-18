@@ -4,6 +4,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Reverse(Pattern):
   HELP = """Reverses patterns that are fed to it."""
+
   PATTERN_COUNT = 1
 
   def _evaluate(self):

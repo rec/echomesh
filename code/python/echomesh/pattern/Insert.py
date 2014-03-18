@@ -8,7 +8,9 @@ from echomesh.pattern.Pattern import Pattern
 
 class Insert(Pattern):
   PATTERN_COUNT = 1
+
   HELP = """Inserts a given pattern into a larger ColorList."""
+
   SETTINGS = {
 	  'length': {  # TODO: this can be omitted if rollover is False.
       'default': 0,

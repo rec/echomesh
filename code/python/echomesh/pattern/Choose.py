@@ -6,6 +6,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Choose(Pattern):
   HELP = """Choose one of several patterns to display."""
+
   SETTINGS = {
     'choose': {
       'default': 0,

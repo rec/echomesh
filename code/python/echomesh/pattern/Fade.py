@@ -5,14 +5,13 @@ import cechomesh
 from echomesh.pattern.Pattern import Pattern
 
 class Fade(Pattern):
+  HELP = 'Fade between zero or more patterns.'
+
   SETTINGS = {
     'fade': {
       'default': 0.0,
-      'help': '',
-      },
-    'smooth': {
-      'default': 0,
-      'help': '',
+      'help': ('Controls which pattern is seen.  At 0.0, the first pattern is '
+               'seen, at 1.0 the last pattern is seen.'),
       },
     }
 
@@ -29,7 +28,7 @@ class Fade(Pattern):
     segment = int(total_fade)
     fade = total_fade - segment
     if segment < steps:
-      return cechomesh.to_color_list(patterns[segment]).interpolate(
-        patterns[segment + 1], fade, self.get('smooth'))
+      p1, p2 = patterns[segment], patterns[segment + 1]
+      return cechomesh.to_color_list(p1).interpolate(p2, fade)
     else:
       return patterns[segment]

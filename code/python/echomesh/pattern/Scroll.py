@@ -7,6 +7,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Scroll(Pattern):
   HELP = 'Scrolls an x,y color list in two dimension.'
+
   SETTINGS = {
     'dx': {
       'default': 0,
@@ -32,6 +33,7 @@ class Scroll(Pattern):
                'right reappear at the bottom, top, right or left.'),
       },
     }
+
   PATTERN_COUNT = 1
 
   def _evaluate(self):

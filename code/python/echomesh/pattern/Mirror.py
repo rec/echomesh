@@ -7,6 +7,7 @@ from echomesh.pattern.Pattern import Pattern
 
 class Mirror(Pattern):
   HELP = """Create the mirror image of an x, y pattern."""
+
   SETTINGS = {
     'columns': {
       'default': 0,
@@ -27,6 +28,7 @@ class Mirror(Pattern):
       'help': 'Do we mirror image around the y axis?',
       },
     }
+
   PATTERN_COUNT = 1
 
   def _evaluate(self):

@@ -57,7 +57,7 @@ class FColorList : public vector<FColor> {
 
     for (uint i = 0; i < longer.size(); ++i) {
       auto& color = (i < shorter.size()) ? shorter[i] : FColor::BLACK;
-      result.push_back(longer[i].interpolate(color, ratio, i, smooth));
+      result.push_back(longer[i].interpolate(color, ratio, smooth, i));
     }
 
     return result;
