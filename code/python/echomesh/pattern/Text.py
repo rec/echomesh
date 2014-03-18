@@ -6,26 +6,40 @@ from echomesh.pattern.Pattern import Pattern
 from echomesh.util.image.DrawText import draw_text
 
 class Text(Pattern):
+  HELP = """Display text on an x-y grid in either a PCF or Truetype font.
+PCF fonts are less common but give better results. Truetype (ttf) fonts are
+more common but often require experimentation to get the rid size.
+
+PCF fonts are fixed size so you don't have to set anything other than the font
+and the text.  For Truetype fonts, you need to specify either the height - the
+desired output height for the text - or the font_height - the specific height of
+the font itself (the actual text you display is likely shorteer than that unless
+it includes both ascenders and descenders of maximum size.
+"""
+
   SETTINGS = {
     'font': {
       'default': '',
-      'help': '',
+      'help': ("The name of the file containing the font.  If you don\t ",
+               "include a suffix, the program tries first .pcf then .ttf."),
       },
     'text': {
       'default': '',
-      'help': '',
+      'help': 'The actual text to be displayed.',
       },
     'debug': {
       'default': False,
-      'help': '',
+      'help': ('If true, echomesh tries to pop up an external display '
+               'for the image containing the rendered text.'),
       },
     'height': {
       'default': 0,
-      'help': '',
+      'help': 'The desired height of the output text, in pixels.',
       },
     'font_height': {
       'default': 0,
-      'help': '',
+      'help': ('The full height of the font itself.  This is used as a hint to '
+               'get better results for Truetype fonts.'),
       },
     }
   PATTERN_COUNT = 0

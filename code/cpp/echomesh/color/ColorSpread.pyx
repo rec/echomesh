@@ -37,28 +37,25 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
   if not colors:
     raise Exception('spread: There must be at least two colors.')
 
-  if not (steps is None or total_steps is None):
+  if steps and total_steps:
     raise ValueError('spread: Can only set one of steps and total_steps')
 
   cl = ColorList()
 
   if len(colors) == 1:
     c1 = Color(colors[0])
+    single_steps = total_steps or max_steps
     if steps:
       if len(steps) > 1:
         raise Exception(
           'This spread only has one color %s but more than one step' % c1)
-      steps = steps[0]
-    elif total_steps:
-      steps = total_steps
-    else:
-      steps = max_steps
-    # print('ColorSpread', steps, c1)
-    cl.thisptr.resize(steps)
+      single_steps = steps[0] or single_steps
+
+    cl.thisptr.resize(single_steps)
     cl.set_all(c1)
     return cl
 
-  if model:
+  if model and model != 'rgb':
     cmodel = get_color_model(model)
   else:
     cmodel = NULL
@@ -70,12 +67,16 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
   if transform:
     _ensure_length(transform, lc - 1)
 
+  try:
+    steps = list(steps)
+  except TypeError:
+    steps = steps and [steps]
+
   if steps:
     _ensure_length(steps, lc - 1)
   else:
     steps = list(_even_color_slots((total_steps or max_steps) - 1, lc - 1))
 
-  steps = list(steps)
   cl.thisptr.resize(sum(steps) + lc)
   pos = 0
   for i, step in enumerate(steps):

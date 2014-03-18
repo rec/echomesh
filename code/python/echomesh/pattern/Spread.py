@@ -9,31 +9,34 @@ from echomesh.pattern.Pattern import Pattern
 from echomesh.util.string.Plural import plural
 
 class Spread(Pattern):
+  HELP = 'Display a spread of colors between two or more color endpoints.'
+
   SETTINGS = {
     'colors': {
       'default': [],
-      'constant': True,
-      'help': '',
+      'help': 'The list of two or more colors to be spread.',
       },
     'model': {
-      'default': None,
       'constant': True,
-      'help': '',
-      },
-    'transform': {
-      'default': None,
-      'constant': True,
-      'help': '',
+      'default': 'rgb',
+      'help': 'The color model used for interpolation, either rgb or hsb.',
       },
     'steps': {
-      'default': None,
-      'constant': True,
-      'help': '',
+      'default': [],
+      'help': ('A list containing the number of steps inserted between each '
+               'color in the spread.  If there are not enough steps, the last '
+               'step is repeated as needed.  If steps is empty, the steps are '
+               'computed from the total_steps, and if that\'s empty, from '
+               'the actual number of lights in the system.'),
       },
     'total_steps': {
-      'default': None,
-      'constant': True,
-      'help': '',
+      'default': 0,
+      'help': ('The total number of steps in the entire spread, or 0 for '
+               'use "all lights."' ),
+      },
+    'transform': {
+      'default': '',
+      'help': 'The transform to apply to the spread - see "transforms".',
       },
     }
   PATTERN_COUNT = 0

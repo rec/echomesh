@@ -6,39 +6,38 @@ from echomesh.base import Config
 from echomesh.pattern.Pattern import Pattern
 
 class Scroll(Pattern):
+  HELP = 'Scrolls an x,y color list in two dimension.'
   SETTINGS = {
-    'columns': {
-      'default': None,
-      'help': '',
-      },
     'dx': {
       'default': 0,
-      'help': '',
+      'help': 'How far, in pixels, to scroll in the x direction.',
       },
     'dy': {
       'default': 0,
-      'help': '',
+      'help': 'How far, in pixels, to scroll in the y direction.',
       },
     'smooth': {
       'default': True,
-      'help': '',
+      'help': ('If true, we interpolate between integer pixels, otherwise '
+               'we jump from pixel to pixel.'),
       },
     'transform': {
       'default': '',
-      'help': '',
+      'help': ('A Transform to apply to dx and dy between pixels.  Only '
+               ('useful when smooth=true',
       },
     'wrap': {
       'default': False,
-      'help': '',
+      'help': ('If true, pixels that are scrolled off the top, bottom, left or '
+               'right reappear at the bottom, top, right or left.'),
       },
     }
   PATTERN_COUNT = 1
 
   def _evaluate(self):
-    color_list = self.patterns()[0]
+    color_list = cechomesh.to_color_list(self.patterns()[0])
 
-    columns = (self.get('columns') or
-               getattr(color_list, 'columns', 0) or
+    columns = (color_list.columns or
                Config.get('light', 'visualizer', 'layout')[0])
 
     return cechomesh.scroll_color_list(
