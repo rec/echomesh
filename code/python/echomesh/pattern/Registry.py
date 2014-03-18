@@ -5,6 +5,7 @@ REGISTRY = register(
   __name__,
   'Animation',
   'Choose',
+  'Columns',
   'Concatenate',
   'Fade',
   'Image',
