@@ -18,6 +18,7 @@ cp -Rp "$SOURCE_DIR" "$TARGET_DIR"
 source "$BASH_CODE"/install-libraries.sh
 cp -Rp "$BASH_CODE"/echomesh "$TARGET_BIN_DIR"
 
+
 echo
 echo "echomesh has been installed."
 echo "Open a terminal window and type:"
