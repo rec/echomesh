@@ -544,6 +544,7 @@
 		904776F2B6D6545422CEC7C2 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_LookAndFeel_V3.cpp"; path = "../../JuceLibraryCode/modules/juce_gui_basics/lookandfeel/juce_LookAndFeel_V3.cpp"; sourceTree = "SOURCE_ROOT"; };
 		9108FF32E2BE0E2FBF76F3F5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_android_Network.cpp"; path = "../../JuceLibraryCode/modules/juce_core/native/juce_android_Network.cpp"; sourceTree = "SOURCE_ROOT"; };
 		91765AD7FC2A303FB8DC34B5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TooltipWindow.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/windows/juce_TooltipWindow.h"; sourceTree = "SOURCE_ROOT"; };
+		91E2D45CC30613C3DD7DE2B8 = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_SharedResourcePointer.h"; path = "../../JuceLibraryCode/modules/juce_core/memory/juce_SharedResourcePointer.h"; sourceTree = "SOURCE_ROOT"; };
 		921D8C0732317F08D3EAE3E5 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = InstrumentComponent.cpp; path = ../../echomesh/component/InstrumentComponent.cpp; sourceTree = "SOURCE_ROOT"; };
 		922D349B099BAB0FF9CF37B7 = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "juce_QuickTimeAudioFormat.cpp"; path = "../../JuceLibraryCode/modules/juce_audio_formats/codecs/juce_QuickTimeAudioFormat.cpp"; sourceTree = "SOURCE_ROOT"; };
 		925804309B1EB389653090FF = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "juce_TabbedComponent.h"; path = "../../JuceLibraryCode/modules/juce_gui_basics/layout/juce_TabbedComponent.h"; sourceTree = "SOURCE_ROOT"; };
@@ -1263,6 +1264,7 @@
 					81FC6EF3C00EF39FF98D6117,
 					F878C04B5E83BB151C5E0C08,
 					B47074C848B0561CB824AC77,
+					91E2D45CC30613C3DD7DE2B8,
 					D79DAD71285FF3C91CC964D8,
 					30EC892D70CD0ADE6198FA16, ); name = memory; sourceTree = "<group>"; };
 		2E1622E6EFF9DAE05569C157 = {isa = PBXGroup; children = (
@@ -2039,11 +2041,11 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ("../../JuceLibraryCode", "../../JuceLibraryCode/modules", "$(inherited)");
 				INFOPLIST_FILE = Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				OTHER_CPLUSPLUSFLAGS = "-I../.. -I../../build/include";
 				OTHER_LDFLAGS = "-L../../build/lib -lglog";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				SDKROOT_ppc = macosx10.5; }; name = Debug; };
 		4D878DA245FE4362DF68E428 = {isa = XCBuildConfiguration; buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
@@ -2066,11 +2068,11 @@
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				HEADER_SEARCH_PATHS = ("../../JuceLibraryCode", "../../JuceLibraryCode/modules", "$(inherited)");
 				INFOPLIST_FILE = Info.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				MACOSX_DEPLOYMENT_TARGET_ppc = 10.4;
 				OTHER_CPLUSPLUSFLAGS = "-I../.. -I../../build/include";
 				OTHER_LDFLAGS = "-L../../build/lib -lglog";
-				SDKROOT = macosx10.7;
+				SDKROOT = macosx10.8;
 				SDKROOT_ppc = macosx10.5; }; name = Release; };
 		39BAD73600A982A8B25EF391 = {isa = XCBuildConfiguration; buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;

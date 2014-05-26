@@ -167,10 +167,10 @@
     <XCODE_MAC targetFolder="Builds/MacOSX" extraCompilerFlags="-I../.. -I../../build/include"
                externalLibraries="glog" extraLinkerFlags="-L../../build/lib">
       <CONFIGURATIONS>
-        <CONFIGURATION name="Debug" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK" osxArchitecture="64BitIntel"
+        <CONFIGURATION name="Debug" osxSDK="10.8 SDK" osxCompatibility="10.8 SDK" osxArchitecture="64BitIntel"
                        isDebug="1" optimisation="1" targetName="echomesh" customXcodeFlags=""
                        cppLibType="libc++"/>
-        <CONFIGURATION name="Release" osxSDK="10.7 SDK" osxCompatibility="10.7 SDK"
+        <CONFIGURATION name="Release" osxSDK="10.8 SDK" osxCompatibility="10.8 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
                        cppLibType="libc++"/>
       </CONFIGURATIONS>
