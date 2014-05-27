@@ -69,7 +69,7 @@ void PanGainPlayer::applyPan(const AudioSourceChannelInfo& info) {
     info.buffer->applyGain(1, info.startSample, info.numSamples, pan.second);
 
   } else {
-    auto** channels = info.buffer->getArrayOfChannels();
+    auto** channels = info.buffer->getArrayOfWritePointers();
     auto pans = panPlayer_->getSegments(info.numSamples);
 
     for (auto& p: pans) {

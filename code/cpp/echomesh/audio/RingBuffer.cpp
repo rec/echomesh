@@ -28,8 +28,7 @@ int RingBuffer::write(int count, const float** samples) {
 }
 
 int RingBuffer::write(const AudioSampleBuffer& buffer) {
-  auto samples = const_cast<const float**>(buffer.getArrayOfChannels());
-  return write(buffer.getNumSamples(), samples);
+  return write(buffer.getNumSamples(), buffer.getArrayOfReadPointers());
 }
 
 int RingBuffer::read(const AudioSourceChannelInfo& info) {

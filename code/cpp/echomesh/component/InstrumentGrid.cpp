@@ -5,9 +5,6 @@
 
 namespace echomesh {
 
-static const int TOP_TWEAK = 5;
-static const int LEFT_TWEAK = 5;
-
 InstrumentGrid::InstrumentGrid()
     : isUnclipped_(false),
       labelStartsAtZero_(false),
@@ -153,4 +150,3 @@ void InstrumentGrid::pythonRepaint() {
 }
 
 }  // namespace echomesh
-
