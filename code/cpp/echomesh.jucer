@@ -190,9 +190,9 @@
     <LINUX_MAKE targetFolder="Builds/Linux" extraCompilerFlags="-I../..  -I../../glog/src -std=c++11 -x c++">
       <CONFIGURATIONS>
         <CONFIGURATION name="Debug" libraryPath="/usr/X11R6/lib/" isDebug="1" optimisation="1"
-                       targetName="echomesh"/>
+                       targetName="cechomesh"/>
         <CONFIGURATION name="Release" libraryPath="/usr/X11R6/lib/" isDebug="0" optimisation="2"
-                       targetName="echomesh"/>
+                       targetName="cechomesh"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_gui_extra" path="../../../JUCE/modules"/>
