@@ -8,7 +8,7 @@
 #define GOOGLE_NAMESPACE google
 
 /* Define if you have the `dladdr' function */
-#define HAVE_DLADDR 1
+/* #undef HAVE_DLADDR */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
 #define HAVE_DLFCN_H 1
@@ -29,7 +29,7 @@
 #define HAVE_LIBPTHREAD 1
 
 /* Define to 1 if you have the <libunwind.h> header file. */
-#define HAVE_LIBUNWIND_H 1
+/* #undef HAVE_LIBUNWIND_H */
 
 /* define if you have google gflags library */
 /* #undef HAVE_LIB_GFLAGS */
@@ -83,7 +83,7 @@
 #define HAVE_STRING_H 1
 
 /* Define to 1 if you have the <syscall.h> header file. */
-/* #undef HAVE_SYSCALL_H */
+#define HAVE_SYSCALL_H 1
 
 /* Define to 1 if you have the <syslog.h> header file. */
 #define HAVE_SYSLOG_H 1
@@ -107,7 +107,7 @@
 #define HAVE_SYS_UTSNAME_H 1
 
 /* Define to 1 if you have the <ucontext.h> header file. */
-/* #undef HAVE_UCONTEXT_H */
+#define HAVE_UCONTEXT_H 1
 
 /* Define to 1 if you have the <unistd.h> header file. */
 #define HAVE_UNISTD_H 1
@@ -153,7 +153,7 @@
 #define PACKAGE_VERSION "0.3.3"
 
 /* How to access the PC from a struct ucontext */
-#define PC_FROM_UCONTEXT uc_mcontext->__ss.__rip
+#define PC_FROM_UCONTEXT uc_mcontext.gregs[REG_RIP]
 
 /* Define to necessary symbol if this constant uses a non-standard name on
    your system. */

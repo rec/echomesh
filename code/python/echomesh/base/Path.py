@@ -20,11 +20,19 @@ _ASSET_PATH = None
 _DATA_PATH = None
 _PROJECT_PATH = None
 
+_PLATFORM_CPP_PATHS = {
+  'ubuntu': 'Builds/Linux/build'
+}
+
+
 _EXTERNAL_CODE_PATH = os.path.join(_PYTHON_PATH, 'external')
 _PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
   _EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
 _BINARY_PATH = os.path.join(_ECHOMESH_PATH, 'bin', Platform.PLATFORM)
-_CPP_BUILD_PATH = os.path.join(_ECHOMESH_PATH, 'code', 'cpp')
+_CPP_BUILD_PATH = os.path.join(
+  _ECHOMESH_PATH, 'code', 'cpp',
+  _PLATFORM_CPP_PATHS.get(Platform.PLATFORM, '')
+)
 _COMPATIBILITY_PATH = os.path.join(_PYTHON_PATH, 'compatibility')
 
 PATHS = (_CPP_BUILD_PATH, _PLATFORM_EXTERNAL_CODE_PATH, _EXTERNAL_CODE_PATH,
