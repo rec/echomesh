@@ -11,8 +11,8 @@ from libcpp.pair cimport pair
 cdef extern from "Python.h":
    char* PyByteArray_AsString(object bytearray) except NULL
 
-include "juce/juce_graphics/colour/juce_Colour.pyx"
-include "juce/juce_graphics/colour/juce_Colours.pyx"
+#include "juce/juce_graphics/colour/juce_Colour.pyx"
+#include "juce/juce_graphics/colour/juce_Colours.pyx"
 
 include "echomesh/audio/DefaultDevice.pyx"
 include "echomesh/audio/Loudness.pyx"
@@ -20,6 +20,7 @@ include "echomesh/audio/RingBuffer.pyx"
 include "echomesh/audio/RingBufferIndex.pyx"
 include "echomesh/audio/Source.pyx"
 include "echomesh/base/Echomesh.pyx"
+
 include "echomesh/color/Recolumn.pyx"
 include "echomesh/color/Color.pyx"
 include "echomesh/color/ColorList.pyx"

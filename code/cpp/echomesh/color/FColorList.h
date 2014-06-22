@@ -9,7 +9,7 @@ namespace color {
 
 class FColorList : public vector<FColor> {
  public:
-  FColor& at(int i) {
+  FColor& at(size_t i) {
     DCHECK(isIndex(i)) << "Bad index " << i;
     return vector<FColor>::at(i);
   }
@@ -24,7 +24,7 @@ class FColorList : public vector<FColor> {
       at(i).combine(that.get(i));
   }
 
-  int count(const FColor& c) const {
+  size_t count(const FColor& c) const {
     return std::count(begin(), end(), c);
   }
 
@@ -32,15 +32,15 @@ class FColorList : public vector<FColor> {
     insert(end(), that.begin(), that.end());
   }
 
-  void eraseOne(int pos) {
+  void eraseOne(size_t pos) {
     erase(begin() + pos);
   }
 
-  void eraseRange(int b, int e) {
+  void eraseRange(size_t b, size_t e) {
     erase(begin() + b, begin() + e);
   }
 
-  const FColor& get(int i) const {
+  const FColor& get(size_t i) const {
     return isIndex(i) ? vector<FColor>::at(i) : FColor::BLACK;
   }
 
@@ -63,20 +63,20 @@ class FColorList : public vector<FColor> {
     return result;
   }
 
-  int index(const FColor& c) const {
+  size_t index(const FColor& c) const {
     auto i = std::find(begin(), end(), c);
     return i == end() ? -1 : i - begin();
   }
 
-  void insertRange(int b1, const FColorList& from, int b2, int e2) {
+  void insertRange(size_t b1, const FColorList& from, size_t b2, size_t e2) {
     insert(begin() + b1, from.begin() + b2, from.begin() + e2);
   }
 
-  bool isIndex(int i) const {
-    return i >= 0 and i < size();
+  bool isIndex(size_t i) const {
+    return i < size();
   }
 
-  void resize(int s) {
+  void resize(unsigned long s) {
     vector<FColor>::resize(s, FColor::BLACK);
   }
 
@@ -89,7 +89,7 @@ class FColorList : public vector<FColor> {
       i.scale(s);
   }
 
-  void set(int pos, const FColor& color) {
+  void set(size_t pos, const FColor& color) {
     if (pos >= size())
       resize(pos + 1);
     LOG_IF(DFATAL, pos < 0) << "position is negative: " << pos;
@@ -113,4 +113,3 @@ class FColorList : public vector<FColor> {
 
 }  // namespace color
 }  // namespace echomesh
-

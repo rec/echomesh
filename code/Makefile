@@ -1,4 +1,4 @@
-# Not general, will probably on work on my Mac.  :-)
+# Not general, will probably on work on my Mac only.  :-)
 
 all:
 
@@ -26,4 +26,3 @@ debug_deploy: debug
 
 release_deploy: release
 	cp $(RELEASE_EXECUTABLE) $(BIN)
-

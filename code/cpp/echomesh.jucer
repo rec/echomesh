@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="lm5Yh4" name="echomesh" projectType="dll" version="1.0.0"
+<JUCERPROJECT id="lm5Yh4" name="echomesh" projectType="library" version="1.0.0"
               bundleIdentifier="org.echomesh" includeBinaryInAppConfig="1"
               jucerVersion="3.1.0" defines=" JUCE_DISABLE_JUCE_VERSION_PRINTING=1">
   <MAINGROUP id="Z5EcKk" name="echomesh">
@@ -172,7 +172,7 @@
                        cppLibType="libc++"/>
         <CONFIGURATION name="Release" osxSDK="10.8 SDK" osxCompatibility="10.8 SDK"
                        osxArchitecture="64BitIntel" isDebug="0" optimisation="2" targetName="echomesh"
-                       cppLibType="libc++"/>
+                       cppLibType="libc++" linkTimeOptimisation="1"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_core" path="../../../JUCE/modules"/>
