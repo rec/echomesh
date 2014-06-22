@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import cechomesh
+from echomesh import cechomesh
 
 from echomesh.base import Config
 from echomesh.color import SetupDebianSpiLights

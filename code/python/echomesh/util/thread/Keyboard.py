@@ -95,8 +95,8 @@ class Keyboard(MasterRunnable):
       self.brackets += (data.count('[') - data.count(']'))
       self.braces += (data.count('{') - data.count('}'))
 
-def keyboard(
-    instance, writer=sys.stdout, reader=sys.stdin.readline, new_thread=True):
+def keyboard(instance, writer=sys.stdout, reader=sys.stdin.readline,
+             new_thread=True):
   def processor(line):
     try:
       return Command.execute(instance, line)
@@ -110,5 +110,5 @@ def keyboard(
     runnable = ThreadRunnable(target=keyboard.loop)
     runnable.add_mutual_pause_slave(keyboard)
     return keyboard, runnable
-
-  return keyboard, keyboard
+  else:
+    return keyboard, keyboard

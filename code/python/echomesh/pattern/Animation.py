@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import PIL
-import cechomesh
+from echomesh import cechomesh
 
 from echomesh.pattern.Image import Image
 from echomesh.pattern import Pattern
@@ -54,4 +54,3 @@ with the "frame" setting."""
       ceil = 0
 
     return self.cells[floor].interpolate(self.cells[ceil], frame - floor, False)
-

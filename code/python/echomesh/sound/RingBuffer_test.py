@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util.TestCase import TestCase
 
-import cechomesh
+from echomesh import cechomesh
 
 class RingBuffer_test(TestCase):
   def setUp(self):
@@ -32,4 +32,3 @@ class RingBuffer_test(TestCase):
     data = []
     self.assertEqual(self.buffer.read(8, data), 8)
     self.assertEqual(data, [[8.0, 9.0, 10.0, 11.0, 0.0, 1.0, 2.0, 3.0]])
-

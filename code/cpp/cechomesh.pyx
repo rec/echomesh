@@ -11,9 +11,6 @@ from libcpp.pair cimport pair
 cdef extern from "Python.h":
    char* PyByteArray_AsString(object bytearray) except NULL
 
-#include "juce/juce_graphics/colour/juce_Colour.pyx"
-#include "juce/juce_graphics/colour/juce_Colours.pyx"
-
 include "echomesh/audio/DefaultDevice.pyx"
 include "echomesh/audio/Loudness.pyx"
 include "echomesh/audio/RingBuffer.pyx"
@@ -36,3 +33,5 @@ include "echomesh/color/Tile.pyx"
 include "echomesh/component/LightingWindow.pyx"
 include "echomesh/util/EchomeshApplication.pyx"
 include "echomesh/util/Log.pyx"
+
+LOADED = True

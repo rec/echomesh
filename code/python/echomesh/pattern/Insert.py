@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import cechomesh
+from echomesh import cechomesh
 
 from echomesh.base import Config
 from echomesh.color.LightCount import light_count
@@ -42,4 +42,3 @@ class Insert(Pattern):
     rollover = bool(self.get('rollover'))
 
     return cechomesh.insert_color_list(color_list, offset, length, rollover, skip)
-

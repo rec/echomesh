@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import PIL.Image
 
-import cechomesh
+from echomesh import cechomesh
 
 from echomesh.pattern.Pattern import Pattern
 from echomesh.util import Log

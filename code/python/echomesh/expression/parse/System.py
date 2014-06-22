@@ -4,7 +4,6 @@ import math
 import random
 import time
 
-from echomesh.sound import Level
 from echomesh.util.registry.Registry import Registry
 
 class _SystemFunction(object):
@@ -30,9 +29,13 @@ def register(name, function, is_constant, needs_element=False):
 def _elapsed(element):
   return element.elapsed_time()
 
+def _level():
+  from echomesh.sound import Level
+  return Level.input_level()
+
 register('e', lambda: math.e, True)
 register('elapsed', lambda: _elapsed, False, needs_element=True)
-register('level', lambda: Level.input_level, False)
+register('level', lambda: _level, False)
 register('pi', lambda: math.pi, True)
 register('random', lambda: random.random, False)
 register('time', lambda: time.time, False)

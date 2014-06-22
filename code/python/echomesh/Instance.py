@@ -4,6 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
+from echomesh import cechomesh
 from echomesh.base import Config
 from echomesh.base import Quit
 from echomesh.element import ScoreMaster
@@ -46,12 +47,11 @@ class Instance(MasterRunnable):
     self.callback = self.after_server_starts
 
     self.display = Display.display(self.callback)
-    self.using_cechomesh = hasattr(self.display, 'callback')
-    self.keyboard = self.osc = None
+    self.keyboard_runnable = self.osc = None
     if Config.get('control_program'):
       from echomesh.util.thread import Keyboard
       args = {}
-      keyboard, self.keyboard = Keyboard.keyboard(
+      keyboard, self.keyboard_runnable = Keyboard.keyboard(
         self, new_thread=USE_KEYBOARD_THREAD or self.display)
 
     osc_client = Config.get('osc', 'client', 'enable')
@@ -60,22 +60,22 @@ class Instance(MasterRunnable):
       from echomesh.sound.Osc import Osc
       self.osc = Osc(osc_client, osc_server)
 
-    self.add_mutual_pause_slave(self.socket, self.keyboard, self.osc)
+    self.add_mutual_pause_slave(self.socket, self.keyboard_runnable, self.osc)
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
     self.timeout = Config.get('network', 'timeout')
 
   def keyboard_callback(self, s):
-    self.keyboard_queue.put(s)
+    self.keyboard_runnable_queue.put(s)
 
   def broadcasting(self):
     return self._broadcasting
 
   def set_broadcasting(self, b):
     self._broadcasting = b
-    if self.keyboard:
-      self.keyboard.alert_mode = b
+    if self.keyboard_runnable:
+      self.keyboard_runnable.alert_mode = b
 
   def send(self, **data):
     self.socket.send(data)
@@ -85,11 +85,11 @@ class Instance(MasterRunnable):
 
   def display_loop(self):
     self.display.loop()
-    if self.keyboard.thread:
-      self.keyboard.thread.join()
+    thread = getattr(self.keyboard_runnable, 'thread', None)
+    thread and thread.join()
 
   def main(self):
-    if self.using_cechomesh:
+    if cechomesh.LOADED:
       self.display_loop()
     else:
       self.after_server_starts()
@@ -97,14 +97,14 @@ class Instance(MasterRunnable):
     # Prevents crashes if you start and stop echomesh very fast.
 
   def after_server_starts(self):
-    if self.using_cechomesh:
+    if cechomesh.LOADED:
       run_after(self.run, Expression.convert(Config.get('delay_before_run')))
     else:
       self.run()
       if self.display:
         self.display_loop()
-      elif not USE_KEYBOARD_THREAD and self.keyboard:
-        self.keyboard.loop()
+      elif not USE_KEYBOARD_THREAD and self.keyboard_runnable:
+        self.keyboard_runnable.loop()
       else:
         while self.is_running:
           time.sleep(self.timeout)

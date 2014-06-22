@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import cechomesh
+from echomesh import cechomesh
 import six
 
 from echomesh.base import Config

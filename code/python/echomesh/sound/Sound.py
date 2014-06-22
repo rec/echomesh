@@ -1,6 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import get_device_names
+try:
+  from cechomesh import get_device_names
+except ImportError:
+  get_device_names = lambda x: '(none)',
 
 def info():
   return {

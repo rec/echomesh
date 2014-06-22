@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import cechomesh
+from echomesh import cechomesh
 
 from echomesh.base import Config
 from echomesh.pattern.Pattern import Pattern
@@ -49,4 +49,3 @@ class Mirror(Pattern):
     return cechomesh.mirror_color_list(
       color_list, int(columns), int(rows),
       bool(self.get('reverse_x')), bool(self.get('reverse_y')))
-
