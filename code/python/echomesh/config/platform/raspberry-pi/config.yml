@@ -1,0 +1,3 @@
+hardware:
+  gpio:
+    enable: true
