@@ -4,7 +4,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from echomesh import cechomesh
+from echomesh.Cechomesh import cechomesh
 from echomesh.base import Config
 from echomesh.base import Quit
 from echomesh.element import ScoreMaster

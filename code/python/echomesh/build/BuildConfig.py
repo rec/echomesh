@@ -6,6 +6,9 @@ import sys
 from Cython.Build import cythonize
 from Cython.Distutils import extension
 
+from echomesh.base import Path
+from echomesh.base import Platform
+
 _DEBUG_FLAG = '--debug'
 
 DEBUG = _DEBUG_FLAG in sys.argv
@@ -14,10 +17,6 @@ if DEBUG:
 
 VERBOSE = True
 
-ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-  os.path.dirname(os.path.abspath(__file__))))))
-
-from echomesh.base import Platform
 
 class Config(object):
   def __init__(self):
@@ -75,7 +74,7 @@ class Config(object):
 
     extra_compile_args = extra_compile_args.split()
     extra_link_args = extra_link_args.split()
-    self.bin_dir = os.path.join(ECHOMESH_BASE, 'bin', Platform.PLATFORM)
+    self.bin_dir = Path.LIBRARY_PATH
     lib_dirs = ['build/lib', echomesh_lib]
 
     ext = extension.Extension(

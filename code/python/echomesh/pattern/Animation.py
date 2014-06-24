@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import PIL
-from echomesh import cechomesh
+from echomesh.Cechomesh import cechomesh
 
 from echomesh.pattern.Image import Image
 from echomesh.pattern import Pattern

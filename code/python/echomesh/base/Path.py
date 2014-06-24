@@ -14,7 +14,7 @@ import sys
 ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES = True
 
 _PYTHON_PATH = os.path.abspath(sys.path[0])
-_ECHOMESH_PATH = os.path.dirname(os.path.dirname(_PYTHON_PATH))
+ECHOMESH_PATH = os.path.dirname(os.path.dirname(_PYTHON_PATH))
 
 _ASSET_PATH = None
 _DATA_PATH = None
@@ -24,19 +24,18 @@ _PLATFORM_CPP_PATHS = {
   'ubuntu': 'Builds/Linux/build'
 }
 
-
 _EXTERNAL_CODE_PATH = os.path.join(_PYTHON_PATH, 'external')
 _PLATFORM_EXTERNAL_CODE_PATH = os.path.join(
   _EXTERNAL_CODE_PATH, 'platform', Platform.PLATFORM)
-_BINARY_PATH = os.path.join(_ECHOMESH_PATH, 'bin', Platform.PLATFORM)
+LIBRARY_PATH = os.path.join(ECHOMESH_PATH, 'lib', Platform.PLATFORM)
 _CPP_BUILD_PATH = os.path.join(
-  _ECHOMESH_PATH, 'code', 'cpp',
+  ECHOMESH_PATH, 'code', 'cpp',
   _PLATFORM_CPP_PATHS.get(Platform.PLATFORM, '')
 )
 _COMPATIBILITY_PATH = os.path.join(_PYTHON_PATH, 'compatibility')
 
 PATHS = (_CPP_BUILD_PATH, _PLATFORM_EXTERNAL_CODE_PATH, _EXTERNAL_CODE_PATH,
-         _BINARY_PATH, _COMPATIBILITY_PATH)
+         LIBRARY_PATH, _COMPATIBILITY_PATH)
 
 _REQUIRED_DIRECTORIES = 'asset', 'cache', 'data', 'log'
 
@@ -46,7 +45,7 @@ def data_path():
 
 def echomesh_path():
   _set_project_path()
-  return _ECHOMESH_PATH
+  return ECHOMESH_PATH
 
 def project_path():
   _set_project_path()
@@ -81,8 +80,8 @@ def set_project_path(project_path=None, show_error=True, prompt=True):
         return False
     if show_error:
       print("\nYour path %s isn't in an echomesh project." % original_path)
-      print("Defaulting to the echomesh path %s." % _ECHOMESH_PATH)
-    path = _ECHOMESH_PATH
+      print("Defaulting to the echomesh path %s." % ECHOMESH_PATH)
+    path = ECHOMESH_PATH
     break
 
   _PROJECT_PATH = path
@@ -107,7 +106,7 @@ def info():
     'Platform external code path': _PLATFORM_EXTERNAL_CODE_PATH,
     'Project path': _PROJECT_PATH,
     'Python path': ':'.join(PATHS),
-    'echomesh path': _ECHOMESH_PATH,
+    'echomesh path': ECHOMESH_PATH,
     }
 
 def fix_sys_path():
@@ -129,3 +128,9 @@ def fix_home_directory_environment_variable():
       if getpass.getuser() == 'root':
         os.environ['HOME'] = '/home/pi'
       _HOME_VARIABLE_FIXED = True
+
+
+def fix_paths():
+  _set_project_path()
+  fix_home_directory_environment_variable()
+  fix_sys_path()

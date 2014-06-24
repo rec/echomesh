@@ -32,7 +32,6 @@ def _main():
     return
   p()
 
-
   Path.fix_home_directory_environment_variable()
   p()
 

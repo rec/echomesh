@@ -1,4 +1,4 @@
-import cechomesh
+from echomesh.Cechomesh import cechomesh
 import time
 
 loudness = cechomesh.AudioLoudness('AK5370', 1)

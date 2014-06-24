@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import math
 
-from echomesh import cechomesh
+from echomesh.Cechomesh import cechomesh
 
 from echomesh.expression import Transform
 from echomesh.util.TestCase import TestCase

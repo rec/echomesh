@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.util.TestCase import TestCase
 
-from echomesh import cechomesh
+from echomesh.Cechomesh import cechomesh
 
 class RingBufferIndex_test(TestCase):
   def setUp(self):
