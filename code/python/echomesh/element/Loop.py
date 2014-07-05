@@ -8,7 +8,7 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-# TODO: these should be config values.
+# TODO: these should be settings values.
 DEFAULT_TIMEOUT = 1.0
 
 class Loop(Element.Element):

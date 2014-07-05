@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Name
 from echomesh.base import Path
 from echomesh.base import Yaml
@@ -52,8 +52,8 @@ def broadcast(echomesh_instance):
   message = 'ON' if echomesh_instance.broadcasting() else 'off'
   LOGGER.info('  Broadcast is %s\n', message)
 
-def _config(_):
-  LOGGER.info('\n' + Yaml.encode_one(Config.get_config()))
+def _settings(_):
+  LOGGER.info('\n' + Yaml.encode_one(Settings.get_settings()))
 
 def directories(_):
   _info(Path.info())
@@ -115,7 +115,7 @@ NO_NODES_ERROR = """\
 There are no echomesh nodes in your network.
 
 Since there should always be at least the computer running echomesh, this
-indicates a serious problem with your networking or your configuration.
+indicates a serious problem with your networking or your settings.
 
 Consult the trouble-shooting guide for more information.
 """
@@ -139,12 +139,12 @@ by "echomesh!"
 
 """
 
-CONFIG_HELP = """
-  "show config" lists the merged configuration values for all scopes.
-  "show config <scope> [<scope>...]" shows the separate configurations
+SETTINGS_HELP = """
+  "show settings" lists the merged settings values for all scopes.
+  "show settings <scope> [<scope>...]" shows the separate settings
     for each scope.
-  "show config all" shows all the separate configurations as well as the
-    merged configuration.
+  "show settings all" shows all the separate settings as well as the
+    merged settings.
 """
 
 NAMES_HELP = """
@@ -152,8 +152,8 @@ NAMES_HELP = """
 
   * The machine name (also called the uname for Linux machines).
   * The echomesh name.  This is by default the machine name but can be changed
-    in the echomesh configuration.
-  * The echomesh tags for this machine, which are also set in the configuration.
+    in the echomesh settings.
+  * The echomesh tags for this machine, which are also set in the settings.
 """
 
 INFO_HELP = """
@@ -174,7 +174,7 @@ DIRECTORIES_HELP = """
 
   * The asset directory, where images, audio and other assets are stored.
   * The code directory, where the echomesh Python code is stored.
-  * The command directory, which holds configuration files and scores.
+  * The command directory, which holds settings files and scores.
   * The project directory, the project root containing assets and commands.
   * The echomesh directory, which is the root of the echomesh installation.
 """
@@ -228,7 +228,7 @@ SHOW_REGISTRY.register_all(
   addresses=(addresses, ADDRESSES_HELP),
   aliases=(aliases, ALIASES_HELP),
   broadcast=(broadcast, BROADCAST_HELP),
-  config=(_config, CONFIG_HELP),
+  settings=(_settings, SETTINGS_HELP),
   contexts=(Contexts.contexts, Contexts.HELP),
   directories=(directories, DIRECTORIES_HELP),
   elements=(elements, ELEMENTS_HELP),

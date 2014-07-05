@@ -6,8 +6,8 @@ from echomesh.base import Join
 from echomesh.command import Registry
 
 # pylint: disable=W0611
-from echomesh.command import ElementCommands, GetConfig
-from echomesh.command import RemoteCommands, SetConfig
+from echomesh.command import ElementCommands, GetSettings
+from echomesh.command import RemoteCommands, SetSettings
 from echomesh.command import Show
 
 # Must be the last one to load.

@@ -2,10 +2,10 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.Cechomesh import cechomesh
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.expression import Expression
 from echomesh.output.Poll import Poll
-from echomesh.util.config.ConfigValues import ConfigValues
+from echomesh.util.settings.SettingsValues import SettingsValues
 from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
@@ -17,8 +17,8 @@ class Visualizer(Poll):
     if not Visualizer.INSTANCE:
       Visualizer.INSTANCE = self
 
-    self.values = ConfigValues(
-      configs={
+    self.values = SettingsValues(
+      settings={
         'brightness': 'light.brightness',
         'instrument_padding': 'light.visualizer.instrument.padding',
         'label_padding': 'light.visualizer.instrument.label_padding',

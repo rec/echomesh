@@ -13,12 +13,12 @@ def contexts(_):
   LOGGER.info('%s\n', '\n'.join(con))
 
 HELP = """
-In order to control multiple machines and configurations effectively, echomesh
-configurations and scores live in one of five different types of "contexts".
+In order to control multiple machines and settings effectively, echomesh
+settings and scores live in one of five different types of "contexts".
 
 default:
   This is the default context that comes with echomesh and contains only the
-  default configuration, which cannot be changed by echomesh programs.
+  default settings, which cannot be changed by echomesh programs.
 
 master:
   This is the master context which contains your master score.  Most of your
@@ -31,7 +31,7 @@ platform:
   Right now, we have three platforms:  linux, darwin and windows.
 
 tag:
-  At configuration time, you can specify text tags for each machine.
+  At settings time, you can specify text tags for each machine.
 
 name:
   This directory contains scores that are only associated with a machine with

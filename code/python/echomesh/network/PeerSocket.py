@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Name
 from echomesh.expression import Expression
 from echomesh.network import DataSocket
@@ -14,18 +14,18 @@ USE_YAML_SOCKET = True
 DEFAULT_TIMEOUT = 0.1
 
 class PeerSocketBase(MasterRunnable):
-  def __init__(self, instance, peers, config_name):
+  def __init__(self, instance, peers, settings_name):
     super(PeerSocketBase, self).__init__()
     self.instance = instance
     self.peers = peers
-    self.config_name = config_name
+    self.settings_name = settings_name
     self.add_slave(self.peers)
     self.port = -1
     self.socket = None
-    Config.add_client(self)
+    Settings.add_client(self)
 
-  def config_update(self, get):
-    new_port = get('network', self.config_name, 'port')
+  def settings_update(self, get):
+    new_port = get('network', self.settings_name, 'port')
     timeout_name = 'network', 'timeout'
     timeout = Expression.convert(get(*timeout_name))
     self.port, old_port = new_port, self.port
@@ -72,4 +72,3 @@ class PeerSocket(PeerSocketBase):
 
   def router(self, data):
     Remote.execute(self.instance, **data)
-

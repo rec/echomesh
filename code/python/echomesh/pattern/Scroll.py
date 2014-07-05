@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.Cechomesh import cechomesh
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.pattern.Pattern import Pattern
 
 class Scroll(Pattern):
@@ -40,7 +40,7 @@ class Scroll(Pattern):
     color_list = cechomesh.to_color_list(self.patterns()[0])
 
     columns = (color_list.columns or
-               Config.get('light', 'visualizer', 'layout')[0])
+               Settings.get('light', 'visualizer', 'layout')[0])
 
     return cechomesh.scroll_color_list(
       color_list, self.get('dx'), self.get('dy'), columns=columns,

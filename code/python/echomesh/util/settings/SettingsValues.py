@@ -1,9 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+from echomesh.base import Settings
 
-class ConfigValues(object):
-  def __init__(self, configs=None, values=None, add_client=Config.add_client,
+class SettingsValues(object):
+  def __init__(self, settings=None, values=None, add_client=Settings.add_client,
                update_callback=None):
     self.update_callback = update_callback
     for k, v in (values or {}).items():
@@ -11,16 +11,14 @@ class ConfigValues(object):
         assert not hasattr(self, k)
         setattr(self, k, v)
 
-    self._configs = {}
-    for k, v in (configs or {}).items():
+    self._settings = {}
+    for k, v in (settings or {}).items():
       if not (v is None or hasattr(self, k)):
-        self._configs[k] = v.split('.')
+        self._settings[k] = v.split('.')
 
     self.add_client = lambda: add_client(self)
 
-  def config_update(self, get):
-    for k, v in self._configs.items():
+  def settings_update(self, get):
+    for k, v in self._settings.items():
       setattr(self, k, get(*v))
     self.update_callback and self.update_callback()
-
-

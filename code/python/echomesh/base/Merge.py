@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-CONFIG_EXCEPTIONS = set(['load', 'map', 'new', 'start'])
+SETTINGS_EXCEPTIONS = set(['load', 'map', 'new', 'start'])
 
 def _merge_or_diff(old, new, is_merge, require_old_key, path='',
                    require_old_key_exceptions=None):
@@ -78,5 +78,5 @@ def merge(*others, **kwds):
 
   return reduce(_merge, others + (kwds, ), None)
 
-def merge_for_config(*config):
-  return merge_strict_with_exceptions(CONFIG_EXCEPTIONS, *config)
+def merge_for_settings(*settings):
+  return merge_strict_with_exceptions(SETTINGS_EXCEPTIONS, *settings)

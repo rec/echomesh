@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.Cechomesh import cechomesh
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.color import SetupDebianSpiLights
 from echomesh.color.LightCount import light_count
 from echomesh.expression import Expression
@@ -32,13 +32,13 @@ class Spi(Poll):
     self.count_set = count is not None
     if self.count_set:
       self._set_count(count)
-    Config.add_client(self)
+    Settings.add_client(self)
     if self.enabled:
       self._device = open(device, 'wb')
     super(Spi, self).__init__(
       is_redirect=False, period=self.period, **description)
 
-  def config_update(self, get):
+  def settings_update(self, get):
     if not self.count_set:
       self._set_count(light_count(get))
     self.brightness = Expression.convert(get('light', 'brightness'))

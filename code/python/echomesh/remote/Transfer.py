@@ -7,7 +7,7 @@ import six
 
 from echomesh.remote import RemoteRegistry
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import MakeDirs
 from echomesh.base import Path
 
@@ -35,7 +35,7 @@ def transfer(_, **data):
       o.write(value['contents'])
     os.utime(fname, (value['atime'], value['mtime']))
 
-  if Config.get('delete_backups_after_transfer'):
+  if Settings.get('delete_backups_after_transfer'):
     try:
       shutil.rmtree(backup_directory)
     except:

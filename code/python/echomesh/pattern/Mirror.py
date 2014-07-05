@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.Cechomesh import cechomesh
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.pattern.Pattern import Pattern
 
 class Mirror(Pattern):
@@ -44,7 +44,7 @@ class Mirror(Pattern):
     elif columns:
       rows = cechomesh.compute_rows(len(color_list), columns)
     else:
-      columns, rows = Config.get('light', 'visualizer', 'layout')
+      columns, rows = Settings.get('light', 'visualizer', 'layout')
 
     return cechomesh.mirror_color_list(
       color_list, int(columns), int(rows),

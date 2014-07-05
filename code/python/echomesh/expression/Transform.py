@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.util.registry import Registry
 from echomesh.util import Log
 

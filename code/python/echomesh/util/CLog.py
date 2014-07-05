@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.Cechomesh import cechomesh
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.util import Log
 
 
@@ -12,7 +12,7 @@ class _Redirector(object):
   def __init__(self):
     self.redirecting = False
 
-  def config_update(self, get):
+  def settings_update(self, get):
     if get('logging', 'redirect_glog') != self.redirecting:
       self.redirecting = not self.redirecting
 
@@ -22,4 +22,4 @@ class _Redirector(object):
 
 def initialize():
   cechomesh.LOADED and cechomesh.init_log()
-  Config.add_client(_Redirector())
+  Settings.add_client(_Redirector())

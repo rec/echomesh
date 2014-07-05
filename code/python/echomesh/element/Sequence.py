@@ -5,7 +5,7 @@ import time
 
 from echomesh.element import Loop
 from echomesh.expression import Expression
-from echomesh.expression import UnitConfig
+from echomesh.expression import UnitSettings
 from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
 
@@ -51,7 +51,7 @@ class Sequence(Loop.Loop):
     self.sequence.sort(key=operator.itemgetter(0))
 
   def _command_time(self):
-    return (self.sequence[self.next_command][0] / UnitConfig.get('speed') +
+    return (self.sequence[self.next_command][0] / UnitSettings.get('speed') +
             self.cycle_time)
 
   def next_time(self, t):

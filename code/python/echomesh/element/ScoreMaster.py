@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import operator
 import six
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import DataFileName
 from echomesh.base import GetPrefix
 from echomesh.element import MakeRoot
@@ -112,11 +112,11 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
     if self.startup:
       self.startup = False
       try:
-        self._load_elements(Config.get('load'))
+        self._load_elements(Settings.get('load'))
       except:
         LOGGER.error()
       try:
-        self.start_elements(Config.get('start'))
+        self.start_elements(Settings.get('start'))
       except:
         LOGGER.error()
 
@@ -142,4 +142,3 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
       elements = MakeRoot.make_root(score_names, self.elements)
       self.elements.update(elements)
       return elements.keys()
-

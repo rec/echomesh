@@ -5,7 +5,7 @@ import time
 
 from six.moves import queue
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.command import Command
 from echomesh.expression import Expression
 from echomesh.util import Log
@@ -103,7 +103,7 @@ def keyboard(instance, writer=sys.stdout, reader=sys.stdin.readline,
     except:
       LOGGER.error('Error processing command line.')
 
-  sleep = Expression.convert(Config.get('delay_before_keyboard_activates'))
+  sleep = Expression.convert(Settings.get('delay_before_keyboard_activates'))
   keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor,
                       writer=writer, reader=reader)
   if new_thread:

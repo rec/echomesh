@@ -8,7 +8,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import copy
 
 from echomesh.expression import Expression
-from echomesh.expression import UnitConfig
+from echomesh.expression import UnitSettings
 from echomesh.expression.UnitExpression import UnitExpression
 from echomesh.expression.Envelope import Envelope
 from echomesh.util import Log
@@ -39,7 +39,7 @@ class _Counter(object):
     if self.is_constant():
       return self.begin
 
-    count = int(UnitConfig.get('speed') * self.element.elapsed_time() //
+    count = int(UnitSettings.get('speed') * self.element.elapsed_time() //
                 self.period)
     if self.count != INFINITY:
       repeat = count // self.count
@@ -67,5 +67,3 @@ def variable(description, element):
   if not vtype:
     raise Exception('No type in variable, description="%s".' % description)
   return REGISTRY.function(vtype)(description, element)
-
-

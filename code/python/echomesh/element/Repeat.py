@@ -1,7 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 from echomesh.element.Loop import Loop
-from echomesh.expression import UnitConfig
+from echomesh.expression import UnitSettings
 from echomesh.expression import Expression
 from echomesh.util.math import Poisson
 
@@ -20,7 +20,7 @@ class Repeat(Loop):
     self.repeat_count = 0
 
   def next_time(self, t):
-    speed = UnitConfig.get('speed')
+    speed = UnitSettings.get('speed')
     t += self.period / speed
     if self.random_delay:
       t += Poisson.next_poisson(self.random_delay) / speed

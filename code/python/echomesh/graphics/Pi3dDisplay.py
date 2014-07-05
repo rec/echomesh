@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import time
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.expression import Expression
 from echomesh.graphics import Shader
 from echomesh.util.thread import Runnable
@@ -10,27 +10,27 @@ from echomesh.util.thread import Runnable
 class Pi3dDisplay(Runnable.Runnable):
   def __init__(self):
     super(Pi3dDisplay, self).__init__()
-    self.timeout = Expression.convert(Config.get('network', 'timeout'))
+    self.timeout = Expression.convert(Settings.get('network', 'timeout'))
     keywords = {}
 
-    background = Config.get('pi3d', 'background')
+    background = Settings.get('pi3d', 'background')
     if background:
       keywords.update(background=background)
 
-    dimensions = Config.get('pi3d', 'dimensions')
+    dimensions = Settings.get('pi3d', 'dimensions')
     if dimensions:
       x, y, width, height = dimensions
       keywords.update(x=x, y=y, width=width, height=height)
 
     for k in ['aspect', 'depth', 'far', 'near', 'tk', 'window_title']:
-      keywords[k] = Config.get('pi3d', k)
+      keywords[k] = Settings.get('pi3d', k)
 
     from pi3d import Display
     self.display = Display.create(**keywords)
-    Config.add_client(self)
+    Settings.add_client(self)
     Shader.SHADER()  # Make sure that the shader is created in the main thread!
 
-  def config_update(self, get):
+  def settings_update(self, get):
     if self.display:
       self.display.frames_per_second = get('pi3d', 'frames_per_second')
 

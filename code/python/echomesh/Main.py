@@ -38,13 +38,13 @@ def _main():
   Path.fix_sys_path()
   p()
 
-  from echomesh.base import Config
+  from echomesh.base import Settings
   p()
 
-  Config.reconfigure(sys.argv[1:])
+  Settings.reconfigure(sys.argv[1:])
   p()
 
-  if Config.get('autostart') and not Config.get('permission', 'autostart'):
+  if Settings.get('autostart') and not Settings.get('permission', 'autostart'):
     print()
     from echomesh.util import Log
     Log.logger(__name__).info('No permission to autostart')
@@ -54,7 +54,7 @@ def _main():
   from echomesh.base import Quit
   p()
 
-  Quit.register_atexit(Config.save)
+  Quit.register_atexit(Settings.save)
   p()
 
   from echomesh.Instance import Instance
@@ -64,7 +64,7 @@ def _main():
   print()
   p()
 
-  if Config.get('diagnostics', 'startup_times'):
+  if Settings.get('diagnostics', 'startup_times'):
     print()
     for i in range(len(times) - 1):
       print(i, ':', int(1000 * (times[i + 1] - times[i])))

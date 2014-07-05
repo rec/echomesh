@@ -17,7 +17,7 @@ def clean(*path):
 def _command_file(*path):
   path = clean(*path)
   if path[0] == 'default':
-    return os.path.join(Path.python_path(), 'echomesh', 'config', *path[1:])
+    return os.path.join(Path.python_path(), 'echomesh', 'settings', *path[1:])
   else:
     return os.path.join(Path.project_path(), 'data', *path)
 
@@ -49,8 +49,8 @@ def _expand(*path):
   compute_command_path()
   return [os.path.join('data', i, *path) for i in _DATA_PATH]
 
-def expand_config():
-  return _expand('config', 'config.yml')[:-2] + _expand('config.yml')[-2:]
+def expand_settings():
+  return _expand('settings', 'settings.yml')[:-2] + _expand('settings.yml')[-2:]
 
 def resolve(*path):
   for f in _expand(*path):
@@ -74,8 +74,8 @@ def load(*path):
 def base_file(*path):
   return _command_file('master', *path)
 
-def config_file(scope='default'):
+def settings_file(scope='default'):
   if scope.startswith('default'):
-    return _command_file(scope, 'config', 'config.yml')
+    return _command_file(scope, 'settings', 'settings.yml')
   else:
-    return _command_file(scope, 'config.yml')
+    return _command_file(scope, 'settings.yml')

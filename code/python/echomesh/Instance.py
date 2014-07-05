@@ -5,7 +5,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 import time
 
 from echomesh.Cechomesh import cechomesh
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Quit
 from echomesh.element import ScoreMaster
 from echomesh.expression import Expression
@@ -33,7 +33,7 @@ class Instance(MasterRunnable):
       self.unload()
 
     Quit.register_atexit(do_quit)
-    gpio = Config.get('hardware', 'gpio')
+    gpio = Settings.get('hardware', 'gpio')
     if gpio['enable']:
       GPIO.on_gpio(Quit.request_quit,
                    gpio['shutdown_pin'],
@@ -48,14 +48,14 @@ class Instance(MasterRunnable):
 
     self.display = Display.display(self.callback)
     self.keyboard_runnable = self.osc = None
-    if Config.get('control_program'):
+    if Settings.get('control_program'):
       from echomesh.util.thread import Keyboard
       args = {}
       keyboard, self.keyboard_runnable = Keyboard.keyboard(
         self, new_thread=USE_KEYBOARD_THREAD or self.display)
 
-    osc_client = Config.get('osc', 'client', 'enable')
-    osc_server = Config.get('osc', 'server', 'enable')
+    osc_client = Settings.get('osc', 'client', 'enable')
+    osc_server = Settings.get('osc', 'server', 'enable')
     if osc_client or osc_server:
       from echomesh.sound.Osc import Osc
       self.osc = Osc(osc_client, osc_server)
@@ -64,7 +64,7 @@ class Instance(MasterRunnable):
     self.add_slave(self.score_master)
     self.add_slave(self.display)
     self.set_broadcasting(False)
-    self.timeout = Config.get('network', 'timeout')
+    self.timeout = Settings.get('network', 'timeout')
 
   def keyboard_callback(self, s):
     self.keyboard_runnable_queue.put(s)
@@ -98,7 +98,7 @@ class Instance(MasterRunnable):
 
   def after_server_starts(self):
     if cechomesh.LOADED:
-      run_after(self.run, Expression.convert(Config.get('delay_before_run')))
+      run_after(self.run, Expression.convert(Settings.get('delay_before_run')))
     else:
       self.run()
       if self.display:

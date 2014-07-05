@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Platform
 
 try:
@@ -28,4 +28,3 @@ def on_gpio(callback, number, pull_up, bounce_time):
   GPIO.setup(number, GPIO.IN, pull_up_down=pull_up_down)
   GPIO.add_event_detect(number, GPIO.RISING, callback=callback,
                         bouncetime = bounce_time)
-

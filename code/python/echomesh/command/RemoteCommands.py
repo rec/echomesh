@@ -4,7 +4,7 @@ import os
 import os.path
 import sys
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Path
 from echomesh.command import Registry
 from echomesh.remote import RemoteRegistry
@@ -26,7 +26,7 @@ INITIALIZE_ENABLED = False
 def _remote(function):
   def f(echomesh_instance, **_):
     name = function.__name__.strip('_')
-    if Config.get('permission', name):
+    if Settings.get('permission', name):
       function(echomesh_instance)
     else:
       LOGGER.error("You don't have permission to run '%s'.", name)
@@ -117,4 +117,4 @@ def _close_and_run(_, msg, cmd):
     _halt(cmd)
 
 def _allowed(operation):
-  return Config.get('permission', operation)
+  return Settings.get('permission', operation)

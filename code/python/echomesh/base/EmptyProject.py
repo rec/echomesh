@@ -1,19 +1,19 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-_CONFIG = """\
-# This is your master config file.
-# Put your configuration settings here.
+_SETTINGS = """\
+# This is your master settings file.
+# Put your settings here.
 """
 
 _README = """\
 This is an empty echomesh directory.
 
 Put your sound or image files in asset/image or asset/audio.
-Put your configurations in data/master/config.yml
+Put your settings in data/master/settings.yml
 """
 
 _NAME = """\
-# This is where you store configurations and scores that are only
+# This is where you store settings and scores that are only
 # used on this specific machine, %s.
 """
 
@@ -35,7 +35,7 @@ EMPTY_PROJECT = {
 
   'data': {
     'master': {
-      'config': { 'config.yml':  _CONFIG, },
+      'settings': { 'settings.yml':  _SETTINGS, },
       'output': None,
       'pattern': None,
       'scene': None,

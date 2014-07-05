@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.util import Log
 from echomesh.util import TestSuperuser
 
@@ -95,6 +95,6 @@ _LIGHTS_ENABLED = None
 def lights_enabled(prompt_to_fix=False):
   global _LIGHTS_ENABLED
   if _LIGHTS_ENABLED is None:
-    _LIGHTS_ENABLED = (Config.get('light', 'enable')
+    _LIGHTS_ENABLED = (Settings.get('light', 'enable')
                        and _test_spi(prompt_to_fix)) or False
   return _LIGHTS_ENABLED

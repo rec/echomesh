@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import os.path
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Path
 from echomesh.util import Log
 from echomesh.util.dict.PersistentDict import PersistentDict
@@ -19,9 +19,9 @@ class Aliases(object):
   DICT = None
 
   def __init__(self):
-    Config.add_client(self)
+    Settings.add_client(self)
 
-  def config_update(self, get):
+  def settings_update(self, get):
     if get('aliases', 'save_with_project'):
       filename = os.path.join(Path.project_path(), ALIAS_FILE_NAME)
     else:

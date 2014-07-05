@@ -67,13 +67,13 @@ class ValueRoot(object):
     return element
 
 
-class Configuration(ValueRoot):
+class Settings(ValueRoot):
   def _evaluate(self, parts, evaluator, element):
-    from echomesh.base import Config
-    return Config.get(*parts)
+    from echomesh.base import Settings
+    return Settings.get(*parts)
 
   def _is_constant(self, parts, element):
-    return False  # TODO: it's inefficient that Configs are non-constant.
+    return False  # TODO: it's inefficient that Settings are non-constant.
 
 
 class Element(ValueRoot):
@@ -114,5 +114,5 @@ class System(ValueRoot):
   def _is_constant(self, parts, element):
     return self._get_system(parts).is_constant
 
-for c in Configuration, Element, Function, Global, Local, Parent, System:
+for c in Settings, Element, Function, Global, Local, Parent, System:
   _REGISTRY.register(c(), c.__name__)

@@ -6,7 +6,7 @@ import yaml
 
 from six.moves import queue
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Yaml
 from echomesh.expression import Expression
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -30,9 +30,9 @@ class Socket(MasterRunnable):
     self.buffer = ''
     self.queue = queue.Queue()
     self.max_size = MAX_SIZE
-    Config.add_client(self)
+    Settings.add_client(self)
 
-  def config_update(self, get):
+  def settings_update(self, get):
     self.timeout = Expression.convert(get('network', 'timeout'))
     self.retries = get('network', 'startup', 'retries')
     self.retry_timeout = get('network', 'startup', 'timeout')

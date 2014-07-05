@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import OSC
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.expression import Expression
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -12,9 +12,9 @@ LOGGER = Log.logger(__name__)
 
 class OscClient(ThreadRunnable):
   def __init__(self):
-    Config.add_client(self)
+    Settings.add_client(self)
 
-  def config_update(self, get):
+  def settings_update(self, get):
     port = get('osc', 'client', 'port')
     host = get('osc', 'client', 'host')
     if self.port != port or self.host != host:
@@ -29,10 +29,10 @@ class OscClient(ThreadRunnable):
     self.client = None
     self.port = None
     self.host = None
-    Config.add_client(self)
+    Settings.add_client(self)
 
   def _on_pause(self):
-    Config.remove_client(self)
+    Settings.remove_client(self)
     super(OscClient, self)._on_pause()
     self.client.close()
     self.client = None
@@ -43,9 +43,9 @@ class OscServer(ThreadRunnable):
     super(OscServer, self).__init__()
     self.server = None
     self.port = None
-    Config.add_client(self)
+    Settings.add_client(self)
 
-  def config_update(self, get):
+  def settings_update(self, get):
     port = get('osc', 'server', 'port')
     if port == self.port:
       return

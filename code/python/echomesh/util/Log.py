@@ -44,8 +44,8 @@ def _add_new_levels():
   logging.Logger.vdebug = vdebug
   logging.VDEBUG = VDEBUG
 
-class _ConfigClient(object):
-  def config_update(self, get):
+class _SettingsClient(object):
+  def settings_update(self, get):
     get = get or (lambda *x: None)
     self.debug = FORCE_DEBUG or get('debug')
     self.stack_traces = self.debug or get('diagnostics', 'stack_traces')
@@ -74,11 +74,11 @@ class _ConfigClient(object):
 
 def _reconfigure():
   try:
-    from echomesh.base import Config
+    from echomesh.base import Settings
   except:
-    _CONFIG.config_update(None)
+    _SETTINGS.settings_update(None)
   else:
-    Config.add_client(_CONFIG)
+    Settings.add_client(_SETTINGS)
 
 def _make_logger(logger, name):
   original_logger = getattr(logger, name)
@@ -99,25 +99,25 @@ def _make_logger(logger, name):
       exc_info = False
       if exc_type:
         message = '%s %s' % (exc_value, message)
-        exc_info = kwds.get('exc_info', _CONFIG.stack_traces)
+        exc_info = kwds.get('exc_info', _SETTINGS.stack_traces)
         kwds['exc_info'] = exc_info
-      if not _CONFIG.filename:
+      if not _SETTINGS.filename:
         message = 'ERROR: %s\n\n' % message
     original_logger(message, *args, **kwds)
 
   setattr(logger, name, new_logger)
   return new_logger
 
-_CONFIG = None
+_SETTINGS = None
 
 def _configure():
-  global _CONFIG, _LOGGER
-  if not _CONFIG:
+  global _SETTINGS, _LOGGER
+  if not _SETTINGS:
     _add_new_levels()
-    _CONFIG = _ConfigClient()
+    _SETTINGS = _SettingsClient()
     _reconfigure()
     _LOGGER = logger(__name__)
-    _LOGGER.debug('\nLog level is %s', _CONFIG.log_level)
+    _LOGGER.debug('\nLog level is %s', _SETTINGS.log_level)
 
 _LOGGER_NAMES = 'vdebug', 'debug', 'error', 'warning', 'info'
 
@@ -146,4 +146,3 @@ def set_stream(stream):
   global _STREAM
   _STREAM = stream
   _reconfigure()
-

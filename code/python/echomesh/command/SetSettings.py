@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.base import Config
+from echomesh.base import Settings
 from echomesh.base import Leafs
 from echomesh.base import Yaml
 from echomesh.command import Registry
@@ -10,20 +10,20 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def set_config(_, *values):
+def set_settings(_, *values):
   if values:
-    assignment = Leafs.leafs(Config.assign(values))
+    assignment = Leafs.leafs(Settings.assign(values))
     for address, value in six.iteritems(assignment):
       LOGGER.info('Set %s=%s', '.'.join(address), value)
-    Config.update_clients()
-  elif Config.MERGE_CONFIG.has_changes():
-    LOGGER.info(Yaml.encode_one(dict(Config.MERGE_CONFIG.get_changes())))
+    Settings.update_clients()
+  elif Settings.MERGE_SETTINGS.has_changes():
+    LOGGER.info(Yaml.encode_one(dict(Settings.MERGE_SETTINGS.get_changes())))
   else:
     LOGGER.info('You have made no changes.')
 
 SET_HELP = """
-  Sets one or more configuration variables.  These changes are only present in
-  memory and will be lost when the program ends - you need to use config save
+  Sets one or more settings variables.  These changes are only present in
+  memory and will be lost when the program ends - you need to use settings save
   to make them permanent.
 
 Examples:
@@ -31,4 +31,4 @@ Examples:
   set speed=10% light.period=40ms
 """
 
-Registry.registry().register(set_config, 'set', SET_HELP)
+Registry.registry().register(set_settings, 'set', SET_HELP)

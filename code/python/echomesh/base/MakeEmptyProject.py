@@ -33,7 +33,7 @@ def _make_empty_project(path):
   """Make an empty echomesh project at this path."""
   ep = copy.deepcopy(EmptyProject.EMPTY_PROJECT)
   name_text = _NAME % Name.NAME
-  ep['data']['name'][Name.NAME] = {'config.yml': name_text, 'score': None}
+  ep['data']['name'][Name.NAME] = {'settings.yml': name_text, 'score': None}
   _make(path, ep)
   print(_CLOSING_MESSAGE)
 
@@ -67,4 +67,3 @@ def ask_to_make_empty_project(path):
   else:
     print(_MISSING_DIRECTORY_ERROR % path)
     return False
-

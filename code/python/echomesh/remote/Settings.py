@@ -7,10 +7,9 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-def config(_, scope, cfg):
-  f = DataFile.config_file(scope)
-  configs = Yaml.read(f) + [cfg]
-  Yaml.write(f, Merge.merge(*configs))
+def settings(_, scope, cfg):
+  f = DataFile.settings_file(scope)
+  settings = Yaml.read(f) + [cfg]
+  Yaml.write(f, Merge.merge(*settings))
   # TODO: needs to propagate!
-  LOGGER.info('Changing configuration for %s', scope)
-
+  LOGGER.info('Changing settings for %s', scope)
