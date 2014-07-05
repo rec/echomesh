@@ -13,11 +13,12 @@ from echomesh.util.string.Split import split_on_commas
 
 LOGGER = Log.logger(__name__)
 
+class PatternException(Exception):
+  pass
+
 class Pattern(object):
   SETTINGS = {}
-
   HELP = ''
-
   PATTERN_COUNT = None
 
   def __init__(self, desc, element, name):
@@ -74,9 +75,17 @@ class Pattern(object):
 
   def get(self, name):
     if self._in_precompute and name not in self.constants:
-      raise Exception('Tried to use non-constant value %s in initialization' %
-                      name)
+      raise PatternException(
+          'Tried to use non-constant value %s in initialization' % name)
     return self.dictionary[name].evaluate()
+
+  def get_raw(self, name):
+    try:
+      return self.get(name)
+    except PatternException:
+      raise
+    except:
+      return getattr(self.dictionary[name], 'original_expression')
 
   def get_dict(self, *names):
     return dict((name, self.get(name)) for name in names)

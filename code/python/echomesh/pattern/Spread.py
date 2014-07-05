@@ -43,7 +43,8 @@ class Spread(Pattern):
   PATTERN_COUNT = 0
 
   def _evaluate(self):
-    colors, error_colors = cechomesh.color_list_with_errors(self.get('colors'))
+    color_names = self.get_raw('colors')
+    colors, error_colors = cechomesh.color_list_with_errors(color_names)
     if error_colors:
       raise Exception('\nCan\'t understand %s: %s.' % (
           plural(len(error_colors), 'color'), ', '.join(error_colors)))
