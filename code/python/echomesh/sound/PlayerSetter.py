@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import traceback
+
 from echomesh.sound import Util
 from echomesh.expression import Expression
 from echomesh.util import Log

@@ -42,20 +42,18 @@ class Cache(object):
   def _get_file_and_new_contents(self, key):
     filename = self.manifest.get(key)
     contents = None
-    if not filename:
-      fileroot = self._key_to_file(key)
-      filename = os.path.join(self.cachedir, fileroot)
-      with open(filename, 'wb') as f:
-        contents = self._get_file_contents(key)
-        f.write(contents)
+    if filename and os.path.exists(filename):
+      return os.path.join(self.cachedir, filename), None
 
-      self.manifest[key] = fileroot
-      Yaml.write(self.manifest_file, self.manifest)
-    else:
-      filename = os.path.join(self.cachedir, filename)
+    fileroot = self._key_to_file(key)
+    filename = os.path.join(self.cachedir, fileroot)
+    with open(filename, 'wb') as f:
+      contents = self._get_file_contents(key)
+      f.write(contents)
 
+    self.manifest[key] = fileroot
+    Yaml.write(self.manifest_file, self.manifest)
     return filename, contents
 
   def _key_to_file(self, key):
     return _SPACES.sub('-', _BAD_CHARS.sub('', key.lower())) + self.suffix
-
