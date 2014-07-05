@@ -7,8 +7,6 @@ from echomesh.util.registry.Registry import Registry
 
 _REGISTRY = Registry('expression values')
 
-DO_RAISE = True
-
 def _get_value_function(value):
    parts = value.split('.')
    if len(parts) == 1:
@@ -25,6 +23,9 @@ def evaluate(value, evaluator, element):
   value_class, parts = _get_value_function(value)
   return value_class.evaluate(parts, evaluator, element)
 
+class ValueException(Exception):
+  pass
+
 class ValueRoot(object):
   def _get_function(self, parts, element):
     element = self._get_element(parts, element)
@@ -34,27 +35,27 @@ class ValueRoot(object):
     try:
       return element.variables[variable]
     except Exception as e:
-      raise Exception(self._error(parts + [variable], e))
+      self._error('No such', parts + [variable], e)
 
-  def _error(self, parts, exception):
-    return ('No such %s variable "%s"' %
-            (self.__class__.__name__.lower(), '.'.join(parts)))
+  def _error(self, message, parts, exception):
+    if isinstance(exception, ValueException):
+      raise
+    exception = (exception and str(exception)) or ''
+    raise ValueException('%s %s variable "%s" %s' %
+                (message, self.__class__.__name__.lower(), '.'.join(parts),
+                exception))
 
   def evaluate(self, parts, evaluator, element):
     try:
       return self._evaluate(parts, evaluator, element)
     except Exception as e:
-      if DO_RAISE:
-        raise
-      raise Exception(self._error(parts, e))
+      self._error("Can't evaluate", parts, e)
 
   def is_constant(self, parts, element):
     try:
       return self._is_constant(parts, element)
     except Exception as e:
-      if DO_RAISE:
-        raise
-      raise Exception(self._error(parts, e))
+      self._error("Can't evaluate", parts, e)
 
   def _evaluate(self, parts, evaluator, element):
     return self._get_function(parts, element).evaluate()
@@ -65,6 +66,7 @@ class ValueRoot(object):
   def _get_element(self, parts, element):
     return element
 
+
 class Configuration(ValueRoot):
   def _evaluate(self, parts, evaluator, element):
     from echomesh.base import Config
@@ -73,9 +75,11 @@ class Configuration(ValueRoot):
   def _is_constant(self, parts, element):
     return False  # TODO: it's inefficient that Configs are non-constant.
 
+
 class Element(ValueRoot):
   def _get_element(self, parts, element):
     return element.get_root()
+
 
 class Function(ValueRoot):
   def _evaluate(self, parts, evaluator, element):
@@ -85,13 +89,16 @@ class Function(ValueRoot):
   def _is_constant(self, parts, element):
     return True
 
+
 class Global(ValueRoot):
   def _get_element(self, parts, element):
     from echomesh.element import ScoreMaster
     return ScoreMaster.INSTANCE.get_prefix(parts.pop(0))[1]
 
+
 class Local(ValueRoot):
   pass
+
 
 class Parent(ValueRoot):
   def _get_element(self, parts, element):
