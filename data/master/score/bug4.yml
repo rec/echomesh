@@ -1,0 +1,32 @@
+type: sequence
+
+variables:
+  xyzzy:
+    type: counter
+    count:  2
+    period: 1/2 second
+
+pattern:
+  eins:
+    type: choose
+    choose: local.xyzzy
+    pattern:
+      -
+        type: insert
+        offset: 32
+        pattern:
+          type: spread
+          colors: [green, green]
+          steps: 32
+      -
+        type: insert
+        pattern:
+          type: spread
+          colors: [green, green]
+          steps: 32
+
+elements:
+  -
+    end: infinite
+    type: pattern
+    pattern: one-reverse
