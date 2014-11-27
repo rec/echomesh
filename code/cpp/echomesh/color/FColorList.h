@@ -63,7 +63,7 @@ class FColorList : public vector<FColor> {
     return result;
   }
 
-  size_t index(const FColor& c) const {
+  int index(const FColor& c) const {
     auto i = std::find(begin(), end(), c);
     return i == end() ? -1 : i - begin();
   }
