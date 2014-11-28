@@ -17,4 +17,3 @@ COMMANDS = {
     Platform.RASPBERRY_PI: _RASPBERRY_PI_BUILD + 'clean'
   },
 }
-

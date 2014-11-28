@@ -15,35 +15,35 @@ REGISTRY = Registry.Registry('transforms')
 # such that f0(f1(x)) = f1(f0(x)) = x
 
 def inverse(x):
-  return x[1], x[0]
+    return x[1], x[0]
 
 def identity(x):
-  return x
+    return x
 
 def reverse(x):
-  return 1.0 - x
+    return 1.0 - x
 
 def square(x):
-  return x * x
+    return x * x
 
 def power(n):
-  def pwr(x):
-    return pow(x, n)
-  def pwr_inverse(x):
-    return pow(x, 1.0 / n)
-  return pwr, pwr_inverse
+    def pwr(x):
+        return pow(x, n)
+    def pwr_inverse(x):
+        return pow(x, 1.0 / n)
+    return pwr, pwr_inverse
 
 def sine(x):
-  return (1 + math.sin(math.pi * (x - 0.5))) / 2
+    return (1 + math.sin(math.pi * (x - 0.5))) / 2
 
 def arcsine(x):
-  return 0.5 + math.asin(2 * x - 1) / math.pi
+    return 0.5 + math.asin(2 * x - 1) / math.pi
 
 def exp(x):
-  return (math.exp(x) - 1) / (math.e - 1)
+    return (math.exp(x) - 1) / (math.e - 1)
 
 def log(x):
-  return math.log((math.e - 1) * x + 1)
+    return math.log((math.e - 1) * x + 1)
 
 IDENTITY = identity, identity
 SQUARE = square, math.sqrt
@@ -95,33 +95,33 @@ The inverse of the "square" transform, this acccelerates rapidly at
 the start and then slows down as it approaches 1.0.""")
 
 def compose(f, g):
-  ff, fi = f
-  gg, gi = g
+    ff, fi = f
+    gg, gi = g
 
-  def composed_function(x):
-    return gg(ff(x))
+    def composed_function(x):
+        return gg(ff(x))
 
-  def composed_function_inverse(x):
-    return fi(gi((x)))
+    def composed_function_inverse(x):
+        return fi(gi((x)))
 
-  return composed_function, composed_function_inverse
+    return composed_function, composed_function_inverse
 
 def transform(name):
-  if name:
-    result = None
-    parts = name.split('.')
-    for part in parts:
-      try:
-        transform = REGISTRY.function(part)
-      except:
-        LOGGER.error("Transform: bad part %s in name %s.", part, name)
-        break
-      if transform is inverse:
-        if not result:
-          LOGGER("Can't start a transform with inverse: %s" % name)
-          break
-        result = inverse(result)
-      else:
-        result = compose(result, transform) if result else transform
+    if name:
+        result = None
+        parts = name.split('.')
+        for part in parts:
+            try:
+                transform = REGISTRY.function(part)
+            except:
+                LOGGER.error("Transform: bad part %s in name %s.", part, name)
+                break
+            if transform is inverse:
+                if not result:
+                    LOGGER("Can't start a transform with inverse: %s" % name)
+                    break
+                result = inverse(result)
+            else:
+                result = compose(result, transform) if result else transform
 
-  return IDENTITY
+    return IDENTITY

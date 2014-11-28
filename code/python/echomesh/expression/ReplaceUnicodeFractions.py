@@ -23,8 +23,7 @@ _TRANSLATION_TABLE = {
   }
 
 def replace_unicode_fractions(s):
-  if isinstance(s, six.string_types):
-    for k, v in six.iteritems(_TRANSLATION_TABLE):
-      s = s.replace(k, v)
-  return s
-
+    if isinstance(s, six.string_types):
+        for k, v in six.iteritems(_TRANSLATION_TABLE):
+            s = s.replace(k, v)
+    return s

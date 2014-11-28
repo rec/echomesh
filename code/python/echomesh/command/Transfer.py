@@ -17,62 +17,64 @@ on this network, replacing whatever is there (y/N)?
 _TRANSFER_ALL_FILES = True
 
 def transfer(echomesh_instance, *path):
-  if not path:
-    LOGGER.info(_TRANSFER_PROMPT)
-    if not raw_input().lower().startswith('y'):
-      LOGGER.info('Transfer cancelled.')
-      return
-    path = ['*']
-  if '*' in path or '.' in path:
-    path = ['']
+    if not path:
+        LOGGER.info(_TRANSFER_PROMPT)
+        if not raw_input().lower().startswith('y'):
+            LOGGER.info('Transfer cancelled.')
+            return
+        path = ['*']
+    if '*' in path or '.' in path:
+        path = ['']
 
-  files, directories = _get_files_to_transfer(path)
+    files, directories = _get_files_to_transfer(path)
 
-  s = '' if len(files) is 1 else 's'
-  LOGGER.info('Transferred %d file%s.', len(files), s)
-  echomesh_instance.send(type='transfer',
-                         directories=sorted(directories),
-                         files=files)
+    s = '' if len(files) is 1 else 's'
+    LOGGER.info('Transferred %d file%s.', len(files), s)
+    echomesh_instance.send(type='transfer',
+                           directories=sorted(directories),
+                           files=files)
 
 def _get_files_to_transfer(path):
-  files = set()
-  directories = set()
+    files = set()
+    directories = set()
 
-  for p in path:
-    f = os.path.join(Path.data_path(), p)
-    if not os.path.exists(f):
-      raise Exception("Command file %s doesn't exist.", f)
-    walk = os.walk(f)
-    if walk:
-      directories.add(p)
-      for root, _, fs in walk:
-        if not root.startswith('.'):
-          for ffs in fs:
-            if _TRANSFER_ALL_FILES or DataFileName.has_extension(ffs):
-              files.add(os.path.join(Path.data_path(), root, ffs))
-      LOGGER.vdebug('Transferring directory %s', p)
-    else:
-      LOGGER.vdebug('Transferring file %s', p)
-      files.add(f)
+    for p in path:
+        f = os.path.join(Path.data_path(), p)
+        if not os.path.exists(f):
+            raise Exception("Command file %s doesn't exist.", f)
+        walk = os.walk(f)
+        if walk:
+            directories.add(p)
+            for root, _, fs in walk:
+                if not root.startswith('.'):
+                    for ffs in fs:
+                        if (_TRANSFER_ALL_FILES or
+                            DataFileName.has_extension(ffs)):
+                            files.add(os.path.join(Path.data_path(), root, ffs))
+            LOGGER.vdebug('Transferring directory %s', p)
+        else:
+            LOGGER.vdebug('Transferring file %s', p)
+            files.add(f)
 
-  return _get_files_table(files), directories
+    return _get_files_table(files), directories
 
 def _get_files_table(files):
-  files_table = {}
-  files = sorted(files)
-  for f in files:
-    stat = os.stat(f)
-    contents = None
-    try:
-      with open(f, 'rb') as fs:
-        contents = fs.read()
-    except:
-      LOGGER.error('Got an unexpected error reading a file %s', f, exc_info=1)
-    else:
-      files_table[f] = {'contents': contents,
-                        'atime': stat.st_atime,
-                        'mtime': stat.st_mtime}
-  return files_table
+    files_table = {}
+    files = sorted(files)
+    for f in files:
+        stat = os.stat(f)
+        contents = None
+        try:
+            with open(f, 'rb') as fs:
+                contents = fs.read()
+        except:
+            LOGGER.error('Got an unexpected error reading a file %s', f,
+                         exc_info=1)
+        else:
+            files_table[f] = {'contents': contents,
+                              'atime': stat.st_atime,
+                              'mtime': stat.st_mtime}
+    return files_table
 
 
 HELP = """

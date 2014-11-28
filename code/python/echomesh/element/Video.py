@@ -23,11 +23,11 @@ BINARY = {
 }
 
 class Video(Execute):
-  def __init__(self, parent, desc):
-    desc['args'] = desc['args'] or ARGS.get(Platform.PLATFORM)
-    desc['binary'] = desc.get('binary') or BINARY.get(Platform.PLATFORM)
-    if not desc['binary']:
-      raise Exception("Couldn't locate video binary for platform %s",
-                      Platform.PLATFORM)
+    def __init__(self, parent, desc):
+        desc['args'] = desc['args'] or ARGS.get(Platform.PLATFORM)
+        desc['binary'] = desc.get('binary') or BINARY.get(Platform.PLATFORM)
+        if not desc['binary']:
+            raise Exception("Couldn't locate video binary for platform %s",
+                            Platform.PLATFORM)
 
-    super(Video, self).__init__(parent, desc)
+        super(Video, self).__init__(parent, desc)

@@ -1,4 +1,3 @@
-
 """
 Represent a set of variables in an Element.
 
@@ -21,36 +20,37 @@ REGISTRY = Registry.Registry('variable classes')
 INFINITY = float('inf')
 
 class _Counter(object):
-  def __init__(self, element, period, begin=None, end=None, count=None, skip=1,
-               repeat=INFINITY, **kwds):
-    parts = [Expression.convert(x, element) for x in (count, begin, end, skip)]
-    self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
+    def __init__(self, element, period, begin=None, end=None, count=None,
+                 skip=1, repeat=INFINITY, **kwds): 
+        parts = [
+            Expression.convert(x, element) for x in (count, begin, end, skip)]
+        self.count, self.begin, self.end, self.skip = Interval.interval(*parts)
 
-    self.element = element
-    self.period = Expression.convert(period, element)
-    self.repeat = repeat
-    if kwds:
-      LOGGER.error('Unknown keywords "%s" for counter', kwds)
+        self.element = element
+        self.period = Expression.convert(period, element)
+        self.repeat = repeat
+        if kwds:
+            LOGGER.error('Unknown keywords "%s" for counter', kwds)
 
-  def is_constant(self):
-    return self.count <= 1
+    def is_constant(self):
+        return self.count <= 1
 
-  def evaluate(self):
-    if self.is_constant():
-      return self.begin
+    def evaluate(self):
+        if self.is_constant():
+            return self.begin
 
-    count = int(UnitSettings.get('speed') * self.element.elapsed_time() //
-                self.period)
-    if self.count != INFINITY:
-      repeat = count // self.count
-      if repeat >= self.repeat:
-        return self.end
-      count -= repeat * self.count
-    value = self.begin + self.skip * count
-    return value
+        count = int(UnitSettings.get('speed') * self.element.elapsed_time() //
+                    self.period)
+        if self.count != INFINITY:
+            repeat = count // self.count
+            if repeat >= self.repeat:
+                return self.end
+            count -= repeat * self.count
+        value = self.begin + self.skip * count
+        return value
 
 def _counter(description, element):
-  return _Counter(element, **description)
+    return _Counter(element, **description)
 
 REGISTRY.register_all(
   counter=_counter,
@@ -59,11 +59,11 @@ REGISTRY.register_all(
   )
 
 def variable(description, element):
-  if not isinstance(description, dict):
-    return UnitExpression(description, element)
+    if not isinstance(description, dict):
+        return UnitExpression(description, element)
 
-  description = copy.copy(description)
-  vtype = description.pop('type', None)
-  if not vtype:
-    raise Exception('No type in variable, description="%s".' % description)
-  return REGISTRY.function(vtype)(description, element)
+    description = copy.copy(description)
+    vtype = description.pop('type', None)
+    if not vtype:
+        raise Exception('No type in variable, description="%s".' % description)
+    return REGISTRY.function(vtype)(description, element)

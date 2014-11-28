@@ -24,61 +24,61 @@ DEFAULT_SHELL = '/bin/bash'
 INITIALIZE_ENABLED = False
 
 def _remote(function):
-  def f(echomesh_instance, **_):
-    name = function.__name__.strip('_')
-    if Settings.get('permission', name):
-      function(echomesh_instance)
-    else:
-      LOGGER.error("You don't have permission to run '%s'.", name)
-  return f
+    def f(echomesh_instance, **_):
+        name = function.__name__.strip('_')
+        if Settings.get('permission', name):
+            function(echomesh_instance)
+        else:
+            LOGGER.error("You don't have permission to run '%s'.", name)
+    return f
 
 def _local(function, name):
-  local_fn = _remote(function)
-  def f(echomesh_instance):
-    if echomesh_instance.broadcasting():
-      echomesh_instance.send(type=name)
-    else:
-      local_fn(echomesh_instance)
-  return f
+    local_fn = _remote(function)
+    def f(echomesh_instance):
+        if echomesh_instance.broadcasting():
+            echomesh_instance.send(type=name)
+        else:
+            local_fn(echomesh_instance)
+    return f
 
 def _boot(echomesh_instance):
-  _close_and_run(echomesh_instance, 'Rebooting', RESTART_CMD)
+    _close_and_run(echomesh_instance, 'Rebooting', RESTART_CMD)
 
 def _exec(_, cmd):
-  result, code = Subprocess.run(cmd)
-  if code:
-    LOGGER.error('%s (%d)', result, code)
-  else:
-    LOGGER.info('%s', result)
+    result, code = Subprocess.run(cmd)
+    if code:
+        LOGGER.error('%s (%d)', result, code)
+    else:
+        LOGGER.info('%s', result)
 
 def _halt(echomesh_instance):
-  _close_and_run(echomesh_instance, 'Halting this machine', HALT_CMD)
+    _close_and_run(echomesh_instance, 'Halting this machine', HALT_CMD)
 
 def _initialize(echomesh_instance):
-  if INITIALIZE_ENABLED:
-    echomesh_instance.pause()
-    shell = os.getenv('SHELL', DEFAULT_SHELL)
-    LOGGER.info('Echomesh is restarting.')
-    os.execl(shell, shell, *sys.argv)
-  else:
-    _quit(echomesh_instance)
+    if INITIALIZE_ENABLED:
+        echomesh_instance.pause()
+        shell = os.getenv('SHELL', DEFAULT_SHELL)
+        LOGGER.info('Echomesh is restarting.')
+        os.execl(shell, shell, *sys.argv)
+    else:
+        _quit(echomesh_instance)
 
 def _quit(_):
-  Quit.request_quit()
-  return True
+    Quit.request_quit()
+    return True
 
 def _update(echomesh_instance):
-  LOGGER.info('Pulling latest codebase from github.')
-  directory = os.getcwd()
+    LOGGER.info('Pulling latest codebase from github.')
+    directory = os.getcwd()
 
-  try:
-    os.chdir(Path.echomesh_path())
-    Git.run_git_commands(GIT_UPDATE)
-    _initialize(echomesh_instance)
-    if not INITIALIZE_ENABLED:
-      LOGGER.info('Please restart echomesh to see the updated changes.')
-  finally:
-    os.chdir(directory)
+    try:
+        os.chdir(Path.echomesh_path())
+        Git.run_git_commands(GIT_UPDATE)
+        _initialize(echomesh_instance)
+        if not INITIALIZE_ENABLED:
+            LOGGER.info('Please restart echomesh to see the updated changes.')
+    finally:
+        os.chdir(directory)
 
 _UPDATE_HELP = """
 The "update" command updates the echomesh code to the latest version in github.
@@ -92,10 +92,11 @@ at the echomesh prompt and everything should proceed automatically.
 """
 
 def _register():
-  for cmd, help_text, see_also in COMMANDS:
-    name = cmd.__name__.strip('_')
-    Registry.registry().register(_local(cmd, name), name, help_text, see_also)
-    RemoteRegistry.register(_remote(cmd), name)
+    for cmd, help_text, see_also in COMMANDS:
+        name = cmd.__name__.strip('_')
+        Registry.registry().register(
+            _local(cmd, name), name, help_text, see_also)
+        RemoteRegistry.register(_remote(cmd), name)
 
 COMMANDS = [
   (_boot, 'Reboot this machine or all machines.', ['initialize', 'halt']),
@@ -110,11 +111,11 @@ COMMANDS = [
 _register()
 
 def _close_and_run(_, msg, cmd):
-  LOGGER.info(msg)
-  if _allowed('shutdown'):
-    Subprocess.run(cmd)
-  if _allowed('halt'):
-    _halt(cmd)
+    LOGGER.info(msg)
+    if _allowed('shutdown'):
+        Subprocess.run(cmd)
+    if _allowed('halt'):
+        _halt(cmd)
 
 def _allowed(operation):
-  return Settings.get('permission', operation)
+    return Settings.get('permission', operation)

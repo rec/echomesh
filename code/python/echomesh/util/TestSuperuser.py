@@ -13,5 +13,5 @@ Please rerun it as follows:
 """
 
 def test_superuser(reason, program_name='echomesh'):
-  if os.geteuid():
-    raise Exception(PERM_ERROR % (program_name, reason, ' '.join(sys.argv)))
+    if os.geteuid():
+        raise Exception(PERM_ERROR % (program_name, reason, ' '.join(sys.argv)))

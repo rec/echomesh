@@ -14,31 +14,32 @@ _ARGS = {'stdin': subprocess.PIPE,
          'stderr': subprocess.PIPE}
 
 class Execute(Element.Element):
-  def __init__(self, parent, description):
-    super(Execute, self).__init__(parent, description)
-    args = description.get('args', [])
-    if not isinstance(args, list):
-      args = [args]
-    self.command_line = [description['binary']] + args
-    LOGGER.debug('Command Line: %s' % self.command_line)
+    def __init__(self, parent, description):
+        super(Execute, self).__init__(parent, description)
+        args = description.get('args', [])
+        if not isinstance(args, list):
+            args = [args]
+        self.command_line = [description['binary']] + args
+        LOGGER.debug('Command Line: %s' % self.command_line)
 
-  def _on_run(self):
-    super(Execute, self)._on_run()
-    self.process = subprocess.Popen(self.command_line, stdout=subprocess.PIPE)
-    Quit.register_atexit(self.pause)
+    def _on_run(self):
+        super(Execute, self)._on_run()
+        self.process = subprocess.Popen(
+            self.command_line, stdout=subprocess.PIPE)
+        Quit.register_atexit(self.pause)
 
-    result = self.process.stdout.read()
-    if not self.process.returncode:
-      LOGGER.debug('Successful completion!')  # Send out a message.
-    self.process = None
-    self.pause()
+        result = self.process.stdout.read()
+        if not self.process.returncode:
+            LOGGER.debug('Successful completion!')  # Send out a message.
+        self.process = None
+        self.pause()
 
-  def _on_pause(self):
-    Quit.unregister_atexit(self.pause)
-    super(Execute, self)._on_pause()
-    if self.process:
-      try:
-        self.process.kill()
-      except:
-        pass
-      self.process = None
+    def _on_pause(self):
+        Quit.unregister_atexit(self.pause)
+        super(Execute, self)._on_pause()
+        if self.process:
+            try:
+                self.process.kill()
+            except:
+                pass
+            self.process = None

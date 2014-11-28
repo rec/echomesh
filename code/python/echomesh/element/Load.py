@@ -10,24 +10,22 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def load_one_element(parent, description):
-  description = Access(resolve_extensions(description))
-  t = description.get('type', '').lower()
-  if not t:
-    raise Exception('No type field in element %s' % description)
+    description = Access(resolve_extensions(description))
+    t = description.get('type', '').lower()
+    if not t:
+        raise Exception('No type field in element %s' % description)
 
-  try:
-    element = REGISTRY.function(t)(parent, description)
-  except PrefixException:
-    raise Error.UnknownElement('There is no element type named "%s".' % t)
+    try:
+        element = REGISTRY.function(t)(parent, description)
+    except PrefixException:
+        raise Error.UnknownElement('There is no element type named "%s".' % t)
 
-  # element.add_elements()
+    # element.add_elements()
 
-  Error.not_accessed(LOGGER, element, description.not_accessed(), t)
-  return element
+    Error.not_accessed(LOGGER, element, description.not_accessed(), t)
+    return element
 
 def load_elements(parent, descriptions):
-  if not isinstance(descriptions, (list, tuple)):
-    descriptions = [descriptions]
-  return [load_one_element(parent, d) for d in descriptions]
-
-
+    if not isinstance(descriptions, (list, tuple)):
+        descriptions = [descriptions]
+    return [load_one_element(parent, d) for d in descriptions]

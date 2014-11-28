@@ -8,57 +8,57 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class MasterRunnable(Runnable):
-  """A Runnable that controls a list of other runnables.
-  """
-  def __init__(self):
-    super(MasterRunnable, self).__init__()
-    self.runnables = LockedList()
-    self.pausables = LockedList()
-    self.joinables = LockedList()
+    """A Runnable that controls a list of other runnables.
+    """
+    def __init__(self):
+        super(MasterRunnable, self).__init__()
+        self.runnables = LockedList()
+        self.pausables = LockedList()
+        self.joinables = LockedList()
 
-  def add_slave(self, *slaves):
-    """Adds one or more slaves - Runnables that run, pause and join
-    when this one does."""
-    self.runnables.add(*slaves)
-    self.pausables.add(*slaves)
-    self.joinables.add(*slaves)
+    def add_slave(self, *slaves):
+        """Adds one or more slaves - Runnables that run, pause and join
+        when this one does."""
+        self.runnables.add(*slaves)
+        self.pausables.add(*slaves)
+        self.joinables.add(*slaves)
 
-  def add_pause_only_slave(self, *slaves):
-    self.pausables.add(*slaves)
-    self.joinables.add(*slaves)
+    def add_pause_only_slave(self, *slaves):
+        self.pausables.add(*slaves)
+        self.joinables.add(*slaves)
 
-  def remove_slave(self, *slaves):
-    self.runnables.remove(*slaves)
-    self.pausables.remove(*slaves)
-    self.joinables.remove(*slaves)
+    def remove_slave(self, *slaves):
+        self.runnables.remove(*slaves)
+        self.pausables.remove(*slaves)
+        self.joinables.remove(*slaves)
 
-  def add_mutual_pause_slave(self, *clients):
-    self.add_slave(*clients)
-    for c in clients:
-      if c:
-        c.pausables.add(self)
+    def add_mutual_pause_slave(self, *clients):
+        self.add_slave(*clients)
+        for c in clients:
+            if c:
+                c.pausables.add(self)
 
-  def run(self):
-    super(MasterRunnable, self).run()
-    self.runnables.foreach('run')
+    def run(self):
+        super(MasterRunnable, self).run()
+        self.runnables.foreach('run')
 
-  def pause(self):
-    try:
-      if self.is_running:
-        self.is_running = False
-        self.pausables.foreach('pause')
-        self.is_running = True
-      super(MasterRunnable, self).pause()
-    except:
-      if Quit.QUITTING:
-        LOGGER.error('')
-      else:
-        raise
+    def pause(self):
+        try:
+            if self.is_running:
+                self.is_running = False
+                self.pausables.foreach('pause')
+                self.is_running = True
+            super(MasterRunnable, self).pause()
+        except:
+            if Quit.QUITTING:
+                LOGGER.error('')
+            else:
+                raise
 
-  def begin(self):
-    super(MasterRunnable, self).begin()
-    self.runnables.foreach('begin')
+    def begin(self):
+        super(MasterRunnable, self).begin()
+        self.runnables.foreach('begin')
 
-  def unload(self):
-    super(MasterRunnable, self).unload()
-    self.runnables.foreach('unload')
+    def unload(self):
+        super(MasterRunnable, self).unload()
+        self.runnables.foreach('unload')

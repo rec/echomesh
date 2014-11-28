@@ -21,94 +21,95 @@ LOGGER = Log.logger(__name__)
 SHOW_REGISTRY = Registry.Registry('show command')
 
 def _indent(s, spaces='  '):
-  return '\n'.join(spaces + i.strip() for i in s.split('\n'))
+    return '\n'.join(spaces + i.strip() for i in s.split('\n'))
 
 def _info(d, spaces='  '):
-  s = 'none'
-  if d:
-    items = [(('%s%s:' % (spaces, k)), v) for k, v in sorted(six.iteritems(d))]
-    length = max(len(k) for k, v in items)
-    s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
-  LOGGER.info('%s\n', s)
+    s = 'none'
+    if d:
+        items = [(('%s%s:' % (spaces, k)), v)
+                 for k, v in sorted(six.iteritems(d))]
+        length = max(len(k) for k, v in items)
+        s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
+    LOGGER.info('%s\n', s)
 
 def addresses(_):
-  _info(Name.addresses())
+    _info(Name.addresses())
 
 def aliases(*_):
-  al = Aliases.instance()
-  if aliases:
-    _info(al)
-  else:
-    LOGGER.info('  No aliases\n')
+    al = Aliases.instance()
+    if aliases:
+        _info(al)
+    else:
+        LOGGER.info('  No aliases\n')
 
 def _all(echomesh_instance):
-  LOGGER.info('')
-  for name in sorted(SHOW_REGISTRY.keys()):
-    if name != 'all':
-      LOGGER.info('%s:', name)
-      SHOW_REGISTRY.function(name)(echomesh_instance)
+    LOGGER.info('')
+    for name in sorted(SHOW_REGISTRY.keys()):
+        if name != 'all':
+            LOGGER.info('%s:', name)
+            SHOW_REGISTRY.function(name)(echomesh_instance)
 
 def broadcast(echomesh_instance):
-  message = 'ON' if echomesh_instance.broadcasting() else 'off'
-  LOGGER.info('  Broadcast is %s\n', message)
+    message = 'ON' if echomesh_instance.broadcasting() else 'off'
+    LOGGER.info('  Broadcast is %s\n', message)
 
 def _settings(_):
-  LOGGER.info('\n' + Yaml.encode_one(Settings.get_settings()))
+    LOGGER.info('\n' + Yaml.encode_one(Settings.get_settings()))
 
 def directories(_):
-  _info(Path.info())
+    _info(Path.info())
 
 def elements(echomesh_instance):
-  info = echomesh_instance.score_master.info()
-  if info:
-    _info(info)
-  else:
-    LOGGER.info('  No elements have been loaded into memory.\n')
+    info = echomesh_instance.score_master.info()
+    if info:
+        _info(info)
+    else:
+        LOGGER.info('  No elements have been loaded into memory.\n')
 
 def info(_):
-  _info(Name.info())
+    _info(Name.info())
 
 def names(_):
-  _info(Name.names())
+    _info(Name.names())
 
 def nodes(echomesh_instance):
-  peers = echomesh_instance.peers.get_peers()
-  if peers:
-    for name, peer in six.iteritems(peers):
-      LOGGER.info('  %s: ', name)
-      _info(peer, '    ')
-  else:
-    LOGGER.error(NO_NODES_ERROR)
+    peers = echomesh_instance.peers.get_peers()
+    if peers:
+        for name, peer in six.iteritems(peers):
+            LOGGER.info('  %s: ', name)
+            _info(peer, '    ')
+    else:
+        LOGGER.error(NO_NODES_ERROR)
 
 def sound(_):
-  _info(Sound.info())
+    _info(Sound.info())
 
 def transforms(_):
-  for k in sorted(Transform.REGISTRY.keys()):
-    LOGGER.info('  %s\n%s\n', k,
-                _indent(Transform.REGISTRY.get_help(k), '    '))
+    for k in sorted(Transform.REGISTRY.keys()):
+        LOGGER.info('  %s\n%s\n', k,
+                    _indent(Transform.REGISTRY.get_help(k), '    '))
 
 def units(_):
-  LOGGER.info('%s\n', Units.list_units())
+    LOGGER.info('%s\n', Units.list_units())
 
 def _variables(path, element, results):
-  vars = getattr(element, 'variables', {})
-  for k, v in six.iteritems(vars):
-    results.append([path + [k], v()])
-  for e in element.elements:
-    _variables(path + [e.name], e, results)
+    vars = getattr(element, 'variables', {})
+    for k, v in six.iteritems(vars):
+        results.append([path + [k], v()])
+    for e in element.elements:
+        _variables(path + [e.name], e, results)
 
 def variables(instance):
-  results = []
-  for name, v in six.iteritems(instance.score_master.elements):
-    _variables([name], v, results)
+    results = []
+    for name, v in six.iteritems(instance.score_master.elements):
+        _variables([name], v, results)
 
-  if results:
-    for path, value in sorted(results):
-      LOGGER.info('  %s = %s', '.'.join(path), value)
-    LOGGER.info('')
-  else:
-    LOGGER.info('  No variables have been set.\n')
+    if results:
+        for path, value in sorted(results):
+            LOGGER.info('  %s = %s', '.'.join(path), value)
+        LOGGER.info('')
+    else:
+        LOGGER.info('  No variables have been set.\n')
 
 
 NO_NODES_ERROR = """\
@@ -253,17 +254,17 @@ Shows all information on all values:
 SHOW_REGISTRY.register_all(all=(_all, ALL_HELP))
 
 def _show(echomesh_instance, *parts):
-  if not parts:
-    LOGGER.info('\n' + SHOW_USAGE)
-  else:
-    name = parts[0]
-    try:
-      function = SHOW_REGISTRY.function(name)
-    except:
-      raise Exception("Didn't understand command 'show %s'. \n\n%s" %
-                      (' '.join(parts), SHOW_USAGE))
+    if not parts:
+        LOGGER.info('\n' + SHOW_USAGE)
+    else:
+        name = parts[0]
+        try:
+            function = SHOW_REGISTRY.function(name)
+        except:
+            raise Exception("Didn't understand command 'show %s'. \n\n%s" %
+                            (' '.join(parts), SHOW_USAGE))
 
-    function(echomesh_instance, *parts[1:])
+        function(echomesh_instance, *parts[1:])
 
 SHOW_HELP = """
 "show" displays information about the current echomesh instance.

@@ -8,13 +8,13 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def save(_, *values):
-  if values:
-    SetSettings.set_settings(_, *values)
-  files = Settings.save(False)
-  if files:
-    LOGGER.info('Settings saved to %s.', Join.join_file_names(files))
-  else:
-    LOGGER.error('There are no settings changes to save.')
+    if values:
+        SetSettings.set_settings(_, *values)
+    files = Settings.save(False)
+    if files:
+        LOGGER.info('Settings saved to %s.', Join.join_file_names(files))
+    else:
+        LOGGER.error('There are no settings changes to save.')
 
 HELP = """
   Saves the current settings values.

@@ -3,15 +3,15 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 DEFAULT_SHADER = None
 
 def SHADER():
-  global DEFAULT_SHADER
-  if not DEFAULT_SHADER:
-    DEFAULT_SHADER = pi3d.Shader(vshader_source=_VERTEXDEFAULT_SHADER,
-                          fshader_source=_FRAGMENTDEFAULT_SHADER)
-  return DEFAULT_SHADER
+    global DEFAULT_SHADER
+    if not DEFAULT_SHADER:
+        DEFAULT_SHADER = pi3d.Shader(vshader_source=_VERTEXDEFAULT_SHADER,
+                              fshader_source=_FRAGMENTDEFAULT_SHADER)
+    return DEFAULT_SHADER
 
 def shader(shader_file=None):
-  import pi3d
-  return pi3d.Shader(shfile=shader_file) if shader_file else SHADER()
+    import pi3d
+    return pi3d.Shader(shfile=shader_file) if shader_file else SHADER()
 
 
 _VERTEXDEFAULT_SHADER = """
@@ -56,4 +56,3 @@ void main(void) {
   gl_FragColor = (1.0 - ffact) * texc + ffact * vec4(unif[4], unif[5][1]); // ------ combine using factors
 }
 """
-

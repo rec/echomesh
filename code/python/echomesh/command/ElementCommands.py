@@ -9,32 +9,32 @@ from echomesh.remote import REGISTRY as remote_registry
 LOGGER = Log.logger(__name__)
 
 def _perform(action, echomesh_instance, parts):
-  names = echomesh_instance.score_master.perform(action, parts)
-  if names:
-    LOGGER.info('%s %s.', action.capitalize(), Join.join_words(names))
-  else:
-    LOGGER.error('%s: no results.', action)
+    names = echomesh_instance.score_master.perform(action, parts)
+    if names:
+        LOGGER.info('%s %s.', action.capitalize(), Join.join_words(names))
+    else:
+        LOGGER.error('%s: no results.', action)
 
 def _local(action):
-  def f(echomesh_instance, *parts):
-    if echomesh_instance.broadcasting():
-      echomesh_instance.send(type=action, parts=parts)
-    else:
-      _perform(action, echomesh_instance, parts)
-  return f
+    def f(echomesh_instance, *parts):
+        if echomesh_instance.broadcasting():
+            echomesh_instance.send(type=action, parts=parts)
+        else:
+            _perform(action, echomesh_instance, parts)
+    return f
 
 def _remote(action):
-  def f(echomesh_instance, **data):
-    _perform(action, echomesh_instance, data['parts'])
+    def f(echomesh_instance, **data):
+        _perform(action, echomesh_instance, data['parts'])
 
-  return f
+    return f
 
 def _register():
-  for command in _COMMANDS:
-    command_registry().register(_local(command), command,
-                                help_text=_HELP[command],
-                                see_also=_SEE_ALSO[command])
-    remote_registry.register(_remote(command), command)
+    for command in _COMMANDS:
+        command_registry().register(_local(command), command,
+                                    help_text=_HELP[command],
+                                    see_also=_SEE_ALSO[command])
+        remote_registry.register(_remote(command), command)
 
 _COMMANDS = ['begin', 'load', 'pause', 'reload', 'run', 'start', 'unload' ]
 

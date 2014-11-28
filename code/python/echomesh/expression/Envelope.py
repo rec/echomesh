@@ -10,94 +10,93 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 class Envelope(object):
-  _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
+    _FIELDS = 'data', 'length', 'loops', 'reverse', 'times'
 
-  def __init__(self, data, element=None):
-    self.element = element
+    def __init__(self, data, element=None):
+        self.element = element
 
-    from echomesh.expression import SplitNumbers
-    kwds, numeric = SplitNumbers.split(data)
-    self.times, self.data = zip(*numeric)
-    if not self.times:
-      raise Exception('Didn\'t understand envelope %s' % data)
+        from echomesh.expression import SplitNumbers
+        kwds, numeric = SplitNumbers.split(data)
+        self.times, self.data = zip(*numeric)
+        if not self.times:
+            raise Exception('Didn\'t understand envelope %s' % data)
 
-    if len(self.times) == 1:
-      self._set_constant(self.data[0])
-      return
+        if len(self.times) == 1:
+            self._set_constant(self.data[0])
+            return
 
-    _check_times(self.times)
+        _check_times(self.times)
 
-    self.loops = kwds.get('loops', 1)
-    if not isinstance(self.loops, six.integer_types):
-      from echomesh.expression import Expression
-      self.loops = Expression.convert(self.loops)
+        self.loops = kwds.get('loops', 1)
+        if not isinstance(self.loops, six.integer_types):
+            from echomesh.expression import Expression
+            self.loops = Expression.convert(self.loops)
 
-    self.last_time = self.times[-1]
+        self.last_time = self.times[-1]
 
-    length = kwds.get('length', self.last_time * self.loops)
-    from echomesh.expression import Expression
-    self.length = Expression.convert(length, self.element)
+        length = kwds.get('length', self.last_time * self.loops)
+        from echomesh.expression import Expression
+        self.length = Expression.convert(length, self.element)
 
-    if self.length > 0:
-      self._is_constant = False
-      self.slot = 0
-      self.reverse = kwds.get('reverse', False)
+        if self.length > 0:
+            self._is_constant = False
+            self.slot = 0
+            self.reverse = kwds.get('reverse', False)
 
-    else:
-      self._set_constant(self.data[0])
-      if self.length < 0:
-        LOGGER.error('Negative length "%s" is not allowed.', length)
+        else:
+            self._set_constant(self.data[0])
+            if self.length < 0:
+                LOGGER.error('Negative length "%s" is not allowed.', length)
+                self.length = 0
+
+    def evaluate(self):
+        return self.interpolate(time.time() - self.element.start_time)
+
+    def is_constant(self):
+        return self._is_constant
+
+    def description(self):
+        return from_attributes(self, Envelope._FIELDS)
+
+    def _set_constant(self, value):
+        self._is_constant = True
+        from echomesh.expression import Expression
+        self.value = Expression.convert(value, self.element)
         self.length = 0
 
-  def evaluate(self):
-    return self.interpolate(time.time() - self.element.start_time)
+    def interpolate(self, time):
+        if self._is_constant:
+            return self.data
 
-  def is_constant(self):
-    return self._is_constant
+        elif time <= 0.0:
+            return self.data[0]
 
-  def description(self):
-    return from_attributes(self, Envelope._FIELDS)
+        elif time >= self.length:
+            return self.data[-1]
 
-  def _set_constant(self, value):
-    self._is_constant = True
-    from echomesh.expression import Expression
-    self.value = Expression.convert(value, self.element)
-    self.length = 0
+        loop_count = int(time / self.last_time)
+        time %= self.last_time
+        if self.reverse and (loop_count % 2):
+            time = self.last_time - time
 
-  def interpolate(self, time):
-    if self._is_constant:
-      return self.data
+        self.slot = max(bisect.bisect(self.times, time) - 1, 0)
+        t1, t2 = self.times[self.slot:self.slot + 2]
+        d1, d2 = self.data[self.slot:self.slot + 2]
+        ratio = float(time - t1) / (t2 - t1)
 
-    elif time <= 0.0:
-      return self.data[0]
-
-    elif time >= self.length:
-      return self.data[-1]
-
-    loop_count = int(time / self.last_time)
-    time %= self.last_time
-    if self.reverse and (loop_count % 2):
-      time = self.last_time - time
-
-    self.slot = max(bisect.bisect(self.times, time) - 1, 0)
-    t1, t2 = self.times[self.slot:self.slot + 2]
-    d1, d2 = self.data[self.slot:self.slot + 2]
-    ratio = float(time - t1) / (t2 - t1)
-
-    try:
-      items = zip(iter(d1), iter(d2))
-    except TypeError:
-      return d1 * (1 - ratio) + d2 * ratio
-    else:
-      return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
+        try:
+            items = zip(iter(d1), iter(d2))
+        except TypeError:
+            return d1 * (1 - ratio) + d2 * ratio
+        else:
+            return [i1 * (1 - ratio) + i2 * ratio for (i1, i2) in items]
 
 
 def _check_times(times):
-  for i in range(1, len(times)):
-    if times[i - 1] >= times[i]:
-      raise Exception('Envelope times must be strictly increasing.')
+    for i in range(1, len(times)):
+        if times[i - 1] >= times[i]:
+            raise Exception('Envelope times must be strictly increasing.')
 
-  for i, t in enumerate(times):
-    if t < 0:
-      raise Exception('Envelope times cannot be negative.')
-
+    for i, t in enumerate(times):
+        if t < 0:
+            raise Exception('Envelope times cannot be negative.')

@@ -22,4 +22,3 @@
 #   from_ts = from.get('target'), from.get('source')
 #   to_ts = to.get('target'), to.get('source')
 #   return from_ts, to_ts
-

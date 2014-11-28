@@ -8,9 +8,9 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def contexts(_):
-  parts = DataFile.named_paths()
-  con = ('  %s:\n    %s' % (x, os.path.abspath(y)) for x, y in parts)
-  LOGGER.info('%s\n', '\n'.join(con))
+    parts = DataFile.named_paths()
+    con = ('  %s:\n    %s' % (x, os.path.abspath(y)) for x, y in parts)
+    LOGGER.info('%s\n', '\n'.join(con))
 
 HELP = """
 In order to control multiple machines and settings effectively, echomesh

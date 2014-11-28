@@ -12,15 +12,15 @@ MATH_FUNCTIONS = [
   'tanh', 'trunc']
 
 if Version.IS_27:
-  MATH_FUNCTIONS += ['erf', 'erfc',  'expm1',  'gamma', 'lgamma']
+    MATH_FUNCTIONS += ['erf', 'erfc',  'expm1',  'gamma', 'lgamma']
 
 def _function_register():
-  register = Registry.Registry('Functions')
+    register = Registry.Registry('Functions')
 
-  for f in MATH_FUNCTIONS:
-    register.register(getattr(math, f))
+    for f in MATH_FUNCTIONS:
+        register.register(getattr(math, f))
 
-  register.register(int)
-  return register
+    register.register(int)
+    return register
 
 FUNCTIONS = _function_register()

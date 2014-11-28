@@ -19,13 +19,13 @@ REGISTRY = register(
 )
 
 def make_pattern(element, description, name=None, patterns=None):
-  if not isinstance(description, dict):
-    name = description
-    pattern = (patterns or {}).get(name)
-    if pattern:
-      return pattern
-    description = DataFile.load('pattern', name)[0]
+    if not isinstance(description, dict):
+        name = description
+        pattern = (patterns or {}).get(name)
+        if pattern:
+            return pattern
+        description = DataFile.load('pattern', name)[0]
 
-  entry = REGISTRY.get_from_description(description)
-  name = name + entry.name if name else entry.name
-  return entry.function(description, element, name)
+    entry = REGISTRY.get_from_description(description)
+    name = name + entry.name if name else entry.name
+    return entry.function(description, element, name)

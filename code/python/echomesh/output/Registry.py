@@ -17,11 +17,11 @@ REGISTRY = register(
 OUTPUT_CACHE = OutputCache()
 
 def make_output(data):
-  if isinstance(data, dict):
-    return REGISTRY.make_from_description(data, default_type='output')
-  else:
-    return OUTPUT_CACHE.get_output(data)
+    if isinstance(data, dict):
+        return REGISTRY.make_from_description(data, default_type='output')
+    else:
+        return OUTPUT_CACHE.get_output(data)
 
 def pause_outputs():
-  from echomesh.output.Output import pause_outputs
-  pause_outputs()
+    from echomesh.output.Output import pause_outputs
+    pause_outputs()

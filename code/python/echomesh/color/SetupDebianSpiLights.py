@@ -12,32 +12,32 @@ BLACKLIST_FILE = '/etc/modprobe.d/raspi-blacklist.conf'
 BLACKLIST_TEMP = '/tmp/raspi-blacklist.conf'
 
 def _blacklist_line(line):
-  return line.strip().startswith('blacklist spi')
+    return line.strip().startswith('blacklist spi')
 
 def _is_blacklisted():
-  try:
-    with open(BLACKLIST_FILE, 'rb') as f:
-      LOGGER.vdebug('You are running the Raspian distribution, '
-                  'blacklist file is here:')
-      LOGGER.vdebug(BLACKLIST_FILE)
-      return any(_blacklist_line(line) for line in f)
-  except:
-    LOGGER.warning('You are not running the Raspian distribution, '
-                   'no blacklist found.')
+    try:
+        with open(BLACKLIST_FILE, 'rb') as f:
+            LOGGER.vdebug('You are running the Raspian distribution, '
+                        'blacklist file is here:')
+            LOGGER.vdebug(BLACKLIST_FILE)
+            return any(_blacklist_line(line) for line in f)
+    except:
+        LOGGER.warning('You are not running the Raspian distribution, '
+                       'no blacklist found.')
 
 def _fix_blacklist():
-  try:
-    with open(BLACKLIST_FILE, 'rb') as f:
-      with open(BLACKLIST_TEMP, 'wb') as g:
-        for line in f:
-          if _blacklist_line(line):
-            line = '#' + line
-          g.write(line)
-    os.rename(BLACKLIST_TEMP, BLACKLIST_FILE)
-    return True
+    try:
+        with open(BLACKLIST_FILE, 'rb') as f:
+            with open(BLACKLIST_TEMP, 'wb') as g:
+                for line in f:
+                    if _blacklist_line(line):
+                        line = '#' + line
+                    g.write(line)
+        os.rename(BLACKLIST_TEMP, BLACKLIST_FILE)
+        return True
 
-  except Exception:
-    LOGGER.error("Couldn't fix blacklist.")
+    except Exception:
+        LOGGER.error("Couldn't fix blacklist.")
 
 
 _SPEEDUP_ERROR = """
@@ -48,14 +48,14 @@ sudo apt-get install -y pyspidev
 at the command line.
 """
 def _speedup():
-  try:
-    import spidev
-    spi = spidev.SpiDev()
-  except:
-    LOGGER.error(_SPEEDUP_ERROR)
-  else:
-    spi.open(0, 0)
-    spi.max_speed_hz = 20000000
+    try:
+        import spidev
+        spi = spidev.SpiDev()
+    except:
+        LOGGER.error(_SPEEDUP_ERROR)
+    else:
+        spi.open(0, 0)
+        spi.max_speed_hz = 20000000
 
 BLACKLISTED_MESSAGE = """\
 SPI has been blacklisted on your machine, which means you won't be able to
@@ -68,33 +68,33 @@ The SPI blacklist has been removed.  Please restart your Raspberry Pi
 and run echomesh again."""
 
 def _fix_spi(prompt_to_fix):
-  LOGGER.info(BLACKLISTED_MESSAGE)
-  if prompt_to_fix:
-    print('Would you like to fix the blacklist now? (y/N) ', end='')
-    result = raw_input()
-    if result.lower().startswith('y'):
-      return _fix_blacklist()
-  LOGGER.error("SPI is blacklisted, lights are disabled.")
+    LOGGER.info(BLACKLISTED_MESSAGE)
+    if prompt_to_fix:
+        print('Would you like to fix the blacklist now? (y/N) ', end='')
+        result = raw_input()
+        if result.lower().startswith('y'):
+            return _fix_blacklist()
+    LOGGER.error("SPI is blacklisted, lights are disabled.")
 
 SPI_ERROR = """\
 you have lights enabled, the lights require SPI, and the SPI driver
 needs to be run as root."""
 
 def _test_spi(prompt_to_fix):
-  try:
-    TestSuperuser.test_superuser(SPI_ERROR)
-  except:
-    LOGGER.info('')
-    LOGGER.error()
-  else:
-    _speedup()
-    return not _is_blacklisted() or _fix_spi(prompt_to_fix)
+    try:
+        TestSuperuser.test_superuser(SPI_ERROR)
+    except:
+        LOGGER.info('')
+        LOGGER.error()
+    else:
+        _speedup()
+        return not _is_blacklisted() or _fix_spi(prompt_to_fix)
 
 _LIGHTS_ENABLED = None
 
 def lights_enabled(prompt_to_fix=False):
-  global _LIGHTS_ENABLED
-  if _LIGHTS_ENABLED is None:
-    _LIGHTS_ENABLED = (Settings.get('light', 'enable')
-                       and _test_spi(prompt_to_fix)) or False
-  return _LIGHTS_ENABLED
+    global _LIGHTS_ENABLED
+    if _LIGHTS_ENABLED is None:
+        _LIGHTS_ENABLED = (Settings.get('light', 'enable')
+                           and _test_spi(prompt_to_fix)) or False
+    return _LIGHTS_ENABLED

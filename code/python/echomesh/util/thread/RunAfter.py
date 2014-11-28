@@ -8,10 +8,10 @@ from echomesh.util import Log
 LOGGER = Log.logger(__name__)
 
 def run_after(callback, t):
-  def run():
-    time.sleep(t)
-    callback()
+    def run():
+        time.sleep(t)
+        callback()
 
-  thread = threading.Thread(target=callback, name='run_after')
-  thread.daemon = True
-  thread.start()
+    thread = threading.Thread(target=callback, name='run_after')
+    thread.daemon = True
+    thread.start()

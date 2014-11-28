@@ -1,12 +1,13 @@
 try:
-  import cechomesh
-  cechomesh.LOADED = True
+    import cechomesh
+    cechomesh.LOADED = True
 
 except ImportError:
-  class _NoEntry(object):
-    LOADED = False
+    class _NoEntry(object):
+        LOADED = False
 
-    def __getattr__(self, name):
-      raise AttributeError('Not able to import cechomesh dynamic library.')
+        def __getattr__(self, name):
+            raise AttributeError(
+                'Not able to import cechomesh dynamic library.')
 
-  cechomesh = _NoEntry()
+    cechomesh = _NoEntry()

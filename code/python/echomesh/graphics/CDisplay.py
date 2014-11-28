@@ -10,14 +10,14 @@ from echomesh.util.thread.Runnable import Runnable
 LOGGER = Log.logger(__name__)
 
 class CDisplay(Runnable):
-  def __init__(self, callback=None):
-    super(CDisplay, self).__init__()
-    self.callback = callback
-    self.is_running = True
+    def __init__(self, callback=None):
+        super(CDisplay, self).__init__()
+        self.callback = callback
+        self.is_running = True
 
-  def _on_pause(self):
-    cechomesh.LOADED and cechomesh.stop_application()
+    def _on_pause(self):
+        cechomesh.LOADED and cechomesh.stop_application()
 
-  def loop(self):
-    if cechomesh.LOADED:
-      cechomesh.start_application(self.callback)
+    def loop(self):
+        if cechomesh.LOADED:
+            cechomesh.start_application(self.callback)

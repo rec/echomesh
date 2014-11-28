@@ -15,24 +15,24 @@ _INSTANCE = None
 _CLIENT = None
 
 class Aliases(object):
-  INSTANCE = None
-  DICT = None
+    INSTANCE = None
+    DICT = None
 
-  def __init__(self):
-    Settings.add_client(self)
+    def __init__(self):
+        Settings.add_client(self)
 
-  def settings_update(self, get):
-    if get('aliases', 'save_with_project'):
-      filename = os.path.join(Path.project_path(), ALIAS_FILE_NAME)
-    else:
-      filename = os.path.join(os.path.expanduser('~'), ALIAS_DOTFILE_NAME)
-    if Aliases.DICT:
-      Aliases.DICT.set_filename(filename)
-    else:
-      Aliases.DICT = PersistentDict(filename)
+    def settings_update(self, get):
+        if get('aliases', 'save_with_project'):
+            filename = os.path.join(Path.project_path(), ALIAS_FILE_NAME)
+        else:
+            filename = os.path.join(os.path.expanduser('~'), ALIAS_DOTFILE_NAME)
+        if Aliases.DICT:
+            Aliases.DICT.set_filename(filename)
+        else:
+            Aliases.DICT = PersistentDict(filename)
 
 def instance():
-  if not Aliases.INSTANCE:
-    Aliases.INSTANCE = Aliases()
+    if not Aliases.INSTANCE:
+        Aliases.INSTANCE = Aliases()
 
-  return Aliases.DICT
+    return Aliases.DICT

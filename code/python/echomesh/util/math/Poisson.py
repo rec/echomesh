@@ -4,4 +4,4 @@ import math
 import random
 
 def next_poisson(mean):
-  return mean * -math.log(random.random())
+    return mean * -math.log(random.random())

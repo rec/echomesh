@@ -1,6 +1,6 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 def plural(number, word, plural=None):
-  if number != 1:
-    word = plural or (word + 's')
-  return word
+    if number != 1:
+        word = plural or (word + 's')
+    return word

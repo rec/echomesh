@@ -1,2 +1,2 @@
 def event(instance, **data):
-  instance.handle(data)
+    instance.handle(data)
