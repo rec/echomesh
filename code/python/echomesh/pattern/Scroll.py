@@ -25,7 +25,7 @@ class Scroll(Pattern):
     'transform': {
       'default': '',
       'help': ('A Transform to apply to dx and dy between pixels.  Only '
-               ('useful when smooth=true',
+               'useful when smooth=true'),
       },
     'wrap': {
       'default': False,
