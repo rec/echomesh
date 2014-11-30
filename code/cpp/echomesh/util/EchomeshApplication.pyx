@@ -6,6 +6,8 @@ from libcpp.string cimport string
 cdef extern from "echomesh/util/EchomeshApplication.h" namespace "echomesh":
     void startApplication(VoidCaller cb, void* user_data) nogil
     bool isStarted()
+    string timestamp()
+    string datestamp()
 
 cdef extern from "echomesh/util/Quit.h" namespace "echomesh":
     void quit() nogil
@@ -23,3 +25,6 @@ def stop_application():
 
 def is_started():
     return isStarted()
+
+def build_timestamp():
+    return timestamp(), datestamp()

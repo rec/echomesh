@@ -84,6 +84,13 @@ def nodes(echomesh_instance):
 def sound(_):
     _info(Sound.info())
 
+def timestamp(_):
+    try:
+        import cechomesh
+        LOGGER.info('cechomesh was built on %s, %s', *cechomesh.build_timestamp())
+    except:
+        LOGGER.error('No cechomesh plugin found!')
+
 def transforms(_):
     for k in sorted(Transform.REGISTRY.keys()):
         LOGGER.info('  %s\n%s\n', k,
@@ -199,6 +206,10 @@ SOUND_HELP = """
 Show all the sound interfaces available on this machine.
 """
 
+TIMESTAMP_HELP = """
+Print the build date and time for the cechmesh plug-in.
+"""
+
 TRANSFORMS_HELP = """
 Transforms are used to reshape curves.  Mathematically, they are invertible
 mappings from [0, 1] onto [0, 1].
@@ -226,21 +237,22 @@ Show all variables for each element currently running.
 """
 
 SHOW_REGISTRY.register_all(
-  addresses=(addresses, ADDRESSES_HELP),
-  aliases=(aliases, ALIASES_HELP),
-  broadcast=(broadcast, BROADCAST_HELP),
-  settings=(_settings, SETTINGS_HELP),
-  contexts=(Contexts.contexts, Contexts.HELP),
-  directories=(directories, DIRECTORIES_HELP),
-  elements=(elements, ELEMENTS_HELP),
-  info=(info, INFO_HELP),
-  names=(names, NAMES_HELP),
-  nodes=(nodes, NODES_HELP),
-  scores=(Scores.scores, Scores.SCORES_HELP),
-  sound=(sound, SOUND_HELP),
-  transforms=(transforms, TRANSFORMS_HELP),
-  units=(units, UNITS_HELP),
-  variables=(variables, VARIABLES_HELP),
+    addresses=(addresses, ADDRESSES_HELP),
+    aliases=(aliases, ALIASES_HELP),
+    broadcast=(broadcast, BROADCAST_HELP),
+    settings=(_settings, SETTINGS_HELP),
+    contexts=(Contexts.contexts, Contexts.HELP),
+    directories=(directories, DIRECTORIES_HELP),
+    elements=(elements, ELEMENTS_HELP),
+    info=(info, INFO_HELP),
+    names=(names, NAMES_HELP),
+    nodes=(nodes, NODES_HELP),
+    scores=(Scores.scores, Scores.SCORES_HELP),
+    sound=(sound, SOUND_HELP),
+    timestamp=(timestamp, TIMESTAMP_HELP),
+    transforms=(transforms, TRANSFORMS_HELP),
+    units=(units, UNITS_HELP),
+    variables=(variables, VARIABLES_HELP),
   )
 
 SHOW_NAMES = SHOW_REGISTRY.join_keys()

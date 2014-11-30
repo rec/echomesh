@@ -58,4 +58,7 @@ bool isStarted() {
     return STARTED;
 }
 
+string timestamp() { return __TIME__; }
+string datestamp() { return __DATE__; }
+
 }  // namespace echomesh

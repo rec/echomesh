@@ -7,5 +7,7 @@ namespace echomesh {
 void startApplication(VoidCaller, void*);
 bool isStarted();
 
-}  // namespace echomesh
+string timestamp();
+string datestamp();
 
+}  // namespace echomesh
