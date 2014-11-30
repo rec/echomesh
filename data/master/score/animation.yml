@@ -5,8 +5,8 @@ pattern:
     # type: image
     type: animation
     filename: "/Volumes/Zog/Documents/animated gifs/spinning sparks.gif"
-    x: 16
-    y: 16
+    x: 32
+    y: 32
     left_offset: 200
     top_offset: 200
     stretch: true

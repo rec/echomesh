@@ -132,6 +132,7 @@ def fix_home_directory_environment_variable():
             _HOME_VARIABLE_FIXED = True
 
 
+# TODO: why is this never called.
 def fix_paths():
     _set_project_path()
     fix_home_directory_environment_variable()
