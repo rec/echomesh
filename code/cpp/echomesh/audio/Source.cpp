@@ -10,20 +10,20 @@ Source::Source(const string& filename, int loops,
                Envelope* gain, Envelope* pan,
                VoidCaller callback, void* callbackData,
                float sampleRate)
-    : SampleAudioSource(filename, loops,
-                        SampleTime(begin, sampleRate),
-                        SampleTime(end, sampleRate),
-                        SampleTime(length, sampleRate), gain, pan,
-                        callback, callbackData, sampleRate, channels),
-      player_(AudioPlayer::getPlayer(device, channels))  {
-  callback(callbackData);
-  player_->addInputSource(this);
+        : SampleAudioSource(filename, loops,
+                            SampleTime(begin, sampleRate),
+                            SampleTime(end, sampleRate),
+                            SampleTime(length, sampleRate), gain, pan,
+                            callback, callbackData, sampleRate, channels),
+          player_(AudioPlayer::getPlayer(device, channels))  {
+    callback(callbackData);
+    player_->addInputSource(this);
 }
 
 Source::~Source() {
-  pause();
-  if (player_->removeInputSource(this))
-    AudioPlayer::removePlayer(player_);
+    pause();
+    if (player_->removeInputSource(this))
+        AudioPlayer::removePlayer(player_);
 }
 
 }  // namespace audio

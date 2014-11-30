@@ -4,7 +4,7 @@
 namespace echomesh {
 
 void quit() {
-  runOnMessageThread(JUCEApplicationBase::quit);
+    runOnMessageThread(JUCEApplicationBase::quit);
 }
 
 }  // namespace echomesh

@@ -28,21 +28,20 @@ namespace echomesh {
 const float EPSILON = 1.0 / 0x10000;
 
 inline bool near(float scale, float value, float tolerance = EPSILON) {
-  return fabsf(scale - value) < tolerance;
+    return fabsf(scale - value) < tolerance;
 }
 
 class Exception : public std::exception {
- public:
-  Exception(const String& m) : message_(m) {}
-  virtual ~Exception() throw() {}
-  virtual const char* what() const throw() { return message_.toUTF8(); }
-  virtual const String& what_str() const throw() { return message_; }
+  public:
+    Exception(const String& m) : message_(m) {}
+    virtual ~Exception() throw() {}
+    virtual const char* what() const throw() { return message_.toUTF8(); }
+    virtual const String& what_str() const throw() { return message_; }
 
- private:
-  const String message_;
+  private:
+    const String message_;
 };
 
 typedef std::pair<int, int> Point;
 
 }  // namespace echomesh
-

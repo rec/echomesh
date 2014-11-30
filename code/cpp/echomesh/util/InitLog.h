@@ -8,4 +8,3 @@ void initLog();
 void setLogger(int logLevel, StringCaller, void* callback);
 
 }  // namespace echomesh
-

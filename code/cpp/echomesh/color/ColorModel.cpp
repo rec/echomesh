@@ -9,7 +9,7 @@ namespace color {
 static const ColorModel* const COLOR_MODELS[2] = { new RGB, new HSB };
 
 const ColorModel* ColorModel::getColorModel(ColorModel::Model model) {
-  return COLOR_MODELS[model];
+    return COLOR_MODELS[model];
 }
 
 }  // namespace color

@@ -9,19 +9,19 @@ namespace audio {
 class AudioPlayer;
 
 class Source : public SampleAudioSource {
- public:
-  Source(const string& filename, int loops,
-         double begin, double end, double length,
-         const string& device, int channels,
-         Envelope* gain, Envelope* pan, VoidCaller callback,
-         void* callbackData, float sampleRate);
+  public:
+    Source(const string& filename, int loops,
+           double begin, double end, double length,
+           const string& device, int channels,
+           Envelope* gain, Envelope* pan, VoidCaller callback,
+           void* callbackData, float sampleRate);
 
-  ~Source();
+    ~Source();
 
- private:
-  AudioPlayer* const player_;
+  private:
+    AudioPlayer* const player_;
 
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(Source);
+    DISALLOW_COPY_ASSIGN_AND_LEAKS(Source);
 };
 
 }  // namespace audio

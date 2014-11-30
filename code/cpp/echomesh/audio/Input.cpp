@@ -12,89 +12,89 @@ namespace audio {
 namespace {
 
 class InputImpl : public AudioIODeviceCallback, public Input {
- public:
-  InputImpl(const InputID& id) : id_(id) {}
+  public:
+    InputImpl(const InputID& id) : id_(id) {}
 
-  ~InputImpl() {
-    manager_.removeAudioCallback(this);
-  }
+    ~InputImpl() {
+        manager_.removeAudioCallback(this);
+    }
 
-  String initialize() override {
-    String error;
-    string name;
-    int channels;
-    int sampleRate;
-    std::tie(name, channels, sampleRate) = id_;
-    if (name.length()) {
-      AudioDeviceManager::AudioDeviceSetup setup;
-      setup.inputDeviceName = name;
-      setup.sampleRate = sampleRate;
-      error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
-      if (error.length()) {
-        String newName;
-        auto inputNames = getDeviceNames(true);
-        for (auto& i: inputNames) {
-          if (0 == i.find(name)) {
-            if (newName.length()) {
-              error = "Multiple input names start with " + name;
-              break;
+    String initialize() override {
+        String error;
+        string name;
+        int channels;
+        int sampleRate;
+        std::tie(name, channels, sampleRate) = id_;
+        if (name.length()) {
+            AudioDeviceManager::AudioDeviceSetup setup;
+            setup.inputDeviceName = name;
+            setup.sampleRate = sampleRate;
+            error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
+            if (error.length()) {
+                String newName;
+                auto inputNames = getDeviceNames(true);
+                for (auto& i: inputNames) {
+                    if (0 == i.find(name)) {
+                        if (newName.length()) {
+                            error = "Multiple input names start with " + name;
+                            break;
+                        }
+                        newName = i;
+                    }
+                }
+                if (newName.length()) {
+                    setup.inputDeviceName = newName;
+                    error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
+                }
             }
-            newName = i;
-          }
+        } else {
+            error = manager_.initialise(channels, 0, nullptr, false, "");
         }
-        if (newName.length()) {
-          setup.inputDeviceName = newName;
-          error = manager_.initialise(channels, 0, nullptr, false, "", &setup);
+        manager_.addAudioCallback(this);
+        return error;
+    }
+
+    void audioDeviceIOCallback(const float** inputChannelData,
+                               int channels,
+                               float**, int,
+                               int numSamples) override {
+        ScopedLock l(lock_);
+        for (auto& i: callbacks_)
+            i->callback(channels, numSamples, inputChannelData);
+    }
+
+    void audioDeviceAboutToStart(AudioIODevice* device) override {}
+    void audioDeviceStopped() override {}
+
+    void audioDeviceError(const String& errorMessage) override {
+        LOG(ERROR) << "Error on device " << std::get<0>(id())
+                   << ": " << errorMessage.toStdString();
+    }
+
+    void addCallback(InputCallback* cb) {
+        ScopedLock l(lock_);
+        callbacks_.push_back(std::move(cb));
+    }
+
+    void removeCallback(InputCallback* cb) {
+        ScopedLock l(lock_);
+        for (auto i = callbacks_.begin(); i != callbacks_.end(); ++i) {
+            if (*i == cb) {
+                callbacks_.erase(i);
+                return;
+            }
         }
-      }
-    } else {
-      error = manager_.initialise(channels, 0, nullptr, false, "");
     }
-    manager_.addAudioCallback(this);
-    return error;
-  }
 
-  void audioDeviceIOCallback(const float** inputChannelData,
-                             int channels,
-                             float**, int,
-                             int numSamples) override {
-    ScopedLock l(lock_);
-    for (auto& i: callbacks_)
-      i->callback(channels, numSamples, inputChannelData);
-  }
+    const InputID& id() const override { return id_; }
 
-  void audioDeviceAboutToStart(AudioIODevice* device) override {}
-  void audioDeviceStopped() override {}
+  private:
+    const InputID id_;
+    AudioDeviceManager manager_;
+    std::vector<InputCallback*> callbacks_;
+    CriticalSection lock_;
 
-  void audioDeviceError(const String& errorMessage) override {
-    LOG(ERROR) << "Error on device " << std::get<0>(id())
-               << ": " << errorMessage.toStdString();
-  }
-
-  void addCallback(InputCallback* cb) {
-    ScopedLock l(lock_);
-    callbacks_.push_back(std::move(cb));
-  }
-
-  void removeCallback(InputCallback* cb) {
-    ScopedLock l(lock_);
-    for (auto i = callbacks_.begin(); i != callbacks_.end(); ++i) {
-      if (*i == cb) {
-        callbacks_.erase(i);
-        return;
-      }
-    }
-  }
-
-  const InputID& id() const override { return id_; }
-
- private:
-  const InputID id_;
-  AudioDeviceManager manager_;
-  std::vector<InputCallback*> callbacks_;
-  CriticalSection lock_;
-
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(InputImpl);
+    DISALLOW_COPY_ASSIGN_AND_LEAKS(InputImpl);
 };
 
 typedef map<InputID, weak_ptr<Input>> InputTable;
@@ -106,24 +106,24 @@ InputTable INPUT_TABLE;
 
 shared_ptr<Input> getInput(
     const string& name, int channels, int sampleRate) {
-  ScopedLock l(INPUT_LOCK);
+    ScopedLock l(INPUT_LOCK);
 
-  InputID id(name, channels, sampleRate);
-  auto i = INPUT_TABLE.find(id);
-  if (i != INPUT_TABLE.end()) {
-    if (auto p = i->second.lock())
-      return std::move(p);
-  }
-  auto result = make_shared<InputImpl>(id);
+    InputID id(name, channels, sampleRate);
+    auto i = INPUT_TABLE.find(id);
+    if (i != INPUT_TABLE.end()) {
+        if (auto p = i->second.lock())
+            return std::move(p);
+    }
+    auto result = make_shared<InputImpl>(id);
 
-  String error = result->initialize();
-  if (error.length()) {
-    LOG(ERROR) << "Couldn't initialize input " << name;
-    result.reset();
-  } else {
-    INPUT_TABLE[id] = result;
-  }
-  return std::move(result);
+    String error = result->initialize();
+    if (error.length()) {
+        LOG(ERROR) << "Couldn't initialize input " << name;
+        result.reset();
+    } else {
+        INPUT_TABLE[id] = result;
+    }
+    return std::move(result);
 }
 
 }  // namespace audio

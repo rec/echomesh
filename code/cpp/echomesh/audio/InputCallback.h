@@ -8,9 +8,9 @@ namespace audio {
 class Input;
 
 class InputCallback {
- public:
-  virtual ~InputCallback() {}
-  virtual void callback(int channels, int count, const float** samples) = 0;
+  public:
+    virtual ~InputCallback() {}
+    virtual void callback(int channels, int count, const float** samples) = 0;
 };
 
 }  // namespace audio

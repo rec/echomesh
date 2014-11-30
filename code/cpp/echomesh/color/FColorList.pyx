@@ -9,7 +9,7 @@ cdef extern from "echomesh/color/FColorList.h" namespace "echomesh::color":
         void eraseRange(size_t b, size_t e)
         void gamma(float)
         const FColor& get(size_t pos)
-        int index(FColor)
+        long index(FColor)
         void insertRange(size_t b1, FColorList, size_t b2, size_t e2)
         FColorList interpolate(FColorList, float ratio, unsigned int smooth)
         void push_back(FColor)

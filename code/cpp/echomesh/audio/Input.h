@@ -10,12 +10,12 @@ namespace audio {
 typedef std::tuple<string, int, int> InputID;
 
 class Input {
- public:
-  virtual ~Input() {}
-  virtual void addCallback(InputCallback*) = 0;
-  virtual void removeCallback(InputCallback*) = 0;
-  virtual const InputID& id() const = 0;
-  virtual String initialize() = 0;
+  public:
+    virtual ~Input() {}
+    virtual void addCallback(InputCallback*) = 0;
+    virtual void removeCallback(InputCallback*) = 0;
+    virtual const InputID& id() const = 0;
+    virtual String initialize() = 0;
 };
 
 std::shared_ptr<Input> getInput(

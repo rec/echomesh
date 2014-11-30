@@ -6,9 +6,9 @@ namespace color {
 namespace {
 
 const FColor make_black() {
-  FColor black;
-  black.clear();
-  return black;
+    FColor black;
+    black.clear();
+    return black;
 }
 
 }

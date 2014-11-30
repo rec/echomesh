@@ -6,23 +6,23 @@ namespace audio {
 /*
   ==============================================================================
 
-   This file is part of the JUCE library.
-   Copyright (c) 2013 - Raw Material Software Ltd.
+  This file is part of the JUCE library.
+  Copyright (c) 2013 - Raw Material Software Ltd.
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+  Permission is granted to use this software under the terms of either:
+  a) the GPL v2 (or any later version)
+  b) the Affero GPL v3
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+  Details of these licenses can be found at: www.gnu.org/licenses
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-   ------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+  To release a closed-source product which uses JUCE, commercial licenses are
+  available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -32,14 +32,14 @@ ResamplingPositionableAudioSource::ResamplingPositionableAudioSource(
     PositionableAudioSource* inputSource,
     bool deleteInputWhenDeleted,
     double samplesInPerOutputSample,                                                                          int numChannels_)
-    : input (inputSource, deleteInputWhenDeleted),
-      ratio (1.0),
-      lastRatio (1.0),
-      buffer (numChannels_, 0),
-      bufferPos (0),
-      sampsInBuffer (0),
-      subSampleOffset (0),
-      numChannels (numChannels_)
+        : input (inputSource, deleteInputWhenDeleted),
+          ratio (1.0),
+          lastRatio (1.0),
+          buffer (numChannels_, 0),
+          bufferPos (0),
+          sampsInBuffer (0),
+          subSampleOffset (0),
+          numChannels (numChannels_)
 {
     jassert (input != nullptr);
 
@@ -58,7 +58,7 @@ void ResamplingPositionableAudioSource::setResamplingRatio (const double samples
 }
 
 void ResamplingPositionableAudioSource::prepareToPlay (int samplesPerBlockExpected,
-                                           double sampleRate)
+                                                       double sampleRate)
 {
     const SpinLock::ScopedLockType sl (ratioLock);
 
@@ -149,7 +149,7 @@ void ResamplingPositionableAudioSource::getNextAudioBlock (const AudioSourceChan
 
         for (int channel = 0; channel < channelsToProcess; ++channel)
             *destBuffers[channel]++ = srcBuffers[channel][bufferPos]
-                                        + alpha * (srcBuffers[channel][nextPos] - srcBuffers[channel][bufferPos]);
+                    + alpha * (srcBuffers[channel][nextPos] - srcBuffers[channel][bufferPos]);
 
         subSampleOffset += localRatio;
 
@@ -201,7 +201,7 @@ void ResamplingPositionableAudioSource::getNextAudioBlock (const AudioSourceChan
 void ResamplingPositionableAudioSource::createLowPass (const double frequencyRatio)
 {
     const double proportionalRate = (frequencyRatio > 1.0) ? 0.5 / frequencyRatio
-                                                           : 0.5 * frequencyRatio;
+            : 0.5 * frequencyRatio;
 
     const double n = 1.0 / std::tan (double_Pi * jmax (0.001, proportionalRate));
     const double nSquared = n * n;
@@ -245,15 +245,15 @@ void ResamplingPositionableAudioSource::applyFilter (float* samples, int num, Fi
         const double in = *samples;
 
         double out = coefficients[0] * in
-                     + coefficients[1] * fs.x1
-                     + coefficients[2] * fs.x2
-                     - coefficients[4] * fs.y1
-                     - coefficients[5] * fs.y2;
+                + coefficients[1] * fs.x1
+                + coefficients[2] * fs.x2
+                - coefficients[4] * fs.y1
+                - coefficients[5] * fs.y2;
 
-       #if JUCE_INTEL
+#if JUCE_INTEL
         if (! (out < -1.0e-8 || out > 1.0e-8))
             out = 0;
-       #endif
+#endif
 
         fs.x2 = fs.x1;
         fs.x1 = in;

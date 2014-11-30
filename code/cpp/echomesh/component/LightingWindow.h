@@ -9,21 +9,21 @@ namespace echomesh {
 class InstrumentGrid;
 
 class LightingWindow : public DocumentWindow {
- public:
-  LightingWindow();
-  ~LightingWindow();
+  public:
+    LightingWindow();
+    ~LightingWindow();
 
-  InstrumentGrid* grid() { return instrumentGrid_; }
-  void saveSnapshotToFile(const string&);
+    InstrumentGrid* grid() { return instrumentGrid_; }
+    void saveSnapshotToFile(const string&);
 
-  void closeButtonPressed() {}
-  virtual void moved() {}
-  void setLights(const color::FColorList&);
+    void closeButtonPressed() {}
+    virtual void moved() {}
+    void setLights(const color::FColorList&);
 
- private:
-  InstrumentGrid* instrumentGrid_;
+  private:
+    InstrumentGrid* instrumentGrid_;
 
-  JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LightingWindow)
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(LightingWindow)
 };
 
 LightingWindow* makeLightingWindow();

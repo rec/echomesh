@@ -7,19 +7,19 @@ namespace echomesh {
 namespace audio {
 
 class PanGainPlayer {
- public:
-  PanGainPlayer(Envelope* gain, Envelope* pan);
+  public:
+    PanGainPlayer(Envelope* gain, Envelope* pan);
 
-  void apply(const AudioSourceChannelInfo&);
-  void begin();
+    void apply(const AudioSourceChannelInfo&);
+    void begin();
 
- private:
-  void applyGain(const AudioSourceChannelInfo&);
-  void applyPan(const AudioSourceChannelInfo&);
+  private:
+    void applyGain(const AudioSourceChannelInfo&);
+    void applyPan(const AudioSourceChannelInfo&);
 
-  unique_ptr<EnvelopePlayer> gainPlayer_, panPlayer_;
+    unique_ptr<EnvelopePlayer> gainPlayer_, panPlayer_;
 
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(PanGainPlayer);
+    DISALLOW_COPY_ASSIGN_AND_LEAKS(PanGainPlayer);
 };
 
 }  // namespace audio

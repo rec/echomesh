@@ -6,19 +6,19 @@ namespace echomesh {
 namespace audio {
 
 class Loudness : public InputCallback {
- public:
-  explicit Loudness(int chunkSize);
-  void callback(int channels, int count, const float** samples) override;
-  float loudness() const;
+  public:
+    explicit Loudness(int chunkSize);
+    void callback(int channels, int count, const float** samples) override;
+    float loudness() const;
 
- private:
-  int sampleIndex_;
-  const int chunkSize_;
-  float sum_;
-  float loudness_;
-  CriticalSection lock_;
+  private:
+    int sampleIndex_;
+    const int chunkSize_;
+    float sum_;
+    float loudness_;
+    CriticalSection lock_;
 
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(Loudness);
+    DISALLOW_COPY_ASSIGN_AND_LEAKS(Loudness);
 };
 
 Loudness* loudnessInput(

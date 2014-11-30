@@ -13,7 +13,7 @@ float fastCos(float);
 std::pair<float, float> fastSinCos(float);
 
 inline float restrictAngle(float x) {
-  return fmod(x + M_PI, M_PI * 2) - M_PI;
+    return fmod(x + M_PI, M_PI * 2) - M_PI;
 }
 
 }  // namespace echomesh

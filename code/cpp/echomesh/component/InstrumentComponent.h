@@ -31,4 +31,3 @@ class InstrumentComponent : public Component {
 };
 
 }  // namespace echomesh
-

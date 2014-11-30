@@ -11,21 +11,21 @@ class ConfigMidiInput;
 class ConfigMidiOutput;
 
 class MidiController : public MidiInputCallback {
- public:
-  MidiController();
-  virtual ~MidiController();
-  virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
+  public:
+    MidiController();
+    virtual ~MidiController();
+    virtual void handleIncomingMidiMessage(MidiInput*, const MidiMessage&);
 
-  void config();
-  void midi();
+    void config();
+    void midi();
 
- private:
+  private:
 #if 0
-  ScopedPointer<ConfigMidiInput> midiInput_;
-  ScopedPointer<ConfigMidiOutput> midiOutput_;
+    ScopedPointer<ConfigMidiInput> midiInput_;
+    ScopedPointer<ConfigMidiOutput> midiOutput_;
 #endif
 
-  DISALLOW_COPY_AND_ASSIGN(MidiController);
+    DISALLOW_COPY_AND_ASSIGN(MidiController);
 };
 
 }  // namespace audio

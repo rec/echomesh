@@ -6,11 +6,11 @@ namespace echomesh {
 namespace audio {
 
 class RecordCallback {
- public:
-  RecordCallback();
+  public:
+    RecordCallback();
 
- private:
-  DISALLOW_COPY_ASSIGN_AND_LEAKS(RecordCallback);
+  private:
+    DISALLOW_COPY_ASSIGN_AND_LEAKS(RecordCallback);
 };
 
 }  // namespace audio

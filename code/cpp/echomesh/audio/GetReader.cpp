@@ -7,9 +7,9 @@ namespace audio {
 namespace {
 
 AudioFormatManager* makeManager() {
-  AudioFormatManager* manager = new AudioFormatManager();
-  manager->registerBasicFormats();
-  return manager;
+    AudioFormatManager* manager = new AudioFormatManager();
+    manager->registerBasicFormats();
+    return manager;
 }
 
 unique_ptr<AudioFormatManager> MANAGER(makeManager());
@@ -19,30 +19,30 @@ unique_ptr<AudioFormatManager> MANAGER(makeManager());
 unique_ptr<PositionableAudioSource> getReader(
     const String& name, SampleTime begin, SampleTime end, float sampleRate,
     int channels) {
-  unique_ptr<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
+    unique_ptr<AudioFormatReader> reader(MANAGER->createReaderFor(File(name)));
 
-  if (not reader.get()) {
-    DLOG(ERROR) << "Can't read file " << name.toStdString();
-    return nullptr;
-  }
+    if (not reader.get()) {
+        DLOG(ERROR) << "Can't read file " << name.toStdString();
+        return nullptr;
+    }
 
-  if (end < 0)
-    end = reader->lengthInSamples;
+    if (end < 0)
+        end = reader->lengthInSamples;
 
-  if (begin or end < reader->lengthInSamples)
-    reader.reset(new AudioSubsectionReader(reader.release(), begin, end, true));
+    if (begin or end < reader->lengthInSamples)
+        reader.reset(new AudioSubsectionReader(reader.release(), begin, end, true));
 
-  auto inputSampleRate = reader->sampleRate;
-  unique_ptr<PositionableAudioSource> source(
-      new AudioFormatReaderSource(reader.release(), true));
-  source->setLooping(true);
+    auto inputSampleRate = reader->sampleRate;
+    unique_ptr<PositionableAudioSource> source(
+        new AudioFormatReaderSource(reader.release(), true));
+    source->setLooping(true);
 
-  if (static_cast<int>(sampleRate) != static_cast<int>(inputSampleRate)) {
-    auto ratio = inputSampleRate / sampleRate;
-    source.reset(new ResamplingPositionableAudioSource(
-        source.release(), true, ratio, channels));
-  }
-  return source;
+    if (static_cast<int>(sampleRate) != static_cast<int>(inputSampleRate)) {
+        auto ratio = inputSampleRate / sampleRate;
+        source.reset(new ResamplingPositionableAudioSource(
+            source.release(), true, ratio, channels));
+    }
+    return source;
 }
 
 }  // namespace audio

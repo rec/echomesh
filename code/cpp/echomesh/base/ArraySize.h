@@ -70,6 +70,6 @@ char (&ArraySizeHelper(const TypeName (&array)[N]))[N];
 // where a pointer is 4 bytes, this means all pointers to a type whose
 // size is 3 or greater than 4 will be (righteously) rejected.
 
-#define ARRAYSIZE_UNSAFE(a) \
-  ((sizeof(a) / sizeof(*(a))) / \
-   static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))
+#define ARRAYSIZE_UNSAFE(a)                             \
+    ((sizeof(a) / sizeof(*(a))) /                       \
+     static_cast<size_t>(!(sizeof(a) % sizeof(*(a)))))

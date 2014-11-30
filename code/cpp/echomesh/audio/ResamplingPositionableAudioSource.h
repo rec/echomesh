@@ -3,23 +3,23 @@
 /*
   ==============================================================================
 
-   This file is part of the JUCE library.
-   Copyright (c) 2013 - Raw Material Software Ltd.
+  This file is part of the JUCE library.
+  Copyright (c) 2013 - Raw Material Software Ltd.
 
-   Permission is granted to use this software under the terms of either:
-   a) the GPL v2 (or any later version)
-   b) the Affero GPL v3
+  Permission is granted to use this software under the terms of either:
+  a) the GPL v2 (or any later version)
+  b) the Affero GPL v3
 
-   Details of these licenses can be found at: www.gnu.org/licenses
+  Details of these licenses can be found at: www.gnu.org/licenses
 
-   JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
-   WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
-   A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+  JUCE is distributed in the hope that it will be useful, but WITHOUT ANY
+  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+  A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
 
-   ------------------------------------------------------------------------------
+  ------------------------------------------------------------------------------
 
-   To release a closed-source product which uses JUCE, commercial licenses are
-   available: visit www.juce.com for more information.
+  To release a closed-source product which uses JUCE, commercial licenses are
+  available: visit www.juce.com for more information.
 
   ==============================================================================
 */
@@ -33,9 +33,9 @@ namespace audio {
 
 //==============================================================================
 /**
-    A type of AudioSource that takes an input source and changes its sample rate.
+   A type of AudioSource that takes an input source and changes its sample rate.
 
-    @see AudioSource
+   @see AudioSource
 */
 class JUCE_API  ResamplingPositionableAudioSource  : public PositionableAudioSource
 {
@@ -45,7 +45,7 @@ public:
 
         @param inputSource              the input source to read from
         @param deleteInputWhenDeleted   if true, the input source will be deleted when
-                                        this object is deleted
+        this object is deleted
         @param numChannels              the number of channels to process
     */
     ResamplingPositionableAudioSource(
@@ -61,8 +61,8 @@ public:
         (This value can be changed at any time, even while the source is running).
 
         @param samplesInPerOutputSample     if set to 1.0, the input is passed through; higher
-                                            values will speed it up; lower values will slow it
-                                            down. The ratio must be greater than 0
+        values will speed it up; lower values will slow it
+        down. The ratio must be greater than 0
     */
     void setResamplingRatio (double samplesInPerOutputSample);
 
@@ -123,7 +123,7 @@ private:
     void applyFilter (float* samples, int num, FilterState& fs);
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (ResamplingPositionableAudioSource)
-};
+            };
 
 }  // namespace audio
 }  // namespace echomesh
