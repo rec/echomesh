@@ -42,7 +42,7 @@ Order getOrder(const string& s) {
     return NONE;
 }
 
-void fillSpi(const FColorList& fc, char* data, int length, Order o) {
+void fillSpi(const FColorList& fc, char* data, size_t length, Order o) {
     auto bytes = reinterpret_cast<uint8*>(data);
     auto i = 0;
     auto tail = length - 3;

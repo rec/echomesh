@@ -11,8 +11,7 @@ enum Order {BGR_ORDER, BRG_ORDER, GBR_ORDER, GRB_ORDER, RBG_ORDER, RGB_ORDER,
             NONE = -1};
 Order getOrder(const string& s);
 
-void fillSpi(const FColorList&, char*, int length, Order);
+void fillSpi(const FColorList&, char*, size_t length, Order);
 
 }  // namespace color
 }  // namespace echomesh
-

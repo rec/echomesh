@@ -29,7 +29,7 @@ class Config(object):
 
         extra_compile_args = (
           '-I. -fmessage-length=0 -std=c++11 '
-          ' -IJuceLibraryCode -Ibuild/include ')
+          ' -IJuceLibraryCode -Ibuild/include -Wno-unused-function ')
 
         if DEBUG:
             extra_args = {'cython_gdb': True, 'pyrex_gdb': True}

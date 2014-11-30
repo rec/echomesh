@@ -2,7 +2,7 @@ cdef extern from "echomesh/color/SPI.h" namespace "echomesh::color":
     enum Order:
         pass
     Order getOrder(string)
-    void fillSpi(FColorList, char*, int length, Order order)
+    void fillSpi(FColorList, char*, size_t length, Order order)
 
 def get_spi_order(string s):
     cdef Order o

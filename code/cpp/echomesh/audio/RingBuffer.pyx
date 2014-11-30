@@ -3,7 +3,8 @@
 cdef extern from "JuceLibraryCode/modules/juce_audio_basics/buffers/juce_AudioSampleBuffer.h" namespace "juce":
     cdef cppclass AudioSampleBuffer:
         AudioSampleBuffer(int channels, int size)
-        float* getSampleData(int channel)
+        const float* getReadPointer(int channel) const
+        float* getWritePointer(int channel)
 
 cdef extern from "echomesh/audio/RingBuffer.h" namespace "echomesh::audio":
     cdef cppclass RingBuffer:
@@ -29,12 +30,12 @@ cdef class AudioRingBuffer:
     def read(self, int size, list data):
         cdef int channels = self.thisptr.channels()
         cdef AudioSampleBuffer* buffer
-        cdef float* channel_data
+        cdef const float* channel_data
         buffer = new AudioSampleBuffer(channels, size)
         try:
             result = self.thisptr.read(buffer)
             for channel in range(channels):
-                channel_data = buffer.getSampleData(channel)
+                channel_data = buffer.getReadPointer(channel)
                 data.append([channel_data[j] for j in range(result)])
 
             return result
@@ -42,17 +43,17 @@ cdef class AudioRingBuffer:
             del buffer
 
     def write(self, data):
-        cdef int channels = len(data)
-        cdef int size = len(data[0])
+        cdef size_t channels = len(data)
+        cdef size_t size = len(data[0])
         cdef AudioSampleBuffer* buffer
         cdef float* channel_data
         assert channels == self.thisptr.channels()
 
-        buffer = new AudioSampleBuffer(channels, size)
+        buffer = new AudioSampleBuffer(<int> channels, <int> size)
         try:
             for channel, cdata in enumerate(data):
                 assert len(cdata) == size
-                channel_data = buffer.getSampleData(channel)
+                channel_data = buffer.getWritePointer(channel)
                 for sample_index, data_point in enumerate(cdata):
                     channel_data[sample_index] = data_point
             return self.thisptr.write(buffer[0])
