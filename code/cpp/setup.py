@@ -20,9 +20,12 @@ if 'build_ext' in sys.argv:
 
 ECHOMESH_BASE = os.path.dirname(os.path.dirname(os.path.dirname(
   os.path.abspath(__file__))))
-ECHOMESH_PATH = os.path.join(ECHOMESH_BASE, 'code', 'python')
 
-sys.path.append(ECHOMESH_PATH)
+sys.path.extend((
+    os.path.join(ECHOMESH_BASE, 'code', 'python'),
+    os.path.join(ECHOMESH_BASE, 'code', 'external'),
+    ))
+
 
 from echomesh.build import clean_older, CONFIG, Clean, Install, Library
 
