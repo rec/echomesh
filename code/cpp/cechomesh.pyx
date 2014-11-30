@@ -9,7 +9,7 @@ from libcpp.vector cimport vector
 from libcpp.pair cimport pair
 
 cdef extern from "Python.h":
-   char* PyByteArray_AsString(object bytearray) except NULL
+    char* PyByteArray_AsString(object bytearray) except NULL
 
 include "echomesh/audio/DefaultDevice.pyx"
 include "echomesh/audio/Loudness.pyx"
