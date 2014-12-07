@@ -20,6 +20,7 @@ class Pattern(object):
     SETTINGS = {}
     HELP = ''
     PATTERN_COUNT = None
+    CONSTANT = False
 
     def __init__(self, desc, element, name):
         self.name = name
@@ -45,7 +46,7 @@ class Pattern(object):
         missing = []
         self.constants = set()
         for k, v in self.SETTINGS.items():
-            const = v.get('constant') or False
+            const = v.get('constant', self.CONSTANT)
             if const:
                 self.constants.add(k)
             value = desc.get(k, v.get('default'))

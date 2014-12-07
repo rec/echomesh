@@ -50,7 +50,8 @@ class Image(Pattern):
         'help': 'How many pixels to crop off the top of the image.',
         },
       'filename': {
-        'default': 0, 'constant': True,
+        'default': 0,
+        'constant': True,
         'help': 'Filename for the image file.',
         },
       'x': {
