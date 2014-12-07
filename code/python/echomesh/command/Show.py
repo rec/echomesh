@@ -2,12 +2,12 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 import six
 
-from echomesh.base import Settings
 from echomesh.base import Name
 from echomesh.base import Path
+from echomesh.base import Settings
 from echomesh.base import Yaml
+from echomesh.base.Join import join_words
 from echomesh.command import Aliases
-import echomesh.command.Registry
 from echomesh.command import Contexts
 from echomesh.command import Scores
 from echomesh.expression import Transform
@@ -15,6 +15,7 @@ from echomesh.expression import Units
 from echomesh.sound import Sound
 from echomesh.util import Log
 from echomesh.util.registry import Registry
+import echomesh.command.Registry
 
 LOGGER = Log.logger(__name__)
 
@@ -29,7 +30,7 @@ def _info(d, spaces='  '):
         items = [(('%s%s:' % (spaces, k)), v)
                  for k, v in sorted(six.iteritems(d))]
         length = max(len(k) for k, v in items)
-        s = '\n'.join('%-*s %s' % (length, k, v) for k, v in items)
+        s = '\n'.join('%-*s %s' % (length, k, ' '.join(v)) for k, v in items)
     LOGGER.info('%s\n', s)
 
 def addresses(_):
@@ -37,7 +38,7 @@ def addresses(_):
 
 def aliases(*_):
     al = Aliases.instance()
-    if aliases:
+    if al:
         _info(al)
     else:
         LOGGER.info('  No aliases\n')
@@ -53,8 +54,24 @@ def broadcast(echomesh_instance):
     message = 'ON' if echomesh_instance.broadcasting() else 'off'
     LOGGER.info('  Broadcast is %s\n', message)
 
-def _settings(_):
-    LOGGER.info('\n' + Yaml.encode_one(Settings.get_settings()))
+def _settings(_, *names):
+    settings = Settings.get_settings()
+    names = set(names)
+    keys = set(settings.keys())
+    if 'all' in names:
+        names = keys
+
+    bad = names - set(settings.keys())
+    if bad:
+        LOGGER.error("Don't understand settings %s.", join_words(bad))
+        names -= bad
+    if names:
+        settings = dict((k, v) for k, v in settings.items() if k in names)
+        LOGGER.info('\n  ' + Yaml.encode_one(settings).replace('\n', '\n  '))
+    else:
+        LOGGER.info('  Possible settings are:\n    ' +
+                    join_words(settings.keys()))
+
 
 def directories(_):
     _info(Path.info())
@@ -87,7 +104,8 @@ def sound(_):
 def timestamp(_):
     try:
         import cechomesh
-        LOGGER.info('cechomesh was built on %s, %s', *cechomesh.build_timestamp())
+        LOGGER.info('  cechomesh was built on %s, %s',
+                    *cechomesh.build_timestamp())
     except:
         LOGGER.error('No cechomesh plugin found!')
 

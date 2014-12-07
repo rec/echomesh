@@ -16,7 +16,7 @@ def alias(_, *path):
 
     if len(path) == 1:
         if result:
-            LOGGER.info('Alias %s=%s', result[0], result[1])
+            LOGGER.info('Alias %s=%s', result[0], ' '.join(result[1]))
         else:
             LOGGER.error('Don\'t understand alias %s.', al)
         return
@@ -38,7 +38,7 @@ def alias(_, *path):
             LOGGER.info('Alias %s deleted.', result[0])
     else:
         aliases[al] = parts
-        LOGGER.info('Alias %s=%s', al, parts)
+        LOGGER.info('Alias %s=%s', al, ' '.join(parts))
 
 HELP = """
   The alias command allows you to attach one or more commands to a

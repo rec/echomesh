@@ -10,7 +10,7 @@ from contextlib import closing
 
 SEPARATOR_BASE = '---'
 SEPARATOR = '\n%s\n' % SEPARATOR_BASE
-PROPAGATE_EXCEPTIONS = False
+PROPAGATE_EXCEPTIONS = not False
 
 def encode_one(item, **kwds):
     return yaml.safe_dump(item, **kwds)
@@ -56,4 +56,7 @@ def write(fname, *items):
             raise
 
 def _open_userfile(fname, perms='r'):
-    return open(data_filename(os.path.expanduser(fname)), perms)
+    fname = os.path.expanduser(fname)
+    if perms == 'r':
+        fname = data_filename(fname)
+    return open(fname, perms)
