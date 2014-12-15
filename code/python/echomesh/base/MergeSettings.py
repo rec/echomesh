@@ -1,6 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import copy
+import os
 from collections import namedtuple
 
 from echomesh.base import Args
@@ -82,8 +83,11 @@ class MergeSettings(object):
                 settings[1] = Merge.merge(*settings[1:])
                 while len(settings) > 2:
                     settings.pop()
-                with open(f, 'r') as fo:
-                    data = fo.read().split(Yaml.SEPARATOR)[0]
+                if os.path.exists(f):
+                    with open(f, 'r') as fo:
+                        data = fo.read().split(Yaml.SEPARATOR)[0]
+                else:
+                    data = {}
 
                 with open(f, 'wb') as fw:
                     fw.write(data)
