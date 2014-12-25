@@ -15,10 +15,10 @@ _NONE = object()
 _ARGS = []
 
 def reconfigure(args=None):
-    global _ARGS, _MERGE_SETTINGS
+    global _ARGS, MERGE_SETTINGS
     if args:
         _ARGS = args
-    _MERGE_SETTINGS = Reconfigure.reconfigure(_ARGS)
+    MERGE_SETTINGS = Reconfigure.reconfigure(_ARGS)
 
 def add_client(client):
     if not client in _CLIENTS:
@@ -30,9 +30,9 @@ def update_clients():
         c.settings_update(get)
 
 def get_settings():
-    if not _MERGE_SETTINGS:
+    if not MERGE_SETTINGS:
         reconfigure()
-    return _MERGE_SETTINGS.settings
+    return MERGE_SETTINGS.settings
 
 def get(*parts):
     settings = get_settings()
@@ -47,22 +47,22 @@ def get(*parts):
     return settings
 
 def assign(values):
-    return _MERGE_SETTINGS.assign(values)
+    return MERGE_SETTINGS.assign(values)
 
 # Automatically save any changed variables on exit.
 def save(log=True):
     if get('autosave'):
-        files = _MERGE_SETTINGS.save()
+        files = MERGE_SETTINGS.save()
         if log and files:
             print(
                 'Settings automatically saved to', Join.join_file_names(files))
         return files
 
 def assignments():
-    return _MERGE_SETTINGS.assignments()
+    return MERGE_SETTINGS.assignments()
 
 def has_changes():
-    return _MERGE_SETTINGS.has_changes()
+    return MERGE_SETTINGS.has_changes()
 
 def get_changes():
-    return _MERGE_SETTINGS.get_changes()
+    return MERGE_SETTINGS.get_changes()

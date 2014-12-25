@@ -87,11 +87,19 @@ class MergeSettings(object):
                     with open(f, 'r') as fo:
                         data = fo.read().split(Yaml.SEPARATOR)[0]
                 else:
-                    data = {}
+                    data = ''
+
+                parent = os.path.dirname(f)
+                if not os.path.exists(parent):
+                    print('Creating directory', parent)
+                    os.makedirs(parent)
+                else:
+                    print('Directory exists', parent)
 
                 with open(f, 'wb') as fw:
-                    fw.write(data)
-                    fw.write(Yaml.SEPARATOR)
+                    if data:
+                        fw.write(data)
+                        fw.write(Yaml.SEPARATOR)
                     fw.write(Yaml.encode_one(settings[1]))
 
         self.arg_settings = Merge.difference_strict(
