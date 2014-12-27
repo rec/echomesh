@@ -30,13 +30,16 @@ def _format(info, spaces=DEFAULT_INDENT):
     s = Yaml.encode_one(info)
     LOGGER.info('\n' + DEFAULT_INDENT + s.replace('\n', '\n' + DEFAULT_INDENT))
 
+def _str(x):
+    return x if isinstance(x, six.string_types) else ' '.join(x)
+
 def _info(d, spaces=DEFAULT_INDENT):
     s = 'none'
     if d:
         items = [(('%s%s:' % (spaces, k)), v)
                  for k, v in sorted(six.iteritems(d))]
         length = max(len(k) for k, v in items)
-        s = '\n'.join('%-*s %s' % (length, k, ' '.join(v)) for k, v in items)
+        s = '\n'.join('%-*s %s' % (length, k, _str(v)) for k, v in items)
     LOGGER.info('%s\n', s)
 
 def addresses(_):
