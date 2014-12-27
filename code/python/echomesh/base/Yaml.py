@@ -11,8 +11,10 @@ from contextlib import closing
 SEPARATOR_BASE = '---'
 SEPARATOR = '\n%s\n' % SEPARATOR_BASE
 PROPAGATE_EXCEPTIONS = not False
+DEFAULT_INDENT = 4
 
 def encode_one(item, **kwds):
+    kwds['indent'] = kwds.get('indent', DEFAULT_INDENT)
     return yaml.safe_dump(item, **kwds)
 
 def decode(s):

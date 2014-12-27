@@ -96,7 +96,7 @@ class ScoreMaster(MasterRunnable.MasterRunnable):
 
     def info(self):
         with self.lock:
-            return dict(self.elements)
+            return dict((k, e.info()) for k, e, in self.elements.items())
 
     def get_score(self, name):
         with self.lock:

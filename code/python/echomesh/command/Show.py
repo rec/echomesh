@@ -20,11 +20,17 @@ import echomesh.command.Registry
 LOGGER = Log.logger(__name__)
 
 SHOW_REGISTRY = Registry.Registry('show command')
+DEFAULT_INDENT = '    '
 
-def _indent(s, spaces='  '):
+# TODO: remove in favor of _format.
+def _indent(s, spaces=DEFAULT_INDENT):
     return '\n'.join(spaces + i.strip() for i in s.split('\n'))
 
-def _info(d, spaces='  '):
+def _format(info, spaces=DEFAULT_INDENT):
+    s = Yaml.encode_one(info)
+    LOGGER.info('\n' + DEFAULT_INDENT + s.replace('\n', '\n' + DEFAULT_INDENT))
+
+def _info(d, spaces=DEFAULT_INDENT):
     s = 'none'
     if d:
         items = [(('%s%s:' % (spaces, k)), v)
@@ -41,7 +47,7 @@ def aliases(*_):
     if al:
         _info(al)
     else:
-        LOGGER.info('  No aliases\n')
+        LOGGER.info('    No aliases\n')
 
 def _all(echomesh_instance):
     LOGGER.info('')
@@ -52,7 +58,7 @@ def _all(echomesh_instance):
 
 def broadcast(echomesh_instance):
     message = 'ON' if echomesh_instance.broadcasting() else 'off'
-    LOGGER.info('  Broadcast is %s\n', message)
+    LOGGER.info('     Broadcast is %s\n', message)
 
 def _settings(_, *names):
     settings = Settings.get_settings()
@@ -66,12 +72,10 @@ def _settings(_, *names):
         LOGGER.error("Don't understand settings %s.", join_words(bad))
         names -= bad
     if names:
-        settings = dict((k, v) for k, v in settings.items() if k in names)
-        LOGGER.info('\n  ' + Yaml.encode_one(settings).replace('\n', '\n  '))
+        _format(dict((k, v) for k, v in settings.items() if k in names))
     else:
-        LOGGER.info('  Possible settings are:\n    ' +
+        LOGGER.info('    Possible settings are:\n    ' +
                     join_words(settings.keys()))
-
 
 def directories(_):
     _info(Path.info())
@@ -79,7 +83,7 @@ def directories(_):
 def elements(echomesh_instance):
     info = echomesh_instance.score_master.info()
     if info:
-        _info(info)
+        _format(info)
     else:
         LOGGER.info('  No elements have been loaded into memory.\n')
 
