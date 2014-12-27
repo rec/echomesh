@@ -93,8 +93,6 @@ class MergeSettings(object):
                 if not os.path.exists(parent):
                     print('Creating directory', parent)
                     os.makedirs(parent)
-                else:
-                    print('Directory exists', parent)
 
                 with open(f, 'wb') as fw:
                     if data:

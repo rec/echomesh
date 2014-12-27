@@ -12,7 +12,7 @@ class ScrollTest(TestCase):
            'plum', 'teal', 'wheat', 'orchid', ])
 
     def doTest(self, dx, dy, expected):
-        result = cechomesh.scroll_color_list(self.data, dx, dy, 4)
+        result = cechomesh.scroll_color_list(self.data, dx, dy, columns=4)
         expected = cechomesh.ColorList(expected)
         self.assertEquals(result, cechomesh.ColorList(expected))
 

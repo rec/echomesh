@@ -6,7 +6,7 @@ from echomesh.base import Settings
 from echomesh.pattern.Pattern import Pattern
 
 class Column(Pattern):
-    HELP = 'Set or rest the number of columns in an x, y pattern.'
+    HELP = 'Set or reset the number of columns in an x, y pattern.'
 
     SETTINGS = {
       'columns': {

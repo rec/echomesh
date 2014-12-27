@@ -40,6 +40,13 @@ cdef class ColorList:
             recolumn(self.thisptr, self._columns, cols)
             self._columns = cols
 
+    property size:
+        def __get__(self):
+            return len(self)
+
+        def __set__(self, unsigned int new_size):
+            self.thisptr.resize(new_size)
+
     def append(self, object item):
         cdef FColor c
         if fill_color(item, &c):
@@ -86,8 +93,7 @@ cdef class ColorList:
         original_length = len(self)
         colors = list(colors)
         new_length = len(colors)
-        if return_errors:
-            error_colors = []
+        error_colors = []
 
         self.thisptr.reserve(original_length + new_length)
         for color in colors:
@@ -119,8 +125,9 @@ cdef class ColorList:
 
     def interpolate(self, color_list, float fader, unsigned int smooth=0):
         cdef ColorList cl = toColorList(color_list)
-        cdef ColorList result = ColorList(columns=self.columns)
-        result.thisptr[0] = self.thisptr.interpolate(cl.thisptr[0], fader, smooth)
+        cdef ColorList result = ColorList(columns=self.column or cl.columns)
+        result.thisptr[0] = self.thisptr.interpolate(
+            cl.thisptr[0], fader, smooth)
         return result
 
     def pop(self, int index=-1):

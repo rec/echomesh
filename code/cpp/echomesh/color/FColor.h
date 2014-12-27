@@ -134,7 +134,9 @@ class FColor {
     }
 
     struct Comparer {
-        bool operator()(const FColor& x, const FColor& y) { return x.compare(y) < 0; }
+        bool operator()(const FColor& x, const FColor& y) {
+            return x.compare(y) < 0;
+        }
     };
 
     void combine(const FColor& x) {
@@ -149,7 +151,10 @@ class FColor {
     }
 
   private:
-    float red_, green_, blue_, alpha_;
+    float red_ = 0.0;
+    float green_ = 0.0;
+    float blue_ = 0.0;
+    float alpha_ = 1.0;
 };
 
 }  // namespace color

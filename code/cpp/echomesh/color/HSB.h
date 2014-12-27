@@ -62,4 +62,3 @@ class HSB : public ColorModel {
 
 }  // namespace color
 }  // namespace echomesh
-

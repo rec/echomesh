@@ -11,6 +11,7 @@ REGISTRY = register(
   'Image',
   'Inject',
   'Insert',
+  'List',
   'Mirror',
   'Scroll',
   'Spread',
