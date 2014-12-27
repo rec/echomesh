@@ -41,7 +41,7 @@ class List(Pattern):
         columns = self.get('columns') or max_column
         if not max_column:
             # Empty list.
-            return cechomesh.Colorlist(columns=columns)
+            return cechomesh.ColorList(columns=columns)
 
         ce = (cechomesh.color_list_with_errors(c) for c in colors)
         color_lists, errors = zip(*ce)

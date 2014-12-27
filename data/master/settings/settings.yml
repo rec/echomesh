@@ -1,0 +1,9 @@
+light:
+  visualizer:
+    instrument:
+      size: [9, 9]
+
+---
+light:
+  visualizer:
+    layout: [100, 10]

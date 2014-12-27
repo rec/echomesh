@@ -1,0 +1,11 @@
+type: sequence
+
+pattern:
+  a list:
+    type: list
+    colors: [[red, white, blue], [green, yellow], [grey, white]]
+
+elements:
+  -
+    type: pattern
+    pattern: a list

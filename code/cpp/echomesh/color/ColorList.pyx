@@ -211,6 +211,8 @@ cdef class ColorList:
         return 'ColorList(%s)' % self.__str__()
 
     def __richcmp__(ColorList self, ColorList other, int comparer):
+        if other is None:
+            other = ColorList()
         if self.columns != other.columns:
             return compare_ints(self.columns, other.columns, comparer)
 

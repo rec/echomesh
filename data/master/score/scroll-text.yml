@@ -6,13 +6,13 @@ pattern:
     wrap: true
     smooth: true
     # transform: exp
-    dx: 3 * system.elapsed
+    dx: -2 * system.elapsed
     pattern:
       type: text
       font: silkscreen/slkscr
-      height: 6
+      height: 10
       # text: "ABCDEFGHIJKLMNOPQRSTUVWYZabcdefghijklmnopqrstuvwyz"
-      text: "H"
+      text: "Hello, world"
 
 elements:
   -

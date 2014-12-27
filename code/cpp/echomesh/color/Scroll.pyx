@@ -20,4 +20,5 @@ def scroll_color_list(object fcl, float dx, float dy, int columns=0,
     else:
         result.thisptr.copy(
           scroll(source.thisptr[0], int(dx), int(dy), columns, wrap))
+    result.columns = columns
     return result

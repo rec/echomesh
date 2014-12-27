@@ -5,6 +5,8 @@ from echomesh.Cechomesh import cechomesh
 from echomesh.base import Settings
 from echomesh.pattern.Pattern import Pattern
 
+LAST_LIST = None
+
 class Scroll(Pattern):
     HELP = 'Scrolls an x,y color list in two dimension.'
 
@@ -42,7 +44,12 @@ class Scroll(Pattern):
         columns = (color_list.columns or
                    Settings.get('light', 'visualizer', 'layout')[0])
 
-        return cechomesh.scroll_color_list(
+        result = cechomesh.scroll_color_list(
           color_list, self.get('dx'), self.get('dy'), columns=columns,
           wrap=self.get('wrap'), smooth=self.get('smooth'),
           transform=self.get('transform'))
+        global LAST_LIST
+        if False and result != LAST_LIST:
+            LAST_LIST = result
+            print(result, color_list)
+        return result
