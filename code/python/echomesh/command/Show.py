@@ -1,6 +1,9 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+import os
 import six
+import sys
+import time
 
 from echomesh.base import Name
 from echomesh.base import Path
@@ -109,12 +112,14 @@ def sound(_):
     _info(Sound.info())
 
 def timestamp(_):
-    try:
-        import cechomesh
-        LOGGER.info('  cechomesh was built on %s, %s',
-                    *cechomesh.build_timestamp())
-    except:
-        LOGGER.error('No cechomesh plugin found!')
+    for p in sys.path:
+        fname = os.path.join(p, 'cechomesh.so')
+        if os.path.exists(fname):
+            timestamp = time.ctime(os.path.getmtime(fname))
+            LOGGER.info('    %s was built on %s', fname, timestamp)
+            break
+    else:
+        LOGGER.error('    No cechomeh.so found!')
 
 def transforms(_):
     for k in sorted(Transform.REGISTRY.keys()):
