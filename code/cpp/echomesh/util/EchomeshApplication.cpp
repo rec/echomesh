@@ -41,6 +41,11 @@ juce::JUCEApplicationBase* juce_CreateApplication() {
 
 }  // namespace
 
+void callEchomesh(string const& s) {
+    if (CALLBACK and USER_DATA)
+        CALLBACK(USER_DATA, s.c_str());
+}
+
 void startApplication(StringCaller cb, void* userData) {
     {
         ScopedLock l(LOCK);

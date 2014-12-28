@@ -100,6 +100,8 @@ class Instance(MasterRunnable):
     def callback(self, data):
         if data == 'start':
             self.after_server_starts()
+        else:
+            print(data)
 
     def after_server_starts(self):
         if cechomesh.LOADED:

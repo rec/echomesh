@@ -1,5 +1,6 @@
 #include "echomesh/color/FColorList.h"
 #include "echomesh/component/LightingWindow.h"
+#include "echomesh/util/EchomeshApplication.h"
 #include "echomesh/util/Quit.h"
 #include "echomesh/util/RunOnMessageThread.h"
 
@@ -44,16 +45,27 @@ LightingWindow* makeLightingWindow() {
     return window.release();
 }
 
+static string stringBounds(LightingWindow const& window) {
+    auto bounds = window.getScreenBounds();
+    return "{\"x\":" + std::to_string(bounds.getX()) +
+            ",\"y\":" + std::to_string(bounds.getY()) +
+            ",\"width\":" + std::to_string(bounds.getWidth()) +
+            ",\"height\":" + std::to_string(bounds.getHeight()) +
+            "}";
+}
+
 void LightingWindow::closeButtonPressed() {
-    // LOG(INFO) << "closing!!";
+    callEchomesh("{\"event\":\"closeButtonPressed\"}");
 }
 
 void LightingWindow::moved() {
-    // LOG(INFO) << "Moved!";
+    callEchomesh("{\"event\":\"moved\",\"bounds\":" +
+                 stringBounds(*this) + "}");
 }
 
 void LightingWindow::resized() {
-    // LOG(INFO) << "Resized!!";
+    callEchomesh("{\"event\":\"resized\",\"bounds\":" +
+                 stringBounds(*this) + "}");
 }
 
 static void deleteWindow(LightingWindow* window) {
