@@ -36,7 +36,7 @@ cdef class ColorList:
         def __get__(self):
             return self._columns
 
-        def __set__(self, cols):
+        def __set__(self, unsigned int cols):
             recolumn(self.thisptr, self._columns, cols)
             self._columns = cols
 

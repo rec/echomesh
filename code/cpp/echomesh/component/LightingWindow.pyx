@@ -10,6 +10,7 @@ cdef extern from "echomesh/component/LightingWindow.h" namespace "echomesh":
         void saveSnapshotToFile(string)
         void setLights(FColorList)
         void setVisible(bool)
+        bool isVisible()
 
     LightingWindow* makeLightingWindow() nogil
     void deleteLightingWindow(LightingWindow*) nogil
@@ -23,8 +24,12 @@ cdef class PyLightingWindow:
     def __dealloc__(self):
         self.dealloc()
 
-    def set_visible(self, bool visible):
-        self.thisptr.setVisible(visible)
+    property visible:
+        def __get__(self):
+            return self.thisptr.isVisible()
+
+        def __set__(self, bool visible):
+            self.thisptr.setVisible(visible)
 
     def dealloc(self):
         deleteLightingWindow(self.thisptr)

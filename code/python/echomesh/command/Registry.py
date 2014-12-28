@@ -10,6 +10,7 @@ def registry():
           'Alias',
           'Broadcast',
           'Transfer',
-          'Save'
+          'Save',
+          'Window',
         )
     return _REGISTRY

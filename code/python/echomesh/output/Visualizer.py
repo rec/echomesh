@@ -103,7 +103,6 @@ def instance():
         Visualizer()
     return Visualizer.INSTANCE
 
-def close():
-    if Visualizer.INSTANCE:
-        Visualizer.INSTANCE.close();
-        Visualizer.INSTANCE = None
+def set_visible(visible):
+    if visible or Visualizer.INSTANCE:
+        instance().lighting_window.visible = visible

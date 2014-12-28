@@ -92,7 +92,6 @@ execution:
   # Handling of the visualiser windows.
   close_button_quits: false
   close_button_closes_window: true
-  new_pattern_opens_window: true
 
   # Do we get and process commands from the keyboard?
   # Set this to "false" for autostart jobs.

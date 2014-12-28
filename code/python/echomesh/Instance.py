@@ -15,6 +15,7 @@ from echomesh.util.hardware import GPIO
 from echomesh.network import PeerSocket
 from echomesh.network import Peers
 from echomesh.output.Registry import pause_outputs
+from echomesh.output import Visualizer
 from echomesh.util import CLog
 from echomesh.util import Log
 from echomesh.util.thread.MasterRunnable import MasterRunnable
@@ -102,8 +103,13 @@ class Instance(MasterRunnable):
         event = data['event']
         if event == 'start':
             self.after_server_starts()
+        elif event == 'closeButtonPressed':
+            if Settings.get('execution', 'close_button_quits'):
+                Quit.request_quit()
+            elif Settings.get('execution', 'close_button_closes_window'):
+                Visualizer.set_visible(False)
         else:
-            print(data)
+            # print(data)
             pass
 
     def after_server_starts(self):
