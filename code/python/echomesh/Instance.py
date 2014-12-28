@@ -44,7 +44,7 @@ class Instance(MasterRunnable):
         self.score_master = ScoreMaster.ScoreMaster()
         self.peers = Peers.Peers(self)
         self.socket = PeerSocket.PeerSocket(self, self.peers)
-        self.callback = self.after_server_starts
+        # self.callback = self.after_server_starts
 
         self.display = Display.display(self.callback)
         self.keyboard_runnable = self.osc = None
@@ -96,6 +96,10 @@ class Instance(MasterRunnable):
             self.after_server_starts()
         time.sleep(self.timeout)
         # Prevents crashes if you start and stop echomesh very fast.
+
+    def callback(self, data):
+        if data == 'start':
+            self.after_server_starts()
 
     def after_server_starts(self):
         if cechomesh.LOADED:

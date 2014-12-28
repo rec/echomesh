@@ -5,7 +5,7 @@ namespace echomesh {
 
 namespace {
 
-VoidCaller CALLBACK;
+StringCaller CALLBACK;
 void* USER_DATA;
 
 CriticalSection LOCK;
@@ -21,7 +21,7 @@ class ApplicationBase : public juce::JUCEApplicationBase {
     virtual bool moreThanOneInstanceAllowed() { return false; }
     virtual void initialise(const String&) {
         if (CALLBACK and USER_DATA)
-            CALLBACK(USER_DATA);
+            CALLBACK(USER_DATA, "start");
     }
     virtual void shutdown() {}
     virtual void anotherInstanceStarted(const String&) {}
@@ -41,7 +41,7 @@ juce::JUCEApplicationBase* juce_CreateApplication() {
 
 }  // namespace
 
-void startApplication(VoidCaller cb, void* userData) {
+void startApplication(StringCaller cb, void* userData) {
     {
         ScopedLock l(LOCK);
         STARTED = true;
@@ -57,8 +57,5 @@ bool isStarted() {
     ScopedLock l(LOCK);
     return STARTED;
 }
-
-string timestamp() { return __TIME__; }
-string datestamp() { return __DATE__; }
 
 }  // namespace echomesh

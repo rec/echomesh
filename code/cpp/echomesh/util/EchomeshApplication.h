@@ -4,7 +4,7 @@
 
 namespace echomesh {
 
-void startApplication(VoidCaller, void*);
+void startApplication(StringCaller, void*);
 bool isStarted();
 
 string timestamp();
