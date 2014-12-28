@@ -8,8 +8,8 @@ from echomesh.util.thread import Lock
 LOGGER = Log.logger(__name__)
 
 def default_output():
-    from echomesh.output.Visualizer import Visualizer
-    return Visualizer()
+    from echomesh.output import Visualizer
+    return Visualizer.instance()
 
 class _SingleOutput(object):
     def __init__(self, name, data, output_cache):

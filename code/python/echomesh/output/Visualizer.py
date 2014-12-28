@@ -42,9 +42,7 @@ class Visualizer(Poll):
         self.values.add_client()
 
     def _close_window(self):
-        if self.lighting_window:
-            self.lighting_window.close()
-            self.lighting_window = None
+        self.lighting_window = None
 
     def pause(self):
         super(Visualizer, self).pause()
@@ -99,3 +97,13 @@ class Visualizer(Poll):
 
         lights.scale(self.brightness)
         self.lighting_window.set_lights(lights)
+
+def instance():
+    if not Visualizer.INSTANCE:
+        Visualizer()
+    return Visualizer.INSTANCE
+
+def close():
+    if Visualizer.INSTANCE:
+        Visualizer.INSTANCE.close();
+        Visualizer.INSTANCE = None

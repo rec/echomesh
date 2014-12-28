@@ -21,7 +21,7 @@ class ApplicationBase : public juce::JUCEApplicationBase {
     virtual bool moreThanOneInstanceAllowed() { return false; }
     virtual void initialise(const String&) {
         if (CALLBACK and USER_DATA)
-            CALLBACK(USER_DATA, "start");
+            CALLBACK(USER_DATA, "{\"event\":\"start\"}");
     }
     virtual void shutdown() {}
     virtual void anotherInstanceStarted(const String&) {}

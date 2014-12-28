@@ -9,6 +9,7 @@ cdef extern from "echomesh/component/LightingWindow.h" namespace "echomesh":
         InstrumentGrid* grid()
         void saveSnapshotToFile(string)
         void setLights(FColorList)
+        void setVisible(bool)
 
     LightingWindow* makeLightingWindow() nogil
     void deleteLightingWindow(LightingWindow*) nogil
@@ -20,9 +21,12 @@ cdef class PyLightingWindow:
         self.thisptr = makeLightingWindow()
 
     def __dealloc__(self):
-        self.close()
+        self.dealloc()
 
-    def close(self):
+    def set_visible(self, bool visible):
+        self.thisptr.setVisible(visible)
+
+    def dealloc(self):
         deleteLightingWindow(self.thisptr)
         self.thisptr = NULL
 

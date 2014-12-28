@@ -7,6 +7,7 @@ import time
 from echomesh.Cechomesh import cechomesh
 from echomesh.base import Settings
 from echomesh.base import Quit
+from echomesh.base import Yaml
 from echomesh.element import ScoreMaster
 from echomesh.expression import Expression
 from echomesh.graphics import Display
@@ -44,7 +45,6 @@ class Instance(MasterRunnable):
         self.score_master = ScoreMaster.ScoreMaster()
         self.peers = Peers.Peers(self)
         self.socket = PeerSocket.PeerSocket(self, self.peers)
-        # self.callback = self.after_server_starts
 
         self.display = Display.display(self.callback)
         self.keyboard_runnable = self.osc = None
@@ -98,10 +98,12 @@ class Instance(MasterRunnable):
         # Prevents crashes if you start and stop echomesh very fast.
 
     def callback(self, data):
-        if data == 'start':
+        data = Yaml.decode_one(data)
+        event = data['event']
+        if event == 'start':
             self.after_server_starts()
         else:
-            #print(data)
+            print(data)
             pass
 
     def after_server_starts(self):

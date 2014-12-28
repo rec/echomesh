@@ -26,14 +26,9 @@ class Snapshot(Element):
 
     def _on_run(self):
         super(Snapshot, self)._on_run()
-
-        if not Visualizer.INSTANCE:
-            LOGGER.error('No Visualizer.INSTANCE')
-            return
-
         self.pause()
         self.index += 1
-        Visualizer.INSTANCE.snapshot(self.get_file(self.index))
+        Visualizer.instance().snapshot(self.get_file(self.index))
 
     def get_file(self, index):
         if self.use_index:
