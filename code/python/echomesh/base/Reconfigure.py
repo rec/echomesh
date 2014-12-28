@@ -28,5 +28,5 @@ def reconfigure(args):
     if not isinstance(tags, (list, tuple)):
         tags = [tags]
 
-    prompt = not get('autostart')
+    prompt = not get('execution', 'autostart')
     return _make(name, tags, project, prompt, args)

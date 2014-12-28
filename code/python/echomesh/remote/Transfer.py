@@ -35,7 +35,7 @@ def transfer(_, **data):
             o.write(value['contents'])
         os.utime(fname, (value['atime'], value['mtime']))
 
-    if Settings.get('delete_backups_after_transfer'):
+    if Settings.get('execution', 'delete_backups_after_transfer'):
         try:
             shutil.rmtree(backup_directory)
         except:

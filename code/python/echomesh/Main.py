@@ -44,7 +44,7 @@ def _main():
     Settings.reconfigure(sys.argv[1:])
     p()
 
-    if Settings.get('autostart') and not Settings.get(
+    if Settings.get('execution', 'autostart') and not Settings.get(
             'permission', 'autostart'):
         print()
         from echomesh.util import Log

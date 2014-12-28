@@ -48,7 +48,7 @@ class Instance(MasterRunnable):
 
         self.display = Display.display(self.callback)
         self.keyboard_runnable = self.osc = None
-        if Settings.get('control_program'):
+        if Settings.get('execution', 'control_program'):
             from echomesh.util.thread import Keyboard
             args = {}
             keyboard, self.keyboard_runnable = Keyboard.keyboard(
@@ -101,12 +101,14 @@ class Instance(MasterRunnable):
         if data == 'start':
             self.after_server_starts()
         else:
-            print(data)
+            #print(data)
+            pass
 
     def after_server_starts(self):
         if cechomesh.LOADED:
             run_after(self.run,
-                      Expression.convert(Settings.get('delay_before_run')))
+                      Expression.convert(Settings.get('execution',
+                                                      'delay_before_run')))
         else:
             self.run()
             if self.display:

@@ -51,7 +51,7 @@ def assign(values):
 
 # Automatically save any changed variables on exit.
 def save(log=True):
-    if get('autosave'):
+    if get('execution', 'autosave'):
         files = MERGE_SETTINGS.save()
         if log and files:
             print(

@@ -103,7 +103,8 @@ def keyboard(instance, writer=sys.stdout, reader=sys.stdin.readline,
         except:
             LOGGER.error('Error processing command line.')
 
-    sleep = Expression.convert(Settings.get('delay_before_keyboard_activates'))
+    sleep = Expression.convert(Settings.get('execution',
+                                            'delay_before_keyboard_activates'))
     keyboard = Keyboard(sleep=sleep, message=MESSAGE, processor=processor,
                         writer=writer, reader=reader)
     if new_thread:

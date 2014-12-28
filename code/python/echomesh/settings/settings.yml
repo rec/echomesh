@@ -11,20 +11,6 @@ type: config
 aliases:
   save_with_project: false
 
-# Can you remotely request the shutdown and restart of this machine?
-allow_shutdown: true
-
-# Do changes to the configuration save automatically?
-autosave: true
-
-# Enable autostart.
-#
-# You still have to configure your computer to automatically run echomesh before
-# this flag has any effect.  It's mostly used for temporarily turning off the
-# program actually starting while you're debugging it.
-
-autostart: false
-
 audio:
    # The audio section is the longest section in the whole config file.
 
@@ -71,24 +57,6 @@ audio:
     # Disabled, see https://github.com/rec/echomesh/issues/197.
     route: audio
 
-# Do we get and process commands from the keyboard?
-# Set this to "false" for autostart jobs.
-# TODO: this needs to be rethought and perhaps re-integrated with autostart.
-control_program: true
-
-delay_before_keyboard_activates: 0.5 seconds
-delay_before_run: 0.1 seconds
-
-# The "transfer" operation overwrites all the score files on all the target
-# machines.  A backup is made during the transfer in case it fails halfway
-# through.
-#
-# If :delete_backups_after_transfer is true, that backup is deleted after the
-# transfer is complete, otherwise that backup is kept around until the next
-# transfer is started.
-
-delete_backups_after_transfer: false
-
 # Turns on various debugging mechanisms and gives better diagnositics.
 debug: false
 
@@ -107,6 +75,43 @@ diagnostics:
   # If true, on quit echomesh prints a list of configs that were never read.
   unused_configs: false
 
+execution:
+  # Can you remotely request the shutdown and restart of this machine?
+  allow_shutdown: true
+
+  # Do changes to the configuration save automatically?
+  autosave: true
+
+  # Enable autostart.
+  #
+  # You still have to configure your computer to automatically run echomesh before
+  # this flag has any effect.  It's mostly used for temporarily turning off the
+  # program actually starting while you're debugging it.
+  autostart: false
+
+  # Handling of the visualiser windows.
+  close_button_quits: false
+  close_button_closes_window: true
+  new_pattern_opens_window: true
+
+  # Do we get and process commands from the keyboard?
+  # Set this to "false" for autostart jobs.
+  # TODO: this needs to be rethought and perhaps re-integrated with autostart.
+  control_program: true
+
+  delay_before_keyboard_activates: 0.5 seconds
+  delay_before_run: 0.1 seconds
+
+  # The "transfer" operation overwrites all the score files on all the target
+  # machines.  A backup is made during the transfer in case it fails halfway
+  # through.
+  #
+  # If :delete_backups_after_transfer is true, that backup is deleted after the
+  # transfer is complete, otherwise that backup is kept around until the next
+  # transfer is started.
+
+  delete_backups_after_transfer: false
+
 # The git section sets the user, project name and server for a git repository
 # connected to the echomesh project.  Please note that you'll still have to
 # authenticate your machine to your git host if you want to check in changes
@@ -124,7 +129,7 @@ hardware:
     shutdown_pin_bounce_time: 300
 
 # Enable lighting control.  Note that your program has to be running as sudo
-# for the lighting to work.
+# for the SPI lighting to work on the RP.
 light:
   brightness: 100%
   count: 0
@@ -270,6 +275,8 @@ pi3d:
 # The path to your project's root directory.
 project: ""
 
+# A scale factor for time.  A value greater than 1.0 (100%) means that events
+# occur faster, less than 1.0 (100%) means that they occur slower.
 speed: 100%
 
 tag: []
