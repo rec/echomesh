@@ -11,20 +11,6 @@ namespace audio {
 
 bool equals(const OneMidiConfig&, const OneMidiConfig&);
 
-class CallbackWrapper : public CallbackMessage {
-  public:
-    explicit CallbackWrapper(CallbackMessage* cb) : callback_(cb) {}
-
-    virtual void messageCallback() {
-        callback_->messageCallback();
-    }
-
-  private:
-    CallbackMessage* const callback_;
-
-    DISALLOW_COPY_ASSIGN_EMPTY_AND_LEAKS(CallbackWrapper);
-};
-
 template <typename DeviceClass>
 class ConfigMidi : public CallbackMessage {
   public:
@@ -36,7 +22,7 @@ class ConfigMidi : public CallbackMessage {
             configAssigned_ = true;
             config_ = config;
 
-            runOnMessageThread(&ConfigMidi<DeviceClass>::messageCallback, this);
+            runOnMessageThread([=] () { messageCallback(); });
         }
     }
 
@@ -85,4 +71,3 @@ class ConfigMidiOutput : public ConfigMidi<MidiOutput> {
 }  // namespace echomesh
 
 #endif
-

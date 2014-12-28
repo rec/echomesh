@@ -30,7 +30,7 @@ void LightingWindow::saveSnapshotToFile(const string& name) {
 }
 
 void LightingWindow::setLights(const color::FColorList& colors) {
-    runOnMessageThread(&InstrumentGrid::setLights, instrumentGrid_, colors);
+    runOnMessageThread([=] () { instrumentGrid_->setLights(colors); });
 }
 
 LightingWindow* makeLightingWindow() {
@@ -44,12 +44,24 @@ LightingWindow* makeLightingWindow() {
     return window.release();
 }
 
+void LightingWindow::closeButtonPressed() {
+    // LOG(INFO) << "closing!!";
+}
+
+void LightingWindow::moved() {
+    // LOG(INFO) << "Moved!";
+}
+
+void LightingWindow::resized() {
+    // LOG(INFO) << "Resized!!";
+}
+
 static void deleteWindow(LightingWindow* window) {
     delete window;
 }
 
 void deleteLightingWindow(LightingWindow* window) {
-    runOnMessageThread(deleteWindow, window);
+    runOnMessageThread([=]() { delete window; });
 }
 
 }  // namespace echomesh

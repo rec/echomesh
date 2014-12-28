@@ -16,8 +16,9 @@ class LightingWindow : public DocumentWindow {
     InstrumentGrid* grid() { return instrumentGrid_; }
     void saveSnapshotToFile(const string&);
 
-    void closeButtonPressed() {}
-    virtual void moved() {}
+    void closeButtonPressed() override;
+    void moved() override;
+    void resized() override;
     void setLights(const color::FColorList&);
 
   private:
@@ -31,4 +32,3 @@ void deleteLightingWindow(LightingWindow*);
 
 
 }  // namespace echomesh
-

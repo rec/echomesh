@@ -8,26 +8,17 @@ namespace echomesh {
 
 typedef std::function<void()> VoidFunction;
 
+template <class Callback>
 class RunOnMessageThread : public CallbackMessage {
   public:
-    RunOnMessageThread(VoidFunction f) : function_(f) {}
-    virtual void messageCallback() { function_(); }
-    VoidFunction const function_;
+    RunOnMessageThread(Callback f) : callback_(f) {}
+    virtual void messageCallback() { callback_(); }
+    Callback callback_;
 };
 
-inline void runOnMessageThread(VoidFunction f) {
-    (new RunOnMessageThread(f))->post();
-}
-
-template <typename F, typename X>
-void runOnMessageThread(F f, X x) {
-    runOnMessageThread(std::bind(f, x));
-}
-
-template <typename F, typename X, typename Y>
-void runOnMessageThread(F f, X x, Y y) {
-    runOnMessageThread(std::bind(f, x, y));
+template <class Callback>
+void runOnMessageThread(Callback cb) {
+    (new RunOnMessageThread<Callback>(cb))->post();
 }
 
 }  // namespace echomesh
-
