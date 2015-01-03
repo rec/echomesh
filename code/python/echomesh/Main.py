@@ -41,7 +41,7 @@ def _main():
     from echomesh.base import Settings
     p()
 
-    Settings.reconfigure(sys.argv[1:])
+    Settings.read_settings(sys.argv[1:])
     p()
 
     if Settings.get('execution', 'autostart') and not Settings.get(
