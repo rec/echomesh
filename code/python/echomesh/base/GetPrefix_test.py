@@ -50,5 +50,5 @@ class GetPrefixTest(TestCase):
 
     def test_assignment_unmapped(self):
         GetPrefix.set_assignment('new.foo', 23, MASTER, self.slave,
-                                 unmapped_names=set(['new']))
+                                 unmapped_keys=set(['new']))
         self.assertEqual(self.slave, {'new': {'foo': 23}})

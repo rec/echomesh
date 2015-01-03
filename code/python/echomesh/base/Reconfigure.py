@@ -5,18 +5,18 @@ from echomesh.base import MergeSettings
 from echomesh.base import Name
 from echomesh.base import Path
 
-def _make(name, tags, project, show_error, args):
-    Name.set_name(name)
-    Name.set_tags(tags)
-    Path.set_project_path(project_path=project, show_error=show_error)
-
-    DataFile.compute_command_path(force=True)
-    return MergeSettings.MergeSettings(args)
-
 def reconfigure(args):
+    def _make(name, tags, project, show_error):
+        Name.set_name(name)
+        Name.set_tags(tags)
+        Path.set_project_path(project_path=project, show_error=show_error)
+
+        DataFile.compute_command_path(force=True)
+        return MergeSettings.MergeSettings(args)
+
     # Read a settings file with a given name, tags, and project.
     # First, make a settings with the default information.
-    merge_settings = _make(None, [], None, False, args)
+    merge_settings = _make(None, [], None, False)
 
     # Now, use the name, tags and project to get the correct configuration.
     get = merge_settings.settings.get
@@ -29,4 +29,4 @@ def reconfigure(args):
         tags = [tags]
 
     prompt = not get('execution', 'autostart')
-    return _make(name, tags, project, prompt, args)
+    return _make(name, tags, project, prompt)

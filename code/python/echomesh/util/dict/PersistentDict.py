@@ -20,7 +20,10 @@ class PersistentDict(dict):
         self._write()
 
     def get_prefix(self, *args):
-        return GetPrefix.get(self, *args)
+        try:
+            return GetPrefix.get_prefix(self, *args)
+        except GetPrefix.PrefixException:
+            return None
 
     def _write(self):
         Yaml.write(self._filename, self)

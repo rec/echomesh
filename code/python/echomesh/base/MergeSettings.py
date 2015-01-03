@@ -33,8 +33,6 @@ Examples:
   audio.input.enable=false light.enable=false
 """
 
-FileSettings = namedtuple('FileSettings', 'file base edits changes')
-
 class MergeSettings(object):
     def __init__(self, settings):
         self.settings = settings
@@ -139,7 +137,7 @@ class MergeSettings(object):
             try:
                 GetPrefix.set_assignment(
                     addr, value, base_settings, settings,
-                    unmapped_names=Merge.SETTINGS_EXCEPTIONS)
+                    unmapped_keys=Merge.SETTINGS_EXCEPTIONS)
             except GetPrefix.PrefixException:
                 raise Exception('Can\'t understand settings address "%s"' %
                                 addr)
