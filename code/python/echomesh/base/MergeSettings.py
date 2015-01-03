@@ -38,9 +38,9 @@ FileSettings = namedtuple('FileSettings', 'file base edits changes')
 class MergeSettings(object):
     def __init__(self, settings):
         self.settings = settings
-        self.read()
+        self._read()
 
-    def read(self):
+    def _read(self):
         self._read_file_settings()
         self.arg_settings = self._assignment_to_settings(
             self.settings, _ARGUMENT_ERROR)
