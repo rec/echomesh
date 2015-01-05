@@ -34,28 +34,28 @@ Examples:
 """
 
 class MergeSettings(object):
-    def __init__(self, settings):
-        self.settings = settings
+    def __init__(self, args):
+        self.args = args
         self._read()
 
     def _read(self):
         self._read_file_settings()
-        self.arg_settings = self._assignment_to_settings(
-            self.settings, _ARGUMENT_ERROR)
+        self.arg_settings = self._args_to_settings(
+            self.args, _ARGUMENT_ERROR)
         return self.recalculate()
 
     def recalculate(self):
-        self.settings = None
+        self.args = None
         self.changed = {}
         for _, settings in self.file_settings:
-            self.settings = Merge.merge(self.settings, *settings)
+            self.args = Merge.merge(self.args, *settings)
             self.changed = Merge.merge(self.changed, *settings[2:])
 
         arg = copy.deepcopy(self.arg_settings)
         clean_arg = Merge.difference_strict(arg, self.changed)
-        self.settings = Merge.merge_for_settings(self.settings, clean_arg)
+        self.args = Merge.merge_for_settings(self.args, clean_arg)
 
-        return self.settings
+        return self.args
 
     def has_changes(self):
         return any(settings[2] for (_, settings) in self.file_settings)
@@ -68,7 +68,7 @@ class MergeSettings(object):
 
         while len(settings) < 3:
             settings.append({})
-        assignments = self._assignment_to_settings(args, _ASSIGNMENT_ERROR)
+        assignments = self._args_to_settings(args, _ASSIGNMENT_ERROR)
         settings[2] = Merge.merge(settings[2], assignments)
         self.recalculate()
         return assignments
@@ -122,7 +122,7 @@ class MergeSettings(object):
                 settings.append({})
             self.file_settings.append([f, settings])
 
-    def _assignment_to_settings(self, args, error):
+    def _args_to_settings(self, args, error):
         args = ' '.join(args)
         settings = {}
         base_settings = self.file_settings[0][1][0]

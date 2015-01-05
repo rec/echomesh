@@ -8,7 +8,7 @@ except:
 
 from echomesh.base import DataFile
 from echomesh.base import Join
-from echomesh.base import MergeSettings
+from echomesh.base.MergeSettings import MergeSettings
 from echomesh.base import Name
 from echomesh.base import Path
 
@@ -28,14 +28,14 @@ def read_settings(args=None):
         Path.set_project_path(project_path=project, show_error=show_error)
 
         DataFile.compute_command_path(force=True)
-        return MergeSettings.MergeSettings(args)
+        return MergeSettings(args)
 
     # Read a settings file with a given name, tags, and project.
     # First, make a settings with the default information.
     merge_settings = _make(None, [], None, False)
 
     # Now, use the name, tags and project to get the correct configuration.
-    get = merge_settings.settings.get
+    get = merge_settings.args.get
 
     name = get('name') or Name.lookup(get('map', {}).get('name', {}))
     tags = get('tag') or Name.lookup(get('map', {}).get('tag', {})) or []
@@ -60,7 +60,7 @@ def update_clients():
 def get_settings():
     if not MERGE_SETTINGS:
         read_settings()
-    return MERGE_SETTINGS.settings
+    return MERGE_SETTINGS.args
 
 def get(*parts):
     settings = get_settings()

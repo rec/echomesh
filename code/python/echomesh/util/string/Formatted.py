@@ -6,12 +6,13 @@ class Formatted(object):
     string suitable for use in format()."""
 
     FORMAT = ''
-    MEMBERS = []
+    FORMAT_MEMBERS = []
     FORMAT_WITH_CLASS = True
 
     def _formatted(self):
         if not self.FORMAT:
-            self.FORMAT = ' '.join('%s={%s}' % (m, m) for m in self.MEMBERS)
+            self.FORMAT = ' '.join(
+                '%s={%s}' % (m, m) for m in self.FORMAT_MEMBERS)
         return self.FORMAT.format(**self.__dict__)
 
     def __str__(self):
