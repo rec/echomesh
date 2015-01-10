@@ -11,6 +11,7 @@ type: config
 aliases:
   save_with_project: false
 
+# Configure audio input, output and processing.
 audio:
    # The audio section is the longest section in the whole config file.
 
@@ -35,10 +36,13 @@ audio:
     # printed on the console - very spammy.
     verbose: false
 
-    # This is a list of mapping from db levels to microphone levels.
+    # A list of mapping from db levels to microphone levels.
+    #
     # BUG: For the moment, you can't use unit conversions in this area, so
     # don't put "db" after these numbers:
     # https://github.com/rec/echomesh/issues/195
+    #
+    # TODO: these should move into a plug-in specific setting.
     levels:
       silent: -37
       quiet: -25
@@ -56,6 +60,17 @@ audio:
     # Do we route the audio to the HD or the earphone audio jack?
     # Disabled, see https://github.com/rec/echomesh/issues/197.
     route: audio
+
+# Where do we look for commands, patterns, elements and outputs?
+#
+# Any entries from here come before the echomesh system defaults, so if you
+# create a function of the same name as a system one, it'll override that value.
+
+classpath:
+  command: ''
+  pattern: ''
+  element: ''
+  output: ''
 
 # Turns on various debugging mechanisms and gives better diagnositics.
 debug: false

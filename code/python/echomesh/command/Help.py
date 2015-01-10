@@ -7,7 +7,7 @@ from echomesh.util import Log
 
 LOGGER = Log.logger(__name__)
 
-HELP_TEXT = """
+HELP = """
 echomesh has the following help topics:
 
   %s
@@ -17,8 +17,7 @@ Type "help TOPIC" for more information - for example, "help quit" or "help run".
 
 def _help(_, *parts):
     if not parts:
-        LOGGER.info(HELP_TEXT,
-                    Registry.registry().join_keys(command_only=False))
+        LOGGER.info(HELP, Registry.registry().join_keys(command_only=False))
     else:
         cmd, parts = parts[0], parts[1:]
         if not parts:

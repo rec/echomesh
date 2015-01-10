@@ -10,6 +10,11 @@ class GetPrefixTest(TestCase):
     def setUp(self):
         self.slave = {}
 
+    def assertException(self, key, message, allow_prefixes=True):
+        with self.assertRaises(GetPrefix.PrefixException) as cm:
+            GetPrefix.get_prefix(TABLE, key, allow_prefixes=allow_prefixes)
+        self.assertEqual(str(cm.exception), message)
+
     def test_simple(self):
         self.assertEqual(GetPrefix.get_prefix(TABLE, 'one'), ('one', 1))
 
@@ -22,23 +27,10 @@ class GetPrefixTest(TestCase):
             ('one', 1))
 
     def test_bad_prefix(self):
-        try:
-            GetPrefix.get_prefix(TABLE, 'o', allow_prefixes=False)
-        except Exception as e:
-            self.assertEqual(str(e), '"o" is not valid')
-
-    def test_no_prefix2(self):
-        try:
-            GetPrefix.get_prefix(TABLE, 'x', allow_prefixes=False)
-        except Exception as e:
-            self.assertEqual(str(e), '"x" is not valid')
+        self.assertException('o', '"o" is not valid', allow_prefixes=False)
 
     def test_many_prefixes(self):
-        try:
-            GetPrefix.get_prefix(TABLE, 't')
-        except Exception as e:
-            self.assertEqual(str(e),
-                             '"t" matches more than one: three and two')
+        self.assertException('t', '"t" matches more than one: three and two')
 
     def test_assignment(self):
         GetPrefix.set_assignment('foo.bar.baz', 32, MASTER, self.slave)
@@ -52,3 +44,10 @@ class GetPrefixTest(TestCase):
         GetPrefix.set_assignment('new.foo', 23, MASTER, self.slave,
                                  unmapped_keys=set(['new']))
         self.assertEqual(self.slave, {'new': {'foo': 23}})
+
+    def test_prefix_dict(self):
+        pdict = GetPrefix.PrefixDict(TABLE)
+        self.assertEqual(pdict['o'], 1)
+        with self.assertRaises(GetPrefix.PrefixException) as cm:
+            GetPrefix.get_prefix(TABLE, 'x')
+        self.assertEqual(str(cm.exception), '"x" is not valid')

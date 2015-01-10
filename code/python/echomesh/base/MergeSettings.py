@@ -89,7 +89,8 @@ class MergeSettings(object):
 
                 parent = os.path.dirname(f)
                 if not os.path.exists(parent):
-                    print('Creating directory', parent)
+                    from echomesh.util import Log
+                    Log.logger(__name__).info('Creating directory %s.', parent)
                     os.makedirs(parent)
 
                 with open(f, 'wb') as fw:
