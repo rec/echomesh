@@ -9,5 +9,6 @@ def importer(classpath):
     except ImportError:
         # Try to import a function out of a module.
         parts = classpath.split('.')
-        function = classpath.pop()
-        return getattr(importlib.import_module(classpath), function)
+        function = parts.pop()
+
+        return getattr(importlib.import_module('.'.join(parts)), function)
