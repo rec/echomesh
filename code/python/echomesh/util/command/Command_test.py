@@ -8,7 +8,7 @@ class Command_test(TestCase):
         registry = Command.Registry('test', 'echomesh.util.command.test', '')
         foo = registry['f']
         self.assertEquals(foo(), 'foo')
-        self.assertEquals(registry.help('foo'), '')
+        self.assertEquals(registry.help('foo'), 'Some help text')
 
     def test_two(self):
         registry = Command.Registry('test', 'echomesh.util.command.test',

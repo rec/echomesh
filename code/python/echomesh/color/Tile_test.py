@@ -5,9 +5,9 @@ from echomesh.util.TestCase import TestCase
 
 class TestTile(TestCase):
     def test_empty(self):
-        before = ColorList()
+        before = ColorList(columns=1)
         self.assertEqual(tile_color_list(before, 1, 1), before)
-        self.assertEqual(tile_color_list(before, 1, 1, 1), ColorList(columns=1))
+        self.assertEqual(tile_color_list(before, 1, 1), ColorList(columns=1))
 
     def test_trivial(self):
         before = ColorList(['red', 'yellow', 'green', 'blue'], columns=2)

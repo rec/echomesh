@@ -8,24 +8,32 @@ from echomesh.util.string.Formatted import Formatted
 
 class Command(Formatted):
     FORMAT_MEMBERS = 'name', 'help'
+    DEFER_LOADING = True
 
     def __init__(self, classpath, name, importer=importer):
         self.classpath = classpath
         self.name = name
         self.importer = importer
+        self._loaded = not Command.DEFER_LOADING
         self._load()
 
     def _load(self):
-        mod = self.importer('%s.%s' % (self.classpath, self.name))
-        get = lambda key: getattr(mod, key, None)
+        if not self._loaded:
+            mod = self.importer('%s.%s' % (self.classpath, self.name))
+            get = lambda key: getattr(mod, key, None)
 
-        self.call = get('COMMAND') or get(self.name.lower())
-        assert (self.call)
-        self.help = get('HELP')
-        self._loaded = True
+            self.call = get('COMMAND') or get(self.name.lower())
+            assert (self.call)
+            self._help = get('HELP')
+            self._loaded = True
 
     def __call__(self, *args, **kwds):
+        self._load()
         return self.call(*args, **kwds)
+
+    def help(self):
+        self._load()
+        return self._help
 
 
 class Registry(PrefixDict):
@@ -50,4 +58,4 @@ class Registry(PrefixDict):
             self.help_table.update(getattr(module, 'HELP', {}))
 
     def help(self, key):
-        return self.help_table.get(key) or getattr(self[key], 'HELP', '')
+        return self.help_table.get(key) or self[key].help()

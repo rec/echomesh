@@ -169,7 +169,7 @@ cdef class ColorList:
     def __getitem__(self, object key):
         if isinstance(key, slice):
             indices = range(*key.indices(len(self)))
-            cl = ColorList(columns=self.columns)
+            cl = ColorList()
             cl.thisptr.resize(len(indices))
             i = 0
             for j in indices:
@@ -263,10 +263,13 @@ cdef class ColorList:
         return super(ColorList, self).__sizeof__() + 4 * len(self)
 
     def __str__(self):
-        s = '[%s]' % ', '.join(str(c) for c in self)
-        if self._columns:
-            s = '%s, columns=%d' % (s, self._columns)
-        return s
+        if not self._columns:
+            return '[%s]' % ', '.join(str(c) for c in self)
+        result = []
+        for c in xrange(0, len(self), self._columns):
+            result.append(str(self[c:c + self._columns]))
+        joined = ',\n '.join(result)
+        return '[%s]' % (('\n ' + joined) if joined else joined)
 
     def _check_key(self, int key):
         if key >= 0:

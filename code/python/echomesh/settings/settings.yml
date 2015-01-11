@@ -105,7 +105,7 @@ execution:
   autostart: false
 
   # Handling of the visualiser windows.
-  close_button_quits: false
+  close_button_quits: true
   close_button_closes_window: true
 
   # Do we get and process commands from the keyboard?
