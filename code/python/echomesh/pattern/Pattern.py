@@ -119,3 +119,13 @@ def copy_const_settings(cl, **kwds):
         v['constant'] = True
 
     return dict(parent, **kwds)
+
+
+class Filter(Pattern):
+    """A Filter is a Pattern that contains exactly one Pattern."""
+    PATTERN_COUNT = 1
+
+    def _evaluate(self):
+        color_lists = self.patterns()
+        assert len(color_lists) == 1
+        self._evaluate_one(color_lists[0])

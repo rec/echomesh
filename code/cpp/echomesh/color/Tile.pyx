@@ -27,12 +27,13 @@ def tile_colors(object fcl, int new_columns, int new_rows,
     cdef ColorList result
 
     source = toColorList(fcl)
-    if not fcl.columns:
+    old_columns = fcl.columns or len(fcl)
+    if not old_columns:
         return source
 
     result = ColorList(columns=new_columns)
     result.thisptr.copy(tile_pieces(
-        source.thisptr[0], fcl.columns,
+        source.thisptr[0], old_columns,
         new_columns, new_rows, x_center, y_center))
     return result
 
