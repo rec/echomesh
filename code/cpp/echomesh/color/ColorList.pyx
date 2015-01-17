@@ -6,8 +6,7 @@ import six
 cdef ColorList toColorList(object value):
     if isinstance(value, ColorList):
         return <ColorList> value
-    else:
-        return ColorList(value)
+    return ColorList(value)
 
 def to_color_list(object x):
     return toColorList(x)
