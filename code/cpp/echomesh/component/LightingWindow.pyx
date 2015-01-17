@@ -35,7 +35,7 @@ cdef class PyLightingWindow:
         deleteLightingWindow(self.thisptr)
         self.thisptr = NULL
 
-    def set_lights(self, ColorList lights):
+    def set_lights(self, ColorMatrix lights):
         self.thisptr.setLights(lights.thisptr[0])
 
     def set_light_count(self, int count):

@@ -17,4 +17,4 @@ class Column(Pattern):
     PATTERN_COUNT = 1
 
     def _evaluate(self):
-        return cechomesh.ColorList(self.patterns()[0], self.get('columns'))
+        return cechomesh.ColorMatrix(self.patterns()[0], self.get('columns'))

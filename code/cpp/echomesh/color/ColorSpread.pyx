@@ -40,7 +40,7 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
     if steps and total_steps:
         raise ValueError('spread: Can only set one of steps and total_steps')
 
-    cl = ColorList()
+    cl = ColorMatrix()
 
     if len(colors) == 1:
         c1 = Color(colors[0])
@@ -60,8 +60,8 @@ def color_spread(colors, model=None, max_steps=None, steps=None,
     else:
         cmodel = NULL
 
-    cdef ColorList colors2
-    colors2 = ColorList(colors)
+    cdef ColorMatrix colors2
+    colors2 = ColorMatrix(colors)
     transform = _to_list(transform, Transform)
     lc = len(colors2)
     if transform:

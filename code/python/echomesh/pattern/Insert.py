@@ -9,12 +9,12 @@ from echomesh.pattern.Pattern import Pattern
 class Insert(Pattern):
     PATTERN_COUNT = 1
 
-    HELP = """Inserts a given pattern into a larger ColorList."""
+    HELP = """Inserts a given pattern into a larger ColorMatrix."""
 
     SETTINGS = {
             'length': {  # TODO: this can be omitted if rollover is False.
         'default': 0,
-        'help': 'The total number of lights in the output ColorList.',
+        'help': 'The total number of lights in the output ColorMatrix.',
         },
       'offset': {
         'default': 0,

@@ -85,4 +85,4 @@ class Image(Pattern):
           'top_offset', 'left_offset', 'bottom_offset', 'right_offset'))
         image = resize(
             image, **self.get_dict('x', 'y', 'stretch', 'top', 'left'))
-        return cechomesh.ColorList(image, columns=image.size[0])
+        return cechomesh.ColorMatrix(image, columns=image.size[0])

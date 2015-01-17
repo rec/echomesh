@@ -10,16 +10,16 @@ def _make_list(object value):
         value = list(value)
     return value
 
-cdef ColorList toColorList(object value):
-    if isinstance(value, ColorList):
-        return <ColorList> value
+cdef ColorMatrix toColorMatrix(object value):
+    if isinstance(value, ColorMatrix):
+        return <ColorMatrix> value
     else:
-        return ColorList(value)
+        return ColorMatrix(value)
 
 def to_color_list(object x):
-    return toColorList(x)
+    return toColorMatrix(x)
 
-cdef class ColorList:
+cdef class ColorMatrix:
     cdef FColorList* thisptr
     cdef int _columns
 
@@ -55,19 +55,19 @@ cdef class ColorList:
             raise ValueError('Don\'t understand color value %s' % item)
 
     def combine(self, *items):
-        cdef ColorList cl
+        cdef ColorMatrix cl
         for other in items:
-            if isinstance(other, ColorList):
+            if isinstance(other, ColorMatrix):
                 if mustRecolumn(self.columns, other.columns):
                     if other.columns < self.columns:
-                        cl = ColorList(other, columns=self.columns)
+                        cl = ColorMatrix(other, columns=self.columns)
                     else:
-                        cl = <ColorList> other
+                        cl = <ColorMatrix> other
                         self.columns = cl.columns
                 else:
-                    cl = <ColorList> other
+                    cl = <ColorMatrix> other
             else:
-                cl = ColorList(other, columns=self.columns)
+                cl = ColorMatrix(other, columns=self.columns)
 
             self.thisptr.combine(cl.thisptr[0])
             if not self.columns:
@@ -86,8 +86,8 @@ cdef class ColorList:
         if hasattr(colors, 'getdata'):
             colors = colors.getdata()
 
-        if isinstance(colors, ColorList):
-            self.thisptr.extend((<ColorList> colors).thisptr[0])
+        if isinstance(colors, ColorMatrix):
+            self.thisptr.extend((<ColorMatrix> colors).thisptr[0])
             return
 
         original_length = len(self)
@@ -118,14 +118,14 @@ cdef class ColorList:
         index = self.thisptr.index(c)
         if index >= 0:
             return index
-        raise ValueError('%s is not in ColorList' % color)
+        raise ValueError('%s is not in ColorMatrix' % color)
 
     def insert(self, int index, object item):
         self[index:index] = [item]
 
     def interpolate(self, color_list, float fader, unsigned int smooth=0):
-        cdef ColorList cl = toColorList(color_list)
-        cdef ColorList result = ColorList(columns=self.column or cl.columns)
+        cdef ColorMatrix cl = toColorMatrix(color_list)
+        cdef ColorMatrix result = ColorMatrix(columns=self.column or cl.columns)
         result.thisptr[0] = self.thisptr.interpolate(
             cl.thisptr[0], fader, smooth)
         return result
@@ -152,7 +152,7 @@ cdef class ColorList:
         self.thisptr.sort()
 
     def __add__(self, object other):
-        cl = ColorList(self, columns=getattr(self, 'columns', 0))
+        cl = ColorMatrix(self, columns=getattr(self, 'columns', 0))
         cl.extend(other)
         return cl
 
@@ -169,7 +169,7 @@ cdef class ColorList:
     def __getitem__(self, object key):
         if isinstance(key, slice):
             indices = range(*key.indices(len(self)))
-            cl = ColorList()
+            cl = ColorMatrix()
             cl.thisptr.resize(len(indices))
             i = 0
             for j in indices:
@@ -198,21 +198,21 @@ cdef class ColorList:
         return self.thisptr.size()
 
     def __mul__(self, object mult):
-        if not isinstance(self, ColorList):
+        if not isinstance(self, ColorMatrix):
             self, mult = mult, self
-        cl = ColorList(self, columns=self.columns)
+        cl = ColorMatrix(self, columns=self.columns)
         cl *= mult
         return cl
 
     def __radd__(self, object other):
-        return ColorList(other) + self
+        return ColorMatrix(other) + self
 
     def __repr__(self):
-        return 'ColorList(%s)' % self.__str__()
+        return 'ColorMatrix(%s)' % self.__str__()
 
-    def __richcmp__(ColorList self, ColorList other, int comparer):
+    def __richcmp__(ColorMatrix self, ColorMatrix other, int comparer):
         if other is None:
-            other = ColorList()
+            other = ColorMatrix()
         if self.columns != other.columns:
             return compare_ints(self.columns, other.columns, comparer)
 
@@ -223,7 +223,7 @@ cdef class ColorList:
         return True
 
     def __reversed__(self):
-        cl = ColorList(self)
+        cl = ColorMatrix(self)
         cl.reverse()
         return cl
 
@@ -232,7 +232,7 @@ cdef class ColorList:
 
     def __setitem__(self, object key, object value):
         if isinstance(key, slice):
-            cl = toColorList(value)
+            cl = toColorMatrix(value)
             length = len(cl)
             indices = key.indices(len(self))
             pieces = range(*indices)
@@ -260,7 +260,7 @@ cdef class ColorList:
                 raise ValueError('Don\'t understand color value %s' % value)
 
     def __sizeof__(self):
-        return super(ColorList, self).__sizeof__() + 4 * len(self)
+        return super(ColorMatrix, self).__sizeof__() + 4 * len(self)
 
     def __str__(self):
         if not self._columns:
@@ -278,7 +278,7 @@ cdef class ColorList:
         else:
             if -key <= len(self):
                 return len(self) + key
-        raise IndexError('ColorList index out of range')
+        raise IndexError('ColorMatrix index out of range')
 
     def _set_item(self, int i, object item):
         cdef FColor c
@@ -290,11 +290,11 @@ cdef class ColorList:
 def color_list_with_errors(colors=None):
     if isinstance(colors, six.string_types):
         colors = [colors]
-    cl = ColorList()
+    cl = ColorMatrix()
     return cl, cl.extend(colors, return_errors=True)
 
 def combine_color_lists(list data, int columns=0):
-    cdef ColorList result = ColorList()
+    cdef ColorMatrix result = ColorMatrix()
     result.combine(*data)
     if columns:
         result.columns = columns

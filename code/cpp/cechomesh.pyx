@@ -20,7 +20,7 @@ include "echomesh/base/Echomesh.pyx"
 
 include "echomesh/color/Recolumn.pyx"
 include "echomesh/color/Color.pyx"
-include "echomesh/color/ColorList.pyx"
+include "echomesh/color/ColorMatrix.pyx"
 include "echomesh/color/ColorSpread.pyx"
 include "echomesh/color/Concatenate.pyx"
 include "echomesh/color/Expand.pyx"

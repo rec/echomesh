@@ -61,4 +61,4 @@ class Text(Pattern):
         if debug:
             print('width=%d, height=%d' % (width, height))
             image.show()
-        return cechomesh.ColorList(image, columns=width)
+        return cechomesh.ColorMatrix(image, columns=width)

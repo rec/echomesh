@@ -5,12 +5,12 @@ cdef extern from "echomesh/color/Scroll.h" namespace "echomesh::color":
 
 def scroll_color_list(object fcl, float dx, float dy, int columns=0,
                       bool wrap=False, bool smooth=True, string transform=''):
-    cdef ColorList source
-    cdef ColorList result
+    cdef ColorMatrix source
+    cdef ColorMatrix result
     cdef CTransform* ctransform
 
-    source = toColorList(fcl)
-    result = ColorList()
+    source = toColorMatrix(fcl)
+    result = ColorMatrix()
     columns = columns or source.columns
     if smooth:
         ctransform = makeTransform(transform)

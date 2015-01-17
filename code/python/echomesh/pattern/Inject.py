@@ -3,7 +3,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 from echomesh.pattern.Pattern import Pattern
 
 class Inject(Pattern):
-    HELP = """Injects a pattern into a larger ColorList."""
+    HELP = """Injects a pattern into a larger ColorMatrix."""
 
     SETTINGS = {
       'mapping': {

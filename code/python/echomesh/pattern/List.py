@@ -41,7 +41,7 @@ class List(Pattern):
         columns = self.get('columns') or max_column
         if not max_column:
             # Empty list.
-            return cechomesh.ColorList(columns=columns)
+            return cechomesh.ColorMatrix(columns=columns)
 
         ce = (cechomesh.color_list_with_errors(c) for c in colors)
         color_lists, errors = zip(*ce)
@@ -49,7 +49,7 @@ class List(Pattern):
         if errors:
             raise Exception('\nCan\'t understand %s: %s.' % (
                 plural(len(errors), 'color'), ', '.join(errors)))
-        result = cechomesh.ColorList(columns=columns)
+        result = cechomesh.ColorMatrix(columns=columns)
         for i, cl in enumerate(color_lists):
             cl.size = columns
             result.extend(cl)

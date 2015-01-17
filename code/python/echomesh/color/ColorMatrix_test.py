@@ -1,12 +1,12 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-from cechomesh import Color, ColorList, even_color_spread
+from cechomesh import Color, ColorMatrix, even_color_spread
 
 from echomesh.util.TestCase import TestCase
 
-class ColorListTest(TestCase):
+class ColorMatrixTest(TestCase):
     def setUp(self):
-        self.cl = ColorList()
+        self.cl = ColorMatrix()
 
     def assertResult(self, s):
         self.assertEqual(str(self.cl), s)
@@ -16,15 +16,15 @@ class ColorListTest(TestCase):
         self.assertResult('[red]')
 
     def test_issue(self):
-        cl = ColorList(['red', 'white'])
+        cl = ColorMatrix(['red', 'white'])
         self.assertEqual(str(cl), '[red, white]')
 
     def test_issue(self):
-        cl = ColorList(['red', 'white', 'green', 'blue'])
+        cl = ColorMatrix(['red', 'white', 'green', 'blue'])
         self.assertEqual(str(cl), '[red, white, green, blue]')
 
     def test_single_hsb(self):
-        self.cl = ColorList()
+        self.cl = ColorMatrix()
         self.cl.append('red')
         self.assertResult('[red]')
 
@@ -48,26 +48,26 @@ class ColorListTest(TestCase):
         self.assertResult('[white, white, magenta, cyan, yellow]')
 
     def test_combine_columns(self):
-        self.cl = ColorList(['yellow', 'white', 'red', 'blue', 'green'],
+        self.cl = ColorMatrix(['yellow', 'white', 'red', 'blue', 'green'],
                             columns=2)
-        self.cl.combine(ColorList(['yellow', 'white', 'black', 'green', 'red'],
+        self.cl.combine(ColorMatrix(['yellow', 'white', 'black', 'green', 'red'],
                                   columns=3))
         self.assertResult('[\n [yellow, white, black],\n'
                           ' [yellow, magenta, black],\n'
                           ' [green, black, black]]')
 
     def test_combine_columns2(self):
-        self.cl = ColorList(['yellow', 'white', 'red', 'blue', 'green'],
+        self.cl = ColorMatrix(['yellow', 'white', 'red', 'blue', 'green'],
                             columns=3)
-        self.cl.combine(ColorList(['yellow', 'white', 'red', 'green', 'coral'],
+        self.cl.combine(ColorMatrix(['yellow', 'white', 'red', 'green', 'coral'],
                                   columns=2))
         self.assertResult('[\n [yellow, white, red],\n'
                           ' [magenta, green, black],\n'
                           ' [coral, black, black]]')
 
     def test_combine_columns4(self):
-        self.cl = ColorList()
-        self.cl.combine(ColorList(['yellow', 'white', 'red', 'green', 'coral'],
+        self.cl = ColorMatrix()
+        self.cl.combine(ColorMatrix(['yellow', 'white', 'red', 'green', 'coral'],
                                   columns=2))
         self.assertResult('[\n [yellow, white],\n [red, green],\n [coral]]')
 
@@ -118,24 +118,24 @@ class ColorListTest(TestCase):
         self.assertResult('[green, red, red]')
 
     def test_columns(self):
-        cl = ColorList(['green', 'red', 'blue'], columns=8)
+        cl = ColorMatrix(['green', 'red', 'blue'], columns=8)
         cl.columns = 4
         self.assertEqual(
-          cl, ColorList(['green', 'red', 'blue', 'black'], columns=4))
+          cl, ColorMatrix(['green', 'red', 'blue', 'black'], columns=4))
 
-        self.cl = ColorList(['green', 'red', 'blue', 'yellow', 'orange'],
+        self.cl = ColorMatrix(['green', 'red', 'blue', 'yellow', 'orange'],
                             columns=3)
         self.assertEqual(self.cl, self.cl)
-        cl = ColorList(['green', 'red', 'blue', 'yellow', 'orange'], columns=2)
+        cl = ColorMatrix(['green', 'red', 'blue', 'yellow', 'orange'], columns=2)
         self.assertNotEqual(self.cl, cl)
 
         self.cl.columns = 2
         self.assertEqual(
-          self.cl, ColorList(['green', 'red', 'yellow', 'orange'], columns=2))
+          self.cl, ColorMatrix(['green', 'red', 'yellow', 'orange'], columns=2))
 
         self.cl.columns = 3
         self.assertEqual(
-          self.cl, ColorList(
+          self.cl, ColorMatrix(
               ['green', 'red', 'black', 'yellow', 'orange', 'black'],
               columns=3))
 
@@ -162,49 +162,49 @@ class ColorListTest(TestCase):
     def test_pop(self):
         self.cl.extend(['green', 'red', 'blue', 'red'])
         self.assertEqual(self.cl.pop(), Color('red'))
-        self.assertEqual(self.cl, ColorList(['green', 'red', 'blue']))
+        self.assertEqual(self.cl, ColorMatrix(['green', 'red', 'blue']))
         self.assertEqual(self.cl.pop(0), Color('green'))
-        self.assertEqual(self.cl, ColorList(['red', 'blue']))
+        self.assertEqual(self.cl, ColorMatrix(['red', 'blue']))
         self.assertRaises(IndexError, self.cl.pop, 3)
 
     def test_remove(self):
         self.cl.extend(['green', 'red', 'blue', 'red'])
         self.cl.remove('red')
-        self.assertEqual(self.cl, ColorList(['green', 'blue', 'red']))
+        self.assertEqual(self.cl, ColorMatrix(['green', 'blue', 'red']))
         self.cl.remove('green')
-        self.assertEqual(self.cl, ColorList(['blue', 'red']))
+        self.assertEqual(self.cl, ColorMatrix(['blue', 'red']))
         self.assertRaises(ValueError, self.cl.remove, 'green')
 
     def test_reverse(self):
         self.cl += ['green', 'red', 'blue', 'red']
         self.cl.reverse()
-        self.assertEqual(self.cl, ColorList(['red', 'blue', 'red', 'green']))
+        self.assertEqual(self.cl, ColorMatrix(['red', 'blue', 'red', 'green']))
 
     def test_reversed(self):
         self.cl += ['green', 'red', 'blue', 'red']
         cl = reversed(self.cl)
-        self.assertEqual(cl, ColorList(['red', 'blue', 'red', 'green']))
+        self.assertEqual(cl, ColorMatrix(['red', 'blue', 'red', 'green']))
 
     def test_mul(self):
         self.cl += ['green', 'red']
         self.cl = self.cl * 3
         self.assertEqual(
             self.cl,
-            ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+            ColorMatrix(['green', 'red', 'green', 'red', 'green', 'red']))
 
     def test_rmul(self):
         self.cl += ['green', 'red']
         self.cl = 3 * self.cl
         self.assertEqual(
             self.cl,
-            ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+            ColorMatrix(['green', 'red', 'green', 'red', 'green', 'red']))
 
     def test_imul(self):
         self.cl += ['green', 'red']
         self.cl *= 3
         self.assertEqual(
             self.cl,
-            ColorList(['green', 'red', 'green', 'red', 'green', 'red']))
+            ColorMatrix(['green', 'red', 'green', 'red', 'green', 'red']))
 
     def test_scale0(self):
         self.cl += ['green', 'red']
