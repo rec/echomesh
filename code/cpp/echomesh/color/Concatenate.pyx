@@ -1,9 +1,9 @@
 def concatenate_color_lists(object fcls):
-    cdef ColorMatrix result
-    cdef ColorMatrix source
+    cdef ColorList result
+    cdef ColorList source
 
-    result = ColorMatrix()
+    result = ColorList()
     for fcl in fcls:
-        source = toColorMatrix(fcl)
+        source = toColorList(fcl)
         result.thisptr.extend(source.thisptr[0])
     return result

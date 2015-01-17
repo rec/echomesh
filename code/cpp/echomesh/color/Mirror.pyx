@@ -3,10 +3,10 @@ cdef extern from "echomesh/color/Mirror.h" namespace "echomesh::color":
 
 def mirror_color_list(object fcl, unsigned int x, unsigned int y,
                       bool reverseX, bool reverseY):
-    cdef ColorMatrix source
-    cdef ColorMatrix result
+    cdef ColorList source
+    cdef ColorList result
 
-    source = toColorMatrix(fcl)
-    result = ColorMatrix()
+    source = toColorList(fcl)
+    result = ColorList()
     result.thisptr.copy(mirror(source.thisptr[0], x, y, reverseX, reverseY))
     return result

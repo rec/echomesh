@@ -9,7 +9,7 @@ def scroll_color_list(object fcl, float dx, float dy, int columns=0,
     cdef ColorMatrix result
     cdef CTransform* ctransform
 
-    source = toColorMatrix(fcl)
+    source = toColorList(fcl)
     result = ColorMatrix()
     columns = columns or source.columns
     if smooth:

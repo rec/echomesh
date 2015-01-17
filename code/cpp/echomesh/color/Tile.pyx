@@ -7,7 +7,7 @@ def tile_color_list(object fcl, int x_mult, int y_mult):
     cdef ColorMatrix source
     cdef ColorMatrix result
 
-    source = toColorMatrix(fcl)
+    source = toColorList(fcl)
     if not fcl.columns:
         return source
 
@@ -21,7 +21,7 @@ def tile_colors(object fcl, int new_columns, int new_rows,
     cdef ColorMatrix source
     cdef ColorMatrix result
 
-    source = toColorMatrix(fcl)
+    source = toColorList(fcl)
     old_columns = fcl.columns or len(fcl)
     if not old_columns:
         return source

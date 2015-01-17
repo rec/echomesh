@@ -11,13 +11,13 @@ def get_spi_order(string s):
         raise Exception('Don\'t understand SPI order %s.' % s)
     return o
 
-def fill_spi(ColorMatrix cl, bytearray b, Order order):
+def fill_spi(ColorList cl, bytearray b, Order order):
     cdef char* bptr = PyByteArray_AsString(b)
     fillSpi(cl.thisptr[0], bptr, len(b), order)
 
 def combine_to_spi(list data, float brightness, float gamma, bytearray b,
                    Order order):
-    cdef ColorMatrix cl = combine_color_lists(data)
+    cdef ColorList cl = combine_color_lists(data)
     cl.scale(brightness)
     cl.gamma(gamma)
     fill_spi(cl, b, order)

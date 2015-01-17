@@ -4,10 +4,11 @@ cdef extern from "echomesh/color/Insert.h" namespace "echomesh::color":
 
 def insert_color_list(object fcl,
                       int offset, unsigned int length, bool rollover, int skip):
-    cdef ColorMatrix source
-    cdef ColorMatrix result
+    cdef ColorList source
+    cdef ColorList result
 
-    source = toColorMatrix(fcl)
-    result = ColorMatrix()
-    result.thisptr.copy(insert(source.thisptr[0], offset, length, rollover, skip))
+    source = toColorList(fcl)
+    result = ColorList()
+    result.thisptr.copy(
+        insert(source.thisptr[0], offset, length, rollover, skip))
     return result
