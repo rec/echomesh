@@ -1,5 +1,7 @@
 type: sequence
 
+output: spi
+
 pattern:
   a simple one:
     type: spread

@@ -27,7 +27,7 @@ class Spread(Pattern):
                  'color in the spread.  If there are not enough steps, the '
                  'last step is repeated as needed.  If steps is empty, the '
                  'steps are computed from the total_steps, and if that\'s '
-                 'empty, from the actual number of lights in the system.'),
+                 'empty, from the number of colors in the input.'),
         },
       'total_steps': {
         'default': 0,
@@ -51,17 +51,20 @@ class Spread(Pattern):
 
         steps = self.get('steps')
         total_steps = self.get('total_steps')
-        if total_steps is None:
-            if steps is None:
-                total_steps = None
-            else:
+        max_steps = light_count(Settings.get)
+
+        if not total_steps:
+            if steps:
                 total_steps = steps
                 steps = None
+            else:
+                total_steps = None
+                max_steps = len(colors)
 
         return cechomesh.color_spread(
           colors,
           self.get('model'),
-          max_steps=light_count(Settings.get),
+          max_steps=max_steps,
           steps=steps,
           total_steps=total_steps,
           transform=self.get('transform'))

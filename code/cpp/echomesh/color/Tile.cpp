@@ -34,7 +34,6 @@ static int getOffset(int centering, int tileSize, int boardSize) {
 }
 
 FColorList tile(const FColorList& fcl, int xMult, int yMult, int columns) {
-
     auto rows = computeRows(fcl.size(), columns);
     auto newColumns = columns * xMult;
     auto newRows = rows * yMult;

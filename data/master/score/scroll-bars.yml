@@ -1,0 +1,16 @@
+type: sequence
+
+pattern:
+  scrolling:
+    type: scroll
+    wrap: true
+    smooth: false
+    dx: system.elapsed
+    pattern:
+      type: list
+      colors: [[black, black, white, white], [green, yellow, pink]]
+
+elements:
+  -
+    type: pattern
+    pattern: scrolling

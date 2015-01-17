@@ -5,5 +5,5 @@ light:
 
 ---
 light:
-  visualizer:
-    layout: [100, 10]
+    visualizer:
+        layout: [16, 16]

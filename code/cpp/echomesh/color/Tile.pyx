@@ -1,8 +1,3 @@
-cdef enum Centering:
-  BEGIN = -1
-  MIDDLE = 0
-  END = 1
-
 cdef extern from "echomesh/color/Tile.h" namespace "echomesh::color":
     FColorList tile(FColorList, int xMult, int yMult, int columns)
     FColorList tile_pieces(FColorList, int columns, int newColumns, int newRows,

@@ -7,6 +7,7 @@ REGISTRY = register(
   'Choose',
   'Columns',
   'Concatenate',
+  'Expand',
   'Fade',
   'Image',
   'Inject',
@@ -16,6 +17,7 @@ REGISTRY = register(
   'Scroll',
   'Spread',
   'Text',
+  'Tile',
   'Reverse',
 )
 

@@ -1,5 +1,7 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
+# TODO(tom): is this obsolete?
+
 def light_count(get):
     count = get('light', 'count')
     if not count:

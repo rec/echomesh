@@ -31,8 +31,6 @@ class Tile(Filter):
         },
       }
 
-    PATTERN_COUNT = 1
-
     def _evaluate_one(self, color_list):
         if not color_list:
             LOGGER.error('Empty input to Tile.')

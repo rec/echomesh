@@ -3,8 +3,7 @@ type: sequence
 pattern:
   a simple one:
     type: spread
-    colors: [red, white]
-    steps: 32
+    colors: [red, green, white, yellow, orange, purple]
 
 elements:
   -

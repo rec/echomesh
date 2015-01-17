@@ -1,0 +1,14 @@
+type: sequence
+
+pattern:
+  expand:
+    type: expand
+    scale =
+    spread:
+      type: spread
+      colors: [red, yellow]
+
+elements:
+  -
+    type: pattern
+    pattern: expand
