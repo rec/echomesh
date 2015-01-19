@@ -48,8 +48,4 @@ class Scroll(Pattern):
           color_list, self.get('dx'), self.get('dy'), columns=columns,
           wrap=self.get('wrap'), smooth=self.get('smooth'),
           transform=self.get('transform'))
-        global LAST_LIST
-        if False and result != LAST_LIST:
-            LAST_LIST = result
-            print(result, color_list)
         return result

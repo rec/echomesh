@@ -58,7 +58,4 @@ class Text(Pattern):
             raise ValueError("Text doesn't have a text setting")
 
         image, width, height = draw_text(fontfile, text, height, font_height)
-        if debug:
-            print('width=%d, height=%d' % (width, height))
-            image.show()
         return cechomesh.ColorList(image, columns=width)

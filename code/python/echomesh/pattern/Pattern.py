@@ -128,4 +128,4 @@ class Filter(Pattern):
     def _evaluate(self):
         color_lists = self.patterns()
         assert len(color_lists) == 1
-        self._evaluate_one(color_lists[0])
+        return self._evaluate_one(color_lists[0])

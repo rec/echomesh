@@ -129,13 +129,32 @@ int InstrumentGrid::getLightCount() const {
     return instruments_.size();
 }
 
+float InstrumentGrid::gamma() const {
+    MessageManagerLock l;
+    return gamma_;
+}
+
+void InstrumentGrid::setGamma(float gamma) {
+    MessageManagerLock l;
+    gamma_ = gamma;
+    useGamma_ = not near(gamma_, 1.0f);
+}
+
 void InstrumentGrid::setLights(const color::FColorList& colors) {
     MessageManagerLock l;
 
     auto size = jmin(colors.size(), instruments_.size());
     for (auto i = 0; i < size; ++i) {
-        auto color = Colour(colors.get(i).argb());
-        instruments_[i]->setColor(color);
+        auto& c = colors.get(i);
+        uint32 argb;
+        if (useGamma_) {
+            auto c2 = c;
+            c2.gamma(gamma_);
+            argb = c2.argb();
+        } else {
+            argb = c.argb();
+        }
+        instruments_[i]->setColor(Colour(argb));
     }
 
     for (auto i = size; i < instruments_.size(); ++i)

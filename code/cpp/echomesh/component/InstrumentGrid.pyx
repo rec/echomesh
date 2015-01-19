@@ -12,3 +12,5 @@ cdef extern from "echomesh/component/InstrumentGrid.h" namespace "echomesh":
         void setShape(bool isRect)
         void setShowLabel(bool)
         int getLightCount()
+        float gamma()
+        void setGamma(float gamma)

@@ -24,6 +24,8 @@ class InstrumentGrid : public Component {
     void setBackground(const Colour&);
     void setLayout(const Point& layout, const Point& size, const Point& padding,
                    const Point& instrumentPadding, const Point& labelPadding);
+    float gamma() const;
+    void setGamma(float gamma);
 
     void paint(Graphics&);
     void pythonRepaint();
@@ -38,6 +40,8 @@ class InstrumentGrid : public Component {
     bool labelStartsAtZero_;
     bool showLabel_;
     Colour background_;
+    float gamma_ = 1.0f;
+    bool useGamma_ = false;
 
     Point layout_;
     Point size_;
@@ -53,4 +57,3 @@ class InstrumentGrid : public Component {
 };
 
 }  // namespace echomesh
-

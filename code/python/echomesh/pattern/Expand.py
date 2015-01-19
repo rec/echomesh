@@ -18,5 +18,6 @@ class Expand(Filter):
         },
       }
 
-    def _evaluate_one(self, color):
-        return cechomesh.expand_color_list(colors, *self.get(scale))
+    def _evaluate_one(self, colors):
+        res = cechomesh.expand_color_list(colors, *self.get('scale'))
+        return res

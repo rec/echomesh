@@ -1,0 +1,21 @@
+type: sequence
+
+pattern:
+  scroll:
+    type: scroll
+    wrap: true
+    dx: system.elapsed
+    pattern:
+      type: tile
+      scale: [2, 2]
+      pattern:
+        type: expand
+        scale: [4, 6]
+        pattern:
+          type: list
+          colors: [black, white]
+
+elements:
+  -
+    type: pattern
+    pattern: scroll

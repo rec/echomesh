@@ -31,6 +31,13 @@ cdef class PyLightingWindow:
         def __set__(self, bool visible):
             self.thisptr.setVisible(visible)
 
+    property gamma:
+        def __get__(self):
+            return self.thisptr.grid().gamma()
+
+        def __set__(self, float gamma):
+            self.thisptr.grid().setGamma(gamma)
+
     def dealloc(self):
         deleteLightingWindow(self.thisptr)
         self.thisptr = NULL
@@ -51,7 +58,7 @@ cdef class PyLightingWindow:
         self.thisptr.grid().setShowLabel(show)
 
     def set_label_starts_at_zero(self, bool at_zero):
-        self.thisptr.grid().setShowLabel(at_zero)
+        self.thisptr.grid().setLabelStartsAtZero(at_zero)
 
     def set_layout(self, object layout, object size, object padding,
                    object instrument_padding, object label_padding):

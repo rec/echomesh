@@ -1,0 +1,17 @@
+type: sequence
+
+pattern:
+  tile:
+    type: tile
+    scale: [2, 2]
+    pattern:
+      type: expand
+      scale: [4, 4]
+      pattern:
+        type: list
+        colors: [red, yellow]
+
+elements:
+  -
+    type: pattern
+    pattern: tile

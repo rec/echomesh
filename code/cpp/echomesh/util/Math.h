@@ -39,5 +39,4 @@ bool near(Number x, Number y) {
     return near(x, y, Number(0.000001));
 }
 
-
 }  // namespace echomesh

@@ -3,10 +3,10 @@ type: sequence
 pattern:
   expand:
     type: expand
-    scale =
-    spread:
-      type: spread
-      colors: [red, yellow]
+    scale: [10, 10]
+    pattern:
+      type: list
+      colors: [black, white]
 
 elements:
   -
