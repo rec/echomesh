@@ -5,6 +5,13 @@ cdef extern from "echomesh/color/Transform.h" namespace "echomesh::color":
 
     cdef CTransform* makeTransform(string)
 
+    cdef cppclass FloatFunction:
+        pass
+
+    cdef float apply(FloatFunction, float)
+    cdef bool empty(FloatFunction)
+    cdef FloatFunction makeFunction(string)
+
 cdef class Transform:
     cdef CTransform* thisptr
 
@@ -24,3 +31,29 @@ cdef class Transform:
 
     def inverse(self, float x):
         return self.thisptr.inverse(x)
+
+cdef class Function:
+    cdef FloatFunction function
+    cdef string desc
+
+    def __cinit__(self, object desc):
+        if not isinstance(desc, six.string_types):
+            raise ValueError('FloatFunction desc "%s" is not a string' % desc)
+
+        self.function = makeFunction(desc)
+        self.desc = desc
+
+    property desc:
+        def __get__(self):
+            return self.desc
+
+    def __str__(self):
+        return self.desc
+
+    def __call__(self, float x):
+        if not self:
+            raise ValueError('Empty function %s' % self)
+        return apply(self.function, x)
+
+    def __nonzero__(self):
+        return not empty(self.function)

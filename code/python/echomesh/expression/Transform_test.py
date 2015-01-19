@@ -62,3 +62,47 @@ class CTransformTest(TestCase):
 
     def test_exp(self):
         self.assertTransform("exp")
+
+class FunctionTest(TestCase):
+    def assert_function(self, desc):
+        f = cechomesh.Function(desc)
+        self.assertNear(f(0), 0)
+        self.assertNear(f(1), 1)
+        return f
+
+    def assert_functions_near(self, d1, d2):
+        f1 = cechomesh.Function(d1)
+        f2 = cechomesh.Function(d2)
+        for x in range(11):
+            r = x / 10.0
+            self.assertNear(f1(r), f2(r))
+
+    def assert_functions_inverse(self, d1, d2):
+        f1 = cechomesh.Function(d1)
+        f2 = cechomesh.Function(d2)
+        for x in range(11):
+            r = x / 10.0
+            self.assertNear(f1(f2(r)), r)
+            self.assertNear(f2(f1(r)), r)
+
+    def test_identity(self):
+        f = self.assert_function('identity')
+        self.assertNear(f(0.5), 0.5)
+
+    def test_square(self):
+        f = self.assert_function('square')
+        self.assertNear(f(0.5), 0.25)
+
+    def test_mirror(self):
+        self.assert_functions_near('mirror(identity)', 'identity')
+        f = self.assert_function('mirror(square)')
+        self.assertNear(f(0.5), 0.5)
+        self.assertNear(f(0.25), 0.125)
+        self.assertNear(f(0.75), 0.875)
+
+    def test_inverse(self):
+        for name in 'square', 'cube', 'log', 'sine':
+            self.assert_functions_inverse(name, 'inverse(%s)' % name)
+
+
+#

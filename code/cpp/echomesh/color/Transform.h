@@ -7,6 +7,9 @@
 namespace echomesh {
 namespace color {
 
+typedef std::function<float(float)> FloatFunction;
+FloatFunction makeFunction(string const&);
+
 class CTransform {
   public:
     virtual ~CTransform() {}
@@ -18,6 +21,8 @@ CTransform* makeTransform(const string&);
 
 vector<string> getTransformNames();
 
+inline float apply(FloatFunction const& f, float x) { return f(x); }
+inline bool empty(FloatFunction const &f) { return !f; }
+
 }  // namespace color
 }  // namespace echomesh
-

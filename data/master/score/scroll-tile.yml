@@ -4,7 +4,9 @@ pattern:
   scroll:
     type: scroll
     wrap: true
-    dx: system.elapsed
+    dx: system.elapsed / 3
+    smooth: true
+    transform: square+square
     pattern:
       type: tile
       scale: [2, 2]

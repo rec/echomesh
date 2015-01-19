@@ -63,5 +63,31 @@ FColorList smoothScroll(
     return fcl1.interpolate(fcl2, r);
 }
 
+FColorList smoothScroll(
+    const FColorList& fcl, float dx, float dy, int columns, bool wrap,
+    FloatFunction const& transform) {
+    auto dx1 = static_cast<int>(dx), dy1 = static_cast<int>(dy);
+    auto xSame = near(dx1, dx), ySame = near(dy1, dy);
+
+    if (xSame and ySame)
+        return scroll(fcl, dx1, dy1, columns, wrap);
+
+    int dx2 = dx1 + (xSame ? 0 : (dx > 0 ? 1 : -1));
+    int dy2 = dy1 + (ySame ? 0 : (dy > 0 ? 1 : -1));
+
+    float rx = (dx > 0) ? (dx - dx1) : (dx1 - dx);
+    float ry = (dy > 0) ? (dy - dy1) : (dy1 - dy);
+
+    auto rxZero = near(rx, 0.0f), ryZero = near(ry, 0.0f);
+
+    DCHECK(not (rxZero and ryZero));
+
+    FColorList fcl1 = scroll(fcl, dx1, dy1, columns, wrap);
+    FColorList fcl2 = scroll(fcl, dx2, dy2, columns, wrap);
+
+    auto r = rxZero ? ry : (ryZero ? rx : (rx + ry) / 2.0f);
+    return fcl1.interpolate(fcl2, transform(r));
+}
+
 }  // namespace color
 }  // namespace echomesh

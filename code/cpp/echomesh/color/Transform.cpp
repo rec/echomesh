@@ -1,6 +1,7 @@
 #include <math.h>
 
 #include <map>
+#include <sstream>
 
 #include "echomesh/color/Transform.h"
 
@@ -9,10 +10,55 @@ using namespace std;
 namespace echomesh {
 namespace color {
 
+typedef pair<FloatFunction, FloatFunction> FloatTransform;
+
 namespace {
 
-typedef std::function<float(float)> FloatFunction;
-typedef std::pair<FloatFunction, FloatFunction> FloatTransform;
+vector<string> split(const string &s, char delim) {
+    stringstream ss(s);
+    string item;
+    vector<string> elems;
+    while (getline(ss, item, delim))
+        elems.push_back(item);
+
+    return elems;
+}
+
+float const PI = 3.14159265358979f;
+float const E = 2.718281828f;
+
+float croot(float x)    { return powf(x, 1.0f / 3.0f); }
+float cube(float x)     { return x * x * x; }
+float identity(float x) { return x; }
+float reverse(float x)  { return 1.0 - x; }
+float square(float x)   { return x * x; }
+
+float sine(float x) {
+    return (1 + sinf(PI * (x - 0.5))) / 2;
+}
+
+float arcsine(float x) {
+    return 0.5 + asinf(2 * x - 1) / PI;
+}
+
+float exp(float x) {
+    return (expf(x) - 1) / (E - 1);
+}
+
+float log(float x) {
+    return logf((E - 1) * x + 1);
+}
+
+FloatFunction mirror(FloatFunction const& f) {
+    if (!f)
+        return f;
+    return [f] (float x) {
+        if (x <= 0.5)
+            return f(2 * x) / 2;
+
+        return 1 - f(2 * (1 - x)) / 2;
+    };
+};
 
 class CTransformBase : public CTransform {
   public:
@@ -75,29 +121,6 @@ unique_ptr<CTransform> inverse(unique_ptr<CTransform> transform) {
 
 typedef map<string, FloatTransform> TransformMap;
 
-float PI = 3.14159265358979f;
-float E = 2.718281828;
-
-float identity(float x) { return x; }
-float reverse(float x) { return 1.0 - x; }
-float square(float x) { return x * x; }
-
-float sine(float x) {
-    return (1 + sinf(PI * (x - 0.5f))) / 2.0f;
-}
-
-float arcsine(float x) {
-    return 0.5 + asinf(2.0 * x - 1.0) / PI;
-}
-
-float exp(float x) {
-    return (expf(x) - 1.0) / (E - 1.0);
-}
-
-float log(float x) {
-    return logf((E - 1.0) * x + 1.0);
-}
-
 FloatTransform power(float n) {
     return FloatTransform(
         bind(powf, placeholders::_1, n),
@@ -155,7 +178,80 @@ unique_ptr<CTransform> getTransform(const string& name) {
     return move(result);
 }
 
+FloatFunction findFunction(string const& s, bool isInverse) {
+    using Table = map<string, FloatFunction>;
+    static Table const TABLE{
+        {"croot", croot},
+        {"cube", cube},
+        {"exp", exp},
+        {"identity", identity},
+        {"log", log},
+        {"reverse", reverse},
+        {"sine", sine},
+        {"sqrt", sqrtf},
+        {"square", square}
+    };
+
+    static Table const INVERSE{
+        {"croot", cube},
+        {"cube", croot},
+        {"exp", log},
+        {"identity", identity},
+        {"log", exp},
+        {"reverse", reverse},
+        {"sine", arcsine},
+        {"sqrt", square},
+        {"square", sqrtf}
+    };
+
+    auto& table = isInverse ? INVERSE : TABLE;
+
+    auto i = table.find(s);
+    if (i != table.end())
+        return i->second;
+    return {};
 }
+
+inline FloatFunction compose(
+        FloatFunction const& first, FloatFunction const& second) {
+    if (!(first && second))
+        return first;
+    return [first, second] (float x) {
+        return second(first(x));
+    };
+}
+
+inline FloatFunction reverse(FloatFunction const& f) {
+    if (!f)
+        return f;
+    return [f] (float x) {
+        return f(1 - x);
+    };
+}
+
+FloatFunction makeOneFunction(string const& s) {
+    auto pos = s.find('(');
+    if (pos == string::npos)
+        return findFunction(s, false);
+
+    if (!pos || s.back() != ')')
+        return {};
+
+    auto mod = s.substr(0, pos);
+    auto rem = s.substr(pos + 1, s.size() - pos - 2);
+    if (mod == "inverse")
+        return findFunction(rem, true);
+    auto f = makeFunction(rem);
+    if (!f)
+        return f;
+    if (mod == "mirror")
+        return mirror(f);
+    else if (mod == "reverse")
+        return reverse(f);
+    return {};
+}
+
+} // namespace
 
 CTransform* makeTransform(const string& s) {
     try {
@@ -164,6 +260,18 @@ CTransform* makeTransform(const string& s) {
         LOG(ERROR) << e.what();
         return nullptr;
     }
+}
+
+FloatFunction makeFunction(string const& s) {
+    auto tokens = split(s, '+');
+    auto size = tokens.size();
+    if (!size)
+        return {};
+
+    auto f = makeOneFunction(tokens[0]);
+    for (auto i = 1; i < size; ++size)
+        f = compose(makeOneFunction(tokens[i]), f);
+    return f;
 }
 
 vector<string> getTransformNames() {

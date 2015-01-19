@@ -6,6 +6,7 @@ import six
 
 from echomesh.expression import ConstantExpression
 from echomesh.expression import Expression
+from echomesh.expression.LiteralExpression import LiteralExpression
 from echomesh.pattern.Registry import make_pattern
 from echomesh.util import Log
 from echomesh.util.dict.ReadObservingDictionary import ReadObservingDictionary
@@ -47,13 +48,16 @@ class Pattern(object):
         self.constants = set()
         for k, v in self.SETTINGS.items():
             const = v.get('constant', self.CONSTANT)
+            literal = v.get('literal')
             if const:
                 self.constants.add(k)
             value = desc.get(k, v.get('default'))
             if value is None and 'default' not in v:
                 missing.append(k)
             else:
-                if const:
+                if literal:
+                    expression = LiteralExpression(value)
+                elif const:
                     expression = ConstantExpression.constant_expression(value)
                 else:
                     expression = Expression.expression(value, element)
