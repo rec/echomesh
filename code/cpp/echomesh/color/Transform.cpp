@@ -269,7 +269,7 @@ FloatFunction makeFunction(string const& s) {
         return {};
 
     auto f = makeOneFunction(tokens[0]);
-    for (auto i = 1; i < size; ++size)
+    for (auto i = 1; i < size; ++i)
         f = compose(makeOneFunction(tokens[i]), f);
     return f;
 }

@@ -6,7 +6,7 @@ pattern:
     wrap: true
     dx: system.elapsed / 3
     smooth: true
-    transform: square+square
+    transform: mirror(square)
     pattern:
       type: tile
       scale: [2, 2]
