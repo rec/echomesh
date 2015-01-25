@@ -18,6 +18,7 @@ class FColorList : public vector<FColor> {
         *this = that;
     }
 
+    // DEPRECATED - use Combine.h.
     void combine(const FColorList& that) {
         resize(std::max(size(), that.size()));
         for (auto i = 0; i < that.size(); ++i)
@@ -109,6 +110,35 @@ class FColorList : public vector<FColor> {
         for (auto color: *this)
             color.gamma(gamma);
     }
+};
+
+class FColorArray : public FColorList {
+  public:
+    int columns() const { return columns_; }
+    void setColumns(int columns) { columns_ = columns; }
+
+    FColor& at(size_t x, size_t y) {
+        return FColorList::at(index(x, y));
+    }
+
+    const FColor& get(size_t x, size_t y) const {
+        return FColorList::get(index(x, y));
+    }
+
+    size_t index(size_t x, size_t y) const {
+        return x + y * columns_;
+    }
+
+    bool isIndex(size_t x, size_t y) const {
+        return FColorList::isIndex(index(x, y));
+    }
+
+    void set(size_t x, size_t y, const FColor& color) {
+        FColorList::set(index(x, y), color);
+    }
+
+  private:
+    int columns_ = 0;
 };
 
 }  // namespace color

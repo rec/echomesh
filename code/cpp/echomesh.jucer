@@ -67,6 +67,8 @@
         <FILE id="t3GAZw" name="ColorModel.cpp" compile="1" resource="0" file="echomesh/color/ColorModel.cpp"/>
         <FILE id="Ymm2iO" name="ColorName.cpp" compile="1" resource="0" file="echomesh/color/ColorName.cpp"/>
         <FILE id="n3f3uh" name="ColorName.h" compile="0" resource="0" file="echomesh/color/ColorName.h"/>
+        <FILE id="h3SR18" name="Combine.cpp" compile="1" resource="0" file="echomesh/color/Combine.cpp"/>
+        <FILE id="B1iWAe" name="Combine.h" compile="0" resource="0" file="echomesh/color/Combine.h"/>
         <FILE id="CEhCgq" name="Expand.cpp" compile="1" resource="0" file="echomesh/color/Expand.cpp"/>
         <FILE id="L3jquL" name="Expand.h" compile="0" resource="0" file="echomesh/color/Expand.h"/>
         <FILE id="bmO26j" name="FColor.cpp" compile="1" resource="0" file="echomesh/color/FColor.cpp"/>

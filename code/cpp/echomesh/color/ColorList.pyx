@@ -27,7 +27,8 @@ cdef class ColorList:
         self.thisptr = new FColorList()
         self.extend(colors)
         self._columns = getattr(colors, 'columns', 0)
-        self.columns = columns
+        if columns:
+            self.columns = columns
 
     def __dealloc__(self):
         del self.thisptr

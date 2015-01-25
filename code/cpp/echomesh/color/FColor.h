@@ -124,7 +124,8 @@ class FColor {
         }
         return FColor(red_ + ratio * (end.red_ - red_),
                       green_ + ratio * (end.green_ - green_),
-                      blue_ + ratio * (end.blue_ - blue_));
+                      blue_ + ratio * (end.blue_ - blue_),
+                      alpha_ + ratio * (end.alpha_ - alpha_));
     }
 
     void scale(float scale) {
@@ -139,11 +140,68 @@ class FColor {
         }
     };
 
-    void combine(const FColor& x) {
-        red_ = std::max(red_, x.red());
-        green_ = std::max(green_, x.green());
-        blue_ = std::max(blue_, x.blue());
-        alpha_ = std::max(alpha_, x.alpha_);
+    // Deprecated.
+    void combine(FColor const& x) { return max(x); }
+
+    void min(const FColor& x) {
+        red_ = std::min(red_ * alpha_, x.red() * x.alpha());
+        green_ = std::min(green_ * alpha_, x.green() * x.alpha());
+        blue_ = std::min(blue_ * alpha_, x.blue() * x.alpha());
+        alpha_ = 1.0f;
+    }
+
+    void max(const FColor& x) {
+        red_ = std::max(red_ * alpha_, x.red() * x.alpha());
+        green_ = std::max(green_ * alpha_, x.green() * x.alpha());
+        blue_ = std::max(blue_ * alpha_, x.blue() * x.alpha());
+        alpha_ = 1.0f;
+    }
+
+    void add(const FColor& x) {
+        red_ = red_ * alpha_ + x.red() * x.alpha();
+        green_ = green_ * alpha_ + x.green() * x.alpha();
+        blue_ = blue_ * alpha_ + x.blue() * x.alpha();
+        alpha_ = 1.0f;
+    }
+
+    void subtract(const FColor& x) {
+        red_ = red_ * alpha_ - x.red() * x.alpha();
+        green_ = green_ * alpha_ - x.green() * x.alpha();
+        blue_ = blue_ * alpha_ - x.blue() * x.alpha();
+        alpha_ = 1.0f;
+    }
+
+    void multiply(const FColor& x) {
+        red_ = red_ * alpha_ * x.red() * x.alpha();
+        green_ = green_ * alpha_ * x.green() * x.alpha();
+        blue_ = blue_ * alpha_ * x.blue() * x.alpha();
+        alpha_ = 1.0f;
+    }
+
+    void divide(const FColor& x) {
+        red_ = red_ * alpha_ / (x.red() * x.alpha());
+        green_ = green_ * alpha_ / (x.green() * x.alpha());
+        blue_ = blue_ * alpha_ / (x.blue() * x.alpha());
+        alpha_ = 1.0f;
+    }
+
+    void andC(const FColor& x) {
+        *this = FColor(argb() & x.argb());
+    }
+
+    void orC(const FColor& x) {
+        *this = FColor(argb() | x.argb());
+    }
+
+    void xorC(const FColor& x) {
+        *this = FColor(argb() ^ x.argb());
+    }
+
+    void limit() {
+        red_ = std::min(std::max(red_, 1.0f), 0.0f);
+        green_ = std::min(std::max(green_, 1.0f), 0.0f);
+        blue_ = std::min(std::max(blue_, 1.0f), 0.0f);
+        alpha_ = std::min(std::max(alpha_, 1.0f), 0.0f);
     }
 
     string toString() const {

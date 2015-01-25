@@ -69,6 +69,7 @@ OBJECTS := \
   $(OBJDIR)/LightingWindow_79bb5b00.o \
   $(OBJDIR)/ColorModel_26f43044.o \
   $(OBJDIR)/ColorName_ff26ac1a.o \
+  $(OBJDIR)/Combine_9cff3e0b.o \
   $(OBJDIR)/Expand_81404fd8.o \
   $(OBJDIR)/FColor_a3dc465b.o \
   $(OBJDIR)/HSB_7615b903.o \
@@ -203,6 +204,11 @@ $(OBJDIR)/ColorModel_26f43044.o: ../../echomesh/color/ColorModel.cpp
 $(OBJDIR)/ColorName_ff26ac1a.o: ../../echomesh/color/ColorName.cpp
 	-@mkdir -p $(OBJDIR)
 	@echo "Compiling ColorName.cpp"
+	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
+
+$(OBJDIR)/Combine_9cff3e0b.o: ../../echomesh/color/Combine.cpp
+	-@mkdir -p $(OBJDIR)
+	@echo "Compiling Combine.cpp"
 	@$(CXX) $(CXXFLAGS) -o "$@" -c "$<"
 
 $(OBJDIR)/Expand_81404fd8.o: ../../echomesh/color/Expand.cpp

@@ -86,7 +86,8 @@ FColorList smoothScroll(
     FColorList fcl2 = scroll(fcl, dx2, dy2, columns, wrap);
 
     auto r = rxZero ? ry : (ryZero ? rx : (rx + ry) / 2.0f);
-    return fcl1.interpolate(fcl2, transform(r));
+    auto tr = transform(r);
+    return fcl1.interpolate(fcl2, tr);
 }
 
 }  // namespace color

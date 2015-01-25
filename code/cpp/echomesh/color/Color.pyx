@@ -96,7 +96,7 @@ cdef class Color:
         return rgbToName(self.thisptr[0])
 
 def _conv(c):
-    return c if isinstance(c, float) else c / 256.0;
+    return c if isinstance(c, float) else c / 256.0
 
 cdef bool fill_color(object x, FColor* c):
     if not x:
