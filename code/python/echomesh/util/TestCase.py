@@ -19,3 +19,5 @@ class TestCase(unittest.TestCase):
             self.assertEquals(lx, ly)
             for xi, yi in zip(x, y):
                 self.assertNear(xi, yi, msg)
+
+main = unittest.main
