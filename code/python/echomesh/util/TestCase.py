@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function, unicode_litera
 
 from echomesh.base import Path
 
-Path.fix_sys_path(prompt=False)
+Path.fix_sys_path(show_error=False, prompt=False)
 
 import unittest
 

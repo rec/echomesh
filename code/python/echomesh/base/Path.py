@@ -112,8 +112,8 @@ def info():
       'echomesh path': ECHOMESH_PATH,
       }
 
-def fix_sys_path(prompt=True):
-    _set_project_path(prompt=prompt)
+def fix_sys_path(**kwds):
+    _set_project_path(**kwds)
     for path in reversed(PATHS):
         if ECHOMESH_EXTERNALS_OVERRIDE_SYSTEM_PACKAGES:
             sys.path.insert(1, path)
