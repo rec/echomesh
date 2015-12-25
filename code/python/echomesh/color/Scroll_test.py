@@ -13,7 +13,7 @@ class ScrollTest(TestCase):
 
     def doTest(self, dx, dy, expected):
         result = cechomesh.scroll_color_list(self.data, dx, dy, columns=4)
-        expected = cechomesh.ColorList(expected, columns=4)
+        expected = cechomesh.ColorList(expected) # , columns=4)
         self.assertEquals(result, expected)
 
     def test_empty(self):
@@ -129,7 +129,8 @@ class ScrollTest(TestCase):
 
     def doWrapTest(self, dx, dy, expected):
         result = cechomesh.scroll_color_list(self.data, dx, dy, 4, wrap=True)
-        expected = cechomesh.ColorList(expected, columns=4)
+        expected = cechomesh.ColorList(expected)
+        # , columns=4) why was this there
         self.assertEquals(result, expected)
 
     def test_empty_wrap(self):

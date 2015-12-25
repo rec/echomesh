@@ -52,24 +52,25 @@ class ColorListTest(TestCase):
                             columns=2)
         self.cl.combine(ColorList(['yellow', 'white', 'black', 'green', 'red'],
                                   columns=3))
-        self.assertResult('[\n [yellow, white, black],\n'
-                          ' [yellow, magenta, black],\n'
-                          ' [green, black, black]]')
+        self.assertResult(
+            '[yellow, white, black,'
+            ' yellow, magenta, black,'
+            ' green, black, black], columns=3')
 
     def test_combine_columns2(self):
         self.cl = ColorList(['yellow', 'white', 'red', 'blue', 'green'],
                             columns=3)
         self.cl.combine(ColorList(['yellow', 'white', 'red', 'green', 'coral'],
                                   columns=2))
-        self.assertResult('[\n [yellow, white, red],\n'
-                          ' [magenta, green, black],\n'
-                          ' [coral, black, black]]')
+        self.assertResult(
+            '[yellow, white, red, magenta, green, black, coral, black, black]'
+            ', columns=3')
 
     def test_combine_columns4(self):
         self.cl = ColorList()
         self.cl.combine(ColorList(['yellow', 'white', 'red', 'green', 'coral'],
                                   columns=2))
-        self.assertResult('[\n [yellow, white],\n [red, green],\n [coral]]')
+        self.assertResult('[yellow, white, red, green, coral], columns=2')
 
     def test_count(self):
         self.cl.extend(['green', 'red', 'blue', 'red', 'pink'])
