@@ -1,7 +1,5 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
-import six
-
 from PIL import Image
 
 from echomesh.util.image.Crop import crop
